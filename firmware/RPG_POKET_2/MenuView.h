@@ -9,6 +9,7 @@ struct MenuState {
   rpg::Load slots[3]={rpg::Load::Empty,rpg::Load::Empty,rpg::Load::Empty};rpg::Game previews[3];
   bool connected=false,connecting=false,scanning=false,openNetwork=false;
   int networkCount=0,networkIndex=0;char network[33]="",password[64]="",ip[20]="";
+  uint32_t rollStarted=0;bool rollReady=false;
   ArtStatus art=ArtStatus::Fallback;Journey journey;uint8_t destination=0;
   uint32_t touchErrors=0,touches=0;uint8_t flashMiB=0,ramMiB=0;int memoryTest=-1;const char* notice="";
 };
@@ -49,12 +50,23 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     center(144,menu.art==ArtStatus::Ready?"Artes do cartao: OK":"Artes simplificadas: ativas",1,menu.art==ArtStatus::Ready?UI_GREEN:UI_GOLD);
     snprintf(b,sizeof(b),"Tela %lums / toque %lums",(unsigned long)menu.frameMs,(unsigned long)menu.pollMs);center(198,b);center(177,menu.memoryTest<0?"Teste PSRAM: ainda nao feito":menu.memoryTest?"Teste 64 KiB PSRAM: OK":"Teste PSRAM: falhou",1,menu.memoryTest==1?UI_GREEN:UI_WHITE);
     button(14,222,212,"Testar memoria");button(14,272,212,"Voltar");return true;}
-  if(page==35||page==14){bool travel=page==35;center(7,travel?"EM VIAGEM":"MAPA DO MUNDO",2,UI_GOLD);
+  if(page==35||page==14||page==46){bool roll=page==46;bool travel=page==35;center(7,roll?"TESTE DE VIAGEM":travel?"EM VIAGEM":"MAPA DO MUNDO",2,UI_GOLD);
     auto line=[&](Point p,Point q,uint16_t color){int dx=abs(q.x-p.x),sx=p.x<q.x?1:-1,dy=-abs(q.y-p.y),sy=p.y<q.y?1:-1,err=dx+dy;for(;;){c.fillRect(p.x-1,p.y-1,3,3,color);if(p.x==q.x&&p.y==q.y)break;int e=2*err;if(e>=dy){err+=dy;p.x+=sx;}if(e<=dx){err+=dx;p.y+=sy;}}};
     for(unsigned i=0;i<9;++i)line(roadPoints[i],roadPoints[i+1],UI_GOLD);
     for(unsigned i=0;i<4;++i){const auto& p=places[i];c.fillRect(p.x-5,p.y-5,11,11,i==g.city?UI_GREEN:i==menu.destination?UI_BLUE:UI_WHITE);c.drawRect(p.x-7,p.y-7,15,15,UI_INK);text(std::max(3,std::min(234-int(strlen(p.name))*6,p.x-14)),p.y+12,p.name,1,i==menu.destination?UI_GOLD:UI_WHITE);}
-    if(travel){Point p=menu.journey.position();for(int y=0;y<24;++y)for(int x=0;x<22;++x){auto color=personalPixel(g,frame%6,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y-int(frame%2),1,1,color);}c.fillRect(p.x-6-int(frame%3),p.y+1,3,2,UI_MUTED);
+    if(roll){
+      // Dice box overlays the lower-right map, with a tumbling D20 outline.
+      box(150,126,80,91);unsigned die=menu.rollReady?g.tripRoll:1+(frame*7)%20;int bounce=menu.rollReady?0:int(frame%3)*3;
+      int cx=190+(menu.rollReady?0:(int(frame%3)-1)*4),cy=163-bounce;
+      auto edge=[&](int a,int b,int d,int e){line({a,b},{d,e},UI_GOLD);};
+      edge(cx,cy-26,cx+24,cy-12);edge(cx+24,cy-12,cx+23,cy+16);edge(cx+23,cy+16,cx,cy+27);edge(cx,cy+27,cx-24,cy+14);edge(cx-24,cy+14,cx-23,cy-12);edge(cx-23,cy-12,cx,cy-26);
+      edge(cx-23,cy-12,cx+24,cy-12);edge(cx-23,cy-12,cx,cy+27);edge(cx+24,cy-12,cx,cy+27);
+      snprintf(b,sizeof(b),"%u",die);text(cx-int(strlen(b))*6,cy-7,b,2,UI_WHITE);text(158,201,menu.rollReady?(rpg::tripSafe(g)?"SEGURO":"ENCONTRO"):"ROLANDO",1,menu.rollReady&&rpg::tripSafe(g)?UI_GREEN:UI_GOLD);
+      snprintf(b,sizeof(b),"D20 + Sobrev %u + Sorte %u",g.tripSurvival,g.tripLuck);center(231,b);
+      if(menu.rollReady){snprintf(b,sizeof(b),"%u + %u + %u = %u / CD %u",g.tripRoll,g.tripSurvival,g.tripLuck,g.tripTotal,g.tripDifficulty);center(250,b,1,UI_GOLD);button(14,272,212,rpg::tripSafe(g)?"Continuar viagem":"Enfrentar inimigo");}
+      else center(281,"Rolando o dado...",1,UI_GOLD);
+    }else if(travel){Point p=menu.journey.position();for(int y=0;y<24;++y)for(int x=0;x<22;++x){auto color=personalPixel(g,frame%6,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y-int(frame%2),1,1,color);}c.fillRect(p.x-6-int(frame%3),p.y+1,3,2,UI_MUTED);
       snprintf(b,sizeof(b),"%s -> %s",placeName(menu.journey.from),placeName(menu.journey.to));center(245,b);box(14,277,212,20);c.fillRect(17,280,206*menu.journey.progress/1000,14,UI_GREEN);}
-    else{snprintf(b,sizeof(b),"Voce esta em %s",placeName(g.city));center(231,b);snprintf(b,sizeof(b),"Destino: %s",placeName(menu.destination));center(250,b,1,UI_GOLD);button(14,272,102,menu.destination==g.city?"Entrar":"Viajar");button(124,272,102,"Voltar");}return true;}
+    else{snprintf(b,sizeof(b),"Destino Nv %u+ / CD %u",rpg::cityLevel(menu.destination),rpg::routeDifficulty(g.city,menu.destination));center(231,b,1,g.p.level<rpg::cityLevel(menu.destination)?UI_RED:UI_WHITE);snprintf(b,sizeof(b),"Destino: %s",placeName(menu.destination));center(250,b,1,UI_GOLD);button(14,272,102,menu.destination==g.city?"Entrar":"Viajar");button(124,272,102,"Voltar");}return true;}
   return false;
 }

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdlib.h>
 struct Place {const char* name;int x,y;};
-constexpr Place places[]={{"Vila",178,198},{"Ruinas",100,170},{"Porto",141,89},{"Castelo",39,62}};
+constexpr Place places[]={{"Carvalho",178,198},{"Ruinas",100,170},{"Mares",141,89},{"Aurora",39,62}};
 // Connected chain, with bends between landmarks on the user's mapa1 image.
 struct Point {int x,y;};
 constexpr Point roadPoints[]={{178,198},{149,192},{121,185},{100,170},{101,135},{119,112},{141,89},{115,76},{76,74},{39,62}};

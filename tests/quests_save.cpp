@@ -11,7 +11,7 @@ void same(const Game& a,const Game& b){uint8_t x[rpg::SAVE_SIZE],y[rpg::SAVE_SIZ
 void win(Game& g,uint8_t enemyId){assert(begin(g,enemyId));g.enemyHp=0;finish(g);assert(g.phase==Phase::Won);assert(home(g));}
 int main(){
   for(uint8_t id=1;id<=3;++id){
-    auto g=create(0,11);g.ruinsWins=3;win(g,2);assert(!g.questId);assert(!acceptQuest(g,id)&&g.questLevel==3&&!g.questProgress);
+    auto g=create(0,11);g.city=1;g.ruinsWins=3;win(g,2);assert(!g.questId);assert(!acceptQuest(g,id)&&g.questLevel==3&&!g.questProgress);
     auto old=g;assert(acceptQuest(g,id));same(g,old);assert(claimQuest(g));same(g,old);
     // Unrelated enemy, loss, flee and repeated finish never advance a specific contract.
     if(id>1){win(g,0);assert(!g.questProgress);}
@@ -37,7 +37,7 @@ int main(){
   g=create(0,1);assert(!acceptQuest(g,3));g.questProgress=1;g.p.level=4;g.p.maxmp=totalMana(g);auto xp=contractXp(g.questId,g.questLevel);assert(xp==72);
   g.p.gold=999999;auto old=g;assert(claimQuest(g));same(g,old);g.p.gold=999999-39;assert(!claimQuest(g)&&g.p.gold==999999);
   // Atomic accept/progress/claim retry and reboot. No doubled XP/gold on retry.
-  Memory mem;Journal<Memory> j(mem);Game loaded;assert(j.load(loaded)==Load::Empty);g=create(0,5);assert(j.save(g));old=g;
+  Memory mem;Journal<Memory> j(mem);Game loaded;assert(j.load(loaded)==Load::Empty);g=create(0,5);g.city=1;assert(j.save(g));old=g;
   assert(!acceptQuest(g,1));mem.fail=true;assert(!j.save(g));Journal<Memory> reboot(mem);assert(reboot.load(loaded)==Load::Ok);same(old,loaded);
   mem.fail=false;assert(j.save(g));for(int n=0;n<3;++n){win(g,0);assert(j.save(g));reboot.load(loaded);same(g,loaded);}
   old=g;assert(!claimQuest(g));mem.fail=true;assert(!j.save(g));reboot.load(loaded);same(old,loaded);

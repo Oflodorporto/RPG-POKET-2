@@ -22,6 +22,9 @@ struct Canvas {
   void draw16bitRGBBitmap(int x,int y,uint16_t* b,int w,int h){for(int j=0;j<h;++j)for(int i=0;i<w;++i)pixel(x+i,y+j,b[j*w+i]);}
   void save(const std::string& path){std::ofstream f(path,std::ios::binary);f<<"P6\n240 320\n255\n";for(auto p:pixels){char rgb[]={char(((p>>11)&31)*255/31),char(((p>>5)&63)*255/63),char((p&31)*255/31)};f.write(rgb,3);}}
 };
+
+// Legacy equipment regressions select a city that actually sells the item.
+const char* buyStockGear(rpg::Game& g,uint8_t id){uint8_t old=g.city;if(!rpg::cityStock(g,id))g.city=3;auto err=rpg::buyGear(g,id);g.city=old;return err;}
 int main(int argc,char** argv){
   assert(argc==2);artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();
   std::ifstream pack("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);Canvas c;rpg::Game g=rpg::create(0,32);ViewState v;std::string root=argv[1];
@@ -54,11 +57,11 @@ int main(int argc,char** argv){
   for(int id=1;id<=18;++id){g=rpg::create(id<=12?(id-1)/3:0,8);g.p.level=8;g.p.mp=g.p.maxmp=rpg::maxMana(g.p.cls,8);g.p.gold=999999;
     v.page=Page::GearShop;v.gearIndex=id<=12?(id-1)%3:id-10;render(c,g,v);c.save(root+"/equip-item-"+std::to_string(id)+".ppm");
     v.page=Page::GearBuy;v.itemId=id;render(c,g,v);
-    assert(!rpg::buyGear(g,id));v.page=Page::GearEquip;render(c,g,v);
+    assert(!buyStockGear(g,id));v.page=Page::GearEquip;render(c,g,v);
     assert(!rpg::equipGear(g,id));rpg::rest(g);v.page=Page::GearEquip;render(c,g,v);
   }
   g=rpg::create(0,8);g.p.level=8;g.p.mp=g.p.maxmp=rpg::maxMana(0,8);g.p.gold=999999;
-  for(uint8_t id:{uint8_t(1),uint8_t(3),uint8_t(13),uint8_t(16),uint8_t(18)})assert(!rpg::buyGear(g,id));
+  for(uint8_t id:{uint8_t(1),uint8_t(3),uint8_t(13),uint8_t(16),uint8_t(18)})assert(!buyStockGear(g,id));
   assert(!rpg::equipGear(g,1));v.page=Page::GearBag;v.gearIndex=0;render(c,g,v);c.save(root+"/equip-bolsa.ppm");
   v.page=Page::GearEquip;v.itemId=3;render(c,g,v);c.save(root+"/equip-confirmar.ppm");
   assert(!rpg::equipGear(g,18));rpg::rest(g);v.itemId=18;render(c,g,v);c.save(root+"/equip-retirar.ppm");
@@ -88,10 +91,11 @@ int main(int argc,char** argv){
   for(int status=0;status<=5;++status){v.card.status=CardStatus(status);v.card.capacityMiB=status>1?3815:0;render(c,g,v);c.save(root+"/cartao-"+std::to_string(status)+".ppm");}
   v.card.capacityMiB=UINT32_MAX;render(c,g,v);
   g=rpg::create(0,1);const Backdrop* seen[64]={};int count=0;
-  for(int page=0;page<=int(Page::Updates);++page){const auto* bg=&backdropFor(Page(page),g);if(Page(page)==Page::Travel)continue;for(int i=0;i<count;++i)assert(seen[i]!=bg);seen[count++]=bg;}
+  for(int page=0;page<=int(Page::Explore);++page){const auto* bg=&backdropFor(Page(page),g);if(Page(page)==Page::Travel||Page(page)==Page::TravelRoll)continue;for(int i=0;i<count;++i)assert(seen[i]!=bg);seen[count++]=bg;}
   for(auto phase:{rpg::Phase::Won,rpg::Phase::Lost}){g.phase=phase;const auto* bg=&backdropFor(Page::Result,g);for(int i=0;i<count;++i)assert(seen[i]!=bg);seen[count++]=bg;}
   for(int id:{0,1,3}){g.enemyId=id;const auto* bg=&backdropFor(Page::Battle,g);for(int i=0;i<count;++i)assert(seen[i]!=bg);seen[count++]=bg;}
-  assert(count==50);
+  for(unsigned city=1;city<4;++city){g.city=city;const auto* bg=&backdropFor(Page::Explore,g);for(int i=0;i<count;++i)assert(seen[i]!=bg);seen[count++]=bg;}g.city=0;
+  assert(count==56);
   for(int i=0;i<count;++i){drawBackdrop(c,*seen[i]);for(int y=0;y<160;++y)for(int x=0;x<120;++x){uint16_t expected=seen[i]->palette()[seen[i]->pixels()[y*120+x]];assert(c.pixels[y*2*240+x*2]==expected&&c.pixels[(y*2+1)*240+x*2+1]==expected);}}
   // Largest legal display values must also fit on screen.
   g.p.level=99;g.p.hp=g.p.maxhp=65535;g.p.mp=g.p.maxmp=110;g.p.gold=999999;g.p.xp=UINT32_MAX;g.p.life=g.p.mana=99;
@@ -110,7 +114,10 @@ int main(int argc,char** argv){
   v.page=Page::Clothes;render(c,g,v,0);std::vector<uint16_t> stable(c.pixels,c.pixels+240*320);render(c,g,v,5);assert(std::equal(stable.begin(),stable.end(),c.pixels));
   v.page=Page::Updates;menu.connected=true;render(c,g,v);assert(c.pixels[15*240+229]==0x07e0);c.save(root+"/atualizacao.ppm");
   for(unsigned state=0;state<=unsigned(updater::State::Error);++state){updateInfo.state=updater::State(state);updateInfo.busy=state==1||(state>=4&&state<=8);updateInfo.progress=57;strcpy(updateInfo.version,"2026.10.06-ota1");strcpy(updateInfo.message,"Mantenha a alimentacao");render(c,g,v);c.save(root+"/update-"+std::to_string(state)+".ppm");}menu.connected=false;updateInfo=updater::Info{};
+  for(unsigned city=0;city<4;++city){g=rpg::create(0,10);g.city=city;for(Page page:{Page::Village,Page::Explore,Page::CityGoods,Page::GoodsBuy,Page::GearShop,Page::Shop}){v.page=page;render(c,g,v);c.save(root+"/cidade-"+std::to_string(city)+"-"+std::to_string(int(page))+".ppm");}}
+  for(unsigned id=4;id<8;++id){g=rpg::create(1,1);rpg::begin(g,id);v.page=Page::Battle;for(unsigned frame=0;frame<4;++frame){v.effectOnHero=frame>=2;v.effect=frame>=2?Effect::Slash:Effect::None;v.effectFrame=frame;render(c,g,v,frame);c.save(root+"/novo-inimigo-"+std::to_string(id)+"-"+std::to_string(frame)+".ppm");}}v.effect=Effect::None;
+  g=rpg::create(0,1);rpg::prepareTrip(g,3);v.page=Page::TravelRoll;for(unsigned frame=0;frame<20;++frame){menu.rollReady=frame>=15;render(c,g,v,frame);}menu.rollReady=true;render(c,g,v);c.save(root+"/dado-viagem.ppm");
   makeFallback();v.page=Page::Battle;render(c,g,v);c.save(root+"/sem-cartao.ppm");
-  puts("PASS: shared firmware renderer; text bounds; 299+ screens; 50 distinct backgrounds; 1008 travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
+  puts("PASS: shared firmware renderer; text bounds; 299+ screens; 56 distinct backgrounds; 1008 travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

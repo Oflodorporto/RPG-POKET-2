@@ -25,3 +25,9 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 Versão 2026.10.06-ota1: prévia estática de cores, Fúria do bárbaro com efeito próprio, indicador verde de Wi-Fi e atualizador. Compilação/testes no computador são separados do teste físico. O atualizador ainda requer teste real de HTTPS, cartão e reinicialização. A versão Heltec permanece em uma pasta separada e não está incluída aqui.
 
 O projeto inclui GFX de terceiros em `src/GFX`; os avisos/licenças existentes acompanham a biblioteca. Nenhuma licença nova é atribuída ao projeto ou às imagens de terceiros sem decisão do proprietário.
+
+## Estradas e cidades
+
+Versao 2026.10.06-estradas1: cidades com niveis e comercio proprios, quatro inimigos originais, exploracao regional e D20 persistente na viagem. Download com retomada e novas tentativas automaticas. [Regras, saves e teste na placa](docs/ESTRADAS_E_CIDADES.md).
+
+A ota1 foi confirmada funcionando na placa pelo usuario. Esta entrega nova exige validacao fisica separada. Saves escritos no formato8; nao voltar ao firmware antigo para continuar estes saves. Sem gravacao automatica ou arquivos .rpg.

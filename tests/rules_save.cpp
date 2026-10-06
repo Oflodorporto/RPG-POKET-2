@@ -57,7 +57,7 @@ int main(){
   mem.failWrite=true;auto beforeSeq=reboot.seq;assert(!reboot.save(g)&&reboot.seq==beforeSeq);mem.failWrite=false;
   mem.data[1][22]^=1;Journal<Memory> recovery(mem);assert(recovery.load(loaded)==Load::Recovered);same(checkpoint,loaded);
   assert(recovery.save(g));Journal<Memory> r2(mem);assert(r2.load(loaded)==Load::Ok);same(g,loaded);
-  mem.data[0][4]=8;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
+  mem.data[0][4]=9;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
   Memory corrupt;corrupt.exists[0]=true;Journal<Memory> bad(corrupt);assert(bad.load(loaded)==Load::Blocked&&!bad.save(g));
   Memory inaccessible;inaccessible.failRead=true;Journal<Memory> broken(inaccessible);assert(broken.load(loaded)==Load::Blocked);
   // Readback failure must not be reported as successful even if NVS wrote.
@@ -91,15 +91,15 @@ int main(){
     Journal<Memory> migration(legacy);assert(migration.load(loaded)==Load::Ok);same(old,loaded);
     assert(loaded.enemyId==2&&loaded.ruinsWins==0&&!loaded.guardianDefeated);
     legacy.failWrite=true;assert(!migration.save(loaded));assert(!memcmp(bytes,legacy.data[0],SAVE_SIZE));
-    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==7);
+    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==8);
     Journal<Memory> migrated(legacy);assert(migrated.load(g)==Load::Ok);same(old,g);
     if(old.phase==Phase::Enemy){enemy(old);enemy(g);same(old,g);}
   }
   // Gate does not consume RNG; each win advances once; boss rewards and retry.
   g=create(2,54);auto locked=g;assert(!explore(g,true));same(g,locked);
-  bool seen[3]={};for(int seed=1;seed<=200;++seed){g=create(0,seed);assert(explore(g));assert(g.enemyId<3);seen[g.enemyId]=true;}
-  assert(seen[0]&&seen[1]&&seen[2]);
-  g=create(2,7);g.p.atk=255;g.p.def=255;
+  bool seen[8]={};for(int seed=1;seed<=200;++seed){g=create(0,seed);assert(explore(g));assert(g.enemyId==1||g.enemyId==4);seen[g.enemyId]=true;}
+  assert(seen[1]&&seen[4]);
+  g=create(2,7);g.city=1;g.p.atk=255;g.p.def=255;
   for(int id=0;id<4;++id){
     assert(begin(g,id));assert(g.enemyHp==enemySpec(id).hp);auto gold=g.p.gold;
     for(int turn=0;turn<100&&g.phase!=Phase::Won;++turn){if(g.phase==Phase::Hero)act(g,Action::Attack);else enemy(g);}
@@ -110,7 +110,7 @@ int main(){
     assert(home(g));rest(g);
   }
   assert(g.guardianDefeated&&g.p.life>=1&&g.p.mana>=3);assert(explore(g,true));
-  g=create(0,1);g.enemyId=4;assert(!valid(g));g=create(0,1);g.ruinsWins=4;assert(!valid(g));
+  g=create(0,1);g.enemyId=8;assert(!valid(g));g=create(0,1);g.ruinsWins=4;assert(!valid(g));
   // Every enemy uses its own attack/defense, and losing/fleeing grants no progress.
   for(int id=0;id<4;++id)for(uint32_t seed=1;seed<=100;++seed){
     g=create(1,seed);g.ruinsWins=3;assert(begin(g,id));auto oracle=g;

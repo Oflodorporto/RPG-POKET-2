@@ -19,7 +19,7 @@ int main(){
  now=30000;connectNetwork();WiFi.state=WL_CONNECTED;settings.failKey="pass";tickWifi();assert(!settings.getBool("wifi",true));settings.failKey="";
  // Only successful complete credential writes enable restart reconnection.
  menu.networkIndex=0;networkChoice();snprintf(menu.password,sizeof(menu.password),"nova_senha");connectNetwork();tickWifi();assert(settings.getBool("wifi",false));WiFi.state=0;initSettings();resumeConnection();assert(menu.connecting&&WiFi.selected=="Teste1"&&WiFi.password=="nova_senha");
- artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);std::ifstream input("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(input);packBytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(input),{});
+ artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);std::ifstream input("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);assert(input);packBytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(input),{});
  assert(loadSdArt()==ArtStatus::Ready&&cardEnds==1&&closes==1&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
  cardAvailable=false;assert(loadSdArt()==ArtStatus::Missing&&cardEnds==2);cardAvailable=true;fileExists=false;assert(loadSdArt()==ArtStatus::Missing&&cardEnds==3);fileExists=true;badRead=10;assert(loadSdArt()==ArtStatus::Invalid&&cardEnds==4&&closes==2);badRead=-1;assert(loadSdArt()==ArtStatus::Ready&&cardEnds==5&&closes==3);
  free(artMemory);puts("PASS: actual settings adapter; PWM/persistence failures, async Wi-Fi scan/password/open network/timeout/restart, complete credential commit, volatile PSRAM test, read-only shared SPI art load/absence/read-error/retry/unmount.");

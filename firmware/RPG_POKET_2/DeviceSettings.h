@@ -19,7 +19,7 @@ inline ArtStatus loadSdArt(){
   char named[48];updater::artPath(named,sizeof(named),ART_CRC);bool versioned=SD.exists(named);File f=SD.open(versioned?named:"/RPGPOKET/artes.pak",FILE_READ);ArtStatus status=ArtStatus::Missing;
   if(f){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{f};status=readArt(reader);f.close();}
   if(versioned&&status==ArtStatus::Ready){
-    SD.remove("/RPGPOKET/firmware.part");SD.remove("/RPGPOKET/artes.part");
+    // Incomplete downloads may belong to a newer release: preserve them for resume.
     // FAT has no journal: close each file before deleting it; never format or touch saves.
     File dir=SD.open("/RPGPOKET");if(dir){File entry=dir.openNextFile();while(entry){char candidate[48];snprintf(candidate,sizeof(candidate),"/RPGPOKET/%s",entry.name());bool regular=!entry.isDirectory();entry.close();const char* name=strrchr(candidate,'/');name=name?name+1:candidate;
       bool ours=regular&&strlen(name)==18&&!strncmp(name,"artes_",6)&&!strcmp(name+14,".pak");for(unsigned i=6;ours&&i<14;++i)ours=(name[i]>='0'&&name[i]<='9')||(name[i]>='a'&&name[i]<='f');
