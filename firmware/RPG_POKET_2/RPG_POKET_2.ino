@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.06-dungeon1. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.06-dungeon1a. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -368,7 +368,7 @@ void setup(){
   if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
   lastActivity=millis();activateTripPage();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.06-dungeon1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
+  Serial.printf("RPG POKET 2.0 2026.10.06-dungeon1a LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
 }
 void loop(){
   uint32_t now=millis();
