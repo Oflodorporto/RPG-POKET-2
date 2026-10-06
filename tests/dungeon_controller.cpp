@@ -227,7 +227,7 @@ void tapped(int x,int y){
     else if(hit(x,y,14,shop?182:226,212)){view.gearIndex=0;view.page=shop?Page::GearShop:Page::GearBag;say("");}
     else if(shop&&hit(x,y,14,226,102)){view.page=Page::Forge;say("");}
     else if(shop&&hit(x,y,124,226,102)){view.page=Page::CityGoods;say("");}
-else if(shop?hit(x,y,14,270,212):hit(x,y,124,272,102)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;
+    else if(shop?hit(x,y,14,270,212):hit(x,y,124,272,102)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;
   }
   if(view.page==Page::Forge){
     if(hit(x,y,124,224,102)){view.page=Page::Market;say("");return;}
@@ -339,7 +339,7 @@ int main(){
  tapped(80,240);assert(view.page==Page::Guild);view.page=Page::Tavern;tapped(80,235);assert(view.page==Page::Guild);tapped(80,190);tapped(80,135);assert(view.page==Page::Contract);
  game=rpg::create(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;journal.blocked=false;
  tapped(100,70);assert(view.page==Page::DungeonEntry);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.crystals==0&&rpg::inDungeon(game));
- nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.crystals==0);auto sequence=journal.seq;tapped(110,230);assert(journal.seq==sequence);tapped(190,230);assert(rpg::dungeonHeading(game)==1&&journal.seq==sequence+1);
+ nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.crystals==0);tapped(30,230);auto sequence=journal.seq;tapped(110,230);assert(journal.seq==sequence);tapped(190,230);assert(rpg::dungeonHeading(game)==1&&journal.seq==sequence+1);
  tapped(110,230);tapped(110,230);assert(game.phase==rpg::Phase::Hero&&game.enemyId==2&&view.page==Page::Dungeon);combatFx.kind=Effect::None;game.enemyHp=1;game.p.atk=99;tapped(80,305);assert(view.page==Page::Dungeon||view.page==Page::SaveError);combatFx.kind=Effect::None;
  game.phase=rpg::Phase::Won;game.enemyHp=0;assert(journal.save(game));tapped(80,305);assert(game.phase==rpg::Phase::Home&&game.dungeonEnemies&1);tapped(190,305);assert(view.page==Page::DungeonMenu);tapped(100,250);assert(view.page==Page::DungeonExit);tapped(180,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game));
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");

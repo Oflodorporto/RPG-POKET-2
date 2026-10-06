@@ -110,7 +110,7 @@ int main(){
     assert(home(g));rest(g);
   }
   assert(g.guardianDefeated&&g.p.life>=1&&g.p.mana>=3);assert(explore(g,true));
-  g=create(0,1);g.enemyId=8;assert(!valid(g));g=create(0,1);g.ruinsWins=4;assert(!valid(g));
+  g=create(0,1);g.enemyId=10;assert(!valid(g));g=create(0,1);g.ruinsWins=4;assert(!valid(g));
   // Every enemy uses its own attack/defense, and losing/fleeing grants no progress.
   for(int id=0;id<4;++id)for(uint32_t seed=1;seed<=100;++seed){
     g=create(1,seed);g.ruinsWins=3;assert(begin(g,id));auto oracle=g;
@@ -136,5 +136,4 @@ int main(){
   puts("PASS: ruins roster, 3-win gate, all enemies, rewards exactly once, boss persistence, v1 migration of all 6 phases, failed migration write, resumed legacy enemy turn.");
   puts("PASS: Heltec formulas, 1600 battles, four classes, skills/potions/escape/results, restart, CRC, journal fallback, unknown version, I/O failures, held touch; shop prices/limits, outside-combat potion, atomic purchase and save retry.");
 }
-
 

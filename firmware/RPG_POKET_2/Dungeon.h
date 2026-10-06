@@ -21,7 +21,7 @@ inline int dungeonEnemyAt(const Game& g,int x,int y){for(unsigned i=0;i<7;++i){a
 inline int dungeonEnemyAhead(const Game& g){unsigned d=dungeonHeading(g);return dungeonEnemyAt(g,dungeonX(g)+dungeonDx[d],dungeonY(g)+dungeonDy[d]);}
 inline void clearDungeon(Game& g){g.dungeonFlags=g.dungeonXY=g.dungeonLoot=g.dungeonEnemies=0;}
 inline const char* buyCrystal(Game& g){if(g.phase!=Phase::Home||g.tripStage||inDungeon(g)||g.city!=1)return "Compre nas Ruinas";if(g.crystals>=9)return "Limite: 9 cristais";if(g.p.gold<300)return "Precisa de 300 ouro";g.p.gold-=300;++g.crystals;return nullptr;}
-inline const char* enterDungeon(Game& g){if(g.phase!=Phase::Home||g.tripStage||inDungeon(g)||g.city!=1||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(!g.crystals)return "Precisa de um cristal";--g.crystals;clearDungeon(g);g.dungeonFlags=1;g.dungeonXY=0x71;return nullptr;}
+inline const char* enterDungeon(Game& g){if(g.phase!=Phase::Home||g.tripStage||inDungeon(g)||g.city!=1||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(!g.crystals)return "Precisa de um cristal";--g.crystals;clearDungeon(g);g.dungeonFlags=5;g.dungeonXY=0x71;return nullptr;}
 inline bool dungeonValid(const Game& g){
   if(g.crystals>9||g.dungeonFlags>15||g.dungeonEnemies>127)return false;
   if(!inDungeon(g))return !g.dungeonFlags&&!g.dungeonXY&&!g.dungeonLoot&&!g.dungeonEnemies;

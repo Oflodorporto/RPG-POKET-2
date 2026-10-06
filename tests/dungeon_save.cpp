@@ -8,7 +8,7 @@ void reach(Game g,int sx,int sy,bool visited[9][9]){std::queue<std::pair<int,int
 int main(){
  Game g=create(0,19);g.city=1;g.p.gold=299;assert(buyCrystal(g)&&g.p.gold==299);assert(enterDungeon(g));g.p.gold=600;assert(!buyCrystal(g)&&g.crystals==1&&g.p.gold==300);assert(!enterDungeon(g)&&g.crystals==0);assert(enterDungeon(g));g=roundtrip(g);
  bool v[9][9]={};reach(g,1,7,v);assert(v[1][7]&&v[1][3]);for(auto s:dungeonPickups)if(s.floor==0)assert(v[s.y][s.x]);
- assert(dungeonMove(g,1,0,0));assert(dungeonX(g)==1&&dungeonY(g)==7);assert(!dungeonMove(g,0,0,1));assert(!dungeonMove(g,1,0,0));assert(!dungeonMove(g,1,0,0)&&g.phase==Phase::Hero&&g.enemyId==2);g=roundtrip(g);
+ assert(!dungeonMove(g,0,0,-1));assert(dungeonMove(g,1,0,0));assert(dungeonX(g)==1&&dungeonY(g)==7);assert(!dungeonMove(g,0,0,1));assert(!dungeonMove(g,1,0,0));assert(!dungeonMove(g,1,0,0)&&g.phase==Phase::Hero&&g.enemyId==2);g=roundtrip(g);
  unsigned gold=g.p.gold;g.enemyHp=0;finish(g);assert(g.phase==Phase::Won&&g.ruinsWins==0);g=roundtrip(g);unsigned rewarded=g.p.gold;finish(g);assert(g.p.gold==rewarded&&rewarded>gold);assert(dungeonResolve(g));g=roundtrip(g);assert(g.dungeonEnemies&1);assert(!dungeonResolve(g));assert(!dungeonMove(g,1,0,0)&&dungeonX(g)==3);
  g.dungeonXY=0x13;assert(dungeonCollect(g)&&g.dungeonLoot&8);g=roundtrip(g);g.dungeonXY=0x17;assert(dungeonStairs(g)&&dungeonFloor(g)==1);
  assert(dungeonX(g)==1&&dungeonY(g)==7);g=roundtrip(g);bool v2[9][9]={};reach(g,1,7,v2);assert(v2[1][7]);
