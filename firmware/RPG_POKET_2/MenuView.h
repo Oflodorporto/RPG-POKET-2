@@ -8,12 +8,15 @@ struct MenuState {
   uint8_t activeSlot=0,slotChoice=0,brightness=80,keyboard=0,keyPage=0;
   rpg::Load slots[3]={rpg::Load::Empty,rpg::Load::Empty,rpg::Load::Empty};rpg::Game previews[3];
   bool connected=false,connecting=false,scanning=false,openNetwork=false;
+  bool savedNetworks=false;uint8_t savedCount=0,savedIndex=0,signalBars=0;int signalDbm=-100,networkDbm=-100,networkChannel=0;
   int networkCount=0,networkIndex=0;char network[33]="",password[64]="",ip[20]="";
+  bool clockIdle=false,clockValid=false;char clockTime[9]="--:--:--",clockDate[11]="--/--/----";
   uint32_t rollStarted=0;bool rollReady=false;
   ArtStatus art=ArtStatus::Fallback;Journey journey;uint8_t destination=0;
   uint32_t touchErrors=0,touches=0;uint8_t flashMiB=0,ramMiB=0;int memoryTest=-1;const char* notice="";
 };
 inline MenuState menu;
+inline uint8_t wifiBars(int dbm){return dbm>=-55?4:dbm>=-67?3:dbm>=-75?2:1;}
 inline const char* keyboardChars(uint8_t mode){static const char* keys[]={"abcdefghijklmnopqrstuvwxyz0123456789","ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789","!@#$%^&*()-_=+[]{};:,.?/\\|~`'\"<>    "};return keys[mode%3];}
 template<class Canvas,class Text,class Center,class Box,class Button,class Portrait>
 bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Box box,Button button,Portrait portrait,unsigned frame){
@@ -34,13 +37,25 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
   if(page==45){center(26,"ATUALIZACAO",2,UI_GOLD);center(58,"Via GitHub / Wi-Fi");center(88,FW_VERSION,1,UI_MUTED);
     if(updateInfo.busy){center(124,updater::stage(updateInfo.state));snprintf(b,sizeof(b),"%u%%",updateInfo.progress);center(158,b,2,UI_GREEN);box(14,192,212,20);c.fillRect(17,195,206*std::min(100u,updateInfo.progress)/100,14,UI_GREEN);center(234,updateInfo.message);center(270,"Nao retire o cartao ou a energia.");}
     else{center(121,*updateInfo.version?updateInfo.version:menu.connected?"Conectado / pronto para verificar":"Conecte o Wi-Fi primeiro",1,UI_GOLD);center(153,updateInfo.message,1,updateInfo.state==updater::State::Error?UI_RED:UI_WHITE);
-      if(updateInfo.state==updater::State::Available){center(189,updateInfo.artOnly?"Baixar e reparar as artes?":"Instalar a nova versao e artes?");center(212,"O jogo sera reiniciado.");button(14,272,102,"Cancelar");button(124,272,102,"Instalar");}
-      else{button(14,218,212,"Verificar versao");button(14,272,212,"Voltar");}}
+      if(updateInfo.state==updater::State::Available||updateInfo.canResume){center(189,updateInfo.artOnly?"Baixar e reparar as artes?":"Instalar a nova versao e artes?");button(14,272,102,"Cancelar");button(124,272,102,updateInfo.canResume?"Continuar":"Instalar");button(14,218,212,"Testar conexao");}
+      else{button(14,173,212,"Testar conexao");button(14,218,212,"Verificar versao");button(14,272,212,"Voltar");}}
     return true;}
+  if(page==52){center(12,"TESTE DE CONEXAO",2,UI_GOLD);center(48,"Sinal e servidor do GitHub");
+    if(updateInfo.busy){center(111,"Testando HTTPS...");snprintf(b,sizeof(b),"Tentativa %u/3",updateInfo.netTrials);center(150,b);center(203,"Aguarde o resultado.");}
+    else if(updateInfo.tested){snprintf(b,sizeof(b),"HTTPS: %u/%u respostas OK",updateInfo.netSuccess,updateInfo.netTrials);center(100,b,1,updateInfo.netSuccess==3?UI_GREEN:UI_RED);snprintf(b,sizeof(b),"Falhas: %u / Wi-Fi caiu: %u",updateInfo.netTrials-updateInfo.netSuccess,updateInfo.netDrop);center(132,b);snprintf(b,sizeof(b),"Sinal: %d a %d dBm",updateInfo.minDbm,updateInfo.maxDbm);center(164,b);snprintf(b,sizeof(b),"Resposta media: %lums",(unsigned long)updateInfo.avgMs);center(196,b);center(235,"Teste HTTPS; nao mede ping.");}
+    else center(141,updateInfo.message,1,UI_RED);if(!updateInfo.busy){button(14,272,102,"Voltar");button(124,272,102,"Testar");}return true;}
+  if(page==51){c.fillRect(0,0,240,320,0);c.setTextColor(UI_WHITE);c.setTextSize(3);c.setCursor(75,112);char hm[6];snprintf(hm,sizeof(hm),"%.5s",menu.clockTime);c.print(hm);c.setTextSize(1);c.setCursor(114,148);c.print(menu.clockTime+6);c.setTextSize(2);c.setCursor(60,184);c.print(menu.clockDate);c.setTextSize(1);c.setCursor(30,278);c.print("Toque para voltar ao jogo");if(!menu.clockValid){c.setCursor(24,231);c.print("Conecte Wi-Fi para acertar a hora");}return true;}
   if(page==32){center(12,"INTERNET / WI-FI",2,UI_GOLD);center(43,menu.connecting?"Conectando...":menu.connected?"Wi-Fi conectado":"Wi-Fi desconectado",1,menu.connected?UI_GREEN:UI_WHITE);
-    if(menu.connected)center(64,menu.ip);center(87,menu.scanning?"Buscando redes...":menu.networkCount?"Escolha sua rede":"Toque em Buscar redes");
-    if(menu.networkCount){char shortName[25];snprintf(shortName,sizeof(shortName),"%.24s",menu.network);center(117,shortName);snprintf(b,sizeof(b),"Rede %d/%d %s",menu.networkIndex+1,menu.networkCount,menu.openNetwork?"/ aberta":"");center(142,b);button(14,163,102,"Anterior");button(124,163,102,"Proxima");}
-    button(14,211,102,"Buscar");button(124,211,102,menu.connecting?"Cancelar":menu.connected?"Desligar":"Conectar");center(258,menu.notice,1,UI_RED);button(14,272,212,"Voltar");return true;}
+    if(menu.connected){snprintf(b,sizeof(b),"Sinal %d dBm / %u barras",menu.signalDbm,menu.signalBars);center(64,b);}else center(64,"Redes de 2.4 GHz");
+    button(14,80,102,"Salvas");button(124,80,102,menu.scanning?"Buscando":"Buscar");
+    unsigned count=menu.savedNetworks?menu.savedCount:menu.networkCount;
+    if(count){char shortName[25];snprintf(shortName,sizeof(shortName),"%.24s",menu.network);center(130,shortName);
+      if(menu.savedNetworks)snprintf(b,sizeof(b),"Salva %u/%u",menu.savedIndex+1,menu.savedCount);else snprintf(b,sizeof(b),"%d/%d Ch%d %ddBm",menu.networkIndex+1,menu.networkCount,menu.networkChannel,menu.networkDbm);center(151,b);
+      button(14,174,102,"Anterior");button(124,174,102,"Proxima");
+    }else center(139,menu.scanning?"Buscando em todos os canais...":menu.savedNetworks?"Nenhuma rede salva":"Toque em Buscar");
+    button(14,221,102,menu.savedNetworks?"Esquecer":"2.4 GHz");button(124,221,102,menu.connecting?"Aguarde":"Conectar");center(260,menu.notice,1,UI_RED);
+    button(14,276,102,"Voltar");button(124,276,102,menu.connecting?"Cancelar":"Desligar");return true;}
+  if(page==50){center(20,"ESQUECER REDE",2,UI_GOLD);char name[25];snprintf(name,sizeof(name),"%.24s",menu.network);center(105,name);center(158,"Remover a senha salva?");center(191,"Seus personagens ficam intactos.");center(237,menu.notice,1,UI_RED);button(14,272,102,"Cancelar");button(124,272,102,"Esquecer");return true;}
   if(page==33){char bar[31];unsigned n=strlen(menu.password);snprintf(bar,sizeof(bar),"%u: %.*s",n,22,menu.password+(n>22?n-22:0));box(4,2,232,30);text(10,12,*menu.notice?menu.notice:bar,1,*menu.notice?UI_RED:UI_WHITE);
     const char* chars=keyboardChars(menu.keyboard);for(unsigned i=0;i<12;++i){int x=4+(i%3)*78,y=38+(i/3)*45;box(x,y,76,43);char ch[2]={chars[menu.keyPage*12+i],0};text(x+31,y+12,ch,2);}
     button(4,222,76,menu.keyboard==0?"abc":menu.keyboard==1?"ABC":"#+@");button(82,222,76,"<- Pag");button(160,222,76,"Pag >");

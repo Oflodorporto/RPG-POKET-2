@@ -117,13 +117,17 @@ void selectSlot(uint8_t slot){
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
 }
 bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
+uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
+bool tickIdleClock(uint32_t now,bool blocked){if(blocked){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 void tapped(int x,int y){
+  lastActivity=millis();if(view.page==Page::Clock){view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(combatFx.active()||menu.journey.active)return;
+  if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
   if(view.page==Page::TravelRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptTrip(game)){say("");savedTransition(currentPage());}return;}
   if(view.page==Page::Club||view.page==Page::ClubBattle||view.page==Page::ClubResult){clubTap(x,y);return;}
   if(view.page==Page::Updates){if(updateInfo.busy)return;
-    if(updateInfo.state==updater::State::Available){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
-    else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
+    if(updateInfo.state==updater::State::Available||updateInfo.canResume){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,14,218,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
+    else if(hit(x,y,14,173,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
     else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
   if(view.page==Page::Menu){
     if(hit(x,y,14,86,212)){if(journal.blocked||journal.active<0)say("Escolha ou crie um personagem");else showMap();}
@@ -140,16 +144,20 @@ void tapped(int x,int y){
     else if(hit(x,y,124,272,102)){uint8_t old=backend.slot;backend.slot=menu.slotChoice;bool ok=backend.remove();backend.slot=old;if(!ok){menu.notice="Falha; personagem preservado";dirty=true;return;}refreshSlots();menu.notice="Slot apagado";
       if(menu.slotChoice==old){game=rpg::Game{};journal.load(game);view.choice=0;view.page=Page::Race;say("");}else{view.page=Page::Slots;dirty=true;}}return;}
   if(view.page==Page::Settings){if(hit(x,y,14,78,102)||hit(x,y,124,78,102)){int level=menu.brightness+(x<120?-10:10);level=std::max(10,std::min(100,level));menu.notice=saveBrightness(level)?"":"Falha ao salvar brilho";dirty=true;}
-    else if(hit(x,y,14,130,212)){view.page=Page::Wifi;menu.notice="";dirty=true;}
+    else if(hit(x,y,14,130,212)){view.page=Page::Wifi;showSavedNetworks();menu.notice="";dirty=true;}
     else if(hit(x,y,14,176,102)){view.page=Page::Card;say("");}
     else if(hit(x,y,124,176,102)){view.page=Page::Tests;dirty=true;}
     else if(hit(x,y,14,222,212)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
     else if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}return;}
   if(view.page==Page::Tests){if(hit(x,y,14,222,212)){testMemory();pendingTouch=false;gate=TouchGate{};dirty=true;}else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
-  if(view.page==Page::Wifi){if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}
-    else if(hit(x,y,14,211,102)){searchNetworks();dirty=true;}
-    else if(hit(x,y,124,211,102)){if(menu.connected||menu.connecting)forgetConnection();else if(menu.networkCount){menu.password[0]=0;menu.keyboard=menu.keyPage=0;menu.notice="";view.page=Page::Keyboard;}else menu.notice="Busque e escolha uma rede";dirty=true;}
-    else if(menu.networkCount&&!menu.connecting&&(hit(x,y,14,163,102)||hit(x,y,124,163,102))){menu.networkIndex+=x<120?-1:1;networkChoice();dirty=true;}return;}
+  if(view.page==Page::Wifi){if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
+    else if(hit(x,y,124,276,102)){forgetConnection();dirty=true;}
+    else if(hit(x,y,14,80,102)){showSavedNetworks();dirty=true;}
+    else if(hit(x,y,124,80,102)){searchNetworks();dirty=true;}
+    else if(hit(x,y,14,221,102)){if(menu.savedNetworks&&menu.savedCount&&!menu.connecting&&!menu.scanning)view.page=Page::ForgetWifi;dirty=true;}
+    else if(hit(x,y,124,221,102)&&!menu.connecting&&!menu.scanning){if(menu.savedNetworks&&menu.savedCount)connectSavedNetwork();else if(menu.networkCount){menu.password[0]=0;menu.keyboard=menu.keyPage=0;menu.notice="";view.page=Page::Keyboard;}else menu.notice="Busque e escolha uma rede";dirty=true;}
+    else if(!menu.connecting&&!menu.scanning&&(hit(x,y,14,174,102)||hit(x,y,124,174,102))){if(menu.savedNetworks&&menu.savedCount)menu.savedIndex=(menu.savedIndex+menu.savedCount+(x<120?-1:1))%menu.savedCount;else menu.networkIndex+=x<120?-1:1;networkChoice();dirty=true;}return;}
+  if(view.page==Page::ForgetWifi){if(hit(x,y,14,272,102)){view.page=Page::Wifi;dirty=true;}else if(hit(x,y,124,272,102)){if(deleteSavedNetwork())view.page=Page::Wifi;dirty=true;}return;}
   if(view.page==Page::Keyboard){size_t n=strlen(menu.password);menu.notice="";
     if(hit(x,y,4,266,76,50)){memset(menu.password,0,sizeof(menu.password));view.page=Page::Wifi;dirty=true;return;}
     if(hit(x,y,160,266,76,50)){connectNetwork();if(menu.connecting)view.page=Page::Wifi;dirty=true;return;}
@@ -327,9 +335,9 @@ void setup(){
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();
   say(view.recovered?"Checkpoint recuperado":game.phase==rpg::Phase::Enemy?"Retomando turno salvo":"Seu turno");
   if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
-  activateTripPage();enemyAt=millis()+1200;
+  lastActivity=millis();activateTripPage();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.06-estradas1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
+  Serial.printf("RPG POKET 2.0 2026.10.06-wifi1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
 }
 void loop(){
   uint32_t now=millis();
@@ -346,6 +354,8 @@ void loop(){
   sampleTouch();
   if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
   now=millis();
+  tickIdleClock(now,updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||(view.page==Page::TravelRoll&&!menu.rollReady)||(view.page==Page::Battle&&game.phase==rpg::Phase::Enemy));
+  if(view.page==Page::Clock&&uint32_t(now-clockPollAt)>=1000){clockPollAt=now;if(tickClock())dirty=true;}
   if(!combatFx.active()&&view.page==Page::Battle&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
     rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
     view.message=message;savedTransition(currentPage());beginEffect(Effect::Slash,true);

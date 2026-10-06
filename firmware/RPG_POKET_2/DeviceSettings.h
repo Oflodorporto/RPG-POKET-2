@@ -2,11 +2,12 @@
 #include <WiFi.h>
 #include <Preferences.h>
 #include <SD.h>
+#include <time.h>
 #include "MenuView.h"
 #include "UpdateModel.h"
 inline Preferences settings;inline bool settingsReady=false,pwmReady=false;
-inline uint32_t wifiAt=0;inline bool resumeWifi=false;
-inline void applyBrightness(){if(pwmReady)ledcWrite(1,menu.brightness*255u/100);}
+inline uint32_t wifiAt=0,signalAt=0;inline bool resumeWifi=false;
+inline void applyBrightness(){if(pwmReady)ledcWrite(1,(menu.clockIdle?10u:menu.brightness)*255u/100);}
 inline bool saveBrightness(uint8_t value){if(!settingsReady||settings.putUChar("light",value)!=1)return false;menu.brightness=value;applyBrightness();return true;}
 inline void initSettings(){settingsReady=settings.begin("pkt2_ui",false);menu.activeSlot=settingsReady?settings.getUChar("slot",0):0;if(menu.activeSlot>2)menu.activeSlot=0;
   menu.brightness=settingsReady?settings.getUChar("light",80):80;if(menu.brightness<10||menu.brightness>100)menu.brightness=80;
@@ -29,25 +30,42 @@ inline ArtStatus loadSdArt(){
   }
   SD.end();digitalWrite(41,HIGH);digitalWrite(45,HIGH);return status;
 }
-inline void networkChoice(){if(menu.networkCount<=0){menu.network[0]=0;return;}menu.networkIndex=(menu.networkIndex+menu.networkCount)%menu.networkCount;
-  snprintf(menu.network,sizeof(menu.network),"%s",WiFi.SSID(menu.networkIndex).c_str());menu.openNetwork=WiFi.encryptionType(menu.networkIndex)==WIFI_AUTH_OPEN;
+// Each profile is one atomic NVS string: decimal SSID length + SSID + password.
+// Credentials stay on the device and never enter logs or public source packages.
+struct WifiProfile {char ssid[33]="",pass[64]="";};
+inline WifiProfile wifiProfiles[5];inline uint8_t profileSlots[5];
+inline void profileKey(char* key,unsigned i){snprintf(key,8,"net%u",i);}
+inline bool decodeProfile(const char* raw,WifiProfile& p){size_t n=strlen(raw);if(n<3||raw[0]<'0'||raw[0]>'9'||raw[1]<'0'||raw[1]>'9')return false;unsigned len=(raw[0]-'0')*10+raw[1]-'0';if(!len||len>32||n<2+len||n-2-len>63)return false;memcpy(p.ssid,raw+2,len);p.ssid[len]=0;snprintf(p.pass,sizeof(p.pass),"%s",raw+2+len);return true;}
+inline void loadWifiProfiles(){menu.savedCount=0;for(unsigned i=0;i<5;++i){wifiProfiles[i]=WifiProfile{};char key[8];profileKey(key,i);if(settingsReady&&decodeProfile(settings.getString(key,"").c_str(),wifiProfiles[i]))profileSlots[menu.savedCount++]=i;}if(menu.savedIndex>=menu.savedCount)menu.savedIndex=0;}
+inline bool rememberWifiProfile(const char* ssid,const char* pass){if(!settingsReady||!*ssid||strlen(ssid)>32||strlen(pass)>63)return false;loadWifiProfiles();int slot=-1;for(unsigned i=0;i<5;++i)if(!strcmp(wifiProfiles[i].ssid,ssid)){slot=i;break;}if(slot<0)for(unsigned i=0;i<5;++i)if(!*wifiProfiles[i].ssid){slot=i;break;}if(slot<0)return false;
+  char key[8],record[100];profileKey(key,slot);snprintf(record,sizeof(record),"%02u%s%s",unsigned(strlen(ssid)),ssid,pass);bool ok=settings.putString(key,record)==strlen(record)&&settings.getString(key,"?")==record;loadWifiProfiles();return ok;}
+inline void networkChoice(){if(menu.savedNetworks){if(!menu.savedCount){menu.network[0]=0;return;}menu.savedIndex%=menu.savedCount;const auto& p=wifiProfiles[profileSlots[menu.savedIndex]];snprintf(menu.network,sizeof(menu.network),"%s",p.ssid);menu.openNetwork=!*p.pass;menu.networkChannel=0;return;}
+  if(menu.networkCount<=0){menu.network[0]=0;return;}menu.networkIndex=(menu.networkIndex+menu.networkCount)%menu.networkCount;
+  snprintf(menu.network,sizeof(menu.network),"%s",WiFi.SSID(menu.networkIndex).c_str());menu.openNetwork=WiFi.encryptionType(menu.networkIndex)==WIFI_AUTH_OPEN;menu.networkDbm=WiFi.RSSI(menu.networkIndex);menu.networkChannel=WiFi.channel(menu.networkIndex);
 }
-inline void searchNetworks(){if(menu.scanning||menu.connecting)return;WiFi.mode(WIFI_STA);WiFi.scanDelete();menu.networkCount=0;menu.networkIndex=0;int rc=WiFi.scanNetworks(true);menu.scanning=rc==WIFI_SCAN_RUNNING;menu.notice=rc==WIFI_SCAN_FAILED?"Busca falhou; tente novamente":"";}
+inline void showSavedNetworks(){if(menu.scanning||menu.connecting)return;loadWifiProfiles();menu.savedNetworks=true;menu.savedIndex=0;networkChoice();menu.notice="";}
+inline void searchNetworks(){if(menu.scanning||menu.connecting)return;WiFi.mode(WIFI_STA);WiFi.scanDelete();menu.savedNetworks=false;menu.network[0]=0;menu.networkCount=0;menu.networkIndex=0;int rc=WiFi.scanNetworks(true,false,false,500,0);menu.scanning=rc==WIFI_SCAN_RUNNING;menu.notice=rc==WIFI_SCAN_FAILED?"Busca falhou; tente novamente":"";}
 inline void connectNetwork(){
-  if(!*menu.network){menu.notice="Escolha uma rede primeiro";return;}
+  if(menu.scanning||menu.connecting)return;if(!*menu.network){menu.notice="Escolha uma rede primeiro";return;}
   size_t n=strlen(menu.password);if(!menu.openNetwork&&(n<8||n>63)){menu.notice="Senha: entre 8 e 63 caracteres";return;}
-  WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(false);WiFi.begin(menu.network,menu.openNetwork?nullptr:menu.password);menu.connecting=true;wifiAt=millis();menu.notice="";
+  WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(true);WiFi.begin(menu.network,menu.openNetwork?nullptr:menu.password);menu.connecting=true;wifiAt=millis();menu.notice="";
 }
-inline void forgetConnection(){resumeWifi=false;if(settingsReady)settings.putBool("wifi",false);WiFi.disconnect(false,false);menu.connecting=false;menu.connected=false;menu.password[0]=0;menu.notice="Wi-Fi desligado";}
+inline void connectSavedNetwork(){if(!menu.savedCount||menu.scanning||menu.connecting)return;const auto& p=wifiProfiles[profileSlots[menu.savedIndex]];snprintf(menu.password,sizeof(menu.password),"%s",p.pass);connectNetwork();}
+inline void forgetConnection(){resumeWifi=false;if(settingsReady)settings.putBool("wifi",false);WiFi.setAutoReconnect(false);WiFi.disconnect(false,false);menu.connecting=false;menu.connected=false;menu.signalBars=0;menu.password[0]=0;menu.notice="Wi-Fi desligado";}
+inline bool deleteSavedNetwork(){if(!menu.savedNetworks||!menu.savedCount||!settingsReady)return false;char key[8];profileKey(key,profileSlots[menu.savedIndex]);if(menu.network[0]&&settings.getString("ssid","")==menu.network){if(settings.putBool("wifi",false)!=1)return false;resumeWifi=false;WiFi.setAutoReconnect(false);WiFi.disconnect(false,false);menu.connected=menu.connecting=false;menu.signalBars=0;}
+  settings.putString(key,"");if(!(settings.getString(key,"?")=="")){menu.notice="Nao foi possivel esquecer";return false;}loadWifiProfiles();networkChoice();menu.notice="Rede removida";return true;}
 inline bool tickWifi(){bool changed=false;
   if(menu.scanning){int n=WiFi.scanComplete();if(n!=WIFI_SCAN_RUNNING){menu.scanning=false;menu.networkCount=std::max(0,n);menu.networkIndex=0;networkChoice();menu.notice=n<=0?"Nenhuma rede encontrada":"";changed=true;}}
-  bool connected=WiFi.status()==WL_CONNECTED;if(connected!=menu.connected){menu.connected=connected;changed=true;}
-  if(menu.connecting&&connected){menu.connecting=false;snprintf(menu.ip,sizeof(menu.ip),"%s",WiFi.localIP().toString().c_str());bool saved=settingsReady&&settings.putBool("wifi",false)==1&&settings.putString("ssid",menu.network)>0;
+  bool connected=WiFi.status()==WL_CONNECTED;if(connected!=menu.connected){menu.connected=connected;menu.signalBars=connected?wifiBars(WiFi.RSSI()):0;changed=true;}
+  if(connected&&(changed||uint32_t(millis()-signalAt)>=2000)){signalAt=millis();int dbm=WiFi.RSSI();uint8_t bars=wifiBars(dbm);if(bars!=menu.signalBars||dbm!=menu.signalDbm){menu.signalBars=bars;menu.signalDbm=dbm;changed=true;}snprintf(menu.ip,sizeof(menu.ip),"%s",WiFi.localIP().toString().c_str());}
+  if(menu.connecting&&connected&&WiFi.SSID()==menu.network){menu.connecting=false;configTzTime("BRT3","pool.ntp.org","time.google.com");bool saved=settingsReady&&settings.putBool("wifi",false)==1&&settings.putString("ssid",menu.network)>0;
     if(saved){settings.putString("pass",menu.password);saved=settings.getString("pass","?")==menu.password;}
-    if(saved)saved=settings.putBool("wifi",true)==1;if(saved)resumeWifi=true;menu.notice=saved?"Conexao salva":"Conectado; ajustes nao salvos";memset(menu.password,0,sizeof(menu.password));changed=true;}
-  else if(menu.connecting&&uint32_t(millis()-wifiAt)>=20000){menu.connecting=false;WiFi.disconnect(false,false);menu.notice="Falhou; confira rede e senha";changed=true;}
+    if(saved)saved=settings.putBool("wifi",true)==1;if(saved)resumeWifi=true;bool profile=saved&&rememberWifiProfile(menu.network,menu.password);menu.notice=profile?"Conexao salva":saved?"Conectado; lista cheia ou erro":"Conectado; ajustes nao salvos";memset(menu.password,0,sizeof(menu.password));changed=true;}
+  else if(menu.connecting&&uint32_t(millis()-wifiAt)>=20000){menu.connecting=false;WiFi.setAutoReconnect(false);WiFi.disconnect(false,false);menu.notice="Falhou; confira rede e senha";memset(menu.password,0,sizeof(menu.password));changed=true;}
   return changed;
 }
-inline void resumeConnection(){if(!resumeWifi)return;snprintf(menu.network,sizeof(menu.network),"%s",settings.getString("ssid","").c_str());snprintf(menu.password,sizeof(menu.password),"%s",settings.getString("pass","").c_str());menu.openNetwork=!*menu.password;if(*menu.network)connectNetwork();}
+inline void resumeConnection(){loadWifiProfiles();if(!resumeWifi){menu.savedNetworks=true;networkChoice();return;}snprintf(menu.network,sizeof(menu.network),"%s",settings.getString("ssid","").c_str());snprintf(menu.password,sizeof(menu.password),"%s",settings.getString("pass","").c_str());menu.openNetwork=!*menu.password;if(*menu.network){rememberWifiProfile(menu.network,menu.password);connectNetwork();}menu.savedNetworks=true;}
 
 inline void testMemory(){uint32_t* allocated=static_cast<uint32_t*>(heap_caps_malloc(65536,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));volatile uint32_t* sample=allocated;menu.memoryTest=0;if(!sample)return;for(unsigned i=0;i<16384;++i)sample[i]=i^0x5a9695a5u;menu.memoryTest=1;for(unsigned i=0;i<16384;++i)if(sample[i]!=(i^0x5a9695a5u)){menu.memoryTest=0;break;}heap_caps_free(allocated);}
+
+inline bool tickClock(){time_t stamp=time(nullptr);bool valid=stamp>=1767225600;char hours[9]="--:--:--",date[11]="--/--/----";if(valid){struct tm local;localtime_r(&stamp,&local);strftime(hours,sizeof(hours),"%H:%M:%S",&local);strftime(date,sizeof(date),"%d/%m/%Y",&local);}bool changed=strcmp(hours,menu.clockTime)||strcmp(date,menu.clockDate)||valid!=menu.clockValid;snprintf(menu.clockTime,sizeof(menu.clockTime),"%s",hours);snprintf(menu.clockDate,sizeof(menu.clockDate),"%s",date);menu.clockValid=valid;return changed;}

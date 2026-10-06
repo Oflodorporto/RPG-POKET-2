@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: Versão inédita (ex. 2026.10.06-estradas1)
+        description: Versão inédita (ex. 2026.10.06-wifi1)
         required: true
         type: string
 permissions:
