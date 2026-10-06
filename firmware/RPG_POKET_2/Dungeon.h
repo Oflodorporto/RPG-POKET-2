@@ -54,8 +54,7 @@ inline const char* dungeonCollect(Game& g){
   }
   return nullptr;
 }
-inline bool dungeonStairs(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home||dungeonCell(dungeonFloor(g),dungeonX(g),dungeonY(g))!='S')return false;bool down=!dungeonFloor(g);g.dungeonFlags=1|(down?2:0);g.dungeonXY=down?0x71:0x17;return true;}
+inline bool dungeonStairs(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home||dungeonCell(dungeonFloor(g),dungeonX(g),dungeonY(g))!='S')return false;bool down=!dungeonFloor(g);g.dungeonFlags=down?7:9;g.dungeonXY=down?0x71:0x17;return true;}
 inline bool dungeonResolve(Game& g){if(!inDungeon(g)||g.phase==Phase::Home||g.phase==Phase::Hero||g.phase==Phase::Enemy)return false;int e=dungeonEnemyAhead(g);bool won=g.phase==Phase::Won,lost=g.phase==Phase::Lost;if(won&&e>=0){g.dungeonEnemies|=1u<<e;if(e==6&&g.dungeonClears<255)++g.dungeonClears;}home(g);if(lost)clearDungeon(g);return true;}
 inline bool leaveDungeon(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home)return false;clearDungeon(g);return true;}
 }
-

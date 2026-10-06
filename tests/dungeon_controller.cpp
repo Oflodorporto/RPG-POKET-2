@@ -342,5 +342,7 @@ int main(){
  nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.crystals==0);tapped(30,230);auto sequence=journal.seq;tapped(110,230);assert(journal.seq==sequence);tapped(190,230);assert(rpg::dungeonHeading(game)==1&&journal.seq==sequence+1);
  tapped(110,230);tapped(110,230);assert(game.phase==rpg::Phase::Hero&&game.enemyId==2&&view.page==Page::Dungeon);combatFx.kind=Effect::None;game.enemyHp=1;game.p.atk=99;tapped(80,305);assert(view.page==Page::Dungeon||view.page==Page::SaveError);combatFx.kind=Effect::None;
  game.phase=rpg::Phase::Won;game.enemyHp=0;assert(journal.save(game));tapped(80,305);assert(game.phase==rpg::Phase::Home&&game.dungeonEnemies&1);tapped(190,305);assert(view.page==Page::DungeonMenu);tapped(100,250);assert(view.page==Page::DungeonExit);tapped(180,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game));
+ game=rpg::create(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;view.page=Page::Dungeon;
+ tapped(80,305);assert(view.page==Page::Dungeon&&game.phase==rpg::Phase::Hero&&game.enemyId==8&&!(game.dungeonLoot&128));combatFx.kind=Effect::None;
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }
