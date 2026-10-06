@@ -29,7 +29,9 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   }
   const auto* weapon=dungeonArt::weapons[g.p.cls][v.effect!=Effect::None&&!v.effectOnHero];for(int y=0;y<52;++y)for(int x=0;x<64;++x){uint16_t color=weapon[y*64+x];if(color!=0xf81f)c.fillRect(144+x,120+y,1,1,color);}
   if(v.effect==Effect::Lightning){for(int y=30;y<130;y+=6)c.fillRect(118+(y/6%2?5:-5),y,5,7,0xaffe);}
-  if(v.effect!=Effect::None&&v.effectOnHero)c.drawRect(0,0,240,172,UI_RED);
+  if(v.effect==Effect::Slash&&v.effectOnHero)c.drawRect(0,0,240,172,UI_RED);
+  if(v.effect==Effect::Shield){for(int k=0;k<3;++k)c.drawRect(k*3,k*3,240-k*6,172-k*6,UI_BLUE);}
+  if(v.effect==Effect::Rage){for(int k=0;k<3;++k)c.drawRect(k*2,k*2,240-k*4,172-k*4,(v.effectFrame&1)?0xfd20:UI_GOLD);}
   c.fillRect(0,172,240,148,UI_INK);auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x,y);c.print(s);};char b[48];
   snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);text(4,176,b);static const char* directions[]={"N","L","S","O"};snprintf(b,sizeof(b),"ANDAR %u / %s / SELO %s",floor+1,directions[heading],g.dungeonLoot&8?"SIM":"NAO");text(4,186,b,UI_GOLD);
   const char* status=g.phase==rpg::Phase::Won?"Vitoria! Toque em Continuar":g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,196,shortText,UI_GREEN);
