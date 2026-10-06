@@ -1,6 +1,7 @@
 """Pack original imagegen atlases; never writes to a card or changes existing art."""
 from pathlib import Path
 from PIL import Image,ImageOps,ImageDraw
+import numpy as np
 import json,hashlib,struct
 root=Path(__file__).resolve().parents[1];base=root/'assets/dungeon1';base.mkdir(parents=True,exist_ok=True)
 entries=[];headers=['#pragma once','#include <stdint.h>','namespace dungeonArt {'];preview=Image.new('RGB',(640,620),'#121823');draw=ImageDraw.Draw(preview)
@@ -17,9 +18,31 @@ def save(im,name,size,transparent=True):
     return out
 def cell(im,col,row,cols,rows):return im.crop((round(col*im.width/cols),round(row*im.height/rows),round((col+1)*im.width/cols),round((row+1)*im.height/rows)))
 im=Image.open(base/'enemies-original.png').convert('RGBA');enemy=['skeleton','spectre','warden','archon']
+# Generated enemy rows are uneven and two poses touch. Extract alpha components
+# instead of slicing uniform cells, so neighboring heads/weapons cannot leak.
+data=np.array(im);alpha=data[:,:,3];seen=alpha<=100;parts=[];h,w=alpha.shape
+for y,x in zip(*np.where(~seen)):
+    if seen[y,x]:continue
+    stack=[(int(y),int(x))];seen[y,x]=True;pts=[]
+    while stack:
+        py,px=stack.pop();pts.append((py,px))
+        for dy,dx in ((0,1),(0,-1),(1,0),(-1,0),(1,1),(1,-1),(-1,1),(-1,-1)):
+            ny,nx=py+dy,px+dx
+            if 0<=ny<h and 0<=nx<w and not seen[ny,nx]:seen[ny,nx]=True;stack.append((ny,nx))
+    if len(pts)>3000:
+        if max(y for y,x in pts)-min(y for y,x in pts)>h*.45:
+            parts.extend([[p for p in pts if p[0]<1020],[p for p in pts if p[0]>=1020]])
+        else:parts.append(pts)
+assert len(parts)==16,len(parts)
+parts.sort(key=lambda pts:(min(3,int(np.mean([p[0] for p in pts])/360)),np.mean([p[1] for p in pts])))
+enemy_frames=[]
+for pts in parts:
+    ys,xs=zip(*pts);box=(min(xs),min(ys),max(xs)+1,max(ys)+1);crop=data[box[1]:box[3],box[0]:box[2]].copy();mask=np.zeros(crop.shape[:2],dtype=bool)
+    for y,x in pts:mask[y-box[1],x-box[0]]=True
+    crop[~mask,3]=0;enemy_frames.append(Image.fromarray(crop))
 for row,name in enumerate(enemy):
     for col in range(4):
-        out=save(cell(im,col,row,4,4),f'{name}_{col}',(48,64));p=out.resize((96,128),Image.Resampling.NEAREST);preview.paste(p,(col*100,row*132),p)
+        out=save(enemy_frames[row*4+col],f'{name}_{col}',(48,64));p=out.resize((96,128),Image.Resampling.NEAREST);preview.paste(p,(col*100,row*132),p)
 headers.append('constexpr const uint16_t* enemies[4][4]={'+','.join('{'+','.join(f'{n}_{i}' for i in range(4))+'}' for n in enemy)+'};')
 props=['coins','gold','chest','chest_open','crystal','seal','life','mana','torch','stairs_up','stairs_down','relic'];im=Image.open(base/'props-original.png').convert('RGBA')
 for i,name in enumerate(props):
