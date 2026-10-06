@@ -121,6 +121,11 @@ int main(int argc,char** argv){
   menu.savedNetworks=true;menu.savedCount=5;menu.savedIndex=4;v.page=Page::Wifi;render(c,g,v);c.save(root+"/wifi-salvas.ppm");v.page=Page::ForgetWifi;render(c,g,v);c.save(root+"/wifi-esquecer.ppm");v.page=Page::Clock;strcpy(menu.clockTime,"17:05:26");strcpy(menu.clockDate,"06/10/2026");menu.clockValid=true;render(c,g,v);assert(c.pixels[0]==0&&c.pixels[319*240+239]==0);c.save(root+"/relogio.ppm");menu.connected=false;
   v.page=Page::NetworkTest;updateInfo.tested=true;updateInfo.netTrials=3;updateInfo.netSuccess=2;updateInfo.minDbm=-71;updateInfo.maxDbm=-65;updateInfo.avgMs=450;render(c,g,v);c.save(root+"/wifi-teste.png.ppm");
   makeFallback();v.page=Page::Battle;render(c,g,v);c.save(root+"/sem-cartao.ppm");
+  for(unsigned cls=0;cls<4;++cls){g=rpg::create(cls,42);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g));v.message="";v.effect=Effect::None;
+    for(unsigned floor=0;floor<2;++floor)for(unsigned direction=0;direction<4;++direction){g.dungeonFlags=1|(floor<<1)|(direction<<2);v.page=Page::Dungeon;render(c,g,v);c.save(root+"/dungeon-"+std::to_string(cls)+"-"+std::to_string(floor)+"-"+std::to_string(direction)+".ppm");}
+    for(Page page:{Page::DungeonEntry,Page::DungeonMenu,Page::CrystalBuy,Page::DungeonExit}){v.page=page;render(c,g,v);c.save(root+"/dungeon-page-"+std::to_string(int(page))+".ppm");}
+    for(unsigned enemy=0;enemy<4;++enemy)for(unsigned pose=0;pose<4;++pose){unsigned i=enemy==0?0:enemy==1?2:enemy==2?5:6;auto spawn=rpg::dungeonSpawns[i];g.dungeonFlags=1|(spawn.floor<<1);g.dungeonXY=spawn.x|((spawn.y+1)<<4);g.enemyId=spawn.id;g.enemyHp=rpg::enemySpec(spawn.id).hp;g.phase=rpg::Phase::Hero;v.page=Page::Dungeon;v.effect=pose?Effect::Slash:Effect::None;v.effectOnHero=pose==1||pose==2;v.effectFrame=pose==2?5:0;render(c,g,v);c.save(root+"/dungeon-enemy-"+std::to_string(enemy)+"-"+std::to_string(pose)+".ppm");}
+  }
   puts("PASS: shared firmware renderer; text bounds; 299+ screens; 56 distinct backgrounds; 1008 travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

@@ -91,7 +91,7 @@ int main(){
     Journal<Memory> migration(legacy);assert(migration.load(loaded)==Load::Ok);same(old,loaded);
     assert(loaded.enemyId==2&&loaded.ruinsWins==0&&!loaded.guardianDefeated);
     legacy.failWrite=true;assert(!migration.save(loaded));assert(!memcmp(bytes,legacy.data[0],SAVE_SIZE));
-    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==8);
+    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==9);
     Journal<Memory> migrated(legacy);assert(migrated.load(g)==Load::Ok);same(old,g);
     if(old.phase==Phase::Enemy){enemy(old);enemy(g);same(old,g);}
   }

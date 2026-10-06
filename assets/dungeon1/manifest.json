@@ -1,0 +1,359 @@
+{
+  "assets": [
+    {
+      "name": "skeleton_0",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "336b134e738a89f0e6aca2321fef46b3ba9e9a811f80ad7d0ee907b10f6c7e7d",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "skeleton_1",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "45ece0e081262106c5a7e51f1bf6f23cb374c22a397ff3dab0bbfb5f41676524",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "skeleton_2",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "4ea9189b38ad6f707190b26348a6a147c05a42bd50060055913ccca671e6ba55",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "skeleton_3",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "b9493c89cb3019b2962f760e149c2915d7c3b9ccf70af5316a2e583306d367fe",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "spectre_0",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "9cfc05e7b8e1b5282fcd05cc3b77b6d05de959cf2c700d4ec01450365b2542a9",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "spectre_1",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "5f8c7a83392ff3f1cf41c55b4fb304faef2f495760bdb20de553d8f8fe02388b",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "spectre_2",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "baaa6b4aeed95b0cc6b965f02d6124fff2b524216b6a368302f49c7b08ccf84b",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "spectre_3",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "4988296b1f1b321651ae130cc00bb48c34a0bbc701fda45cf2f6a10c6efb8eaa",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "warden_0",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "e9032f77363993cfb0920dc805ab65aa0b2af29290bd61c17cec72fa69f5c75b",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "warden_1",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "0cbb5d8af0b6d7a98c7ec8204ff45cfbd9c7bca618d0ee9c92bb0d4dc88c81b9",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "warden_2",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "1b363cbf44d43a1ea718765be859068e6af00fd5357af9a9cf06593662f6ad98",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "warden_3",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "a4f83371a876c4e1633a57147e8ae44eb1b18861816b609d8322aaa8d58b9ead",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "archon_0",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "13b08048bceeb04f674b9ae21c9ef596047a811d62b260af6983e5889af2dc2c",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "archon_1",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "234dcc0da890773809dab16aad57c2de67d8baba426c25b9f63cbea153e95531",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "archon_2",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "213c1afebea83c6746c71331159f25dce3a1caeaa6e2b661353cbbdc2cb7ad1f",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "archon_3",
+      "width": 48,
+      "height": 64,
+      "transparent": true,
+      "sha256": "6b7ab8c8fe7b02ebc2477d34b51a9c619059d52ad5450fc7385ad5b30303a915",
+      "bytes_rgb565": 6144
+    },
+    {
+      "name": "coins",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "5a893060950b4788498d45e92600922bc0f28737f082fbbd84e866dd1ace8cad",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "gold",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "e70959c62a7b88d881f5bae46fa8d35d117bc979c5cb8ed64abd74da5aaabb66",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "chest",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "deb986ee25ea4b9e55384985687940e2e29a43d7848e1e866e098e37fc9d7fcb",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "chest_open",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "6c79b99f15300ceab1702c2984bcf41e0a5ac835e23d905ee59694ee5a6ccb44",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "crystal",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "5a6e9f7f67cb1d0d02b233242258965174c5c576cf5a302e5e45da2ff9840fb9",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "seal",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "99f75036113556cfc91408dfece7b52dd0e16b950c292e4ac9cb3a0904dbd7ac",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "life",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "58386a9621d478c948bbce951d50aa33c4be41ededdfa3c1d6211e96d8e14d12",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "mana",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "9c6fa53e2ef068434e03291d4f8acaea05cb2c7ed0e07f256776f6a78e9e01d8",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "torch",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "014534af696cea75a228aa69bc522509dbb1d50a9ce64dbc6727b4ddaa9db079",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "stairs_up",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "aed3c33b543f4f7be7fcf68548bb08354d5f0a5b992d97bf6d87d656ca7f87ea",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "stairs_down",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "2b334d905b2b45cfc46f5d12290c618a952279d7fd55d4325ee063c6ff1e9e7f",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "relic",
+      "width": 32,
+      "height": 32,
+      "transparent": true,
+      "sha256": "e253c8b79924c9885bcbc3e74efe66fa8c22a34d1c2a4d0c8a25463d89033c11",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f0_wall",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "46d275f837596801621fe9a0774d2e006d85fd9b906cd7c034250772b0e33a81",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f0_floor",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "e61dc46b225b873b88d6c52e9d4b5e7c545358a7177aa2c1394774d55bbcf97b",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f0_ceiling",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "e0ef316524f7a04083fe9c8b24a45f311d6e97080df9695f15c0092b6cf1bf22",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f0_door",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "678038fc95e17feeb8d90913213598fcaefd6a6db47ce025ad10bc7e7e3a39c8",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f1_wall",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "dce180708f78ec332913f9d508ddb49e321fbcc6b1a6879b2ea2e9f3fd288b69",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f1_floor",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "d751655b38d2a17c13c1a409d9567ac317bf32d7a0916b0005a90abf485e848b",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f1_ceiling",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "ad02c19adc2534d09a4ca5b6efe019288600bfd2c819fd2aea4feef8031aabb4",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "f1_door",
+      "width": 32,
+      "height": 32,
+      "transparent": false,
+      "sha256": "f19d2b4abd548418a56cb64e80aef5a808797e46138a3cde8cb6a3e2a6095a32",
+      "bytes_rgb565": 2048
+    },
+    {
+      "name": "weapon_0_0",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "0697067f3f1e6965a82a2caa9c91fe3385812a4d01b4e04ca1831b1dd627ba7a",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_0_1",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "1c9c8c622ed8a863ffce0f3bdbdc0ffad1990ec32df6d4872cfc04e66cfc5deb",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_1_0",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "e79dca131ddac05121f9d91c1effc5d072952f2ee1e33a8255529d00392d5a1f",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_1_1",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "09fca9ff6de0e0ae8ddae9a18332c2ae0ba2cea18a26979a50d154cde00d0d18",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_2_0",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "03fbde9a803c1834d2357de546c56061a2312248d2ab0c9bd94eb47a6b44d4fb",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_2_1",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "377d538f39cacba8df9434cb334fbdd5b34ffe758fd5a68055774c0385e86344",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_3_0",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "04dcac7d4b4cbbcb772ecbc9719bc70ced22a433c4600ce3b8e0b8b3b3e8cdef",
+      "bytes_rgb565": 6656
+    },
+    {
+      "name": "weapon_3_1",
+      "width": 64,
+      "height": 52,
+      "transparent": true,
+      "sha256": "80afebcf02d0c57bd18f2e18fd8cea0dc9c52483e3944f4cb45522972fcaa138",
+      "bytes_rgb565": 6656
+    }
+  ],
+  "count": 44,
+  "bytes_rgb565": 192512,
+  "source": "Built-in imagegen; original atlases preserved; RGB565 transparent key 0xf81f"
+}

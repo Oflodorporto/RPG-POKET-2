@@ -1,5 +1,5 @@
 #pragma once
-#include "Rules.h"
+#include "Dungeon.h"
 #include <string.h>
 namespace rpg {
 constexpr unsigned SAVE_SIZE=96;
@@ -10,6 +10,7 @@ inline uint32_t get32(const uint8_t* b,unsigned o){return get16(b,o)|uint32_t(ge
 inline uint32_t crc(const uint8_t* b,unsigned n){uint32_t c=~0u;for(unsigned i=0;i<n;++i){c^=b[i];for(int k=0;k<8;++k)c=(c>>1)^(0xedb88320u&uint32_t(-int(c&1)));}return ~c;}
 inline bool valid(const Game& g){
   auto &p=g.p;
+  if(!dungeonValid(g))return false;
   if(g.rations>9||g.charts>9||g.charms>9||g.tripStage>3)return false;
   if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}
   else {if(g.tripTo>3||g.tripTo==g.city||g.tripRoll<1||g.tripRoll>20||g.tripEnemy<4||g.tripEnemy>7||g.tripSurvival>13||g.tripLuck>11||g.tripTotal!=g.tripRoll+g.tripSurvival+g.tripLuck||g.tripDifficulty!=routeDifficulty(g.city,g.tripTo)||g.clubStage==1||g.clubStage==2)return false;
@@ -25,7 +26,7 @@ inline bool valid(const Game& g){
     if(id&&(!gearOwns(g.owned,id)||gearSlot(id)!=slot||!gearAllowed(id,p.cls,p.level)))return false;
   }
   if(p.cls>3||p.level<3||p.level>99||!p.maxhp||p.hp>p.maxhp||p.maxmp!=totalMana(g)||p.mp>p.maxmp||!p.atk||p.life>99||p.mana>99||p.gold>999999||!g.randomState)return false;
-  if(uint8_t(g.phase)>5||g.enemyId>7||g.ruinsWins>3||(g.guardianDefeated&&g.ruinsWins<3)||(g.enemyId==3&&g.ruinsWins<3)||g.enemyHp>enemySpec(g.enemyId).hp||(g.guard!=0&&g.guard!=50&&g.guard!=75)||g.gainGold>enemySpec(g.enemyId).gold||g.gainXp>3276)return false;
+  if(uint8_t(g.phase)>5||g.enemyId>9||g.ruinsWins>3||(g.guardianDefeated&&g.ruinsWins<3)||(g.enemyId==3&&g.ruinsWins<3)||g.enemyHp>enemySpec(g.enemyId).hp||(g.guard!=0&&g.guard!=50&&g.guard!=75)||g.gainGold>enemySpec(g.enemyId).gold||g.gainXp>3276)return false;
   if((g.phase==Phase::Hero||g.phase==Phase::Enemy)&&(!p.hp||!g.enemyHp))return false;
   if(g.phase==Phase::Won&&(g.enemyHp||!p.hp))return false;
   if(g.phase==Phase::Lost&&(p.hp||!g.enemyHp))return false;
@@ -33,19 +34,20 @@ inline bool valid(const Game& g){
   return true;
 }
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,8);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,9);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
   put16(b,42,g.gainXp);put16(b,44,g.damage);b[46]=g.gainGold;
-  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;put32(b,92,crc(b,92));
+  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;b[69]=g.crystals;b[70]=g.dungeonFlags;b[71]=g.dungeonXY;b[87]=g.dungeonLoot;b[88]=g.dungeonEnemies;b[89]=g.dungeonClears;put32(b,92,crc(b,92));
 }
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>8)||get16(b,6)!=(get16(b,4)>=7?SAVE_SIZE:64))return Decode::Unsupported;
+  if((get16(b,4)<1||get16(b,4)>9)||get16(b,6)!=(get16(b,4)>=7?SAVE_SIZE:64))return Decode::Unsupported;
   if(get32(b,get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=7?92:60)||b[47]>31)return Decode::Corrupt;
   if(get16(b,4)<8&&get16(b,4)>=2&&b[48]>3)return Decode::Corrupt;
+  if(get16(b,4)==8&&b[48]>7)return Decode::Corrupt;
   Game t;seq=get32(b,8);t.p.cls=b[12];t.p.level=b[13];t.p.atk=b[14];t.p.def=b[15];t.p.life=b[16];t.p.mana=b[17];
   t.p.hp=get16(b,18);t.p.maxhp=get16(b,20);t.p.mp=get16(b,22);t.p.maxmp=get16(b,24);t.p.xp=get32(b,26);t.p.gold=get32(b,30);
   t.phase=Phase(b[34]);t.guard=b[35];t.enemyHp=get16(b,36);t.randomState=get32(b,38);t.gainXp=get16(b,42);t.damage=get16(b,44);t.gainGold=b[46];
@@ -55,8 +57,9 @@ inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(get16(b,4)>=3){t.owned=get32(b,51);memcpy(t.equipped,b+55,3);}
   if(get16(b,4)>=4){if(b[58]>63)return Decode::Corrupt;t.forge[0]=b[58]&3;t.forge[1]=(b[58]>>2)&3;t.forge[2]=(b[58]>>4)&3;}
   if(get16(b,4)>=5){uint32_t packed=get32(b,51);if(packed>>(get16(b,4)>=6?24:22))return Decode::Corrupt;t.owned=packed&((1u<<18)-1);t.questId=(packed>>18)&3;t.questProgress=(packed>>20)&3;t.questLevel=b[59];if(get16(b,4)>=6)t.city=(packed>>22)&3;}
-  if(get16(b,4)>=7){if(b[67]>1)return Decode::Corrupt;t.race=b[64];t.shirt=b[65];t.trousers=b[66];t.guildMember=b[67];t.clubStage=b[68];t.clubSession=get32(b,72);for(unsigned i=69;i<92;++i)if((i<72||i>75)&&(get16(b,4)<8||i<76||i>86)&&b[i])return Decode::Corrupt;}
+  if(get16(b,4)>=7){if(b[67]>1)return Decode::Corrupt;t.race=b[64];t.shirt=b[65];t.trousers=b[66];t.guildMember=b[67];t.clubStage=b[68];t.clubSession=get32(b,72);for(unsigned i=69;i<92;++i)if((i<72||i>75)&&(get16(b,4)<8||i<76||i>86)&&(get16(b,4)<9||!((i>=69&&i<=71)||(i>=87&&i<=89)))&&b[i])return Decode::Corrupt;}
   if(get16(b,4)>=8){t.tripStage=b[76];t.tripTo=b[77];t.tripRoll=b[78];t.tripDifficulty=b[79];t.tripTotal=b[80];t.tripEnemy=b[81];t.tripSurvival=b[82];t.tripLuck=b[83];t.rations=b[84];t.charts=b[85];t.charms=b[86];}
+  if(get16(b,4)>=9){t.crystals=b[69];t.dungeonFlags=b[70];t.dungeonXY=b[71];t.dungeonLoot=b[87];t.dungeonEnemies=b[88];t.dungeonClears=b[89];}
   if(!valid(t))return Decode::Corrupt;g=t;return Decode::Ok;
 }
 enum class Read{Missing,Ok,Error};

@@ -11,12 +11,13 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Guild:return bg_guild;case Page::GuildJoin:return bg_guildjoin;case Page::GuildMissions:return bg_missions;case Page::Race:return bg_race;case Page::Clothes:return bg_clothes;case Page::Club:return bg_club;case Page::ClubBattle:return bg_clubbattle;case Page::ClubResult:return bg_clubresult;
   case Page::NetworkTest:case Page::Clock:case Page::Menu:return bg_menu;case Page::Slots:return bg_slots;case Page::SlotConfirm:return bg_slotconfirm;case Page::DeleteSlot:return bg_delete;case Page::Settings:return bg_settings;case Page::Wifi:case Page::ForgetWifi:return bg_wifi;case Page::Keyboard:return bg_keyboard;case Page::Tests:return bg_tests;case Page::Travel:return bg_world;case Page::Ruins:return bg_map;
   case Page::TravelRoll:return bg_world;case Page::CityGoods:return bg_goods;case Page::GoodsBuy:return bg_goodsbuy;case Page::Explore:return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;
+  case Page::DungeonEntry:case Page::CrystalBuy:case Page::DungeonExit:case Page::DungeonMenu:return bg_slotconfirm;case Page::Dungeon:return bg_explore1;
   case Page::Updates:return bg_updates;case Page::Card:return bg_card;
   case Page::Tavern:return bg_tavern;case Page::Contract:return bg_contract;case Page::QuestConfirm:return bg_questconfirm;
   case Page::Choose:return bg_choose;case Page::Help:return bg_guide;case Page::Home:return bg_camp;
@@ -33,6 +34,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
 struct ViewState {Page page=Page::Choose;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "MenuView.h"
+#include "DungeonView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -50,8 +52,22 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
+  if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   char b[64];if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
+  if(v.page==Page::DungeonEntry||v.page==Page::CrystalBuy||v.page==Page::DungeonExit){
+    bool buy=v.page==Page::CrystalBuy,exit=v.page==Page::DungeonExit;
+    center(16,buy?"CRISTAL DA CRIPTA":exit?"SAIR DA CRIPTA?":"CRIPTA DO ARCONTE",2,UI_GOLD);
+    snprintf(b,sizeof(b),"Cristais: %u / ouro: %lu",g.crystals,(unsigned long)g.p.gold);center(64,b);
+    center(98,buy?"Preco: 300 ouro":exit?"Seu saque sera preservado.":"Entrada: consome 1 cristal");
+    center(124,buy?"Guardiao tambem deixa cristal.":exit?"Nova entrada custa outro cristal.":"2 andares + sala do chefe");
+    center(152,buy?"Compra limitada a 9 cristais.":exit?"O labirinto sera reiniciado.":"Nivel recomendado: 8+");
+    center(182,exit?"Confirme somente para sair.":"Setas: mover / girar / andar de lado");
+    center(206,exit?"": "Acao: coletar, escadas ou ataque");center(237,v.message,1,UI_RED);
+    button(14,272,102,"Voltar");button(124,272,102,buy?"Comprar":exit?"Sair":"Entrar");return;
+  }
+  if(v.page==Page::DungeonMenu){center(14,"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);
+    button(14,86,102,"Tecnica");button(124,86,102,"Defesa");button(14,134,102,"Vida");button(124,134,102,"Mana");button(14,182,212,"Fugir do inimigo");button(14,230,212,"Sair da dungeon");button(14,278,212,"Voltar");return;}
   if(v.page==Page::SaveError||v.page==Page::Blocked){
     center(30,"RPG POKET 2.0",2,UI_GOLD);center(88,"PROGRESSO PROTEGIDO",1,UI_RED);
     center(119,v.page==Page::SaveError?"Nao foi possivel salvar.":"Save indisponivel ou incompativel.");
@@ -105,12 +121,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,placeName(g.city));center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
     snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
     center(182,"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");center(170,v.message,1,UI_RED);
-    if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {button(14,218,212,"Comprar");button(14,270,212,"Voltar");}return;}
+    if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,212,"Voltar");}return;}
   if(v.page==Page::Explore){center(12,placeName(g.city),2,UI_GOLD);center(56,rpg::citySpecialty(g.city));snprintf(b,sizeof(b),"Nivel recomendado: %u+",rpg::cityLevel(g.city));center(90,b,1,UI_GOLD);
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);
     center(195,"O combate comeca ao confirmar.");button(14,220,212,"Explorar");button(14,270,212,"Voltar");return;}
   if(v.page==Page::Ruins){
-    center(10,"RUINAS ANTIGAS",2,UI_GOLD);
+    center(10,"RUINAS ANTIGAS",2,UI_GOLD);button(14,52,212,"Dungeon / Nv 8+");
     box(14,98,212,54);snprintf(b,sizeof(b),"Vitorias: %u/3",g.ruinsWins);center(106,b,1,UI_GOLD);
     center(124,g.guardianDefeated?"Guardiao vencido!":g.ruinsWins==3?"Guardiao liberado!":"Venca 3 encontros para liberar.");
     center(140,v.message,1,UI_RED);if(g.questId){snprintf(b,sizeof(b),"Missao: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / volte a guilda":"");center(156,b,1,UI_GREEN);}button(14,166,212,"Explorar");
