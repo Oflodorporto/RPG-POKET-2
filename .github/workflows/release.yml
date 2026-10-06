@@ -31,6 +31,11 @@ jobs:
           PY
       - name: Testar regras, saves e telas
         run: bash tools/test_native.sh
+      - name: Guardar previas da dungeon
+        uses: actions/upload-artifact@v4
+        with:
+          name: dungeon-previews
+          path: build/screens/dungeon-*.ppm
       - name: Instalar ESP32
         run: |
           arduino-cli config init
@@ -48,3 +53,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --title "RPG POKET $RELEASE_VERSION" --notes "Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Saves preservados."
+
