@@ -1,5 +1,27 @@
 # RPG POKET 2.0
 
-Jogo para Waveshare ESP32-S3-Touch-LCD-2, SKU 29667.
+RPG para Waveshare ESP32-S3-Touch-LCD-2, SKU 29667 (16 MiB flash, 8 MiB OPI PSRAM, tela 240×320).
 
-A publicacao inicial esta sendo preparada. Gravacao inicial pelo cabo; saves da Heltec permanecem separados.
+## Instalação inicial
+
+Abra `firmware/RPG_POKET_2/RPG_POKET_2.ino` no Arduino IDE. Core Espressif 3.3.12, ESP32S3 Dev Module, flash 16 MB, PSRAM OPI, partição `app3M_fat9M_16MB`, USB CDC ativado. Não apague a flash. Para instalar as artes pelo computador, baixe `artes.pak` da Release e coloque em `/RPGPOKET/artes.pak` num microSD FAT32. No repositorio o pacote fica compactado como `artes.pak.gz`; o workflow o descompacta e valida. A versão inicial do atualizador precisa ser gravada pelo cabo uma única vez.
+
+## Atualizações pela placa
+
+Conecte a uma rede 2,4 GHz. Vá a **Configurações → Atualização → Verificar versão**. Confirme **Instalar** para baixar o firmware e as artes. A placa confere SHA-256, tamanho e CRC do pacote de artes, instala o firmware na partição livre e reinicia. As artes antigas ficam intactas até a nova versão iniciar e validar o novo pacote; então os arquivos temporários e as artes obsoletas são removidos. Os três saves permanecem em NVS.
+
+Sem uma Release publicada, a placa informa que ainda não há versão disponível. Se as artes locais faltarem, é possível baixar as da mesma versão sem regravar o firmware. Não há leituras periódicas do cartão durante o jogo. Não retire o cartão ou a alimentação durante a instalação. FAT32 não garante recuperação de toda falha de energia; não se promete rollback automático de firmware que não inicialize.
+
+## Publicar uma versão
+
+1. Atualize `ReleaseVersion.h`: versão e número crescente `FW_BUILD`.
+2. Atualize fontes e pacote `cartao/RPGPOKET/artes.pak`, conservando os identificadores em `AssetCatalog.h`.
+3. Faça os testes e envie ao repositório.
+4. Em **Actions → Publicar versão → Run workflow**, informe a mesma versão de `FW_VERSION`.
+5. O envio de alteracoes a `main` tambem inicia a publicacao automaticamente. O workflow compila, verifica os tamanhos e publica `firmware.bin`, `artes.pak` e `manifest.json` em uma Release. A placa consulta a última Release publicada.
+
+## Estado
+
+Versão 2026.10.06-ota1: prévia estática de cores, Fúria do bárbaro com efeito próprio, indicador verde de Wi-Fi e atualizador. Compilação/testes no computador são separados do teste físico. O atualizador ainda requer teste real de HTTPS, cartão e reinicialização. A versão Heltec permanece em uma pasta separada e não está incluída aqui.
+
+O projeto inclui GFX de terceiros em `src/GFX`; os avisos/licenças existentes acompanham a biblioteca. Nenhuma licença nova é atribuída ao projeto ou às imagens de terceiros sem decisão do proprietário.

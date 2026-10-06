@@ -1,0 +1,50 @@
+name: Publicar versão
+on:
+  push:
+    branches: [main]
+    paths: ["firmware/**", "cartao/**", "tools/release_manifest.py", ".github/workflows/release.yml"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Versão inédita (ex. 2026.10.06-ota1)
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Identificar versao
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_ENV"
+          from pathlib import Path
+          import re,os
+          version=re.search(r'FW_VERSION="([^"]+)"',Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()).group(1)
+          requested=os.environ.get("REQUESTED_VERSION")
+          assert not requested or requested==version, "Versao diferente do firmware"
+          print("RELEASE_VERSION="+version)
+          PY
+      - name: Testar regras, saves e telas
+        run: bash tools/test_native.sh
+      - name: Instalar ESP32
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar sem gravar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Preparar arquivos e manifesto
+        run: python3 tools/release_manifest.py
+      - name: Publicar Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --title "RPG POKET $RELEASE_VERSION" --notes "Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Saves preservados."

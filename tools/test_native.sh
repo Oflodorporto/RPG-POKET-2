@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eu
+python3 tools/unpack_art.py
+mkdir -p build/tests build/screens
+for name in club_protocol club_duel guild_save rules_save gear_save forge_save quests_save card_read menu_state settings_adapter sd_adapter render; do
+  extras=()
+  if [[ "$name" == club_protocol || "$name" == club_duel ]]; then extras+=(firmware/RPG_POKET_2/ClubProtocol.cpp firmware/RPG_POKET_2/ClubDuel.cpp -Ifirmware/RPG_POKET_2); fi
+  if [[ "$name" == settings_adapter ]]; then extras+=(-Itests/settings_fake); fi
+  if [[ "$name" == sd_adapter ]]; then extras+=(-Itests/sd_fake); fi
+  g++ -std=c++17 -O2 -Wall -Wextra "tests/$name.cpp" "${extras[@]}" -o "build/tests/$name"
+  if [[ "$name" == render ]]; then "build/tests/$name" build/screens; else "build/tests/$name"; fi
+done

@@ -1,0 +1,60 @@
+#pragma once
+#include "World.h"
+#include "AssetStore.h"
+#include "UpdateModel.h"
+struct MenuState {
+  uint8_t draftRace=0,draftShirt=0,draftPants=0;
+  uint32_t frameMs=0,pollMs=0,loopMs=0;
+  uint8_t activeSlot=0,slotChoice=0,brightness=80,keyboard=0,keyPage=0;
+  rpg::Load slots[3]={rpg::Load::Empty,rpg::Load::Empty,rpg::Load::Empty};rpg::Game previews[3];
+  bool connected=false,connecting=false,scanning=false,openNetwork=false;
+  int networkCount=0,networkIndex=0;char network[33]="",password[64]="",ip[20]="";
+  ArtStatus art=ArtStatus::Fallback;Journey journey;uint8_t destination=0;
+  uint32_t touchErrors=0,touches=0;uint8_t flashMiB=0,ramMiB=0;int memoryTest=-1;const char* notice="";
+};
+inline MenuState menu;
+inline const char* keyboardChars(uint8_t mode){static const char* keys[]={"abcdefghijklmnopqrstuvwxyz0123456789","ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789","!@#$%^&*()-_=+[]{};:,.?/\\|~`'\"<>    "};return keys[mode%3];}
+template<class Canvas,class Text,class Center,class Box,class Button,class Portrait>
+bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Box box,Button button,Portrait portrait,unsigned frame){
+  // New pages are appended to Page after Card (26), kept independent of View.
+  char b[64];
+  if(page==27){center(12,"MENU",2,UI_GOLD);snprintf(b,sizeof(b),"Slot %u / %s",menu.activeSlot+1,rpg::className(g.p.cls));center(53,b);
+    button(14,86,212,"Mapa do mundo");button(14,132,212,"Personagens");button(14,178,212,"Configuracoes");button(14,224,102,"Cidade");button(124,224,102,"Refugio");button(14,272,212,"Voltar");return true;}
+  if(page==28){center(12,"PERSONAGENS",2,UI_GOLD);for(unsigned i=0;i<3;++i){int y=55+i*61;box(14,y,212,56);snprintf(b,sizeof(b),"SLOT %u%s",i+1,i==menu.activeSlot?" / ATIVO":"");text(24,y+8,b,1,UI_GOLD);
+      if(menu.slots[i]==rpg::Load::Empty)snprintf(b,sizeof(b),"Vazio / criar personagem");else if(menu.slots[i]==rpg::Load::Blocked)snprintf(b,sizeof(b),"Save protegido / ver opcoes");else snprintf(b,sizeof(b),"%s / Nivel %u",rpg::className(menu.previews[i].p.cls),menu.previews[i].p.level);text(24,y+29,b);}
+    center(247,menu.notice,1,UI_RED);button(14,272,212,"Voltar");return true;}
+  if(page==29||page==30){bool del=page==30;snprintf(b,sizeof(b),"SLOT %u",menu.slotChoice+1);center(12,b,2,UI_GOLD);
+    if(menu.slots[menu.slotChoice]==rpg::Load::Ok||menu.slots[menu.slotChoice]==rpg::Load::Recovered){portrait(menu.previews[menu.slotChoice].p.cls,80,48,&menu.previews[menu.slotChoice]);snprintf(b,sizeof(b),"%s / Nivel %u",rpg::className(menu.previews[menu.slotChoice].p.cls),menu.previews[menu.slotChoice].p.level);center(131,b);}
+    else center(101,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Slot vazio":"Save protegido",2);
+    if(del){center(176,"APAGAR ESTE PERSONAGEM?",1,UI_RED);center(202,"A exclusao e permanente.");center(224,"Os outros slots ficam preservados.");center(245,menu.notice,1,UI_RED);button(14,272,102,"Cancelar");button(124,272,102,"Apagar");}
+    else{center(160,menu.notice,1,UI_RED);if(menu.slots[menu.slotChoice]!=rpg::Load::Blocked)button(14,178,212,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Criar":"Entrar");if(menu.slots[menu.slotChoice]!=rpg::Load::Empty)button(14,224,212,"Excluir slot");button(14,272,212,"Voltar");}return true;}
+  if(page==31){center(12,"CONFIGURACOES",2,UI_GOLD);snprintf(b,sizeof(b),"Brilho: %u%%",menu.brightness);center(52,b,2);button(14,78,102,"- Brilho");button(124,78,102,"+ Brilho");
+    button(14,130,212,"Internet / Wi-Fi");button(14,176,102,"Cartao");button(124,176,102,"Testes");button(14,222,212,"Atualizacao");center(265,menu.notice,1,UI_RED);button(14,278,212,"Voltar");return true;}
+  if(page==45){center(26,"ATUALIZACAO",2,UI_GOLD);center(58,"Via GitHub / Wi-Fi");center(88,FW_VERSION,1,UI_MUTED);
+    if(updateInfo.busy){center(124,updater::stage(updateInfo.state));snprintf(b,sizeof(b),"%u%%",updateInfo.progress);center(158,b,2,UI_GREEN);box(14,192,212,20);c.fillRect(17,195,206*std::min(100u,updateInfo.progress)/100,14,UI_GREEN);center(234,updateInfo.message);center(270,"Nao retire o cartao ou a energia.");}
+    else{center(121,*updateInfo.version?updateInfo.version:menu.connected?"Conectado / pronto para verificar":"Conecte o Wi-Fi primeiro",1,UI_GOLD);center(153,updateInfo.message,1,updateInfo.state==updater::State::Error?UI_RED:UI_WHITE);
+      if(updateInfo.state==updater::State::Available){center(189,updateInfo.artOnly?"Baixar e reparar as artes?":"Instalar a nova versao e artes?");center(212,"O jogo sera reiniciado.");button(14,272,102,"Cancelar");button(124,272,102,"Instalar");}
+      else{button(14,218,212,"Verificar versao");button(14,272,212,"Voltar");}}
+    return true;}
+  if(page==32){center(12,"INTERNET / WI-FI",2,UI_GOLD);center(43,menu.connecting?"Conectando...":menu.connected?"Wi-Fi conectado":"Wi-Fi desconectado",1,menu.connected?UI_GREEN:UI_WHITE);
+    if(menu.connected)center(64,menu.ip);center(87,menu.scanning?"Buscando redes...":menu.networkCount?"Escolha sua rede":"Toque em Buscar redes");
+    if(menu.networkCount){char shortName[25];snprintf(shortName,sizeof(shortName),"%.24s",menu.network);center(117,shortName);snprintf(b,sizeof(b),"Rede %d/%d %s",menu.networkIndex+1,menu.networkCount,menu.openNetwork?"/ aberta":"");center(142,b);button(14,163,102,"Anterior");button(124,163,102,"Proxima");}
+    button(14,211,102,"Buscar");button(124,211,102,menu.connecting?"Cancelar":menu.connected?"Desligar":"Conectar");center(258,menu.notice,1,UI_RED);button(14,272,212,"Voltar");return true;}
+  if(page==33){char bar[31];unsigned n=strlen(menu.password);snprintf(bar,sizeof(bar),"%u: %.*s",n,22,menu.password+(n>22?n-22:0));box(4,2,232,30);text(10,12,*menu.notice?menu.notice:bar,1,*menu.notice?UI_RED:UI_WHITE);
+    const char* chars=keyboardChars(menu.keyboard);for(unsigned i=0;i<12;++i){int x=4+(i%3)*78,y=38+(i/3)*45;box(x,y,76,43);char ch[2]={chars[menu.keyPage*12+i],0};text(x+31,y+12,ch,2);}
+    button(4,222,76,menu.keyboard==0?"abc":menu.keyboard==1?"ABC":"#+@");button(82,222,76,"<- Pag");button(160,222,76,"Pag >");
+    box(4,266,76,50);text(14,278,"Voltar");box(82,266,76,50);text(97,278,"Apagar");box(160,266,76,50);text(173,278,"Conectar");return true;}
+  if(page==34){center(12,"TESTES DO APARELHO",2,UI_GOLD);snprintf(b,sizeof(b),"Flash: %u MiB / PSRAM: %u MiB",menu.flashMiB,menu.ramMiB);center(57,b);
+    snprintf(b,sizeof(b),"Toques: %lu / erros: %lu",(unsigned long)menu.touches,(unsigned long)menu.touchErrors);center(83,b);center(112,"Um toque deve contar uma vez.");
+    center(144,menu.art==ArtStatus::Ready?"Artes do cartao: OK":"Artes simplificadas: ativas",1,menu.art==ArtStatus::Ready?UI_GREEN:UI_GOLD);
+    snprintf(b,sizeof(b),"Tela %lums / toque %lums",(unsigned long)menu.frameMs,(unsigned long)menu.pollMs);center(198,b);center(177,menu.memoryTest<0?"Teste PSRAM: ainda nao feito":menu.memoryTest?"Teste 64 KiB PSRAM: OK":"Teste PSRAM: falhou",1,menu.memoryTest==1?UI_GREEN:UI_WHITE);
+    button(14,222,212,"Testar memoria");button(14,272,212,"Voltar");return true;}
+  if(page==35||page==14){bool travel=page==35;center(7,travel?"EM VIAGEM":"MAPA DO MUNDO",2,UI_GOLD);
+    auto line=[&](Point p,Point q,uint16_t color){int dx=abs(q.x-p.x),sx=p.x<q.x?1:-1,dy=-abs(q.y-p.y),sy=p.y<q.y?1:-1,err=dx+dy;for(;;){c.fillRect(p.x-1,p.y-1,3,3,color);if(p.x==q.x&&p.y==q.y)break;int e=2*err;if(e>=dy){err+=dy;p.x+=sx;}if(e<=dx){err+=dx;p.y+=sy;}}};
+    for(unsigned i=0;i<9;++i)line(roadPoints[i],roadPoints[i+1],UI_GOLD);
+    for(unsigned i=0;i<4;++i){const auto& p=places[i];c.fillRect(p.x-5,p.y-5,11,11,i==g.city?UI_GREEN:i==menu.destination?UI_BLUE:UI_WHITE);c.drawRect(p.x-7,p.y-7,15,15,UI_INK);text(std::max(3,std::min(234-int(strlen(p.name))*6,p.x-14)),p.y+12,p.name,1,i==menu.destination?UI_GOLD:UI_WHITE);}
+    if(travel){Point p=menu.journey.position();for(int y=0;y<24;++y)for(int x=0;x<22;++x){auto color=personalPixel(g,frame%6,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y-int(frame%2),1,1,color);}c.fillRect(p.x-6-int(frame%3),p.y+1,3,2,UI_MUTED);
+      snprintf(b,sizeof(b),"%s -> %s",placeName(menu.journey.from),placeName(menu.journey.to));center(245,b);box(14,277,212,20);c.fillRect(17,280,206*menu.journey.progress/1000,14,UI_GREEN);}
+    else{snprintf(b,sizeof(b),"Voce esta em %s",placeName(g.city));center(231,b);snprintf(b,sizeof(b),"Destino: %s",placeName(menu.destination));center(250,b,1,UI_GOLD);button(14,272,102,menu.destination==g.city?"Entrar":"Viajar");button(124,272,102,"Voltar");}return true;}
+  return false;
+}

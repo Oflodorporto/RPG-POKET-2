@@ -1,3 +1,0 @@
-Teste de acesso de escrita do ChatGPT Work/GitHub.
-Data: 2026-10-06
-Se este arquivo apareceu no repositorio, a permissao de escrita esta funcionando.
