@@ -108,8 +108,8 @@ void tapped(int x,int y){
     if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
   if(view.page==Page::Dungeon){
     if(game.phase==rpg::Phase::Enemy)return;
-    if(hit(x,y,160,296,76,22)){view.page=Page::DungeonMenu;say("");return;}
-    if(hit(x,y,4,296,152,22)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(hit(x,y,160,280,76,38)){view.page=Page::DungeonMenu;say("");return;}
+    if(hit(x,y,4,280,152,38)){view.choice=0;view.page=Page::Bag;say("");return;}
     if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
@@ -121,8 +121,8 @@ void tapped(int x,int y){
     }
     if(game.phase!=rpg::Phase::Home)return;
     int forward=0,side=0,turn=0;
-    if(hit(x,y,4,208,74,39))turn=-1;else if(hit(x,y,82,208,74,39))forward=1;else if(hit(x,y,160,208,76,39))turn=1;
-    else if(hit(x,y,4,252,74,39))side=-1;else if(hit(x,y,82,252,74,39))forward=-1;else if(hit(x,y,160,252,76,39))side=1;else return;
+    if(hit(x,y,4,202,74,35))turn=-1;else if(hit(x,y,82,202,74,35))forward=1;else if(hit(x,y,160,202,76,35))turn=1;
+    else if(hit(x,y,4,241,74,35))side=-1;else if(hit(x,y,82,241,74,35))forward=-1;else if(hit(x,y,160,241,76,35))side=1;else return;
     const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
   }
   if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
@@ -306,10 +306,9 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
-  if(view.page==Page::Skills||view.page==Page::Bag){
-    bool bag=view.page==Page::Bag;
-    if(hit(x,y,14,172,212))action(bag?rpg::Action::Life:rpg::Action::Offensive);
-    else if(hit(x,y,14,218,212))action(bag?rpg::Action::Mana:rpg::Action::Defensive);
+  if(view.page==Page::Skills){
+    if(hit(x,y,14,172,212))action(rpg::Action::Offensive);
+    else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
   if(hit(x,y,14,220,102))action(rpg::Action::Attack);
@@ -371,6 +370,10 @@ int main(){
  tapped(80,305);assert(view.page==Page::Bag);tapped(180,294);assert(game.p.life==1&&game.crystals==3&&game.p.hp>1);
  auto consumed=game.p.life;tapped(170,90);assert(view.choice==2);tapped(180,294);assert(game.crystals==3&&game.p.life==consumed);
  tapped(60,294);assert(view.page==Page::Dungeon);tapped(80,305);tapped(100,245);assert(view.page==Page::BagGear);tapped(60,294);assert(view.page==Page::Bag);
+ // Bag equipment is accessible in the dungeon, saved and not automatically consumed.
+ game.owned|=1;view.page=Page::Bag;tapped(80,245);assert(view.page==Page::BagGear);view.choice=0;view.gearIndex=0;tapped(180,294);assert(game.equipped[0]==1&&view.page==Page::BagGear);
+ tapped(40,294);game.p.hp=1;auto potionCount=game.p.life;nvs.fail=true;view.choice=0;tapped(180,294);assert(view.page==Page::SaveError&&game.p.life==potionCount-1);nvs.fail=false;tapped(100,265);assert(view.page==Page::Bag&&game.p.life==potionCount-1);
+ rpg::Journal<NvsBackend> bagRestart(backend);rpg::Game bagCopy;assert(bagRestart.load(bagCopy)==rpg::Load::Ok&&bagCopy.p.life==game.p.life&&bagCopy.crystals==3&&bagCopy.equipped[0]==1);
  // Boss victory is explicit and resumable; reward/mask applied once on the chosen exit.
  game=rpg::create(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;
  assert(currentPage()==Page::DungeonVictory);view.page=currentPage();nvs.fail=true;tapped(80,240);assert(view.page==Page::SaveError&&game.dungeonClears==1&&game.dungeonEnemies&64);

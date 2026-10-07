@@ -20,9 +20,9 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 4. Em **Actions → Publicar versão → Run workflow**, informe a mesma versão de `FW_VERSION`.
 5. O envio de alteracoes a `main` tambem inicia a publicacao automaticamente. O workflow compila, verifica os tamanhos e publica `firmware.bin`, `artes.pak` e `manifest.json` em uma Release. A placa consulta a última Release publicada.
 
-## Estado
+## Estado atual
 
-Versão 2026.10.06-ota1: prévia estática de cores, Fúria do bárbaro com efeito próprio, indicador verde de Wi-Fi e atualizador. Compilação/testes no computador são separados do teste físico. O atualizador ainda requer teste real de HTTPS, cartão e reinicialização. A versão Heltec permanece em uma pasta separada e não está incluída aqui.
+2026.10.06-bolsa1: bolsa em slots com itens e equipamentos acessiveis na dungeon, recompensa do bau identificada, escolha apos o Arconte, retorno a exploracao e ataques com movimentos por classe. [Controles e detalhes](docs/BOLSA_ANIMACOES_E_VITORIA.md). Saves9 e artes SD estradas1 permanecem compativeis. Dungeon1c e wifi1 foram confirmadas funcionando na placa pelo usuario; esta entrega requer novo teste fisico.
 
 O projeto inclui GFX de terceiros em `src/GFX`; os avisos/licenças existentes acompanham a biblioteca. Nenhuma licença nova é atribuída ao projeto ou às imagens de terceiros sem decisão do proprietário.
 
@@ -36,8 +36,8 @@ A ota1 foi confirmada funcionando na placa pelo usuario. Esta entrega nova exige
 
 2026.10.06-wifi1: cinco redes salvas, reconexao, indicador RSSI em quatro barras, relogio preto apos um minuto com brilho reduzido, Continuar download e diagnostico HTTPS do GitHub. [Uso e limites do teste](docs/WIFI_RELOGIO_E_DIAGNOSTICO.md).
 
-Firmware e artes mantem saves8 e o pacote estradas1 de417 recursos. Sem gravacao automatica ou .rpg. Teste fisico desta versao pendente; os downloads anteriores ainda falharam na placa e a causa nao esta comprovada.
+Firmware e artes mantem saves8 e o pacote estradas1 de417 recursos. Sem gravacao automatica ou .rpg. Testes fisicos de wifi1 confirmados pelo usuario.
 
 ## Cripta do Arconte
 
-2026.10.06-dungeon1b: primeira pessoa, dois andares, selo, sete encontros e chefe, cristal por drop/300 ouro, 44 assets originais e saves9 com importacao1..8. [Controles e detalhes](docs/DUNGEON_PRIMEIRA_PESSOA.md). A arte da dungeon acompanha o firmware; artes.pak permanece compativel. Testes fisicos de wifi1 confirmados pelo usuario; dungeon1 aguarda teste na placa.
+2026.10.06-dungeon1c: primeira pessoa, dois andares, selo, sete encontros e chefe, cristal por drop/300 ouro, 44 assets originais e saves9 com importacao1..8. [Controles e detalhes](docs/DUNGEON_PRIMEIRA_PESSOA.md). A arte da dungeon acompanha o firmware; artes.pak permanece compativel. Testes fisicos de wifi1 confirmados pelo usuario; dungeon1c confirmada funcionando na placa pelo usuario.

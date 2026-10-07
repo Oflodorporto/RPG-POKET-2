@@ -164,8 +164,8 @@ void tapped(int x,int y){
     if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
   if(view.page==Page::Dungeon){
     if(game.phase==rpg::Phase::Enemy)return;
-    if(hit(x,y,160,296,76,22)){view.page=Page::DungeonMenu;say("");return;}
-    if(hit(x,y,4,296,152,22)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(hit(x,y,160,280,76,38)){view.page=Page::DungeonMenu;say("");return;}
+    if(hit(x,y,4,280,152,38)){view.choice=0;view.page=Page::Bag;say("");return;}
     if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
@@ -177,8 +177,8 @@ void tapped(int x,int y){
     }
     if(game.phase!=rpg::Phase::Home)return;
     int forward=0,side=0,turn=0;
-    if(hit(x,y,4,208,74,39))turn=-1;else if(hit(x,y,82,208,74,39))forward=1;else if(hit(x,y,160,208,76,39))turn=1;
-    else if(hit(x,y,4,252,74,39))side=-1;else if(hit(x,y,82,252,74,39))forward=-1;else if(hit(x,y,160,252,76,39))side=1;else return;
+    if(hit(x,y,4,202,74,35))turn=-1;else if(hit(x,y,82,202,74,35))forward=1;else if(hit(x,y,160,202,76,35))turn=1;
+    else if(hit(x,y,4,241,74,35))side=-1;else if(hit(x,y,82,241,74,35))forward=-1;else if(hit(x,y,160,241,76,35))side=1;else return;
     const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
   }
   if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
@@ -362,10 +362,9 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
-  if(view.page==Page::Skills||view.page==Page::Bag){
-    bool bag=view.page==Page::Bag;
-    if(hit(x,y,14,172,212))action(bag?rpg::Action::Life:rpg::Action::Offensive);
-    else if(hit(x,y,14,218,212))action(bag?rpg::Action::Mana:rpg::Action::Defensive);
+  if(view.page==Page::Skills){
+    if(hit(x,y,14,172,212))action(rpg::Action::Offensive);
+    else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
   if(hit(x,y,14,220,102))action(rpg::Action::Attack);
