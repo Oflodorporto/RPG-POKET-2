@@ -275,7 +275,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(246,v.message,1,UI_RED);button(14,270,102,"Cancelar");button(124,270,102,buy?"Comprar":"Aplicar");return;
   }
   if(v.page==Page::Shop){
-    center(12,"LOJA DE POCOES",2,UI_GOLD);box(14,62,212,70);
+    center(12,"LOJA DE POCOES",2,UI_GOLD);center(41,story::supplier(g.city),1,UI_GOLD);box(14,62,212,70);
     snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(73,b,2,UI_GOLD);center(103,"Escolha uma pocao para comprar.");
     center(146,v.message,1,UI_GREEN);
     for(int i=0;i<2;++i){int y=172+i*46;box(14,y,212,40);snprintf(b,sizeof(b),"%s / %u ouro",i?"Mana":"Vida",rpg::potionPrice(g,i));center(y+5,b,2);
@@ -333,5 +333,3 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
 }
 // Inclusive lower and exclusive upper bounds match the visible controls.
 inline bool hit(int x,int y,int left,int top,int width,int height=40){return x>=left&&x<left+width&&y>=top&&y<top+height;}
-
-

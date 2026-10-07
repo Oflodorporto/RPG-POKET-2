@@ -427,7 +427,7 @@ int main(){
  // Sale confirmation and save retry never pay twice; equipped and foreign-class gear are distinct.
  game.owned|=1u<<(rpg::gearOffer(1,1)-1);view.page=Page::BagGear;view.gearIndex=0;view.choice=0;tapped(180,295);assert(view.page==Page::GearSell);tapped(40,290);assert(view.page==Page::BagGear);tapped(180,295);auto saleGold=game.p.gold;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.p.gold>saleGold);auto paid=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::BagGear&&game.p.gold==paid);
  // Narrative navigation must not mutate any save, reroll, charge or heal a veteran.
- game=rpg::create(0,42);game.tutorial=true;game.guardianDefeated=true;game.dungeonClears=1;game.p.gold=123;assert(journal.save(game));auto narrativeBlobs=nvs.blobs;
+ game=rpg::create(0,42);game.tutorial=true;game.ruinsWins=3;game.guardianDefeated=true;game.dungeonClears=1;game.p.gold=123;assert(journal.save(game));auto narrativeBlobs=nvs.blobs;
  view.page=Page::Menu;tapped(40,240);assert(view.page==Page::Journal&&menu.chapterIndex==3);tapped(180,290);assert(view.page==Page::Prologue&&menu.storyReplay);for(unsigned i=0;i<4;++i)tapped(180,290);assert(view.page==Page::Journal&&game.tutorial&&nvs.blobs==narrativeBlobs);
  tapped(40,290);tapped(180,240);assert(view.page==Page::People);tapped(80,100);assert(view.page==Page::Dialogue);tapped(80,290);tapped(80,290);assert(view.page==Page::Menu&&nvs.blobs==narrativeBlobs);
  showMap();tapped(180,40);assert(view.page==Page::Continent);tapped(180,240);assert(menu.regionIndex==1);tapped(180,290);assert(view.page==Page::Continent&&game.city==0);tapped(40,290);assert(view.page==Page::Map&&nvs.blobs==narrativeBlobs);
