@@ -22,7 +22,7 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-2026.10.06-bolsa1: bolsa em slots com itens e equipamentos acessiveis na dungeon, recompensa do bau identificada, escolha apos o Arconte, retorno a exploracao e ataques com movimentos por classe. [Controles e detalhes](docs/BOLSA_ANIMACOES_E_VITORIA.md). Saves9 e artes SD estradas1 permanecem compativeis. Dungeon1c e wifi1 foram confirmadas funcionando na placa pelo usuario; esta entrega requer novo teste fisico.
+2026.10.07-camp1: acampamento regional com D20, emboscada antes do descanso, comida e kit de dormir; bola de fogo e raio animados; bau com armas de outras classes ou ouro e venda de equipamentos. [Uso e regras](docs/ACAMPAMENTO_MAGIA_E_SAQUE.md). Save10 importa os formatos1..9; nao voltar a firmware antigo depois de gravar saves nesta versao. Artes SD estradas1 permanecem iguais. Bolsa1 foi testada na placa pelo usuario; camp1 requer novo teste fisico.
 
 O projeto inclui GFX de terceiros em `src/GFX`; os avisos/licenças existentes acompanham a biblioteca. Nenhuma licença nova é atribuída ao projeto ou às imagens de terceiros sem decisão do proprietário.
 
