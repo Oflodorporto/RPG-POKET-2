@@ -22,7 +22,7 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-2026.10.07-camp1: acampamento regional com D20, emboscada antes do descanso, comida e kit de dormir; bola de fogo e raio animados; bau com armas de outras classes ou ouro e venda de equipamentos. [Uso e regras](docs/ACAMPAMENTO_MAGIA_E_SAQUE.md). Save10 importa os formatos1..9; nao voltar a firmware antigo depois de gravar saves nesta versao. Artes SD estradas1 permanecem iguais. Bolsa1 foi testada na placa pelo usuario; camp1 requer novo teste fisico.
+2026.10.07-lore1: primeira integracao de As Cinzas da Primeira Aurora, abertura com Nara e carta de Maelis, Diario por progresso existente, Pessoas com dialogos locais e atlas de Valdaria. [Uso e limites](docs/REORGANIZACAO_AELDRA.md). Save10/96bytes e artes SD permanecem iguais; a leitura da historia nao altera recompensas ou personagens. Novas regioes, eventos diarios, dia/noite e campanha completa serao etapas posteriores. [Lore](docs/LORE_CANONICA_RPG_POKET_2.md) e [continente](docs/CONTINENTE_VALDARIA.md).
 
 O projeto inclui GFX de terceiros em `src/GFX`; os avisos/licenças existentes acompanham a biblioteca. Nenhuma licença nova é atribuída ao projeto ou às imagens de terceiros sem decisão do proprietário.
 
