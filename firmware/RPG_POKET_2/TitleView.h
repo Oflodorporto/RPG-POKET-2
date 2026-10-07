@@ -7,6 +7,7 @@ template<class Canvas> void drawTitle(Canvas& c,unsigned frame){
  c.setTextWrap(false);
  auto label=[&](int x,int y,const char* s,int scale,uint16_t color){c.setTextSize(scale);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
  auto center=[&](int y,const char* s,int scale,uint16_t color){label((240-int(strlen(s))*6*scale)/2,y,s,scale,color);};
+ unsigned breathe=(frame/3)%8;int sway=breathe<4?int(breathe)-2:5-int(breathe);
  // A few moving leaf highlights suggest a breeze without shaking the whole screen.
  for(unsigned i=0;i<4;++i){int x=15+int(i*14)+sway,y=13+int(i*9);c.fillRect(x,y,3,1,0x52c5);}
  unsigned wind=frame%100;c.fillRect(8+int(wind/3),154+int(wind/12),2,1,0xa4a6);
@@ -19,7 +20,6 @@ template<class Canvas> void drawTitle(Canvas& c,unsigned frame){
  const uint16_t* bird=hippogriffArt::frames[(frame/6)%4];
  for(int y=0;y<17;++y)for(int x=0;x<16;++x){uint16_t color=bird[(y*86/17)*80+x*80/16];if(color!=SPRITE_KEY)c.fillRect(bx+x,by+y,1,1,color);}
  // Slow fire tips and rising embers follow the illustration's hearth.
- unsigned breathe=(frame/3)%8;int sway=breathe<4?int(breathe)-2:5-int(breathe);
  c.fillRect(52+sway,252-int(breathe%3),2,9,0xfba0);c.fillRect(54,258,3,5,0xffab);
  for(unsigned i=0;i<3;++i){unsigned age=(frame/3+i*11)%28;c.fillRect(50+int(i*4)+int(age/9),255-int(age),1,age<15?2:1,age<14?0xfdc4:0xb240);}
  auto button=[&](int y,const char* s,bool enabled,bool selected){
@@ -33,5 +33,6 @@ template<class Canvas> void drawTitle(Canvas& c,unsigned frame){
  button(216,"Novo jogo",true,!menu.hasContinue);
  button(262,"Configuracoes",true,false);
  if(*menu.notice){c.fillRect(2,150,236,14,UI_INK);center(153,menu.notice,1,UI_RED);}
- center(309,"RPG POKET 2 / titulo1",1,UI_MUTED);
+ center(309,"RPG POKET 2.0",1,UI_MUTED);
 }
+
