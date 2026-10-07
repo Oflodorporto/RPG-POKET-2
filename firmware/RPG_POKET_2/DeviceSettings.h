@@ -5,12 +5,14 @@
 #include <time.h>
 #include "MenuView.h"
 #include "UpdateModel.h"
+inline worldClock::Clock localClock;
 inline Preferences settings;inline bool settingsReady=false,pwmReady=false;
 inline uint32_t wifiAt=0,signalAt=0;inline bool resumeWifi=false;
 inline void applyBrightness(){if(pwmReady)ledcWrite(1,(menu.clockIdle?10u:menu.brightness)*255u/100);}
 inline bool saveBrightness(uint8_t value){if(!settingsReady||settings.putUChar("light",value)!=1)return false;menu.brightness=value;applyBrightness();return true;}
 inline void initSettings(){settingsReady=settings.begin("pkt2_ui",false);menu.activeSlot=settingsReady?settings.getUChar("slot",0):0;if(menu.activeSlot>2)menu.activeSlot=0;
   menu.brightness=settingsReady?settings.getUChar("light",80):80;if(menu.brightness<10||menu.brightness>100)menu.brightness=80;
+  int automatic=1,offset=-3,cycle=1;auto record=settings.getString("clockcfg","");if(sscanf(record.c_str(),"%d,%d,%d",&automatic,&offset,&cycle)==3&&(automatic==0||automatic==1)&&offset>=-12&&offset<=14&&(cycle==0||cycle==1)){menu.clockAutomatic=automatic;menu.utcOffset=offset;menu.dayCycle=cycle;}else {menu.clockAutomatic=true;menu.utcOffset=-3;menu.dayCycle=true;}localClock=worldClock::Clock{};if(!menu.clockAutomatic)localClock.manual=true;
   pwmReady=ledcAttach(1,5000,8);applyBrightness();resumeWifi=settingsReady&&settings.getBool("wifi",false);
 }
 inline bool rememberSlot(uint8_t slot){if(slot>2||!settingsReady||settings.putUChar("slot",slot)!=1)return false;menu.activeSlot=slot;return true;}
@@ -58,7 +60,7 @@ inline bool tickWifi(){bool changed=false;
   if(menu.scanning){int n=WiFi.scanComplete();if(n!=WIFI_SCAN_RUNNING){menu.scanning=false;menu.networkCount=std::max(0,n);menu.networkIndex=0;networkChoice();menu.notice=n<=0?"Nenhuma rede encontrada":"";changed=true;}}
   bool connected=WiFi.status()==WL_CONNECTED;if(connected!=menu.connected){menu.connected=connected;menu.signalBars=connected?wifiBars(WiFi.RSSI()):0;changed=true;}
   if(connected&&(changed||uint32_t(millis()-signalAt)>=2000)){signalAt=millis();int dbm=WiFi.RSSI();uint8_t bars=wifiBars(dbm);if(bars!=menu.signalBars||dbm!=menu.signalDbm){menu.signalBars=bars;menu.signalDbm=dbm;changed=true;}snprintf(menu.ip,sizeof(menu.ip),"%s",WiFi.localIP().toString().c_str());}
-  if(menu.connecting&&connected&&WiFi.SSID()==menu.network){menu.connecting=false;configTzTime("BRT3","pool.ntp.org","time.google.com");bool saved=settingsReady&&settings.putBool("wifi",false)==1&&settings.putString("ssid",menu.network)>0;
+  if(menu.connecting&&connected&&WiFi.SSID()==menu.network){menu.connecting=false;configTzTime("UTC0","pool.ntp.org","time.google.com");bool saved=settingsReady&&settings.putBool("wifi",false)==1&&settings.putString("ssid",menu.network)>0;
     if(saved){settings.putString("pass",menu.password);saved=settings.getString("pass","?")==menu.password;}
     if(saved)saved=settings.putBool("wifi",true)==1;if(saved)resumeWifi=true;bool profile=saved&&rememberWifiProfile(menu.network,menu.password);menu.notice=profile?"Conexao salva":saved?"Conectado; lista cheia ou erro":"Conectado; ajustes nao salvos";memset(menu.password,0,sizeof(menu.password));changed=true;}
   else if(menu.connecting&&uint32_t(millis()-wifiAt)>=20000){menu.connecting=false;WiFi.setAutoReconnect(false);WiFi.disconnect(false,false);menu.notice="Falhou; confira rede e senha";memset(menu.password,0,sizeof(menu.password));changed=true;}
@@ -68,4 +70,10 @@ inline void resumeConnection(){loadWifiProfiles();if(!resumeWifi){menu.savedNetw
 
 inline void testMemory(){uint32_t* allocated=static_cast<uint32_t*>(heap_caps_malloc(65536,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));volatile uint32_t* sample=allocated;menu.memoryTest=0;if(!sample)return;for(unsigned i=0;i<16384;++i)sample[i]=i^0x5a9695a5u;menu.memoryTest=1;for(unsigned i=0;i<16384;++i)if(sample[i]!=(i^0x5a9695a5u)){menu.memoryTest=0;break;}heap_caps_free(allocated);}
 
-inline bool tickClock(){time_t stamp=time(nullptr);bool valid=stamp>=1767225600;char hours[9]="--:--:--",date[11]="--/--/----";if(valid){struct tm local;localtime_r(&stamp,&local);strftime(hours,sizeof(hours),"%H:%M:%S",&local);strftime(date,sizeof(date),"%d/%m/%Y",&local);}bool changed=strcmp(hours,menu.clockTime)||strcmp(date,menu.clockDate)||valid!=menu.clockValid;snprintf(menu.clockTime,sizeof(menu.clockTime),"%s",hours);snprintf(menu.clockDate,sizeof(menu.clockDate),"%s",date);menu.clockValid=valid;return changed;}
+inline bool saveClockConfig(bool automatic,int offset,bool cycle){if(offset<-12||offset>14||!settingsReady)return false;char record[24];snprintf(record,sizeof(record),"%u,%d,%u",automatic,offset,cycle);if(settings.putString("clockcfg",record)!=strlen(record)||!(settings.getString("clockcfg","?")==record))return false;bool switchMode=menu.clockAutomatic!=automatic;menu.clockAutomatic=automatic;menu.utcOffset=offset;menu.dayCycle=cycle;if(switchMode){localClock.manual=!automatic;if(!automatic)localClock.set(time(nullptr),millis());}return true;}
+inline void prepareClockEdit(){menu.clockField=0;int64_t stamp=localClock.read(time(nullptr),millis());if(localClock.valid(stamp)){time_t value=stamp+int(menu.utcOffset)*3600;struct tm local;gmtime_r(&value,&local);menu.clockDraft[0]=local.tm_year+1900;menu.clockDraft[1]=local.tm_mon+1;menu.clockDraft[2]=local.tm_mday;menu.clockDraft[3]=local.tm_hour;menu.clockDraft[4]=local.tm_min;}}
+inline void adjustClockDraft(int direction){int& value=menu.clockDraft[menu.clockField];int low=menu.clockField==0?2026:menu.clockField<=2?1:0;int high=menu.clockField==0?2099:menu.clockField==1?12:menu.clockField==2?worldClock::days(menu.clockDraft[0],menu.clockDraft[1]):menu.clockField==3?23:59;value+=direction;if(value<low)value=high;if(value>high)value=low;menu.clockDraft[2]=std::min(menu.clockDraft[2],int(worldClock::days(menu.clockDraft[0],menu.clockDraft[1])));}
+inline bool applyClockDraft(){int64_t value=worldClock::epoch(menu.clockDraft[0],menu.clockDraft[1],menu.clockDraft[2],menu.clockDraft[3],menu.clockDraft[4],menu.utcOffset);if(!value||!saveClockConfig(false,menu.utcOffset,menu.dayCycle))return false;localClock.set(value,millis());return true;}
+inline bool tickClock(bool allowPeriod=true){int64_t value=localClock.read(time(nullptr),millis());bool valid=localClock.valid(value);char hours[9]="--:--:--",date[11]="--/--/----";bool changed=valid!=menu.clockValid;
+ if(valid){time_t stamp=value+int(menu.utcOffset)*3600;struct tm local;gmtime_r(&stamp,&local);strftime(hours,sizeof(hours),"%H:%M:%S",&local);strftime(date,sizeof(date),"%d/%m/%Y",&local);auto p=worldClock::period(local.tm_hour);if(allowPeriod&&p!=menu.worldPeriod){menu.worldPeriod=p;changed=true;}}
+ changed=changed||strcmp(hours,menu.clockTime)||strcmp(date,menu.clockDate);snprintf(menu.clockTime,sizeof(menu.clockTime),"%s",hours);snprintf(menu.clockDate,sizeof(menu.clockDate),"%s",date);menu.clockValid=valid;return changed;}

@@ -145,6 +145,9 @@ int main(int argc,char** argv){
   for(unsigned city=0;city<4;++city){g.city=city;for(Page pg:{Page::People,Page::Village,Page::Ruins,Page::CityGoods,Page::Forge,Page::Guild,Page::Tavern}){v.page=pg;render(c,g,v);c.save(root+"/lore-city-"+std::to_string(city)+"-"+std::to_string(int(pg))+".ppm");}for(unsigned npc=0;npc<3;++npc){menu.personIndex=npc;v.page=Page::Dialogue;g.dungeonClears=npc==2?1:0;render(c,g,v);c.save(root+"/lore-npc-"+std::to_string(city)+"-"+std::to_string(npc)+".ppm");}}
   g=rpg::create(0,42);for(unsigned veteran=0;veteran<2;++veteran){g.tutorial=veteran;g.guardianDefeated=veteran;g.dungeonClears=veteran;for(unsigned i=0;i<6;++i){menu.chapterIndex=i;v.page=Page::Journal;render(c,g,v);c.save(root+"/lore-journal-"+std::to_string(veteran)+"-"+std::to_string(i)+".ppm");}}
   for(unsigned i=0;i<8;++i){menu.regionIndex=i;v.page=Page::Continent;render(c,g,v);c.save(root+"/lore-region-"+std::to_string(i)+".ppm");}v.page=Page::Map;render(c,g,v);c.save(root+"/lore-map.ppm");
+  menu.clockValid=true;snprintf(menu.clockTime,sizeof(menu.clockTime),"21:30:00");snprintf(menu.clockDate,sizeof(menu.clockDate),"07/10/2026");g=rpg::create(0,42);v.message="";
+  for(unsigned period=0;period<4;++period){menu.worldPeriod=worldClock::Period(period);for(Page pg:{Page::Home,Page::Map,Page::Village,Page::Explore,Page::CampSetup,Page::Clock,Page::TimeSettings,Page::TimeEdit}){v.page=pg;render(c,g,v);c.save(root+"/day-period-"+std::to_string(period)+"-"+std::to_string(int(pg))+".ppm");}}
+  menu.clockValid=false;v.page=Page::TimeSettings;render(c,g,v);c.save(root+"/day-unsynced.ppm");v.page=Page::Clock;render(c,g,v);c.save(root+"/day-clock-unsynced.ppm");
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

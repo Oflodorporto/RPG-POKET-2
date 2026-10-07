@@ -16,7 +16,7 @@ struct SerialMock {void println(const char*){}template<class... T>void printf(co
 uint32_t now=0;uint32_t millis(){return now;}uint32_t esp_random(){return 13;}
 bool startNetworkTest(){updateInfo.busy=menu.connected;return menu.connected;}void resetUpdateScreen(){updateInfo=updater::Info{};}bool startUpdate(bool install){if(!menu.connected)return false;updateInfo.busy=true;updateInfo.state=install?updater::State::Downloading:updater::State::Checking;return true;}void paint(uint32_t){}bool openClub(){return true;}void closeClub(){}void clubTap(int,int){}void recoverClubReservation(){}ArtStatus loadSdArt(){return ArtStatus::Ready;}
 bool rememberSlot(uint8_t slot){menu.activeSlot=slot;return true;}bool saveBrightness(uint8_t n){menu.brightness=n;return true;}
-void applyBrightness(){}void showSavedNetworks(){menu.savedNetworks=true;}void connectSavedNetwork(){menu.connecting=true;}bool deleteSavedNetwork(){--menu.savedCount;return true;}void testMemory(){menu.memoryTest=1;}void searchNetworks(){menu.scanning=true;}void networkChoice(){}void connectNetwork(){menu.connecting=true;}void forgetConnection(){menu.connected=false;menu.connecting=false;}
+bool tickClock(bool=true){return false;}void prepareClockEdit(){}void adjustClockDraft(int){}bool applyClockDraft(){return true;}bool saveClockConfig(bool a,int o,bool d){menu.clockAutomatic=a;menu.utcOffset=o;menu.dayCycle=d;return true;}void applyBrightness(){}void showSavedNetworks(){menu.savedNetworks=true;}void connectSavedNetwork(){menu.connecting=true;}bool deleteSavedNetwork(){--menu.savedCount;return true;}void testMemory(){menu.memoryTest=1;}void searchNetworks(){menu.scanning=true;}void networkChoice(){}void connectNetwork(){menu.connecting=true;}void forgetConnection(){menu.connected=false;menu.connecting=false;}
 struct SdFake {} sdReader;CardInfo checkCard(SdFake&){CardInfo c;c.status=CardStatus::Verified;return c;}
 rpg::Journal<NvsBackend> journal(backend);
 rpg::Game game;ViewState view;Page afterSave=Page::Home,helpReturn=Page::Home;TouchGate gate;
@@ -176,11 +176,25 @@ void tapped(int x,int y){
   if(view.page==Page::DeleteSlot){if(hit(x,y,14,272,102)){view.page=Page::SlotConfirm;dirty=true;}
     else if(hit(x,y,124,272,102)){uint8_t old=backend.slot;backend.slot=menu.slotChoice;bool ok=backend.remove();backend.slot=old;if(!ok){menu.notice="Falha; personagem preservado";dirty=true;return;}refreshSlots();menu.notice="Slot apagado";
       if(menu.slotChoice==old){game=rpg::Game{};journal.load(game);view.choice=0;view.page=Page::Race;say("");}else{view.page=Page::Slots;dirty=true;}}return;}
+  if(view.page==Page::TimeSettings){
+    if(hit(x,y,14,272,102)){view.page=Page::Settings;dirty=true;return;}
+    if(hit(x,y,124,272,102)){prepareClockEdit();view.page=Page::TimeEdit;dirty=true;return;}
+    bool ok=true;if(hit(x,y,14,113,102)||hit(x,y,124,113,102)){int offset=std::max(-12,std::min(14,int(menu.utcOffset)+(x<120?-1:1)));ok=saveClockConfig(menu.clockAutomatic,offset,menu.dayCycle);}
+    else if(hit(x,y,14,159,212))ok=saveClockConfig(!menu.clockAutomatic,menu.utcOffset,menu.dayCycle);
+    else if(hit(x,y,14,205,212))ok=saveClockConfig(menu.clockAutomatic,menu.utcOffset,!menu.dayCycle);else return;
+    menu.notice=ok?"Ajuste salvo":"Falha; tente novamente";tickClock();dirty=true;return;
+  }
+  if(view.page==Page::TimeEdit){if(hit(x,y,14,272,102)){view.page=Page::TimeSettings;dirty=true;return;}
+    if(hit(x,y,124,272,102)){if(applyClockDraft()){view.page=Page::TimeSettings;menu.notice="Hora manual / enquanto ligado";tickClock();}else say("Falha ao aplicar a hora");dirty=true;return;}
+    if(hit(x,y,14,181,102)||hit(x,y,124,181,102))adjustClockDraft(x<120?-1:1);
+    else if(hit(x,y,14,227,102))menu.clockField=(menu.clockField+4)%5;else if(hit(x,y,124,227,102))menu.clockField=(menu.clockField+1)%5;else return;dirty=true;return;
+  }
   if(view.page==Page::Settings){if(hit(x,y,14,78,102)||hit(x,y,124,78,102)){int level=menu.brightness+(x<120?-10:10);level=std::max(10,std::min(100,level));menu.notice=saveBrightness(level)?"":"Falha ao salvar brilho";dirty=true;}
     else if(hit(x,y,14,130,212)){view.page=Page::Wifi;showSavedNetworks();menu.notice="";dirty=true;}
     else if(hit(x,y,14,176,102)){view.page=Page::Card;say("");}
     else if(hit(x,y,124,176,102)){view.page=Page::Tests;dirty=true;}
-    else if(hit(x,y,14,222,212)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
+    else if(hit(x,y,124,222,102)){view.page=Page::TimeSettings;menu.notice="";tickClock();dirty=true;}
+    else if(hit(x,y,14,222,102)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
     else if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}return;}
   if(view.page==Page::Tests){if(hit(x,y,14,222,212)){testMemory();pendingTouch=false;gate=TouchGate{};dirty=true;}else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
   if(view.page==Page::Wifi){if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}

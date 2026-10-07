@@ -1,5 +1,6 @@
 #pragma once
 #include "World.h"
+#include "WorldClock.h"
 #include "AssetStore.h"
 #include "UpdateModel.h"
 struct MenuState {
@@ -11,6 +12,8 @@ struct MenuState {
   bool connected=false,connecting=false,scanning=false,openNetwork=false;
   bool savedNetworks=false;uint8_t savedCount=0,savedIndex=0,signalBars=0;int signalDbm=-100,networkDbm=-100,networkChannel=0;
   int networkCount=0,networkIndex=0;char network[33]="",password[64]="",ip[20]="";
+  int8_t utcOffset=-3;bool clockAutomatic=true,dayCycle=true;worldClock::Period worldPeriod=worldClock::Period::Day;
+  uint8_t clockField=0;int clockDraft[5]={2026,1,1,12,0};
   bool clockIdle=false,clockValid=false;char clockTime[9]="--:--:--",clockDate[11]="--/--/----";
   uint32_t rollStarted=0,campStarted=0;bool rollReady=false,campRation=false,campKit=false,campShopReturn=false;
   ArtStatus art=ArtStatus::Fallback;Journey journey;uint8_t destination=0;
@@ -34,7 +37,9 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     if(del){center(176,"APAGAR ESTE PERSONAGEM?",1,UI_RED);center(202,"A exclusao e permanente.");center(224,"Os outros slots ficam preservados.");center(245,menu.notice,1,UI_RED);button(14,272,102,"Cancelar");button(124,272,102,"Apagar");}
     else{center(160,menu.notice,1,UI_RED);if(menu.slots[menu.slotChoice]!=rpg::Load::Blocked)button(14,178,212,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Criar":"Entrar");if(menu.slots[menu.slotChoice]!=rpg::Load::Empty)button(14,224,212,"Excluir slot");button(14,272,212,"Voltar");}return true;}
   if(page==31){center(12,"CONFIGURACOES",2,UI_GOLD);snprintf(b,sizeof(b),"Brilho: %u%%",menu.brightness);center(52,b,2);button(14,78,102,"- Brilho");button(124,78,102,"+ Brilho");
-    button(14,130,212,"Internet / Wi-Fi");button(14,176,102,"Cartao");button(124,176,102,"Testes");button(14,222,212,"Atualizacao");center(265,menu.notice,1,UI_RED);button(14,278,212,"Voltar");return true;}
+    button(14,130,212,"Internet / Wi-Fi");button(14,176,102,"Cartao");button(124,176,102,"Testes");button(14,222,102,"Atualizar");button(124,222,102,"Horario");center(265,menu.notice,1,UI_RED);button(14,278,212,"Voltar");return true;}
+  if(page==71){center(12,"HORA E MUNDO",2,UI_GOLD);center(46,menu.clockValid?menu.clockDate:"Hora nao sincronizada");center(65,menu.clockTime,2);snprintf(b,sizeof(b),"Fuso UTC%+d",int(menu.utcOffset));center(94,b);button(14,113,102,"- Fuso");button(124,113,102,"+ Fuso");button(14,159,212,menu.clockAutomatic?"Hora: automatica":"Hora: manual");button(14,205,212,menu.dayCycle?"Dia/noite: ligado":"Dia/noite: desligado");center(251,menu.notice,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,"Acertar");return true;}
+  if(page==72){static const char* fields[]={"ANO","MES","DIA","HORA","MINUTO"};center(12,"ACERTAR A HORA",2,UI_GOLD);center(49,"Selecione e ajuste cada campo");snprintf(b,sizeof(b),"%02d/%02d/%04d %02d:%02d",menu.clockDraft[2],menu.clockDraft[1],menu.clockDraft[0],menu.clockDraft[3],menu.clockDraft[4]);center(78,b);center(112,fields[menu.clockField],2,UI_GOLD);snprintf(b,sizeof(b),"%02d",menu.clockDraft[menu.clockField]);center(142,b,3);button(14,181,102,"- Valor");button(124,181,102,"+ Valor");button(14,227,102,"Anterior");button(124,227,102,"Proximo");button(14,272,102,"Cancelar");button(124,272,102,"Aplicar");return true;}
   if(page==45){center(26,"ATUALIZACAO",2,UI_GOLD);center(58,"Via GitHub / Wi-Fi");center(88,FW_VERSION,1,UI_MUTED);
     if(updateInfo.busy){center(124,updater::stage(updateInfo.state));snprintf(b,sizeof(b),"%u%%",updateInfo.progress);center(158,b,2,UI_GREEN);box(14,192,212,20);c.fillRect(17,195,206*std::min(100u,updateInfo.progress)/100,14,UI_GREEN);center(234,updateInfo.message);center(270,"Nao retire o cartao ou a energia.");}
     else{center(121,*updateInfo.version?updateInfo.version:menu.connected?"Conectado / pronto para verificar":"Conecte o Wi-Fi primeiro",1,UI_GOLD);center(153,updateInfo.message,1,updateInfo.state==updater::State::Error?UI_RED:UI_WHITE);
@@ -45,7 +50,7 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     if(updateInfo.busy){center(111,"Testando HTTPS...");snprintf(b,sizeof(b),"Tentativa %u/3",updateInfo.netTrials);center(150,b);center(203,"Aguarde o resultado.");}
     else if(updateInfo.tested){snprintf(b,sizeof(b),"HTTPS: %u/%u respostas OK",updateInfo.netSuccess,updateInfo.netTrials);center(100,b,1,updateInfo.netSuccess==3?UI_GREEN:UI_RED);snprintf(b,sizeof(b),"Falhas: %u / Wi-Fi caiu: %u",updateInfo.netTrials-updateInfo.netSuccess,updateInfo.netDrop);center(132,b);snprintf(b,sizeof(b),"Sinal: %d a %d dBm",updateInfo.minDbm,updateInfo.maxDbm);center(164,b);snprintf(b,sizeof(b),"Resposta media: %lums",(unsigned long)updateInfo.avgMs);center(196,b);center(235,"Teste HTTPS; nao mede ping.");}
     else center(141,updateInfo.message,1,UI_RED);if(!updateInfo.busy){button(14,272,102,"Voltar");button(124,272,102,"Testar");}return true;}
-  if(page==51){c.fillRect(0,0,240,320,0);c.setTextColor(UI_WHITE);c.setTextSize(3);c.setCursor(75,112);char hm[6];snprintf(hm,sizeof(hm),"%.5s",menu.clockTime);c.print(hm);c.setTextSize(1);c.setCursor(114,148);c.print(menu.clockTime+6);c.setTextSize(2);c.setCursor(60,184);c.print(menu.clockDate);c.setTextSize(1);c.setCursor(30,278);c.print("Toque para voltar ao jogo");if(!menu.clockValid){c.setCursor(24,231);c.print("Conecte Wi-Fi para acertar a hora");}return true;}
+  if(page==51){c.fillRect(0,0,240,320,0);c.setTextColor(UI_WHITE);c.setTextSize(3);c.setCursor(75,112);char hm[6];snprintf(hm,sizeof(hm),"%.5s",menu.clockTime);c.print(hm);c.setTextSize(1);c.setCursor(114,148);c.print(menu.clockTime+6);c.setTextSize(2);c.setCursor(60,184);c.print(menu.clockDate);c.setTextSize(1);c.setCursor(90,226);c.print(menu.clockValid?worldClock::name(menu.worldPeriod):"Sem hora");c.setCursor(30,278);c.print("Toque para voltar ao jogo");if(!menu.clockValid){c.setCursor(24,231);c.print("Wi-Fi ou ajuste em Horario");}return true;}
   if(page==32){center(12,"INTERNET / WI-FI",2,UI_GOLD);center(43,menu.connecting?"Conectando...":menu.connected?"Wi-Fi conectado":"Wi-Fi desconectado",1,menu.connected?UI_GREEN:UI_WHITE);
     if(menu.connected){snprintf(b,sizeof(b),"Sinal %d dBm / %u barras",menu.signalDbm,menu.signalBars);center(64,b);}else center(64,"Redes de 2.4 GHz");
     button(14,80,102,"Salvas");button(124,80,102,menu.scanning?"Buscando":"Buscar");

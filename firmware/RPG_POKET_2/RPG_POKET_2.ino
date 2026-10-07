@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-lore1. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.07-dia1. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -233,11 +233,25 @@ void tapped(int x,int y){
   if(view.page==Page::DeleteSlot){if(hit(x,y,14,272,102)){view.page=Page::SlotConfirm;dirty=true;}
     else if(hit(x,y,124,272,102)){uint8_t old=backend.slot;backend.slot=menu.slotChoice;bool ok=backend.remove();backend.slot=old;if(!ok){menu.notice="Falha; personagem preservado";dirty=true;return;}refreshSlots();menu.notice="Slot apagado";
       if(menu.slotChoice==old){game=rpg::Game{};journal.load(game);view.choice=0;view.page=Page::Race;say("");}else{view.page=Page::Slots;dirty=true;}}return;}
+  if(view.page==Page::TimeSettings){
+    if(hit(x,y,14,272,102)){view.page=Page::Settings;dirty=true;return;}
+    if(hit(x,y,124,272,102)){prepareClockEdit();view.page=Page::TimeEdit;dirty=true;return;}
+    bool ok=true;if(hit(x,y,14,113,102)||hit(x,y,124,113,102)){int offset=std::max(-12,std::min(14,int(menu.utcOffset)+(x<120?-1:1)));ok=saveClockConfig(menu.clockAutomatic,offset,menu.dayCycle);}
+    else if(hit(x,y,14,159,212))ok=saveClockConfig(!menu.clockAutomatic,menu.utcOffset,menu.dayCycle);
+    else if(hit(x,y,14,205,212))ok=saveClockConfig(menu.clockAutomatic,menu.utcOffset,!menu.dayCycle);else return;
+    menu.notice=ok?"Ajuste salvo":"Falha; tente novamente";tickClock();dirty=true;return;
+  }
+  if(view.page==Page::TimeEdit){if(hit(x,y,14,272,102)){view.page=Page::TimeSettings;dirty=true;return;}
+    if(hit(x,y,124,272,102)){if(applyClockDraft()){view.page=Page::TimeSettings;menu.notice="Hora manual / enquanto ligado";tickClock();}else say("Falha ao aplicar a hora");dirty=true;return;}
+    if(hit(x,y,14,181,102)||hit(x,y,124,181,102))adjustClockDraft(x<120?-1:1);
+    else if(hit(x,y,14,227,102))menu.clockField=(menu.clockField+4)%5;else if(hit(x,y,124,227,102))menu.clockField=(menu.clockField+1)%5;else return;dirty=true;return;
+  }
   if(view.page==Page::Settings){if(hit(x,y,14,78,102)||hit(x,y,124,78,102)){int level=menu.brightness+(x<120?-10:10);level=std::max(10,std::min(100,level));menu.notice=saveBrightness(level)?"":"Falha ao salvar brilho";dirty=true;}
     else if(hit(x,y,14,130,212)){view.page=Page::Wifi;showSavedNetworks();menu.notice="";dirty=true;}
     else if(hit(x,y,14,176,102)){view.page=Page::Card;say("");}
     else if(hit(x,y,124,176,102)){view.page=Page::Tests;dirty=true;}
-    else if(hit(x,y,14,222,212)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
+    else if(hit(x,y,124,222,102)){view.page=Page::TimeSettings;menu.notice="";tickClock();dirty=true;}
+    else if(hit(x,y,14,222,102)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
     else if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}return;}
   if(view.page==Page::Tests){if(hit(x,y,14,222,212)){testMemory();pendingTouch=false;gate=TouchGate{};dirty=true;}else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
   if(view.page==Page::Wifi){if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
@@ -424,7 +438,7 @@ void setup(){
   if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
   lastActivity=millis();activateTripPage();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.07-lore1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
+  Serial.printf("RPG POKET 2.0 2026.10.07-dia1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
 }
 void loop(){
   uint32_t now=millis();
@@ -443,7 +457,9 @@ void loop(){
   if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
   now=millis();
   tickIdleClock(now,updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||view.page==Page::CampRest||(view.page==Page::CampRoll&&!menu.rollReady)||(view.page==Page::TravelRoll&&!menu.rollReady)||((view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy));
-  if(view.page==Page::Clock&&uint32_t(now-clockPollAt)>=1000){clockPollAt=now;if(tickClock())dirty=true;}
+  if(uint32_t(now-clockPollAt)>=1000){clockPollAt=now;auto before=menu.worldPeriod;bool wasValid=menu.clockValid;
+    bool safe=game.phase==rpg::Phase::Home&&!game.tripStage&&!game.campStage&&!combatFx.active()&&!arena.opened;
+    bool changed=tickClock(safe);if((changed&&(view.page==Page::Clock||view.page==Page::TimeSettings))||before!=menu.worldPeriod||wasValid!=menu.clockValid)dirty=true;}
   if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
     rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
     view.message=message;savedTransition(currentPage());beginEffect(game.enemyId==5?Effect::Projectile:Effect::Slash,true);
