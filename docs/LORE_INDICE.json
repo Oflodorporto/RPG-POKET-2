@@ -1,0 +1,95 @@
+{
+  "canon_version": 1,
+  "date": "2026-10-07",
+  "continent": "Valdária",
+  "current_region": "aeldra",
+  "regions": [
+    {
+      "id": "aeldra",
+      "name": "Aeldra",
+      "subtitle": "Terras da Primeira Aurora"
+    },
+    {
+      "id": "nivaria",
+      "name": "Nivária",
+      "subtitle": "Coroa do Inverno"
+    },
+    {
+      "id": "kharum",
+      "name": "Kharum",
+      "subtitle": "Montanhas que Cantam"
+    },
+    {
+      "id": "silvaran",
+      "name": "Silvaran",
+      "subtitle": "Floresta sem Fim"
+    },
+    {
+      "id": "veldrum",
+      "name": "Veldrûm",
+      "subtitle": "Pântanos do Véu"
+    },
+    {
+      "id": "sahram",
+      "name": "Sahram",
+      "subtitle": "Mar de Vidro"
+    },
+    {
+      "id": "ignaria",
+      "name": "Ignária",
+      "subtitle": "Terras da Brasa"
+    },
+    {
+      "id": "talassar",
+      "name": "Talassar",
+      "subtitle": "Ilhas das Mil Marés"
+    }
+  ],
+  "current_destinations": [
+    {
+      "id": 0,
+      "name": "Carvalho"
+    },
+    {
+      "id": 1,
+      "name": "Ruínas"
+    },
+    {
+      "id": 2,
+      "name": "Mares"
+    },
+    {
+      "id": 3,
+      "name": "Aurora"
+    }
+  ],
+  "campaign": "As Cinzas da Primeira Aurora",
+  "guild_leader": "Maelis Voss",
+  "event_catalog": [
+    "ev_hipogrifo",
+    "ev_ervas",
+    "ev_cripta",
+    "ev_mercador",
+    "ev_farol",
+    "ev_caravana",
+    "ev_selos",
+    "ev_acampamento"
+  ],
+  "daily_event_offers": 2,
+  "implementation_state": "narrative_and_design_only",
+  "firmware_unchanged": "2026.10.07-camp1",
+  "documents": [
+    {
+      "file": "LORE_CANONICA_RPG_POKET_2.md",
+      "sha256": "f9135426f6d47b4d25a69a47b5fd751323f44fd9f5c14e782e1ed19f4a78f9fe"
+    },
+    {
+      "file": "CONTINENTE_VALDARIA.md",
+      "sha256": "3ca95a9682a1ea3634932ad28cab5b2620cbb06ae697df30e0dd4bc77baf6ec3"
+    },
+    {
+      "file": "EVENTOS_E_CICLO_DIA_NOITE.md",
+      "sha256": "e0fd6d9d34dbf6dc5dd0ca1e660db40333e8a77c7946b35aead3fa5eb089b7ef"
+    }
+  ]
+}

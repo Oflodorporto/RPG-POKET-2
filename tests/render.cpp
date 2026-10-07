@@ -140,5 +140,11 @@ int main(int argc,char** argv){
   g=rpg::create(0,42);g.p.hp=1;g.p.gold=999999;g.rations=9;g.sleepKit=true;menu.campRation=true;menu.campKit=true;v.itemId=rpg::gearOffer(1,1);
   for(Page page:{Page::CampSetup,Page::CampRoll,Page::CampKit,Page::GearSell,Page::Bag}){v.page=page;g.campRoll=1;menu.rollReady=true;render(c,g,v);c.save(root+"/camp-page-"+std::to_string(int(page))+".ppm");}
   v.page=Page::Bag;v.choice=6;render(c,g,v);c.save(root+"/camp-bag-kit.ppm");
+  g=rpg::create(0,42);v.message="";v.effect=Effect::None;
+  for(unsigned scene=0;scene<4;++scene){menu.storyIndex=scene;v.page=Page::Prologue;render(c,g,v);c.save(root+"/lore-opening-"+std::to_string(scene)+".ppm");}
+  for(unsigned city=0;city<4;++city){g.city=city;for(Page pg:{Page::People,Page::Village,Page::Ruins,Page::CityGoods,Page::Forge,Page::Guild,Page::Tavern}){v.page=pg;render(c,g,v);c.save(root+"/lore-city-"+std::to_string(city)+"-"+std::to_string(int(pg))+".ppm");}for(unsigned npc=0;npc<3;++npc){menu.personIndex=npc;v.page=Page::Dialogue;g.dungeonClears=npc==2?1:0;render(c,g,v);c.save(root+"/lore-npc-"+std::to_string(city)+"-"+std::to_string(npc)+".ppm");}}
+  g=rpg::create(0,42);for(unsigned veteran=0;veteran<2;++veteran){g.tutorial=veteran;g.guardianDefeated=veteran;g.dungeonClears=veteran;for(unsigned i=0;i<6;++i){menu.chapterIndex=i;v.page=Page::Journal;render(c,g,v);c.save(root+"/lore-journal-"+std::to_string(veteran)+"-"+std::to_string(i)+".ppm");}}
+  for(unsigned i=0;i<8;++i){menu.regionIndex=i;v.page=Page::Continent;render(c,g,v);c.save(root+"/lore-region-"+std::to_string(i)+".ppm");}v.page=Page::Map;render(c,g,v);c.save(root+"/lore-map.ppm");
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
+

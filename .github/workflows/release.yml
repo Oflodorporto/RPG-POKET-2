@@ -1,7 +1,7 @@
 name: Publicar versão
 on:
   push:
-    branches: [main, bolsa-dungeon, camp-development]
+    branches: [main, bolsa-dungeon, camp-development, lore-development]
     paths: ["firmware/**", "cartao/**", "tests/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
     inputs:
@@ -38,6 +38,7 @@ jobs:
           path: |
             build/screens/dungeon-*.ppm
             build/screens/camp-*.ppm
+            build/screens/lore-*.ppm
       - name: Instalar ESP32
         run: |
           arduino-cli config init

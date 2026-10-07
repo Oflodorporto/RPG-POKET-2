@@ -12,9 +12,10 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
+  case Page::Prologue:return bg_tavern;case Page::Journal:return bg_character;case Page::People:case Page::Dialogue:return bg_village;case Page::Continent:return bg_world;
   case Page::Guild:return bg_guild;case Page::GuildJoin:return bg_guildjoin;case Page::GuildMissions:return bg_missions;case Page::Race:return bg_race;case Page::Clothes:return bg_clothes;case Page::Club:return bg_club;case Page::ClubBattle:return bg_clubbattle;case Page::ClubResult:return bg_clubresult;
   case Page::NetworkTest:case Page::Clock:case Page::Menu:return bg_menu;case Page::Slots:return bg_slots;case Page::SlotConfirm:return bg_slotconfirm;case Page::DeleteSlot:return bg_delete;case Page::Settings:return bg_settings;case Page::Wifi:case Page::ForgetWifi:return bg_wifi;case Page::Keyboard:return bg_keyboard;case Page::Tests:return bg_tests;case Page::Travel:return bg_world;case Page::Ruins:return bg_map;
   case Page::TravelRoll:return bg_world;case Page::CityGoods:return bg_goods;case Page::GoodsBuy:return bg_goodsbuy;case Page::Explore:return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;
@@ -39,6 +40,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "CampView.h"
 #include "DungeonView.h"
 #include "BagView.h"
+#include "NarrativeView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -56,6 +58,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
+  if(v.page==Page::Prologue||v.page==Page::Journal||v.page==Page::People||v.page==Page::Dialogue||v.page==Page::Continent){drawNarrative(c,g,v);return;}
   if(v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest){drawCamp(c,g,v,frame);return;}
   if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
@@ -74,12 +77,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
   }
   if(v.page==Page::DungeonVictory){
-    center(18,"ARCONTE DERROTADO!",2,UI_GOLD);
+    center(18,"VAELOR DERROTADO!",2,UI_GOLD);
     center(76,"A cripta foi conquistada.");
     snprintf(b,sizeof(b),"+%u XP / +%u ouro",g.gainXp,g.gainGold);center(108,b,2,UI_GREEN);
-    center(148,"O bau do chefe esta liberado.");
+    center(148,"O Livro das Vigilias foi revelado.");
     center(174,"Continue para buscar o saque");center(190,"ou saia com suas recompensas.");
-    center(202,"Progresso salvo.",1,UI_GREEN);
+    center(202,"Descoberta registrada no Diario.",1,UI_GREEN);
     button(14,218,212,"Explorar");button(14,272,212,"Sair");return;
   }
   if(v.page==Page::DungeonEntry||v.page==Page::CrystalBuy||v.page==Page::DungeonExit){
@@ -102,7 +105,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(163,v.page==Page::SaveError?"Mantenha o aparelho ligado.":"Informe esta tela ao desenvolvedor.");
     if(v.page==Page::SaveError)button(14,250,212,"Tentar salvar");else button(14,250,212,"Menu");return;
   }
-  if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);center(37,"Duelo entre placas / entrada 25 ouro");
+  if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);center(37,"Grum Pedrafranca / entrada 25 ouro");
     auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
     else {center(95,arena.session.opponent.name,2);center(135,state==club::State::Incoming?"Aceitar duelo por 25 ouro?":"Aguardando outra placa...");if(state==club::State::Incoming){button(14,218,102,"Recusar");button(124,218,102,"Aceitar");}}
     center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
@@ -117,10 +120,10 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,177,102,"Roupa <");button(124,177,102,"Roupa >");button(14,224,102,"Calca <");button(124,224,102,"Calca >");
     button(14,272,102,"Voltar");button(124,272,102,"Criar");return;}
   if(v.page==Page::Guild||v.page==Page::GuildJoin){center(12,"GUILDA",2,UI_GOLD);center(43,"DOS AVENTUREIROS",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(88,b);
-    center(118,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(145,v.message,1,UI_RED);
+    center(103,"Maelis Voss / mestra da Guilda",1,UI_GOLD);center(123,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(145,v.message,1,UI_RED);
     if(v.page==Page::GuildJoin){center(182,"Pagar 100 ouro para se cadastrar?");button(14,272,102,"Cancelar");button(124,272,102,"Pagar");}
     else{button(14,170,212,g.guildMember?"Missoes":"Cadastrar");button(14,218,212,"Clube da luta");button(14,272,212,"Voltar");}return;}
-  if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);center(95,"O taberneiro aponta para a guilda.");center(119,"Os contratos ficam com os aventureiros.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
+  if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);center(65,"Nara Veld / Refugio das Brasas",1,UI_GOLD);center(95,"Entre. A fogueira ainda esta acesa.");center(119,"Maelis cuida dos contratos na Guilda.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
   if(v.page==Page::Choose){
     for(int y=8;y<26;y+=7)c.fillRect(8,y,20,3,UI_GOLD);center(12,"RPG POKET 2.0",2,UI_GOLD);center(38,"ESCOLHA SUA CLASSE");auto draft=g;draft.race=menu.draftRace;portrait(v.choice,80,57,&draft);
     center(136,rpg::className(v.choice),2);auto p=rpg::create(v.choice,1).p;
@@ -129,7 +132,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,211,102,"< Voltar");button(124,211,102,"Proxima>");button(14,263,212,"Personalizar");return;
   }
   if(v.page==Page::Help){
-    center(14,"GUIA DO VIAJANTE",2,UI_GOLD);
+    center(14,"NARA VELD / GUIA",2,UI_GOLD);center(43,"Refugio das Brasas / Carvalho");
     c.fillRect(10,64,220,82,UI_INK);text(19,75,"Um toque, uma acao.",1);
     text(19,92,"Ataque e aguarde o inimigo.");text(19,109,"Habilidades consomem mana.");text(19,126,"Pocoes tambem usam um turno.");
     center(184,"Descanse para recuperar HP/MP.");center(205,"O progresso e salvo a cada turno.");
@@ -137,15 +140,15 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,268,212,"Continuar");return;
   }
   if(v.page==Page::Home){
-    center(10,"REFUGIO",2,UI_GOLD);
+    center(10,g.city==0?"REFUGIO DAS BRASAS":"ABRIGO DE VIAGEM",2,UI_GOLD);center(43,g.city==0?"Nara Veld / Carvalho":placeName(g.city));
     portrait(g.p.cls,14,80);box(102,80,124,66);text(111,88,rpg::className(g.p.cls));snprintf(b,sizeof(b),"Nivel %u",g.p.level);text(111,106,b,2);
     snprintf(b,sizeof(b),"%lu ouro",(unsigned long)g.p.gold);text(111,130,b,1,UI_GOLD);
     snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);center(169,b);
     snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g.p.level));center(187,b,1,UI_MUTED);
-    center(203,v.message,1,UI_GREEN);button(14,220,212,"Mapa do mundo");button(14,270,102,"Descanso");button(124,270,102,"Menu");return;
+    center(203,v.message,1,UI_GREEN);button(14,220,212,"Mapa de Aeldra");button(14,270,102,"Descanso");button(124,270,102,"Menu");return;
   }
   if(v.page==Page::CityGoods||v.page==Page::GoodsBuy){bool buy=v.page==Page::GoodsBuy;uint8_t id=rpg::localGood(g.city);auto preview=g;
-    center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,placeName(g.city));center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
+    center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
     snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
     center(182,"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");center(170,v.message,1,UI_RED);
     if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,102,"Voltar");button(124,270,102,"Kit");}return;}
@@ -153,7 +156,8 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);
     center(195,"O combate comeca ao confirmar.");button(14,220,212,"Explorar");button(14,270,102,"Acampar");button(124,270,102,"Voltar");return;}
   if(v.page==Page::Ruins){
-    center(10,"RUINAS ANTIGAS",2,UI_GOLD);button(14,52,212,"Dungeon / Nv 8+");
+    box(14,30,212,20);center(36,"Iria Sorel / conversar",1,UI_GOLD);
+    center(10,"RUINAS DE VESPERA",2,UI_GOLD);button(14,52,212,"Dungeon / Nv 8+");
     box(14,98,212,54);snprintf(b,sizeof(b),"Vitorias: %u/3",g.ruinsWins);center(106,b,1,UI_GOLD);
     center(124,g.guardianDefeated?"Guardiao vencido!":g.ruinsWins==3?"Guardiao liberado!":"Venca 3 encontros para liberar.");
     center(140,v.message,1,UI_RED);if(g.questId){snprintf(b,sizeof(b),"Missao: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / volte a guilda":"");center(156,b,1,UI_GREEN);}button(14,166,102,"Explorar");button(124,166,102,"Acampar");
@@ -161,12 +165,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(239,"HP 28 / ATQ 6 / DEF 6",1,UI_MUTED);button(14,262,102,"Mapa");button(124,262,102,"Loja");return;
   }
   if(v.page==Page::Village){
-    center(12,placeName(g.city),2,UI_GOLD);snprintf(b,sizeof(b),"%lu OURO",(unsigned long)g.p.gold);box(66,68,108,30);center(80,b,1,UI_GOLD);snprintf(b,sizeof(b),"Exploracao: nivel %u+",rpg::cityLevel(g.city));center(49,b,1,UI_MUTED);center(109,v.message,1,UI_GREEN);
+    center(12,placeName(g.city),2,UI_GOLD);snprintf(b,sizeof(b),"%lu OURO",(unsigned long)g.p.gold);center(65,b,1,UI_GOLD);box(14,78,212,26);center(86,"Conversar / pessoas",1,UI_GOLD);snprintf(b,sizeof(b),"Exploracao: nivel %u+",rpg::cityLevel(g.city));center(49,b,1,UI_MUTED);center(109,v.message,1,UI_GREEN);
     button(14,126,102,"Loja");button(124,126,102,"Bolsa");button(14,170,102,"Heroi");button(124,170,102,"Explorar");
     button(14,214,102,"Guilda");button(124,214,102,"Acampar");button(14,258,102,"Mapa");button(124,258,102,"Menu");return;
   }
   if(v.page==Page::GuildMissions){
-    center(12,"MISSOES",2,UI_GOLD);center(43,v.message,1,UI_GREEN);
+    center(12,"MISSOES",2,UI_GOLD);center(43,"Contratos de Maelis Voss",1,UI_GOLD);center(109,v.message,1,UI_GREEN);
     center(69,g.questId?"CONTRATO ATIVO":"ESCOLHA UM CONTRATO",1,UI_GOLD);
     if(g.questId){snprintf(b,sizeof(b),"%s: %u/%u",rpg::contract(g.questId).name,g.questProgress,rpg::contract(g.questId).count);center(91,b);}
     else center(91,"Uma missao por vez / ruinas.");
@@ -178,7 +182,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Contract){
     uint8_t id=v.questChoice;if(id<1||id>3){center(100,"Contrato indisponivel");return;}
     bool active=g.questId==id;uint8_t level=active?g.questLevel:g.p.level;
-    center(12,"CONTRATO",2,UI_GOLD);center(60,rpg::contract(id).name,2);center(89,rpg::contract(id).objective);center(108,"REGIAO: RUINAS",1,UI_GOLD);
+    center(12,"CONTRATO",2,UI_GOLD);center(39,"Maelis Voss / Guilda");center(60,rpg::contract(id).name,2);center(89,rpg::contract(id).objective);center(108,"REGIAO: RUINAS",1,UI_GOLD);
     snprintf(b,sizeof(b),"Progresso: %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(132,b,2);
     snprintf(b,sizeof(b),"Recompensa: %u XP / %u ouro",rpg::contractXp(id,level),rpg::contractGold(id,level));center(164,b,1,UI_GOLD);
     snprintf(b,sizeof(b),"Calculada no nivel %u",level);center(185,b);center(201,v.message,1,UI_RED);
@@ -222,7 +226,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,224,212,"Verificar");button(14,272,212,"Voltar");return;
   }
   if(v.page==Page::Forge){
-    center(12,"FERREIRO",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(35,b,1,UI_GOLD);
+    center(12,story::smith(g.city),1,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(35,b,1,UI_GOLD);
     center(153,v.message,1,UI_RED);
     for(uint8_t slot=0;slot<3;++slot){int x=slot==1?124:14,y=slot==2?224:174;button(x,y,102,rpg::forgeName(slot));
       snprintf(b,sizeof(b),"+%u: +%u %s",g.forge[slot],g.forge[slot]*(slot==0?2:3),slot==0?"ATQ":slot==1?"DEF":"MP");text(x,y+43,b,1,UI_GOLD);}
