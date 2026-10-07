@@ -132,11 +132,13 @@ int main(int argc,char** argv){
   v.page=Page::DungeonLoot;v.message="CAJADO DO TROVAO";render(c,g,v);c.save(root+"/dungeon-loot.ppm");v.message="";v.page=Page::DungeonVictory;g.gainXp=190;g.gainGold=65;render(c,g,v);c.save(root+"/dungeon-victory.ppm");
   for(unsigned cls=0;cls<4;++cls){g=rpg::create(cls,42);g.city=1;g.crystals=1;rpg::enterDungeon(g);g.dungeonXY=0x72;g.phase=rpg::Phase::Hero;g.enemyId=2;g.enemyHp=19;v.page=Page::Dungeon;v.effectOnHero=false;
     for(auto fx:{Effect::Slash,Effect::Projectile,Effect::Thrust,Effect::Lightning,Effect::Rage})for(unsigned step=0;step<8;++step){v.effect=fx;v.effectFrame=step;render(c,g,v);c.save(root+"/dungeon-fx-"+std::to_string(cls)+"-"+std::to_string(int(fx))+"-"+std::to_string(step)+".ppm");}}
+  // Camp previews use the actual regional scenery, not the earlier no-card fallback fixture.
+  pack.clear();pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
   v.message="";v.effect=Effect::None;
   for(unsigned city=0;city<4;++city)for(unsigned cls=0;cls<4;++cls)for(unsigned food=0;food<2;++food)for(unsigned kit=0;kit<2;++kit){g=rpg::create(cls,42);g.city=city;g.sleepKit=kit;g.rations=1;g.p.hp=1;g.p.mp=0;rpg::startCamp(g,food,kit);g.campRoll=20;rpg::acceptCamp(g);v.page=Page::CampRest;
     for(unsigned step=0;step<4;++step){v.campProgress=step*333;render(c,g,v,step);c.save(root+"/camp-rest-"+std::to_string(city)+"-"+std::to_string(cls)+"-"+std::to_string(food)+"-"+std::to_string(kit)+"-"+std::to_string(step)+".ppm");}}
   g=rpg::create(0,42);g.p.hp=1;g.p.gold=999999;g.rations=9;g.sleepKit=true;menu.campRation=true;menu.campKit=true;v.itemId=rpg::gearOffer(1,1);
   for(Page page:{Page::CampSetup,Page::CampRoll,Page::CampKit,Page::GearSell,Page::Bag}){v.page=page;g.campRoll=1;menu.rollReady=true;render(c,g,v);c.save(root+"/camp-page-"+std::to_string(int(page))+".ppm");}
-  puts("PASS: shared firmware renderer; text bounds; 299+ screens; 56 distinct backgrounds; 1008 travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
+  v.page=Page::Bag;v.choice=6;render(c,g,v);c.save(root+"/camp-bag-kit.ppm");
+  puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
-
