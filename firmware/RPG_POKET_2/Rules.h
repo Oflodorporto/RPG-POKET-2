@@ -9,7 +9,7 @@ namespace rpg {
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
 enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
-inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9}};return e[id<10?id:2];}
+inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0}};return e[id<14?id:2];}
 struct Player {
   uint8_t cls=0, level=3, atk=6, def=4, life=0, mana=2;
   uint16_t hp=18,maxhp=18,mp=14,maxmp=14;
@@ -22,6 +22,7 @@ struct Game {
   uint8_t tripStage=0,tripTo=0,tripRoll=0,tripDifficulty=0,tripTotal=0,tripEnemy=0,tripSurvival=0,tripLuck=0;
   uint8_t rations=0,charts=0,charms=0;
   uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
+  uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0;
   uint8_t crystals=0,dungeonFlags=0,dungeonXY=0,dungeonLoot=0,dungeonEnemies=0,dungeonClears=0;
   uint32_t owned=0;
   uint8_t equipped[3]={},forge[3]={};
@@ -130,7 +131,7 @@ inline Game create(uint8_t c,uint32_t seed) {
 inline uint32_t random(Game& g){uint32_t x=g.randomState;x^=x<<13;x^=x>>17;x^=x<<5;return g.randomState=x;}
 inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<12;return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>9||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=enemySpec(id).hp;g.guard=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=enemySpec(id).hp;g.guard=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(n%2?4:1):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
@@ -140,10 +141,10 @@ inline void finish(Game& g){
   if(!g.enemyHp){
     g.phase=Phase::Won;const auto& e=enemySpec(g.enemyId);g.gainXp=e.xp;g.gainGold=uint8_t(std::min<uint32_t>(e.gold,999999u-g.p.gold));g.p.gold+=g.gainGold;
     g.p.xp=g.p.xp>UINT32_MAX-e.xp?UINT32_MAX:g.p.xp+e.xp;
-    if(!g.tripStage&&!g.dungeonFlags&&g.city==1){if(g.enemyId==3){g.guardianDefeated=true;if(g.crystals<9)++g.crystals;}else if(g.ruinsWins<3)++g.ruinsWins;}
-    if(g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}
-    if(g.p.mana<99 && (g.enemyId==3||random(g)%100<25)){++g.p.mana;g.dropMana=true;}
-    if(!g.tripStage&&!g.dungeonFlags&&g.city==1&&g.questId&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
+    if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1){if(g.enemyId==3){g.guardianDefeated=true;if(g.crystals<9)++g.crystals;}else if(g.ruinsWins<3)++g.ruinsWins;}
+    if(g.eventStage!=2&&g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}
+    if(g.eventStage!=2&&g.p.mana<99 && (g.enemyId==3||random(g)%100<25)){++g.p.mana;g.dropMana=true;}
+    if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1&&g.questId&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
     levelUp(g);
   }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g.p.level)/20)));g.p.xp-=g.gainXp;}
 }

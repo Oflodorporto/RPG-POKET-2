@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-dia1. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.07-cartas1. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -29,7 +29,7 @@ struct NvsStore {
   rpg::Read read(const char* key,uint8_t* b){
     if(!ready)return rpg::Read::Error;
     if(!prefs.isKey(key))return rpg::Read::Missing;
-    size_t n=prefs.getBytesLength(key);if(n!=64&&n!=rpg::SAVE_SIZE)return rpg::Read::Error;memset(b,0,rpg::SAVE_SIZE);
+    size_t n=prefs.getBytesLength(key);if(n!=64&&n!=96&&n!=rpg::SAVE_SIZE)return rpg::Read::Error;memset(b,0,rpg::SAVE_SIZE);
     return prefs.getBytes(key,b,n)==n?rpg::Read::Ok:rpg::Read::Error;
   }
   bool write(const char* key,const uint8_t* b){return ready&&prefs.putBytes(key,b,rpg::SAVE_SIZE)==rpg::SAVE_SIZE;}
@@ -55,6 +55,7 @@ void paint(uint32_t now){
   view.campProgress=game.campStage==3?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/4500):0;
   uint32_t started=millis();
   view.effect=combatFx.kind;view.effectFrame=combatFx.frame(now);view.effectOnHero=combatFx.onHero;view.heroFrame=combatFx.active()&&!combatFx.onHero?1+std::min(4u,combatFx.frame(now)*5/8):0;
+  menu.renderNow=now;
   if(buffered){render(frameBuffer,game,view,now/120);
     // Short SPI stripes let the touch reader run during each full-screen transfer.
     for(int y=0;y<320;y+=16){{UpdateSpiLock lock;lcd.draw16bitRGBBitmap(0,y,frameBuffer.pixels+y*240,240,16);}sampleTouch();}
@@ -91,7 +92,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -122,7 +123,7 @@ bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservati
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
 bool tickIdleClock(uint32_t now,bool blocked){if(blocked){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 void tapped(int x,int y){
-  lastActivity=millis();if(view.page==Page::Clock){view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
+  lastActivity=millis();if(view.page==Page::Clock){if(game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(combatFx.active()||menu.journey.active)return;
   if(view.page==Page::CampRest)return;
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
@@ -224,7 +225,8 @@ void tapped(int x,int y){
     else if(hit(x,y,14,178,212)){view.page=Page::Settings;menu.notice="";dirty=true;}
     else if(hit(x,y,14,224,102)){if(!journal.blocked&&journal.active>=0){menu.chapterIndex=story::knownChapter(game);view.page=Page::Journal;say("");}else say("Escolha ou crie um personagem");}
     else if(hit(x,y,124,224,102)){if(!journal.blocked&&journal.active>=0){menu.storyReturn=int(Page::Menu);view.page=Page::People;say("");}else say("Escolha ou crie um personagem");}
-    else if(hit(x,y,14,272,212)){view.page=journal.blocked?Page::Blocked:journal.active<0?Page::Race:currentPage();say("");}return;
+    else if(hit(x,y,14,272,102)){if(journal.blocked||journal.active<0)say("Escolha ou crie um personagem");else {view.page=Page::Letters;menu.eventReturn=int(Page::Menu);dirty=true;}}
+    else if(hit(x,y,124,272,102)){view.page=journal.blocked?Page::Blocked:journal.active<0?Page::Race:currentPage();say("");}return;
   }
   if(view.page==Page::Slots){if(hit(x,y,14,272,212)){view.page=Page::Menu;say("");return;}for(uint8_t i=0;i<3;++i)if(hit(x,y,14,55+i*61,212,56)){menu.slotChoice=i;view.page=Page::SlotConfirm;menu.notice="";dirty=true;return;}return;}
   if(view.page==Page::SlotConfirm){if(hit(x,y,14,272,212)){view.page=Page::Slots;dirty=true;}
@@ -233,6 +235,14 @@ void tapped(int x,int y){
   if(view.page==Page::DeleteSlot){if(hit(x,y,14,272,102)){view.page=Page::SlotConfirm;dirty=true;}
     else if(hit(x,y,124,272,102)){uint8_t old=backend.slot;backend.slot=menu.slotChoice;bool ok=backend.remove();backend.slot=old;if(!ok){menu.notice="Falha; personagem preservado";dirty=true;return;}refreshSlots();menu.notice="Slot apagado";
       if(menu.slotChoice==old){game=rpg::Game{};journal.load(game);view.choice=0;view.page=Page::Race;say("");}else{view.page=Page::Slots;dirty=true;}}return;}
+  if(view.page==Page::Letters){if(hit(x,y,14,272,212)){view.page=Page::Menu;dirty=true;}else if(hit(x,y,14,216,212)){if(game.eventStage==2){view.page=currentPage();dirty=true;}else if(game.eventStage==1){menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;dirty=true;}}return;}
+  if(view.page==Page::Letter){if(uint32_t(millis()-menu.letterStarted)<450)return;
+    if(hit(x,y,14,222,212)){view.page=Page(menu.eventReturn);say("");return;}
+    if(hit(x,y,14,272,102)){view.page=Page::LetterRefuse;dirty=true;return;}
+    if(hit(x,y,124,272,102)){if(arena.opened||updateInfo.busy){say("Termine a acao atual primeiro");return;}const char* err=rpg::acceptEvent(game,menu.eventReturn);if(err){menu.notice=err;dirty=true;return;}menu.notice="";menu.letterStarted=millis();say("");savedTransition(Page::EventTravel);}return;}
+  if(view.page==Page::LetterRefuse){if(hit(x,y,14,272,102)){menu.letterStarted=millis()-450;view.page=Page::Letter;dirty=true;}else if(hit(x,y,124,272,102)&&rpg::refuseEvent(game)){say("");savedTransition(Page::Letters);}return;}
+  if(view.page==Page::EventTravel)return;
+  if(view.page==Page::EventResult){if(hit(x,y,14,272,212)){auto back=Page(game.eventOriginPage);if(rpg::finishEvent(game)){say("Missao encerrada");savedTransition(back);}}return;}
   if(view.page==Page::TimeSettings){
     if(hit(x,y,14,272,102)){view.page=Page::Settings;dirty=true;return;}
     if(hit(x,y,124,272,102)){prepareClockEdit();view.page=Page::TimeEdit;dirty=true;return;}
@@ -438,7 +448,7 @@ void setup(){
   if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
   lastActivity=millis();activateTripPage();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.07-dia1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
+  Serial.printf("RPG POKET 2.0 2026.10.07-cartas1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
 }
 void loop(){
   uint32_t now=millis();
@@ -450,13 +460,15 @@ void loop(){
   if(menu.journey.tick(now)){rpg::arriveTrip(game);pendingTouch=false;gate=TouchGate{};savedTransition(game.city==1?Page::Ruins:Page::Village);}
   if((view.page==Page::TravelRoll||view.page==Page::CampRoll)&&!menu.rollReady&&uint32_t(now-menu.rollStarted)>=1800){menu.rollReady=true;pendingTouch=false;gate=TouchGate{};dirty=true;}
   if(view.page==Page::CampRest&&game.campStage==3&&uint32_t(now-menu.campStarted)>=4500){rpg::finishCamp(game);say("Descanso concluido");savedTransition(game.city==1?Page::Ruins:Page::Explore);}
+  if(view.page==Page::EventTravel&&uint32_t(now-menu.letterStarted)>=700){view.page=currentPage();pendingTouch=false;gate=TouchGate{};dirty=true;}
   if(combatFx.expire(now)){view.page=currentPage();dirty=true;}
   if(view.touchFeedback&&int32_t(now-touchFeedbackUntil)>=0){view.touchFeedback=false;dirty=true;}
   if(!touchReady&&uint32_t(now-reidentifyAt)>=1000){reidentifyAt=now;uint8_t id=0;touchReady=readRegs(0xa7,&id,1)&&id==0xb6;}
   sampleTouch();
   if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
   now=millis();
-  tickIdleClock(now,updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||view.page==Page::CampRest||(view.page==Page::CampRoll&&!menu.rollReady)||(view.page==Page::TravelRoll&&!menu.rollReady)||((view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy));
+  if(menu.clockValid&&uint32_t(now-menu.eventCheckAt)>=1000){menu.eventCheckAt=now;if(!journal.blocked&&journal.active>=0&&!updateInfo.busy&&!arena.opened&&view.page!=Page::SaveError&&view.page!=Page::Letter&&view.page!=Page::LetterRefuse&&rpg::offerEvent(game,menu.eventDay,menu.eventHour)){say("Nova carta de Maelis");savedTransition(view.page);}}
+  tickIdleClock(now,updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||(view.page==Page::CampRoll&&!menu.rollReady)||(view.page==Page::TravelRoll&&!menu.rollReady)||((view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy));
   if(uint32_t(now-clockPollAt)>=1000){clockPollAt=now;auto before=menu.worldPeriod;bool wasValid=menu.clockValid;
     bool safe=game.phase==rpg::Phase::Home&&!game.tripStage&&!game.campStage&&!combatFx.active()&&!arena.opened;
     bool changed=tickClock(safe);if((changed&&(view.page==Page::Clock||view.page==Page::TimeSettings))||before!=menu.worldPeriod||wasValid!=menu.clockValid)dirty=true;}
@@ -464,7 +476,7 @@ void loop(){
     rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
     view.message=message;savedTransition(currentPage());beginEffect(game.enemyId==5?Effect::Projectile:Effect::Slash,true);
   }
-  if(lcdReady&&(dirty||((view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
+  if(lcdReady&&(dirty||((view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
   if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}
 
   delay(1);

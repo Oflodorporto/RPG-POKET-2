@@ -1,9 +1,10 @@
 #pragma once
 #include "Dungeon.h"
 #include "Camp.h"
+#include "GuildEvents.h"
 #include <string.h>
 namespace rpg {
-constexpr unsigned SAVE_SIZE=96;
+constexpr unsigned SAVE_SIZE=128;
 inline void put16(uint8_t* b,unsigned o,uint16_t v){b[o]=uint8_t(v);b[o+1]=uint8_t(v>>8);}
 inline void put32(uint8_t* b,unsigned o,uint32_t v){put16(b,o,uint16_t(v));put16(b,o+2,uint16_t(v>>16));}
 inline uint16_t get16(const uint8_t* b,unsigned o){return b[o]|uint16_t(b[o+1])<<8;}
@@ -11,7 +12,7 @@ inline uint32_t get32(const uint8_t* b,unsigned o){return get16(b,o)|uint32_t(ge
 inline uint32_t crc(const uint8_t* b,unsigned n){uint32_t c=~0u;for(unsigned i=0;i<n;++i){c^=b[i];for(int k=0;k<8;++k)c=(c>>1)^(0xedb88320u&uint32_t(-int(c&1)));}return ~c;}
 inline bool valid(const Game& g){
   auto &p=g.p;
-  if(!dungeonValid(g)||!campValid(g))return false;
+  if(!eventValid(g)||!dungeonValid(g)||!campValid(g))return false;
   if(g.rations>9||g.charts>9||g.charms>9||g.tripStage>3)return false;
   if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}
   else {if(g.tripTo>3||g.tripTo==g.city||g.tripRoll<1||g.tripRoll>20||g.tripEnemy<4||g.tripEnemy>7||g.tripSurvival>13||g.tripLuck>11||g.tripTotal!=g.tripRoll+g.tripSurvival+g.tripLuck||g.tripDifficulty!=routeDifficulty(g.city,g.tripTo)||g.clubStage==1||g.clubStage==2)return false;
@@ -27,7 +28,7 @@ inline bool valid(const Game& g){
     if(id&&(!gearOwns(g.owned,id)||gearSlot(id)!=slot||!gearAllowed(id,p.cls,p.level)))return false;
   }
   if(p.cls>3||p.level<3||p.level>99||!p.maxhp||p.hp>p.maxhp||p.maxmp!=totalMana(g)||p.mp>p.maxmp||!p.atk||p.life>99||p.mana>99||p.gold>999999||!g.randomState)return false;
-  if(uint8_t(g.phase)>5||g.enemyId>9||g.ruinsWins>3||(g.guardianDefeated&&g.ruinsWins<3)||(g.enemyId==3&&g.ruinsWins<3)||g.enemyHp>enemySpec(g.enemyId).hp||(g.guard!=0&&g.guard!=50&&g.guard!=75)||g.gainGold>enemySpec(g.enemyId).gold||g.gainXp>3276)return false;
+  if(uint8_t(g.phase)>5||g.enemyId>13||g.ruinsWins>3||(g.guardianDefeated&&g.ruinsWins<3)||(g.enemyId==3&&g.ruinsWins<3)||g.enemyHp>enemySpec(g.enemyId).hp||(g.guard!=0&&g.guard!=50&&g.guard!=75)||g.gainGold>enemySpec(g.enemyId).gold||g.gainXp>3276)return false;
   if((g.phase==Phase::Hero||g.phase==Phase::Enemy)&&(!p.hp||!g.enemyHp))return false;
   if(g.phase==Phase::Won&&(g.enemyHp||!p.hp))return false;
   if(g.phase==Phase::Lost&&(p.hp||!g.enemyHp))return false;
@@ -35,18 +36,18 @@ inline bool valid(const Game& g){
   return true;
 }
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,10);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,11);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
   put16(b,42,g.gainXp);put16(b,44,g.damage);b[46]=g.gainGold;
-  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;b[69]=g.crystals;b[70]=g.dungeonFlags;b[71]=g.dungeonXY;b[87]=g.dungeonLoot;b[88]=g.dungeonEnemies;b[89]=g.dungeonClears;b[90]=g.campStage|(g.campRation<<2)|(g.campKit<<3)|(g.sleepKit<<4);b[91]=g.campRoll;put32(b,92,crc(b,92));
+  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;b[69]=g.crystals;b[70]=g.dungeonFlags;b[71]=g.dungeonXY;b[87]=g.dungeonLoot;b[88]=g.dungeonEnemies;b[89]=g.dungeonClears;b[90]=g.campStage|(g.campRation<<2)|(g.campKit<<3)|(g.sleepKit<<4);b[91]=g.campRoll;put32(b,92,g.eventDay);b[96]=g.eventStage;b[97]=g.eventTier;b[98]=g.eventOriginCity;b[99]=g.eventOriginPage;put32(b,124,crc(b,124));
 }
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>10)||get16(b,6)!=(get16(b,4)>=7?SAVE_SIZE:64))return Decode::Unsupported;
-  if(get32(b,get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=7?92:60)||b[47]>31)return Decode::Corrupt;
+  if((get16(b,4)<1||get16(b,4)>11)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
+  if(get32(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)||b[47]>31)return Decode::Corrupt;
   if(get16(b,4)<8&&get16(b,4)>=2&&b[48]>3)return Decode::Corrupt;
   if(get16(b,4)==8&&b[48]>7)return Decode::Corrupt;
   Game t;seq=get32(b,8);t.p.cls=b[12];t.p.level=b[13];t.p.atk=b[14];t.p.def=b[15];t.p.life=b[16];t.p.mana=b[17];
@@ -62,11 +63,12 @@ inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(get16(b,4)>=8){t.tripStage=b[76];t.tripTo=b[77];t.tripRoll=b[78];t.tripDifficulty=b[79];t.tripTotal=b[80];t.tripEnemy=b[81];t.tripSurvival=b[82];t.tripLuck=b[83];t.rations=b[84];t.charts=b[85];t.charms=b[86];}
   if(get16(b,4)>=9){t.crystals=b[69];t.dungeonFlags=b[70];t.dungeonXY=b[71];t.dungeonLoot=b[87];t.dungeonEnemies=b[88];t.dungeonClears=b[89];}
   if(get16(b,4)>=10){if(b[90]>31)return Decode::Corrupt;t.campStage=b[90]&3;t.campRation=b[90]&4;t.campKit=b[90]&8;t.sleepKit=b[90]&16;t.campRoll=b[91];}
+  if(get16(b,4)>=11){t.eventDay=get32(b,92);t.eventStage=b[96];t.eventTier=b[97];t.eventOriginCity=b[98];t.eventOriginPage=b[99];for(unsigned i=100;i<124;++i)if(b[i])return Decode::Corrupt;}
   if(!valid(t))return Decode::Corrupt;g=t;return Decode::Ok;
 }
 enum class Read{Missing,Ok,Error};
 enum class Load{Empty,Ok,Recovered,Blocked};
-// Backend reads legacy 64-byte or new 96-byte records into SAVE_SIZE buffers; writes 96 bytes.
+// Backend pads legacy 64/96-byte records into 128-byte buffers; writes save11/128 bytes.
 // Two atomic NVS blobs with CRC and readback. No erase, format or legacy import.
 template<class Backend> struct Journal {
   Backend& io;int active=-1;uint32_t seq=0;bool blocked=true;

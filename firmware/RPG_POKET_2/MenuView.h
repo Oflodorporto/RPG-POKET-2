@@ -4,6 +4,7 @@
 #include "AssetStore.h"
 #include "UpdateModel.h"
 struct MenuState {
+  uint32_t renderNow=0,letterStarted=0,eventCheckAt=0,eventDay=0;uint8_t eventHour=0;int eventReturn=27;
   uint8_t storyIndex=0,chapterIndex=0,personIndex=0,regionIndex=0;bool storyReplay=false;int storyReturn=27;
   uint8_t draftRace=0,draftShirt=0,draftPants=0;
   uint32_t frameMs=0,pollMs=0,loopMs=0;
@@ -27,7 +28,7 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
   // New pages are appended to Page after Card (26), kept independent of View.
   char b[64];
   if(page==27){center(12,"MENU",2,UI_GOLD);snprintf(b,sizeof(b),"Slot %u / %s",menu.activeSlot+1,rpg::className(g.p.cls));center(53,b);
-    button(14,86,212,"Mapa de Aeldra");button(14,132,212,"Personagens");button(14,178,212,"Configuracoes");button(14,224,102,"Diario");button(124,224,102,"Pessoas");button(14,272,212,"Voltar");return true;}
+    button(14,86,212,"Mapa de Aeldra");button(14,132,212,"Personagens");button(14,178,212,"Configuracoes");button(14,224,102,"Diario");button(124,224,102,"Pessoas");button(14,272,102,"Cartas");button(124,272,102,"Voltar");return true;}
   if(page==28){center(12,"PERSONAGENS",2,UI_GOLD);for(unsigned i=0;i<3;++i){int y=55+i*61;box(14,y,212,56);snprintf(b,sizeof(b),"SLOT %u%s",i+1,i==menu.activeSlot?" / ATIVO":"");text(24,y+8,b,1,UI_GOLD);
       if(menu.slots[i]==rpg::Load::Empty)snprintf(b,sizeof(b),"Vazio / criar personagem");else if(menu.slots[i]==rpg::Load::Blocked)snprintf(b,sizeof(b),"Save protegido / ver opcoes");else snprintf(b,sizeof(b),"%s / Nivel %u",rpg::className(menu.previews[i].p.cls),menu.previews[i].p.level);text(24,y+29,b);}
     center(247,menu.notice,1,UI_RED);button(14,272,212,"Voltar");return true;}
@@ -50,7 +51,7 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     if(updateInfo.busy){center(111,"Testando HTTPS...");snprintf(b,sizeof(b),"Tentativa %u/3",updateInfo.netTrials);center(150,b);center(203,"Aguarde o resultado.");}
     else if(updateInfo.tested){snprintf(b,sizeof(b),"HTTPS: %u/%u respostas OK",updateInfo.netSuccess,updateInfo.netTrials);center(100,b,1,updateInfo.netSuccess==3?UI_GREEN:UI_RED);snprintf(b,sizeof(b),"Falhas: %u / Wi-Fi caiu: %u",updateInfo.netTrials-updateInfo.netSuccess,updateInfo.netDrop);center(132,b);snprintf(b,sizeof(b),"Sinal: %d a %d dBm",updateInfo.minDbm,updateInfo.maxDbm);center(164,b);snprintf(b,sizeof(b),"Resposta media: %lums",(unsigned long)updateInfo.avgMs);center(196,b);center(235,"Teste HTTPS; nao mede ping.");}
     else center(141,updateInfo.message,1,UI_RED);if(!updateInfo.busy){button(14,272,102,"Voltar");button(124,272,102,"Testar");}return true;}
-  if(page==51){c.fillRect(0,0,240,320,0);c.setTextColor(UI_WHITE);c.setTextSize(3);c.setCursor(75,112);char hm[6];snprintf(hm,sizeof(hm),"%.5s",menu.clockTime);c.print(hm);c.setTextSize(1);c.setCursor(114,148);c.print(menu.clockTime+6);c.setTextSize(2);c.setCursor(60,184);c.print(menu.clockDate);c.setTextSize(1);c.setCursor(90,226);c.print(menu.clockValid?worldClock::name(menu.worldPeriod):"Sem hora");c.setCursor(30,278);c.print("Toque para voltar ao jogo");if(!menu.clockValid){c.setCursor(45,249);c.print("Wi-Fi ou ajuste em Horario");}return true;}
+  if(page==51){c.fillRect(0,0,240,320,0);if(g.eventStage==1){unsigned color=frame%8<4?UI_GOLD:UI_WHITE;c.fillRect(102,48,36,34,0xbdd0);c.drawRect(100,46,40,38,color);for(unsigned i=0;i<3;++i)c.fillRect(109,57+i*7,22,2,0x4208);c.fillRect(116,88,8,8,color);}c.setTextColor(UI_WHITE);c.setTextSize(3);c.setCursor(75,112);char hm[6];snprintf(hm,sizeof(hm),"%.5s",menu.clockTime);c.print(hm);c.setTextSize(1);c.setCursor(114,148);c.print(menu.clockTime+6);c.setTextSize(2);c.setCursor(60,184);c.print(menu.clockDate);c.setTextSize(1);c.setCursor(90,226);c.print(menu.clockValid?worldClock::name(menu.worldPeriod):"Sem hora");c.setCursor(30,278);c.print("Toque para voltar ao jogo");if(!menu.clockValid){c.setCursor(45,249);c.print("Wi-Fi ou ajuste em Horario");}return true;}
   if(page==32){center(12,"INTERNET / WI-FI",2,UI_GOLD);center(43,menu.connecting?"Conectando...":menu.connected?"Wi-Fi conectado":"Wi-Fi desconectado",1,menu.connected?UI_GREEN:UI_WHITE);
     if(menu.connected){snprintf(b,sizeof(b),"Sinal %d dBm / %u barras",menu.signalDbm,menu.signalBars);center(64,b);}else center(64,"Redes de 2.4 GHz");
     button(14,80,102,"Salvas");button(124,80,102,menu.scanning?"Buscando":"Buscar");

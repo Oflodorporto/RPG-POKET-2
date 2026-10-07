@@ -34,7 +34,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -65,7 +65,7 @@ bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservati
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
 bool tickIdleClock(uint32_t now,bool blocked){if(blocked){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 void tapped(int x,int y){
-  lastActivity=millis();if(view.page==Page::Clock){view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
+  lastActivity=millis();if(view.page==Page::Clock){if(game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(combatFx.active()||menu.journey.active)return;
   if(view.page==Page::CampRest)return;
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
@@ -167,7 +167,8 @@ void tapped(int x,int y){
     else if(hit(x,y,14,178,212)){view.page=Page::Settings;menu.notice="";dirty=true;}
     else if(hit(x,y,14,224,102)){if(!journal.blocked&&journal.active>=0){menu.chapterIndex=story::knownChapter(game);view.page=Page::Journal;say("");}else say("Escolha ou crie um personagem");}
     else if(hit(x,y,124,224,102)){if(!journal.blocked&&journal.active>=0){menu.storyReturn=int(Page::Menu);view.page=Page::People;say("");}else say("Escolha ou crie um personagem");}
-    else if(hit(x,y,14,272,212)){view.page=journal.blocked?Page::Blocked:journal.active<0?Page::Race:currentPage();say("");}return;
+    else if(hit(x,y,14,272,102)){if(journal.blocked||journal.active<0)say("Escolha ou crie um personagem");else {view.page=Page::Letters;menu.eventReturn=int(Page::Menu);dirty=true;}}
+    else if(hit(x,y,124,272,102)){view.page=journal.blocked?Page::Blocked:journal.active<0?Page::Race:currentPage();say("");}return;
   }
   if(view.page==Page::Slots){if(hit(x,y,14,272,212)){view.page=Page::Menu;say("");return;}for(uint8_t i=0;i<3;++i)if(hit(x,y,14,55+i*61,212,56)){menu.slotChoice=i;view.page=Page::SlotConfirm;menu.notice="";dirty=true;return;}return;}
   if(view.page==Page::SlotConfirm){if(hit(x,y,14,272,212)){view.page=Page::Slots;dirty=true;}
@@ -176,6 +177,14 @@ void tapped(int x,int y){
   if(view.page==Page::DeleteSlot){if(hit(x,y,14,272,102)){view.page=Page::SlotConfirm;dirty=true;}
     else if(hit(x,y,124,272,102)){uint8_t old=backend.slot;backend.slot=menu.slotChoice;bool ok=backend.remove();backend.slot=old;if(!ok){menu.notice="Falha; personagem preservado";dirty=true;return;}refreshSlots();menu.notice="Slot apagado";
       if(menu.slotChoice==old){game=rpg::Game{};journal.load(game);view.choice=0;view.page=Page::Race;say("");}else{view.page=Page::Slots;dirty=true;}}return;}
+  if(view.page==Page::Letters){if(hit(x,y,14,272,212)){view.page=Page::Menu;dirty=true;}else if(hit(x,y,14,216,212)){if(game.eventStage==2){view.page=currentPage();dirty=true;}else if(game.eventStage==1){menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;dirty=true;}}return;}
+  if(view.page==Page::Letter){if(uint32_t(millis()-menu.letterStarted)<450)return;
+    if(hit(x,y,14,222,212)){view.page=Page(menu.eventReturn);say("");return;}
+    if(hit(x,y,14,272,102)){view.page=Page::LetterRefuse;dirty=true;return;}
+    if(hit(x,y,124,272,102)){if(arena.opened||updateInfo.busy){say("Termine a acao atual primeiro");return;}const char* err=rpg::acceptEvent(game,menu.eventReturn);if(err){menu.notice=err;dirty=true;return;}menu.notice="";menu.letterStarted=millis();say("");savedTransition(Page::EventTravel);}return;}
+  if(view.page==Page::LetterRefuse){if(hit(x,y,14,272,102)){menu.letterStarted=millis()-450;view.page=Page::Letter;dirty=true;}else if(hit(x,y,124,272,102)&&rpg::refuseEvent(game)){say("");savedTransition(Page::Letters);}return;}
+  if(view.page==Page::EventTravel)return;
+  if(view.page==Page::EventResult){if(hit(x,y,14,272,212)){auto back=Page(game.eventOriginPage);if(rpg::finishEvent(game)){say("Missao encerrada");savedTransition(back);}}return;}
   if(view.page==Page::TimeSettings){
     if(hit(x,y,14,272,102)){view.page=Page::Settings;dirty=true;return;}
     if(hit(x,y,124,272,102)){prepareClockEdit();view.page=Page::TimeEdit;dirty=true;return;}
@@ -447,5 +456,8 @@ int main(){
  showMap();tapped(180,40);assert(view.page==Page::Continent);tapped(180,240);assert(menu.regionIndex==1);tapped(180,290);assert(view.page==Page::Continent&&game.city==0);tapped(40,290);assert(view.page==Page::Map&&nvs.blobs==narrativeBlobs);
  game=rpg::create(0,7);assert(currentPage()==Page::Prologue);rpg::begin(game);assert(currentPage()==Page::Battle);game=rpg::create(0,8);game.tutorial=true;assert(currentPage()==Page::Home);
  view.page=Page::Settings;auto clockBlobs=nvs.blobs;tapped(180,240);assert(view.page==Page::TimeSettings);tapped(180,130);assert(menu.utcOffset==-2);tapped(40,130);assert(menu.utcOffset==-3);tapped(180,290);assert(view.page==Page::TimeEdit);tapped(180,240);assert(menu.clockField==1);tapped(40,290);assert(view.page==Page::TimeSettings);tapped(40,290);assert(view.page==Page::Settings&&nvs.blobs==clockBlobs);
+ // A letter cannot interrupt activities, and completion is one save transaction.
+ game=rpg::create(0,42);game.tutorial=true;game.city=2;assert(rpg::offerEvent(game,20733,10));assert(journal.save(game));view.page=Page::Menu;tapped(40,290);assert(view.page==Page::Letters);now=10000;tapped(100,235);assert(view.page==Page::Letter);tapped(180,290);assert(game.eventStage==1);now+=451;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.eventStage==2&&game.city==0);nvs.fail=false;tapped(100,265);assert(view.page==Page::EventTravel);assert(currentPage()==Page::Battle);view.page=currentPage();combatFx.kind=Effect::None;game.enemyHp=0;rpg::finish(game);assert(game.phase==rpg::Phase::Won&&game.questProgress==0&&game.ruinsWins==0);view.page=currentPage();assert(view.page==Page::EventResult);auto eventGold=game.p.gold;auto eventXp=game.p.xp;nvs.fail=true;tapped(100,290);assert(view.page==Page::SaveError&&game.eventStage==3&&game.city==2&&game.p.gold==eventGold+25&&game.p.xp==eventXp+20);auto paidEventGold=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::Menu&&game.p.gold==paidEventGold&&!rpg::finishEvent(game));
+ assert(rpg::offerEvent(game,20734,10));view.page=Page::Clock;clockReturn=Page::Explore;menu.clockIdle=true;tapped(10,10);assert(view.page==Page::Letter&&!menu.clockIdle);now+=451;tapped(40,290);assert(view.page==Page::LetterRefuse);tapped(40,290);assert(game.eventStage==1);tapped(40,290);tapped(180,290);assert(game.eventStage==4&&view.page==Page::Letters);assert(!rpg::offerEvent(game,20734,20));
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }

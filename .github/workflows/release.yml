@@ -40,6 +40,7 @@ jobs:
             build/screens/camp-*.ppm
             build/screens/lore-*.ppm
             build/screens/day-*.ppm
+            build/screens/event-*.ppm
       - name: Instalar ESP32
         run: |
           arduino-cli config init
