@@ -3,10 +3,10 @@
 #include <algorithm>
 #include <stdlib.h>
 struct Place {const char* name;int x,y;};
-constexpr Place places[]={{"Carvalho",178,198},{"Ruinas",100,170},{"Mares",141,89},{"Aurora",39,62}};
+constexpr Place places[]={{"Carvalho",209,200},{"Ruinas",122,176},{"Mares",180,115},{"Aurora",106,98}};
 // Connected chain, with bends between landmarks on the user's mapa1 image.
 struct Point {int x,y;};
-constexpr Point roadPoints[]={{178,198},{149,192},{121,185},{100,170},{101,135},{119,112},{141,89},{115,76},{76,74},{39,62}};
+constexpr Point roadPoints[]={{209,200},{180,197},{151,185},{122,176},{135,149},{160,128},{180,115},{157,105},{131,103},{106,98}};
 constexpr unsigned placePoint[]={0,3,6,9};
 struct Journey {
   bool active=false;uint8_t from=0,to=0;uint32_t started=0;unsigned progress=0;

@@ -45,6 +45,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "BagView.h"
 #include "NarrativeView.h"
 #include "TitleView.h"
+#include "ScenicView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -63,13 +64,17 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
   if(v.page==Page::Title){drawTitle(c,frame);return;}
+  if(v.page==Page::Menu){drawScenicMenu(c,g,v,frame);return;}
+  if(v.page==Page::Home){drawScenicHome(c,g,v,frame);return;}
+  if(v.page==Page::Map){drawScenicMap(c,g,v,frame);return;}
+  if(v.page==Page::Ruins){drawScenicRuins(c,g,v,frame);return;}
   if(v.page==Page::Prologue||v.page==Page::Journal||v.page==Page::People||v.page==Page::Dialogue||v.page==Page::Continent||v.page==Page::Campaign){drawNarrative(c,g,v);return;}
   if(v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest){drawCamp(c,g,v,frame);return;}
   if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
   bool outside=v.page==Page::Map||v.page==Page::Travel||v.page==Page::EventTravel||v.page==Page::TravelRoll||v.page==Page::Home||v.page==Page::Village||v.page==Page::Ruins||v.page==Page::Explore||v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest||v.page==Page::Battle;
   backdropPeriod=outside&&menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
-  char b[64];if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
+  char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderEvent(c,g,int(v.page),text,center,box,button,frame))return;
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
@@ -147,14 +152,6 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(229,v.recovered?"Checkpoint anterior recuperado.":"Reiniciar retoma sua aventura.",1,UI_MUTED);
     button(14,268,212,"Continuar");return;
   }
-  if(v.page==Page::Home){
-    center(10,g.city==0?"REFUGIO DAS BRASAS":"ABRIGO DE VIAGEM",2,UI_GOLD);center(43,g.city==0?"Nara Veld / Carvalho":placeName(g.city));
-    portrait(g.p.cls,14,80);box(102,80,124,66);text(111,88,rpg::className(g.p.cls));snprintf(b,sizeof(b),"Nivel %u",g.p.level);text(111,106,b,2);
-    snprintf(b,sizeof(b),"%lu ouro",(unsigned long)g.p.gold);text(111,130,b,1,UI_GOLD);
-    snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);center(169,b);
-    snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g.p.level));center(187,b,1,UI_MUTED);
-    center(203,v.message,1,UI_GREEN);button(14,220,212,"Mapa de Aeldra");button(14,270,102,"Descanso");button(124,270,102,"Menu");return;
-  }
   if(v.page==Page::CityGoods||v.page==Page::GoodsBuy){bool buy=v.page==Page::GoodsBuy;uint8_t id=rpg::localGood(g.city);auto preview=g;
     center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
     snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
@@ -163,15 +160,6 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Explore){center(12,placeName(g.city),2,UI_GOLD);center(56,rpg::citySpecialty(g.city));snprintf(b,sizeof(b),"Nivel recomendado: %u+",rpg::cityLevel(g.city));center(90,b,1,UI_GOLD);
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);
     center(195,"O combate comeca ao confirmar.");button(14,220,212,"Explorar");button(14,270,102,"Acampar");button(124,270,102,"Voltar");return;}
-  if(v.page==Page::Ruins){
-    box(14,30,212,20);center(36,"Iria Sorel / conversar",1,UI_GOLD);
-    center(10,"RUINAS DE VESPERA",2,UI_GOLD);button(14,52,212,"Dungeon / Nv 8+");
-    box(14,98,212,54);snprintf(b,sizeof(b),"Vitorias: %u/3",g.ruinsWins);center(106,b,1,UI_GOLD);
-    center(124,g.guardianDefeated?"Guardiao vencido!":g.ruinsWins==3?"Guardiao liberado!":"Venca 3 encontros para liberar.");
-    center(140,v.message,1,UI_RED);if(g.questId){snprintf(b,sizeof(b),"Missao: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / volte a guilda":"");center(156,b,1,UI_GREEN);}button(14,166,102,"Explorar");button(124,166,102,"Acampar");
-    box(14,214,212,40);center(222,g.ruinsWins<3?"Guardiao bloqueado":"Desafiar Guardiao",1,g.ruinsWins<3?UI_MUTED:UI_GOLD);
-    center(239,"HP 28 / ATQ 6 / DEF 6",1,UI_MUTED);button(14,262,102,"Mapa");button(124,262,102,"Loja");return;
-  }
   if(v.page==Page::Village){
     center(12,placeName(g.city),2,UI_GOLD);snprintf(b,sizeof(b),"%lu OURO",(unsigned long)g.p.gold);center(65,b,1,UI_GOLD);box(14,78,212,26);center(86,"Conversar / pessoas",1,UI_GOLD);snprintf(b,sizeof(b),"Exploracao: nivel %u+",rpg::cityLevel(g.city));center(49,b,1,UI_MUTED);center(109,v.message,1,UI_GREEN);
     button(14,126,102,"Loja");button(124,126,102,"Bolsa");button(14,170,102,"Heroi");button(124,170,102,"Explorar");

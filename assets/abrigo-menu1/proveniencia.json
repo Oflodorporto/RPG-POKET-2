@@ -1,0 +1,39 @@
+{
+  "source": "Exact user supplied concepts, deterministic crop/resize/RGB565 indexed conversion; generated alternative retained but unused",
+  "prompt": "Preserve original artwork, text, buttons, colors and proportions; clickable regions use the same button rectangles; gameplay status is live.",
+  "original_sha256": "81cc18bcad022fa651ba1f07d8fe7776a5d3726a5a3ee9deb1c145d31ef6a3c7",
+  "map_ruins_sha256": "d9fa4e2ee3b30a5c36db541a17782c3cdf41959e9bc6b9739c2f4a910e3471ce",
+  "crop_boxes": {
+    "shelter": [
+      0,
+      0,
+      578,
+      788
+    ],
+    "menu": [
+      596,
+      0,
+      1172,
+      788
+    ],
+    "map": [
+      0,
+      0,
+      754,
+      1024
+    ],
+    "ruins": [
+      784,
+      0,
+      1536,
+      1024
+    ]
+  },
+  "dimensions": [
+    240,
+    320
+  ],
+  "palette_colors": 256,
+  "flash_bytes": 309248,
+  "sd_changes": false
+}

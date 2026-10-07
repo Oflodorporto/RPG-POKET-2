@@ -73,11 +73,11 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     center(144,menu.art==ArtStatus::Ready?"Artes do cartao: OK":"Artes simplificadas: ativas",1,menu.art==ArtStatus::Ready?UI_GREEN:UI_GOLD);
     snprintf(b,sizeof(b),"Tela %lums / toque %lums",(unsigned long)menu.frameMs,(unsigned long)menu.pollMs);center(198,b);center(177,menu.memoryTest<0?"Teste PSRAM: ainda nao feito":menu.memoryTest?"Teste 64 KiB PSRAM: OK":"Teste PSRAM: falhou",1,menu.memoryTest==1?UI_GREEN:UI_WHITE);
     button(14,222,212,"Testar memoria");button(14,272,212,"Voltar");return true;}
-  if(page==35||page==14||page==46){bool roll=page==46;bool travel=page==35;center(7,roll?"TESTE DE VIAGEM":travel?"EM VIAGEM":"AELDRA",2,UI_GOLD);
+  if(page==35||page==14||page==46){bool roll=page==46;bool travel=page==35;if(roll||travel){c.fillRect(0,272,240,48,UI_INK);c.fillRect(53,245,134,26,UI_INK);box(35,4,170,48);}center(21,roll?"TESTE DE VIAGEM":travel?"EM VIAGEM":"AELDRA",1,UI_GOLD);
     if(!roll&&!travel){box(150,30,80,24);text(158,38,"Continente");text(8,38,"Valdaria");}
     auto line=[&](Point p,Point q,uint16_t color){int dx=abs(q.x-p.x),sx=p.x<q.x?1:-1,dy=-abs(q.y-p.y),sy=p.y<q.y?1:-1,err=dx+dy;for(;;){c.fillRect(p.x-1,p.y-1,3,3,color);if(p.x==q.x&&p.y==q.y)break;int e=2*err;if(e>=dy){err+=dy;p.x+=sx;}if(e<=dx){err+=dx;p.y+=sy;}}};
     for(unsigned i=0;i<9;++i)line(roadPoints[i],roadPoints[i+1],UI_GOLD);
-    for(unsigned i=0;i<4;++i){const auto& p=places[i];c.fillRect(p.x-5,p.y-5,11,11,i==g.city?UI_GREEN:i==menu.destination?UI_BLUE:UI_WHITE);c.drawRect(p.x-7,p.y-7,15,15,UI_INK);text(std::max(3,std::min(234-int(strlen(p.name))*6,p.x-14)),p.y+12,p.name,1,i==menu.destination?UI_GOLD:UI_WHITE);}
+    for(unsigned i=0;i<4;++i){const auto& p=places[i];c.drawRect(p.x-8,p.y-8,17,17,i==g.city?UI_GREEN:i==menu.destination?UI_GOLD:UI_BLUE);}
     if(roll){
       // Dice box overlays the lower-right map, with a tumbling D20 outline.
       box(150,126,80,91);unsigned die=menu.rollReady?g.tripRoll:1+(frame*7)%20;int bounce=menu.rollReady?0:int(frame%3)*3;

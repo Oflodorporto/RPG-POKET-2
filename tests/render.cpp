@@ -28,7 +28,20 @@ const char* buyStockGear(rpg::Game& g,uint8_t id){uint8_t old=g.city;if(!rpg::ci
 int main(int argc,char** argv){
   assert(argc==2);artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();
   std::ifstream pack("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);Canvas c;rpg::Game g=rpg::create(0,32);ViewState v;std::string root=argv[1];
-  const Page pages[]={Page::Choose,Page::Help,Page::Home,Page::Battle,Page::Skills,Page::Bag,Page::Result,Page::SaveError,Page::Blocked};
+  for(int city=0;city<4;++city){g.city=city;v.page=Page::Home;for(auto period:{worldClock::Period::Day,worldClock::Period::Night}){menu.clockValid=true;menu.dayCycle=true;menu.worldPeriod=period;render(c,g,v,0);c.save(root+"/scenic-home-"+std::to_string(city)+"-"+std::to_string(int(period))+".ppm");}}
+  menu.clockValid=false;menu.dayCycle=false;g.city=1;v.page=Page::Menu;render(c,g,v,0);c.save(root+"/scenic-menu.ppm");
+  for(int i=0;i<240*320;++i)assert(c.pixels[i]==scenicArt::menuPalette[scenicArt::menuPixels[i]]);
+  uint8_t scenicBefore[rpg::SAVE_SIZE],scenicAfter[rpg::SAVE_SIZE];rpg::encode(g,11,scenicBefore);
+  for(unsigned frame:{12,36,96}){render(c,g,v,frame);c.save(root+"/scenic-menu-"+std::to_string(frame)+".ppm");v.page=Page::Home;render(c,g,v,frame);c.save(root+"/scenic-home-"+std::to_string(frame)+".ppm");v.page=Page::Menu;}
+  rpg::encode(g,11,scenicAfter);assert(!memcmp(scenicBefore,scenicAfter,sizeof(scenicBefore)));
+  for(int wins=0;wins<=3;++wins){g.ruinsWins=wins;g.guardianDefeated=wins==3;v.page=Page::Ruins;render(c,g,v,0);c.save(root+"/scenic-ruins-"+std::to_string(wins)+".ppm");}
+  for(int city=0;city<4;++city){g.city=city;menu.destination=city;v.page=Page::Map;render(c,g,v);c.save(root+"/scenic-map-"+std::to_string(city)+".ppm");}
+  g.city=0;menu.destination=3;assert(!rpg::prepareTrip(g,3));menu.rollReady=false;v.page=Page::TravelRoll;
+  for(unsigned frame:{0,5,13,24}){render(c,g,v,frame);c.save(root+"/scenic-d20-"+std::to_string(frame)+".ppm");}
+  menu.rollReady=true;render(c,g,v,24);c.save(root+"/scenic-d20-result.ppm");menu.journey.start(0,3,0);v.page=Page::Travel;
+  for(unsigned now:{0,750,1500,2250,3000}){menu.journey.tick(now);render(c,g,v,now/120);c.save(root+"/scenic-travel-"+std::to_string(now)+".ppm");}
+  g=rpg::create(0,32);v.message="";
+   const Page pages[]={Page::Choose,Page::Help,Page::Home,Page::Battle,Page::Skills,Page::Bag,Page::Result,Page::SaveError,Page::Blocked};
   const char* names[]={"classe","guia","refugio","batalha","habilidades","pocoes","vitoria","erro-save","save-bloqueado"};
   for(unsigned i=0;i<9;++i){v.page=pages[i];g.phase=i==6?rpg::Phase::Won:rpg::Phase::Hero;g.gainXp=12;g.gainGold=6;v.message=i==3?"Voce causou 8 de dano":"";render(c,g,v);c.save(root+"/"+names[i]+".ppm");}
   for(int cls=0;cls<4;++cls){g=rpg::create(cls,1);v.page=Page::Skills;render(c,g,v);c.save(root+"/habilidade-"+std::to_string(cls)+".ppm");}
