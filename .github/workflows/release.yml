@@ -2,7 +2,7 @@ name: Publicar versão
 on:
   push:
     branches: [main, bolsa-dungeon, camp-development]
-    paths: ["firmware/**", "cartao/**", "tools/release_manifest.py", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "cartao/**", "tests/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
     inputs:
       version:
