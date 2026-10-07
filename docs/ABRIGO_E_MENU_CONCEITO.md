@@ -16,6 +16,9 @@ Fontes: assets/abrigo-menu1/conceito-original.png, conceito-mapa-ruinas.png e pr
 
 Save11, leitura1..11, namespaces, particoes e Heltec permanecem iguais. Nenhuma gravacao automatica, pacote.rpg, formato de SD ou apagamento de save.
 
-Validacao em andamento: controlador real e renderizacao no computador; compilacao ESP32 e testes automatizados antes da publicacao. Validacao fisica sera realizada pelo usuario.
+Validacao concluida em software: 18 conjuntos de testes e compilacao ESP32-S3 aprovados; controlador real, renderizacao e previas finais conferidos. CI candidata 37697988756; publicacao 37698319513. Commit testado 485fdb430ea437c10bd8b01db4768c18b8965eb7. Programa: 2605298 bytes (82% de 3 MiB); variaveis globais: 53500 bytes (16%). Release e arquivos baixados conferidos por SHA-256. Validacao fisica sera realizada pelo usuario.
 
 Teste na placa: abrirMenu e tocar os sete botoes; voltar ao titulo e Continuar; visitarAbrigo nas Ruinas e testarMapa/Descanso/Menu; selecionar as quatro cidades e abrirValdaria; iniciarviagem e verificar d20 animado e chegada do personagem; explorarRuinas e testarIria/Dungeon/Guardiao/Acampar/Mapa/Loja. Conferir dados do heroi, carta pendente e ciclo noturno. Nao apagar personagens para testar.
+
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-abrigo1
+Firmware publicado: 2605440 bytes; SHA-256 8dc3a97a77d9049ec3d64ff45353432f386ab79c35c08111f02f22520d44c933.

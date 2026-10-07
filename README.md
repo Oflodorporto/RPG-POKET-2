@@ -49,3 +49,7 @@ Firmware e artes mantem saves8 e o pacote estradas1 de417 recursos. Sem gravacao
 ## Tela de titulo e jornada
 
 A versao titulo1 abre no titulo em todo reinicio, protege os tres slots na criacao e concentra as configuracoes. Menu > Diario > Objetivo orienta a historia sem modificar os saves. Consulte [guia e testes](docs/TELA_TITULO_E_JORNADA.md).
+
+## Telas do conceito
+
+Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com botoes interativos e dados reais. D20 e viagem animados preservados. [Guia e teste na placa](docs/ABRIGO_E_MENU_CONCEITO.md). Versao 2026.10.07-abrigo1.
