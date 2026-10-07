@@ -23,7 +23,7 @@ inline const char* acceptEvent(Game& g,uint8_t page){if(g.eventStage!=1)return "
 inline bool refuseEvent(Game& g){if(g.eventStage!=1)return false;g.eventStage=4;return true;}
 inline bool finishEvent(Game& g){if(g.eventStage!=2||(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled))return false;
  bool won=g.phase==Phase::Won;uint8_t outcome=won?3:g.phase==Phase::Lost?5:6;
- if(won){g.p.gold=std::min(999999u,g.p.gold+eventGold(g.eventTier));unsigned xp=eventXp(g.eventTier);g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);}
+ if(won){g.p.gold=std::min<uint32_t>(999999u,g.p.gold+eventGold(g.eventTier));unsigned xp=eventXp(g.eventTier);g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);}
  home(g);g.city=g.eventOriginCity;g.eventStage=outcome;g.enemyId=2;g.enemyHp=enemySpec(2).hp;g.guard=0;g.gainGold=g.gainXp=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;
 }
 }
