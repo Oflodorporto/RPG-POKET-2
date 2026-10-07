@@ -7,5 +7,8 @@
   ],
   "palette": 256,
   "flash_bytes": 77312,
-  "animations": "code: leaves, fire tips, embers, distant hippogriff; no SD reads"
+  "animations": "code: leaves, fire tips, embers, distant hippogriff; no SD reads",
+  "logo_source": "imagegen extraction of user supplied reference",
+  "logo_sha256": "a983abe8098f9aae7469c59a73cca0e7d87262b87441543e7a432259b657af70",
+  "logo_flash_bytes": 21792
 }
