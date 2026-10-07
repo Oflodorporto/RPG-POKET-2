@@ -11,7 +11,7 @@ struct MenuState {
   bool savedNetworks=false;uint8_t savedCount=0,savedIndex=0,signalBars=0;int signalDbm=-100,networkDbm=-100,networkChannel=0;
   int networkCount=0,networkIndex=0;char network[33]="",password[64]="",ip[20]="";
   bool clockIdle=false,clockValid=false;char clockTime[9]="--:--:--",clockDate[11]="--/--/----";
-  uint32_t rollStarted=0;bool rollReady=false;
+  uint32_t rollStarted=0,campStarted=0;bool rollReady=false,campRation=false,campKit=false,campShopReturn=false;
   ArtStatus art=ArtStatus::Fallback;Journey journey;uint8_t destination=0;
   uint32_t touchErrors=0,touches=0;uint8_t flashMiB=0,ramMiB=0;int memoryTest=-1;const char* notice="";
 };

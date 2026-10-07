@@ -1,5 +1,6 @@
 #pragma once
 #include "Rules.h"
+#include "Camp.h"
 #include "BackgroundArt.h"
 #include "SpriteArt.h"
 #include "RegionalArt.h"
@@ -11,13 +12,13 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Guild:return bg_guild;case Page::GuildJoin:return bg_guildjoin;case Page::GuildMissions:return bg_missions;case Page::Race:return bg_race;case Page::Clothes:return bg_clothes;case Page::Club:return bg_club;case Page::ClubBattle:return bg_clubbattle;case Page::ClubResult:return bg_clubresult;
   case Page::NetworkTest:case Page::Clock:case Page::Menu:return bg_menu;case Page::Slots:return bg_slots;case Page::SlotConfirm:return bg_slotconfirm;case Page::DeleteSlot:return bg_delete;case Page::Settings:return bg_settings;case Page::Wifi:case Page::ForgetWifi:return bg_wifi;case Page::Keyboard:return bg_keyboard;case Page::Tests:return bg_tests;case Page::Travel:return bg_world;case Page::Ruins:return bg_map;
   case Page::TravelRoll:return bg_world;case Page::CityGoods:return bg_goods;case Page::GoodsBuy:return bg_goodsbuy;case Page::Explore:return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;
-  case Page::DungeonLoot:case Page::DungeonVictory:case Page::BagGear:case Page::DungeonEntry:case Page::CrystalBuy:case Page::DungeonExit:case Page::DungeonMenu:return bg_slotconfirm;case Page::Dungeon:return bg_explore1;
+  case Page::CampSetup:case Page::CampRoll:case Page::CampRest:return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;case Page::CampKit:case Page::GearSell:case Page::DungeonLoot:case Page::DungeonVictory:case Page::BagGear:case Page::DungeonEntry:case Page::CrystalBuy:case Page::DungeonExit:case Page::DungeonMenu:return bg_slotconfirm;case Page::Dungeon:return bg_explore1;
   case Page::Updates:return bg_updates;case Page::Card:return bg_card;
   case Page::Tavern:return bg_tavern;case Page::Contract:return bg_contract;case Page::QuestConfirm:return bg_questconfirm;
   case Page::Choose:return bg_choose;case Page::Help:return bg_guide;case Page::Home:return bg_camp;
@@ -31,9 +32,11 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page page=Page::Choose;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {Page page=Page::Choose;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "MenuView.h"
+#include "MagicView.h"
+#include "CampView.h"
 #include "DungeonView.h"
 #include "BagView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
@@ -53,13 +56,20 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
+  if(v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest){drawCamp(c,g,v,frame);return;}
   if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
   char b[64];if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
+  if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
+    center(16,selling?"VENDER EQUIPAMENTO":"KIT DE ACAMPAMENTO",2,UI_GOLD);
+    if(selling){box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);center(207,"O item sera retirado da bolsa.");}
+    else {magicSprite(c,campArt::kit,48,48,84,55,72,72);center(146,"Preco: 80 ouro",2,UI_GOLD);center(180,"Reutilizavel / +2 no teste");center(204,"Saco de dormir ao lado do heroi.");}
+    center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
+  }
   if(v.page==Page::DungeonLoot){
-    center(18,"BAU ABERTO",2,UI_GOLD);box(86,55,68,68);sprite(92,61,gear_icons[g.p.cls],56,56);
-    center(143,v.message,1,UI_GREEN);center(170,"Guardado em Bolsa > Equipamentos");
+    center(18,"BAU ABERTO",2,UI_GOLD);box(86,55,68,68);if(v.itemId)sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);else magicSprite(c,dungeonArt::props[1],32,32,92,61,56,56);
+    center(143,v.message,1,UI_GREEN);center(170,v.itemId?"Guardado em Bolsa > Equipamentos":"O ouro foi somado a sua bolsa.");
     center(186,"Equipe fora de um combate.");
     button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
   }
@@ -138,22 +148,22 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,placeName(g.city));center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
     snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
     center(182,"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");center(170,v.message,1,UI_RED);
-    if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,212,"Voltar");}return;}
+    if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,102,"Voltar");button(124,270,102,"Kit");}return;}
   if(v.page==Page::Explore){center(12,placeName(g.city),2,UI_GOLD);center(56,rpg::citySpecialty(g.city));snprintf(b,sizeof(b),"Nivel recomendado: %u+",rpg::cityLevel(g.city));center(90,b,1,UI_GOLD);
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);
-    center(195,"O combate comeca ao confirmar.");button(14,220,212,"Explorar");button(14,270,212,"Voltar");return;}
+    center(195,"O combate comeca ao confirmar.");button(14,220,212,"Explorar");button(14,270,102,"Acampar");button(124,270,102,"Voltar");return;}
   if(v.page==Page::Ruins){
     center(10,"RUINAS ANTIGAS",2,UI_GOLD);button(14,52,212,"Dungeon / Nv 8+");
     box(14,98,212,54);snprintf(b,sizeof(b),"Vitorias: %u/3",g.ruinsWins);center(106,b,1,UI_GOLD);
     center(124,g.guardianDefeated?"Guardiao vencido!":g.ruinsWins==3?"Guardiao liberado!":"Venca 3 encontros para liberar.");
-    center(140,v.message,1,UI_RED);if(g.questId){snprintf(b,sizeof(b),"Missao: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / volte a guilda":"");center(156,b,1,UI_GREEN);}button(14,166,212,"Explorar");
+    center(140,v.message,1,UI_RED);if(g.questId){snprintf(b,sizeof(b),"Missao: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / volte a guilda":"");center(156,b,1,UI_GREEN);}button(14,166,102,"Explorar");button(124,166,102,"Acampar");
     box(14,214,212,40);center(222,g.ruinsWins<3?"Guardiao bloqueado":"Desafiar Guardiao",1,g.ruinsWins<3?UI_MUTED:UI_GOLD);
     center(239,"HP 28 / ATQ 6 / DEF 6",1,UI_MUTED);button(14,262,102,"Mapa");button(124,262,102,"Loja");return;
   }
   if(v.page==Page::Village){
     center(12,placeName(g.city),2,UI_GOLD);snprintf(b,sizeof(b),"%lu OURO",(unsigned long)g.p.gold);box(66,68,108,30);center(80,b,1,UI_GOLD);snprintf(b,sizeof(b),"Exploracao: nivel %u+",rpg::cityLevel(g.city));center(49,b,1,UI_MUTED);center(109,v.message,1,UI_GREEN);
     button(14,126,102,"Loja");button(124,126,102,"Bolsa");button(14,170,102,"Heroi");button(124,170,102,"Explorar");
-    button(14,214,102,"Guilda");button(124,214,102,"Descanso");button(14,258,102,"Mapa");button(124,258,102,"Menu");return;
+    button(14,214,102,"Guilda");button(124,214,102,"Acampar");button(14,258,102,"Mapa");button(124,258,102,"Menu");return;
   }
   if(v.page==Page::GuildMissions){
     center(12,"MISSOES",2,UI_GOLD);center(43,v.message,1,UI_GREEN);
@@ -200,7 +210,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     portrait(g.p.cls,80,shop?38:48);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(shop?114:136,b,1,UI_GOLD);
     if(shop){button(14,138,212,"Pocoes");button(14,182,212,"Equipamentos");button(14,226,102,"Forja");button(124,226,102,"Viagem");button(14,270,212,"Voltar");}
     else{snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));center(155,b);snprintf(b,sizeof(b),"Racoes %u / Mapas %u / Sorte %u",g.rations,g.charts,g.charms);center(169,b,1,UI_MUTED);
-      button(14,180,212,"Pocoes");button(14,226,212,"Equipamentos");button(14,272,102,"Menu");button(124,272,102,"Voltar");}return;
+      button(14,180,212,"Abrir bolsa");button(14,226,212,"Equipamentos");button(14,272,102,"Menu");button(124,272,102,"Voltar");}return;
   }
   if(v.page==Page::Card){
     center(12,"CARTAO MICROSD",2,UI_GOLD);center(43,v.message,1,UI_GOLD);
@@ -283,7 +293,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP  +%u ouro",g.gainXp,g.gainGold);center(79,b,2);
       center(110,g.dropLife?"Encontrou uma pocao de HP.":"Ruinas exploradas.");center(125,g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou das ruinas.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}
-    snprintf(b,sizeof(b),"Ruinas: %u/3 / Guardiao %s",g.ruinsWins,g.guardianDefeated?"vencido":"pendente");center(170,b);center(190,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,"Voltar a explorar");return;
+    snprintf(b,sizeof(b),"Ruinas: %u/3 / Guardiao %s",g.ruinsWins,g.guardianDefeated?"vencido":"pendente");center(170,b);center(190,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
   }
   if(v.page==Page::Skills||v.page==Page::Bag||v.page==Page::TownBag){
     bool bag=v.page!=Page::Skills;center(14,bag?"POCOES":"HABILIDADES",2,UI_GOLD);portrait(g.p.cls,80,44);
@@ -307,7 +317,8 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int trail=0;trail<3;++trail)for(int k=0;k<55;++k){int x=reach-k,y=52+k+trail*9;if(x>=45&&x<232)c.fillRect(x,y,7,5,trail==0?0xffe0:trail==1?0xfd20:0xf800);}
     if(f>=3){int r=9+int(f-3)*7;int cx=184,cy=111;for(int k=-r;k<=r;++k){int y=r-abs(k);c.fillRect(cx+k,cy-y,3,3,0xfd20);c.fillRect(cx+k,cy+y,3,3,0xf800);}c.fillRect(178,96,12,29,0xffe0);c.fillRect(169,106,30,8,0xffe0);}
   }
-  else if(v.effect==Effect::Projectile||v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)c.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){c.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
+  else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning){magicEffect(c,v,false);}
+  else if(v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)c.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){c.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
   else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)c.fillRect(104+x*2,18+y*2,2,2,color);}}else sprite(v.effectOnHero?22:156,82,fx,64,72);}
   c.fillRect(0,168,240,45,UI_INK);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);text(14,171,b,2);
   snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);text(156,176,b);

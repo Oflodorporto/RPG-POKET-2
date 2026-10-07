@@ -1,0 +1,343 @@
+{
+  "count": 48,
+  "flash_bytes": 404992,
+  "assets": [
+    {
+      "name": "hero_0_0_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "85c5b3d9393d59378c894bb012f3e9e6dbf32e0244f6c58c68ff1d19cf72f1d0",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_0_0_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "6c3fd9408818406133c44a7856d33b1f0438e1ec09a8bfc0671223c49323078e",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_0_1_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "7ab032b504d4f3da95233a3764916d17d8ff2d4790b1054798ea0a832242e13e",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_0_1_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "a4ea663237f64bef8a95536909577ece227ba68cf2341a32f49e104052ba80a3",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_1_0_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "12fdb6173865419e24b4f62a3c972f1da68c8632b204ec0d11a4241cb634af4b",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_1_0_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "d66d631628235b7c3f32f11afa8d97fe2c4979722ff2a9e38533c9f2fe58c710",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_1_1_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "2ffaafcd51f54e17fd0e762c71026ef3ca205c6952739d31c979814edbb56651",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_1_1_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "6d522f28440c33b75b7219ebac9b71fa0837bafbe44e431a901aa739f23796f8",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_2_0_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "35dc068f50294fb029afb8e444fed8fd527269d8e61c82914d6c5b10fda7e703",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_2_0_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "901fff1f9e7b035f6b783988716a4f1fe4d5e1018fe7ef57004fdc5f1bcc6b77",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_2_1_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "1e2b2c773050c7b061f1fe4344ea84dd40c06b6c625803b7af19b551982e5d52",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_2_1_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "df9f03044de667111f2abe91acef98d6c67a2f3e36b8070928a404300fff46e5",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_3_0_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "bb7b7db00a81c34a655b1ab73ddb3e790965df08ef4b5733dca8ebf3ac376ef5",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_3_0_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "8b022a05f0ce56ae2d7c6d3f59560e027c7424c69a745174274676fd909f14e9",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_3_1_0",
+      "width": 56,
+      "height": 64,
+      "sha256": "b1585de17d973fe8b230de61bef4bb39b195281c18accdd90861232d98a35e9e",
+      "bytes": 7168
+    },
+    {
+      "name": "hero_3_1_1",
+      "width": 56,
+      "height": 64,
+      "sha256": "6d1e4e0540163fa10abf3266d97a15470877a07de235f3d5188c0b5c64943d37",
+      "bytes": 7168
+    },
+    {
+      "name": "fire_0",
+      "width": 48,
+      "height": 48,
+      "sha256": "1789c58a4a5a206d4db4fa4f89478883d257be259aa1d4b56683252457ebd5dd",
+      "bytes": 4608
+    },
+    {
+      "name": "fire_1",
+      "width": 48,
+      "height": 48,
+      "sha256": "bf52e24bd4459e63e5988caa7ec0ff2f6b8c4ee434abba20bcd2b6c666efa1d0",
+      "bytes": 4608
+    },
+    {
+      "name": "fire_2",
+      "width": 48,
+      "height": 48,
+      "sha256": "ece1b36a91c7e46d65e1e4cb0f59685c80bafc2e98a94746b44a50af4cef2df6",
+      "bytes": 4608
+    },
+    {
+      "name": "fire_3",
+      "width": 48,
+      "height": 48,
+      "sha256": "21af5649a8ab84c2665ebad2f7286214286d75206f96dfad0ebbbbf9ef7758d9",
+      "bytes": 4608
+    },
+    {
+      "name": "sleepingbag",
+      "width": 48,
+      "height": 48,
+      "sha256": "a0710394cffe7206113c4f13710cacfd8a3832fc850621b6b30a089cda49d0f0",
+      "bytes": 4608
+    },
+    {
+      "name": "bedroll",
+      "width": 48,
+      "height": 48,
+      "sha256": "915b55a990a54aa3d6c0aed1651a16c9f2934c8b1a777dc02cad1f67600a3759",
+      "bytes": 4608
+    },
+    {
+      "name": "meat",
+      "width": 48,
+      "height": 48,
+      "sha256": "c8644f94b4cd339bb8972f7046830e2abdd0b44ea794fee3de08fe11293dd4e9",
+      "bytes": 4608
+    },
+    {
+      "name": "kit",
+      "width": 48,
+      "height": 48,
+      "sha256": "0ff7ed8a760839ef052597caaf486d321d8b4568be6af88a3f79816bdc52da39",
+      "bytes": 4608
+    },
+    {
+      "name": "fireball_0",
+      "width": 40,
+      "height": 40,
+      "sha256": "8a2e2eac65489601036c82a96210d544ca7742f7e03f3a33d0bd9dd8b6f98587",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_1",
+      "width": 40,
+      "height": 40,
+      "sha256": "3809af356eeef1910c9475cdc36cdab625079c8170e268bc2fa76b6416306f17",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_2",
+      "width": 40,
+      "height": 40,
+      "sha256": "99a2b5527aa7357a684d428e1a2316ef95ee933e149893c6cc1ee7ed3d386ed2",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_3",
+      "width": 40,
+      "height": 40,
+      "sha256": "3f1960ddaff583dfc8a88dd671f144f2c2e81ede9ee4c5194d4a0dac075b452d",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_4",
+      "width": 40,
+      "height": 40,
+      "sha256": "76ae54650b70fe9716fd9f031a5547eeea3a53dde75e3e13c5fcf531baf24383",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_5",
+      "width": 40,
+      "height": 40,
+      "sha256": "ed4158c25847b0206b3961f06f057a0b488ce37d3af4e6c0445bddbcbe5d8873",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_6",
+      "width": 40,
+      "height": 40,
+      "sha256": "50c4592498b6abdc333af532bc50a12db518418c9c497b7f337be26050930f12",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_7",
+      "width": 40,
+      "height": 40,
+      "sha256": "dab13b2f61e0bc37033acc27e3a08cccf56628ffbfc84bc6c5865f413d6db1c9",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_8",
+      "width": 40,
+      "height": 40,
+      "sha256": "20fcb9a1e01f92a5b1802ab746f106e847d9c615d1aacf6b339909e90e7584d1",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_9",
+      "width": 40,
+      "height": 40,
+      "sha256": "5dc1130d18699d1129813eb6752b17898e54372fd111f42c1462d27ac61ac587",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_10",
+      "width": 40,
+      "height": 40,
+      "sha256": "f6fa8a0f9a9b17845d96e1991e99c6b651b62f3e09d1383948f48858574266ee",
+      "bytes": 3200
+    },
+    {
+      "name": "fireball_11",
+      "width": 40,
+      "height": 40,
+      "sha256": "8a2e2eac65489601036c82a96210d544ca7742f7e03f3a33d0bd9dd8b6f98587",
+      "bytes": 3200
+    },
+    {
+      "name": "lightning_0",
+      "width": 80,
+      "height": 112,
+      "sha256": "d7436ee68519c9688079bd60d400c71cbbdc26056c6be9a8b9740c5e52050a3c",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_1",
+      "width": 80,
+      "height": 112,
+      "sha256": "d9aca7a8101d22af078e35ea4195be4b5fb29861df43ad61c28494622420a912",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_2",
+      "width": 80,
+      "height": 112,
+      "sha256": "d9aca7a8101d22af078e35ea4195be4b5fb29861df43ad61c28494622420a912",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_3",
+      "width": 80,
+      "height": 112,
+      "sha256": "860dbaafb64d1808e6334ebb386c11507c1262f01aaf0bba784413b7dd18f726",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_4",
+      "width": 80,
+      "height": 112,
+      "sha256": "c9d9dbf7a38d3e1c3a59160188c5f538a3c100bed32ae7b0a916b1b36e15cb83",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_5",
+      "width": 80,
+      "height": 112,
+      "sha256": "c9d9dbf7a38d3e1c3a59160188c5f538a3c100bed32ae7b0a916b1b36e15cb83",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_6",
+      "width": 80,
+      "height": 112,
+      "sha256": "1e1279c39ed0b3dd55d761b4466a9c35b3b779acf151971e1c057eed0b7fb372",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_7",
+      "width": 80,
+      "height": 112,
+      "sha256": "1e1279c39ed0b3dd55d761b4466a9c35b3b779acf151971e1c057eed0b7fb372",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_8",
+      "width": 80,
+      "height": 112,
+      "sha256": "cb82020774643a8623515c3ed34d691f647da8c50006f1ef276610c3d09da00b",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_9",
+      "width": 80,
+      "height": 112,
+      "sha256": "9b6888a06b324b2af12ff6969221b1adac7767aaa7114053106c4a2ddd2dfadd",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_10",
+      "width": 80,
+      "height": 112,
+      "sha256": "9b6888a06b324b2af12ff6969221b1adac7767aaa7114053106c4a2ddd2dfadd",
+      "bytes": 17920
+    },
+    {
+      "name": "lightning_11",
+      "width": 80,
+      "height": 112,
+      "sha256": "81ac84b985733dd2b0d05ddd73469b05b351a698b4534197935c4374508b8a9c",
+      "bytes": 17920
+    }
+  ],
+  "sources": "Built-in imagegen originals plus user-provided bola de fogo.gif and raio 3.gif"
+}

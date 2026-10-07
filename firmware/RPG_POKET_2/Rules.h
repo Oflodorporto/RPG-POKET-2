@@ -21,6 +21,7 @@ struct Game {
   uint8_t questId=0,questProgress=0,questLevel=0,city=0;
   uint8_t tripStage=0,tripTo=0,tripRoll=0,tripDifficulty=0,tripTotal=0,tripEnemy=0,tripSurvival=0,tripLuck=0;
   uint8_t rations=0,charts=0,charms=0;
+  uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
   uint8_t crystals=0,dungeonFlags=0,dungeonXY=0,dungeonLoot=0,dungeonEnemies=0,dungeonClears=0;
   uint32_t owned=0;
   uint8_t equipped[3]={},forge[3]={};
@@ -130,8 +131,8 @@ inline uint32_t random(Game& g){uint32_t x=g.randomState;x^=x<<13;x^=x>>17;x^=x<
 inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<12;return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>9||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=enemySpec(id).hp;g.guard=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
-inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(n%2?4:1):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
-inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
+inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(n%2?4:1):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
+inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
 inline bool arriveTrip(Game& g){if(g.tripStage!=3||g.phase!=Phase::Home)return false;g.city=g.tripTo;clearTrip(g);return true;}
 inline void finish(Game& g){

@@ -32,9 +32,7 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   const auto* weapon=dungeonArt::weapons[g.p.cls][strike&&step>=2&&step<=5];for(int y=0;y<52;++y)for(int x=0;x<64;++x){uint16_t color=weapon[y*64+x];if(color!=0xf81f)c.fillRect(wx+x,wy+y,1,1,color);}
   if(v.effect==Effect::Slash&&!v.effectOnHero){int reach=35+step*22;for(int k=0;k<36;++k){int x=reach-k,y=38+k*2;if(x>=0&&x<237)c.fillRect(x,y,3,4,k<12?UI_WHITE:UI_GOLD);}}
   if(v.effect==Effect::Thrust){int end=146-int(step<5?step:7-step)*12;for(int k=0;k<3;++k)c.fillRect(end+k*4,62+k*5,4,65,UI_WHITE);}
-  if(v.effect==Effect::Projectile){int travel=std::min(5u,step),cx=v.effectOnHero?120:176-travel*11,cy=v.effectOnHero?45+travel*15:141-travel*15;int radius=step>=5?5+(step-5)*5:5;for(int k=-radius;k<=radius;++k)c.fillRect(cx-abs(k)/2,cy+k,radius,1,step>=5?UI_WHITE:UI_BLUE);}
-
-  if(v.effect==Effect::Lightning){for(int y=20;y<145;y+=6){int x=112+((y/6+step)%2?12:-12);c.fillRect(x-3,y,11,8,UI_BLUE);c.fillRect(x,y,5,8,UI_WHITE);}if(step>=4){int radius=12+int(step-4)*5;for(int k=-radius;k<=radius;++k){c.fillRect(120+k,116-radius+abs(k),2,3,UI_WHITE);c.fillRect(120+k,116+radius-abs(k),2,3,UI_BLUE);}}}
+  magicEffect(c,v,true);
   if(v.effect==Effect::Slash&&v.effectOnHero)c.drawRect(0,0,240,172,UI_RED);
   if(v.effect==Effect::Shield){for(int k=0;k<3;++k)c.drawRect(k*3,k*3,240-k*6,172-k*6,UI_BLUE);}
   if(v.effect==Effect::Rage){for(int k=0;k<3;++k)c.drawRect(k*2,k*2,240-k*4,172-k*4,(v.effectFrame&1)?0xfd20:UI_GOLD);for(int k=0;k<52;++k){int x=28+int(step)*20-k,y=32+k*2;if(x>0&&x<232)c.fillRect(x,y,7,4,k<15?UI_WHITE:0xfd20);}if(step>=4){int radius=8+int(step-4)*8;c.drawRect(120-radius,95-radius,radius*2,radius*2,UI_GOLD);}}
