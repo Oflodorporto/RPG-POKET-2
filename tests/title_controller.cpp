@@ -1,44 +1,23 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-titulo1. Manual USB upload only.
-// Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
-#include <Arduino.h>
-#ifndef ARDUINO_ESP32S3_DEV
-#error "Use ESP32S3 Dev Module (Espressif). Este sketch nao e para Heltec."
-#endif
-#ifndef BOARD_HAS_PSRAM
-#error "Selecione PSRAM > OPI PSRAM para a Waveshare SKU29667."
-#endif
-#include <Wire.h>
-#include <SPI.h>
-#include <Preferences.h>
-#include "src/GFX/databus/Arduino_HWSPI.h"
-#include "src/GFX/display/Arduino_ST7789.h"
-#include "TouchGate.h"
-#include "Save.h"
-#include "View.h"
-#include "FrameBuffer.h"
-#include "SdReader.h"
-#include "Slots.h"
-#include "DeviceSettings.h"
-#include "UpdateDevice.h"
-Arduino_HWSPI bus(42,45,39,38,40);
-Arduino_ST7789 lcd(&bus,-1,0,true,240,320);
-FrameBuffer frameBuffer;
-SdReader sdReader;
-struct NvsStore {
-  Preferences prefs;bool ready=false;
-  rpg::Read read(const char* key,uint8_t* b){
-    if(!ready)return rpg::Read::Error;
-    if(!prefs.isKey(key))return rpg::Read::Missing;
-    size_t n=prefs.getBytesLength(key);if(n!=64&&n!=96&&n!=rpg::SAVE_SIZE)return rpg::Read::Error;memset(b,0,rpg::SAVE_SIZE);
-    return prefs.getBytes(key,b,n)==n&&rpg::get16(b,6)==n?rpg::Read::Ok:rpg::Read::Error;
-  }
-  bool write(const char* key,const uint8_t* b){return ready&&prefs.putBytes(key,b,rpg::SAVE_SIZE)==rpg::SAVE_SIZE;}
-  bool deleted(uint8_t slot){char k[4];snprintf(k,sizeof(k),"t%u",slot);return prefs.getBool(k,false);}
-  bool mark(uint8_t slot,bool value){char k[4];snprintf(k,sizeof(k),"t%u",slot);return ready&&prefs.putBool(k,value)==1;}
-  bool erase(const char* key){return ready&&(!prefs.isKey(key)||prefs.remove(key));}
-} nvs;
-using NvsBackend=SlotBackend<NvsStore>;
-NvsBackend backend(nvs);
+
+#include "../firmware/RPG_POKET_2/View.h"
+#include "../firmware/RPG_POKET_2/Slots.h"
+#include "../firmware/RPG_POKET_2/TouchGate.h"
+#include <cassert>
+#include <map>
+#include <string>
+#include <vector>
+struct Store {bool ready=true;bool fail=false;std::map<std::string,std::vector<uint8_t>> blobs;bool tomb[3]={};
+ bool deleted(unsigned s){return tomb[s];}bool mark(unsigned s,bool b){if(fail)return false;tomb[s]=b;return true;}
+ bool erase(const char* k){if(fail)return false;blobs.erase(k);return true;}
+ rpg::Read read(const char* k,uint8_t* b){auto it=blobs.find(k);if(it==blobs.end())return rpg::Read::Missing;memcpy(b,it->second.data(),rpg::SAVE_SIZE);return rpg::Read::Ok;}
+ bool write(const char* k,const uint8_t* b){if(fail)return false;blobs[k]=std::vector<uint8_t>(b,b+rpg::SAVE_SIZE);return true;}} nvs;
+using NvsBackend=SlotBackend<Store>;NvsBackend backend(nvs);
+struct SerialMock {void println(const char*){}template<class... T>void printf(const char*,T...){}} Serial;
+uint32_t now=0;uint32_t millis(){return now;}uint32_t esp_random(){return 13;}
+bool startNetworkTest(){updateInfo.busy=menu.connected;return menu.connected;}void resetUpdateScreen(){updateInfo=updater::Info{};}bool startUpdate(bool install){if(!menu.connected)return false;updateInfo.busy=true;updateInfo.state=install?updater::State::Downloading:updater::State::Checking;return true;}void paint(uint32_t){}bool openClub(){return true;}void closeClub(){}void clubTap(int,int){}void recoverClubReservation(){}ArtStatus loadSdArt(){return ArtStatus::Ready;}
+bool rememberSlot(uint8_t slot){menu.activeSlot=slot;return true;}bool saveBrightness(uint8_t n){menu.brightness=n;return true;}
+bool tickClock(bool=true){return false;}void prepareClockEdit(){}void adjustClockDraft(int){}bool applyClockDraft(){return true;}bool saveClockConfig(bool a,int o,bool d){menu.clockAutomatic=a;menu.utcOffset=o;menu.dayCycle=d;return true;}void applyBrightness(){}void showSavedNetworks(){menu.savedNetworks=true;}void connectSavedNetwork(){menu.connecting=true;}bool deleteSavedNetwork(){--menu.savedCount;return true;}void testMemory(){menu.memoryTest=1;}void searchNetworks(){menu.scanning=true;}void networkChoice(){}void connectNetwork(){menu.connecting=true;}void forgetConnection(){menu.connected=false;menu.connecting=false;}
+struct SdFake {} sdReader;CardInfo checkCard(SdFake&){CardInfo c;c.status=CardStatus::Verified;return c;}
 rpg::Journal<NvsBackend> journal(backend);
 rpg::Game game;ViewState view;Page afterSave=Page::Home,helpReturn=Page::Home;TouchGate gate;
 bool lcdReady=false,touchReady=false,dirty=true;
@@ -50,43 +29,6 @@ bool pendingTouch=false;int pendingX=0,pendingY=0;Page pendingPage=Page::Home;rp
 uint32_t loopAt=0,loopGap=0,frameMax=0,serialDropped=0,wifiPollAt=0;
 uint32_t acceptedTouches=0,maxPollGap=0,touchFeedbackUntil=0;bool polledOnce=false;
 char message[40]="";
-void sampleTouch();
-void paint(uint32_t now){
-  view.campProgress=game.campStage==3?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/4500):0;
-  uint32_t started=millis();
-  view.effect=combatFx.kind;view.effectFrame=combatFx.frame(now);view.effectOnHero=combatFx.onHero;view.heroFrame=combatFx.active()&&!combatFx.onHero?1+std::min(4u,combatFx.frame(now)*5/8):0;
-  menu.renderNow=now;
-  if(buffered){render(frameBuffer,game,view,now/120);
-    // Short SPI stripes let the touch reader run during each full-screen transfer.
-    for(int y=0;y<320;y+=16){{UpdateSpiLock lock;lcd.draw16bitRGBBitmap(0,y,frameBuffer.pixels+y*240,240,16);}sampleTouch();}
-  }
-  else {UpdateSpiLock lock;render(lcd,game,view,now/120);}
-  frameMax=std::max(frameMax,uint32_t(millis()-started));
-}
-bool readRegs(uint8_t reg,uint8_t* data,size_t n){
-  Wire.beginTransmission(0x15);Wire.write(reg);
-  if(Wire.endTransmission(true)!=0){++busErrors;return false;}
-  if(Wire.requestFrom(uint8_t(0x15),n)!=n||Wire.available()<int(n)){while(Wire.available())Wire.read();++shortReads;return false;}
-  for(size_t i=0;i<n;++i)data[i]=Wire.read();return true;
-}
-bool readTouch(bool& down,uint16_t& x,uint16_t& y){
-  uint8_t b[5];if(!readRegs(2,b,5))return false;
-  if(b[0]>1){++countErrors;return false;}down=b[0]==1;if(!down)return true;
-  x=((b[1]&15)<<8)|b[2];y=((b[3]&15)<<8)|b[4];
-  if(x>=240||y>=320){++rangeErrors;return false;}return true;
-}
-void sampleTouch(){
-  uint32_t now=millis();if(uint32_t(now-pollAt)<8)return;
-  if(polledOnce)maxPollGap=std::max(maxPollGap,uint32_t(now-pollAt));polledOnce=true;pollAt=now;
-  bool down=false;uint16_t x=0,y=0;bool valid=touchReady&&readTouch(down,x,y);
-  if(gate.update(valid,down,now)){
-    ++acceptedTouches;touchFeedbackUntil=now+140;view.touchFeedback=true;dirty=true;
-    // Never carry an input made during an animation/enemy turn into the next turn.
-    if(!pendingTouch&&!combatFx.active()&&!menu.journey.active&&!(view.page==Page::Battle&&game.phase!=rpg::Phase::Hero)){
-      pendingTouch=true;pendingX=x;pendingY=y;pendingPage=view.page;pendingPhase=game.phase;
-    }
-  }
-}
 void beginEffect(Effect effect,bool onHero){
   if(view.page==Page::SaveError)return;
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
@@ -457,51 +399,49 @@ void tapped(int x,int y){
   else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
   else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
 }
-#include "ClubRadio.h"
-void setup(){
-  Serial.begin(115200);Serial.setTxTimeoutMs(0);pinMode(41,OUTPUT);digitalWrite(41,HIGH);pinMode(1,OUTPUT);digitalWrite(1,LOW);
-  Wire.begin(48,47);Wire.setClock(400000);Wire.setTimeOut(20);
-  uint8_t id=0;touchReady=readRegs(0xa7,&id,1)&&id==0xb6;
-  lcdReady=lcd.begin(40000000);
-  buffered=frameBuffer.begin();frameBuffer.onChunk=sampleTouch;
-  initUpdater();initSettings();nvs.ready=nvs.prefs.begin("pkt2_slice",false);backend.slot=menu.activeSlot;
-  artMemory=static_cast<uint8_t*>(heap_caps_malloc(ART_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
-  if(!artMemory){Serial.println("Memoria de artes indisponivel; nenhum save alterado");if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_WHITE);lcd.setTextSize(1);lcd.setCursor(12,130);lcd.print("PSRAM indisponivel");lcd.setCursor(12,156);lcd.print("Confira OPI PSRAM no IDE");lcd.setCursor(12,182);lcd.print("Saves preservados");}while(true)delay(1000);}
-  if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_GOLD);lcd.setTextSize(2);lcd.setCursor(12,130);lcd.print("Carregando artes...");lcd.setTextSize(1);lcd.setCursor(69,177);lcd.print("Saves protegidos");}
-  menu.art=loadSdArt();menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
-  bootTitle();
-  lastActivity=millis();enemyAt=millis()+1200;
-  if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.07-titulo1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(journal.active>=0));
-}
-void loop(){
-  uint32_t now=millis();
-  menu.frameMs=frameMax;menu.pollMs=maxPollGap;menu.loopMs=loopGap;menu.touches=acceptedTouches;menu.touchErrors=busErrors+shortReads+countErrors+rangeErrors;
-  if(loopAt)loopGap=std::max(loopGap,uint32_t(now-loopAt));loopAt=now;
-  if(tickUpdater())dirty=true;
-  tickClub(now);
-  if(!arena.opened&&uint32_t(now-wifiPollAt)>=250){wifiPollAt=now;if(tickWifi())dirty=true;}
-  if(menu.journey.tick(now)){rpg::arriveTrip(game);pendingTouch=false;gate=TouchGate{};savedTransition(game.city==1?Page::Ruins:Page::Village);}
-  if((view.page==Page::TravelRoll||view.page==Page::CampRoll)&&!menu.rollReady&&uint32_t(now-menu.rollStarted)>=1800){menu.rollReady=true;pendingTouch=false;gate=TouchGate{};dirty=true;}
-  if(view.page==Page::CampRest&&game.campStage==3&&uint32_t(now-menu.campStarted)>=4500){rpg::finishCamp(game);say("Descanso concluido");savedTransition(game.city==1?Page::Ruins:Page::Explore);}
-  if(view.page==Page::EventTravel&&uint32_t(now-menu.letterStarted)>=700){view.page=currentPage();pendingTouch=false;gate=TouchGate{};dirty=true;}
-  if(combatFx.expire(now)){view.page=currentPage();dirty=true;}
-  if(view.touchFeedback&&int32_t(now-touchFeedbackUntil)>=0){view.touchFeedback=false;dirty=true;}
-  if(!touchReady&&uint32_t(now-reidentifyAt)>=1000){reidentifyAt=now;uint8_t id=0;touchReady=readRegs(0xa7,&id,1)&&id==0xb6;}
-  sampleTouch();
-  if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
-  now=millis();
-  if(menu.clockValid&&uint32_t(now-menu.eventCheckAt)>=1000){menu.eventCheckAt=now;if(canOfferEvents()&&!updateInfo.busy&&!arena.opened&&view.page!=Page::SaveError&&view.page!=Page::Letter&&view.page!=Page::LetterRefuse&&rpg::offerEvent(game,menu.eventDay,menu.eventHour)){say("Nova carta de Maelis");savedTransition(view.page);}}
-  tickIdleClock(now,updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||(view.page==Page::CampRoll&&!menu.rollReady)||(view.page==Page::TravelRoll&&!menu.rollReady)||((view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy));
-  if(uint32_t(now-clockPollAt)>=1000){clockPollAt=now;auto before=menu.worldPeriod;bool wasValid=menu.clockValid;
-    bool safe=game.phase==rpg::Phase::Home&&!game.tripStage&&!game.campStage&&!combatFx.active()&&!arena.opened;
-    bool changed=tickClock(safe);if((changed&&(view.page==Page::Clock||view.page==Page::TimeSettings))||before!=menu.worldPeriod||wasValid!=menu.clockValid)dirty=true;}
-  if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
-    rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
-    view.message=message;savedTransition(currentPage());beginEffect(game.enemyId==5?Effect::Projectile:Effect::Slash,true);
-  }
-  if(lcdReady&&(dirty||((view.page==Page::Title||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
-  if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}
 
-  delay(1);
+int main(){
+ auto pristine=nvs.blobs;bootTitle();assert(view.page==Page::Title&&!menu.hasContinue&&!canOfferEvents()&&nvs.blobs==pristine);
+ tapped(160,190);assert(view.page==Page::Title&&journal.active<0&&nvs.blobs==pristine);
+ tapped(160,280);assert(view.page==Page::Settings);tapped(170,90);tapped(80,295);assert(view.page==Page::Title&&nvs.blobs==pristine);
+ tapped(160,235);assert(view.page==Page::Race&&menu.creationFromTitle&&menu.activeSlot==0&&nvs.blobs==pristine);
+ tapped(40,280);assert(view.page==Page::Title&&!menu.hasContinue&&nvs.blobs==pristine);
+ newTitle();tapped(170,280);tapped(100,280);assert(view.page==Page::Clothes&&nvs.blobs==pristine);
+ tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);auto created=nvs.blobs;
+ bootTitle();assert(view.page==Page::Title&&menu.hasContinue&&!canOfferEvents()&&nvs.blobs==created);
+ tapped(160,190);assert(view.page==Page::Prologue&&menu.sessionStarted&&nvs.blobs==created);
+ // Boot/resume preserves each committed gameplay state and only activates timers on Continue.
+ for(unsigned state=0;state<5;++state){
+  game=rpg::create(1,42);game.tutorial=true;
+  if(state==0){assert(rpg::begin(game));assert(!rpg::act(game,rpg::Action::Attack));assert(game.phase==rpg::Phase::Enemy);}
+  if(state==1){game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));}
+  if(state==2){assert(!rpg::prepareTrip(game,1));game.tripRoll=20;game.tripTotal=20+game.tripSurvival+game.tripLuck;rpg::acceptTrip(game);assert(game.tripStage==3);}
+  if(state==3){game.p.hp=1;assert(!rpg::startCamp(game,false,false));game.campRoll=20;rpg::acceptCamp(game);assert(game.campStage==3);}
+  if(state==4){assert(rpg::offerEvent(game,20734,10));assert(!rpg::acceptEvent(game,49));}
+  assert(journal.save(game));auto saved=nvs.blobs;uint8_t bytes[rpg::SAVE_SIZE];rpg::encode(game,1,bytes);
+  bootTitle();assert(view.page==Page::Title&&menu.hasContinue&&!menu.journey.active&&!combatFx.active()&&!canOfferEvents()&&nvs.blobs==saved);
+  now+=120000;tickIdleClock(now,false);assert(view.page==Page::Clock);tapped(20,20);assert(view.page==Page::Title&&nvs.blobs==saved);
+  tapped(170,190);assert(menu.sessionStarted&&view.page==currentPage()&&nvs.blobs==saved);uint8_t after[rpg::SAVE_SIZE];rpg::encode(game,1,after);assert(!memcmp(bytes,after,sizeof(bytes)));
+ }
+ // Empty slot is selected before draft. Cancel never overwrites the first character.
+ openTitle();auto existing=nvs.blobs;newTitle();assert(view.page==Page::Race&&menu.activeSlot==1&&nvs.blobs==existing);tapped(40,280);assert(view.page==Page::Title&&menu.hasContinue);continueTitle();assert(menu.activeSlot==0&&game.eventStage==2&&nvs.blobs==existing);
+ // Three occupied slots: no hidden overwrite; deletion is explicit, cancellable and checked.
+ for(unsigned slot=0;slot<3;++slot){selectSlot(slot);game=rpg::create(slot,42);game.tutorial=true;assert(journal.save(game));}
+ bootTitle();existing=nvs.blobs;newTitle();assert(view.page==Page::Slots&&menu.newGameSlots);
+ tapped(80,75);assert(view.page==Page::SlotConfirm);tapped(80,190);assert(view.page==Page::SlotConfirm&&nvs.blobs==existing);
+ tapped(80,240);assert(view.page==Page::DeleteSlot);tapped(40,290);assert(view.page==Page::SlotConfirm&&nvs.blobs==existing);
+ tapped(80,240);nvs.fail=true;tapped(170,290);assert(view.page==Page::DeleteSlot&&nvs.blobs==existing);nvs.fail=false;tapped(170,290);assert(view.page==Page::Race&&menu.activeSlot==0&&journal.active<0);
+ for(auto key:{"a1","b1","a2","b2"}){auto it=existing.find(key);if(it!=existing.end())assert(nvs.blobs[key]==it->second);}
+ tapped(40,280);continueTitle();assert(menu.activeSlot==1&&game.p.cls==1);
+ // Even a direct stale creation page cannot replace an occupied or blocked slot.
+ existing=nvs.blobs;view.page=Page::Clothes;tapped(170,290);assert(view.page==Page::Clothes&&nvs.blobs==existing);
+ // A corrupt sole slot does not enable Continue; new game uses another empty slot.
+ nvs.blobs.clear();nvs.tomb[0]=nvs.tomb[1]=nvs.tomb[2]=false;menu.activeSlot=backend.slot=0;game=rpg::create(0,42);journal.load(game);assert(journal.save(game));nvs.blobs["a"][0]^=1;
+ existing=nvs.blobs;bootTitle();assert(!menu.hasContinue&&view.page==Page::Title);continueTitle();assert(view.page==Page::Title&&nvs.blobs==existing);newTitle();assert(menu.activeSlot==1&&view.page==Page::Race&&nvs.blobs==existing);
+ // Recovered save is selectable without rewriting it on boot or resume.
+ backend.slot=menu.activeSlot=0;nvs.blobs.clear();journal.load(game);game=rpg::create(0,42);assert(journal.save(game));assert(journal.save(game));nvs.blobs["b"][0]^=1;existing=nvs.blobs;bootTitle();assert(menu.hasContinue&&menu.slots[0]==rpg::Load::Recovered);continueTitle();assert(view.recovered&&nvs.blobs==existing);
+ // Narrative compass derives from old fields: no manufactured quest rewards or new save bytes.
+ game=rpg::create(0,42);assert(strstr(story::objective(game).title,"NOME"));game.tutorial=true;assert(strstr(story::objective(game).title,"FLORESTA"));game.ruinsWins=1;assert(strstr(story::objective(game).title,"ORDENS"));game.guardianDefeated=true;assert(strstr(story::objective(game).title,"ANTIGOS"));game.dungeonClears=1;assert(strstr(story::objective(game).title,"VIGILIAS"));
+ view.page=Page::Journal;existing=nvs.blobs;tapped(170,290);assert(view.page==Page::Campaign);tapped(170,290);assert(view.page==Page::People);tapped(80,100);assert(view.page==Page::Dialogue);tapped(80,290);tapped(80,290);assert(view.page==Page::Campaign&&nvs.blobs==existing);
+ puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }

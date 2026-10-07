@@ -5,6 +5,7 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
  auto button=[&](int x,int y,int w,const char* s){c.fillRect(x,y,w,40,UI_PANEL);c.drawRect(x,y,w,40,UI_GOLD);text(x+(w-int(strlen(s))*6)/2,y+15,s);};
  char b[64];
+ if(v.page==Page::Campaign){drawBackdrop(c,bg_character);auto goal=story::objective(g);center(12,"SUA JORNADA",2,UI_GOLD);center(48,goal.title,1,UI_GOLD);center(78,goal.place,1,UI_GREEN);for(unsigned i=0;i<4;++i)center(108+i*23,goal.lines[i]);center(205,"As Cinzas da Primeira Aurora",1,UI_GOLD);button(14,224,212,"Relembrar o inicio");button(14,272,102,"Diario");button(124,272,102,"Pessoas");return;}
  if(v.page==Page::Prologue){const auto& scene=story::opening[menu.storyIndex%4];drawBackdrop(c,menu.storyIndex==0?bg_explore0:menu.storyIndex==3?bg_guild:bg_tavern);
   center(15,"AS CINZAS DA",2,UI_GOLD);center(36,"PRIMEIRA AURORA",2,UI_GOLD);center(75,scene.speaker,1,UI_GOLD);
   for(unsigned i=0;i<4;++i)center(116+i*25,scene.lines[i]);snprintf(b,sizeof(b),"Aeldra / cena %u de 4",menu.storyIndex+1);center(231,b);
@@ -21,6 +22,8 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  }
  if(v.page==Page::Dialogue){const auto& p=story::person(g.city,menu.personIndex);center(14,p.name,1,UI_GOLD);center(41,p.role);
   if(g.city==1&&menu.personIndex==2&&!story::arconteKnown(g)){center(105,"Um eco permanece na Cripta.");center(133,"Encontre-o antes de ouvir sua voz.");}
+  else if(g.city==0&&menu.personIndex==0){center(87,story::classVoice(g.p.cls),1,UI_GOLD);center(116,"O mundo esquece. Nos resistimos.");center(145,g.guardianDefeated?"Voce abriu caminho em Vespera.":"Elarin e Borin precisam de voce.");center(174,story::arconteKnown(g)?"Leve as pistas para Mares.":"Nao deixe a estrada apagar seu nome.");}
+  else if(g.city==1&&menu.personIndex==0&&g.guardianDefeated){center(87,"O Guardiao nao era o Arconte.");center(116,"Era a sentinela do Farol Memoria.");center(145,story::arconteKnown(g)?"O livro prova o custo do Pacto.":"Seu cristal abre a Cripta de Vaelor.");center(174,story::arconteKnown(g)?"Sabela precisa ouvir isso em Mares.":"Procure a verdade alem dos selos.");}
   else for(unsigned i=0;i<4;++i)center(87+i*29,p.lines[i]);
   center(223,"As Cinzas da Primeira Aurora",1,UI_GOLD);button(14,272,212,"Voltar");return;
  }
@@ -31,5 +34,5 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  if(index==2&&g.guardianDefeated)center(191,"Guardiao do Limiar: vencido",1,UI_GREEN);
  if(index==2&&story::arconteKnown(g))center(209,"Cripta de Vaelor: concluida",1,UI_GREEN);
  button(14,224,102,"Anterior");button(124,224,102,"Proxima");
- button(14,272,102,"Voltar");button(124,272,102,"Relembrar");
+ button(14,272,102,"Voltar");button(124,272,102,"Objetivo");
 }

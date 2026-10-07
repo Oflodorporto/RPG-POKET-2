@@ -1,0 +1,11 @@
+{
+  "source": "imagegen; user reference used for style and vertical composition",
+  "original_sha256": "0626a34a614b1d52a8fd9b83bee83956b0dd4dcdbe098d414ce9841234881718",
+  "dimensions": [
+    240,
+    320
+  ],
+  "palette": 256,
+  "flash_bytes": 77312,
+  "animations": "code: leaves, fire tips, embers, distant hippogriff; no SD reads"
+}

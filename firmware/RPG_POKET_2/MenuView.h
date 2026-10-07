@@ -4,6 +4,7 @@
 #include "AssetStore.h"
 #include "UpdateModel.h"
 struct MenuState {
+  bool hasContinue=false,sessionStarted=false,creationFromTitle=false,newGameSlots=false;int slotsReturn=27;
   uint32_t renderNow=0,letterStarted=0,eventCheckAt=0,eventDay=0;uint8_t eventHour=0;int eventReturn=27;
   uint8_t storyIndex=0,chapterIndex=0,personIndex=0,regionIndex=0;bool storyReplay=false;int storyReturn=27;
   uint8_t draftRace=0,draftShirt=0,draftPants=0;
@@ -28,15 +29,15 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
   // New pages are appended to Page after Card (26), kept independent of View.
   char b[64];
   if(page==27){center(12,"MENU",2,UI_GOLD);snprintf(b,sizeof(b),"Slot %u / %s",menu.activeSlot+1,rpg::className(g.p.cls));center(53,b);
-    button(14,86,212,"Mapa de Aeldra");button(14,132,212,"Personagens");button(14,178,212,"Configuracoes");button(14,224,102,"Diario");button(124,224,102,"Pessoas");button(14,272,102,"Cartas");button(124,272,102,"Voltar");return true;}
-  if(page==28){center(12,"PERSONAGENS",2,UI_GOLD);for(unsigned i=0;i<3;++i){int y=55+i*61;box(14,y,212,56);snprintf(b,sizeof(b),"SLOT %u%s",i+1,i==menu.activeSlot?" / ATIVO":"");text(24,y+8,b,1,UI_GOLD);
+    button(14,86,212,"Mapa de Aeldra");button(14,132,212,"Personagens");button(14,178,212,"Tela de titulo");button(14,224,102,"Diario");button(124,224,102,"Pessoas");button(14,272,102,"Cartas");button(124,272,102,"Voltar");return true;}
+  if(page==28){center(12,menu.newGameSlots?"NOVO PERSONAGEM":"PERSONAGENS",2,UI_GOLD);for(unsigned i=0;i<3;++i){int y=55+i*61;box(14,y,212,56);snprintf(b,sizeof(b),"SLOT %u%s",i+1,i==menu.activeSlot?" / ATIVO":"");text(24,y+8,b,1,UI_GOLD);
       if(menu.slots[i]==rpg::Load::Empty)snprintf(b,sizeof(b),"Vazio / criar personagem");else if(menu.slots[i]==rpg::Load::Blocked)snprintf(b,sizeof(b),"Save protegido / ver opcoes");else snprintf(b,sizeof(b),"%s / Nivel %u",rpg::className(menu.previews[i].p.cls),menu.previews[i].p.level);text(24,y+29,b);}
-    center(247,menu.notice,1,UI_RED);button(14,272,212,"Voltar");return true;}
+    center(247,*menu.notice?menu.notice:menu.newGameSlots?"Libere um slot para criar":"",1,UI_RED);button(14,272,212,"Voltar");return true;}
   if(page==29||page==30){bool del=page==30;snprintf(b,sizeof(b),"SLOT %u",menu.slotChoice+1);center(12,b,2,UI_GOLD);
     if(menu.slots[menu.slotChoice]==rpg::Load::Ok||menu.slots[menu.slotChoice]==rpg::Load::Recovered){portrait(menu.previews[menu.slotChoice].p.cls,80,48,&menu.previews[menu.slotChoice]);snprintf(b,sizeof(b),"%s / Nivel %u",rpg::className(menu.previews[menu.slotChoice].p.cls),menu.previews[menu.slotChoice].p.level);center(131,b);}
     else center(101,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Slot vazio":"Save protegido",2);
     if(del){center(176,"APAGAR ESTE PERSONAGEM?",1,UI_RED);center(202,"A exclusao e permanente.");center(224,"Os outros slots ficam preservados.");center(245,menu.notice,1,UI_RED);button(14,272,102,"Cancelar");button(124,272,102,"Apagar");}
-    else{center(160,menu.notice,1,UI_RED);if(menu.slots[menu.slotChoice]!=rpg::Load::Blocked)button(14,178,212,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Criar":"Entrar");if(menu.slots[menu.slotChoice]!=rpg::Load::Empty)button(14,224,212,"Excluir slot");button(14,272,212,"Voltar");}return true;}
+    else{center(160,menu.notice,1,UI_RED);if(menu.slots[menu.slotChoice]!=rpg::Load::Blocked&&(!menu.newGameSlots||menu.slots[menu.slotChoice]==rpg::Load::Empty))button(14,178,212,menu.slots[menu.slotChoice]==rpg::Load::Empty?"Criar":"Entrar");if(menu.slots[menu.slotChoice]!=rpg::Load::Empty)button(14,224,212,"Excluir slot");button(14,272,212,"Voltar");}return true;}
   if(page==31){center(12,"CONFIGURACOES",2,UI_GOLD);snprintf(b,sizeof(b),"Brilho: %u%%",menu.brightness);center(52,b,2);button(14,78,102,"- Brilho");button(124,78,102,"+ Brilho");
     button(14,130,212,"Internet / Wi-Fi");button(14,176,102,"Cartao");button(124,176,102,"Testes");button(14,222,102,"Atualizar");button(124,222,102,"Horario");center(265,menu.notice,1,UI_RED);button(14,278,212,"Voltar");return true;}
   if(page==71){center(12,"HORA E MUNDO",2,UI_GOLD);center(46,menu.clockValid?menu.clockDate:"Hora nao sincronizada");center(65,menu.clockTime,2);snprintf(b,sizeof(b),"Fuso UTC%+d",int(menu.utcOffset));center(94,b);button(14,113,102,"- Fuso");button(124,113,102,"+ Fuso");button(14,159,212,menu.clockAutomatic?"Hora: automatica":"Hora: manual");button(14,205,212,menu.dayCycle?"Dia/noite: SIM":"Dia/noite: NAO");center(251,menu.notice,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,"Acertar");return true;}

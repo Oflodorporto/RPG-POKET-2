@@ -23,10 +23,19 @@ constexpr Person people[4][3]={
   {"Seraphine Alvor","Guardia dos juramentos",{"Obediencia nao e virtude.","Um juramento pode ser reparado.","Conserve as pistas das outras", "cidades. Todas fazem parte disso."}},
   {"Dargan Setemartelos","Mestre da forja real",{"Minha lealdade e com o povo.","Aurora tem boas oficinas.","Prepare sua armadura; sentinelas", "nao perguntam por que voce veio."}}}
 };
+inline bool arconteKnown(const rpg::Game& g){return g.dungeonClears||((g.dungeonFlags&1)&&(g.dungeonEnemies&64))||(g.enemyId==8&&g.phase==rpg::Phase::Won);}
+inline const char* classVoice(unsigned cls){const char* lines[]={"Voce sente ecos nos cristais.","Um juramento pode salvar vidas.","Uma estrada segura e uma vitoria.","A terra pede que voce a escute."};return lines[cls%4];}
+struct Objective {const char* title;const char* place;const char* lines[4];};
+inline Objective objective(const rpg::Game& g){
+ if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Seu primeiro abrigo e nas Brasas.","O sino anuncia uma nova jornada."}};
+ if(arconteKnown(g))return {"O LIVRO DAS VIGILIAS","Mares / Sabela Marebrava",{"O livro liga cristais a memorias.","Sabela procura provas no porto.","Converse com ela em Mares.","O proximo ato ainda esta em preparo."}};
+ if(g.guardianDefeated)return {"A CONTA DOS ANTIGOS","Ruinas / Iria Sorel",{"O Guardiao deixou uma chave.","Leve um cristal a Cripta de Vaelor.","Busque selos, sobreviva aos andares.","O Arconte guarda mais que ouro."}};
+ if(g.ruinsWins)return {"OS MORTOS TEM ORDENS","Ruinas de Vespera",{"Venca tres encontros nas Ruinas.","Enfrente o Guardiao do Limiar.","Iria pode explicar a antiga defesa.","Leve racoes e equipamento."}};
+ return {"A FLORESTA FERIDA","Carvalho / Elarin e Borin",{"Os animais fogem de cinza branca.","Converse com Elarin e Borin.","Prepare-se e investigue Vespera.","Os farois ligam essas estradas."}};
+}
 inline const Person& person(unsigned city,unsigned index){return people[city%4][index%3];}
 inline const char* supplier(unsigned city){const char* n[]={"Elarin Folhacinza","Caelen Vesper","Tomas Valevento","Seraphine Alvor"};return n[city%4];}
 inline const char* smith(unsigned city){const char* n[]={"Borin Caldaferrea","Caelen Vesper","Nilsa Bronzamar","Dargan Setemartelos"};return n[city%4];}
-inline bool arconteKnown(const rpg::Game& g){return g.dungeonClears||((g.dungeonFlags&1)&&(g.dungeonEnemies&64))||(g.enemyId==8&&g.phase==rpg::Phase::Won);}
 inline unsigned knownChapter(const rpg::Game& g){return arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
 constexpr const char* chapterNames[]={"O sino em Carvalho","A floresta ferida","Os mortos tem ordens","O porto e as cinzas","Juramentos de Aurora","A primeira luz"};
 constexpr Scene chapters[]={

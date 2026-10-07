@@ -152,6 +152,13 @@ int main(int argc,char** argv){
   for(unsigned tier=0;tier<4;++tier){g.eventTier=tier;for(Page pg:{Page::Letters,Page::Letter,Page::LetterRefuse,Page::EventTravel,Page::Clock}){v.page=pg;render(c,g,v);c.save(root+"/event-page-"+std::to_string(tier)+"-"+std::to_string(int(pg))+".ppm");}
    rpg::acceptEvent(g,49);v.page=Page::Battle;for(unsigned i=0;i<4;++i){v.effect=i>=2?Effect::Slash:Effect::None;v.effectOnHero=i>=2;v.effectFrame=i;render(c,g,v,i);c.save(root+"/event-battle-"+std::to_string(tier)+"-"+std::to_string(i)+".ppm");}v.effect=Effect::None;v.page=Page::EventResult;for(auto result:{rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled}){g.phase=result;render(c,g,v);c.save(root+"/event-result-"+std::to_string(tier)+"-"+std::to_string(int(result))+".ppm");}g=rpg::create(0,42);g.tutorial=true;rpg::offerEvent(g,20733,10);
   }v.page=Page::Letter;for(unsigned t:{0u,120u,240u,440u,450u}){menu.renderNow=t;render(c,g,v);c.save(root+"/event-scroll-"+std::to_string(t)+".ppm");}
+
+  // Title frames are independent of SD and do not alter the character or save bytes.
+  uint8_t beforeTitle[rpg::SAVE_SIZE];rpg::encode(g,17,beforeTitle);v.page=Page::Title;menu.notice="";
+  std::vector<uint16_t> titleFrames;
+  for(unsigned enabled=0;enabled<2;++enabled){menu.hasContinue=enabled;for(unsigned frame:{0u,12u,36u,96u,192u,319u}){render(c,g,v,frame);c.save(root+"/title-"+std::to_string(enabled)+"-"+std::to_string(frame)+".ppm");if(frame==0)titleFrames.assign(c.pixels,c.pixels+240*320);else assert(!std::equal(titleFrames.begin(),titleFrames.end(),c.pixels));uint8_t after[rpg::SAVE_SIZE];rpg::encode(g,17,after);assert(!memcmp(beforeTitle,after,sizeof(after)));}}
+  v.page=Page::Campaign;for(unsigned progress=0;progress<5;++progress){g=rpg::create(0,42);g.tutorial=progress>=1;g.ruinsWins=progress>=2;g.guardianDefeated=progress>=3;g.dungeonClears=progress>=4;render(c,g,v);c.save(root+"/title-objective-"+std::to_string(progress)+".ppm");}
+  v.page=Page::Dialogue;g.city=0;menu.personIndex=0;for(unsigned cls=0;cls<4;++cls){g.p.cls=cls;render(c,g,v);c.save(root+"/title-nara-"+std::to_string(cls)+".ppm");}
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 
