@@ -446,5 +446,6 @@ int main(){
  tapped(40,290);tapped(180,240);assert(view.page==Page::People);tapped(80,100);assert(view.page==Page::Dialogue);tapped(80,290);tapped(80,290);assert(view.page==Page::Menu&&nvs.blobs==narrativeBlobs);
  showMap();tapped(180,40);assert(view.page==Page::Continent);tapped(180,240);assert(menu.regionIndex==1);tapped(180,290);assert(view.page==Page::Continent&&game.city==0);tapped(40,290);assert(view.page==Page::Map&&nvs.blobs==narrativeBlobs);
  game=rpg::create(0,7);assert(currentPage()==Page::Prologue);rpg::begin(game);assert(currentPage()==Page::Battle);game=rpg::create(0,8);game.tutorial=true;assert(currentPage()==Page::Home);
+ view.page=Page::Settings;auto clockBlobs=nvs.blobs;tapped(180,240);assert(view.page==Page::TimeSettings);tapped(180,130);assert(menu.utcOffset==-2);tapped(40,130);assert(menu.utcOffset==-3);tapped(180,290);assert(view.page==Page::TimeEdit);tapped(180,240);assert(menu.clockField==1);tapped(40,290);assert(view.page==Page::TimeSettings);tapped(40,290);assert(view.page==Page::Settings&&nvs.blobs==clockBlobs);
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }

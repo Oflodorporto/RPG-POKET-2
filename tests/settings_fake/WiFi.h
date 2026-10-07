@@ -12,4 +12,4 @@ struct WifiFake {
  struct IP {String toString(){return String("192.168.1.23");}};IP localIP(){return {};}
 };inline WifiFake WiFi;
 
-inline void configTzTime(const char* zone,const char*,const char*){assert(!strcmp(zone,"BRT3"));}
+inline void configTzTime(const char* zone,const char*,const char*){assert(!strcmp(zone,"UTC0"));}

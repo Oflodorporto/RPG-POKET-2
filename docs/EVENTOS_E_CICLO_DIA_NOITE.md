@@ -1,6 +1,6 @@
 # Eventos da Guilda e ciclo de dia/noite
 
-**Projeto de implementação posterior — 07/10/2026.** Conectado ao cânone `LORE_CANONICA_RPG_POKET_2.md`. Nada deste documento foi adicionado ao firmware camp1. Criar primeiro a narrativa e reorganizar o jogo; só depois implementar e publicar os sistemas abaixo.
+**Plano e acompanhamento — 07/10/2026.** Conectado ao cânone `LORE_CANONICA_RPG_POKET_2.md`. A narrativa inicial foi integrada em lore1. A entrega dia1 implementa hora/fuso/ajuste manual e paletas de período, documentados em HORA_E_DIA_NOITE.md. Eventos, persistência diária, pergaminho e novos inimigos ainda são projeto posterior; o restante deste documento descreve o objetivo completo.
 
 ## Duas oportunidades por dia, oito histórias possíveis
 
