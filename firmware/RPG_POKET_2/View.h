@@ -52,7 +52,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){if(*s)c.fillRect(x-3,y-2,int(strlen(s))*6*size+6,8*size+4,UI_INK);c.setTextColor(color);c.setTextSize(size);c.setCursor(x,y);c.print(s);};
   auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
   auto box=[&](int x,int y,int w,int h){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);c.drawRect(x+2,y+2,w-4,h-4,0x3186);};
-  auto button=[&](int x,int y,int w,const char* s){box(x,y,w,40);c.setTextColor(UI_WHITE);c.setTextSize(2);c.setCursor(x+(w-int(strlen(s))*12)/2,y+12);c.print(s);};
+  auto button=[&](int x,int y,int w,const char* s){box(x,y,w,40);c.setTextColor(UI_WHITE);int size=int(strlen(s))*12<=w-6?2:1;c.setTextSize(size);c.setCursor(x+(w-int(strlen(s))*6*size)/2,y+(40-8*size)/2);c.print(s);};
   auto sprite=[&](int x,int y,const uint16_t* pixels,int w,int h,bool outline=false){
     if(outline)for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.fillRect(x+start-1,y+row-1,col-start+2,3,UI_MUTED);}}
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}

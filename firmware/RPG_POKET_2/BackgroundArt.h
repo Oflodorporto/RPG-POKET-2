@@ -101,7 +101,7 @@ const Backdrop bg_battle2={61,60};
 #define bg_battle3_palette (reinterpret_cast<const uint16_t*>(assetBytes(62)))
 #define bg_battle3_pixels (reinterpret_cast<const uint8_t*>(assetBytes(63)))
 const Backdrop bg_battle3={63,62};
-template<class Canvas> void drawBackdrop(Canvas& c,const Backdrop& bg){uint16_t stripe[480],palette[256];for(unsigned i=0;i<256;++i)palette[i]=worldClock::shade(bg.palette()[i],backdropPeriod);for(int y=0;y<160;++y){for(int x=0;x<120;++x){uint16_t color=palette[bg.pixels()[y*120+x]];stripe[x*2]=stripe[x*2+1]=stripe[240+x*2]=stripe[241+x*2]=color;}c.draw16bitRGBBitmap(0,y*2,stripe,240,2);}}
+template<class Canvas> void drawBackdrop(Canvas& c,const Backdrop& bg){uint16_t stripe[480],palette[128];for(unsigned i=0;i<128;++i)palette[i]=worldClock::shade(bg.palette()[i],backdropPeriod);for(int y=0;y<160;++y){for(int x=0;x<120;++x){uint16_t color=palette[bg.pixels()[y*120+x]];stripe[x*2]=stripe[x*2+1]=stripe[240+x*2]=stripe[241+x*2]=color;}c.draw16bitRGBBitmap(0,y*2,stripe,240,2);}}
 
 const Backdrop bg_tests={154,153};
 const Backdrop bg_world={156,155};
