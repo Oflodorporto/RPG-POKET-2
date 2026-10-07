@@ -24,7 +24,7 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   for(unsigned i=0;i<8;++i){auto s=rpg::dungeonPickups[i];if(s.floor==floor&&!(g.dungeonLoot&(1u<<i)))add(1,i,s.x,s.y);}
   for(int y=1;y<8;++y)for(int x=1;x<8;++x)if(rpg::dungeonCell(floor,x,y)=='S')add(2,floor?9:10,x,y);
   std::sort(objects,objects+count,[](const Visible&a,const Visible&b){return a.distance>b.distance;});
-  for(unsigned i=0;i<count;++i){auto o=objects[i];if(o.kind==0){auto s=rpg::dungeonSpawns[o.id];unsigned type=s.id==2?0:s.id==5?1:s.id==9?2:3,pose=0;if(o.id==rpg::dungeonEnemyAhead(g)){if(v.effect!=Effect::None)pose=v.effectOnHero?(v.effectFrame<3?1:2):3;else if(g.phase==rpg::Phase::Enemy)pose=1;}billboard(dungeonArt::enemies[type][pose],48,64,o.x+.5f,o.y+.5f,.8f);}
+  for(unsigned i=0;i<count;++i){auto o=objects[i];if(o.kind==0){auto s=rpg::dungeonSpawns[o.id];unsigned type=s.id==2?0:s.id==5?1:s.id==9?2:3,pose=0;if(o.id==rpg::dungeonEnemyAhead(g)){if(v.effect!=Effect::None)pose=v.effectOnHero?(v.effectFrame<3?1:2):(v.effectFrame>=4?3:0);else if(g.phase==rpg::Phase::Enemy)pose=1;}billboard(dungeonArt::enemies[type][pose],48,64,o.x+.5f,o.y+.5f,.8f);}
     else {unsigned prop=o.kind==2?o.id:rpg::dungeonPickups[o.id].id;billboard(dungeonArt::props[prop],32,32,o.x+.5f,o.y+.5f,.32f);if(o.distance<.1f){const auto* image=dungeonArt::props[prop];for(int y=0;y<32;++y)for(int x=0;x<32;++x)if(image[y*32+x]!=0xf81f)c.fillRect(104+x,130+y,1,1,image[y*32+x]);}}
   }
   unsigned step=std::min(7u,v.effectFrame);bool strike=v.effect!=Effect::None&&!v.effectOnHero;
@@ -34,10 +34,10 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   if(v.effect==Effect::Thrust){int end=146-int(step<5?step:7-step)*12;for(int k=0;k<3;++k)c.fillRect(end+k*4,62+k*5,4,65,UI_WHITE);}
   if(v.effect==Effect::Projectile){int travel=std::min(5u,step),cx=v.effectOnHero?120:176-travel*11,cy=v.effectOnHero?45+travel*15:141-travel*15;int radius=step>=5?5+(step-5)*5:5;for(int k=-radius;k<=radius;++k)c.fillRect(cx-abs(k)/2,cy+k,radius,1,step>=5?UI_WHITE:UI_BLUE);}
 
-  if(v.effect==Effect::Lightning){for(int y=30;y<130;y+=6)c.fillRect(118+(y/6%2?5:-5),y,5,7,0xaffe);}
+  if(v.effect==Effect::Lightning){for(int y=20;y<145;y+=6){int x=112+((y/6+step)%2?12:-12);c.fillRect(x-3,y,11,8,UI_BLUE);c.fillRect(x,y,5,8,UI_WHITE);}if(step>=4){int radius=12+int(step-4)*5;for(int k=-radius;k<=radius;++k){c.fillRect(120+k,116-radius+abs(k),2,3,UI_WHITE);c.fillRect(120+k,116+radius-abs(k),2,3,UI_BLUE);}}}
   if(v.effect==Effect::Slash&&v.effectOnHero)c.drawRect(0,0,240,172,UI_RED);
   if(v.effect==Effect::Shield){for(int k=0;k<3;++k)c.drawRect(k*3,k*3,240-k*6,172-k*6,UI_BLUE);}
-  if(v.effect==Effect::Rage){for(int k=0;k<3;++k)c.drawRect(k*2,k*2,240-k*4,172-k*4,(v.effectFrame&1)?0xfd20:UI_GOLD);}
+  if(v.effect==Effect::Rage){for(int k=0;k<3;++k)c.drawRect(k*2,k*2,240-k*4,172-k*4,(v.effectFrame&1)?0xfd20:UI_GOLD);for(int k=0;k<52;++k){int x=28+int(step)*20-k,y=32+k*2;if(x>0&&x<232)c.fillRect(x,y,7,4,k<15?UI_WHITE:0xfd20);}if(step>=4){int radius=8+int(step-4)*8;c.drawRect(120-radius,95-radius,radius*2,radius*2,UI_GOLD);}}
   c.fillRect(0,172,240,148,UI_INK);auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x,y);c.print(s);};char b[48];
   snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);text(4,176,b);static const char* directions[]={"N","L","S","O"};snprintf(b,sizeof(b),"ANDAR %u / %s / SELO %s",floor+1,directions[heading],g.dungeonLoot&8?"SIM":"NAO");text(4,186,b,UI_GOLD);
   const char* status=g.phase==rpg::Phase::Won?"Vitoria! Toque na cena":g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,196,shortText,UI_GREEN);

@@ -11,13 +11,13 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Guild:return bg_guild;case Page::GuildJoin:return bg_guildjoin;case Page::GuildMissions:return bg_missions;case Page::Race:return bg_race;case Page::Clothes:return bg_clothes;case Page::Club:return bg_club;case Page::ClubBattle:return bg_clubbattle;case Page::ClubResult:return bg_clubresult;
   case Page::NetworkTest:case Page::Clock:case Page::Menu:return bg_menu;case Page::Slots:return bg_slots;case Page::SlotConfirm:return bg_slotconfirm;case Page::DeleteSlot:return bg_delete;case Page::Settings:return bg_settings;case Page::Wifi:case Page::ForgetWifi:return bg_wifi;case Page::Keyboard:return bg_keyboard;case Page::Tests:return bg_tests;case Page::Travel:return bg_world;case Page::Ruins:return bg_map;
   case Page::TravelRoll:return bg_world;case Page::CityGoods:return bg_goods;case Page::GoodsBuy:return bg_goodsbuy;case Page::Explore:return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;
-  case Page::DungeonVictory:case Page::BagGear:case Page::DungeonEntry:case Page::CrystalBuy:case Page::DungeonExit:case Page::DungeonMenu:return bg_slotconfirm;case Page::Dungeon:return bg_explore1;
+  case Page::DungeonLoot:case Page::DungeonVictory:case Page::BagGear:case Page::DungeonEntry:case Page::CrystalBuy:case Page::DungeonExit:case Page::DungeonMenu:return bg_slotconfirm;case Page::Dungeon:return bg_explore1;
   case Page::Updates:return bg_updates;case Page::Card:return bg_card;
   case Page::Tavern:return bg_tavern;case Page::Contract:return bg_contract;case Page::QuestConfirm:return bg_questconfirm;
   case Page::Choose:return bg_choose;case Page::Help:return bg_guide;case Page::Home:return bg_camp;
@@ -57,6 +57,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
   char b[64];if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
+  if(v.page==Page::DungeonLoot){
+    center(18,"BAU ABERTO",2,UI_GOLD);box(86,55,68,68);sprite(92,61,gear_icons[g.p.cls],56,56);
+    center(143,v.message,1,UI_GREEN);center(170,"Guardado em Bolsa > Equipamentos");
+    center(186,"Equipe fora de um combate.");
+    button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
+  }
   if(v.page==Page::DungeonVictory){
     center(18,"ARCONTE DERROTADO!",2,UI_GOLD);
     center(76,"A cripta foi conquistada.");

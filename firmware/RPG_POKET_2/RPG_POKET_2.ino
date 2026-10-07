@@ -130,6 +130,10 @@ void tapped(int x,int y){
     if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
       if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?Page::Ruins:Page::Dungeon);}}return;
   }
+  if(view.page==Page::DungeonLoot){
+    if(hit(x,y,14,272,212)){view.page=Page::Dungeon;say("");return;}
+    if(hit(x,y,14,218,212)){unsigned count=rpg::gearOwnedCount(game.owned),index=0;auto id=rpg::gearOffer(game.p.cls,1);while(index<count&&rpg::gearOwnedAt(game.owned,index)!=id)++index;view.gearIndex=index/6;view.choice=index%6;view.page=Page::BagGear;say("");}return;
+  }
   if(view.page==Page::BagGear){
     if(hit(x,y,14,278,102)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
     unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
@@ -167,7 +171,7 @@ void tapped(int x,int y){
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
       if(rpg::dungeonCell(rpg::dungeonFloor(game),rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
       int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawns[enemy].id);say("Seu turno");savedTransition(Page::Dungeon);return;}
-      uint8_t before=game.dungeonLoot;const char* notice=rpg::dungeonCollect(game);if(before!=game.dungeonLoot){say(notice);savedTransition(Page::Dungeon);return;}if(notice){say(notice);return;}
+      uint8_t before=game.dungeonLoot;const char* notice=rpg::dungeonCollect(game);if(before!=game.dungeonLoot){say(notice);savedTransition((game.dungeonLoot&128)&&!(before&128)?Page::DungeonLoot:Page::Dungeon);return;}if(notice){say(notice);return;}
       if(rpg::dungeonStairs(game)){say("Escadas: novo andar");savedTransition(Page::Dungeon);return;}
       say("Nada para interagir aqui");return;
     }

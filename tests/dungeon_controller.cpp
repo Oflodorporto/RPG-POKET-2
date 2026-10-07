@@ -74,6 +74,10 @@ void tapped(int x,int y){
     if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
       if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?Page::Ruins:Page::Dungeon);}}return;
   }
+  if(view.page==Page::DungeonLoot){
+    if(hit(x,y,14,272,212)){view.page=Page::Dungeon;say("");return;}
+    if(hit(x,y,14,218,212)){unsigned count=rpg::gearOwnedCount(game.owned),index=0;auto id=rpg::gearOffer(game.p.cls,1);while(index<count&&rpg::gearOwnedAt(game.owned,index)!=id)++index;view.gearIndex=index/6;view.choice=index%6;view.page=Page::BagGear;say("");}return;
+  }
   if(view.page==Page::BagGear){
     if(hit(x,y,14,278,102)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
     unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
@@ -111,7 +115,7 @@ void tapped(int x,int y){
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
       if(rpg::dungeonCell(rpg::dungeonFloor(game),rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
       int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawns[enemy].id);say("Seu turno");savedTransition(Page::Dungeon);return;}
-      uint8_t before=game.dungeonLoot;const char* notice=rpg::dungeonCollect(game);if(before!=game.dungeonLoot){say(notice);savedTransition(Page::Dungeon);return;}if(notice){say(notice);return;}
+      uint8_t before=game.dungeonLoot;const char* notice=rpg::dungeonCollect(game);if(before!=game.dungeonLoot){say(notice);savedTransition((game.dungeonLoot&128)&&!(before&128)?Page::DungeonLoot:Page::Dungeon);return;}if(notice){say(notice);return;}
       if(rpg::dungeonStairs(game)){say("Escadas: novo andar");savedTransition(Page::Dungeon);return;}
       say("Nada para interagir aqui");return;
     }
@@ -370,10 +374,10 @@ int main(){
  // Boss victory is explicit and resumable; reward/mask applied once on the chosen exit.
  game=rpg::create(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;
  assert(currentPage()==Page::DungeonVictory);view.page=currentPage();nvs.fail=true;tapped(80,240);assert(view.page==Page::SaveError&&game.dungeonClears==1&&game.dungeonEnemies&64);
- nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.dungeonClears==1);tapped(80,100);assert(game.dungeonLoot&128);
+ nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.dungeonClears==1);tapped(80,100);assert(game.dungeonLoot&128&&view.page==Page::DungeonLoot);tapped(80,240);assert(view.page==Page::BagGear&&rpg::gearOwnedAt(game.owned,view.gearIndex*6+view.choice)==rpg::gearOffer(game.p.cls,1));
  // Leaving directly after the boss needs no maze backtracking and preserves gold.
  game=rpg::create(1,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;game.p.gold=456;view.page=currentPage();tapped(80,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game)&&game.p.gold==456&&game.dungeonClears==1);
  // Map Guardian returns to the Ruins screen, not the refuge.
- game=rpg::create(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
+ game=rpg::create(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;game.ruinsWins=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }
