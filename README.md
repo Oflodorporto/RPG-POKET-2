@@ -43,3 +43,5 @@ Firmware e artes mantem saves8 e o pacote estradas1 de417 recursos. Sem gravacao
 2026.10.06-dungeon1c: primeira pessoa, dois andares, selo, sete encontros e chefe, cristal por drop/300 ouro, 44 assets originais e saves9 com importacao1..8. [Controles e detalhes](docs/DUNGEON_PRIMEIRA_PESSOA.md). A arte da dungeon acompanha o firmware; artes.pak permanece compativel. Testes fisicos de wifi1 confirmados pelo usuario; dungeon1c confirmada funcionando na placa pelo usuario.
 
 2026.10.07-dia1: hora local e paletas do mundo: [guia dia1](docs/HORA_E_DIA_NOITE.md). Eventos e novos inimigos noturnos continuam planejados.
+
+2026.10.07-cartas1: [carta de Maelis e missao do hipogrifo](docs/CARTAS_E_HIPOGRIFO.md), Save11/128bytes com leitura1–10. Piloto: uma oferta diaria; demais eventos continuam planejados.

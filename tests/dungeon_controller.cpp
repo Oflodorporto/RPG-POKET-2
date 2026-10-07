@@ -378,7 +378,7 @@ int main(){
  tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(40,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Home&&game.tutorial);
  auto first=game;tapped(170,285);assert(view.page==Page::Menu);tapped(100,150);assert(view.page==Page::Slots&&menu.slots[0]==rpg::Load::Ok);
  tapped(80,130);assert(view.page==Page::SlotConfirm&&menu.slotChoice==1);tapped(80,190);assert(view.page==Page::Race&&menu.activeSlot==1);
- view.page=Page::Race;tapped(30,280);assert(view.page==Page::Menu);tapped(80,100);assert(view.page==Page::Menu&&journal.active<0);tapped(80,285);assert(view.page==Page::Race);tapped(170,280);
+ view.page=Page::Race;tapped(30,280);assert(view.page==Page::Menu);tapped(80,100);assert(view.page==Page::Menu&&journal.active<0);tapped(180,285);assert(view.page==Page::Race);tapped(170,280);
  tapped(130,220);tapped(130,220);tapped(100,280);tapped(170,290);tapped(40,290);tapped(100,280);assert(game.p.cls==2&&view.page==Page::Home);
  tapped(170,285);tapped(100,150);tapped(80,75);tapped(80,190);assert(menu.activeSlot==0&&game.p.cls==first.p.cls&&game.tutorial);
  // Cancellation must preserve both blobs. Confirmed deletion targets only slot2.

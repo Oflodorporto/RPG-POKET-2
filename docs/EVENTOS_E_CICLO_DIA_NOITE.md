@@ -1,6 +1,6 @@
 # Eventos da Guilda e ciclo de dia/noite
 
-**Plano e acompanhamento — 07/10/2026.** Conectado ao cânone `LORE_CANONICA_RPG_POKET_2.md`. A narrativa inicial foi integrada em lore1. A entrega dia1 implementa hora/fuso/ajuste manual e paletas de período, documentados em HORA_E_DIA_NOITE.md. Eventos, persistência diária, pergaminho e novos inimigos ainda são projeto posterior; o restante deste documento descreve o objetivo completo.
+**Plano e acompanhamento — 07/10/2026.** Conectado ao cânone `LORE_CANONICA_RPG_POKET_2.md`. A narrativa inicial foi integrada em lore1. A entrega dia1 implementa hora/fuso/ajuste manual e paletas de período, documentados em HORA_E_DIA_NOITE.md. Cartas1 acrescenta o piloto do hipogrifo, uma oferta diária após09h, pergaminho no relógio e persistência Save11; o uso está em CARTAS_E_HIPOGRIFO.md. Duas ofertas distintas, os outros sete eventos e novos inimigos continuam posteriores; o restante deste documento descreve o objetivo completo.
 
 ## Duas oportunidades por dia, oito histórias possíveis
 

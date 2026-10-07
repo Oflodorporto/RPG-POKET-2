@@ -77,9 +77,10 @@
   ],
   "daily_event_offers": 2,
   "implementation_state": "initial_narrative_ui_lore1",
-  "firmware_version": "2026.10.07-dia1",
+  "firmware_version": "2026.10.07-cartas1",
   "future_systems": [
-    "daily_events",
+    "two_distinct_daily_events",
+    "other_seven_events",
     "day_night_enemy_rosters",
     "additional_region_maps",
     "full_campaign_acts"
@@ -98,5 +99,7 @@
       "sha256": "e0fd6d9d34dbf6dc5dd0ca1e660db40333e8a77c7946b35aead3fa5eb089b7ef"
     }
   ],
-  "world_clock": "automatic_or_manual_utc_offset_and_period_palettes"
+  "world_clock": "automatic_or_manual_utc_offset_and_period_palettes",
+  "guild_event_pilot": "hippogriff_one_offer_per_local_day_after_09h",
+  "save_format": 11
 }
