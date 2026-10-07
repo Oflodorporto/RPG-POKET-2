@@ -27,16 +27,22 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   for(unsigned i=0;i<count;++i){auto o=objects[i];if(o.kind==0){auto s=rpg::dungeonSpawns[o.id];unsigned type=s.id==2?0:s.id==5?1:s.id==9?2:3,pose=0;if(o.id==rpg::dungeonEnemyAhead(g)){if(v.effect!=Effect::None)pose=v.effectOnHero?(v.effectFrame<3?1:2):3;else if(g.phase==rpg::Phase::Enemy)pose=1;}billboard(dungeonArt::enemies[type][pose],48,64,o.x+.5f,o.y+.5f,.8f);}
     else {unsigned prop=o.kind==2?o.id:rpg::dungeonPickups[o.id].id;billboard(dungeonArt::props[prop],32,32,o.x+.5f,o.y+.5f,.32f);if(o.distance<.1f){const auto* image=dungeonArt::props[prop];for(int y=0;y<32;++y)for(int x=0;x<32;++x)if(image[y*32+x]!=0xf81f)c.fillRect(104+x,130+y,1,1,image[y*32+x]);}}
   }
-  const auto* weapon=dungeonArt::weapons[g.p.cls][v.effect!=Effect::None&&!v.effectOnHero];for(int y=0;y<52;++y)for(int x=0;x<64;++x){uint16_t color=weapon[y*64+x];if(color!=0xf81f)c.fillRect(144+x,120+y,1,1,color);}
+  unsigned step=std::min(7u,v.effectFrame);bool strike=v.effect!=Effect::None&&!v.effectOnHero;
+  int wx=144,wy=120;if(strike){static const int swingX[]={0,6,12,-12,-32,-18,-8,0},swingY[]={0,6,10,-10,-22,-12,-4,0};wx+=swingX[step];wy+=swingY[step];}
+  const auto* weapon=dungeonArt::weapons[g.p.cls][strike&&step>=2&&step<=5];for(int y=0;y<52;++y)for(int x=0;x<64;++x){uint16_t color=weapon[y*64+x];if(color!=0xf81f)c.fillRect(wx+x,wy+y,1,1,color);}
+  if(v.effect==Effect::Slash&&!v.effectOnHero){int reach=35+step*22;for(int k=0;k<36;++k){int x=reach-k,y=38+k*2;if(x>=0&&x<237)c.fillRect(x,y,3,4,k<12?UI_WHITE:UI_GOLD);}}
+  if(v.effect==Effect::Thrust){int end=146-int(step<5?step:7-step)*12;for(int k=0;k<3;++k)c.fillRect(end+k*4,62+k*5,4,65,UI_WHITE);}
+  if(v.effect==Effect::Projectile){int travel=std::min(5u,step),cx=v.effectOnHero?120:176-travel*11,cy=v.effectOnHero?45+travel*15:141-travel*15;int radius=step>=5?5+(step-5)*5:5;for(int k=-radius;k<=radius;++k)c.fillRect(cx-abs(k)/2,cy+k,radius,1,step>=5?UI_WHITE:UI_BLUE);}
+
   if(v.effect==Effect::Lightning){for(int y=30;y<130;y+=6)c.fillRect(118+(y/6%2?5:-5),y,5,7,0xaffe);}
   if(v.effect==Effect::Slash&&v.effectOnHero)c.drawRect(0,0,240,172,UI_RED);
   if(v.effect==Effect::Shield){for(int k=0;k<3;++k)c.drawRect(k*3,k*3,240-k*6,172-k*6,UI_BLUE);}
   if(v.effect==Effect::Rage){for(int k=0;k<3;++k)c.drawRect(k*2,k*2,240-k*4,172-k*4,(v.effectFrame&1)?0xfd20:UI_GOLD);}
   c.fillRect(0,172,240,148,UI_INK);auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x,y);c.print(s);};char b[48];
   snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);text(4,176,b);static const char* directions[]={"N","L","S","O"};snprintf(b,sizeof(b),"ANDAR %u / %s / SELO %s",floor+1,directions[heading],g.dungeonLoot&8?"SIM":"NAO");text(4,186,b,UI_GOLD);
-  const char* status=g.phase==rpg::Phase::Won?"Vitoria! Toque em Continuar":g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,196,shortText,UI_GREEN);
+  const char* status=g.phase==rpg::Phase::Won?"Vitoria! Toque na cena":g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,196,shortText,UI_GREEN);
   auto button=[&](int x,int y,int w,int h,const char* label){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);if(h>30){int cx=x+w/2,cy=y+12;bool up=!strcmp(label,"Avancar"),down=!strcmp(label,"Recuar"),left=strchr(label,'<');if(up||down){c.fillRect(cx-2,cy-4,4,16,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx-k,cy+(up?-7+k:10-k),2*k+1,1,UI_GOLD);}else{c.fillRect(cx-10,cy-2,21,4,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx+(left?-12+k:12-k),cy-k,1,2*k+1,UI_GOLD);}text(x+(w-int(strlen(label))*6)/2,y+28,label);}else text(x+(w-int(strlen(label))*6)/2,y+(h-8)/2,label);};
   if(g.phase==rpg::Phase::Hero||g.phase==rpg::Phase::Enemy){snprintf(b,sizeof(b),"%s / HP %u",rpg::enemySpec(g.enemyId).name,g.enemyHp);c.fillRect(4,4,204,14,UI_INK);text(8,7,b,UI_GOLD);}
   button(4,208,74,39,"Girar <");button(82,208,74,39,"Avancar");button(160,208,76,39,"Girar >");button(4,252,74,39,"Lado <");button(82,252,74,39,"Recuar");button(160,252,76,39,"Lado >");
-  button(4,296,152,22,g.phase==rpg::Phase::Hero?"ATACAR":g.phase==rpg::Phase::Home?"ACAO / COLETAR":g.phase==rpg::Phase::Enemy?"TURNO INIMIGO":"CONTINUAR");button(160,296,76,22,"Menu");
+  button(4,296,152,22,"Bolsa");button(160,296,76,22,"Menu");
 }

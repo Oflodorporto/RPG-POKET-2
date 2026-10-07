@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.06-dungeon1c. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.06-bolsa1. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -90,7 +90,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(rpg::inDungeon(game))return Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Help):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Help):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll){menu.rollStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -105,7 +105,7 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):Effect::Slash,false);
+  if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
   else if(a==rpg::Action::Defensive)beginEffect(Effect::Shield,true);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;}
@@ -126,18 +126,43 @@ void tapped(int x,int y){
     Page page=view.page;if(hit(x,y,14,272,102)){view.page=page==Page::DungeonExit?Page::Dungeon:page==Page::CrystalBuy?Page::CityGoods:Page::Ruins;say("");}
     else if(hit(x,y,124,272,102)){if(page==Page::DungeonExit){if(rpg::leaveDungeon(game)){say("Saque preservado");savedTransition(Page::Ruins);}}
       else {const char* err=page==Page::CrystalBuy?rpg::buyCrystal(game):rpg::enterDungeon(game);if(err)say(err);else {say(page==Page::CrystalBuy?"Cristal comprado":"Explore e encontre o selo");savedTransition(page==Page::CrystalBuy?Page::CityGoods:Page::Dungeon);}}}return;}
+  if(view.page==Page::DungeonVictory){
+    if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
+      if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?Page::Ruins:Page::Dungeon);}}return;
+  }
+  if(view.page==Page::BagGear){
+    if(hit(x,y,14,278,102)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
+    unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
+    if(hit(x,y,10,200,68,24)||hit(x,y,162,200,68,24)){view.gearIndex=(view.gearIndex+(x<120?pages-1:1))%pages;view.choice=0;say("");return;}
+    for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
+    if(hit(x,y,124,278,102)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}
+      if(game.phase!=rpg::Phase::Home){say("Equipe depois do combate");return;}
+      auto err=rpg::equipGear(game,rpg::gearOwnedAt(game.owned,index));if(err)say(err);else {say("Equipamento alterado");savedTransition(Page::BagGear);}}return;
+  }
+  if(view.page==Page::Bag||view.page==Page::TownBag){
+    Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
+    if(hit(x,y,14,278,102)){view.page=back;say("");return;}
+    for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
+    if(hit(x,y,14,230,212)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
+    if(!hit(x,y,124,278,102))return;
+    if(view.choice>=2){say(view.choice==2?"Cristal: entrada nas Ruinas":"Usado automaticamente na viagem");return;}
+    bool mana=view.choice==1;
+    if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
+    if(game.phase!=rpg::Phase::Home){say("Termine o turno primeiro");return;}
+    auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
+    if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(view.page);return;
+  }
   if(view.page==Page::DungeonMenu){
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
-    int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,134,102)?3:hit(x,y,124,134,102)?4:hit(x,y,14,182,212)?5:-1;
-    if(a<0)return;if(game.phase==rpg::Phase::Hero){action(rpg::Action(a));return;}
-    if(game.phase!=rpg::Phase::Home||a<3||a>4){say("Use durante o combate");return;}
-    bool mana=a==4;auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
-    if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(Page::Dungeon);return;}
+    if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
+    int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,182,212)?5:-1;
+    if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
   if(view.page==Page::Dungeon){
     if(game.phase==rpg::Phase::Enemy)return;
     if(hit(x,y,160,296,76,22)){view.page=Page::DungeonMenu;say("");return;}
-    if(y<172||hit(x,y,4,296,152,22)){
+    if(hit(x,y,4,296,152,22)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
       if(rpg::dungeonCell(rpg::dungeonFloor(game),rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
@@ -331,13 +356,7 @@ void tapped(int x,int y){
       say(view.choice?"+1 pocao de mana":"+1 pocao de vida");savedTransition(Page::Shop);
     }return;
   }
-  if(view.page==Page::TownBag){
-    if(hit(x,y,14,270,212)){view.page=Page::Inventory;say("");return;}
-    int item=hit(x,y,14,172,212)?0:hit(x,y,14,218,212)?1:-1;if(item<0)return;
-    uint16_t before=item?game.p.mp:game.p.hp;const char* err=rpg::usePotionAtHome(game,item==1);if(err){say(err);return;}
-    snprintf(message,sizeof(message),"Recuperou %u %s",(item?game.p.mp:game.p.hp)-before,item?"MP":"HP");view.message=message;savedTransition(Page::TownBag);return;
-  }
-  if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(currentPage());}return;}
+  if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
   if(view.page==Page::Skills||view.page==Page::Bag){
     bool bag=view.page==Page::Bag;
@@ -347,7 +366,7 @@ void tapped(int x,int y){
   }
   if(hit(x,y,14,220,102))action(rpg::Action::Attack);
   else if(hit(x,y,124,220,102)){view.page=Page::Skills;say("");}
-  else if(hit(x,y,14,270,102)){view.page=Page::Bag;say("");}
+  else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
   else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
 }
 #include "ClubRadio.h"
@@ -368,7 +387,7 @@ void setup(){
   if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
   lastActivity=millis();activateTripPage();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}
-  Serial.printf("RPG POKET 2.0 2026.10.06-dungeon1c LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
+  Serial.printf("RPG POKET 2.0 2026.10.06-bolsa1 LCD=%d touch=%d flash=%u PSRAM=%u load=%u\n",lcdReady,touchReady,ESP.getFlashChipSize(),ESP.getPsramSize(),unsigned(loaded));
 }
 void loop(){
   uint32_t now=millis();
@@ -389,7 +408,7 @@ void loop(){
   if(view.page==Page::Clock&&uint32_t(now-clockPollAt)>=1000){clockPollAt=now;if(tickClock())dirty=true;}
   if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
     rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
-    view.message=message;savedTransition(currentPage());beginEffect(Effect::Slash,true);
+    view.message=message;savedTransition(currentPage());beginEffect(game.enemyId==5?Effect::Projectile:Effect::Slash,true);
   }
   if(lcdReady&&(dirty||((view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::Travel||view.page==Page::TravelRoll||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
   if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}

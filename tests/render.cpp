@@ -126,6 +126,12 @@ int main(int argc,char** argv){
     for(Page page:{Page::DungeonEntry,Page::DungeonMenu,Page::CrystalBuy,Page::DungeonExit}){v.page=page;render(c,g,v);c.save(root+"/dungeon-page-"+std::to_string(int(page))+".ppm");}
     for(unsigned enemy=0;enemy<4;++enemy)for(unsigned pose=0;pose<4;++pose){unsigned i=enemy==0?0:enemy==1?2:enemy==2?5:6;auto spawn=rpg::dungeonSpawns[i];g.dungeonFlags=1|(spawn.floor<<1);g.dungeonXY=spawn.x|((spawn.y+1)<<4);g.enemyId=spawn.id;g.enemyHp=rpg::enemySpec(spawn.id).hp;g.phase=rpg::Phase::Hero;v.page=Page::Dungeon;v.effect=pose?Effect::Slash:Effect::None;v.effectOnHero=pose==1||pose==2;v.effectFrame=pose==2?5:0;render(c,g,v);c.save(root+"/dungeon-enemy-"+std::to_string(enemy)+"-"+std::to_string(pose)+".ppm");}
   }
+  // All bag slots, maximum quantities and gear pagination; boss decision, each attack phase.
+  g=rpg::create(0,42);g.p.gold=999999;g.crystals=9;g.p.life=99;g.p.mana=99;g.rations=g.charts=g.charms=9;g.owned=(1u<<18)-1;v.effect=Effect::None;v.message="";
+  for(Page page:{Page::Bag,Page::TownBag,Page::BagGear})for(unsigned pg=0;pg<(page==Page::BagGear?3u:1u);++pg)for(unsigned slot=0;slot<6;++slot){v.page=page;v.choice=slot;v.gearIndex=pg;render(c,g,v);c.save(root+"/dungeon-bag-"+std::to_string(int(page))+"-"+std::to_string(pg)+"-"+std::to_string(slot)+".ppm");}
+  v.page=Page::DungeonVictory;g.gainXp=190;g.gainGold=65;render(c,g,v);c.save(root+"/dungeon-victory.ppm");
+  for(unsigned cls=0;cls<4;++cls){g=rpg::create(cls,42);g.city=1;g.crystals=1;rpg::enterDungeon(g);g.dungeonXY=0x72;g.phase=rpg::Phase::Hero;g.enemyId=2;g.enemyHp=19;v.page=Page::Dungeon;v.effectOnHero=false;
+    for(auto fx:{Effect::Slash,Effect::Projectile,Effect::Thrust,Effect::Lightning,Effect::Rage})for(unsigned step=0;step<8;++step){v.effect=fx;v.effectFrame=step;render(c,g,v);c.save(root+"/dungeon-fx-"+std::to_string(cls)+"-"+std::to_string(int(fx))+"-"+std::to_string(step)+".ppm");}}
   puts("PASS: shared firmware renderer; text bounds; 299+ screens; 56 distinct backgrounds; 1008 travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

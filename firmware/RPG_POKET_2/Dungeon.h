@@ -44,13 +44,14 @@ inline const char* dungeonMove(Game& g,int forward,int side,int turn){
 }
 inline const char* dungeonCollect(Game& g){
   if(!inDungeon(g)||g.phase!=Phase::Home)return "Termine o combate";
+  const char* chestNotice=nullptr;
   for(unsigned i=0;i<8;++i){auto s=dungeonPickups[i];if((g.dungeonLoot&(1u<<i))||s.floor!=dungeonFloor(g)||s.x!=dungeonX(g)||s.y!=dungeonY(g))continue;
     if(i==7&&!(g.dungeonEnemies&64))return "Bau protegido pelo chefe";
     if(i==1||i==5){if(g.p.life>=99)return "Bolsa de vida cheia";++g.p.life;}
     else if(i==2||i==6){if(g.p.mana>=99)return "Bolsa de mana cheia";++g.p.mana;}
-    else if(i==7){uint8_t id=gearOffer(g.p.cls,1);if(gearOwns(g.owned,id))g.p.gold=std::min<uint32_t>(999999u,g.p.gold+50);else g.owned|=1u<<(id-1);}
+    else if(i==7){uint8_t id=gearOffer(g.p.cls,1);if(gearOwns(g.owned,id)){g.p.gold=std::min<uint32_t>(999999u,g.p.gold+50);chestNotice="Duplicado: +50 ouro";}else {g.owned|=1u<<(id-1);chestNotice=gearName(id);}}
     else if(i!=3)g.p.gold=std::min<uint32_t>(999999u,g.p.gold+(i==0?25u:60u));
-    g.dungeonLoot|=1u<<i;return i==3?"Selo obtido! Porta liberada":i==7?"Reliquia na bolsa!":i==1||i==5?"Pocao de vida coletada":i==2||i==6?"Pocao de mana coletada":"Ouro coletado!";
+    g.dungeonLoot|=1u<<i;return i==3?"Selo obtido! Porta liberada":i==7?chestNotice:i==1||i==5?"Pocao de vida coletada":i==2||i==6?"Pocao de mana coletada":"Ouro coletado!";
   }
   return nullptr;
 }

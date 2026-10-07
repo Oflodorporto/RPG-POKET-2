@@ -34,7 +34,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(rpg::inDungeon(game))return Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Help):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Help):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll){menu.rollStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -49,7 +49,7 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):Effect::Slash,false);
+  if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
   else if(a==rpg::Action::Defensive)beginEffect(Effect::Shield,true);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;}
@@ -70,18 +70,43 @@ void tapped(int x,int y){
     Page page=view.page;if(hit(x,y,14,272,102)){view.page=page==Page::DungeonExit?Page::Dungeon:page==Page::CrystalBuy?Page::CityGoods:Page::Ruins;say("");}
     else if(hit(x,y,124,272,102)){if(page==Page::DungeonExit){if(rpg::leaveDungeon(game)){say("Saque preservado");savedTransition(Page::Ruins);}}
       else {const char* err=page==Page::CrystalBuy?rpg::buyCrystal(game):rpg::enterDungeon(game);if(err)say(err);else {say(page==Page::CrystalBuy?"Cristal comprado":"Explore e encontre o selo");savedTransition(page==Page::CrystalBuy?Page::CityGoods:Page::Dungeon);}}}return;}
+  if(view.page==Page::DungeonVictory){
+    if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
+      if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?Page::Ruins:Page::Dungeon);}}return;
+  }
+  if(view.page==Page::BagGear){
+    if(hit(x,y,14,278,102)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
+    unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
+    if(hit(x,y,10,200,68,24)||hit(x,y,162,200,68,24)){view.gearIndex=(view.gearIndex+(x<120?pages-1:1))%pages;view.choice=0;say("");return;}
+    for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
+    if(hit(x,y,124,278,102)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}
+      if(game.phase!=rpg::Phase::Home){say("Equipe depois do combate");return;}
+      auto err=rpg::equipGear(game,rpg::gearOwnedAt(game.owned,index));if(err)say(err);else {say("Equipamento alterado");savedTransition(Page::BagGear);}}return;
+  }
+  if(view.page==Page::Bag||view.page==Page::TownBag){
+    Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
+    if(hit(x,y,14,278,102)){view.page=back;say("");return;}
+    for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
+    if(hit(x,y,14,230,212)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
+    if(!hit(x,y,124,278,102))return;
+    if(view.choice>=2){say(view.choice==2?"Cristal: entrada nas Ruinas":"Usado automaticamente na viagem");return;}
+    bool mana=view.choice==1;
+    if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
+    if(game.phase!=rpg::Phase::Home){say("Termine o turno primeiro");return;}
+    auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
+    if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(view.page);return;
+  }
   if(view.page==Page::DungeonMenu){
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
-    int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,134,102)?3:hit(x,y,124,134,102)?4:hit(x,y,14,182,212)?5:-1;
-    if(a<0)return;if(game.phase==rpg::Phase::Hero){action(rpg::Action(a));return;}
-    if(game.phase!=rpg::Phase::Home||a<3||a>4){say("Use durante o combate");return;}
-    bool mana=a==4;auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
-    if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(Page::Dungeon);return;}
+    if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
+    int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,182,212)?5:-1;
+    if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
   if(view.page==Page::Dungeon){
     if(game.phase==rpg::Phase::Enemy)return;
     if(hit(x,y,160,296,76,22)){view.page=Page::DungeonMenu;say("");return;}
-    if(y<172||hit(x,y,4,296,152,22)){
+    if(hit(x,y,4,296,152,22)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
       if(game.phase!=rpg::Phase::Home){rpg::dungeonResolve(game);say("");savedTransition(rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
       if(rpg::dungeonCell(rpg::dungeonFloor(game),rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
@@ -275,13 +300,7 @@ void tapped(int x,int y){
       say(view.choice?"+1 pocao de mana":"+1 pocao de vida");savedTransition(Page::Shop);
     }return;
   }
-  if(view.page==Page::TownBag){
-    if(hit(x,y,14,270,212)){view.page=Page::Inventory;say("");return;}
-    int item=hit(x,y,14,172,212)?0:hit(x,y,14,218,212)?1:-1;if(item<0)return;
-    uint16_t before=item?game.p.mp:game.p.hp;const char* err=rpg::usePotionAtHome(game,item==1);if(err){say(err);return;}
-    snprintf(message,sizeof(message),"Recuperou %u %s",(item?game.p.mp:game.p.hp)-before,item?"MP":"HP");view.message=message;savedTransition(Page::TownBag);return;
-  }
-  if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(currentPage());}return;}
+  if(view.page==Page::Result){if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
   if(view.page==Page::Skills||view.page==Page::Bag){
     bool bag=view.page==Page::Bag;
@@ -291,7 +310,7 @@ void tapped(int x,int y){
   }
   if(hit(x,y,14,220,102))action(rpg::Action::Attack);
   else if(hit(x,y,124,220,102)){view.page=Page::Skills;say("");}
-  else if(hit(x,y,14,270,102)){view.page=Page::Bag;say("");}
+  else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
   else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
 }
 int main(){
@@ -339,9 +358,22 @@ int main(){
  game=rpg::create(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;journal.blocked=false;
  tapped(100,70);assert(view.page==Page::DungeonEntry);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.crystals==0&&rpg::inDungeon(game));
  nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.crystals==0);tapped(30,230);auto sequence=journal.seq;tapped(110,230);assert(journal.seq==sequence);tapped(190,230);assert(rpg::dungeonHeading(game)==1&&journal.seq==sequence+1);
- tapped(110,230);tapped(110,230);assert(game.phase==rpg::Phase::Hero&&game.enemyId==2&&view.page==Page::Dungeon);combatFx.kind=Effect::None;game.enemyHp=1;game.p.atk=99;tapped(80,305);assert(view.page==Page::Dungeon||view.page==Page::SaveError);combatFx.kind=Effect::None;
- game.phase=rpg::Phase::Won;game.enemyHp=0;assert(journal.save(game));tapped(80,305);assert(game.phase==rpg::Phase::Home&&game.dungeonEnemies&1);tapped(190,305);assert(view.page==Page::DungeonMenu);tapped(100,250);assert(view.page==Page::DungeonExit);tapped(180,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game));
+ tapped(110,230);tapped(110,230);assert(game.phase==rpg::Phase::Hero&&game.enemyId==2&&view.page==Page::Dungeon);combatFx.kind=Effect::None;game.enemyHp=1;game.p.atk=99;tapped(80,100);assert(view.page==Page::Dungeon||view.page==Page::SaveError);combatFx.kind=Effect::None;
+ game.phase=rpg::Phase::Won;game.enemyHp=0;assert(journal.save(game));tapped(80,100);assert(game.phase==rpg::Phase::Home&&game.dungeonEnemies&1);tapped(190,305);assert(view.page==Page::DungeonMenu);tapped(100,250);assert(view.page==Page::DungeonExit);tapped(180,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game));
  game=rpg::create(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;view.page=Page::Dungeon;
- tapped(80,305);assert(view.page==Page::Dungeon&&game.phase==rpg::Phase::Hero&&game.enemyId==8&&!(game.dungeonLoot&128));combatFx.kind=Effect::None;
+ tapped(80,100);assert(view.page==Page::Dungeon&&game.phase==rpg::Phase::Hero&&game.enemyId==8&&!(game.dungeonLoot&128));combatFx.kind=Effect::None;
+ // Bag quantities survive reload, potions use once, crystal is not consumed by browsing.
+ combatFx.kind=Effect::None;game.phase=rpg::Phase::Home;view.page=Page::Dungeon;game.p.hp=1;game.p.life=2;game.crystals=3;
+ tapped(80,305);assert(view.page==Page::Bag);tapped(180,294);assert(game.p.life==1&&game.crystals==3&&game.p.hp>1);
+ auto consumed=game.p.life;tapped(170,90);assert(view.choice==2);tapped(180,294);assert(game.crystals==3&&game.p.life==consumed);
+ tapped(60,294);assert(view.page==Page::Dungeon);tapped(80,305);tapped(100,245);assert(view.page==Page::BagGear);tapped(60,294);assert(view.page==Page::Bag);
+ // Boss victory is explicit and resumable; reward/mask applied once on the chosen exit.
+ game=rpg::create(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;
+ assert(currentPage()==Page::DungeonVictory);view.page=currentPage();nvs.fail=true;tapped(80,240);assert(view.page==Page::SaveError&&game.dungeonClears==1&&game.dungeonEnemies&64);
+ nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.dungeonClears==1);tapped(80,100);assert(game.dungeonLoot&128);
+ // Leaving directly after the boss needs no maze backtracking and preserves gold.
+ game=rpg::create(1,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;game.p.gold=456;view.page=currentPage();tapped(80,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game)&&game.p.gold==456&&game.dungeonClears==1);
+ // Map Guardian returns to the Ruins screen, not the refuge.
+ game=rpg::create(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }
