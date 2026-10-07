@@ -1,0 +1,27 @@
+{
+  "source": "generated original hippogriff for RPG POKET",
+  "source_sha256": "040af3e56429e415473ddc68c46a8bb9bc81c36e8402c1b6c3b4e8364f31a0f6",
+  "frames": 4,
+  "width": 80,
+  "height": 86,
+  "facing": "left",
+  "flash_bytes": 55040,
+  "crop_columns": [
+    [
+      33,
+      529
+    ],
+    [
+      546,
+      1027
+    ],
+    [
+      1063,
+      1615
+    ],
+    [
+      1641,
+      2143
+    ]
+  ]
+}

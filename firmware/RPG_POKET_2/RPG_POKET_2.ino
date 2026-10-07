@@ -30,7 +30,7 @@ struct NvsStore {
     if(!ready)return rpg::Read::Error;
     if(!prefs.isKey(key))return rpg::Read::Missing;
     size_t n=prefs.getBytesLength(key);if(n!=64&&n!=96&&n!=rpg::SAVE_SIZE)return rpg::Read::Error;memset(b,0,rpg::SAVE_SIZE);
-    return prefs.getBytes(key,b,n)==n?rpg::Read::Ok:rpg::Read::Error;
+    return prefs.getBytes(key,b,n)==n&&rpg::get16(b,6)==n?rpg::Read::Ok:rpg::Read::Error;
   }
   bool write(const char* key,const uint8_t* b){return ready&&prefs.putBytes(key,b,rpg::SAVE_SIZE)==rpg::SAVE_SIZE;}
   bool deleted(uint8_t slot){char k[4];snprintf(k,sizeof(k),"t%u",slot);return prefs.getBool(k,false);}
