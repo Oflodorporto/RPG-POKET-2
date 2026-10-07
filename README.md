@@ -45,3 +45,7 @@ Firmware e artes mantem saves8 e o pacote estradas1 de417 recursos. Sem gravacao
 2026.10.07-dia1: hora local e paletas do mundo: [guia dia1](docs/HORA_E_DIA_NOITE.md). Eventos e novos inimigos noturnos continuam planejados.
 
 2026.10.07-cartas1: [carta de Maelis e missao do hipogrifo](docs/CARTAS_E_HIPOGRIFO.md), Save11/128bytes com leitura1–10. Piloto: uma oferta diaria; demais eventos continuam planejados.
+
+## Tela de titulo e jornada
+
+A versao titulo1 abre no titulo em todo reinicio, protege os tres slots na criacao e concentra as configuracoes. Menu > Diario > Objetivo orienta a historia sem modificar os saves. Consulte [guia e testes](docs/TELA_TITULO_E_JORNADA.md).

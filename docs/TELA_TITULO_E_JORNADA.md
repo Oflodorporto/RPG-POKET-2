@@ -23,3 +23,9 @@ Versão **2026.10.07-titulo1**, build2026100705. Abertura vertical inspirada na 
 5. No Diário, abrir Objetivo, conversar e relembrar. Ouro, itens e recompensas ficam intactos durante a leitura.
 
 Save11 e leitura1–11 permanecem iguais; sem mudança de partição ou pacote de artes. Sem gravação automática na placa pelo agente, formato de SD/NVS, pacote .rpg ou alteração da Heltec. Compilação e testes em software não substituem teste físico.
+
+## Validação final
+
+18 conjuntos de testes e compilação ESP32-S3 aprovados. 21prévias geradas e amostra inspecionada. [CI37669986839](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37669986839); commit `492d2d9664926b6ebdbf2e6693174d78564cb3f5`. Release/latest e arquivos baixados conferidos por SHA-256; pacoteSD inalterado. Teste físico pendente.
+
+Firmware publicado: 2291840bytes; o log da compilação separa programa e variáveis. Brasão e fundo totalizam99.104bytes de flash; não ocupam novo espaço no SD.
