@@ -1,6 +1,6 @@
 # Pacote 2 — Exploração variada
 
-Versão 2026.10.08-exploracao1, build 2026100807. Candidata em validação; não recomendar instalação antes de verificar a release final em CONTINUE_ATUAL.txt.
+Versão 2026.10.08-exploracao1, build 2026100807. Publicada e verificada. As25 suítes e a compilação passaram no GitHub; downloads finais conferidos por tamanho, SHA-256, CRC e catálogo. Teste físico desta versão ainda cabe ao usuário.
 
 Explorar agora sorteia 50% combates, 20% achados, 20% baús e 10% pequenos encontros positivos na estrada. Guardião, missões de campanha, viagem D20 e dungeon conservam seus acessos e controles.
 

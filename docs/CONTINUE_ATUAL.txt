@@ -1,4 +1,38 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 2 — EXPLORAÇÃO VARIADA
+Versão2026.10.08-exploracao1, build2026100807.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-exploracao1
+Commit do firmware: 7339b94f87bf19987e504c196ea0e96f121f489b
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37845313444 — sucesso.
+
+ENTREGUE: Explorar sorteia50% combate,20% achado,20% baú e10% encontro positivo. Cinco por cento dos baús são mímicos, cerca de1% das explorações; ruído indica risco e Abrir/Deixar é escolha. Quatro mímicos regionais, animação de mandíbula própria, Carvalho adaptado a novos níveis1–2. Ouro, poções, ração, arma por classe/nível/região, bota/roupa velha. Equipamento duplicado vira ouro. Sucata: slot próprio de até9, vender2g/unidade ou descartar. Conteúdo e recibo são salvos antes da tela; reinício/falha não rerrola nem duplica prêmio. Dia/noite varia provisão de pequenos encontros locais.
+Mapa/D20/deslocamento, campanha, guardian/dungeon e progressão conservados. Baús com trancas/gazuas são pacote3, ainda não implementados. Arte SD permanece byte a byte igual à origens1:459 entradas,6.846.544 bytes, CRC19aa0797; sem novas leituras SD por quadro.
+Save18/128 bytes/CRC124, lê1–18. Bytes60–63 guardam descoberta/conteúdo/quantidade/sucata; campos antigos preservados. Firmware antigo não lê save18; não fazer downgrade sem backup compatível.
+25 suítes passaram, incluindo100.000 explorações simuladas (50.002 combates,19.975 achados,19.884 baús,10.139 encontros;1.025 mímicos). Média de ouro por descoberta4,29 (não inclui combates ou venda de equipamentos).
+Compilação final: Sketch uses 2672382 bytes (84%) of program storage space. Maximum is 3145728 bytes. Global variables use 53724 bytes (16%) of dynamic memory, leaving 273956 bytes for local variables. Maximum is 327680 bytes.
+Downloads verificados e hashes: releases/2026.10.08-exploracao1/VERIFICACAO.json. Firmware final:2672528 bytes. Teste físico pendente do usuário.
+
+PASTA CANÔNICA:
+C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: firmware/RPG_POKET_2/RPG_POKET_2.ino
+Guia: PACOTE_2_EXPLORACAO_VARIADA.md
+Preview: validacao/previa-exploracao1.png
+Nova regra: firmware/RPG_POKET_2/Exploration.h
+Testes: tests/exploration_save.cpp; title_controller.cpp; render.cpp. Snapshot real do controlador conferido.
+Mirror: github_publicacao, não é checkout Git.
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler integralmente este TXT, PACOTE_2_EXPLORACAO_VARIADA.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h/Save.h e commit antes de editar.
+2. Confirmar teste físico do usuário: Configurações > Atualização, depois Explorar em Carvalho/Ruínas. Conferir variedade, recompensa, reinício no achado/recibo, bolsa/Sucata, mímico e retorno. Não criar outro pacote enquanto corrigimos essa entrega se houver erro.
+3. Planejar Pacote3 — Trancas e gazuas: escolhas claras, CD, atributo, consumo/custo explícitos, tentativas limitadas, nenhuma pista principal atrás de sorte. Ainda não implementado.
+4. Projetar persistência sem reutilizar campos ocupados: bytes60–63 e122–123 já usados. Atualizar saves/backend/migração/testes se precisar aumentar formato; preservar slots/itens e animações de viagem.
+5. Testar regras/saves, controlador real e telas; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB com EraseFlash=none; validar candidato no GitHub, promover e conferir downloads; registrar continuação e teste físico.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático, .rpg, NVS erase, formatação SD. Usuário instala pelo cabo ou confirma OTA na placa. Entrega final é firmware.bin da release verificada; build/ local antigo não deve ser usado.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
 PACOTE 1 — ORIGEM E ROSTOS
 Versão 2026.10.08-origens1; build 2026100806.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-origens1
