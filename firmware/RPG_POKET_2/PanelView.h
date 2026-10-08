@@ -13,12 +13,13 @@ template<class C>void panelImage(C& c,const uint16_t* palette,unsigned asset,int
 #define PANEL_IMAGE(c,name) panelImage(c,panelArt::name##Palette,panelArt::name##Asset)
 template<class C>void panelLabel(C& c,int x,int y,int w,const char* s,uint16_t color=UI_WHITE,int size=1){c.fillRect(x,y,w,8*size+2,0x0843);int len=int(strlen(s))*6*size;if(len>w){size=1;len=int(strlen(s))*6;}c.setTextSize(size);c.setTextColor(color);c.setCursor(x+std::max(0,(w-len)/2),y+1);char clipped[64];snprintf(clipped,sizeof(clipped),"%.*s",std::min(63,w/(6*size)),s);c.print(clipped);}
 template<class C>void panelBar(C& c,int x,int y,int w,unsigned value,unsigned maximum,uint16_t color){c.fillRect(x,y,w,4,0x18c6);c.fillRect(x,y,maximum?int(uint64_t(w)*std::min(value,maximum)/maximum):0,4,color);}
+template<class C>void panelCrop(C& c,const uint16_t* palette,unsigned asset,int sx,int sy,int iw,int ih,int x,int y,int w,int h){const auto* source=assetBytes(asset);uint16_t row[48];for(int py=0;py<h;++py){for(int px=0;px<w;++px)row[px]=palette[source[(sy+py*ih/h)*240+sx+px*iw/w]];c.draw16bitRGBBitmap(x,y+py,row,w,1);}}
 template<class C>void panelHero(C& c,const rpg::Game& g,int x,int y,int w,int h,unsigned frame=0){c.fillRect(x,y,w,h,0x0843); // only the live personalized hero is displayed
  for(int py=0;py<h;++py)for(int px=0;px<w;++px){auto color=personalPixel(g,6,(py*66/h)*80+px*80/w);if(color!=0xf81f)c.fillRect(x+px,y+py,1,1,color);} (void)frame;
 }
 template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,skills);panelHero(c,g,90,89,62,48);char b[64];
- snprintf(b,sizeof(b),"HP %u/%u  MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);panelLabel(c,75,142,93,b);panelBar(c,78,154,37,g.p.hp,g.p.maxhp,UI_RED);panelBar(c,124,154,37,g.p.mp,g.p.maxmp,UI_BLUE);
+ PANEL_IMAGE(c,skills);panelHero(c,g,90,89,62,48);c.fillRect(75,140,93,18,0x0843);char b[64];
+ snprintf(b,sizeof(b),"HP%u/%u",g.p.hp,g.p.maxhp);panelLabel(c,75,142,46,b);snprintf(b,sizeof(b),"MP%u/%u",g.p.mp,g.p.maxmp);panelLabel(c,123,142,46,b);panelBar(c,78,154,37,g.p.hp,g.p.maxhp,UI_RED);panelBar(c,124,154,37,g.p.mp,g.p.maxmp,UI_BLUE);
  for(int i=0;i<2;++i){int y=180+i*48;c.fillRect(75,y,132,31,0x0843);snprintf(b,sizeof(b),"%s / %u MP",rpg::skillName(g.p.cls,i),rpg::skillCost(g.p.cls,i));panelLabel(c,75,y,132,b,UI_GOLD);
  const char* desc=i?(g.p.cls<2?"Bloqueia 75%":g.p.cls==3?"Cura 25% / guarda 50%":"Bloqueia 50%"):(g.p.cls==0?"+80% / ignora defesa":g.p.cls==3?"Dano dobrado":g.p.cls==2?"+50% / nao erra":"Dano +50%");panelLabel(c,75,y+19,132,desc);
  if(g.p.cls!=0){c.fillRect(34,y,34,29,0x0843);magicSprite(c,i?sprites_shield[0]:sprites_slash[0],64,72,35,y,32,29);}}
@@ -26,7 +27,7 @@ template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v
 }
 template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
  PANEL_IMAGE(c,bag);char b[64];snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);panelLabel(c,92,57,78,b,UI_GOLD);
- panelHero(c,g,55,72,51,41);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,112,77,66,b);panelBar(c,114,88,65,g.p.hp,g.p.maxhp,UI_RED);
+ panelHero(c,g,55,72,51,41);c.fillRect(110,72,76,41,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,112,77,66,b);panelBar(c,114,88,65,g.p.hp,g.p.maxhp,UI_RED);
  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,112,97,66,b);panelBar(c,114,106,65,g.p.mp,g.p.maxmp,UI_BLUE);
  const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit"};unsigned q[]={g.p.life,g.p.mana,g.crystals,g.rations,g.charts,g.charms,unsigned(g.sleepKit)};
  for(unsigned i=0;i<7;++i){auto r=panelUi::bagSlot(i);c.fillRect(r.x+30,r.y+17,11,9,0x0843);snprintf(b,sizeof(b),"%u",q[i]);panelLabel(c,r.x+22,r.y+17,19,b,q[i]?UI_GREEN:UI_MUTED);for(int border=0;border<3;++border)c.drawRect(r.x+border,r.y+border,r.w-border*2,r.h-border*2,i==v.choice?UI_GOLD:0x3186);}
@@ -34,12 +35,12 @@ template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
  const char* desc=i==0?"Recupera 50% HP":i==1?"Recupera 50% MP":i==2?"Chave da cripta":i==3?"Comida no acampamento":i==6?"Kit de acampamento":"Bonus na viagem";panelLabel(c,89,247,105,desc);
  // The sample detail potion is replaced by the selected inventory icon.
  
- c.fillRect(55,231,29,24,0x0843);if(i==6)magicSprite(c,campArt::bedroll,48,48,57,232,25,22);else magicSprite(c,dungeonArt::props[i==0?6:i==1?7:i==2?4:i==3?0:i==4?5:11],32,32,57,232,25,22);
+ auto icon=panelUi::bagSlot(i);panelCrop(c,panelArt::bagPalette,panelArt::bagAsset,icon.x+10,icon.y+2,23,18,55,231,29,24);
  snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));panelLabel(c,92,269,101,b);
  if(*v.message)panelLabel(c,4,310,232,v.message,UI_RED);
 }
 template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
- PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);panelLabel(c,97,120,53,rpg::className(g.p.cls),UI_GOLD);char b[64];
+ PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);panelLabel(c,88,120,70,rpg::className(g.p.cls),UI_GOLD);c.fillRect(54,139,132,18,0x0843);c.fillRect(55,161,63,19,0x0843);c.fillRect(124,161,63,19,0x0843);char b[64];
  snprintf(b,sizeof(b),"Nv %u  XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g.p.level));panelLabel(c,54,142,132,b);panelBar(c,60,152,120,g.p.xp,rpg::xpNeeded(g.p.level),UI_GREEN);
  snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,56,164,61,b);panelBar(c,59,175,56,g.p.hp,g.p.maxhp,UI_RED);
  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,124,164,63,b);panelBar(c,126,175,56,g.p.mp,g.p.maxmp,UI_BLUE);
@@ -49,7 +50,7 @@ template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
  scenicPanel(c,40,240,160,31);snprintf(b,sizeof(b),"Sobrevivencia %u",rpg::survival(g));panelLabel(c,45,245,150,b,UI_GREEN);snprintf(b,sizeof(b),"Sorte %u",rpg::luck(g));panelLabel(c,45,258,150,b,UI_GOLD);
 }
 template<class C>void drawPanelVillage(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,village);char b[48];snprintf(b,sizeof(b),"Explorar Nv %u+",rpg::cityLevel(g.city));panelLabel(c,77,52,89,b);snprintf(b,sizeof(b),"%lu OURO",(unsigned long)g.p.gold);panelLabel(c,96,61,49,b,UI_GOLD);if(*v.message)panelLabel(c,7,166,226,v.message,UI_RED);
+ PANEL_IMAGE(c,village);char b[48];snprintf(b,sizeof(b),"Explorar Nv %u+",rpg::cityLevel(g.city));panelLabel(c,77,52,89,b);snprintf(b,sizeof(b),"%lu g",(unsigned long)g.p.gold);panelLabel(c,96,61,49,b,UI_GOLD);if(*v.message)panelLabel(c,7,166,226,v.message,UI_RED);
 }
 template<class C>void panelCampBackdrop(C& c,const rpg::Game& g,const ViewState& v){
  if(v.page==Page::CampSetup){PANEL_IMAGE(c,campSetup);}else if(v.page==Page::CampRoll){PANEL_IMAGE(c,campRoll);}else {PANEL_IMAGE(c,campRest);}
@@ -62,3 +63,5 @@ template<class C>struct PanelEffectCanvas {
  void drawRect(int x,int y,int w,int h,uint16_t color){c.drawRect(x,y+34,w,h,color);}
  void draw16bitRGBBitmap(int x,int y,uint16_t* pixels,int w,int h){c.draw16bitRGBBitmap(x,y+34,pixels,w,h);}
 };
+
+
