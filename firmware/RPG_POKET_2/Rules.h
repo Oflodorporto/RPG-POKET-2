@@ -32,6 +32,7 @@ struct Game {
   bool guardianDefeated=false;bool dndProgression=false,tough=false;uint8_t attributes[6]={8,12,14,16,12,10},advancementSpent=0;
   uint8_t oath=0,laySpent=0,sacredTurns=0,turnedTurns=0;bool channelSpent=false;
   uint8_t enemyBeat=0;
+  uint8_t campaignFlags=0,campaignStage=0;
   uint8_t windSpent=0,surgeSpent=0,rageSpent=0,rageTurns=0;bool surgePending=false,surgeTurnUsed=false;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;

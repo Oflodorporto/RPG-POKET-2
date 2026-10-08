@@ -73,3 +73,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Revisão para lançamento
 
 2026.10.08-lancamento1 aplica cinco de dez melhorias: intenções de inimigos, preparação de viagem, compra comparativa, recuperação após derrota e guia. [Revisão completa e limites](docs/REVISAO_LANCAMENTO_10_MELHORIAS.md). 22 suítes; save15/leitura1–15; artes compatíveis. A campanha completa ainda está em desenvolvimento.
+
+## A campanha chega a Mares
+
+2026.10.08-mares1: duas missões de Sabela depois da Cripta, nível10+, provas da Mão de Cinza e resgate dos refugiados. [Como jogar e limites](docs/CAMPANHA_MARES.md). 23 suítes, save16/importação1–15, mesmas artes. Aurora e o final ainda estão em desenvolvimento.

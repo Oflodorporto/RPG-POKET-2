@@ -194,6 +194,9 @@ int main(int argc,char** argv){
   v.page=Page::Recovery;g.p.hp=1;render(c,g,v);c.save(root+"/launch-recovery.ppm");
   for(unsigned id:{1u,2u,3u,5u,7u,8u})for(unsigned beat=0;beat<3;++beat){g=rpg::create(2,42);g.ruinsWins=3;rpg::begin(g,id);g.enemyBeat=beat;v.page=Page::Battle;render(c,g,v);c.save(root+"/launch-intent-"+std::to_string(id)+"-"+std::to_string(beat)+".ppm");}
   g=rpg::create(2,42);g.p.xp=2700;rpg::levelUp(g);g.p.gold=9999;g.owned=1u<<6;g.equipped[0]=7;v.page=Page::GearBuy;v.itemId=8;render(c,g,v);c.save(root+"/launch-gear.ppm");
+  g=rpg::create(2,77);g.p.xp=64000;rpg::levelUp(g);g.tutorial=true;g.city=2;g.dungeonClears=1;v.message="";v.effect=Effect::None;menu.personIndex=0;
+  for(unsigned mission=1;mission<=2;++mission){g.campaignFlags=mission-1;v.campaignChoice=mission;v.page=Page::CampaignTask;render(c,g,v);c.save(root+"/campaign-task-"+std::to_string(mission)+".ppm");rpg::startCampaign(g,mission);g.enemyHp=0;rpg::finish(g);v.page=Page::CampaignResult;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);for(unsigned i=0;i<4;++i){v.campaignScene=i;render(c,g,v);c.save(root+"/campaign-result-"+std::to_string(mission)+"-"+std::to_string(i)+".ppm");}rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));rpg::resolveCampaign(g);}
+  g.phase=rpg::Phase::Lost;g.campaignStage=2;v.page=Page::CampaignResult;render(c,g,v);c.save(root+"/campaign-loss.ppm");g.phase=rpg::Phase::Fled;render(c,g,v);g.campaignStage=0;g.phase=rpg::Phase::Home;g.campaignFlags=3;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/campaign-sabela.ppm");v.page=Page::Campaign;render(c,g,v);c.save(root+"/campaign-aurora.ppm");
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

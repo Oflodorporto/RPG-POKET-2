@@ -35,7 +35,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -70,7 +70,7 @@ void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
-  backend.slot=slot;menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;helpReturn=Page::Home;menu.storyIndex=0;menu.storyReplay=false;
+  backend.slot=slot;menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=0;menu.storyReplay=false;
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
 }
 void openTitle(){
@@ -113,6 +113,7 @@ void tapped(int x,int y){
     if(hit(x,y,14,198,212,24)){menu.storyReplay=true;menu.storyReturn=int(Page::Campaign);menu.storyIndex=0;view.page=Page::Prologue;say("");return;}
     if(hit(x,y,14,224,212)){
       if(!game.tutorial){helpReturn=view.objectiveReturn;view.page=Page::Help;}
+      else if(game.campaignFlags==3){if(game.city==3){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}else {showMap();menu.destination=3;}}
       else if(story::arconteKnown(game)){if(game.city==2){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}else {showMap();menu.destination=2;}}
       else if(game.guardianDefeated){if(game.city==1)view.page=Page::DungeonEntry;else {showMap();menu.destination=1;}}
       else if(game.city==1)view.page=Page::Ruins;
@@ -124,7 +125,17 @@ void tapped(int x,int y){
   }
   if(view.page==Page::People){if(hit(x,y,14,272,212))view.page=Page(menu.storyReturn);
     else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.page=Page::Dialogue;break;}say("");return;}
-  if(view.page==Page::Dialogue){if(hit(x,y,14,272,212))view.page=Page::People;say("");return;}
+  if(view.page==Page::CampaignTask){
+    if(hit(x,y,14,272,102)){view.page=Page::Dialogue;say("");}
+    else if(hit(x,y,124,272,102)){const char* err=rpg::startCampaign(game,view.campaignChoice);if(err)say(err);else {view.campaignScene=0;say("");savedTransition(Page::Battle);}}return;
+  }
+  if(view.page==Page::CampaignResult){
+    if(!hit(x,y,14,272,212))return;
+    bool won=game.phase==rpg::Phase::Won,lost=game.phase==rpg::Phase::Lost;
+    if(won&&view.campaignScene<3){++view.campaignScene;say("");return;}
+    if(rpg::resolveCampaign(game)){view.campaignScene=0;say(won?"Descoberta registrada no diario":"A missao pode ser tentada de novo");savedTransition(lost?Page::Recovery:Page::People);menu.storyReturn=int(Page::Village);}return;
+  }
+  if(view.page==Page::Dialogue){if(game.city==2&&menu.personIndex==0&&story::arconteKnown(game)&&rpg::campaignMission(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,212))view.page=Page::People;say("");return;}
   if(view.page==Page::Continent){if(hit(x,y,14,272,102))showMap();
     else if(hit(x,y,124,272,102)){if(!menu.regionIndex)showMap();else say("Mapa de regiao futura");}
     else if(hit(x,y,14,224,102))menu.regionIndex=(menu.regionIndex+7)%8;
@@ -565,6 +576,10 @@ int main(){
   game=rpg::create(2,42);game.windSpent=1;view.page=Page::Home;combatFx.kind=Effect::None;assert(journal.save(game));tapped(120,290);assert(!game.windSpent&&game.p.hp==game.p.maxhp);
   rpg::begin(game,1);game.p.hp=0;game.phase=rpg::Phase::Lost;game.gainXp=0;view.page=Page::Result;tapped(120,290);assert(view.page==Page::Recovery&&game.phase==rpg::Phase::Home&&game.p.hp==1);guideBlobs=nvs.blobs;tapped(120,117);assert(view.page==Page::TownBag&&view.bagReturn==Page::Recovery);tapped(70,290);assert(view.page==Page::Recovery&&nvs.blobs==guideBlobs);tapped(120,167);assert(view.page==Page::CampSetup&&nvs.blobs==guideBlobs);
   game=rpg::create(2,42);game.city=1;game.crystals=1;rpg::enterDungeon(game);game.phase=rpg::Phase::Lost;game.p.hp=0;view.page=Page::Dungeon;combatFx.kind=Effect::None;tapped(120,90);assert(view.page==Page::Recovery&&!rpg::inDungeon(game)&&game.p.hp==1);
+  // Port missions: preview/back do not write; save retry never repeats a reward.
+  game=rpg::create(2,77);game.p.xp=64000;rpg::levelUp(game);game.p.hp=game.p.maxhp;game.p.mp=game.p.maxmp;game.tutorial=true;game.city=2;game.dungeonClears=1;journal.blocked=false;combatFx.kind=Effect::None;assert(journal.save(game));view.page=Page::Dialogue;menu.personIndex=0;auto portBlobs=nvs.blobs;tapped(120,240);assert(view.page==Page::CampaignTask&&nvs.blobs==portBlobs);tapped(60,290);assert(view.page==Page::Dialogue&&nvs.blobs==portBlobs);tapped(120,240);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.campaignStage==1);auto portRng=game.randomState;nvs.fail=false;tapped(110,269);assert(view.page==Page::Battle&&game.randomState==portRng&&game.campaignStage==1);
+  game.enemyHp=0;rpg::finish(game);assert(journal.save(game));view.page=currentPage();assert(view.page==Page::CampaignResult);portBlobs=nvs.blobs;auto portGold=game.p.gold,portXP=game.p.xp;for(unsigned i=0;i<3;++i)tapped(120,290);assert(game.p.gold==portGold&&game.p.xp==portXP&&nvs.blobs==portBlobs);nvs.fail=true;tapped(120,290);assert(view.page==Page::SaveError&&game.campaignFlags==1&&game.p.gold==portGold+120);nvs.fail=false;tapped(110,269);assert(view.page==Page::People&&game.p.gold==portGold+120&&!game.campaignStage);rpg::Game portLoaded;assert(journal.load(portLoaded)==rpg::Load::Ok&&portLoaded.campaignFlags==1);
+  view.page=Page::Dialogue;menu.personIndex=0;tapped(120,240);assert(view.campaignChoice==2);tapped(175,290);game.p.hp=0;rpg::finish(game);view.page=currentPage();tapped(120,290);assert(view.page==Page::Recovery&&game.campaignFlags==1&&!game.campaignStage&&game.p.hp==1);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

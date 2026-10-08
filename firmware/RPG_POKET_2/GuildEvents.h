@@ -7,7 +7,7 @@ inline uint8_t eventTierFor(uint8_t level){return level<5?0:level<10?1:level<18?
 inline unsigned eventGold(uint8_t tier){static const unsigned n[]={25,70,150,300};return n[tier<4?tier:0];}
 inline unsigned eventXp(uint8_t tier){static const unsigned n[]={20,60,140,280};return n[tier<4?tier:0];}
 inline const char* eventPlace(uint8_t tier){static const char* n[]={"Pomar de Carvalho","Ruinas de Vespera","Costa de Mares","Telhados de Aurora"};return n[tier<4?tier:0];}
-inline bool eventSafe(const Game& g){return g.tutorial&&g.phase==Phase::Home&&g.p.hp&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2;}
+inline bool eventSafe(const Game& g){return g.tutorial&&!g.campaignStage&&g.phase==Phase::Home&&g.p.hp&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2;}
 inline bool eventReturnPage(uint8_t p){return p==2||p==9||p==27||p==36||p==49;}
 inline bool eventValid(const Game& g){
  if(g.eventStage>6||g.eventTier>3||g.eventOriginCity>3)return false;

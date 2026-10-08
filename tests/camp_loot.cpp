@@ -28,7 +28,8 @@ int main(){
  auto sale=testHero(0,3);sale.owned=1u<<(gearOffer(1,1)-1);auto price=sellPrice(sale,gearOffer(1,1));assert(!sellGear(sale,gearOffer(1,1))&&sale.p.gold==price&&!sale.owned);assert(sellGear(sale,gearOffer(1,1))&&sale.p.gold==price);sale=checkpoint(sale);
  sale.owned=1;sale.equipped[0]=1;assert(sellGear(sale,1)&&sale.owned==1);sale.p.gold=999999;sale.equipped[0]=0;assert(sellGear(sale,1)&&sale.owned==1&&sale.p.gold==999999);
  uint8_t bytes[SAVE_SIZE];auto legacy=testHero(0,17);encode(legacy,1,bytes);put16(bytes,4,9);put16(bytes,6,96);put32(bytes,92,crc(bytes,92));Game copy;uint32_t seq;assert(decode(bytes,copy,seq)==Decode::Ok&&!copy.sleepKit&&!copy.campStage);
- bytes[90]=16;put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Corrupt);put16(bytes,4,10);put16(bytes,6,96);put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Ok&&copy.sleepKit);bytes[90]=32;put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Corrupt);put16(bytes,4,16);assert(decode(bytes,copy,seq)==Decode::Unsupported);
+ bytes[90]=16;put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Corrupt);put16(bytes,4,10);put16(bytes,6,96);put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Ok&&copy.sleepKit);bytes[90]=32;put32(bytes,92,crc(bytes,92));assert(decode(bytes,copy,seq)==Decode::Corrupt);put16(bytes,4,17);assert(decode(bytes,copy,seq)==Decode::Unsupported);
  puts("PASS: 1280 camps, D20 natural1/20, food/kit, save10/import9, post-battle rest, loss/flee interruption, healing once, 1024 random chests/all four outcomes/no duplicates, sales and caps");
  return 0;
 }
+

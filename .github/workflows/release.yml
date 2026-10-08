@@ -41,6 +41,7 @@ jobs:
             build/screens/lore-*.ppm
             build/screens/day-*.ppm
             build/screens/event-*.ppm
+            build/screens/campaign-*.ppm
             build/screens/launch-*.ppm
             build/screens/powers-*.ppm
             build/screens/title-*.ppm
