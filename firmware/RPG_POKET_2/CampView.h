@@ -12,7 +12,7 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
     magicSprite(c,campArt::heroes[g.p.cls][g.campRation?1:0][frame%2],56,64,18,114,84,96);
     magicSprite(c,campArt::fires[frame%4],48,48,116,156,64,64);
     if(g.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,188,64,48);
-    box(14,242,212,18);c.fillRect(17,245,206*std::min(1000u,v.campProgress)/1000,12,UI_GREEN);
+    c.fillRect(14,236,212,77,0x0843);box(14,242,212,18);c.fillRect(17,245,206*std::min(1000u,v.campProgress)/1000,12,UI_GREEN);
     snprintf(b,sizeof(b),"Tempo passando... %u%%",std::min(1000u,v.campProgress)/10);center(269,b);
     snprintf(b,sizeof(b),"HP %u/%u / MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);center(295,b);return;
   }
@@ -27,8 +27,13 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
     button(14,272,212,menu.rollReady?(rpg::campSafe(g)?"Descansar":"Enfrentar"):"Aguarde");return;
   }
   snprintf(b,sizeof(b),"D20 + atributos / alvo %u",rpg::campDifficulty(g));center(82,b);
-  box(14,100,212,40);snprintf(b,sizeof(b),"Racao: %s / tem %u",menu.campRation?"SIM":"NAO",g.rations);center(115,b,1,UI_GOLD);
-  box(14,152,212,40);center(167,g.sleepKit?(menu.campKit?"Kit: SIM / +2 no teste":"Kit: NAO / dormir no chao"):"Kit: comprar por 80 ouro",1,UI_GOLD);
-  center(210,menu.campRation?"Recupera 100% de HP e MP":"Recupera ate 50% dos maximos");center(227,"Falha: lutar antes de descansar");center(247,v.message,1,UI_RED);
+  magicSprite(c,campArt::heroes[g.p.cls][menu.campRation?1:0][frame%2],56,64,38,99,66,75);
+  magicSprite(c,campArt::fires[frame%4],48,48,121,133,49,49);
+  if(menu.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,157,47,33);
+  c.fillRect(18,180,205,87,0x0843);
+  center(183,menu.campRation?"Recupera 100% de HP e MP":"Recupera ate 50% de HP e MP");
+  box(14,207,212,33);snprintf(b,sizeof(b),"Racao: %s / tem %u",menu.campRation?"SIM":"NAO",g.rations);center(218,b,1,UI_GOLD);
+  box(14,244,212,26);center(253,g.sleepKit?(menu.campKit?"Kit: SIM / +2 no teste":"Kit: NAO / dormir no chao"):"Kit: comprar por 80 ouro",1,UI_GOLD);
+  if(*v.message)center(194,v.message,1,UI_RED);
   button(14,272,102,"Voltar");button(124,272,102,"Acampar");
 }

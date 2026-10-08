@@ -112,8 +112,8 @@ void tapped(int x,int y){
   if(view.page==Page::CampRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptCamp(game)){say(rpg::campSafe(game)?"Descanso seguro":"Inimigo da regiao!");savedTransition(currentPage());}return;}
   if(view.page==Page::CampSetup){
     if(hit(x,y,14,272,102)){view.page=game.city==1?Page::Ruins:Page::Explore;say("");}
-    else if(hit(x,y,14,100,212)){if(!game.rations){say("Sem racoes");return;}menu.campRation=!menu.campRation;say("");}
-    else if(hit(x,y,14,152,212)){if(!game.sleepKit){menu.campShopReturn=false;view.page=Page::CampKit;say("");}else {menu.campKit=!menu.campKit;say("");}}
+    else if(hit(x,y,14,207,212,33)){if(!game.rations){say("Sem racoes");return;}menu.campRation=!menu.campRation;say("");}
+    else if(hit(x,y,14,244,212,26)){if(!game.sleepKit){menu.campShopReturn=false;view.page=Page::CampKit;say("");}else {menu.campKit=!menu.campKit;say("");}}
     else if(hit(x,y,124,272,102)){auto err=rpg::startCamp(game,menu.campRation,menu.campKit);if(err)say(err);else {say("");savedTransition(Page::CampRoll);}}return;
   }
   if(view.page==Page::CampKit||view.page==Page::GearSell){bool selling=view.page==Page::GearSell;Page back=selling?Page::BagGear:menu.campShopReturn?Page::CityGoods:Page::CampSetup;
@@ -481,8 +481,8 @@ int main(){
  game=rpg::create(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;game.ruinsWins=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  // Camp choices are saved before rolling. Save failure cannot consume another ration.
  combatFx.kind=Effect::None;game=rpg::create(0,42);game.city=1;game.p.hp=1;game.p.mp=0;game.p.gold=80;game.rations=2;view.page=Page::Ruins;
- tapped(185,259);assert(view.page==Page::CampSetup);tapped(80,165);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::CampSetup&&menu.campKit);
- tapped(80,120);assert(menu.campRation);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.campStage==1&&game.rations==1);auto campRoll=game.campRoll;
+ tapped(185,259);assert(view.page==Page::CampSetup);tapped(80,253);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::CampSetup&&menu.campKit);
+ tapped(80,218);assert(menu.campRation);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.campStage==1&&game.rations==1);auto campRoll=game.campRoll;
  nvs.fail=false;tapped(100,265);assert(view.page==Page::CampRoll&&game.campRoll==campRoll&&game.rations==1&&!menu.rollReady);tapped(100,290);assert(game.campStage==1);game.campRoll=20;menu.rollReady=true;tapped(100,290);assert(view.page==Page::CampRest&&game.campStage==3&&game.p.hp==1);
  tapped(170,185);assert(view.page==Page::CampRest&&game.campStage==3);rpg::finishCamp(game);savedTransition(Page::Ruins);assert(game.p.hp==game.p.maxhp&&game.p.mp==game.p.maxmp&&game.rations==1);
  // Failed camp reaches regional combat and only a victory starts the resting scene.
@@ -502,3 +502,4 @@ int main(){
  assert(rpg::offerEvent(game,20734,10));menu.sessionStarted=true;view.page=Page::Clock;clockReturn=Page::Explore;menu.clockIdle=true;tapped(10,10);assert(view.page==Page::Letter&&!menu.clockIdle);now+=451;tapped(75,290);assert(view.page==Page::LetterRefuse);tapped(75,290);assert(game.eventStage==1);tapped(75,290);tapped(180,290);assert(game.eventStage==4&&view.page==Page::Letters);assert(!rpg::offerEvent(game,20734,20));
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }
+

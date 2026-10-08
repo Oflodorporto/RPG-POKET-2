@@ -170,8 +170,8 @@ void tapped(int x,int y){
   if(view.page==Page::CampRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptCamp(game)){say(rpg::campSafe(game)?"Descanso seguro":"Inimigo da regiao!");savedTransition(currentPage());}return;}
   if(view.page==Page::CampSetup){
     if(hit(x,y,14,272,102)){view.page=game.city==1?Page::Ruins:Page::Explore;say("");}
-    else if(hit(x,y,14,100,212)){if(!game.rations){say("Sem racoes");return;}menu.campRation=!menu.campRation;say("");}
-    else if(hit(x,y,14,152,212)){if(!game.sleepKit){menu.campShopReturn=false;view.page=Page::CampKit;say("");}else {menu.campKit=!menu.campKit;say("");}}
+    else if(hit(x,y,14,207,212,33)){if(!game.rations){say("Sem racoes");return;}menu.campRation=!menu.campRation;say("");}
+    else if(hit(x,y,14,244,212,26)){if(!game.sleepKit){menu.campShopReturn=false;view.page=Page::CampKit;say("");}else {menu.campKit=!menu.campKit;say("");}}
     else if(hit(x,y,124,272,102)){auto err=rpg::startCamp(game,menu.campRation,menu.campKit);if(err)say(err);else {say("");savedTransition(Page::CampRoll);}}return;
   }
   if(view.page==Page::CampKit||view.page==Page::GearSell){bool selling=view.page==Page::GearSell;Page back=selling?Page::BagGear:menu.campShopReturn?Page::CityGoods:Page::CampSetup;
