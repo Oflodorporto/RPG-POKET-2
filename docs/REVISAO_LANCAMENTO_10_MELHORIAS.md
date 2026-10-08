@@ -66,3 +66,5 @@ As cinco melhorias não fecham Mares/Aurora, não completam D&D nem comprovam es
 22 suítes nativas, com launch_readiness: intenções/rolagens determinísticas/retomada, preparação/cura/drenagem, limite de dano, chance exata do D20, comparação e importação14. Controller real: guia/retorno sem escrita, cancelamento sem custo/RNG, save retry do mesmo dado, descanso com recursos gastos/HPcheio e recuperação após derrota/dungeon. Renderer: sete guias, três confirmações, recuperação,18 quadros de intenções e compra, com limite de texto e pureza de consultas.
 
 Testar na placa: 1. Guerreiro/Bárbaro novos versus Lobo e Esqueleto e contra Espectro; 2. Cancelar/confirmar viagem com suprimentos e manter D20/animação; 3. Comprar arma melhor e conferir comparação/bolsa/equipar; 4. Derrota normal/dungeon e bolsa/acampamento de recuperação; 5. Abrir o guia nas quatro entradas e retornar, sem apagar saves antigos.
+
+Avanco em mares1: o ato de Mares agora tem investigacao e resgate jogaveis, com cenas, recompensas e progresso salvo. O item6 avancou, mas ainda exige Aurora, Odran, Coracao do Veu e desfecho. Consulte CAMPANHA_MARES.md.
