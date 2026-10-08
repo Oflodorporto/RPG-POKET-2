@@ -1,6 +1,6 @@
 # Evolução por classes — direcao1
 
-Base escolhida: D&D5e de2014/SRD5.1, sem misturar a revisão2024. Cavaleiro=Paladino por escolha explícita do usuário; Mago=Wizard, Guerreiro=Fighter, Bárbaro=Barbarian. XP acumulado e proficiência são compartilhados; recursos e marcos de atributos variam por classe.
+Base escolhida: D&D 5e de2014/SRD 5.1, sem misturar a revisão2024. Cavaleiro=Paladino por escolha explícita do usuário; Mago=Wizard, Guerreiro=Fighter, Bárbaro=Barbarian. XP acumulado e proficiência são compartilhados; recursos e marcos de atributos variam por classe.
 
 Fonte: https://media.wizards.com/2023/downloads/dnd/SRD_CC_v5.1.pdf
 
@@ -31,9 +31,9 @@ A tabela abaixo é referência de desenvolvimento, não uma declaração de que 
 
 ## Implementado nesta etapa
 
-Novos heróis nível1/0XP; limiares de XP oficiais até20; XP interno é a parcela do nível, e Evolução mostra os valores totais oficiais. HP inicial=dado máximo+modificador de Constituição; crescimento fixo: Mago4+CON, Cavaleiro/Guerreiro6+CON, Bárbaro7+CON. O ganho aumenta HP máximo, sem cura grátis ao subir. Proficiência+2..+6 entra no ataque adaptado. Seis atributos iniciais da matriz padrão por classe, até20; Constituição aumenta HP retroativamente; Força/Inteligência afetam ataque, Destreza defesa, Sabedoria sobrevivência, INT/Carisma mana de Mago/Paladino. Mana, defesa e ataque ainda usam a escala própria do jogo: não são slots de magia ou CA de D&D.
+Novos heróis nível 1/0XP; limiares de XP oficiais até20; XP interno é a parcela do nível, e Evolução mostra os valores totais oficiais. HP inicial = dado máximo+modificador de Constituição; crescimento fixo: Mago 4 + CON, Cavaleiro/Guerreiro 6 + CON, Bárbaro 7 + CON. O ganho aumenta HP máximo, sem cura grátis ao subir. Proficiência +2 a +6 entra no ataque adaptado. Seis atributos iniciais da matriz padrão por classe, até20; Constituição aumenta HP retroativamente; Força/Inteligência afetam ataque, Destreza defesa, Sabedoria sobrevivência, INT/Carisma mana de Mago/Paladino. Mana, defesa e ataque ainda usam a escala própria do jogo: não são slots de magia ou CA de D&D.
 
-Marcos4,8,12,16,19 liberam2pontos para +2 em um atributo ou +1 em dois. Guerreiro também6e14. Alternativa implementada: talento Resistente (Tough), uma vez, +2HP por nível e nos níveis futuros. Gastar um ponto impede trocar aquele mesmo marco pelo talento; pontos e escolha persistem. Evolução acessível em Herói> Evolução (botão sob o retrato). Novos Paladinos só usam técnica ofensiva a partir do nível2; demais ações antigas são adaptações do RPGPOKET.
+Marcos4,8,12,16,19 liberam2pontos para +2 em um atributo ou +1 em dois. Guerreiro também nos níveis 6 e 14. Alternativa implementada: talento Resistente (Tough), uma vez, +2 HP por nível e nos níveis futuros. Gastar um ponto impede trocar aquele mesmo marco pelo talento; pontos e escolha persistem. Evolução acessível em Herói> Evolução (botão sob o retrato). Novos Paladinos só usam técnica ofensiva a partir do nível 2; demais ações antigas são adaptações do RPGPOKET.
 
 Ataques extras: classes marciais2no5; Guerreiro3no11e4no20. Nesta etapa, multiplicam o dano do ataque normal com um único teste de esquiva; não são rolagens independentes de D&D. Crítico do Bárbaro recebe incremento nos marcos9/13/17; é adaptação em pontos de dano, não dados de arma. Magias/círculos ficam na referência; grimório ainda não existe.
 
@@ -41,7 +41,7 @@ Primeiros encontros dos novos heróis em Carvalho são Goblin/Lobo reduzidos (n�
 
 ## Preservação dos heróis antigos
 
-Save12 mantém128bytes e CRC. Lê1..12. Bytes90/91(acampamento),92..99(eventos), destinos e namespaces preservados. Bytes100..108 guardam modo, talento, pontos e atributos. Arquivos/saves antigos importados conservam nível, XP, HP, equipamento e a curva anterior; não ganham nem perdem atributos silenciosamente. Não foi feita migração global de curva. Na Evolução aparece a informação de regras antigas. Novas escolhas são salvas pelos checkpoints existentes e pausam em erro de escrita. Firmware anterior não lêSave12: não fazer downgrade depois de salvar nesta versão sem backup compatível.
+Save12 mantém 128 bytes e CRC. Lê1..12. Bytes90/91(acampamento),92..99(eventos), destinos e namespaces preservados. Bytes100..108 guardam modo, talento, pontos e atributos. Arquivos/saves antigos importados conservam nível, XP, HP, equipamento e a curva anterior; não ganham nem perdem atributos silenciosamente. Não foi feita migração global de curva. Na Evolução aparece a informação de regras antigas. Novas escolhas são salvas pelos checkpoints existentes e pausam em erro de escrita. Firmware anterior não lêSave12: não fazer downgrade depois de salvar nesta versão sem backup compatível.
 
 ## Ainda falta para uma conversão completa
 
@@ -49,5 +49,5 @@ Escolha de subclasses e juramentos; poderes do juramento, auras e cura de Paladi
 
 ## Atribuição
 
-This work includes material taken from the System Reference Document5.1 (“SRD5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD5.1 is licensed under the Creative Commons Attribution4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
+This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
 Traduções resumidas e adaptações de combate/progressão para RPGPOKET por este projeto. Dungeons&Dragons não é a marca deste jogo.

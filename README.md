@@ -60,4 +60,4 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 
 ## Evolução e direção de lançamento
 
-2026.10.08-direcao1: novos heróis no nível1, curvaD&D1..20, atributos e talentoResistente, orientação do objetivo, combate/bolsa/recompensas mais claros. [Evolução e limites da adaptação](docs/EVOLUCAO_DND.md) e [avaliação crítica de lançamento](docs/AUDITORIA_LANCAMENTO.md). Saves anteriores preservados; Save12 não permite downgrade para firmwareantigo.
+2026.10.08-direcao1: novos heróis no nível 1, curva D&D 1–20, atributos e talento Resistente, orientação do objetivo, combate/bolsa/recompensas mais claros. [Evolução e limites da adaptação](docs/EVOLUCAO_DND.md) e [avaliação crítica de lançamento](docs/AUDITORIA_LANCAMENTO.md). Saves anteriores preservados; Save12 não permite downgrade para firmware antigo.

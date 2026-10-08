@@ -1,0 +1,23 @@
+RPG POKET 2 - DIRECAO1 / 2026.10.08-direcao1 / build 2026100801
+Estado: publicada/latest; 19 suites e compilacao ESP32 aprovadas; arquivos baixados e SHA conferidos. Teste fisico pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guias: EVOLUCAO_DND.md e AUDITORIA_LANCAMENTO.md. Previa: validacao/previa-direcao1.png.
+Commit firmware: dd2cc9aef25780bd4cdd4ce62e782e1b5d785814
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37725710663
+CI publicacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37726033564
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-direcao1
+IMPLEMENTADO: objetivo clicavel em abrigo/Carvalho/Ruinas; Seguir objetivo sem viagem automatica; novos herois nivel1 e XP oficial D&D5e2014/SRD5.1 ate20; Mago=Wizard, Cavaleiro=Paladino com juramento (escolha do usuario), Guerreiro=Fighter, Barbaro=Barbarian. Evolucao mostra tabela de referencia por nivel, seis atributos, pontos nos marcos e talento Resistente. HP por classe/CON; ataques extras adaptados por multiplicacao de dano (uma rolagem); critico Barbaro adaptado em pontos. Paladino ofensivo somente a partir2. Primeiros Goblin/Lobo novos herois reduzidos. Risco maximo do proximo golpe inclui critico/guarda; habilidades sem MP sinalizadas. Bolsa retorna a origem correta; HP30%/MP50% descritos. Vitoria mostra progresso/objetivo/contrato e local coerente.
+LIMITES: tabela de referencia nao significa poderes implementados. Juramentos/subclasses/auras/cura de Paladino, grimorio/slots de magias, surto/indomavel, furia completa e mais talentos ainda faltam. Campanha Aeldra e equilibrio1..20 ainda impedem lancamento completo. Ver auditoria critica.
+SAVES: Save12/128bytes; le1..12. Herois antigos conservam nivel/XP/stats/curva anterior; novos usam D&D. Campos90/91 e92..99 preservados;100..108 novos atributos/modo/talento/pontos. Firmware antigo nao le checkpoints12: nao fazer downgrade apos salvar sem backup compativel. Nao houve escrita na placa pelo agente.
+ARTES: inalteradas,425assets/6772560bytes SHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921. SD carrega uma vez para PSRAM; nenhuma leitura por quadro. D20/viagem/animacoes anteriores preservadas.
+FIRMWARE:2627856bytes SHA8435af3e4c7d1e2262d9033d9b52084d5cb9e22323631e5c7e6693e6f63fbd5c. Arquivos em releases/2026.10.08-direcao1.
+VALIDACAO:19suites locais e CI,80 consultas classe/nivel renderizadas, importacao antigos e falha/retry atributos sem duplicar. ESP32 programa2627710bytes83%,globais53532bytes16%. Logvalidacao/direcao1-ci.log. Compilacao nao prova teste fisico.
+RESTRICOES: preservar Heltec/IDs/namespace/particoes; sem flash automatico/apagarNVS/formatarSD/.rpg. Usuario confirma OTA ou grava pelo cabo.
+CINCO PRIMEIROS COMANDOS:
+1. Ler esteTXT, EVOLUCAO_DND.md, AUDITORIA_LANCAMENTO.md e canon; conferir Release/latest antes de orientar atualizacao.
+2. Testar novo heroi em slot vazio, sem apagar antigo: nivel1, tutorial/Carvalho, XP300para2/900totalpara3; Heroi>Evolucao e objetivo clicavel.
+3. Implementar juramento do Paladino e magia do Mago usando tabela2014, com desbloqueios reais e escolhas persistidas; nao confundir referencia com poderes ativos.
+4. Balancear1..20, criar comportamentos distintos e fechar arco/climax/desfecho de Aeldra antes de expandir mapas. Eventos diarios extras seguem planejados.
+5. Rodar19suites/compilar semupload/inspecionarprevias; teste com5pessoas e falhas fisicas de OTA/cartao/checkpoint; publicar versao inedita e registrar progresso.
+
