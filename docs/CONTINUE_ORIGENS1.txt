@@ -1,0 +1,30 @@
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 1 — ORIGEM E ROSTOS
+Versão 2026.10.08-origens1; build 2026100806.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-origens1
+Commit de firmware: 94cfc529a8d1a629f35343cfc971545a069d7acf
+Publicação/testes/compilação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37840225760 — sucesso.
+
+IMPLEMENTADO: oito páginas para novos heróis, passado e motivação por classe, chegada concreta a Carvalho, 17 retratos compactos e distinção entre NPC/narrador/carta. Odran e Anwen têm assets, ainda sem novas cenas. Heróis antigos conservam seus dados e só reveem a chegada comum.
+Save17 lê 1..17, 128 bytes, CRC124; origem/page em122/123. Reinício retoma introdução salva. Releitura não altera progresso nem dá recompensas. Não fazer downgrade após save17 sem backup compatível.
+Arte: 459 entradas, 6.846.544 bytes, CRC19aa0797; +73.984 bytes, cache PSRAM na inicialização, sem leitura SD a cada quadro.
+24 suítes nativas passaram. Compilação final candidata: programa2.665.802 bytes (84%), variáveis53.708 bytes (16%). Downloads finais verificados: firmware2.665.952 bytes; artes6.846.544 bytes; manifesto983 bytes. Hashes em releases/2026.10.08-origens1/VERIFICACAO.json. Teste na placa ainda pendente.
+
+PASTA CANÔNICA:
+C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: firmware/RPG_POKET_2/RPG_POKET_2.ino
+Entrega verificada: releases/2026.10.08-origens1/{firmware.bin,artes.pak,manifest.json}
+Guia: PACOTE_1_ORIGEM_E_ROSTOS.md
+Fila: ROADMAP_PACOTES_EXPERIENCIA.md
+Prévia: validacao/previa-origens1.png
+Mirror GitHub: github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler integralmente este TXT, PACOTE_1_ORIGEM_E_ROSTOS.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir fonte atual antes de editar. Histórico abaixo pode estar obsoleto.
+2. Conferir resultado do usuário na placa: atualizar em Tela de título > Configurações > Atualização; criar personagem em slot vazio, voltar/avançar/reiniciar e conferir retratos. Preservar slots existentes.
+3. Confirmar próximo pacote com o usuário; o próximo planejado é Pacote 2 — Exploração variada. Não representar baús, mímicos, gazuas e futuras cenas como já implementados.
+4. Implementar encontros variados com persistência compatível e contexto de retorno; preservar mapa, animação D20/deslocamento, progressão e saves. Testar regras relevantes e renderer com bounds/pureza.
+5. Compilar fonte final com ESP32S3 Dev Module, OPI PSRAM, 16MB, app3M_fat9M_16MB, sem apagar flash; publicar candidato e validar antes de promover main. Registrar evidências e próximo teste físico.
+
+RESTRIÇÕES: preservar Heltec; não gravar placa automaticamente; não gerar .rpg; não apagar NVS, saves ou formatar SD. Usuário instala pelo cabo ou confirma OTA na placa. Não usar build/ local preliminar como entrega: usar firmware.bin da release verificada ou compilar novamente no IDE.
+

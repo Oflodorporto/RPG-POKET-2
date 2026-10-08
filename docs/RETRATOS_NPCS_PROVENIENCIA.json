@@ -1,421 +1,378 @@
-{
-  "sources": [
-    {
-      "id": "nara",
-      "source_file": "nara.png",
-      "description": "Nara Veld, older human woman, practical kind innkeeper, warm brown skin, silver-brown hair tied in bun, simple burgundy shawl and apron, welcoming confident face",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1491927,
-      "source_sha256": "6abe4b0ca1421c037e976bc3bbe58a164be486c788346561d0a5f837068d5cfb"
-    },
-    {
-      "id": "maelis",
-      "source_file": "maelis.png",
-      "description": "Maelis Voss, middle-aged human woman guildmaster, medium brown skin, short dark chestnut hair streaked gray, navy coat with small bronze guild clasp, resolute honest expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1648085,
-      "source_sha256": "0615c3a6324305616c6e2bbb54f58e690171e9a3a193bfefb688809a7f905c7d"
-    },
-    {
-      "id": "borin",
-      "source_file": "borin.png",
-      "description": "Borin Caldaferrea, male dwarf blacksmith, broad weathered copper face, long ginger beard braided twice, dark leather smith apron over amber tunic, thick eyebrows, proud meticulous expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1833118,
-      "source_sha256": "c4998b3cf14edc56d35a9d050f453510f5263db03ac0c666593e216688de4635"
-    },
-    {
-      "id": "elarin",
-      "source_file": "elarin.png",
-      "description": "Elarin Folhacinza, male elf herbalist, tawny skin, long ash-blond hair, pointed ears, sage green robe and simple leaf brooch, patient thoughtful expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1668724,
-      "source_sha256": "954bc25d94f0c2fd124aed1f69e85d65174967e0b3b5fffcf6de1f8e840fdd15"
-    },
-    {
-      "id": "grum",
-      "source_file": "grum.png",
-      "description": "Grum Pedrafranca, male orc trainer/referee, moss-green skin, small lower tusks, broad face, dark braided hair, brown padded training vest, friendly fair-minded steady expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1630625,
-      "source_sha256": "6f5d42bad4e23fe2af4f08a79b68fd2835b84b3aa8773455edeb0caac63322a3"
-    },
-    {
-      "id": "iria",
-      "source_file": "iria.png",
-      "description": "Iria Sorel, young adult human woman archaeologist, olive skin, curly dark hair tied back, worn ochre scarf and practical blue field jacket, curious courageous expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1655373,
-      "source_sha256": "6ee3a1d1836d812ad43b869ad182104cf28d6e7375dc7f478bc3c101a922afc3"
-    },
-    {
-      "id": "caelen",
-      "source_file": "caelen.png",
-      "description": "Caelen Vesper, male elf expedition quartermaster, pale olive skin, straight short silver hair, pointed ears, dark teal travel cloak, reserved alert expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1647481,
-      "source_sha256": "d77ecc02d4b24a08f652c61e4ce25e5d9d77c4a04b01359308dde7324d1bb8af"
-    },
-    {
-      "id": "vaelor",
-      "source_file": "vaelor.png",
-      "description": "Arconte Vaelor, spectral ancient male mage, translucent blue-gray face with faint white-blue rune light, gaunt but remorseful eyes, broken indigo hood, dignified haunted expression, facial features clearly readable not skull",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1910612,
-      "source_sha256": "8d824e45e28572e50e024300c4e8e7985d5c28c5ab54262d509c4c4e815e5ae6"
-    },
-    {
-      "id": "sabela",
-      "source_file": "sabela.png",
-      "description": "Sabela Marebrava, adult female orc harbor guard captain, sea-green skin, small tusks, strong kind features, black braid, navy maritime coat with brass shoulder buckle, dry-humored protective expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1699896,
-      "source_sha256": "1940abc91e268c6caa59d57ecfc8a7d152474da40b5f13236f75a1e7469670b3"
-    },
-    {
-      "id": "tomas",
-      "source_file": "tomas.png",
-      "description": "Tomas Valevento, adult male human merchant/cartographer, tan skin, curly sandy hair, short moustache, ochre travel scarf and brown coat, expressive sociable slightly worried smile",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1667935,
-      "source_sha256": "f03f39ebe56010075d6ef97b835f0de874bf13cc16d984682b987b8ec385db29"
-    },
-    {
-      "id": "nilsa",
-      "source_file": "nilsa.png",
-      "description": "Nilsa Bronzamar, adult female dwarf shipwright, copper brown skin, broad face, long auburn braid, practical teal work shirt and leather strap, direct ingenious confident expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1690935,
-      "source_sha256": "f082629288bcca2c6cb3417e26c53538e183fcbd0a36fc4a3b032dc224005a65"
-    },
-    {
-      "id": "seraphine",
-      "source_file": "seraphine.png",
-      "description": "Seraphine Alvor, adult female elf oath guardian, deep brown skin, silver-black hair braided neatly, long pointed ears, ivory and blue temple mantle with tiny sun brooch, composed discerning expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1761988,
-      "source_sha256": "4ff62d245432bf2c25a2c7325cd246070bf4617b0126943e3074a3e70d209be9"
-    },
-    {
-      "id": "dargan",
-      "source_file": "dargan.png",
-      "description": "Dargan Setemartelos, older male dwarf royal blacksmith, weathered bronze skin, thick black-and-gray square beard, cropped hair, dark leather apron over royal blue tunic, stern conscientious expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1638652,
-      "source_sha256": "2dbcc0c413ab973275f85678cd373c9b13859ff9b69d7f84dc025081eff89493"
-    },
-    {
-      "id": "liora",
-      "source_file": "liora.png",
-      "description": "Liora Valcer, young adult human woman princess and resistance ally, warm olive skin, wavy dark brown hair, plain navy traveling cloak with discreet gold clasp, observant determined compassionate expression, no crown",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1584970,
-      "source_sha256": "2fd49925b78e130bf6c6f69090b77fa8d4653c61dfdf497e40c04c9f271834d7"
-    },
-    {
-      "id": "odran",
-      "source_file": "odran.png",
-      "description": "Odran Valcer, aging human male regent, same warm olive skin and dark hair as daughter Liora but graying, lined face and weary eyes, burgundy royal coat and understated gold circlet, burdened controlling sorrowful expression",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1797290,
-      "source_sha256": "c0f5964c67dcdb5ffb967690818dfe3bb9a981d366e38b63dfe02776e4c18316"
-    },
-    {
-      "id": "anwen",
-      "source_file": "anwen.png",
-      "description": "Anwen da Primeira Luz, original human woman erased witness from 120 years ago, deep warm brown skin, long dark hair, cream and muted gold scholar robe, hopeful courageous face, subtle sunrise rim light",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1831411,
-      "source_sha256": "40e0051f23f4bb85481760a7e2bcbace3777f0defc0f8d0dc52fc6b9ff874451"
-    },
-    {
-      "id": "mensageiro",
-      "source_file": "mensageiro.png",
-      "description": "The Messenger, young adult human male guild courier, tan skin, damp dark hair, rain-wet brown travel cloak with small bronze guild clasp, exhausted earnest expression, distinct face",
-      "status": "generated-source-not-integrated",
-      "generated_with": "image_gen",
-      "planned_game_resolution": [
-        64,
-        64
-      ],
-      "source_resolution": [
-        1254,
-        1254
-      ],
-      "source_mode": "RGB",
-      "source_bytes": 1734712,
-      "source_sha256": "2a3d227e4c6de028613053a5aaaa8c93159572e2d3dcc305f753be0ee7e95929"
-    }
-  ],
-  "integration": {
-    "package": "Pacote 1 - Origem e rostos",
-    "version": "2026.10.08-origens1",
-    "assets": [
-      {
-        "id": "nara",
-        "palette": 425,
-        "pixels": 426,
-        "source_sha256": "6abe4b0ca1421c037e976bc3bbe58a164be486c788346561d0a5f837068d5cfb"
-      },
-      {
-        "id": "maelis",
-        "palette": 427,
-        "pixels": 428,
-        "source_sha256": "0615c3a6324305616c6e2bbb54f58e690171e9a3a193bfefb688809a7f905c7d"
-      },
-      {
-        "id": "borin",
-        "palette": 429,
-        "pixels": 430,
-        "source_sha256": "c4998b3cf14edc56d35a9d050f453510f5263db03ac0c666593e216688de4635"
-      },
-      {
-        "id": "elarin",
-        "palette": 431,
-        "pixels": 432,
-        "source_sha256": "954bc25d94f0c2fd124aed1f69e85d65174967e0b3b5fffcf6de1f8e840fdd15"
-      },
-      {
-        "id": "grum",
-        "palette": 433,
-        "pixels": 434,
-        "source_sha256": "6f5d42bad4e23fe2af4f08a79b68fd2835b84b3aa8773455edeb0caac63322a3"
-      },
-      {
-        "id": "iria",
-        "palette": 435,
-        "pixels": 436,
-        "source_sha256": "6ee3a1d1836d812ad43b869ad182104cf28d6e7375dc7f478bc3c101a922afc3"
-      },
-      {
-        "id": "caelen",
-        "palette": 437,
-        "pixels": 438,
-        "source_sha256": "d77ecc02d4b24a08f652c61e4ce25e5d9d77c4a04b01359308dde7324d1bb8af"
-      },
-      {
-        "id": "vaelor",
-        "palette": 439,
-        "pixels": 440,
-        "source_sha256": "8d824e45e28572e50e024300c4e8e7985d5c28c5ab54262d509c4c4e815e5ae6"
-      },
-      {
-        "id": "sabela",
-        "palette": 441,
-        "pixels": 442,
-        "source_sha256": "1940abc91e268c6caa59d57ecfc8a7d152474da40b5f13236f75a1e7469670b3"
-      },
-      {
-        "id": "tomas",
-        "palette": 443,
-        "pixels": 444,
-        "source_sha256": "f03f39ebe56010075d6ef97b835f0de874bf13cc16d984682b987b8ec385db29"
-      },
-      {
-        "id": "nilsa",
-        "palette": 445,
-        "pixels": 446,
-        "source_sha256": "f082629288bcca2c6cb3417e26c53538e183fcbd0a36fc4a3b032dc224005a65"
-      },
-      {
-        "id": "seraphine",
-        "palette": 447,
-        "pixels": 448,
-        "source_sha256": "4ff62d245432bf2c25a2c7325cd246070bf4617b0126943e3074a3e70d209be9"
-      },
-      {
-        "id": "dargan",
-        "palette": 449,
-        "pixels": 450,
-        "source_sha256": "2dbcc0c413ab973275f85678cd373c9b13859ff9b69d7f84dc025081eff89493"
-      },
-      {
-        "id": "liora",
-        "palette": 451,
-        "pixels": 452,
-        "source_sha256": "2fd49925b78e130bf6c6f69090b77fa8d4653c61dfdf497e40c04c9f271834d7"
-      },
-      {
-        "id": "odran",
-        "palette": 453,
-        "pixels": 454,
-        "source_sha256": "c0f5964c67dcdb5ffb967690818dfe3bb9a981d366e38b63dfe02776e4c18316"
-      },
-      {
-        "id": "anwen",
-        "palette": 455,
-        "pixels": 456,
-        "source_sha256": "40e0051f23f4bb85481760a7e2bcbace3777f0defc0f8d0dc52fc6b9ff874451"
-      },
-      {
-        "id": "mensageiro",
-        "palette": 457,
-        "pixels": 458,
-        "source_sha256": "2a3d227e4c6de028613053a5aaaa8c93159572e2d3dcc305f753be0ee7e95929"
-      }
+[
+  {
+    "id": "nara",
+    "source_file": "nara.png",
+    "description": "Nara Veld, older human woman, practical kind innkeeper, warm brown skin, silver-brown hair tied in bun, simple burgundy shawl and apron, welcoming confident face",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
     ],
-    "art_bytes": 6846544,
-    "art_crc": "19aa0797",
-    "art_sha256": "5ba38de515b61d3ab4b005dbe78c260d6ed8297ec924f42c6a206e7d8dae7d59"
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1491927,
+    "source_sha256": "6abe4b0ca1421c037e976bc3bbe58a164be486c788346561d0a5f837068d5cfb",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "maelis",
+    "source_file": "maelis.png",
+    "description": "Maelis Voss, middle-aged human woman guildmaster, medium brown skin, short dark chestnut hair streaked gray, navy coat with small bronze guild clasp, resolute honest expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1648085,
+    "source_sha256": "0615c3a6324305616c6e2bbb54f58e690171e9a3a193bfefb688809a7f905c7d",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "borin",
+    "source_file": "borin.png",
+    "description": "Borin Caldaferrea, male dwarf blacksmith, broad weathered copper face, long ginger beard braided twice, dark leather smith apron over amber tunic, thick eyebrows, proud meticulous expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1833118,
+    "source_sha256": "c4998b3cf14edc56d35a9d050f453510f5263db03ac0c666593e216688de4635",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "elarin",
+    "source_file": "elarin.png",
+    "description": "Elarin Folhacinza, male elf herbalist, tawny skin, long ash-blond hair, pointed ears, sage green robe and simple leaf brooch, patient thoughtful expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1668724,
+    "source_sha256": "954bc25d94f0c2fd124aed1f69e85d65174967e0b3b5fffcf6de1f8e840fdd15",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "grum",
+    "source_file": "grum.png",
+    "description": "Grum Pedrafranca, male orc trainer/referee, moss-green skin, small lower tusks, broad face, dark braided hair, brown padded training vest, friendly fair-minded steady expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1630625,
+    "source_sha256": "6f5d42bad4e23fe2af4f08a79b68fd2835b84b3aa8773455edeb0caac63322a3",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "iria",
+    "source_file": "iria.png",
+    "description": "Iria Sorel, young adult human woman archaeologist, olive skin, curly dark hair tied back, worn ochre scarf and practical blue field jacket, curious courageous expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1655373,
+    "source_sha256": "6ee3a1d1836d812ad43b869ad182104cf28d6e7375dc7f478bc3c101a922afc3",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "caelen",
+    "source_file": "caelen.png",
+    "description": "Caelen Vesper, male elf expedition quartermaster, pale olive skin, straight short silver hair, pointed ears, dark teal travel cloak, reserved alert expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1647481,
+    "source_sha256": "d77ecc02d4b24a08f652c61e4ce25e5d9d77c4a04b01359308dde7324d1bb8af",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "vaelor",
+    "source_file": "vaelor.png",
+    "description": "Arconte Vaelor, spectral ancient male mage, translucent blue-gray face with faint white-blue rune light, gaunt but remorseful eyes, broken indigo hood, dignified haunted expression, facial features clearly readable not skull",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1910612,
+    "source_sha256": "8d824e45e28572e50e024300c4e8e7985d5c28c5ab54262d509c4c4e815e5ae6",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "sabela",
+    "source_file": "sabela.png",
+    "description": "Sabela Marebrava, adult female orc harbor guard captain, sea-green skin, small tusks, strong kind features, black braid, navy maritime coat with brass shoulder buckle, dry-humored protective expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1699896,
+    "source_sha256": "1940abc91e268c6caa59d57ecfc8a7d152474da40b5f13236f75a1e7469670b3",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "tomas",
+    "source_file": "tomas.png",
+    "description": "Tomas Valevento, adult male human merchant/cartographer, tan skin, curly sandy hair, short moustache, ochre travel scarf and brown coat, expressive sociable slightly worried smile",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1667935,
+    "source_sha256": "f03f39ebe56010075d6ef97b835f0de874bf13cc16d984682b987b8ec385db29",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "nilsa",
+    "source_file": "nilsa.png",
+    "description": "Nilsa Bronzamar, adult female dwarf shipwright, copper brown skin, broad face, long auburn braid, practical teal work shirt and leather strap, direct ingenious confident expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1690935,
+    "source_sha256": "f082629288bcca2c6cb3417e26c53538e183fcbd0a36fc4a3b032dc224005a65",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "seraphine",
+    "source_file": "seraphine.png",
+    "description": "Seraphine Alvor, adult female elf oath guardian, deep brown skin, silver-black hair braided neatly, long pointed ears, ivory and blue temple mantle with tiny sun brooch, composed discerning expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1761988,
+    "source_sha256": "4ff62d245432bf2c25a2c7325cd246070bf4617b0126943e3074a3e70d209be9",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "dargan",
+    "source_file": "dargan.png",
+    "description": "Dargan Setemartelos, older male dwarf royal blacksmith, weathered bronze skin, thick black-and-gray square beard, cropped hair, dark leather apron over royal blue tunic, stern conscientious expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1638652,
+    "source_sha256": "2dbcc0c413ab973275f85678cd373c9b13859ff9b69d7f84dc025081eff89493",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "liora",
+    "source_file": "liora.png",
+    "description": "Liora Valcer, young adult human woman princess and resistance ally, warm olive skin, wavy dark brown hair, plain navy traveling cloak with discreet gold clasp, observant determined compassionate expression, no crown",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1584970,
+    "source_sha256": "2fd49925b78e130bf6c6f69090b77fa8d4653c61dfdf497e40c04c9f271834d7",
+    "game_resolution": [
+      64,
+      64
+    ]
+  },
+  {
+    "id": "odran",
+    "source_file": "odran.png",
+    "description": "Odran Valcer, aging human male regent, same warm olive skin and dark hair as daughter Liora but graying, lined face and weary eyes, burgundy royal coat and understated gold circlet, burdened controlling sorrowful expression",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1797290,
+    "source_sha256": "c0f5964c67dcdb5ffb967690818dfe3bb9a981d366e38b63dfe02776e4c18316",
+    "game_resolution": [
+      64,
+      64
+    ],
+    "scene_status": "future-scenes-not-implemented"
+  },
+  {
+    "id": "anwen",
+    "source_file": "anwen.png",
+    "description": "Anwen da Primeira Luz, original human woman erased witness from 120 years ago, deep warm brown skin, long dark hair, cream and muted gold scholar robe, hopeful courageous face, subtle sunrise rim light",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1831411,
+    "source_sha256": "40e0051f23f4bb85481760a7e2bcbace3777f0defc0f8d0dc52fc6b9ff874451",
+    "game_resolution": [
+      64,
+      64
+    ],
+    "scene_status": "future-scenes-not-implemented"
+  },
+  {
+    "id": "mensageiro",
+    "source_file": "mensageiro.png",
+    "description": "The Messenger, young adult human male guild courier, tan skin, damp dark hair, rain-wet brown travel cloak with small bronze guild clasp, exhausted earnest expression, distinct face",
+    "status": "integrated-compact-in-origens1",
+    "generated_with": "image_gen",
+    "planned_game_resolution": [
+      64,
+      64
+    ],
+    "source_resolution": [
+      1254,
+      1254
+    ],
+    "source_mode": "RGB",
+    "source_bytes": 1734712,
+    "source_sha256": "2a3d227e4c6de028613053a5aaaa8c93159572e2d3dcc305f753be0ee7e95929",
+    "game_resolution": [
+      64,
+      64
+    ]
   }
-}
+]

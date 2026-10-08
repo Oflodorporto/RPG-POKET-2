@@ -1,6 +1,6 @@
 # Pacote 1 — Origem e rostos
 
-Versão técnica: `2026.10.08-origens1`, build `2026100806`. Preparação em 08/10/2026. A publicação e a compilação final devem ser conferidas no registro de continuidade antes de recomendar a atualização.
+Versão técnica: `2026.10.08-origens1`, build `2026100806`. Publicado em 08/10/2026. As 24 suítes e a compilação final passaram no GitHub (run 37840225760). Firmware, artes e manifesto publicados foram baixados e seus tamanhos e SHA-256 conferidos; CRC e catálogo das artes também passaram. Validação física desta versão aguarda o usuário.
 
 ## A experiência
 

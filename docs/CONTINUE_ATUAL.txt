@@ -1,3 +1,43 @@
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 1 — ORIGEM E ROSTOS
+Versão 2026.10.08-origens1; build 2026100806.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-origens1
+Commit de firmware: 94cfc529a8d1a629f35343cfc971545a069d7acf
+Publicação/testes/compilação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37840225760 — sucesso.
+
+IMPLEMENTADO: oito páginas para novos heróis, passado e motivação por classe, chegada concreta a Carvalho, 17 retratos compactos e distinção entre NPC/narrador/carta. Odran e Anwen têm assets, ainda sem novas cenas. Heróis antigos conservam seus dados e só reveem a chegada comum.
+Save17 lê 1..17, 128 bytes, CRC124; origem/page em122/123. Reinício retoma introdução salva. Releitura não altera progresso nem dá recompensas. Não fazer downgrade após save17 sem backup compatível.
+Arte: 459 entradas, 6.846.544 bytes, CRC19aa0797; +73.984 bytes, cache PSRAM na inicialização, sem leitura SD a cada quadro.
+24 suítes nativas passaram. Compilação final candidata: programa2.665.802 bytes (84%), variáveis53.708 bytes (16%). Downloads finais verificados: firmware2.665.952 bytes; artes6.846.544 bytes; manifesto983 bytes. Hashes em releases/2026.10.08-origens1/VERIFICACAO.json. Teste na placa ainda pendente.
+
+PASTA CANÔNICA:
+C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: firmware/RPG_POKET_2/RPG_POKET_2.ino
+Entrega verificada: releases/2026.10.08-origens1/{firmware.bin,artes.pak,manifest.json}
+Guia: PACOTE_1_ORIGEM_E_ROSTOS.md
+Fila: ROADMAP_PACOTES_EXPERIENCIA.md
+Prévia: validacao/previa-origens1.png
+Mirror GitHub: github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler integralmente este TXT, PACOTE_1_ORIGEM_E_ROSTOS.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir fonte atual antes de editar. Histórico abaixo pode estar obsoleto.
+2. Conferir resultado do usuário na placa: atualizar em Tela de título > Configurações > Atualização; criar personagem em slot vazio, voltar/avançar/reiniciar e conferir retratos. Preservar slots existentes.
+3. Confirmar próximo pacote com o usuário; o próximo planejado é Pacote 2 — Exploração variada. Não representar baús, mímicos, gazuas e futuras cenas como já implementados.
+4. Implementar encontros variados com persistência compatível e contexto de retorno; preservar mapa, animação D20/deslocamento, progressão e saves. Testar regras relevantes e renderer com bounds/pureza.
+5. Compilar fonte final com ESP32S3 Dev Module, OPI PSRAM, 16MB, app3M_fat9M_16MB, sem apagar flash; publicar candidato e validar antes de promover main. Registrar evidências e próximo teste físico.
+
+RESTRIÇÕES: preservar Heltec; não gravar placa automaticamente; não gerar .rpg; não apagar NVS, saves ou formatar SD. Usuário instala pelo cabo ou confirma OTA na placa. Não usar build/ local preliminar como entrega: usar firmware.bin da release verificada ou compilar novamente no IDE.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+PLANEJAMENTO NOVO - 08/10/2026: EXPERIENCIA, ORIGENS E EXPLORACAO
+Firmware publicado permanece 2026.10.08-mares1; nenhuma alteracao de firmware nesta etapa.
+Plano: ROADMAP_PACOTES_EXPERIENCIA.md (8 pacotes, criterios e cinco proximos comandos).
+Arte fonte: assets_conceito/retratos_npcs_v1/README.md e catalogo.json; 17 PNGs individuais verificados, ainda nao integrados.
+Prioridade seguinte: pacote 1 (origens por classe, retratos e dialogos concretos), depois explorar variado e trancas/gazuas.
+Preservar Heltec, slots e saves; sem gravacao automatica, apagar NVS, formatar SD ou gerar .rpg.
+
+--- ESTADO DO FIRMWARE ANTERIOR, AINDA VIGENTE ---
 RPG POKET 2 - MARES1 / 2026.10.08-mares1 / build 2026100805
 Estado: Publicada e verificada; 23 suites e compilacao ESP32 aprovadas. Teste fisico pendente.
 Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
@@ -23,3 +63,424 @@ CINCO PRIMEIROS COMANDOS DE CONTINUIDADE:
 3. Implementar Ato IV em Aurora: Liora/Seraphine/Dargan, verdade de Odran e Vigilia Perpetua. Desenhar encontros/confirmacoes antes de ampliar regioes.
 4. Reunir quatro contribuicoes e projeto de Anwen; implementar Coracao do Veu, final temporario reversivel, final pleno e epilogo; manter exploracao posterior.
 5. Medir curva1..20/economia/combate; completar poderes, matriz fisica OTA/SD/Wi-Fi e creditos/licencas. Rodar23suites/ESP32 sem upload/previas; publicar build inedito apos checks e registrar continuidade/teste fisico.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - LANCAMENTO1 / 2026.10.08-lancamento1 / build 2026100804
+Estado: Publicada e verificada; 22 suites e compilacao ESP32 aprovadas. Teste fisico pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Relatorio: REVISAO_LANCAMENTO_10_MELHORIAS.md
+Previa: validacao/previa-lancamento1.png
+Testes: work/test_launch.ps1; work/check_powers_snapshot.py; 22 suites nativas aprovadas.
+Commit firmware: f0e284e779059880a3e889a73b11b4f2bde9c4a8
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37801727626
+Release prevista (verificar publicacao antes de orientar OTA): https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-lancamento1
+Evidencia: {"version": "2026.10.08-lancamento1", "build": 2026100804, "candidate_run": 37801727626, "publication_run": 37802210402, "commit": "f0e284e779059880a3e889a73b11b4f2bde9c4a8", "program_bytes": 2645402, "globals_bytes": 53692, "firmware_bytes": 2645552, "firmware_sha256": "ef874d1b837298c9c91702172611fc121375905d8d68d7005ee8d217586c7a95", "art_sha256": "7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921", "art_file": "C:\\Users\\Rodolfo\\Documents\\Codex\\2026-09-29\\vamos-iniciar-o-rpg-poket-2-2\\outputs\\RPG_POKET_2_0_Waveshare\\releases\\2026.10.08-poderes1\\artes.pak", "art_bytes": 6772560, "physical_test": "pending"}
+
+CINCO MELHORIAS IMPLEMENTADAS:
+1. Intencoes dos inimigos: ataque/preparacao/golpe forte, recompor4HP e drenar2MP. Cadencia persistida; herois legados e Clube mantem regras anteriores. Indicacao e animacao coerentes em batalha/dungeon.
+2. Confirmacao de viagem: nivel/CD/chance exata D20/suprimentos; cancelar nao gasta nem rola/salva. Confirmar rola/gasta uma vez; retry conserva resultado. D20 e deslocamento preservados.
+3. Compra compara ATQ/DEF/MP maximo com equipamento atual usando copia, sem posse/equipamento ficticios. Item comprado vai para bolsa.
+4. Recuperacao depois de derrota normal/dungeon/evento: bolsa/acampamento/mapa, conservando1HP/penalidades e loot. Descanso repoe poderes gastos mesmo HP/MPcheios.
+5. Guia de7topicos no Menu/Configuracoes/tutorial/Tecnicas; retorno a origem, sem gastar turno ou escrever save por consulta.
+
+SAVES: Save15,128bytes,CRC124; le1..15. Byte119 enemyBeat0..2;120..123 reservados. Formatos1..14 importados combeat0, sem mudar classe/atributos/itens. Destinos0..3/enums preservados; Pages novos anexados. Firmware anterior nao le Save15; nao downgrade aposcheckpoint sembackup compativel.
+ARTE: 425assets,6772560bytes, SHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921. Nenhuma arte nova nem leituraSD porquadro. CachePSRAM preservado.
+VALIDACAO: intencoes/chance D20/dano/legados/importacao14; controller real conferido nos fixtures; viagemcancelar/retry,guiaretorno,descansocomrecursos,derrotadungeon; renderer eprevia6telas inspecionados. Compilacao/teste nativo nao comprovam teste fisico.
+LIMITES: alpha, nao jogo comercial completo. Pendentes: fechar campanhaAeldra; medir/balancear1..20/economia; poderes/escolhas avancados; matriz fisicaOTA/SD/WiFi/bateria/toque + jogadoresnovos; creditos/licencas/manual/apresentacao.
+RESTRICOES: preservarHeltec,semflashautomatico/NVSapagado/particaomudada/formatarSD/.rpg. Usuario confirmaOTA ou grava cabo. Memoria global nao alterada.
+
+CINCO PRIMEIROS COMANDOS DE CONTINUIDADE:
+1. Ler esteTXT e relatorio; verificarCI/Release/latest/manifesto/fontes reais antes de orientarOTA.
+2. Testar fisicamente guia nas4entradas, cancelamento/confirmacao de viagem, compra, derrota/dungeon e descanso; preservarheroisantigos.
+3. Concluir campanhaAeldra seguindo canon/Anwen/Odran/Coracao do Veu; nao criar regioes extras antes do climax/desfecho.
+4. Medir progressao1..20/economia/combate, concluir poderes de classes e revisar creditos/origens dos assets.
+5. Rodar22suites econtrollercheck,compilarESP32semupload,inspecionarprevias; publicarbuildineditoaposchecks e registrarhashes/resultadofisico/continuidade.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - MARTIAIS1 / 2026.10.08-martiais1 / build 2026100803
+Estado: Publicada e verificada; 21 suites e compilacao ESP32 aprovadas. Teste fisico desta versao pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: PODERES_MARCIAIS.md; tabela: EVOLUCAO_DND.md; canon nos documentos de lore existentes.
+Previa: validacao/previa-martiais1.png. Testes: work/test_martial.ps1; work/check_powers_snapshot.py.
+Commit firmware/tag: ccb2b81189b69be0a5b67c79fbb9777912088c3b
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37789056279
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-martiais1
+Evidencia de publicacao: {"version": "2026.10.08-martiais1", "build": 2026100803, "candidate_run": 37789056279, "publication_run": 37789708521, "commit": "ccb2b81189b69be0a5b67c79fbb9777912088c3b", "program_bytes": 2638098, "globals_bytes": 53676, "firmware_bytes": 2638240, "firmware_sha256": "8001a4ad2c02d7eb6d69d2d3e259ca804c04efc5e6c3953763bb9746c31d53e9", "art_sha256": "7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921", "art_file": "C:\\Users\\Rodolfo\\Documents\\Codex\\2026-09-29\\vamos-iniciar-o-rpg-poket-2-2\\outputs\\RPG_POKET_2_0_Waveshare\\releases\\2026.10.08-poderes1\\artes.pak", "art_bytes": 6772560, "physical_test": "pending"}
+
+IMPLEMENTADO: Guerreiro SegundoFolego Nv1, cura1d10+lvl, uma vez por descanso, bonus sem gasto de ataque/MP, seguro fora. Surto Nv2 uma acao extra, dois usos Nv17, no maximo uma ativacao no mesmo turno; ativar mantemHero; proxima acao normal consomepending e mantemHero; seguinte acao vaiEnemy. Folego e bonus nao consomepending. Surto aplica a ataques/tecnicas/defesa/pocao/tentativa de fuga. Campos gastosepending persistidos, fim batalha limpa efeitos sem repor usos. Teste falha/retry grava uma vez.
+BARBARO: FuriaDeBatalha Nv1 ativa como bonus, 3 rodadasEnemy; +2/3/4dano por ataque conformeNv1/9/16; resistenciafisica metade arredondabaixo depoisguarda; magia nao reduz. EspectroID5/ArconteID8 magicos; demais fisicos. Usos2Nv1,3Nv3,4Nv6,5Nv12,6Nv17, ilimitadoNv20; ao atingir20 limpa consumoantigo. Tecnicaantiga chamadaGolpebrutal em novospersonagens para distinguirda Furia; antigos preservados. UI mostra usos e duracao; Battle mostraacaoextra/Furia,riscoinclui resistencia.
+ACESSO: Heroi>Evolucao>Poderes; Tecnicas>Poderes paraasquatroclasses; dungeonMenu>Poderes. Consulta nao escreve. Acampamento permitido comHPMPcheios e recursosgastos; descanso concluido cidade/camp repoe recursos; iniciado/interrompido/pocao/reiniciarnao. Clube PvP conserva regras/protocolo proprios; novos poderes nao integrados ao duelo nesta etapa.
+SAVES: Save14/128bytes, CRC124; le1..14. Bytes114windSpent115surgeSpent116pending/turnUsed bits117rageSpent118rageTurns.119..123reservadoszerados. Bytes90/91camp92..99eventos100..108evolucao109..113paladino intactos. Save13 importado comnovosrecursoszero; legados nao recebemmodoprogressao automaticamente. Firmware anterior nao le Save14; nao downgrade sembackupcompativel. IDs destinos0..3 e enumsPage/Effect preservados; Actions novos anexados14..16. Acaoextraeefeitos persistem duranteanimacao,savefalhapausae retry naoreaplicapoder.
+ARTE: semmudancas,425assets pacote6772560bytesSHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921. EfeitosShield/RageaprovadosresidentesPSRAM; nenhuma leituraSDporquadro nemnovodelta.
+LIMITES: regrasD&D2014adaptadas, nao integral; Furia3rodadasemvez1minuto; separacaodescansocurto/longo, subclasses,caminhos,Imprudente,Indomavel,Persistenteecapstoneacima20 pendentes. PaladinoeMago poderes1 intactos. CampanhaAeldra/climax/desfechoequilibrio20 incompletos; nao anunciarjogofinalizado.
+RESTRICOES: semflashautomatico/NVSapagado/particaomudada/formatarSD/.rpg/Heltecmodificada; publicacaoGitHubautorizada,usuarioOTAconfirmadaougravacabomanual. Globalmemoria naoalterada.
+
+CINCO PRIMEIROS COMANDOS DE CONTINUIDADE:
+1. Ler esteTXT e PODERES_MARCIAIS.md; verificar Release/latest, CI, manifesto, versao/fontes e saves sem presumir sucesso fisico.
+2. Testar Guerreiro1cura/2Surto, Barbaro1Furia, retomar no meio de efeito/acao extra, descanso/dungeon e slot antigo; nao apagar herois para testar.
+3. Implementar PunicaoDivina e aura do Paladino ou caminhos de classe conforme tabela, persistindo recursos e separando adaptacoes das regras de mesa. Preservar bytes/enums/IDs.
+4. Balancear combate/XP1..20 e tipos de inimigos; fechar Aeldra com climax/desfecho antes novas regioes/eventos.
+5. Rodar21suites, conferir controller real, previews e ESP32 semupload; publicarbuildinedito aposchecks, baixarverificar hashes e registrar novo progresso e teste fisico.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - PODERES1 / 2026.10.08-poderes1 / build 2026100802
+Estado: publicada/latest;20suites eESP32aprovados, firmware/manifesto baixados eSHAconferidos. Teste fisico pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: PODERES_DAS_CLASSES.md; tabela: EVOLUCAO_DND.md; critica: AUDITORIA_LANCAMENTO.md.
+Previa: validacao/previa-poderes1.png. Controladores title_controller/dungeon_controller sao copia exata do corpo real .ino; ver work/check_powers_snapshot.py.
+Commit firmware/tag: 038fcfa64a401db10fe608c516fb870f3b297a64
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37765744962
+CI publicacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37766115238
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-poderes1
+IMPLEMENTADO: Page::Powers/OathConfirm ao fim do enum; Heroi>Evolucao>Poderes, Tecnicas>Grimorio/Poderes e DungeonMenu>Poderes. Mago automatico Nv1 Misseis(3MP,3d4+3,nao erra),Maos(3MP,3d6/save metade),Escudo(3MP,75% proximo golpe/usa turno);Nv3 Raios(5MP,3 ataques magicos2d6),Nv5 Bola(7MP,8d6/save metade). Um alvo; custosMP adaptados. Botao ofensivo novoMago=Misseis/defensivo=Escudo; antigosRaio/Barreira conservados.
+PALADINO: ImporMaos Nv1/reserva5*lvl, cura ateHPcheio/reserva esgotar; turno no combate, seguro fora; persiste consumo. Nv3 firmarDevoção com confirmacao permanente cidade/abrigo, sem autoescolha. ArmaSagrada+CHA(min1) por3ataques; ExpulsarProfanos perde2turnos, somenteIDs2/5/8/9; ambos compartilham1Canalizar. Ativacao ocupa turno. Inicio/fim batalha limpa so efeitos, conserva uso. Descanso concluido abrigo/acampamento repoe cura/canalizar; inicio/interrupcao/pocoes/reboot nao. Acampar permitido HPMPcheios com recursos consumidos.
+LIMITES: D&D2014/SRD5.1 adaptado, nao converter sistemas completos. Sem novos juramentos, aura, punição divina completa, recursos Guerreiro/Barbaro, grimorio preparado, slots, resistencias ou AOE no mapa. Expulsar semsave/movimento eArmaSagrada dano3ataques sao adaptacoes, nao regras literais. Heróis pre-direcao1 continuam regras antigas e nao usam poderes novos. Aeldra/endgame/equilibrio20 seguem incompletos.
+ANIMACOES: MagicDarts/FlameVolley/FireBurst/Radiant anexados ao Effect; azul3dardos/chamas3/projetilgrandeexplosao/brilhodourado.1100/1200ms,entrada bloqueada. Arte ja aprovadaresidentePSRAM;425assets6772560bytesSHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921;nenhuma leituraSDporquadro/delta novo.
+SAVES: Save13/128bytes/CRC124,le1..13. Campos90/91camp92..99eventos100..108evolucao intactos.109oath110laySpent111channelSpent112sacredTurns113turnedTurns;114..123reservadoszero. Save12 importado semrecalcularstats/modo,novosrecursoszero. Nao downgrade depoischeckpoint13 sembackupcompativel. Sem hardware escrito pelo agente.
+VALIDACAO:20suites incluindo class_powers,24consultasPowers/confirmacao/32quadrosefeitos; consultas semmutar. Gatesclasse/lvl/MP,alvoinvalido,usoscompartilhados,duracao,cura/rest/persistencia. Controller confirma/cancela oath,savefalha/retry semduplicar cura/mana,animacaobloqueiatap. CI candidata aprovada: programa2636222bytes83%,globais53628bytes16%; logvalidacao/poderes1-ci.log. Publicacao CI aprovada. Firmware2636368bytes/SHA75621f8a124dfd1cbddee30d5140575946174fcdddac55de59c4391ffe10782a;arquivos releases/2026.10.08-poderes1. Arte localcompativel conferida contra manifesto.
+RESTRICOES: semflashautomatico/NVSapagado/particaomudada/formatarSD/.rpg/Heltecmodificada; publicacaoGitHubautorizada,usuarioOTAconfirmadaougravacabomanual.
+CINCO PRIMEIROS COMANDOS:
+1. Ler esteTXT, PODERES_DAS_CLASSES.md e canon; conferir commit/CI/Release/latest e arquivos reais antes orientar update.
+2. Testar heroi das novas regras: Mago1,3,5; Paladino1cura/3Devoção,canalizarcompartilhado eacampamento; consulta/nav/retomadaDungeon/slotantigo. Semapagarheroispara testar.
+3. Completar poderes porclasse: PunicaoDivina/auras,RecuperacaoArcana/tradicao e preparados; GuerreiroSurto/SegundoFolego; BarbaroFuria/uso/duracao. Preservar enums/IDs e persistir recursos semrebootgratis.
+4. Balancear decisao/custo/XP1..20 e inimigosdistintos; fechar Aeldra comclimax/desfecho antesregioes/eventosextras.
+5. Rodar20suites/compilarESP32semupload/inspecionarprevias; publicarbuildinedito aposchecks, registrartestefisico econtinuidade. Globalmemoria nao alterada.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - DIRECAO1 / 2026.10.08-direcao1 / build 2026100801
+Estado: publicada/latest; 19 suites e compilacao ESP32 aprovadas; arquivos baixados e SHA conferidos. Teste fisico pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guias: EVOLUCAO_DND.md e AUDITORIA_LANCAMENTO.md. Previa: validacao/previa-direcao1.png.
+Main documental: 420ee645fae71ebb911879669ce40a7079b74fc5
+Commit firmware: dd2cc9aef25780bd4cdd4ce62e782e1b5d785814
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37725710663
+CI publicacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37726033564
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-direcao1
+IMPLEMENTADO: objetivo clicavel em abrigo/Carvalho/Ruinas; Seguir objetivo sem viagem automatica; novos herois nivel1 e XP oficial D&D5e2014/SRD5.1 ate20; Mago=Wizard, Cavaleiro=Paladino com juramento (escolha do usuario), Guerreiro=Fighter, Barbaro=Barbarian. Evolucao mostra tabela de referencia por nivel, seis atributos, pontos nos marcos e talento Resistente. HP por classe/CON; ataques extras adaptados por multiplicacao de dano (uma rolagem); critico Barbaro adaptado em pontos. Paladino ofensivo somente a partir2. Primeiros Goblin/Lobo novos herois reduzidos. Risco maximo do proximo golpe inclui critico/guarda; habilidades sem MP sinalizadas. Bolsa retorna a origem correta; HP30%/MP50% descritos. Vitoria mostra progresso/objetivo/contrato e local coerente.
+LIMITES: tabela de referencia nao significa poderes implementados. Juramentos/subclasses/auras/cura de Paladino, grimorio/slots de magias, surto/indomavel, furia completa e mais talentos ainda faltam. Campanha Aeldra e equilibrio1..20 ainda impedem lancamento completo. Ver auditoria critica.
+SAVES: Save12/128bytes; le1..12. Herois antigos conservam nivel/XP/stats/curva anterior; novos usam D&D. Campos90/91 e92..99 preservados;100..108 novos atributos/modo/talento/pontos. Firmware antigo nao le checkpoints12: nao fazer downgrade apos salvar sem backup compativel. Nao houve escrita na placa pelo agente.
+ARTES: inalteradas,425assets/6772560bytes SHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921. SD carrega uma vez para PSRAM; nenhuma leitura por quadro. D20/viagem/animacoes anteriores preservadas.
+FIRMWARE:2627856bytes SHA8435af3e4c7d1e2262d9033d9b52084d5cb9e22323631e5c7e6693e6f63fbd5c. Arquivos em releases/2026.10.08-direcao1.
+VALIDACAO:19suites locais e CI,80 consultas classe/nivel renderizadas, importacao antigos e falha/retry atributos sem duplicar. ESP32 programa2627710bytes83%,globais53532bytes16%. Logvalidacao/direcao1-ci.log. Compilacao nao prova teste fisico.
+RESTRICOES: preservar Heltec/IDs/namespace/particoes; sem flash automatico/apagarNVS/formatarSD/.rpg. Usuario confirma OTA ou grava pelo cabo.
+CINCO PRIMEIROS COMANDOS:
+1. Ler esteTXT, EVOLUCAO_DND.md, AUDITORIA_LANCAMENTO.md e canon; conferir Release/latest antes de orientar atualizacao.
+2. Testar novo heroi em slot vazio, sem apagar antigo: nivel1, tutorial/Carvalho, XP300para2/900totalpara3; Heroi>Evolucao e objetivo clicavel.
+3. Implementar juramento do Paladino e magia do Mago usando tabela2014, com desbloqueios reais e escolhas persistidas; nao confundir referencia com poderes ativos.
+4. Balancear1..20, criar comportamentos distintos e fechar arco/climax/desfecho de Aeldra antes de expandir mapas. Eventos diarios extras seguem planejados.
+5. Rodar19suites/compilar semupload/inspecionarprevias; teste com5pessoas e falhas fisicas de OTA/cartao/checkpoint; publicar versao inedita e registrar progresso.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - PAINEIS1 / 2026.10.07-paineis1b / build 2026100708
+Estado: publicada/latest; 18 suites e compilacao ESP32 aprovadas; teste fisico pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: NOVAS_TELAS_CONCEITO.md
+Main (documentacao): fd8b345bf6859eda75396c7d9311560ff5455a31
+Commit firmware/tag: 3381c29f90da9168e40f57466ff885224042e194
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37715749484
+CI publicacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37716011656
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-paineis1b
+IMPLEMENTADO: batalha, habilidades, bolsa, Carvalho, personagem, CampSetup/CampRoll/CampRest com seis conceitos originais. Atores e valores de exemplo substituidos por heroi real e dados do jogo. Acoes, regras, custos/turnos, slots de equipamento, raca e personalizacao conservados. Bolsa seleciona7consumiveis, mostra icone do proprio conceito/quantidade/descricao, equipamentos/usarpocao. Carvalho9botoes com geometria compartilhada. CampSetup possui racao(207..240),kit(244..270) e Voltar/Acampar; testeD20 e cena de descanso conservam regras e animacoes. Outras cidades conservam seus cenarios. Inteligencia/agilidade ainda nao implementadas; personagem mostra sobrevivencia/sorte reais. D20 e viagem no mapa inalterados.
+ARTES: 8imagens240x320/256cores, +614400 bytes no SD/PSRAM, paletas/fallback pequenos naflash. ArtCount425; payload6772544; arquivo6772560; CRC1a8982c3. Prefixo dos417assets originais byte-a-byte igual. Carrega/valida uma vez no boot; nenhuma leituraSD porquadro. Atualizacao nesta versao precisa firmware+artes, sem retirar cartao. Publicacao completa gerada por tools/unpack_art.py da basecartao/artes.pak.gz e delta paineis1.bin.gz. OriginaisPNG/conversor local em assets/painéis1 e tools/prepare_panels_ui.py. Repo tem delta/paletas/catalogo para reconstruir arte.
+VALIDACAO: 18suites, controlador real sincronizado,16combinacoes classe/raca e efeitos, navegacao9botoes/7slots, consumo unico e save failure/retry; previas inspecionadas; programa2620490,globais53500. Firmware2620640 bytes/SHA95a386db1de006f681d0608ec7f20a196fcecea1df18ead30120695478ee4249; artesSHA7fe0d0dffdc396a7c031de0876b2a38336a01e25a45a06f23154b6082f1c6921. Pacote e manifesto baixadosconferidos em releases/2026.10.07-paineis1b; logsvalidacao/paineis1b-ci.log. Sem teste fisico pelo agente.
+RESTRICOES: Save11/leitura1..11, IDs, namespaces e particoes intactos. Sem flash automatico/NVS apagado/formatacao SD/.rpg/Heltec alterada. Usuario confirma OTA ou grava pelo cabo. Relatar compilacao e teste fisico separadamente.
+CINCO PRIMEIROS COMANDOS:
+1. Ler esteTXT e NOVAS_TELAS_CONCEITO.md, canon e manifestos; abrirsketch atual e conferir Release/latest.
+2. Receber teste fisico: atualizar firmware+artes pela placa; Carvalho9acoes, bolsa7slots/icone/quantidade/usarpocao, habilidades4classes, personagemraca/cores, efeitos/turnosinimigo, acampar com/semracao/kit e voltar/mapa. Nao apagar herois para testar.
+3. Ajustarlegibilidade e toque conforme retorno, sem inventar atributos/progresso. Sincronizarcontrollerreal nos testes se editar.ino. Configuracoes continuam no titulo.
+4. Retomar segundo evento completo antesde2ofertasdiarias e campanha/expansoes; cartas1 continua1piloto diario. Preservar90/91 e IDs0..3. Planejar espacoPSRAM para novas regioes: atuais6772544+framebuffer153600, antes de buffers/rede.
+5. Rodar18suites/compilarESP32/inspecionarprevias semupload; publicar versao/build ineditos apospassar e registrar continuidade.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - ABRIGO1 / 2026.10.07-abrigo1 / build 2026100706
+Estado: publicada/latest; 18 suites e compilacao ESP32-S3 aprovadas. Teste fisico pelo usuario pendente.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: ABRIGO_E_MENU_CONCEITO.md
+Main (documentacao): b690c05ae7a4cb3f34a2792b0bdde32b4d6d0bad
+Commit firmware: 485fdb430ea437c10bd8b01db4768c18b8965eb7
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37697988756
+CI publicacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37698319513
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-abrigo1
+IMPLEMENTADO: quatro telas com conceitos originais. Menu preserva recortes dos sete botoes/fonte/cores/icones; hitboxes compartilhadas. Abrigo das Ruinas usa conceito e HUD real; demais cidades usam fundo local. Mapa conserva IDs 0 Carvalho, 1 Ruinas, 2 Mares, 3 Aurora; Valdaria abre atlas. World::places/roadPoints alinhados; d20/sobrevivencia/sorte e Journey::position/tick/duracao mantidos. Ruinas possui Iria/Dungeon/Guardiao/Explorar/Acampar/Mapa/Loja, dados reais e mesmas travas. Animacoes sutis em codigo, sem SD/rede por quadro. Save11/leitura1..11/layout/namespace/particoes preservados. Pacote SD inalterado. Conceitos PNG+conversor reproduzivel no GitHub; alternativa imagegen nao usada.
+VALIDACAO: programa 2605298 bytes (82%), globais 53500 (16%). Render final passou, previas inspecionadas em validacao/previa-quatro-telas.png e previa-viagem.gif. Firmware e pacote baixados conferidos por tamanho e SHA; manifesto em releases/2026.10.07-abrigo1. Nao inferir teste fisico destes resultados.
+RESTRICOES: sem flash automatico, apagamento NVS, mudanca de particao, formato/escrita direta SD, pacote .rpg ou alteracao Heltec. Usuario instala pela placa em Titulo > Configuracoes > Atualizacao ou pelo cabo manualmente.
+CINCO PRIMEIROS COMANDOS:
+1. Ler este TXT, ABRIGO_E_MENU_CONCEITO.md e o canon. Conferir fontes, manifesto e validacao/abrigo1-ci.log; abrir sketch atual.
+2. Receber teste fisico dos sete botoes do Menu, Abrigo, quatro cidades/atlas, d20 e viagem/chegada, Iria/dungeon/guardiao/acampamento/mapa/loja. Sem apagar herois para testar.
+3. Ajustar legibilidade/toque conforme retorno. Ao editar .ino sincronizar controlador em title_controller/dungeon_controller. Preservar geometria compartilhada e dados reais sob a arte.
+4. Retomar segundo evento completo (ervas-lanterna/Elarin) antes de agenda com dois eventos/dia. Piloto hipogrifo continua uma oferta/dia; outros sete eventos e novas regioes ainda planejados. Preservar campos90/91 e IDs0..3.
+5. Rodar18suites e compilarESP32 semupload; inspecionarprevias; publicar versao/build ineditos so apos passar; registrar continuidade. Atualizacao confirmada pelo usuario na placa ou cabo.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - TITULO1 / 2026.10.07-titulo1 / build2026100705
+Estado: publicada/latest; arquivos baixados e SHA/CRC conferidos; CI37669986839 passou18suites+ESP32+Release. Teste fisico titulo1 pendente do usuario.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: TELA_TITULO_E_JORNADA.md
+Main: 4b5a95646ad0ec1dd0b941b13a0d0968db9ed29c (documentacao final)
+Firmware/tag testado: 492d2d9664926b6ebdbf2e6693174d78564cb3f5
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-titulo1
+IMPLEMENTADO: todo boot chega a Title, sem executar turnos/viagem/descanso/pagamento/oferta antes de Continuar. Continuar habilitado somente com pelo menos um slot Ok/Recovered; ultimo selecionado quando valido, senao primeiro valido. Saves protegidos nao habilitam Continuar nem sao sobrescritos. NewGame usa primeiro vazio; 3ocupados abrem Slots em modo criar, ocupados nao oferecem Entrar, exclusao somente explicita+confirmada, falha/cancel preservam. Raca/classe/roupas sao rascunho ate confirmar, guard contra sobrescrever slot existente. Cancelar voltaTitle. Personagens do Menu mantidos. Configuracoes somente a partirTitle (brilho/WiFi/cartao/testes/hora/OTA), VoltarTitle, Menu troca entradaConfiguracoes por TelaTitulo. Retomada usa selectSlot/currentPage e recupera reservaClub somente depoisContinue. openTitle pausa Journey/CombatFx e sessionStarted=false; canOfferEvents false antesContinue. Relogio1min retornaTitle antesContinue, sem abrir carta de heroi escondido.
+ARTE: fundo original240x320/256cores (77312bytesflash) + brasao190x112 transparente(21792bytesflash), ambos repro em tools/prepare_title.py com assets/titulo1/*originaisPNG. Fogos/brasas/folhas/hipogrifo pequeno animados em codigo, semSD/network porquadro. Title fixa por-do-sol; mundo mantem seu ciclo dia/noite. PacoteSD inalterado417assets/6158160bytes/CRC27ce9e69.
+LORE: Menu>Diario>Objetivo/SuaJornada deriva de tutorial/Ruinas/Guardiao/Cripta, mostra objetivo/local/proximoNPC. Nara tem fala da classe+descobertas; Iria distingue GuardiaoLimiar de Vaelor e orienta pistasMares. Navegacao somente leitura, sem novas recompensas/progresso ficticio. AtosIII-V ainda em preparo. Title/ Campaign adicionados ao fim do enum, IDs anteriores preservados.
+SAVES: Save11/128bytes, le1..11, sem alterar layout/namespace/particoes. Campos90/91 camp e92..99 eventos preservados. Sem migracao/escrita automatica no titulo. Firmware antigo nao leSave11; semdowngrade apos checkpoint11. .rpg nao gerado, Heltec/cartao/NVS nao apagados, placa nao gravada pelo agente.
+VERIFICADO:18suites incluindo title_controller com o controlador real: boot/Continue em combate turnoEnemy,dungeon,viagem,descanso,hipogrifo; slotsvazios/cheios/protegidos/recuperados, cancel/exclusaofalha, semoverwrite, settingsreturn, compass. 21previas e limites de texto, animacao alteraquadros mas naoGame/savebytes. Candidata inicial passou, polimento teve variavel sway fora de ordem; corrigida e suite/ESP32 novamente passaram. Fonteslocais normalizadasLF comparadas ao commit. Build/tamanhos em validacao/titulo1-ci.log. Firmware2291840bytes/SHAf5719598aeea9cf4cfa0a311fc86e04b91dccd0e0f7b784f6c5545c0482a136a; arteSD SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96.
+AMBIENTE: faltaespaco impediu inicializar revisao automatica uma vez; acesso retomado e119798272bytes de92executaveis/PDB/OBJ temporarios em work removidos, fontes/artes/releases preservadas. Sem subagentes. Nunca contornar revisao.
+PENDENTE: teste fisico desta versao; segundo evento e depois duasofertas distintas/dia e outros7tipos; campanha dos farois/atosIII-V; novosinimigosnoturnos; expansoesregioes e alcance. Cartas1 continua piloto1oferta/dia apos09h porpersonagem.
+
+CINCO PRIMEIROS COMANDOS:
+1. Ler esteTXT e TELA_TITULO_E_JORNADA.md, conferir validacao/titulo1-ci.json / titulo1-release.json e abrir sketch atual. Canon em LORE_CANONICA_RPG_POKET_2.md / CONTINENTE_VALDARIA.md / EVENTOS_E_CICLO_DIA_NOITE.md.
+2. Receber teste fisico: rebootTitle, animacoes/toque, Settings>VoltarTitle, Continue retoma heroi/atividade, NovoJogo slotlivre/cancel/criar e Diario>Objetivo/Pessoas. Nao apagar heroi apenas para testar Continuecinza.
+3. Refinar apresentacao e narrativa conforme retorno; sem inventar progressocampanha. Atualizar controlador extraido em dungeon_controller/title_controller ao editar .ino.
+4. Implementar proximoevento completo (ervas-lanterna/Elarin) antes de agenda2eventos/dia, preservar diario/verificacao e missaoativa. Nao reusar camposSave11 nem mudar IDs0..3.
+5. Rodar18suites, compilarESP32 semupload, inspecionarprevias e publicar versao/build ineditos apospassar. Atualizar so porconfirmacao do usuario na placa ou cabo manual; nao criar.rpg.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - CARTAS1 / 2026.10.07-cartas1 / build2026100704
+Estado: publicada/latest e arquivos baixados com SHA/CRC conferidos. CI37614488184 passou17suites+ESP32+Release. Teste fisico cartas1 pendente do usuario.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: CARTAS_E_HIPOGRIFO.md. Base narrativa/continente e plano de eventos: LORE_CANONICA_RPG_POKET_2.md, CONTINENTE_VALDARIA.md, EVENTOS_E_CICLO_DIA_NOITE.md, LORE_INDICE.json. Hora/paletas: HORA_E_DIA_NOITE.md.
+Main: d4351e857e7c4c1c10c49cd58439264a75da2efa
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-cartas1
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37614488184
+IMPLEMENTADO: piloto Asas sobre os telhados de Maelis. Uma oferta por personagem/data local a partir09h, sem acumular dias desligados, data maxima nao retrocede. Disponivel apos guia de Nara, sem filiacao. Sem hora confiavel nao gera ofertas novas; cartas ja salvas podem ser lidas. Menu > Cartas; Voltar do Menu agora e botao da direita. Relogio preto recebe pergaminho pulsante e toque abre carta; nunca aceita automaticamente. Animacao de abertura450ms e passagem custeada pela Guilda700ms sobre o mapa. Fechar preserva carta, recusar pede confirmacao. Aceitar exige estado seguro/HP>0, sem combate/viagem/dungeon/acampamento/duelo/download. Faixas3-4/5-9/10-17/18+: Pomar/Carvalho25ouro20XP, Ruinas70/60, Costa/Mares150/140, Aurora300/280. Sorte/recursos de viagem/cristais nao consumidos. Quatro sprites originais virados a esquerda(2idle+2ataque), convertidos80x86 e guardados na flash, sem mudar pacoteSD. Vitoria afugenta a ave. Resultado mostra pagamento/retorno; derrota mantem penalidadeXP e volta1HP; fuga HP/MP restantes. Sem drops/progressoRuinas/contratos pela missao; subida de nivel pela recompensa e regra normal. Reboot retoma combate/resultado. Pagamento e retorno na mesma transacao verificada impedem duplicacao em retry/reinicio.
+SAVE: novo Save11/128bytes, mesmo diario duplo e tres slots. Le1..6/64bytes e7..10/96bytes, sem apagar nem converter durante leitura. Campos0..91 preservados;90/91 acampamento.92..95=eventDay,96=stage,97=tier,98=originCity,99=originPage,100..123zero reservado,124..127CRC. NVS aceita64/96/128 e verifica tamanho declarado. IDs inimigos10..13 sao variantes do hipogrifo, somente na missao ativa. Nao voltar a firmware anterior depois de novos checkpoints Save11. Manifesto compatibilidade base continua save_format7 para bootstrapOTA existente; writes_save_format11 e reads1..11 descrevem persistencia real.
+ARTE: assets/cartas1/hipogrifo-original.png, hipogrifo-sprites.png, quatroPNGs e proveniencia.json. Conversor tools/prepare_hippogriff.py; original e tira tambem no GitHub. SHA bloboriginal3feca37a0038d8f98a6ca99c65851f78cd8a27aa conferido. ArteSD continua417assets/6158160bytes/CRC27ce9e69, sem releitura por quadro.
+VALIDACAO:17suites,192resultados(4classes*4cidades*4faixas*3desfechos), recusas/calendario/rollback de data, aceitar seguro, retorno, save failure/reboot antes/depois de pagar, corrupcaoCRC/flags/reservado/futuro e migracao realSave10 com acampamento ativo. Controlador real sincronizado e cobre abertura/animacao/taps/retry.53previas com renderizador real e limites de texto; amostra inspecionada. Primeira falha foi teste de VoltarMenu na posicao antiga; corrigido. CompiladorESP32 pediu min<uint32_t> no limite de ouro, corrigido. Logs de compilacao/tamanhos em validacao/cartas1-ci.log; fontes locais comparadas ao commit publicado. Firmware2186608bytes/SHAc35e3b92af77bbd064356cf259e9c8670c579363c56d11dd18ae3fd99be1a2db; SD SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96. Sem teste fisico pelo agente.
+PENDENTE: dois eventos distintos diarios e sete outros tipos, diversidade/historico, novos inimigos noturnos/variantes de horario, atosIII-V/farois/Odran, novas regioes, alcance. Nao afirmar8eventos/2ofertas prontos. Carta piloto nao concede itens transferiveis ou comercio multiplayer.
+RESTRICOES: Heltec preservada; sem upload automatico/.rpg/formato/cartao/NVS apagados. Atualizacao so confirmada pelo usuario na placa ou cabo manual. Sem subagentes sem pedido.
+
+CINCO PRIMEIROS COMANDOS:
+1. Ler este TXT, CARTAS_E_HIPOGRIFO.md e plano de eventos; conferir validacao/cartas1-ci.json e cartas1-release.json e abrir sketch atual.
+2. Receber teste fisico: hora valida apos09h, Menu>Cartas ou relogio1min, abrir/fechar/recusar/aceitar, combate, reboot em combate/resultado, pagar/retornar sem duplicar e manter contratos/bolsa. Nao apagar saves para testar. Data manual adiantada impede novas cartas nas datas anteriores.
+3. Implementar segundo tipo completo, preferencialmente ervas-lanterna de Elarin, com interacoes/objetivos finitos e progresso salvo. So depois implantar duas ofertas distintas/janelas/agenda e historico por personagem conforme EVENTOS_E_CICLO_DIA_NOITE.md.
+4. Planejar expansaoSave11 sem reusar90/91, validar campos reservados e qualquer migracao nova. Preservar missao ativa ao mudar dia e estados normais de dungeon/viagem/acampamento. Retorno tem paginas seguras2/9/27/36/49, demais origens voltamHome na mesma cidade.
+5. Sincronizar controlador real ao editar .ino, rodar17suites/compilar sem gravar/inspecionar previas e publicar nova versao/build apos passar. Nao sobrescrever Release ou voltar a Save10 no firmware.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - DIA1 / 2026.10.07-dia1 / build2026100703
+Estado: publicada, latest confirmado e arquivos baixados com SHA/CRC conferidos. CI37611077067 passou16suites+ESP32+Release. Teste fisico dia1 pendente do usuario.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: HORA_E_DIA_NOITE.md. Canone: LORE_CANONICA_RPG_POKET_2.md / CONTINENTE_VALDARIA.md / EVENTOS_E_CICLO_DIA_NOITE.md / LORE_INDICE.json. Narrativa inicial: REORGANIZACAO_AELDRA.md.
+Main: b3e9d11b03bf5a874f621c6b11f988fd53cdbff2
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-dia1
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37611077067
+IMPLEMENTADO: Configuracoes > Horario; fuso UTC-12..+14 em horas inteiras, padraoUTC-3; hora automatica NTP ou manual com cinco campos/controles grandes. Preferencias em um registro atomico clockcfg de pkt2_ui, separado dos saves. Hora manual avanca em RAM e precisa de ajuste apos reinicio; nao fingir RTC desligado nem reutilizar data antiga. Sem hora confiavel: aviso e paleta diurna. Quatro periodos:05-06h amanhecer;07-17h dia;18-19h crepusculo;20-04h noite. Paletas de128cores dos fundos em RAM; texto/personagens/botoes/itens nao escurecem. Mapa, viagem, cidade, refugio, exploracao/acampamento e batalha possuem variacao; interiores mantem atmosfera propria. Transicao automatica aguarda estado seguro. Relogio preto de inatividade conserva brilho reduzido e mostra periodo. Sem consultas de SD/servidor por quadro. Botoes ajustam tamanho do texto quando necessario para caber.
+COMPATIBILIDADE: Save10/96bytes e leitura1..10 sem migracao, namespaces de personagem/particoes/artes SD iguais. Bytes90/91 continuam acampamento. Horario nao altera HP/MP/ouro/XP/inimigos/contratos/dungeon/viagem. Heltec intacta, sem upload automatico, .rpg, formato ou apagamento de NVS/cartao.
+VALIDACAO: candidatab3e9d11b03bf5a874f621c6b11f988fd53cdbff2, CI37610794995,16suites e compileESP32.34previas de hora e quatro periodos geradas com limites de texto; amostra conferida visualmente. Calendario/bissexto, offset, timer wrap, manual, falha de gravacao, reinicio sem hora valida, adiamento de periodo, controles reais e bytes de saves preservados. Primeiro CI parou no mock antigo que exigia BRT3; atualizado para UTC0 com offset separado. Paletas usam128entradas conforme AssetCatalog, sem alterar arte. Programa2124662bytes(67% de3145728), variaveis53420bytes(16%). Firmware final2124816bytes / SHAe04b7b43867f08251c27b33767233f1e9708a9fa55fac9d716a8f1c6b659a996; arte6158160bytes / SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96 / CRC27ce9e69. Teste fisico so pelo usuario.
+PENDENTE: novos inimigos noturnos, eventos/pergaminho, duas ofertas diarias, oito variantes, atosIII-V/farois/Odran, novas regioes e alcance. Hora automatica nao pode manter data desligada sem fonte confiavel. Fuso fracionario e horario de verao nao implementados.
+
+CINCO PRIMEIROS COMANDOS:
+1. Ler este TXT, HORA_E_DIA_NOITE.md e EVENTOS_E_CICLO_DIA_NOITE.md; abrir as fontes e validacao/dia1-ci.json / dia1-release.json.
+2. Receber teste fisico: Configuracoes > Horario > Acertar; testar05h,07h,18h,20h; fusoUTC-3, desligar ciclo, relogio apos1min e retomada sem hora apos reinicio. Nao apagar personagens para testar.
+3. Projetar persistencia de eventos por personagem antes de implementa-los: preferir extensao transacional do diario de save com migracao1..10, ou demonstrar atomicidade de registro separado + recompensa. Nao reutilizar bytes90/91 e nao escrever saves via ferramentas. Aceitacao, retorno e pagamento precisam sobreviver a falhas/reinicio.
+4. Implementar piloto Asas sobre os telhados de Maelis: oferta nivelada, pergaminho no relogio/caixa de cartas, aceitar/recusar, combate do hipogrifo com arte propria, retorno seguro e recompensa unica. Dois eventos distintos diarios so depois de existir ao menos outro tipo completo; nao fingir oito eventos implementados.
+5. Sincronizar controlador real em tests/dungeon_controller.cpp; preservar contratos, tres slots, IDs0..3 de Aeldra, dungeon/viagem/acampamento. Testar, compilar sem gravar, inspecionar previas, publicar versao/build novos e registrar. Sem subagentes sem pedido e sem gravacao automatica.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - LORE1 INTEGRADA / 2026.10.07-lore1 / build2026100702
+Estado: publicada, latest confirmado e firmware/artes baixados com SHA/CRC conferidos. CI37599341479 passou16suites+ESP32+Release. Teste fisico lore1 pendente do usuario.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: REORGANIZACAO_AELDRA.md. Canone: LORE_CANONICA_RPG_POKET_2.md / CONTINENTE_VALDARIA.md / EVENTOS_E_CICLO_DIA_NOITE.md / LORE_INDICE.json.
+Main: 9df755bf384bc3072ca694bb0442d9c77487e7c4
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-lore1
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37599341479
+IMPLEMENTADO: abertura em quatro quadros após criação, Nara, carta de Maelis, pular e guia. Diário de seis páginas derivado dos campos tutorial, ruinsWins, guardianDefeated e dungeonClears/chefe vencido; não concede recompensas nem inventa progresso. Veteranos não repetem tutorial; Relembrar é somente leitura. Pessoas: três por cidade, diálogos e voz de Vaelor bloqueada antes de vencê-lo. Serviços identificam Maelis, Grum, ferreiros e fornecedores. Mapa regional de Aeldra, farol do destino e atlas de oito regiões; regiões futuras não oferecem viagem. Ruínas de Véspera e Vaelor recebem identificação narrativa. Livro das Vigílias é descoberta no Diário, não prêmio físico do baú. O baú continua aleatório. Refúgio das Brasas e Nara pertencem a Carvalho; outros abrigos são identificados localmente.
+COMPATIBILIDADE: Save10/96bytes, sem dados novos nem migração. Lê1..10; namespaces, partições e artes SD permanecem iguais. Conversar, Diário e atlas não gravam saves; testes confirmam blobs iguais. Atividades em andamento têm prioridade na retomada. Quadros em RAM, sem leituras do SD por quadro. Heltec intacta; sem upload automático, .rpg, formatação ou apagamento de NVS/cartão.
+PENDENTE: atosIII–V completos, restauração dos faróis, chefe Odran, novas flags de história, duas ofertas diárias, pergaminho, dia/noite, mapas novos e portraits de NPCs. Alcance da dungeon continua adjacente. Atlas usa páginas informativas, não um novo mapa ilustrado. Não afirmar essas mecânicas prontas. Lore original inspirada em D&D; níveis próprios até99. Aeldra é região de Valdária; futuras expansões incluem deserto, gelo, mar, montanhas, floresta, pântano e vulcões.
+VALIDAÇÃO:16suítes; controlador real de criação, pular, rever, guia e retornos sem cura, cobrança ou escrita.65prévias narrativas com limites de texto, NPCs das quatro cidades, novato/veterano e atlas de oito regiões; cenas inspecionadas. Candidata26f8e4b, CI37598980340. Primeiro CI encontrou referência game em vez de g no renderizador; corrigida. Tamanhos finais em validacao/lore1-ci.log. Firmware 2119840 bytes / SHAea561405432273691e35d8d9ce5864a8442136c0fb9e396ecd0fd3d4a9ba4d1a; artes 6158160 bytes / SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96 / CRC27ce9e69. Sem teste físico pelo agente.
+
+CINCO PRIMEIROS COMANDOS:
+1. Ler este TXT, REORGANIZACAO_AELDRA.md e os três documentos canônicos. Abrir as fontes atuais e validacao/lore1-ci.json / lore1-release.json.
+2. Receber o teste físico lore1: Menu > Diário/Pessoas/Relembrar; Guardião e Cripta reconhecidos; NPCs e serviços; Mapa > Continente; abertura em um slot vazio. Não apagar saves para testar.
+3. Planejar persistência para história/eventos: bytes90/91 do save10 já pertencem ao acampamento. Novas regiões precisam de região+destino; IDs0..3 atuais permanecem em Aeldra. Preservar três slots e contratos.
+4. Próximo trabalho pela ordem aceita: hora/fuso/dia-noite sem bloqueios e evento piloto do hipogrifo com carta, retorno e recompensa única. Seguir EVENTOS_E_CICLO_DIA_NOITE.md. Demais atos da campanha ainda futuros.
+5. Sincronizar o controlador real em tests/dungeon_controller.cpp ao editar o sketch. Validar16suítes, compilar sem gravar, inspecionar prévias, publicar versão/build inéditos e registrar o estado. Sem subagentes sem pedido e sem upload automático.
+
+--- HISTORICO ANTERIOR ---
+RPG POKET 2 - LORE E CONTINENTE / 07-10-2026
+Estado narrativo: canonev1 criado; firmware continua camp1. Nenhuma Release nova, nenhum mapa/evento/ciclo dia-noite implementado nesta etapa.
+Continente: Valdaria (Valdária). Regiao atual: Aeldra, Terras da Primeira Aurora. Carvalho/Ruinas/Mares/Aurora sao destinos desta regiao, nao o continente inteiro.
+Regioes futuras: Nivaria(gelo), Kharum(montanhas), Silvaran(floresta), Veldrum(pantanos), Sahram(deserto), Ignaria(vulcoes), Talassar(mar/ilhas).
+Historia de Aeldra: As Cinzas da Primeira Aurora; quatro farois prendem o Veu Oco consumindo memorias; Odran Valcer pretende a Vigilia Perpetua. Heroi reconstroi o pacto com aliados; vitoria regional real, outras campanhas continuam no continente.
+Guilda: Maelis Voss. NPCs de cidades e sete representantes futuros nomeados nos documentos. Manter quatro racas/classes atuais, tres slots, nomes/IDs e saves. Nao tratar canone como mudanca de mecanica ja instalada.
+Documentos obrigatorios (raiz C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare):
+1. LORE_CANONICA_RPG_POKET_2.md - prologo, historia completa5atos,16NPCs, motivacoes, revelacoes e finais.
+2. CONTINENTE_VALDARIA.md -8regioes, biomas/geografia/passagens,28locais futuros,7representantes, hierarquia mapa e migracao.
+3. EVENTOS_E_CICLO_DIA_NOITE.md -8eventos,2ofertas distintas/dia por slot, carta de Maelis, pergaminho sobre relogio de inatividade, passagem direta/retorno seguro, recompensas-base e persistencia;4periodos, encontro congelado no inicio, fuso local/manual/offline.
+4. LORE_INDICE.json - catalogo estavel e hashes dos documentos.
+Usuario pediu explicitamente memorizar esta lore; registro duravel em memoria pessoal via notes/ad_hoc, sem editar MEMORY.md.
+
+CINCO PRIMEIROS COMANDOS PARA CONTINUAR:
+1. Ler os3documentos integrais e indice; manter Valdaria continente/Aeldra regiao. O mapa atual nao e todo o continente.
+2. Reorganizar introducao/NPCs/servicos/mapa conforme canone sem trocar IDs ou apagar progresso. Tutoriais curtos, racas/classes antes do tutorial, missões na Guilda.
+3. Desenhar extensao persistente para historia/eventos e futura regiao+destino, importando save10. Bytes90/91 ja usados pelo acampamento; nao sobrescrever. Guardiao e cripta concluidos devem ser reconhecidos.
+4. Implementar fuso/hora confiavel e dia/noite nao bloqueantes, depois evento piloto completo do hipogrifo com pergaminho, aceitar/recusar, retorno e recompensa unica. Duas oportunidades/dia valem com placa ligada ou ofertas recuperadas ao voltar, nao eventos com dispositivo desligado.
+5. Completar oito eventos e variantes apropriadas; novas regioes terao mapas e campanhas proprias. Testar migracoes e retomadas, compilar/inspecionar e publicar versao inedita. Sem gravacao automatica ou.rpg, preservar Heltec. Alcance anterior continua pendente, prioridade atual e esta reorganizacao.
+
+--- REGISTRO DE FIRMWARE ANTERIOR ---
+RPG POKET 2.0 - CONTINUIDADE 2026.10.07-camp1 / build2026100701
+Estado: publicada e verificada como latest. CI final37567232597/job112617614911 passou16suites+ESP32+Release. Firmware/artes baixados e SHA/CRC conferidos. Teste fisico da camp1 pendente do usuario.
+Usuario confirmou bolsa1 funcionando na placa antes desta etapa.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\ACAMPAMENTO_MAGIA_E_SAQUE.md
+Arte original, PNGs e prompts: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\assets\camp1
+Pacote local de arte: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\releases\RPG_POKET_2_Camp1_Assets.zip
+Commit main: 92c3b07f527507bc2992314015baa3f3a8a0d2ff
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.07-camp1
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37567232597
+
+IMPLEMENTADO: Acampar nas regioes/Ruinas/Vila, D20+sobrevivencia+sorte(+2kit), dificuldade11/13/15/17, naturais1falha/20sucesso; 1racao opcional consumida ao iniciar; 50% dos maximos somados sem racao ou HP/MP completos com racao; kit reutilizavel80ouro na loja ou preparacao, slot7na bolsa; emboscada inimigo4/5/6/7, vitoria->descansar, derrota/fuga->interrompe sem cura/devolucao da racao; descanso4,5s com heroi sentado triste/comendo, fogueira4quadros e saco de dormir com kit, fundo da regiao e barra. Quatro classes possuem novas poses, sem novas variacoes de raca/cores nessas poses. Bola de fogo12quadros/960ms e raio ramificado12quadros/1200ms da pasta do usuario. Bau do chefe: tres armas tier2 de outras classes ou150ouro; itens possuidos excluidos; bolsa mostra item real; venda na cidade pela metade do preco regional, nao vende equipamento em uso. Transferencia entre slots/trocas futuras NAO implementadas.
+PERSISTENCIA: Save10/96bytes, le1..10; bytes90flagscampStage/racao/kit/kitpossuido e91D20. Rolar, consumir, curar e vender salvos uma vez; saveError trava ate retry. Retomada do descanso repete apresentacao, nao duplica cura. Nao voltar a firmware antigo depois de usar save10. Pacote SD continua estradas1/417assets, nada de novas leituras durante animacao. Nao tocar Heltec, NVS, placa/cartao ou particoes. Sem .rpg. Usuario instala/confirma pela placa; nenhum upload automatico.
+LIMITACAO: animacoes de magia sao visuais; alcance continua adjacente. Para alcance futuro, ler COMBATE_DUNGEON_PROXIMA_ETAPA.md; os bytes90/91 ja estao ocupados, desenhar uma extensao de save compativel.
+VALIDACAO: 16suites,1280acampamentos,1024baus,save10/import9,migracoes1..9,transacoes com falha/retry e controlador real. Candidata cd416a0 CI37566935983 passou e506previas PNG conferidas; CI final37567232597 passou compilacao e Release. Sketch2109198bytes(67% de3MiB), globals53316(16%). Firmware2109344bytes/SHAe8ba34891b2677154039f3503d49026ef7df3a78b12535e2f25ead857eb135a1. Artes6158160bytes/SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96/CRC27ce9e69. API latest confirmou camp1. Todos14arquivos alterados do firmware comparados com SHAblob do commit imutavel, iguais. Arte gerada por imagegen integrado, prompts em assets/camp1/PROMPTS.json; conversor prepare_camp_art.py. Primeiro teste falhou por CRC da fixture ao trocar9->10, corrigido recomputando CRC, nao enfraquecer assert. Compilacoes na CI; nenhuma gravacao fisica feita pelo agente.
+
+CINCO PRIMEIROS COMANDOS PARA CONTINUAR:
+1. Ler integralmente este TXT e ACAMPAMENTO_MAGIA_E_SAQUE.md; conferir ReleaseVersion.h, validacao/camp1-ci.json e camp1-release.json.
+2. Conferir sketch e github_publicacao; fontes locais correspondem ao commit92c3b07. Nao alterar Heltec. Sem upload automatico.
+3. Receber teste fisico camp1: ataque/tecnica mago, kit/racao/50%/100%, fundos, emboscada->descanso, bolsa/venda e bau aleatorio sem duplicata. Bolsa1 ja foi confirmada funcionando, nao repetir como pendencia.
+4. Ao editar .ino, sincronizar controlador real no dungeon_controller.cpp. tools/test_native.sh executa16suites com asserts; usar CI Linux para renderer (Windows LLVM esgotou memoria na bolsa1). Preview em validacao/telas-camp1 e previa-camp1.png.
+5. Proximo desenvolvimento autorizado anterior: alcance das armas por linha de visao na dungeon. Desenhar persistencia sem colidir com acampamento; nao afirmar recurso pronto. Publicar versao/build unicos so depois de testes+compilacao+previas e registrar progresso.
+
+--- HISTORICO ANTERIOR (SUPERADO PELO CABECALHO) ---
+RPG POKET 2.0 - CONTINUIDADE 2026.10.06-bolsa1 / build2026100609
+Estado: publicada e verificada como latest. CI final15suites+ESP32+Release passaram; arquivos baixados e SHA/CRC conferidos. Teste fisico da bolsa1 pendente do usuario.
+Usuario confirmou dungeon1c funcionando na placa antes desta etapa.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia desta etapa: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\BOLSA_ANIMACOES_E_VITORIA.md
+Commit main: a8e85fa1a6087fc7e6b9e2e3b497a5ad805af2fd
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.06-bolsa1
+
+IMPLEMENTADO: bolsa consumiveis6slots+quantidades+ouro+desenho mochila; grade equipamentos6porpagina; acesso e equipamento dentro da dungeon fora de combate; cristal visivel e gasto somente na entrada; tecla ACAO retirada, toque na cena preservado; Bolsa/Menu com area maior; pocoes removidas dos atalhos de tecnica; nomes da arma no bau e Ver na bolsa que seleciona sua posicao; chefe com Explorar/Sair; resultado do Guardiao volta para Ruinas, encontros regionais para Explore, emboscada preserva viagem; animacoes de projétil, estocada, corte, raio e furia.
+CRISTAL: Game.crystals no mesmo save do personagem, nao e arquivo no cartao. Bau: Game.owned, arma tier2 da classe, nao item separado Reliquia; duplicata50ouro.
+COMPATIBILIDADE: Save9/96bytes/journal existente; pacote SD estradas1 sem mudancas. Nenhum Heltec, NVS, placa/cartao ou particao alterado pelo agente. Sem .rpg. O usuario instala manualmente ou confirma a atualizacao na placa.
+LIMITACAO: os efeitos sao visuais; alcance do combate continua adjacente. Ler COMBATE_DUNGEON_PROXIMA_ETAPA.md para implementar alvo/distancia salvos antes de ataques a3/2casas. Nao misturar isto com os efeitos ja entregues.
+VALIDACAO: controlador nativo passou com bolsa/equipamento, falha de save/retry/reload e chefe; renderizador candidato passou limites de texto+645telas; CI candidata13e1cb passou15suites+ESP32 sem publicar. Compilacao local do renderizador final esgotou memoria, sem fechar apps do usuario. Apenas cache do compilador criado nesta etapa removido e645PPM convertidos em PNG. CI final37563535330/job112605982535 passou15suites+ESP32+Release;244previas exatas conferidas. Firmware1700592bytes/SHAfea2061f645e35da1985877b99bb906eddc4f5730ed41e90359ab3341fb22b29, globals53324(16%), sketch1700438(54% de3MiB). Artes6158160bytes/SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96/CRC27ce9e69. A API latest confirmou bolsa1. Os sete arquivos de firmware alterados foram comparados com o commit imutavel no GitHub e estao iguais. Primeira fixture falhou porque Guardiao tinha ruinsWins0; corrigida para3, nao remover assert.
+
+CINCO PRIMEIROS COMANDOS PARA CONTINUAR:
+1. Ler integralmente este TXT e BOLSA_ANIMACOES_E_VITORIA.md; conferir versao em ReleaseVersion.h e estado final de validacao/bolsa1-ci.json.
+2. Abrir firmware/RPG_POKET_2/RPG_POKET_2.ino e comparar com github_publicacao/firmware; nao tocar Heltec. Sem upload automatico.
+3. Conferir testes dungeon_controller.cpp e render.cpp (harness tem controlador real; sincronizar ao editar .ino). As demais15suites estao no workflow/test_native.sh.
+4. Pedir/receber resultado fisico: Bolsa na dungeon, poção1consumo, cristalquantidade, bauVernaBolsa, equipamento, chefeExplorar/Sair e GuardiaoRuinas. Nao repetir como pendencia wifi1/dungeon1c ja confirmadas.
+5. Continuar alcance do combate somente com desenho da persistencia/Save10 e testes linha de visao/parede/inimigo/retomada. Publicar nova versao/build unicos depois de validar. Registro abaixo e historico.
+
+--- HISTORICO ANTERIOR (SUPERADO PELO CABECALHO) ---
+RPG POKET 2.0 — CONTINUIDADE ATUAL 06/10/2026
+VERSAO FINAL: 2026.10.06-dungeon1c / build 2026100608
+NOVO PEDIDO: distinguir disparo/corte/estocada e alcance por arma. Ler COMBATE_DUNGEON_PROXIMA_ETAPA.md antes de continuar. A separacao de alcance ainda NAO esta implementada na dungeon1c.
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\DUNGEON_PRIMEIRA_PESSOA.md
+Assets: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\assets\dungeon1
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.06-dungeon1c
+Commit de firmware validado: b68db107ea8080de30af5c0b1bdec0a684072803
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37536279615
+15 suites nativas com asserts + compilacao ESP32 + publicacao passaram. Firmware 1692560 bytes / SHA f27bb7ceff45f4298e272a8ba79e2d491a2b98be9230d3f9530417eb5e014529. Arquivos da Release baixados e conferidos. Artes SD continuam estradas1: 417 recursos, 6158160 bytes, SHA 289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96. Dungeon usa 192512 bytes de arte na FLASH, nao muda o pacote SD. Manifesto writes_save_format9 / reads1..9 / save_format7 ponte do instalador antigo.
+
+USUARIO CONFIRMOU: testes fisicos de wifi1 deram todos certo. Nao repetir como pendencia os problemas antigos de download. Dungeon1c ainda aguarda teste fisico; desempenho na placa nao foi medido pelo agente.
+
+Cripta do Arconte nas Ruinas, nivel8+ recomendado. Cristal consumido na entrada; Guardiao deixa1 por vitoria ate9; loja Suprimentos > Cristal custa300ouro. Dois andares9x9, seis inimigos regulares e chefe. Movimento por casas/setas grandes: frente/tras/girar/lado. Toque curto na visao ou ACAO interage/ataca; gestos de deslizar nao implementados nesta entrega. Menu local: tecnica, defesa, vida/mana, fuga e sair com confirmacao. O inimigo a frente tem prioridade sobre bau protegido. Escadas exigem ACAO e deixam o heroi olhando para corredor.
+
+Andar1: ouro25, vida, mana, selo. Andar2: ouro60, vida, mana e bau protegido. Selo abre a porta do chefe. Bau aposchefao da arma tier2 da classe sem autoequipar; duplicata vira50ouro. Coleta/recompensas nao duplicam no reboot. Vitoria do chefe aumenta contador de expedicoes. Fuga preserva inimigo; derrota encerra a expedicao com1HP/penalidade existente. Saida voluntaria preserva saque e reinicia labirinto na proxima entrada, consumindo outro cristal. Movimento, giro, coleta e turnos usam journal; falha de save pausa e pode tentar de novo sem cobrar outra chave. Retoma andar/direcao/posicao/encontros/loot/turno apos reiniciar.
+
+44 assets originais feitos com imagegen integrado: 16 poses de4 inimigos,12props,8texturas,8armas. PNG RGBA, RGB565,5atlas originais,4GIFs,previas e prompts completos preservados em assets/dungeon1. Script tools/prepare_dungeon_art.py recorta componentes alfa dos inimigos para evitar vazamento entre linhas. Tocha,bau aberto e reliquia preparados para futuras salas, nao todos posicionados nesta dungeon. Cajado do mago, espada/escudo cavaleiro, lanca do guerreiro conforme equipamento existente e machado barbaro. Raio, escudo azul e furia dourada com feedback distinto na dungeon.
+
+Save9 continua96bytes/CRC/journal2registros, importa1..8. Nunca instalar firmware antigo por cima de save9. Nenhum namespace ou particao alterado, nenhuma placa/cartao gravado pelo agente, sem.rpg. 2012 comparacoes SHA confirmam Heltec original e copia congelada intactas.
+
+Problemas de validacao resolvidos: testes antigos de futuroSave9/limiteinimigo8 atualizados para10; fixture legada usa save8 real, nao save9 com inimigo novo; caps de ouro usam std::min<uint32_t> para ESP32. LLVM local falhou por memoria; apenas caches de compilacao antigos e processos do proprio teste foram limpos, sem fechar apps do usuario. CI final eh a evidencia de compilacao.
+
+CINCO PROXIMOS COMANDOS
+1. Ler este TXT, DUNGEON_PRIMEIRA_PESSOA.md, assets/dungeon1/manifest.json e validacao/dungeon1-release.json. Confirmar versao realmente instalada pelo usuario.
+2. Usuario instala dungeon1c pelo cabo ou Configuracoes > Atualizacao, sem remover microSD. ESP32S3DevModule,Flash16MB,OPIPSRAM,app3M_fat9M_16MB,EraseFlashnone. Nao executar upload automaticamente.
+3. Testar Cristal: dropGuardiao, compra300ouro, falta de ouro, falta de chave, cancelamento e entrada unica. Conferir os3slots existentes.
+4. Explorar os2andares/setas/laterais,coletar moedas/pocoes/selo; testar porta bloqueada antes do selo; reiniciar e conferir posicao/inimigos/loot. Medir fluidez/frameMax e tamanho dos controles na placa.
+5. Vencer chefe, abrir bau uma unica vez, equipar arma pela bolsa apos sair; testar tecnica/defesa/fuga/derrota/saida, retomar save no turno inimigo e primeirotoque do relogio. Se usuario quiser, proxima etapa: minimapa/gestos/salas opcionais e balanceamento por classe.
+
+=== HISTORICO ANTERIOR (referencia; instrucoes atuais acima) ===
+RPG POKET 2.0 — CONTINUIDADE ATUAL 06/10/2026
+VERSAO: 2026.10.06-wifi1 / build2026100604
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\WIFI_RELOGIO_E_DIAGNOSTICO.md
+GitHub: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.06-wifi1
+Fonte commit 01dacdfe3c454f8bd46c2e098944a589d2331087; clone independente conferiu14 arquivos alterados. CI final passou13 suites nativas, compilacaoESP32 e publicacao. Sete verificacoes locais focadas passaram com asserts habilitados (-UNDEBUG): perfis/RSSI/controlador/retomada/instalacao/task/diagnostico/render. FirmwareRelease 1484608bytes/SHAd8eb0cfb8c8a58c1c0ef97e7d864899a7009fb9f7557d74304361ea217500673;artes6158160bytes/417recursos/CRC27ce9e69/SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96 iguais estradas1. Release baixada e conferida porHTTPS; evidencia validacao/wifi1-release-github.json.
+
+Usuario gravou estradas1 pelo cabo, mas download de artes ainda falha. Video3.42s mostra48% -> Download pausado / pode retomar; outras tentativas16%/22%. So viu duas redes da casa; hotspot nao apareceu. Causa NAO determinada. GitHub Range206 confirmado por teste remoto. Nao culpar roteador/servidor/SD sem diagnostico. Redes encontradas sao2.4GHz independente deSSID; ESP32S3 nao recebe5GHz.
+
+WIFI1: ate5 perfis NVS atomicos net0..net4; migra unica conexao anterior; Salvas/Buscar/Anterior/Proxima/Conectar; Esquecer com confirmacao; Desligar mantem perfis e pausa reconexao. Ultima conexao retoma no boot; autoreconnect ligado enquantohabilitado. Lista cheia nao substitui outra. RSSI/canalna busca,4 barrasverdes(-55/-67/-75dBm), amostra2secsem SD/NVSperiodicos. Buscaativaassinc500ms/canal, todoscanaisdisponiveis. Credenciaisreais nunca entraramfontes/logs/repositorio.
+
+Relogio apos60s semtoque, fundo preto, brilho10%temporario/restaurado aoacordar, SNTPfusoBRT3/Brasilia. Hora nao confiavel vira tracos. Primeirotoque apenasvolta semacionarbotao/salvar. Atualizacao,diagnostico,busca/conexao,viagem/animacao/turnoautomatico impedem relogio. Nao prometeRTC semalimentacao. LCD economiza pela reducao do backlight.
+
+Atualizacao: Continuar quando ha parcial comSHAcorrespondente; aposreboot Verificarversaoinspeciona parciais. Mantem Range/Content-Range/SHA,5tentativas, blocos completos, limpezaaposinstalar, bootselecionadoporultimo. Erro agora distingueHTTP/rede/WiFi/SD eincluiRSSI quando conectado. Servidor200semRange oupacotealterado podeexigirrecomeco. Testarconexao faz3HTTPSmanifesto, mostraOK/falhas,quedasobservadas/RSSI/tempomedio. Nao instala nada, nao medeICMPnemtodasquedascurtas. Passar3consultaspequenas nao garante downloadgrande. Validacao taskassegura destructores antesvTaskDelete.
+
+Save8 unchanged96bytes/CRC2registros, importa1..7. NVS pkt2_slice/pkt2_ui; nunca erase ou alteraparticao. Manifestosave_format7ponteOTAantigo;writes8/reads1..8. Nao downgrade aposnovo save. PreservarHeltec; semuploadauto,semformatarcartao/NVS,sem.rpg. PublicacaoGitHub autorizada; usuario confirma Instalar/grava cabo. WIFI1 ainda precisa teste fisico separado.
+
+CINCO PROXIMOS COMANDOS
+1. Ler esteTXT,WIFI_RELOGIO_E_DIAGNOSTICO.md,ESTRADAS_E_CIDADES.md evalidacao/wifi1-release-github.json. Confirmarversao queusuario realmentegravou.
+2. Usuario grava wifi1 pelocabo (ESP32S3DevModule/Flash16MB/OPIPSRAM/app3M_fat9M_16MB/EraseFlashnone), semretirarcartao, preservando3slots. Agente nao iniciouupload.
+3. TestarSalvas/reconexao/segunda rede/Esquecer cancelareconfirmar, canal/RSSI/barras. Verificarrelogioapos60s,primeirotoque e brilho restaurado,semalterarsave.
+4. Configuracoes>Atualizacao>Testarconexao: usuario enviaresultado (3HTTPS,RSSI/falhas). EntaoVerificarversao>Instalar/Continuar paraartes. Registrarerroexatoeporcentagem. Nao pedirnovasrepeticoessem evidencianova.
+5. Se persistir, usarerro para separarTLS/HTTP(-codigo), encerramento/tempoesgotado,WiFi ouSD. Preservar parciais,saves/cartao; testar outrarede2.4GHzquando visivel. Aposhardwarevalidado, retornar balanceamento/cidades/viagens.
+
+Ferramentas: compilador ArduinoIDE/core3.3.12 e testesZig. Primeira tentativa local falhou em localizarWire; biblioteca presente. Compilacao local intermediaria nao deve ser confundida com a fonte final: aceitar somente prova de identidade do snapshot compilado. CI GitHub compilou exatamente o commitfinal indicado. O computador teve memoria/disco limitados; -O1/-g0/-UNDEBUG preserva asserts, cache Zigregeneravel limpoapos testes. Nao reutilizar logestradas1 como prova desta versao.
+
+HISTORICO ESTRADAS1 ABAIXO — superado por wifi1 onde houver diferenca
+
+RPG POKET 2.0 — CONTINUIDADE 06/10/2026
+VERSAO ATUAL: 2026.10.06-estradas1 / build 2026100603
+Raiz: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare
+Sketch: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\firmware\RPG_POKET_2\RPG_POKET_2.ino
+Guia: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\ESTRADAS_E_CIDADES.md
+Assets novos: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\assets\estradas1
+Previa: C:\Users\Rodolfo\Documents\Codex\2026-09-29\vamos-iniciar-o-rpg-poket-2-2\outputs\RPG_POKET_2_0_Waveshare\validacao\previa-estradas1.png
+Repositorio: https://github.com/Oflodorporto/RPG-POKET-2
+Commit publicado e conferido: 84ce35642a892c980b0a584586e661955f244644
+Release esperada: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.06-estradas1
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37519952758
+Consultar validacao/estradas1-release-github.json para confirmacao final da Release.
+
+O USUARIO CONFIRMOU OTA1 FUNCIONANDO NA PLACA. Precisou de tres tentativas de download. Nao ha logs suficientes para atribuir causa exata. O codigo anterior removia parciais; agora existem 5 tentativas automaticas, Range com validacao de Content-Range, sidecar SHA, retomada entre tentativas/reinicio e reuso de arte verificada. Boot nao apaga parciais de uma futura versao. TLS continua certificado CA/NTP, sem setInsecure. Esta primeira atualizacao ainda usa o instalador ota1; retomada nova so funciona depois de instalar estradas1.
+
+ESTRADAS1 AINDA EXIGE TESTE FISICO SEPARADO. Nao inferir sucesso da placa da compilacao ou screenshots nativos. Agente nao fez upload nem iniciou update real. Publicacao GitHub foi autorizada; conexao de escrita funciona.
+
+Carvalho nivel3+: bosque com lobo/javali, basicos e racao6g; Ruinas nivel5+: esqueleto/espectro, Guardiao apos3 vitorias, reliquias baratas/suprimentos caros; Mares nivel10+: saqueador, armas importadas com desconto/mapa12g; Aurora nivel18+: sentinela, armaduras/forja mais baratas/talisma25g. Faixas avisam perigo, nao bloqueiam. Catálogo18 equipamentos e exigencias1/4/8 preservados. Estoques e precos locais centralizados, equipamentos antigos preservados.
+
+Viagem: D20+Sobrevivencia+Sorte >= CD; 1 falha sempre,20 seguro sempre. CD=12+2*distancia de indices+max(nivel cidade)/6. Classe base Sv1/3/3/5 e Sorte3/2/2/1; aumentos por nivel5/8, caps10/8. Suprimentos usados automaticamente um de cada por viagem: racao+2Sv,mapa+1Sv/+1Sorte,talisma+2Sorte; max9 de cada. Dados, bonus e destino salvos antes da animacao de1.8s. Passa -> caminho3s -> chegada salva; falha -> inimigo da faixa da rota -> vitoria/fuga continua, derrota aborta na origem. Reboot retoma resultado/combate/caminho sem outro sorteio/recompensa. Vitorias de estrada nao contam ruinas/missoes. Reboot da caminhada pode repetir apenas a animacao.
+
+SAVE8,96bytes,diarioCRC de dois registros, le formatos1..7. Novos bytes76..86 para viagem e suprimentos; demais reservados verificados. Atualiza somente ao salvar, nunca apaga NVS. Firmware antigo bloqueia save8: nao fazer downgrade de personagem ja salvo na nova versao. Manifesto save_format7 e ponte do instalador ota1, writes_save_format8 e reads_save_formats1..8 descrevem a persistencia real.
+
+Novos assets: javali/espectro/saqueador/sentinela,4 quadros cada (idle, idle, preparar, atacar) de80x86. Gerados com imagegen, originais transparentes e prompts preservados em assets/estradas1. Todos voltados a esquerda. Cenarios da pasta conceito autorizada,6 fundos adicionais. Pacote6158160bytes/417recursos/CRC27ce9e69/SHA289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96. 56 fundos totais. Nenhuma leitura periodica do SD; carga unicaPSRAM+desmontagem. Cartao usuario4GB FAT32.
+
+Validacao local:18 suites,4752 viagens,stocks/precos,migracoes,controles do sketch,falhas Range/instalacao,TLS task destructors,56 fundos e393 telas preservadasPNG. Compilacao final1463446bytes(46%),globais52572(16%),core3.3.12. Todos fontes copiados pela compilacao e publicacao independente conferidos;79 arquivos do clone+arte+sprites iguais. Primeiro CI falhou por caminho local num teste de configuracoes; corrigido apenas teste/workflow, codigo de placa nao alterado. Verificar CI final antes de chamar Release publicada.
+
+Placa ESP32S3 Dev Module,Flash16MB,OPI PSRAM8MB,particaoapp3M_fat9M_16MB,CDCOnBoot cdc,USBMode hwcdc,CPU240,FlashMode qio,EraseFlash none. NVS namespaces pkt2_slice/pkt2_ui. Particoes nvs0x9000/0x5000,otadata0xe000/0x2000,app0 0x10000/0x300000,app1 0x310000/0x300000,ffat0x610000/0x9e0000,coredump0xff0000/0x10000. Nao trocar particoes.
+
+RESTRICOES: preservar Heltec original/congelada(2012 hashes iguais em validacao/estradas1-heltec-preservada.json),sem upload automatico/erase/formatarNVS/cartao,sem pacote.rpg sem pedido. Usuario grava pelo cabo ou confirma Instalar na placa. Sem promessa de FAT32 imune a corte de energia/rollback automatico. Nao atualizar memoria global por conta propria. Progresso salvo nos arquivos do projeto.
+
+OS CINCO PROXIMOS COMANDOS
+1. Ler este TXT,ESTRADAS_E_CIDADES.md,validacao/estradas1-release-github.json e fonte atual. Confirmar com retorno do usuario qual versao foi instalada, sem presumir hardware.
+2. Usuario instala em Configuracoes > Atualizacao > Verificar versao > Instalar. Se ota1 tiver dificuldade, fornecer .ino para gravação manual nas mesmas opcoes; nao exigir retirar cartao. Verificar conservacao dos tres slots.
+3. Testar dado1/20,somaSv/Sorte/CD,passagem segura e encontro. Reboot durante dado/combate/caminho deve manter decisao sem novo premio. Registrar valores/telas se houver falha.
+4. Conferir lojas locais,preco cobrado,estoque,consumo de um suprimento por tipo,e os novos inimigos/avisos de nivel. Testar travessia apos vitoria,fuga e derrota. Nao apagar saves nem testar downgrade.
+5. Apos validacao fisica, ajustar balanceamento e expandir missoes/variedade por cidade. A retomada Wi-Fi da nova versao exige proxima entrega ou reparo de artes confirmado pelo usuario; nao disparar testes reais sozinho. Registrar novo resultado e atualizar este TXT.
+
+Ferramentas: Python cache codex-primary-runtime,Zig test-compiler,ArduinoCLI do Arduino IDE; scripts tools/test_estradas.ps1,test_download_resume.py,test_update_transaction.py,test_update_task.py. Logs18 suites em validacao/estradas1-*.log. O disco C encheu com temporarios e imagens de testes: previews anteriores convertidas paraPNG sem perda, arquivosPDB/cacheZig descartaveis removidos. Fontes/ZIPs de entregas/Heltec preservados. Evitar recriar centenasPPMs em disco cheio; converter apos teste. Ferramentas UI @oai/sky falharam em sessao anterior; nao foi necessario controlar IDE nesta entrega.
+
+PUBLICACAO CONCLUIDA: CI final passou testes, compilacao e Release. Os tres arquivos publicados foram baixados por HTTPS e conferidos: firmware 1463536 bytes/SHA b3b752b992b515e03643dd26c8191fd9bac5a672d8bc0040cc36b7d642553d07; arte 6158160 bytes/417 recursos/SHA 289ace65ad4aaae80b783eb8d606d5c29ca654933550165aa643ae0203181b96. Teste fisico estradas1 pendente. Arquivos imutaveis desta entrega em releases/*estradas1*.zip; hashes em validacao/estradas1-releases.json. Nenhuma placa gravada pelo agente.
+
+RETORNO FISICO 06/10: usuario gravou estradas1 pelo cabo e download de artes ainda falha. Video WhatsApp17.05.26 (3.42s) mostra48% -> Download pausado / pode retomar, icone WiFi verde. Novo downloader confirmado pela mensagem; causa nao determinada. Diferenciar sinal/rede/TLS/SD com teste de rede2.4GHz proxima ou hotspot. Nao apagar cartao/saves nem atribuir causa sem evidencia.
+
+COMPILACAO LOCAL INTERMEDIARIA CANCELADA: snapshot de MenuView/UpdateDevice anterior ao polimento final. Compilacao definitiva ocorreu no GitHub commit01dacdfe3c454f8bd46c2e098944a589d2331087 e Release foi baixada/conferida. Nao usar work/build-jogavel1 como fonte/binary validado wifi1; recompilar limpo em futura necessidade. Arduino IDE e seu daemon nao foram encerrados. ArquivoZIPfonte foi arquivado antes desta anotacao, ja contem ressalva de snapshot intermediario.
+
+

@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Pedido de 08/10/2026. Base implementada: `2026.10.08-mares1`. Este arquivo é um plano de produto; não representa funcionalidades já publicadas. Os retratos fonte preparados nesta conversa também não estão integrados ao firmware.
+Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Os pacotes 2–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
 ## O que permanece da revisão anterior
 
@@ -23,7 +23,7 @@ Implementação proposta:
 
 ### Proposta de origem por classe
 
-Estas origens são propostas para a próxima implementação, não retcon já aplicado ao cânone:
+Estas origens foram implementadas para novos personagens no Pacote 1. Heróis anteriores conservam seu passado sem atribuição automática; reveem apenas a chegada comum:
 
 | Classe | Formação e passado | Motivo concreto para chegar a Carvalho | Vínculo com a trama |
 |---|---|---|---|
