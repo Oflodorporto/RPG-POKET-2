@@ -7,7 +7,7 @@ inline const char* description(rpg::Action a,unsigned line){static const char* t
 }
 template<class C>void drawPowers(C& c,const rpg::Game& g,const ViewState& v){
  drawBackdrop(c,bg_character);scenicHeading(c,g.p.cls==0?"GRIMORIO":"PODERES");char b[64];
- if(v.page==Page::OathConfirm){panelLabel(c,12,65,216,"JURAMENTO DA DEVOCAO",UI_GOLD);panelLabel(c,12,92,216,"Honestidade. Coragem. Compaixao.");panelLabel(c,12,113,216,"Proteja os inocentes de Aeldra.");panelLabel(c,12,151,216,"Esta escolha e permanente.");panelLabel(c,12,172,216,"Libera Arma sagrada e Expulsar.");scenicPanel(c,14,240,212,32);panelLabel(c,18,251,204,"Firmar juramento",UI_GOLD);scenicPanel(c,14,278,212,34);panelLabel(c,18,290,204,"Cancelar");return;}
+ if(v.page==Page::OathConfirm){panelLabel(c,12,65,216,"JURAMENTO DA DEVOCAO",UI_GOLD);panelLabel(c,12,92,216,"Honestidade. Coragem. Compaixao.");panelLabel(c,12,113,216,"Proteja os inocentes de Aeldra.");panelLabel(c,12,151,216,"Esta escolha e permanente.");panelLabel(c,12,172,216,"Libera Arma sagrada e Expulsar.");panelLabel(c,12,199,216,v.message,UI_RED);scenicPanel(c,14,240,212,32);panelLabel(c,18,251,204,"Firmar juramento",UI_GOLD);scenicPanel(c,14,278,212,34);panelLabel(c,18,290,204,"Cancelar");return;}
  snprintf(b,sizeof(b),"%s / Nv %u / MP %u",rpg::className(g.p.cls),g.p.level,g.p.mp);panelLabel(c,10,52,220,b);
  panelHero(c,g,93,67,54,42);
  unsigned count=powersUi::count(g.p.cls);
@@ -18,7 +18,7 @@ template<class C>void drawPowers(C& c,const rpg::Game& g,const ViewState& v){
  panelLabel(c,14,187,212,powersUi::description(a,0));panelLabel(c,14,203,212,powersUi::description(a,1));
  if(g.p.cls==1){if(a==rpg::Action::LayHands)snprintf(b,sizeof(b),"Cura restante: %u HP",rpg::layRemaining(g));else snprintf(b,sizeof(b),"Devocao: %s / canalizar %u",g.oath?"SIM":"NAO",g.channelSpent?0:1);panelLabel(c,14,218,212,b,UI_BLUE);}
  else panelLabel(c,14,218,212,"Mana adaptada / alvo unico",UI_BLUE);
- scenicPanel(c,14,240,212,32);const char* err=rpg::powerError(g,a);bool swear=g.p.cls==1&&!g.oath&&g.p.level>=3&&g.phase==rpg::Phase::Home&&a!=rpg::Action::LayHands;
+ scenicPanel(c,14,240,212,32);const char* err=rpg::powerError(g,a);bool swear=g.p.cls==1&&!g.oath&&g.p.level>=3&&g.phase==rpg::Phase::Home&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2&&a!=rpg::Action::LayHands;
  panelLabel(c,18,251,204,*v.message?v.message:swear?"Firmar juramento >":err?err:"Usar poder",*v.message?UI_GOLD:swear||!err?UI_GREEN:UI_MUTED);
  scenicPanel(c,14,278,212,34);panelLabel(c,18,290,204,"Voltar");
 }
