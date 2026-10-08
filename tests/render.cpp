@@ -28,7 +28,7 @@ struct Canvas {
 const char* buyStockGear(rpg::Game& g,uint8_t id){uint8_t old=g.city;if(!rpg::cityStock(g,id))g.city=3;auto err=rpg::buyGear(g,id);g.city=old;return err;}
 int main(int argc,char** argv){
   assert(argc==2);artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();
-  std::ifstream pack("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);Canvas c;rpg::Game g=rpg::testHero(0,32);ViewState v;std::string root=argv[1];
+  std::ifstream pack("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);if(!pack)pack.open("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);Canvas c;rpg::Game g=rpg::testHero(0,32);ViewState v;std::string root=argv[1];
   for(int city=0;city<4;++city){g.city=city;v.page=Page::Home;for(auto period:{worldClock::Period::Day,worldClock::Period::Night}){menu.clockValid=true;menu.dayCycle=true;menu.worldPeriod=period;render(c,g,v,0);c.save(root+"/scenic-home-"+std::to_string(city)+"-"+std::to_string(int(period))+".ppm");}}
   menu.clockValid=false;menu.dayCycle=false;g.city=1;v.page=Page::Menu;render(c,g,v,0);c.save(root+"/scenic-menu.ppm");
   for(int i=0;i<240*320;++i)assert(c.pixels[i]==scenicArt::menuPalette[scenicArt::menuPixels[i]]);

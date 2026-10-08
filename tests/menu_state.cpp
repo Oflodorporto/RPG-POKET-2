@@ -40,7 +40,7 @@ int main(){
     for(unsigned t=0;t<=3000;t+=10){j.tick(uint32_t(UINT32_MAX-500+t));Point p=j.position();assert(p.x>=0&&p.x<240&&p.y>=40&&p.y<225&&int(j.progress)>=previous);previous=j.progress;}assert(!j.active&&j.position().x==places[b].x&&j.position().y==places[b].y);}
   Journey invalid;assert(!invalid.start(0,4,0));CombatFx fx;fx.start(Effect::Lightning,false,100);assert(!fx.expire(1299)&&fx.frame(1299)==7);assert(fx.expire(1300));
   artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();std::vector<uint8_t> fallback(artMemory,artMemory+ART_BYTES);
-  std::ifstream file("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);assert(file);Reader r;r.bytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(file),{});assert(readArt(r)==ArtStatus::Ready);
+  std::ifstream file("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);if(!file)file.open("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(file);Reader r;r.bytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(file),{});assert(readArt(r)==ArtStatus::Ready);
   for(unsigned off:{0u,4u,8u,12u,32u,ART_BYTES-1}){Reader bad;bad.bytes=r.bytes;bad.bytes[off]^=1;makeFallback();assert(readArt(bad)==ArtStatus::Invalid);assert(!memcmp(artMemory,fallback.data(),ART_BYTES));}
   Reader truncated;truncated.bytes=r.bytes;truncated.bytes.pop_back();assert(readArt(truncated)==ArtStatus::Invalid);
   for(int fail:{1,10,200}){Reader bad;bad.bytes=r.bytes;bad.fail=fail;makeFallback();assert(readArt(bad)==ArtStatus::Invalid);assert(!memcmp(artMemory,fallback.data(),ART_BYTES));}
