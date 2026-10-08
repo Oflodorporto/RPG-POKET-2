@@ -59,8 +59,8 @@ template<class Canvas> struct WifiOverlay {
     for(unsigned i=0;i<4;++i)c.fillRect(223+i*4,17-(i+1)*4,3,(i+1)*4,i<bars?green:0x3186);}
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
-  if(v.page==Page::Discovery||v.page==Page::Scrap){drawDiscovery(c,g,v,frame);return;}
   WifiOverlay<Canvas> wifiOverlay{c,menu.connected&&v.page!=Page::Clock,menu.signalBars};
+  if(v.page==Page::Discovery||v.page==Page::Scrap){drawDiscovery(c,g,v,frame);return;}
   if(v.page==Page::TravelConfirm||v.page==Page::Recovery||v.page==Page::Guide){drawLaunch(c,g,v);return;}
   auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){if(*s)c.fillRect(x-3,y-2,int(strlen(s))*6*size+6,8*size+4,UI_INK);c.setTextColor(color);c.setTextSize(size);c.setCursor(x,y);c.print(s);};
   auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};

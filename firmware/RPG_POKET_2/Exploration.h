@@ -29,7 +29,7 @@ inline bool startDiscovery(Game& g,bool night=false){
  if(g.discovery==2&&random(g)%100<5)g.discoverLoot=7;
  return true;
 }
-inline const char* discoveryName(const Game& g){return g.discovery==2?"BAU ESQUECIDO":g.discovery==3?"ENCONTRO NA ESTRADA":g.discovery==5?"ACHADO RECOLHIDO":"ALGO PELO CAMINHO";}
+inline const char* discoveryName(const Game& g){return g.discovery==2?"BAU ESQUECIDO":g.discovery==3?"ENCONTRO LOCAL":g.discovery==5?"ACHADO RECOLHIDO":"ALGO PELO CAMINHO";}
 inline const char* lootName(unsigned id){const char* n[]={"Moedas de ouro","Pocao de vida","Pocao de mana","Racao de viagem","Bota velha","Roupa rasgada","Equipamento","Bau inquieto"};return n[id<8?id:0];}
 inline const char* collectDiscovery(Game& g){
  if(g.phase!=Phase::Home||!g.discovery||g.discovery==4||g.discovery==5)return "Nada para recolher";
