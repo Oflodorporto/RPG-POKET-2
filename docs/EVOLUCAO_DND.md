@@ -1,4 +1,4 @@
-# Evolução por classes — direcao1
+# Evolução por classes — direcao1 / poderes1
 
 Base escolhida: D&D 5e de2014/SRD 5.1, sem misturar a revisão2024. Cavaleiro=Paladino por escolha explícita do usuário; Mago=Wizard, Guerreiro=Fighter, Bárbaro=Barbarian. XP acumulado e proficiência são compartilhados; recursos e marcos de atributos variam por classe.
 
@@ -35,17 +35,17 @@ Novos heróis nível 1/0XP; limiares de XP oficiais até20; XP interno é a parc
 
 Marcos4,8,12,16,19 liberam2pontos para +2 em um atributo ou +1 em dois. Guerreiro também nos níveis 6 e 14. Alternativa implementada: talento Resistente (Tough), uma vez, +2 HP por nível e nos níveis futuros. Gastar um ponto impede trocar aquele mesmo marco pelo talento; pontos e escolha persistem. Evolução acessível em Herói> Evolução (botão sob o retrato). Novos Paladinos só usam técnica ofensiva a partir do nível 2; demais ações antigas são adaptações do RPGPOKET.
 
-Ataques extras: classes marciais2no5; Guerreiro3no11e4no20. Nesta etapa, multiplicam o dano do ataque normal com um único teste de esquiva; não são rolagens independentes de D&D. Crítico do Bárbaro recebe incremento nos marcos9/13/17; é adaptação em pontos de dano, não dados de arma. Magias/círculos ficam na referência; grimório ainda não existe.
+Ataques extras: classes marciais2no5; Guerreiro3no11e4no20. Nesta etapa, multiplicam o dano do ataque normal com um único teste de esquiva; não são rolagens independentes de D&D. Crítico do Bárbaro recebe incremento nos marcos9/13/17; é adaptação em pontos de dano, não dados de arma. Poderes1 acrescenta cinco magias de níveis 1–5, com mana adaptada e consulta em Grimório; veja PODERES_DAS_CLASSES.md.
 
 Primeiros encontros dos novos heróis em Carvalho são Goblin/Lobo reduzidos (níveis1/2), com HP/ATQ coerentes com a HUD; depois voltam à fauna anterior. XP de combate dos novos heróis=10xbase; ouro permanece igual. Contratos dos novos heróis dão percentual do intervalo oficial capturado ao aceitar. Esse ritmo precisa de teste de campanha, não é balanceamento final.
 
 ## Preservação dos heróis antigos
 
-Save12 mantém 128 bytes e CRC. Lê1..12. Bytes90/91(acampamento),92..99(eventos), destinos e namespaces preservados. Bytes100..108 guardam modo, talento, pontos e atributos. Arquivos/saves antigos importados conservam nível, XP, HP, equipamento e a curva anterior; não ganham nem perdem atributos silenciosamente. Não foi feita migração global de curva. Na Evolução aparece a informação de regras antigas. Novas escolhas são salvas pelos checkpoints existentes e pausam em erro de escrita. Firmware anterior não lêSave12: não fazer downgrade depois de salvar nesta versão sem backup compatível.
+Save13 mantém 128 bytes e CRC. Lê 1–13. Devoção e recursos usam 109–113, como descrito em PODERES_DAS_CLASSES.md. Bytes90/91(acampamento),92..99(eventos), destinos e namespaces preservados. Bytes100..108 guardam modo, talento, pontos e atributos. Arquivos/saves antigos importados conservam nível, XP, HP, equipamento e a curva anterior; não ganham nem perdem atributos silenciosamente. Não foi feita migração global de curva. Na Evolução aparece a informação de regras antigas. Novas escolhas são salvas pelos checkpoints existentes e pausam em erro de escrita. Firmware anterior não lê Save13: não fazer downgrade depois de salvar nesta versão sem backup compatível.
 
 ## Ainda falta para uma conversão completa
 
-Escolha de subclasses e juramentos; poderes do juramento, auras e cura de Paladino; grimório, lista de magias e slots; surto de ação e indomável do Guerreiro; usos/duração/resistências da fúria; talentos além de Resistente; ataques extras com rolagens e animações individuais. Nenhum marco de referência aparece como botão executável antes de seu sistema existir. A tabela serve como contrato para as próximas etapas.
+Outros juramentos e subclasses; auras e punição divina completa; mais magias, preparação de grimório e slots; surto de ação e indomável do Guerreiro; usos/duração/resistências da fúria; talentos além de Resistente; ataques extras com rolagens e animações individuais. Nenhum marco de referência aparece como botão executável antes de seu sistema existir. A tabela serve como contrato para as próximas etapas.
 
 ## Atribuição
 

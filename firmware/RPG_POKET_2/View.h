@@ -12,7 +12,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Prologue:return bg_tavern;case Page::Journal:return bg_character;case Page::People:case Page::Dialogue:return bg_village;case Page::Continent:return bg_world;
@@ -34,7 +34,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page page=Page::Choose,bagReturn=Page::Inventory,objectiveReturn=Page::Menu;uint8_t evolutionLevel=1;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {Page page=Page::Choose,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;uint8_t evolutionLevel=1,powerIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "MenuView.h"
 #include "EventView.h"
@@ -48,6 +48,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "PanelView.h"
 #include "CampView.h"
 #include "EvolutionView.h"
+#include "PowersView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -71,6 +72,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Map){drawScenicMap(c,g,v,frame);return;}
   if(v.page==Page::Ruins){drawScenicRuins(c,g,v,frame);return;}
   if(v.page==Page::Skills){drawPanelSkills(c,g,v);return;}
+  if(v.page==Page::Powers||v.page==Page::OathConfirm){drawPowers(c,g,v);return;}
   if(v.page==Page::Evolution){drawEvolution(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag){drawPanelBag(c,g,v);return;}
   if(v.page==Page::Character){drawPanelCharacter(c,g);return;}
@@ -116,7 +118,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(206,exit?"": "Toque na cena: interagir / atacar");center(237,v.message,1,UI_RED);
     button(14,272,102,"Voltar");button(124,272,102,buy?"Comprar":exit?"Sair":"Entrar");return;
   }
-  if(v.page==Page::DungeonMenu){center(14,"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);
+  if(v.page==Page::DungeonMenu){center(14,"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);if(g.dndProgression&&g.p.cls<2){box(14,40,212,34);center(52,"Poderes de classe >",1,UI_GOLD);}
     button(14,86,102,"Tecnica");button(124,86,102,"Defesa");button(14,134,212,"Bolsa");button(14,182,212,"Fugir do inimigo");button(14,230,212,"Sair da dungeon");button(14,278,212,"Voltar");return;}
   if(v.page==Page::SaveError||v.page==Page::Blocked){
     center(30,"RPG POKET 2.0",2,UI_GOLD);center(88,"PROGRESSO PROTEGIDO",1,UI_RED);
@@ -326,7 +328,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int trail=0;trail<3;++trail)for(int k=0;k<55;++k){int x=reach-k,y=52+k+trail*9;if(x>=45&&x<232)effectCanvas.fillRect(x,y,7,5,trail==0?0xffe0:trail==1?0xfd20:0xf800);}
     if(f>=3){int r=9+int(f-3)*7;int cx=184,cy=111;for(int k=-r;k<=r;++k){int y=r-abs(k);effectCanvas.fillRect(cx+k,cy-y,3,3,0xfd20);effectCanvas.fillRect(cx+k,cy+y,3,3,0xf800);}effectCanvas.fillRect(178,96,12,29,0xffe0);effectCanvas.fillRect(169,106,30,8,0xffe0);}
   }
-  else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning){magicEffect(effectCanvas,v,false);}
+  else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning||v.effect==Effect::MagicDarts||v.effect==Effect::FlameVolley||v.effect==Effect::FireBurst||v.effect==Effect::Radiant){magicEffect(effectCanvas,v,false);}
   else if(v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)effectCanvas.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){effectCanvas.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
   else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)effectCanvas.fillRect(104+x*2,18+y*2,2,2,color);}}else magicSprite(effectCanvas,fx,64,72,v.effectOnHero?22:156,82,64,72);}
   // Panels and buttons retain the concept; all combat data remains live.

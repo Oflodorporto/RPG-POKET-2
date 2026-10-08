@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-paineis1b. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.08-poderes1. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -101,14 +101,22 @@ void savedTransition(Page next){
   dirty=true;
 }
 void action(rpg::Action a){
+  if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Offensive)a=rpg::Action::MagicMissile;
+  if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Defensive)a=rpg::Action::ShieldSpell;
   const char* err=rpg::act(game,a);if(err){say(err);return;}
-  if(a==rpg::Action::Life||a==rpg::Action::Mana)snprintf(message,sizeof(message),"Recuperou %u %s",game.damage,a==rpg::Action::Life?"HP":"MP");
+  if(a==rpg::Action::LayHands)snprintf(message,sizeof(message),"Impor as maos: +%u HP",game.damage);
+  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)snprintf(message,sizeof(message),"%s ativado",rpg::powerName(a));
+  else if(a==rpg::Action::Life||a==rpg::Action::Mana)snprintf(message,sizeof(message),"Recuperou %u %s",game.damage,a==rpg::Action::Life?"HP":"MP");
   else if(a==rpg::Action::Defensive)snprintf(message,sizeof(message),"%s ativado",rpg::skillName(game.p.cls,true));
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
   if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
-  else if(a==rpg::Action::Defensive)beginEffect(Effect::Shield,true);
+  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands)beginEffect(Effect::Shield,true);
+  else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false);
+  else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false);
+  else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
+  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
 void openCamp(){menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
@@ -225,6 +233,7 @@ void tapped(int x,int y){
   if(view.page==Page::DungeonMenu){
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
+    if(game.dndProgression&&game.p.cls<2&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
     if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
     int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,182,212)?5:-1;
     if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
@@ -411,7 +420,21 @@ void tapped(int x,int y){
       else say(view.questAction==0?"Missao aceita":"Missao abandonada");savedTransition(Page::GuildMissions);
     }return;
   }
+  if(view.page==Page::OathConfirm){
+    if(powersUi::back.contains(x,y)){view.page=Page::Powers;say("");return;}
+    if(powersUi::use.contains(x,y)){auto err=rpg::swearDevotion(game);if(err)say(err);else {say("Juramento da Devocao firmado");savedTransition(Page::Powers);}}return;
+  }
+  if(view.page==Page::Powers){
+    if(powersUi::back.contains(x,y)){view.page=view.powersReturn;say("");return;}
+    unsigned count=powersUi::count(game.p.cls);if(!game.dndProgression||!count)return;
+    if(powersUi::previous.contains(x,y)||powersUi::next.contains(x,y)){view.powerIndex=(view.powerIndex+(x<120?count-1:1))%count;say("");return;}
+    if(powersUi::use.contains(x,y)){auto a=powersUi::action(game.p.cls,view.powerIndex);
+      if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&a!=rpg::Action::LayHands){view.page=Page::OathConfirm;say("");return;}
+      if(game.phase==rpg::Phase::Hero){action(a);return;}
+      auto err=rpg::usePower(game,a);if(err)say(err);else {say("Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
+  }
   if(view.page==Page::Evolution){
+    if(hit(x,y,10,120,220,18)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
     if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
     else if(hit(x,y,124,272,102)){auto err=rpg::learnTough(game);if(err)say(err);else {say("Talento Resistente aprendido");savedTransition(Page::Evolution);}}
     else if(hit(x,y,14,92,102)){view.evolutionLevel=view.evolutionLevel==1?20:view.evolutionLevel-1;say("");}
@@ -477,6 +500,7 @@ void tapped(int x,int y){
   if(view.page==Page::Result){if(game.campStage==2){if(hit(x,y,14,268,212)&&rpg::resolveCamp(game)){say(game.campStage?"Descanso depois da batalha":"Acampamento interrompido");savedTransition(game.campStage?Page::CampRest:game.city==1?Page::Ruins:Page::Explore);}return;}if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
   if(view.page==Page::Skills){
+    if(game.dndProgression&&game.p.cls<2&&hit(x,y,26,54,188,28)){view.powersReturn=Page::Skills;view.powerIndex=0;view.page=Page::Powers;say("");return;}
     if(hit(x,y,14,172,212))action(rpg::Action::Offensive);
     else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;

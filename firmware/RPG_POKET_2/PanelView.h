@@ -22,12 +22,13 @@ template<class C>void panelHero(C& c,const rpg::Game& g,int x,int y,int w,int h,
 template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v){
  PANEL_IMAGE(c,skills);panelHero(c,g,90,89,62,48);c.fillRect(75,140,93,18,0x0843);char b[64];
  snprintf(b,sizeof(b),"HP%u/%u",g.p.hp,g.p.maxhp);panelLabel(c,75,142,46,b);snprintf(b,sizeof(b),"MP%u/%u",g.p.mp,g.p.maxmp);panelLabel(c,123,142,46,b);panelBar(c,78,154,37,g.p.hp,g.p.maxhp,UI_RED);panelBar(c,124,154,37,g.p.mp,g.p.maxmp,UI_BLUE);
- for(int i=0;i<2;++i){int y=180+i*48;c.fillRect(75,y,132,31,0x0843);snprintf(b,sizeof(b),"%s / %u MP",rpg::skillName(g.p.cls,i),rpg::skillCost(g.p.cls,i));panelLabel(c,75,y,132,b,g.p.mp>=rpg::skillCost(g.p.cls,i)?UI_GOLD:UI_MUTED);
- const char* desc=i?(g.p.cls<2?"Bloqueia 75%":g.p.cls==3?"Cura 25% / guarda 50%":"Bloqueia 50%"):(g.p.cls==0?"+80% / ignora defesa":g.p.cls==3?"Dano dobrado":g.p.cls==2?"+50% / nao erra":"Dano +50%");panelLabel(c,75,y+19,132,desc);
+ for(int i=0;i<2;++i){int y=180+i*48;c.fillRect(75,y,132,31,0x0843);snprintf(b,sizeof(b),"%s / %u MP",g.dndProgression&&g.p.cls==0?(i?"Escudo arcano":"Misseis magicos"):rpg::skillName(g.p.cls,i),g.dndProgression&&g.p.cls==0?3:rpg::skillCost(g.p.cls,i));panelLabel(c,75,y,132,b,g.p.mp>=(g.dndProgression&&g.p.cls==0?3:rpg::skillCost(g.p.cls,i))?UI_GOLD:UI_MUTED);
+ const char* desc=g.dndProgression&&g.p.cls==0?(i?"Bloqueia 75%":"3 dardos / nao erra"):i?(g.p.cls<2?"Bloqueia 75%":g.p.cls==3?"Cura 25% / guarda 50%":"Bloqueia 50%"):(g.p.cls==0?"+80% / ignora defesa":g.p.cls==3?"Dano dobrado":g.p.cls==2?"+50% / nao erra":"Dano +50%");panelLabel(c,75,y+19,132,desc);
  if(g.p.cls!=0){c.fillRect(34,y,34,29,0x0843);magicSprite(c,i?sprites_shield[0]:sprites_slash[0],64,72,35,y,32,29);}}
+ if(g.dndProgression&&g.p.cls<2){scenicPanel(c,26,54,188,28);panelLabel(c,30,63,180,g.p.cls==0?"Grimorio >":"Poderes / juramento >");}
  if(*v.message)panelLabel(c,8,161,224,v.message,UI_RED);
  else {snprintf(b,sizeof(b),"Pocao usa turno / risco %u HP",rpg::incomingCeiling(g,g.guard));panelLabel(c,8,161,224,b,UI_GOLD);}
- for(int i=0;i<2;++i)if(g.p.mp<rpg::skillCost(g.p.cls,i)||(g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2))panelLabel(c,75,180+i*48+19,132,g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2?"Desbloqueia Nv 2":"Sem mana",UI_MUTED);
+ for(int i=0;i<2;++i)if(g.p.mp<(g.dndProgression&&g.p.cls==0?3:rpg::skillCost(g.p.cls,i))||(g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2))panelLabel(c,75,180+i*48+19,132,g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2?"Desbloqueia Nv 2":"Sem mana",UI_MUTED);
 }
 template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
  PANEL_IMAGE(c,bag);char b[64];snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);panelLabel(c,92,57,78,b,UI_GOLD);

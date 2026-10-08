@@ -6,7 +6,7 @@ template<class C>void drawEvolution(C& c,const rpg::Game& g,const ViewState& v){
  snprintf(b,sizeof(b),"XP total %lu / proficiencia +%u",(unsigned long)rpg::dndXp[level-1],rpg::proficiency(level));panelLabel(c,10,65,220,b);
  panelLabel(c,10,80,220,rpg::classMilestone(g.p.cls,level),UI_GOLD);
  for(int i=0;i<2;++i){scenicPanel(c,14+i*110,92,102,28);panelLabel(c,18+i*110,101,94,i?"Proximo >":"< Anterior");}
- panelLabel(c,10,124,220,g.dndProgression?"Marcos SRD / detalhes em preparo":"Heroi antigo: regras preservadas",UI_MUTED);
+ panelLabel(c,10,124,220,g.dndProgression?"Poderes de classe >":"Heroi antigo: regras preservadas",UI_MUTED);
  snprintf(b,sizeof(b),"Pontos disponiveis: %u",rpg::advancementPoints(g));panelLabel(c,10,139,220,b,UI_GREEN);
  for(unsigned i=0;i<6;++i){int x=14+int(i%2)*110,y=156+int(i/2)*34;scenicPanel(c,x,y,102,30);snprintf(b,sizeof(b),"%s %u",rpg::abilityName(i),g.attributes[i]);panelLabel(c,x+4,y+10,94,b,g.dndProgression?UI_WHITE:UI_MUTED);}
  panelLabel(c,10,258,220,*v.message?v.message:"Toque: +1 / Resistente custa 2",UI_GOLD);

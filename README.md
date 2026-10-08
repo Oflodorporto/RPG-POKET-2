@@ -61,3 +61,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Evolução e direção de lançamento
 
 2026.10.08-direcao1: novos heróis no nível 1, curva D&D 1–20, atributos e talento Resistente, orientação do objetivo, combate/bolsa/recompensas mais claros. [Evolução e limites da adaptação](docs/EVOLUCAO_DND.md) e [avaliação crítica de lançamento](docs/AUDITORIA_LANCAMENTO.md). Saves anteriores preservados; Save12 não permite downgrade para firmware antigo.
+
+## Grimório e Devoção
+
+2026.10.08-poderes1: cinco magias de Mago, Impor as mãos e Juramento da Devoção com dois poderes e uso compartilhado. [Controles, custos, saves e limites da adaptação](docs/PODERES_DAS_CLASSES.md). Saves13, leitura1–13; heróis antigos preservados. Artes inalteradas.
