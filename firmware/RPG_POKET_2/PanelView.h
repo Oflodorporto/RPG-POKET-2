@@ -36,7 +36,7 @@ template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,112,97,66,b);panelBar(c,114,106,65,g.p.mp,g.p.maxmp,UI_BLUE);
  const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit"};unsigned q[]={g.p.life,g.p.mana,g.crystals,g.rations,g.charts,g.charms,unsigned(g.sleepKit)};
  for(unsigned i=0;i<7;++i){auto r=panelUi::bagSlot(i);c.fillRect(r.x+30,r.y+17,11,9,0x0843);snprintf(b,sizeof(b),"%u",q[i]);panelLabel(c,r.x+22,r.y+17,19,b,q[i]?UI_GREEN:UI_MUTED);for(int border=0;border<3;++border)c.drawRect(r.x+border,r.y+border,r.w-border*2,r.h-border*2,i==v.choice?UI_GOLD:0x3186);}
- auto scrapRect=panelUi::bagSlot(7);scenicPanel(c,scrapRect.x,scrapRect.y,scrapRect.w,scrapRect.h);char scrapText[24];snprintf(scrapText,sizeof(scrapText),"Sucata %u",g.scrap);panelLabel(c,scrapRect.x+2,scrapRect.y+10,scrapRect.w-4,scrapText,UI_GOLD);
+ auto scrapRect=panelUi::bagSlot(7);scenicPanel(c,scrapRect.x,scrapRect.y,scrapRect.w,scrapRect.h);char scrapText[24];panelLabel(c,scrapRect.x+2,scrapRect.y+4,scrapRect.w-4,"Sucata",UI_GOLD);snprintf(scrapText,sizeof(scrapText),"x%u",g.scrap);panelLabel(c,scrapRect.x+2,scrapRect.y+17,scrapRect.w-4,scrapText,g.scrap?UI_GREEN:UI_MUTED);
  unsigned i=std::min(6u,unsigned(v.choice));c.fillRect(84,228,110,30,0x0843);snprintf(b,sizeof(b),"%s x%u",names[i],q[i]);panelLabel(c,89,231,105,b,UI_GOLD);
  const char* desc=i==0?"Recupera 30% HP":i==1?"Recupera 50% MP":i==2?"Chave da cripta":i==3?"Comida no acampamento":i==6?"Kit de acampamento":"Bonus na viagem";panelLabel(c,89,247,105,desc);
  // The sample detail potion is replaced by the selected inventory icon.
