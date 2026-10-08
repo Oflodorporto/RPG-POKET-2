@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-paineis1. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.07-paineis1b. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -519,3 +519,4 @@ void loop(){
 
   delay(1);
 }
+

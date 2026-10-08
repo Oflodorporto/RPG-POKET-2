@@ -11,6 +11,7 @@ template<class C>void panelImage(C& c,const uint16_t* palette,unsigned asset,int
  for(int y=top;y<bottom;++y){for(int x=0;x<240;++x)row[x]=palette[indices[y*240+x]];c.draw16bitRGBBitmap(0,y,row,240,1);}
 }
 #define PANEL_IMAGE(c,name) panelImage(c,panelArt::name##Palette,panelArt::name##Asset)
+template<class C>void panelBattleArena(C& c){const auto* source=assetBytes(panelArt::battleAsset);uint16_t row[240];for(int y=66;y<192;++y){int sy=76+(y-66)*115/126;for(int x=0;x<240;++x)row[x]=panelArt::battlePalette[source[sy*240+x*128/240]];c.draw16bitRGBBitmap(0,y,row,240,1);}}
 template<class C>void panelLabel(C& c,int x,int y,int w,const char* s,uint16_t color=UI_WHITE,int size=1){c.fillRect(x,y,w,8*size+2,0x0843);int len=int(strlen(s))*6*size;if(len>w){size=1;len=int(strlen(s))*6;}c.setTextSize(size);c.setTextColor(color);c.setCursor(x+std::max(0,(w-len)/2),y+1);char clipped[64];snprintf(clipped,sizeof(clipped),"%.*s",std::min(63,w/(6*size)),s);c.print(clipped);}
 template<class C>void panelBar(C& c,int x,int y,int w,unsigned value,unsigned maximum,uint16_t color){c.fillRect(x,y,w,4,0x18c6);c.fillRect(x,y,maximum?int(uint64_t(w)*std::min(value,maximum)/maximum):0,4,color);}
 template<class C>void panelCrop(C& c,const uint16_t* palette,unsigned asset,int sx,int sy,int iw,int ih,int x,int y,int w,int h){const auto* source=assetBytes(asset);uint16_t row[48];for(int py=0;py<h;++py){for(int px=0;px<w;++px)row[px]=palette[source[(sy+py*ih/h)*240+sx+px*iw/w]];c.draw16bitRGBBitmap(x,y+py,row,w,1);}}
@@ -63,5 +64,4 @@ template<class C>struct PanelEffectCanvas {
  void drawRect(int x,int y,int w,int h,uint16_t color){c.drawRect(x,y+34,w,h,color);}
  void draw16bitRGBBitmap(int x,int y,uint16_t* pixels,int w,int h){c.draw16bitRGBBitmap(x,y+34,pixels,w,h);}
 };
-
 

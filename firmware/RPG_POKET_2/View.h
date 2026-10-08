@@ -79,7 +79,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
   bool outside=v.page==Page::Map||v.page==Page::Travel||v.page==Page::EventTravel||v.page==Page::TravelRoll||v.page==Page::Home||v.page==Page::Village||v.page==Page::Ruins||v.page==Page::Explore||v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest||v.page==Page::Battle;
   backdropPeriod=outside&&menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
-  char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page==Page::Battle){PANEL_IMAGE(c,battle);if(g.city!=1){drawBackdrop(c,backdropFor(v.page,g));panelImage(c,panelArt::battlePalette,panelArt::battleAsset,0,66);panelImage(c,panelArt::battlePalette,panelArt::battleAsset,192,320);}}else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
+  char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page==Page::Battle){PANEL_IMAGE(c,battle);if(g.city==1)panelBattleArena(c);if(g.city!=1){drawBackdrop(c,backdropFor(v.page,g));panelImage(c,panelArt::battlePalette,panelArt::battleAsset,0,66);panelImage(c,panelArt::battlePalette,panelArt::battleAsset,192,320);}}else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderEvent(c,g,int(v.page),text,center,box,button,frame))return;
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
@@ -336,5 +336,6 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
 }
 // Inclusive lower and exclusive upper bounds match the visible controls.
 inline bool hit(int x,int y,int left,int top,int width,int height=40){return x>=left&&x<left+width&&y>=top&&y<top+height;}
+
 
 
