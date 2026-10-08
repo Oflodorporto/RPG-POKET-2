@@ -20,7 +20,7 @@ int main(){
  assert(dungeonCollect(g)&&g.dungeonLoot&128);auto owned=g.owned;gold=g.p.gold;assert(!dungeonCollect(g)&&g.owned==owned&&g.p.gold==gold);g=roundtrip(g);
  assert(leaveDungeon(g)&&!inDungeon(g)&&g.dungeonClears==1);g=roundtrip(g);
  Game legacy=testHero(0,99);legacy.city=1;legacy.p.gold=137;uint8_t bytes[SAVE_SIZE];encode(legacy,1,bytes);put16(bytes,4,8);put16(bytes,6,96);put32(bytes,92,crc(bytes,92));Game old;uint32_t seq;assert(decode(bytes,old,seq)==Decode::Ok&&!old.crystals&&!old.dungeonFlags&&old.p.gold==137);
- bytes[70]=1;put32(bytes,92,crc(bytes,92));assert(decode(bytes,old,seq)==Decode::Corrupt);put16(bytes,4,18);assert(decode(bytes,old,seq)==Decode::Unsupported);
+ bytes[70]=1;put32(bytes,92,crc(bytes,92));assert(decode(bytes,old,seq)==Decode::Corrupt);put16(bytes,4,19);assert(decode(bytes,old,seq)==Decode::Unsupported);
  g=testHero(1,4);g.city=1;g.ruinsWins=3;assert(begin(g,3));g.enemyHp=0;finish(g);assert(g.crystals==1);home(g);g.crystals=9;assert(begin(g,3));g.enemyHp=0;finish(g);assert(g.crystals==9);
  for(unsigned cls=0;cls<4;++cls){g=testHero(cls,4);g.city=1;g.crystals=1;assert(!enterDungeon(g));g.dungeonXY=0x72;g.dungeonFlags=5;assert(begin(g,2));g.p.hp=0;finish(g);g=roundtrip(g);assert(dungeonResolve(g)&&!inDungeon(g)&&g.p.hp==1);assert(valid(g));}
  puts("PASS: crystals, collision, reachability, seal gate, 2 floors, seven enemies, boss, unique loot, save9/import8, defeat, all classes");

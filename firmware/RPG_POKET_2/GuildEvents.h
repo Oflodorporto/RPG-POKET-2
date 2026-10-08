@@ -7,16 +7,16 @@ inline uint8_t eventTierFor(uint8_t level){return level<5?0:level<10?1:level<18?
 inline unsigned eventGold(uint8_t tier){static const unsigned n[]={25,70,150,300};return n[tier<4?tier:0];}
 inline unsigned eventXp(uint8_t tier){static const unsigned n[]={20,60,140,280};return n[tier<4?tier:0];}
 inline const char* eventPlace(uint8_t tier){static const char* n[]={"Pomar de Carvalho","Ruinas de Vespera","Costa de Mares","Telhados de Aurora"};return n[tier<4?tier:0];}
-inline bool eventSafe(const Game& g){return g.tutorial&&!g.campaignStage&&g.phase==Phase::Home&&g.p.hp&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2;}
+inline bool eventSafe(const Game& g){return !g.discovery&&g.tutorial&&!g.campaignStage&&g.phase==Phase::Home&&g.p.hp&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2;}
 inline bool eventReturnPage(uint8_t p){return p==2||p==9||p==27||p==36||p==49;}
 inline bool eventValid(const Game& g){
  if(g.eventStage>6||g.eventTier>3||g.eventOriginCity>3)return false;
- if(!g.eventStage)return !g.eventDay&&!g.eventTier&&!g.eventOriginCity&&!g.eventOriginPage&&g.enemyId<10;
+ if(!g.eventStage)return !g.eventDay&&!g.eventTier&&!g.eventOriginCity&&!g.eventOriginPage&&(g.enemyId<10||g.enemyId>=14);
  if(g.eventDay<20454||g.eventDay>47481)return false;
- if(g.eventStage==1)return !g.eventOriginCity&&!g.eventOriginPage&&g.enemyId<10;
+ if(g.eventStage==1)return !g.eventOriginCity&&!g.eventOriginPage&&(g.enemyId<10||g.enemyId>=14);
  if(!eventReturnPage(g.eventOriginPage)&&g.eventStage!=4)return false;
  if(g.eventStage==2)return !g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2&&g.phase!=Phase::Home&&g.enemyId==10+g.eventTier&&g.city==g.eventTier;
- return g.enemyId<10;
+ return (g.enemyId<10||g.enemyId>=14);
 }
 inline bool offerEvent(Game& g,uint32_t day,unsigned hour){if(!eventSafe(g)||g.eventStage==2||hour<9||day<20454||day>47481||day<=g.eventDay)return false;g.eventDay=day;g.eventStage=1;g.eventTier=eventTierFor(g.p.level);g.eventOriginCity=g.eventOriginPage=0;return true;}
 inline const char* acceptEvent(Game& g,uint8_t page){if(g.eventStage!=1)return "Carta indisponivel";if(!eventSafe(g))return "Termine a acao atual primeiro";g.eventOriginCity=g.city;g.eventOriginPage=eventReturnPage(page)?page:2;g.city=g.eventTier;g.eventStage=2;if(!begin(g,10+g.eventTier))return "Nao foi possivel iniciar";return nullptr;}

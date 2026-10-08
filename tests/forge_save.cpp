@@ -43,7 +43,7 @@ int main(){
     g.phase=Phase(phase);if(phase==3)g.enemyHp=0;if(phase==4)g.p.hp=0;
     uint8_t bytes[rpg::SAVE_SIZE];encode(g,12,bytes);put16(bytes,4,3);rpg::put16(bytes,6,64);bytes[58]=0;put32(bytes,60,crc(bytes,60));
     Memory mem;mem.exists[0]=true;memcpy(mem.data[0],bytes,rpg::SAVE_SIZE);Journal<Memory> j(mem);Game loaded;assert(j.load(loaded)==Load::Ok);same(g,loaded);
-    mem.fail=true;assert(!j.save(loaded)&&get16(mem.data[0],4)==3);mem.fail=false;assert(j.save(loaded)&&get16(mem.data[1],4)==17);
+    mem.fail=true;assert(!j.save(loaded)&&get16(mem.data[0],4)==3);mem.fail=false;assert(j.save(loaded)&&get16(mem.data[1],4)==18);
     Journal<Memory> boot(mem);assert(boot.load(loaded)==Load::Ok);same(g,loaded);
     if(phase==2){enemy(g);enemy(loaded);same(g,loaded);}
   }
