@@ -41,3 +41,5 @@ Passaram 19 suítes (18 anteriores + class_progression), 80 combinações de con
 Próximas 5 ações: 1. Testar um herói novo sem apagar antigos; 2. Implementar juramento e magia usando a tabela; 3. Balancear progressão/recompensas e arquétipos de inimigos; 4. Fechar roteiro de Aeldra; 5. Teste externo + atualização interrompida antes de lançamento.
 
 Atualização martiais1: Guerreiro e Bárbaro agora possuem cura/ação extra/Fúria com recursos e persistência. 21 suítes e ESP32 aprovados; publicação e hashes verificados. Ainda faltam subclasses e habilidades avançadas, balanceamento1–20, clímax/desfecho de Aeldra e os testes externos/físicos acima. Próxima sequência: teste dos quatro heróis; Punição Divina/auras e caminho de classe; tipos/comportamentos de inimigos; desfecho da campanha; teste de instalação e usabilidade com novos jogadores.
+
+Segunda revisão: [dez melhorias, cinco implementadas e bloqueadores restantes](REVISAO_LANCAMENTO_10_MELHORIAS.md). Intenções, preparo de viagem, compra comparativa, recuperação e guia compõem lancamento1; campanha completa e validação física permanecem pendentes.

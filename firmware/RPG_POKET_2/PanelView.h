@@ -20,7 +20,7 @@ template<class C>void panelHero(C& c,const rpg::Game& g,int x,int y,int w,int h,
  for(int py=0;py<h;++py)for(int px=0;px<w;++px){auto color=personalPixel(g,6,(py*66/h)*80+px*80/w);if(color!=0xf81f)c.fillRect(x+px,y+py,1,1,color);} (void)frame;
 }
 template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,skills);panelHero(c,g,90,89,62,48);c.fillRect(75,140,93,18,0x0843);char b[64];
+ PANEL_IMAGE(c,skills);scenicPanel(c,14,143,48,29);panelLabel(c,17,153,42,"Guia",UI_GOLD);panelHero(c,g,90,89,62,48);c.fillRect(75,140,93,18,0x0843);char b[64];
  snprintf(b,sizeof(b),"HP%u/%u",g.p.hp,g.p.maxhp);panelLabel(c,75,142,46,b);snprintf(b,sizeof(b),"MP%u/%u",g.p.mp,g.p.maxmp);panelLabel(c,123,142,46,b);panelBar(c,78,154,37,g.p.hp,g.p.maxhp,UI_RED);panelBar(c,124,154,37,g.p.mp,g.p.maxmp,UI_BLUE);
  for(int i=0;i<2;++i){int y=180+i*48;c.fillRect(75,y,132,31,0x0843);snprintf(b,sizeof(b),"%s / %u MP",g.dndProgression&&g.p.cls==0?(i?"Escudo arcano":"Misseis magicos"):g.dndProgression&&g.p.cls==3&&!i?"Golpe brutal":rpg::skillName(g.p.cls,i),g.dndProgression&&g.p.cls==0?3:rpg::skillCost(g.p.cls,i));panelLabel(c,75,y,132,b,g.p.mp>=(g.dndProgression&&g.p.cls==0?3:rpg::skillCost(g.p.cls,i))?UI_GOLD:UI_MUTED);
  const char* desc=g.dndProgression&&g.p.cls==0?(i?"Bloqueia 75%":"3 dardos / nao erra"):i?(g.p.cls<2?"Bloqueia 75%":g.p.cls==3?"Cura 25% / guarda 50%":"Bloqueia 50%"):(g.p.cls==0?"+80% / ignora defesa":g.p.cls==3?"Dano dobrado":g.p.cls==2?"+50% / nao erra":"Dano +50%");panelLabel(c,75,y+19,132,desc);

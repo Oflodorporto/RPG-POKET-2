@@ -69,3 +69,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Guerreiro e Bárbaro
 
 2026.10.08-martiais1: Segundo Fôlego, Surto de Ação e Fúria com usos por descanso, duração e retomada persistida. [Regras, controles, adaptações e teste na placa](docs/PODERES_MARCIAIS.md). 21 suítes; Save14/leitura1–14; artes inalteradas.
+
+## Revisão para lançamento
+
+2026.10.08-lancamento1 aplica cinco de dez melhorias: intenções de inimigos, preparação de viagem, compra comparativa, recuperação após derrota e guia. [Revisão completa e limites](docs/REVISAO_LANCAMENTO_10_MELHORIAS.md). 22 suítes; save15/leitura1–15; artes compatíveis. A campanha completa ainda está em desenvolvimento.

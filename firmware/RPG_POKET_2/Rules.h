@@ -31,6 +31,7 @@ struct Game {
   uint8_t guard=0,enemyId=2,ruinsWins=0;
   bool guardianDefeated=false;bool dndProgression=false,tough=false;uint8_t attributes[6]={8,12,14,16,12,10},advancementSpent=0;
   uint8_t oath=0,laySpent=0,sacredTurns=0,turnedTurns=0;bool channelSpent=false;
+  uint8_t enemyBeat=0;
   uint8_t windSpent=0,surgeSpent=0,rageSpent=0,rageTurns=0;bool surgePending=false,surgeTurnUsed=false;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;
@@ -199,7 +200,7 @@ inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&id<2?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&g.enemyId<2?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
@@ -249,22 +250,40 @@ inline const char* act(Game& g,Action a){
   if(!g.dodge){g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;}
   endHeroAction(g);finish(g);return nullptr;
 }
-// Public upper bound, including critical hits. Does not advance the RNG.
+enum class Intent:uint8_t {Strike,Prepare,Heavy,Mend,Drain};
+inline Intent enemyIntent(const Game& g){
+ if(!g.dndProgression||g.turnedTurns)return Intent::Strike;
+ if(g.enemyId==2||g.enemyId==9)return g.enemyBeat==1?Intent::Mend:Intent::Strike;
+ if(g.enemyId==5)return g.enemyBeat==2?Intent::Drain:Intent::Strike;
+ if(g.enemyId==1||g.enemyId==3||g.enemyId==4||g.enemyId==7||g.enemyId==8||g.enemyId>=10)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Heavy:Intent::Strike;
+ return Intent::Strike;
+}
+inline const char* intentName(const Game& g){if(g.turnedTurns)return "Expulso: sem ataque";switch(enemyIntent(g)){case Intent::Prepare:return "Preparar golpe / sem dano";case Intent::Heavy:return "Golpe forte / defenda!";case Intent::Mend:return "Recompor: cura ate 4 HP";case Intent::Drain:return "Drenar: HP e ate 2 MP";default:return physicalEnemy(g.enemyId)?"Ataque fisico":"Ataque magico";}}
+inline bool powersSpent(const Game& g){return g.laySpent||g.channelSpent||g.windSpent||g.surgeSpent||g.rageSpent;}
+// Exact D20 safety probability for the current supplies, with natural1/20.
+inline unsigned tripSafety(const Game& g,unsigned dest){unsigned bonus=survival(g)+luck(g)+(g.rations?2:0)+(g.charts?2:0)+(g.charms?2:0),n=0;for(unsigned die=1;die<=20;++die)n+=die==20||(die!=1&&die+bonus>=routeDifficulty(g.city,dest));return n*5;}
+inline const char* tripError(const Game& g,unsigned dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";return nullptr;}
+// Read-only preview of wearing an item, independent of ownership/purchase.
+inline Game gearPreview(const Game& g,unsigned id){auto next=g;if(gearAllowed(id,g.p.cls,g.p.level)){next.equipped[gearSlot(id)]=id;next.p.maxmp=totalMana(next);next.p.mp=std::min(next.p.mp,next.p.maxmp);}return next;}
+// Public upper bound includes heavy attacks and does not advance RNG.
 inline unsigned incomingCeiling(const Game& g,unsigned guard=0){
- if(g.turnedTurns)return 0;
+ if(g.turnedTurns||enemyIntent(g)==Intent::Prepare||enemyIntent(g)==Intent::Mend)return 0;
  int damage=std::max(1,int(encounterAttack(g))+2-effectiveDefense(g)/3);
- damage+=damage/2;damage=(damage*(100-std::min(75u,guard))+99)/100;if(g.rageTurns&&physicalEnemy(g.enemyId))damage/=2;return damage;
+ damage+=damage/2;if(enemyIntent(g)==Intent::Heavy)damage=damage*3/2;damage=(damage*(100-std::min(75u,guard))+99)/100;if(g.rageTurns&&physicalEnemy(g.enemyId))damage/=2;return damage;
 }
 inline bool enemy(Game& g){
-  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;return true;}int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));
-  g.surgeTurnUsed=false;
-  if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
-  if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;--g.rageTurns;}
-  g.dodge=random(g)%100<6;
-  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;}
-  g.phase=Phase::Hero;finish(g);return true;
+ if(g.phase!=Phase::Enemy)return false;clearFeedback(g);g.surgeTurnUsed=false;
+ if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;return true;}
+ auto intent=enemyIntent(g);if(g.dndProgression)g.enemyBeat=(g.enemyBeat+1)%3;
+ if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;if(g.rageTurns)--g.rageTurns;g.phase=Phase::Hero;return true;}
+ int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));if(intent==Intent::Heavy)damage=damage*3/2;
+ unsigned guard=g.guard;if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
+ if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;--g.rageTurns;}
+ g.dodge=random(g)%100<6;
+ if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
+ g.phase=Phase::Hero;finish(g);return true;
 }
-inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
+inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);return true;}
 // Economy.cpp shopLong / UI.cpp invLong: prices and limits from Heltec.
 inline uint8_t potionPrice(bool mana){return mana?12:10;}
