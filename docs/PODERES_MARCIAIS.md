@@ -41,3 +41,5 @@ Após salvar nesta versão, firmware anterior não consegue ler Save14. Não fa�
 5. Usar poderes pela dungeon e conferir retorno; testar save antigo sem apagar ou converter manualmente.
 
 This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
+
+Publicação verificada: CI 37789708521, 21 suítes e ESP32 aprovados. Programa 2.638.098 bytes (83%); globais 53.676 bytes (16%). Firmware baixado 2.638.240 bytes, SHA-256 8001a4ad2c02d7eb6d69d2d3e259ca804c04efc5e6c3953763bb9746c31d53e9. Manifesto e artes compatíveis conferidos. Arquivos em releases/2026.10.08-martiais1; a arte idêntica permanece em releases/2026.10.08-poderes1/artes.pak para evitar duplicar espaço. Teste físico pendente.

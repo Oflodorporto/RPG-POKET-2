@@ -39,3 +39,5 @@ Metas propostas, ainda não medidas: novo jogador chega a combate/bolsa/objetivo
 Passaram 19 suítes (18 anteriores + class_progression), 80 combinações de consulta classe/nível, nova criação/atributos e importação de saves antigos. Compilação ESP32 aprovada sem upload: programa 2.627.710 bytes (83%), globais 53.532 bytes (16%). Teste físico pendente.
 
 Próximas 5 ações: 1. Testar um herói novo sem apagar antigos; 2. Implementar juramento e magia usando a tabela; 3. Balancear progressão/recompensas e arquétipos de inimigos; 4. Fechar roteiro de Aeldra; 5. Teste externo + atualização interrompida antes de lançamento.
+
+Atualização martiais1: Guerreiro e Bárbaro agora possuem cura/ação extra/Fúria com recursos e persistência. 21 suítes e ESP32 aprovados; publicação e hashes verificados. Ainda faltam subclasses e habilidades avançadas, balanceamento1–20, clímax/desfecho de Aeldra e os testes externos/físicos acima. Próxima sequência: teste dos quatro heróis; Punição Divina/auras e caminho de classe; tipos/comportamentos de inimigos; desfecho da campanha; teste de instalação e usabilidade com novos jogadores.
