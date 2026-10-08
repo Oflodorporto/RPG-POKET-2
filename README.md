@@ -57,3 +57,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Combate, bolsa e acampamento com os conceitos
 
 2026.10.07-paineis1b: seis conceitos adaptados para oito telas, com dados e herois reais. Imagens 240x320 carregadas do SD para PSRAM na inicializacao; sem leitura por quadro. [Guia e teste na placa](docs/NOVAS_TELAS_CONCEITO.md). Atualize firmware e artes por Configuracoes > Atualizacao.
+
+## Evolução e direção de lançamento
+
+2026.10.08-direcao1: novos heróis no nível1, curvaD&D1..20, atributos e talentoResistente, orientação do objetivo, combate/bolsa/recompensas mais claros. [Evolução e limites da adaptação](docs/EVOLUCAO_DND.md) e [avaliação crítica de lançamento](docs/AUDITORIA_LANCAMENTO.md). Saves anteriores preservados; Save12 não permite downgrade para firmwareantigo.

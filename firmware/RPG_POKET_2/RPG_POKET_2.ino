@@ -150,14 +150,23 @@ void tapped(int x,int y){
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
     if(x<120||menu.storyIndex==3){view.page=menu.storyReplay?Page(menu.storyReturn):Page::Help;menu.storyIndex=0;}
     else ++menu.storyIndex;say("");}return;}
+  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&game.city==0&&hit(x,y,10,80,220,30))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
   if(view.page==Page::Journal){if(hit(x,y,14,272,102))view.page=Page::Menu;
-    else if(hit(x,y,124,272,102)){view.page=Page::Campaign;}
+    else if(hit(x,y,124,272,102)){view.objectiveReturn=Page::Journal;view.page=Page::Campaign;}
     else if(hit(x,y,14,224,102))menu.chapterIndex=(menu.chapterIndex+5)%6;
     else if(hit(x,y,124,224,102))menu.chapterIndex=(menu.chapterIndex+1)%6;say("");return;}
   if(view.page==Page::Campaign){
-    if(hit(x,y,14,224,212)){menu.storyReplay=true;menu.storyReturn=int(Page::Campaign);menu.storyIndex=0;view.page=Page::Prologue;}
+    if(hit(x,y,14,198,212,24)){menu.storyReplay=true;menu.storyReturn=int(Page::Campaign);menu.storyIndex=0;view.page=Page::Prologue;say("");return;}
+    if(hit(x,y,14,224,212)){
+      if(!game.tutorial){helpReturn=view.objectiveReturn;view.page=Page::Help;}
+      else if(story::arconteKnown(game)){if(game.city==2){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}else {showMap();menu.destination=2;}}
+      else if(game.guardianDefeated){if(game.city==1)view.page=Page::DungeonEntry;else {showMap();menu.destination=1;}}
+      else if(game.city==1)view.page=Page::Ruins;
+      else if(game.p.level<5&&game.city==0)view.page=Page::Explore;
+      else {showMap();menu.destination=1;}
+    }
     else if(hit(x,y,14,272,102))view.page=Page::Journal;
-    else if(hit(x,y,124,272,102)){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}say("");return;
+    else if(hit(x,y,124,272,102))view.page=view.objectiveReturn;say("");return;
   }
   if(view.page==Page::People){if(hit(x,y,14,272,212))view.page=Page(menu.storyReturn);
     else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.page=Page::Dialogue;break;}say("");return;}
@@ -201,7 +210,7 @@ void tapped(int x,int y){
       auto err=rpg::equipGear(game,rpg::gearOwnedAt(game.owned,index));if(err)say(err);else {say("Equipamento alterado");savedTransition(Page::BagGear);}}return;
   }
   if(view.page==Page::Bag||view.page==Page::TownBag){
-    Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
+    Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:view.bagReturn;
     if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
     for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
     if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
@@ -356,7 +365,7 @@ void tapped(int x,int y){
     int choice=-1;for(int i=0;i<9;++i)if(panelUi::cityButtons[i].contains(x,y))choice=i;
     if(choice==0){menu.storyReturn=int(Page::Village);view.page=Page::People;}
     else if(choice==1)view.page=Page::Market;
-    else if(choice==2){view.choice=0;view.page=Page::TownBag;}
+    else if(choice==2){view.bagReturn=Page::Village;view.choice=0;view.page=Page::TownBag;}
     else if(choice==3)view.page=Page::Character;
     else if(choice==4)view.page=Page::Explore;
     else if(choice==5)view.page=Page::Guild;
@@ -395,18 +404,25 @@ void tapped(int x,int y){
     if(hit(x,y,14,270,102)){view.page=Page::Contract;say("Acao cancelada");}
     else if(hit(x,y,124,270,102)){
       if(view.questAction&&game.questId!=view.questChoice){say("Contrato mudou");return;}
-      uint16_t xp=rpg::contractXp(game.questId,game.questLevel),gold=rpg::contractGold(game.questId,game.questLevel);
+      uint16_t xp=rpg::contractXp(game,game.questId,game.questLevel),gold=rpg::contractGold(game.questId,game.questLevel);
       const char* err=view.questAction==0?rpg::acceptQuest(game,view.questChoice):view.questAction==1?rpg::claimQuest(game):rpg::abandonQuest(game);
       if(err){say(err);return;}
       if(view.questAction==1){snprintf(message,sizeof(message),"+%u XP / +%u ouro",xp,gold);view.message=message;}
       else say(view.questAction==0?"Missao aceita":"Missao abandonada");savedTransition(Page::GuildMissions);
     }return;
   }
-  if(view.page==Page::Character){if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::Evolution){
+    if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
+    else if(hit(x,y,124,272,102)){auto err=rpg::learnTough(game);if(err)say(err);else {say("Talento Resistente aprendido");savedTransition(Page::Evolution);}}
+    else if(hit(x,y,14,92,102)){view.evolutionLevel=view.evolutionLevel==1?20:view.evolutionLevel-1;say("");}
+    else if(hit(x,y,124,92,102)){view.evolutionLevel=view.evolutionLevel%20+1;say("");}
+    else for(unsigned i=0;i<6;++i)if(hit(x,y,14+(i%2)*110,156+(i/2)*34,102,30)){auto err=rpg::improveAttribute(game,i);if(err)say(err);else {say("Atributo aumentado");savedTransition(Page::Evolution);}}return;
+  }
+  if(view.page==Page::Character){if(panelUi::evolution.contains(x,y)){view.evolutionLevel=std::min(20u,unsigned(game.p.level));view.page=Page::Evolution;say("");return;}if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}
-    if(hit(x,y,14,shop?138:180,212)){view.page=shop?Page::Shop:Page::TownBag;say("");}
+    if(hit(x,y,14,shop?138:180,212)){if(!shop)view.bagReturn=Page::Inventory;view.page=shop?Page::Shop:Page::TownBag;say("");}
     else if(hit(x,y,14,shop?182:226,212)){view.gearIndex=0;view.page=shop?Page::GearShop:Page::GearBag;say("");}
     else if(shop&&hit(x,y,14,226,102)){view.page=Page::Forge;say("");}
     else if(shop&&hit(x,y,124,226,102)){view.page=Page::CityGoods;say("");}

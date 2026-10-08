@@ -12,6 +12,8 @@ inline uint32_t get32(const uint8_t* b,unsigned o){return get16(b,o)|uint32_t(ge
 inline uint32_t crc(const uint8_t* b,unsigned n){uint32_t c=~0u;for(unsigned i=0;i<n;++i){c^=b[i];for(int k=0;k<8;++k)c=(c>>1)^(0xedb88320u&uint32_t(-int(c&1)));}return ~c;}
 inline bool valid(const Game& g){
   auto &p=g.p;
+  if(g.dndProgression){if(g.p.level>20||g.advancementSpent>improvementCount(g.p.cls,g.p.level)*2||(g.tough&&g.advancementSpent<2))return false;for(auto score:g.attributes)if(score<8||score>20)return false;}
+  else if(g.tough||g.advancementSpent)return false;
   if(!eventValid(g)||!dungeonValid(g)||!campValid(g))return false;
   if(g.rations>9||g.charts>9||g.charms>9||g.tripStage>3)return false;
   if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}
@@ -21,13 +23,13 @@ inline bool valid(const Game& g){
   if(g.clubStage&&(!g.guildMember||g.p.level<5))return false;
   if(g.race>3||g.shirt>7||g.trousers>7||g.clubStage>3||(g.clubStage&&!g.clubSession)||g.city>3||g.questId>3)return false;
   if(!g.questId){if(g.questProgress||g.questLevel)return false;}
-  else if(g.questLevel<3||g.questLevel>p.level||g.questProgress>contract(g.questId).count)return false;
+  else if(g.questLevel<1||g.questLevel>p.level||g.questProgress>contract(g.questId).count)return false;
   if(g.owned>>GEAR_COUNT)return false;
   for(uint8_t slot=0;slot<3;++slot){uint8_t id=g.equipped[slot];
     if(g.forge[slot]>3||(g.forge[slot]&&p.level<forgeRequirement(g.forge[slot]-1)))return false;
     if(id&&(!gearOwns(g.owned,id)||gearSlot(id)!=slot||!gearAllowed(id,p.cls,p.level)))return false;
   }
-  if(p.cls>3||p.level<3||p.level>99||!p.maxhp||p.hp>p.maxhp||p.maxmp!=totalMana(g)||p.mp>p.maxmp||!p.atk||p.life>99||p.mana>99||p.gold>999999||!g.randomState)return false;
+  if(p.cls>3||p.level<1||p.level>99||!p.maxhp||p.hp>p.maxhp||p.maxmp!=totalMana(g)||p.mp>p.maxmp||!p.atk||p.life>99||p.mana>99||p.gold>999999||!g.randomState)return false;
   if(uint8_t(g.phase)>5||g.enemyId>13||g.ruinsWins>3||(g.guardianDefeated&&g.ruinsWins<3)||(g.enemyId==3&&g.ruinsWins<3)||g.enemyHp>enemySpec(g.enemyId).hp||(g.guard!=0&&g.guard!=50&&g.guard!=75)||g.gainGold>enemySpec(g.enemyId).gold||g.gainXp>3276)return false;
   if((g.phase==Phase::Hero||g.phase==Phase::Enemy)&&(!p.hp||!g.enemyHp))return false;
   if(g.phase==Phase::Won&&(g.enemyHp||!p.hp))return false;
@@ -36,17 +38,17 @@ inline bool valid(const Game& g){
   return true;
 }
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,11);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,12);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
   put16(b,42,g.gainXp);put16(b,44,g.damage);b[46]=g.gainGold;
-  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;b[69]=g.crystals;b[70]=g.dungeonFlags;b[71]=g.dungeonXY;b[87]=g.dungeonLoot;b[88]=g.dungeonEnemies;b[89]=g.dungeonClears;b[90]=g.campStage|(g.campRation<<2)|(g.campKit<<3)|(g.sleepKit<<4);b[91]=g.campRoll;put32(b,92,g.eventDay);b[96]=g.eventStage;b[97]=g.eventTier;b[98]=g.eventOriginCity;b[99]=g.eventOriginPage;put32(b,124,crc(b,124));
+  b[47]=g.crit|g.dodge<<1|g.dropLife<<2|g.dropMana<<3|g.tutorial<<4;b[48]=g.enemyId;b[49]=g.ruinsWins;b[50]=g.guardianDefeated;put32(b,51,g.owned|uint32_t(g.questId)<<18|uint32_t(g.questProgress)<<20|uint32_t(g.city)<<22);memcpy(b+55,g.equipped,3);b[58]=g.forge[0]|g.forge[1]<<2|g.forge[2]<<4;b[59]=g.questLevel;b[64]=g.race;b[65]=g.shirt;b[66]=g.trousers;b[67]=g.guildMember;b[68]=g.clubStage;put32(b,72,g.clubSession);b[76]=g.tripStage;b[77]=g.tripTo;b[78]=g.tripRoll;b[79]=g.tripDifficulty;b[80]=g.tripTotal;b[81]=g.tripEnemy;b[82]=g.tripSurvival;b[83]=g.tripLuck;b[84]=g.rations;b[85]=g.charts;b[86]=g.charms;b[69]=g.crystals;b[70]=g.dungeonFlags;b[71]=g.dungeonXY;b[87]=g.dungeonLoot;b[88]=g.dungeonEnemies;b[89]=g.dungeonClears;b[90]=g.campStage|(g.campRation<<2)|(g.campKit<<3)|(g.sleepKit<<4);b[91]=g.campRoll;put32(b,92,g.eventDay);b[96]=g.eventStage;b[97]=g.eventTier;b[98]=g.eventOriginCity;b[99]=g.eventOriginPage;b[100]=g.dndProgression;b[101]=g.tough;b[102]=g.advancementSpent;if(g.dndProgression)memcpy(b+103,g.attributes,6);put32(b,124,crc(b,124));
 }
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>11)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
+  if((get16(b,4)<1||get16(b,4)>12)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
   if(get32(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)||b[47]>31)return Decode::Corrupt;
   if(get16(b,4)<8&&get16(b,4)>=2&&b[48]>3)return Decode::Corrupt;
   if(get16(b,4)==8&&b[48]>7)return Decode::Corrupt;
@@ -63,7 +65,8 @@ inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(get16(b,4)>=8){t.tripStage=b[76];t.tripTo=b[77];t.tripRoll=b[78];t.tripDifficulty=b[79];t.tripTotal=b[80];t.tripEnemy=b[81];t.tripSurvival=b[82];t.tripLuck=b[83];t.rations=b[84];t.charts=b[85];t.charms=b[86];}
   if(get16(b,4)>=9){t.crystals=b[69];t.dungeonFlags=b[70];t.dungeonXY=b[71];t.dungeonLoot=b[87];t.dungeonEnemies=b[88];t.dungeonClears=b[89];}
   if(get16(b,4)>=10){if(b[90]>31)return Decode::Corrupt;t.campStage=b[90]&3;t.campRation=b[90]&4;t.campKit=b[90]&8;t.sleepKit=b[90]&16;t.campRoll=b[91];}
-  if(get16(b,4)>=11){t.eventDay=get32(b,92);t.eventStage=b[96];t.eventTier=b[97];t.eventOriginCity=b[98];t.eventOriginPage=b[99];for(unsigned i=100;i<124;++i)if(b[i])return Decode::Corrupt;}
+  if(get16(b,4)>=11){t.eventDay=get32(b,92);t.eventStage=b[96];t.eventTier=b[97];t.eventOriginCity=b[98];t.eventOriginPage=b[99];for(unsigned i=get16(b,4)>=12?109:100;i<124;++i)if(b[i])return Decode::Corrupt;
+    if(get16(b,4)>=12){if(b[100]>1||b[101]>1)return Decode::Corrupt;t.dndProgression=b[100];t.tough=b[101];t.advancementSpent=b[102];if(t.dndProgression)memcpy(t.attributes,b+103,6);else for(unsigned i=103;i<109;++i)if(b[i])return Decode::Corrupt;}}
   if(!valid(t))return Decode::Corrupt;g=t;return Decode::Ok;
 }
 enum class Read{Missing,Ok,Error};

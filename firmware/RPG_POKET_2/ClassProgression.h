@@ -1,0 +1,10 @@
+#pragma once
+// Reference milestones from SRD5.1; feature titles are not all executable rules.
+// Attribution and implementation status: docs/EVOLUCAO_DND.md.
+namespace rpg {
+constexpr const char* classMilestones[4][20]={{"Magia / recuperacao arcana","Tradicao arcana","Magias de circulo 2","Atributos ou talento","Magias de circulo 3","Recurso da tradicao","Magias de circulo 4","Atributos ou talento","Magias de circulo 5","Recurso da tradicao","Magias de circulo 6","Atributos ou talento","Magias de circulo 7","Recurso da tradicao","Magias de circulo 8","Atributos ou talento","Magias de circulo 9","Maestria em magia","Atributos ou talento","Magias de assinatura"},
+{"Sentido divino / cura","Estilo / magia / punicao","Juramento / saude divina","Atributos ou talento","Ataque extra / circulo 2","Aura de protecao","Recurso do juramento","Atributos ou talento","Magias de circulo 3","Aura de coragem","Punicao aprimorada","Atributos ou talento","Magias de circulo 4","Toque purificador","Recurso do juramento","Atributos ou talento","Magias de circulo 5","Auras ampliadas","Atributos ou talento","Apice do juramento"},
+{"Estilo / segundo folego","Surto de acao","Arquetipo marcial","Atributos ou talento","Ataque extra: 2 golpes","Atributos ou talento","Recurso do arquetipo","Atributos ou talento","Indomavel: 1 uso","Recurso do arquetipo","Ataque extra: 3 golpes","Atributos ou talento","Indomavel: 2 usos","Atributos ou talento","Recurso do arquetipo","Atributos ou talento","Surto 2 / indomavel 3","Recurso do arquetipo","Atributos ou talento","Ataque extra: 4 golpes"},
+{"Furia / defesa sem armadura","Ataque imprudente / perigo","Caminho primitivo","Atributos ou talento","Ataque extra / movimento","Recurso do caminho","Instinto selvagem","Atributos ou talento","Critico brutal: 1 dado","Recurso do caminho","Furia implacavel","Atributos ou talento","Critico brutal: 2 dados","Recurso do caminho","Furia persistente","Atributos ou talento","Critico brutal: 3 dados","Forca indomavel","Atributos ou talento","Campeao primitivo"}};
+inline const char* classMilestone(unsigned cls,unsigned lvl){return classMilestones[cls%4][std::min(20u,std::max(1u,lvl))-1];}
+}

@@ -1,3 +1,4 @@
+#include "TestHero.h"
 #include "../firmware/RPG_POKET_2/CardCheck.h"
 #include <cassert>
 #include <cstdio>

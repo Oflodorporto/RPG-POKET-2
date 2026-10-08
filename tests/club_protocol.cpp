@@ -1,3 +1,4 @@
+#include "TestHero.h"
 #include "ClubProtocol.h"
 #include "ClubDuel.h"
 #include <cassert>

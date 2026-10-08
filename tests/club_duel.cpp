@@ -1,3 +1,4 @@
+#include "TestHero.h"
 #include "ClubDuel.h"
 #include <cassert>
 #include <deque>

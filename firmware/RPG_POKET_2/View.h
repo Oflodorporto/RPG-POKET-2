@@ -12,7 +12,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Prologue:return bg_tavern;case Page::Journal:return bg_character;case Page::People:case Page::Dialogue:return bg_village;case Page::Continent:return bg_world;
@@ -34,7 +34,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page page=Page::Choose;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {Page page=Page::Choose,bagReturn=Page::Inventory,objectiveReturn=Page::Menu;uint8_t evolutionLevel=1;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "MenuView.h"
 #include "EventView.h"
@@ -47,6 +47,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "ScenicView.h"
 #include "PanelView.h"
 #include "CampView.h"
+#include "EvolutionView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -70,6 +71,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Map){drawScenicMap(c,g,v,frame);return;}
   if(v.page==Page::Ruins){drawScenicRuins(c,g,v,frame);return;}
   if(v.page==Page::Skills){drawPanelSkills(c,g,v);return;}
+  if(v.page==Page::Evolution){drawEvolution(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag){drawPanelBag(c,g,v);return;}
   if(v.page==Page::Character){drawPanelCharacter(c,g);return;}
   if(v.page==Page::Village&&g.city==0){drawPanelVillage(c,g,v);return;}
@@ -153,7 +155,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(14,"NARA VELD / GUIA",2,UI_GOLD);center(43,"Refugio das Brasas / Carvalho");
     c.fillRect(10,64,220,82,UI_INK);text(19,75,"Um toque, uma acao.",1);
     text(19,92,"Ataque e aguarde o inimigo.");text(19,109,"Habilidades consomem mana.");text(19,126,"Pocoes tambem usam um turno.");
-    center(184,"Descanse para recuperar HP/MP.");center(205,"O progresso e salvo a cada turno.");
+    center(162,"Carvalho: explore ate nivel 5.");center(184,"Depois: mapa > Ruinas > Guardiao.");center(205,"O progresso e salvo a cada turno.");
     center(229,v.recovered?"Checkpoint anterior recuperado.":"Reiniciar retoma sua aventura.",1,UI_MUTED);
     button(14,268,212,"Continuar");return;
   }
@@ -185,7 +187,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     bool active=g.questId==id;uint8_t level=active?g.questLevel:g.p.level;
     center(12,"CONTRATO",2,UI_GOLD);center(39,"Maelis Voss / Guilda");center(60,rpg::contract(id).name,2);center(89,rpg::contract(id).objective);center(108,"REGIAO: RUINAS",1,UI_GOLD);
     snprintf(b,sizeof(b),"Progresso: %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(132,b,2);
-    snprintf(b,sizeof(b),"Recompensa: %u XP / %u ouro",rpg::contractXp(id,level),rpg::contractGold(id,level));center(164,b,1,UI_GOLD);
+    snprintf(b,sizeof(b),"Recompensa: %u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(164,b,1,UI_GOLD);
     snprintf(b,sizeof(b),"Calculada no nivel %u",level);center(185,b);center(201,v.message,1,UI_RED);
     button(14,220,212,active?(rpg::questComplete(g)?"Receber":"Abandonar"):"Aceitar");button(14,272,212,"Voltar");return;
   }
@@ -195,7 +197,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(12,action==0?"ACEITAR MISSAO":action==1?"RECEBER PREMIO":"ABANDONAR MISSAO",2,UI_GOLD);
     center(72,rpg::contract(id).name,2);center(105,rpg::contract(id).objective);
     if(action==2){center(146,"O progresso sera perdido.",1,UI_RED);center(176,"Voce nao recebera recompensa.");center(205,"Podera aceitar novamente do zero.");}
-    else{snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(id,level),rpg::contractGold(id,level));center(148,b,2,UI_GOLD);
+    else{snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(148,b,2,UI_GOLD);
       if(action==0){center(181,"Contam apenas as novas vitorias.");center(207,"Volte aqui para receber depois.");}
       else{snprintf(b,sizeof(b),"Ouro: %lu -> %lu",(unsigned long)g.p.gold,(unsigned long)(g.p.gold+rpg::contractGold(id,level)));center(184,b);
         auto preview=g;rpg::claimQuest(preview);snprintf(b,sizeof(b),"Nivel: %u -> %u",g.p.level,preview.p.level);center(207,b);}}
@@ -203,7 +205,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   }
   if(v.page==Page::Character){
     center(12,"PERSONAGEM",2,UI_GOLD);portrait(g.p.cls,80,40);center(117,rpg::className(g.p.cls),2);
-    snprintf(b,sizeof(b),"Nivel %u   XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g.p.level));center(143,b);
+    snprintf(b,sizeof(b),"Nivel %u   XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(143,b);
     snprintf(b,sizeof(b),"HP %u/%u  MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);center(162,b);
     snprintf(b,sizeof(b),"ATAQUE %u  DEFESA %u",unsigned(rpg::effectiveAttack(g)),unsigned(rpg::effectiveDefense(g)));center(181,b);
     snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(200,b,1,UI_GOLD);
@@ -296,9 +298,10 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     c.fillRect(12,65,216,77,UI_INK);
     center(15,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
     if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP  +%u ouro",g.gainXp,g.gainGold);center(79,b,2);
-      center(110,g.dropLife?"Encontrou uma pocao de HP.":"Ruinas exploradas.");center(125,g.dropMana?"Encontrou uma pocao de MP.":"");}
+      center(110,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(125,g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou das ruinas.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}
-    snprintf(b,sizeof(b),"Ruinas: %u/3 / Guardiao %s",g.ruinsWins,g.guardianDefeated?"vencido":"pendente");center(170,b);center(190,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
+    snprintf(b,sizeof(b),"Nv %u / XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(151,b,1,UI_GOLD);panelBar(c,25,165,190,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
+    auto goal=story::objective(g);center(183,goal.title,1,UI_GOLD);center(198,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
   }
   if(v.page==Page::Skills||v.page==Page::Bag||v.page==Page::TownBag){
     bool bag=v.page!=Page::Skills;center(14,bag?"POCOES":"HABILIDADES",2,UI_GOLD);portrait(g.p.cls,80,44);
@@ -312,7 +315,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,270,212,"Voltar");return;
   }
   const auto& foe=rpg::enemySpec(g.enemyId);
-  panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,foe.hp);panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,foe.hp,UI_RED);
+  panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);
   personalSprite(c,g,8,77,v.heroFrame%6);
   const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
   magicSprite(c,foeFrame,80,86,145,99,75,80);
@@ -330,6 +333,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   c.fillRect(69,196,63,33,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
   snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,68,216,65,b);panelBar(c,70,225,62,g.p.mp,g.p.maxmp,UI_BLUE);
   panelHero(c,g,22,199,41,33);panelLabel(c,140,211,84,v.effect!=Effect::None?"Animando...":g.phase==rpg::Phase::Enemy?"Turno inimigo":"Seu turno",UI_GOLD);
+  snprintf(b,sizeof(b),"Risco ate %u HP",rpg::incomingCeiling(g,g.guard));panelLabel(c,132,227,101,b,UI_GOLD);
   if(*v.message)panelLabel(c,4,310,232,v.message,g.phase==rpg::Phase::Enemy?UI_GOLD:UI_WHITE);
   if(v.effect!=Effect::None||g.phase!=rpg::Phase::Hero){for(auto r:panelUi::battleButtons){c.drawRect(r.x,r.y,r.w,r.h,UI_MUTED);} }
 

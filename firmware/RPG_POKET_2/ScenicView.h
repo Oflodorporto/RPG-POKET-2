@@ -60,8 +60,9 @@ template<class C>void drawScenicHome(C& c,const rpg::Game& g,const ViewState& v,
  if(g.city!=1){scenicPanel(c,36,49,168,18);scenicText(c,(240-int(strlen(place))*6)/2,54,place,1,UI_GOLD);}
  scenicPanel(c,10,84,220,48);snprintf(b,sizeof(b),"%s / Nv %u / %lu ouro",rpg::className(g.p.cls),g.p.level,(unsigned long)g.p.gold);scenicText(c,17,92,b);
  snprintf(b,sizeof(b),"HP %u/%u  MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);scenicText(c,17,105,b);
- snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g.p.level));scenicText(c,17,119,b,1,UI_MUTED);
+ snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g));scenicText(c,17,119,b,1,UI_MUTED);
  if(*v.message){scenicPanel(c,10,251,220,17);scenicText(c,(240-int(strlen(v.message))*6)/2,255,v.message,1,UI_GREEN);}
+ scenicPanel(c,10,140,220,30);auto goal=story::objective(g);scenicText(c,17,146,goal.title,1,UI_GOLD);scenicText(c,17,158,"Toque: proximo objetivo");
  const char* names[]={"Mapa","Descanso","Menu"};for(int i=0;i<3;++i){int x=6+i*78;scenicPanel(c,x,274,72,40);scenicText(c,x+(72-int(strlen(names[i]))*6)/2,290,names[i]);}
 }
 template<class C>void scenicWorld(C& c,bool ruins,worldClock::Period period){
@@ -83,6 +84,7 @@ template<class C>void drawScenicMap(C& c,const rpg::Game& g,const ViewState& v,u
 }
 template<class C>void drawScenicRuins(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
  auto period=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;scenicWorld(c,true,period);
+ scenicPanel(c,10,94,220,30);auto goal=story::objective(g);scenicText(c,17,100,goal.title,1,UI_GOLD);scenicText(c,17,112,"Toque: proximo objetivo");
  // Never display the sample 3/3 or "vencido" from the concept as real progress.
  c.fillRect(160,178,73,24,0x0843);char b[64];snprintf(b,sizeof(b),"Vitorias %u/3",g.ruinsWins);scenicText(c,160,180,b,1,UI_GOLD);
  scenicText(c,166,193,g.guardianDefeated?"Vencido!":g.ruinsWins>=3?"Liberado":"Bloqueado",1,g.guardianDefeated?UI_GREEN:g.ruinsWins>=3?UI_GOLD:UI_MUTED);

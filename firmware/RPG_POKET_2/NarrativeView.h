@@ -5,7 +5,7 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
  auto button=[&](int x,int y,int w,const char* s){c.fillRect(x,y,w,40,UI_PANEL);c.drawRect(x,y,w,40,UI_GOLD);text(x+(w-int(strlen(s))*6)/2,y+15,s);};
  char b[64];
- if(v.page==Page::Campaign){drawBackdrop(c,bg_character);auto goal=story::objective(g);center(12,"SUA JORNADA",2,UI_GOLD);center(48,goal.title,1,UI_GOLD);center(78,goal.place,1,UI_GREEN);for(unsigned i=0;i<4;++i)center(108+i*23,goal.lines[i]);center(205,"As Cinzas da Primeira Aurora",1,UI_GOLD);button(14,224,212,"Relembrar o inicio");button(14,272,102,"Diario");button(124,272,102,"Pessoas");return;}
+ if(v.page==Page::Campaign){drawBackdrop(c,bg_character);auto goal=story::objective(g);center(12,"SUA JORNADA",2,UI_GOLD);center(48,goal.title,1,UI_GOLD);center(78,goal.place,1,UI_GREEN);for(unsigned i=0;i<4;++i)center(108+i*23,goal.lines[i]);c.fillRect(14,198,212,24,UI_PANEL);c.drawRect(14,198,212,24,UI_GOLD);center(205,"Relembrar o inicio",1,UI_GOLD);button(14,224,212,"Seguir objetivo");button(14,272,102,"Diario");button(124,272,102,"Voltar");return;}
  if(v.page==Page::Prologue){const auto& scene=story::opening[menu.storyIndex%4];drawBackdrop(c,menu.storyIndex==0?bg_explore0:menu.storyIndex==3?bg_guild:bg_tavern);
   center(15,"AS CINZAS DA",2,UI_GOLD);center(36,"PRIMEIRA AURORA",2,UI_GOLD);center(75,scene.speaker,1,UI_GOLD);
   for(unsigned i=0;i<4;++i)center(116+i*25,scene.lines[i]);snprintf(b,sizeof(b),"Aeldra / cena %u de 4",menu.storyIndex+1);center(231,b);

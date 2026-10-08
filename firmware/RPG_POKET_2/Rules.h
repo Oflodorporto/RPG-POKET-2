@@ -29,13 +29,20 @@ struct Game {
   Phase phase=Phase::Home;
   uint16_t enemyHp=17;
   uint8_t guard=0,enemyId=2,ruinsWins=0;
-  bool guardianDefeated=false;
+  bool guardianDefeated=false;bool dndProgression=false,tough=false;uint8_t attributes[6]={8,12,14,16,12,10},advancementSpent=0;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;
   uint8_t gainGold=0;
   bool crit=false,dodge=false,dropLife=false,dropMana=false,tutorial=false;
 };
 
+constexpr uint32_t dndXp[]={0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000};
+inline int abilityMod(unsigned score){return int(score)/2-5;}
+inline unsigned proficiency(unsigned level){return 2+(std::min(20u,std::max(1u,level))-1)/4;}
+inline unsigned primaryAbility(unsigned cls){return cls==0?3:0;}
+inline unsigned improvementCount(unsigned cls,unsigned level){unsigned n=0;for(unsigned l:{4u,8u,12u,16u,19u})n+=level>=l;if(cls==2)n+=(level>=6)+(level>=14);return n;}
+inline unsigned advancementPoints(const Game& g){return g.dndProgression?improvementCount(g.p.cls,g.p.level)*2-g.advancementSpent:0;}
+inline const char* abilityName(unsigned i){const char* n[]={"Forca","Destreza","Constituicao","Inteligencia","Sabedoria","Carisma"};return n[i%6];}
 inline uint8_t cityLevel(uint8_t c){static const uint8_t n[]={3,5,10,18};return n[c<4?c:0];}
 inline const char* citySpecialty(uint8_t c){static const char* n[]={"Bosque / suprimentos baratos","Ruinas / reliquias raras","Porto / armas importadas","Castelo / armaduras superiores"};return n[c<4?c:0];}
 inline uint16_t priced(uint16_t base,unsigned percent){return (uint32_t(base)*percent+99)/100;}
@@ -43,7 +50,7 @@ inline bool cityStock(const Game& g,uint8_t id){if(!gearId(id))return false;unsi
 inline uint8_t cityGearCount(const Game& g){uint8_t n=0;for(unsigned i=0;i<9;++i)if(cityStock(g,gearOffer(g.p.cls,i)))++n;return n;}
 inline uint8_t cityGearOffer(const Game& g,unsigned index){for(unsigned i=0;i<9;++i){uint8_t id=gearOffer(g.p.cls,i);if(cityStock(g,id)&&!index--)return id;}return 0;}
 inline uint16_t cityGearPrice(const Game& g,uint8_t id){unsigned slot=gearSlot(id);unsigned pct=g.city==0?100:g.city==1?(slot==2?75:150):g.city==2?(slot==0?85:115):(slot==1?90:140);return priced(gearPrice(id),pct);}
-inline uint8_t survival(const Game& g){static const uint8_t n[]={1,3,3,5};return std::min(10u,unsigned(n[g.p.cls])+g.p.level/5);}
+inline uint8_t survival(const Game& g){static const uint8_t n[]={1,3,3,5};return std::min(10u,unsigned(n[g.p.cls])+g.p.level/5+(g.dndProgression?std::max(0,abilityMod(g.attributes[4])):0));}
 inline uint8_t luck(const Game& g){static const uint8_t n[]={3,2,2,1};return std::min(8u,unsigned(n[g.p.cls])+g.p.level/8);}
 inline uint8_t localGood(uint8_t city){return city==2?1:city==3?2:0;}
 inline const char* goodName(uint8_t id){static const char* n[]={"RACAO DE VIAGEM","MAPA DO VIAJANTE","TALISMA DA SORTE"};return n[id<3?id:0];}
@@ -58,9 +65,9 @@ inline uint8_t routeDifficulty(uint8_t a,uint8_t b){return 12+2*abs(int(a)-int(b
 inline const char* className(uint8_t c) {static const char* n[]={"Mago","Cavaleiro","Guerreiro","Barbaro"};return n[c<4?c:0];}
 inline const char* skillName(uint8_t c,bool defensive) {static const char* n[][2]={{"Raio","Barreira"},{"Investida","Escudo"},{"Precisao","Aparar"},{"Furia","Vigor"}};return n[c<4?c:0][defensive];}
 inline uint16_t maxMana(uint8_t c,uint8_t l){return (c==0?12:8)+l-1;}
-inline int effectiveAttack(const Game& g){return int(g.p.atk)+g.forge[0]*2+gearBonus(g.equipped[0]);}
-inline int effectiveDefense(const Game& g){return int(g.p.def)+g.forge[1]*3+gearBonus(g.equipped[1]);}
-inline uint16_t totalMana(const Game& g){return maxMana(g.p.cls,g.p.level)+g.forge[2]*3+gearBonus(g.equipped[2]);}
+inline int effectiveAttack(const Game& g){return int(g.p.atk)+(g.dndProgression?abilityMod(g.attributes[primaryAbility(g.p.cls)])+int(proficiency(g.p.level))-2:0)+g.forge[0]*2+gearBonus(g.equipped[0]);}
+inline int effectiveDefense(const Game& g){return int(g.p.def)+(g.dndProgression?std::max(0,abilityMod(g.attributes[1])):0)+g.forge[1]*3+gearBonus(g.equipped[1]);}
+inline uint16_t totalMana(const Game& g){return maxMana(g.p.cls,g.p.level)+(g.dndProgression&&g.p.cls<2?std::max(0,abilityMod(g.attributes[g.p.cls==0?3:5])):0)+g.forge[2]*3+gearBonus(g.equipped[2]);}
 inline const char* forgeName(uint8_t slot){static const char* n[]={"ARMA","ARMADURA","AMULETO"};return slot<3?n[slot]:"INVALIDO";}
 inline uint8_t forgeRequirement(uint8_t tier){return tier==0?1:tier==1?4:tier==2?8:255;}
 inline uint16_t forgePrice(const Game& g,uint8_t slot){static const uint16_t base[]={40,45,35};return slot<3&&g.forge[slot]<3?priced(base[slot]*(g.forge[slot]+1)*(g.forge[slot]+1),g.city==0?100:g.city==1?160:g.city==2?120:85):0;}
@@ -97,12 +104,21 @@ inline const char* equipGear(Game& g,uint8_t id){
   uint8_t slot=gearSlot(id);g.equipped[slot]=g.equipped[slot]==id?0:id;
   g.p.maxmp=totalMana(g);g.p.mp=std::min(g.p.mp,g.p.maxmp);return nullptr;
 }
+inline uint16_t dndXpNeeded(unsigned l){return l<20?uint16_t(dndXp[std::max(1u,l)]-dndXp[std::max(1u,l)-1]):1;}
 inline uint16_t xpNeeded(uint8_t l){return uint16_t(std::min(uint32_t(65535),30u+uint32_t(l)*l*10));}
+inline uint16_t xpNeeded(const Game& g){return g.dndProgression?dndXpNeeded(g.p.level):xpNeeded(g.p.level);}
+inline uint32_t totalExperience(const Game& g){return g.dndProgression?dndXp[std::min(20u,unsigned(g.p.level))-1]+g.p.xp:g.p.xp;}
+inline unsigned attacksPerAction(const Game& g){if(!g.dndProgression||g.p.cls==0)return 1;if(g.p.cls==2)return g.p.level>=20?4:g.p.level>=11?3:g.p.level>=5?2:1;return g.p.level>=5?2:1;}
+inline unsigned hpPerLevel(const Game& g){const unsigned avg[]={4,6,6,7};return std::max(1,int(avg[g.p.cls])+abilityMod(g.attributes[2]))+unsigned(g.tough)*2;}
+inline unsigned spellCircle(const Game& g){return g.p.cls==0?std::min(9u,(unsigned(g.p.level)+1)/2):g.p.cls==1&&g.p.level>=2?std::min(5u,(unsigned(g.p.level)+3)/4):0;}
+inline const char* improveAttribute(Game& g,unsigned i){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(i>=6||!advancementPoints(g))return "Sem pontos disponiveis";if(g.attributes[i]>=20)return "Limite de atributo: 20";int old=abilityMod(g.attributes[i]);++g.attributes[i];++g.advancementSpent;if(i==2){unsigned gain=(abilityMod(g.attributes[i])-old)*g.p.level;g.p.maxhp+=gain;g.p.hp+=gain;}g.p.maxmp=totalMana(g);return nullptr;}
+inline const char* learnTough(Game& g){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(g.tough)return "Talento ja aprendido";if(advancementPoints(g)<2||g.advancementSpent%2)return "Requer 2 pontos do mesmo marco";g.tough=true;g.advancementSpent+=2;g.p.maxhp+=g.p.level*2;g.p.hp+=g.p.level*2;return nullptr;}
 struct Contract {const char* name;const char* objective;int8_t enemy;uint8_t count,gold,percent;};
 inline const Contract& contract(uint8_t id){static const Contract q[]={{"PATRULHA","Vencer 3 inimigos nas ruinas",-1,3,15,25},{"OSSOS DAS RUINAS","Vencer 2 esqueletos",2,2,18,35},{"O GUARDIAO","Vencer 1 Guardiao",3,1,35,60}};return q[id>=1&&id<=3?id-1:0];}
 inline uint16_t contractXp(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?uint32_t(xpNeeded(level))*contract(id).percent/100:0;}
+inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){return g.dndProgression&&id>=1&&id<=3&&level?uint32_t(dndXpNeeded(level))*contract(id).percent/100:contractXp(id,level);}
 inline uint16_t contractGold(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?contract(id).gold+uint16_t(level-1)*2:0;}
-inline void levelUp(Game& g){while(g.p.level<99&&g.p.xp>=xpNeeded(g.p.level)){g.p.xp-=xpNeeded(g.p.level);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535,int(g.p.maxhp)+2));if(g.p.atk<255)++g.p.atk;}}
+inline void levelUp(Game& g){while(g.p.level<(g.dndProgression?20:99)&&g.p.xp>=xpNeeded(g)){g.p.xp-=xpNeeded(g);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535u,unsigned(g.p.maxhp)+(g.dndProgression?hpPerLevel(g):2u)));if(g.p.atk<255)++g.p.atk;}if(g.dndProgression&&g.p.level==20)g.p.xp=0;}
 inline bool questComplete(const Game& g){return g.questId>=1&&g.questId<=3&&g.questProgress>=contract(g.questId).count;}
 inline const char* acceptQuest(Game& g,uint8_t id){
   if(g.phase!=Phase::Home)return "Volte para a vila";if(id<1||id>3)return "Contrato indisponivel";
@@ -115,7 +131,7 @@ inline const char* abandonQuest(Game& g){
 inline const char* claimQuest(Game& g){
   if(g.phase!=Phase::Home)return "Volte para a vila";if(!g.questId)return "Nenhuma missao ativa";
   if(!questComplete(g))return "Missao ainda incompleta";
-  uint16_t gold=contractGold(g.questId,g.questLevel),xp=contractXp(g.questId,g.questLevel);
+  uint16_t gold=contractGold(g.questId,g.questLevel),xp=contractXp(g,g.questId,g.questLevel);
   if(g.p.gold>999999u-gold)return "Gaste ouro antes de receber";
   g.p.gold+=gold;g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);
   g.questId=g.questProgress=g.questLevel=0;return nullptr;
@@ -126,32 +142,39 @@ inline Game create(uint8_t c,uint32_t seed) {
   Game g;g.p.cls=c<4?c:0;g.randomState=seed?seed:1;
   const uint16_t hp[]={18,22,20,24};const uint8_t atk[]={6,7,8,9},def[]={4,6,5,3};
   g.p.hp=g.p.maxhp=hp[g.p.cls];g.p.atk=atk[g.p.cls];g.p.def=def[g.p.cls];
-  g.p.mp=g.p.maxmp=maxMana(g.p.cls,3);return g;
+  g.dndProgression=true;g.p.level=1;
+  const uint8_t scores[][6]={{8,14,14,16,12,10},{16,10,14,8,12,14},{16,14,14,8,12,10},{16,14,16,8,12,8}};
+  for(unsigned i=0;i<6;++i)g.attributes[i]=scores[g.p.cls][i];
+  const unsigned die[]={6,10,10,12};g.p.hp=g.p.maxhp=die[g.p.cls]+abilityMod(g.attributes[2]);
+  g.p.life=2;g.rations=1;g.p.mp=g.p.maxmp=totalMana(g);return g;
 }
 inline uint32_t random(Game& g){uint32_t x=g.randomState;x^=x<<13;x^=x>>17;x^=x<<5;return g.randomState=x;}
 inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<12;return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=enemySpec(id).hp;g.guard=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
-inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(n%2?4:1):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
+inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&id<2?(g.p.level==1?6:10):enemySpec(id).hp;}
+inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&g.enemyId<2?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
+inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
 inline bool arriveTrip(Game& g){if(g.tripStage!=3||g.phase!=Phase::Home)return false;g.city=g.tripTo;clearTrip(g);return true;}
 inline void finish(Game& g){
   if(g.phase!=Phase::Hero&&g.phase!=Phase::Enemy)return;
   if(!g.enemyHp){
-    g.phase=Phase::Won;const auto& e=enemySpec(g.enemyId);g.gainXp=e.xp;g.gainGold=uint8_t(std::min<uint32_t>(e.gold,999999u-g.p.gold));g.p.gold+=g.gainGold;
-    g.p.xp=g.p.xp>UINT32_MAX-e.xp?UINT32_MAX:g.p.xp+e.xp;
+    g.phase=Phase::Won;const auto& e=enemySpec(g.enemyId);g.gainXp=uint16_t(e.xp)*(g.dndProgression?10:1);g.gainGold=uint8_t(std::min<uint32_t>(e.gold,999999u-g.p.gold));g.p.gold+=g.gainGold;
+    g.p.xp=g.p.xp>UINT32_MAX-g.gainXp?UINT32_MAX:g.p.xp+g.gainXp;
     if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1){if(g.enemyId==3){g.guardianDefeated=true;if(g.crystals<9)++g.crystals;}else if(g.ruinsWins<3)++g.ruinsWins;}
     if(g.eventStage!=2&&g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}
     if(g.eventStage!=2&&g.p.mana<99 && (g.enemyId==3||random(g)%100<25)){++g.p.mana;g.dropMana=true;}
     if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1&&g.questId&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
     levelUp(g);
-  }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g.p.level)/20)));g.p.xp-=g.gainXp;}
+  }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g)/20)));g.p.xp-=g.gainXp;}
 }
 // Return nullptr on accepted action; rejected actions do not consume a turn.
 inline const char* act(Game& g,Action a){
   if(g.phase!=Phase::Hero)return "Aguarde seu turno";
   if(a==Action::Offensive||a==Action::Defensive){
+    if(g.dndProgression&&g.p.cls==1&&a==Action::Offensive&&g.p.level<2)return "Desbloqueia no nivel 2";
     uint8_t cost=skillCost(g.p.cls,a==Action::Defensive);if(g.p.mp<cost)return "Mana insuficiente";g.p.mp-=cost;
   }
   if(a==Action::Life||a==Action::Mana){
@@ -167,13 +190,20 @@ inline const char* act(Game& g,Action a){
     g.phase=Phase::Enemy;return nullptr;
   }
   bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def);
+  if(g.dndProgression&&!skill)damage*=attacksPerAction(g);
+  if(g.dndProgression&&g.p.cls==3&&g.crit&&g.p.level>=9)damage+=g.p.level>=17?3:g.p.level>=13?2:1;
   if(skill)damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;
   g.dodge=!(skill&&g.p.cls==2)&&random(g)%100<6;
   if(!g.dodge){g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;}
   g.phase=Phase::Enemy;finish(g);return nullptr;
 }
+// Public upper bound, including critical hits. Does not advance the RNG.
+inline unsigned incomingCeiling(const Game& g,unsigned guard=0){
+ int damage=std::max(1,int(encounterAttack(g))+2-effectiveDefense(g)/3);
+ damage+=damage/2;return (damage*(100-std::min(75u,guard))+99)/100;
+}
 inline bool enemy(Game& g){
-  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);int damage=rollDamage(g,enemySpec(g.enemyId).atk,effectiveDefense(g));
+  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));
   if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
   g.dodge=random(g)%100<6;
   if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;}
