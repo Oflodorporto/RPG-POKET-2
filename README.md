@@ -53,3 +53,7 @@ A versao titulo1 abre no titulo em todo reinicio, protege os tres slots na criac
 ## Telas do conceito
 
 Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com botoes interativos e dados reais. D20 e viagem animados preservados. [Guia e teste na placa](docs/ABRIGO_E_MENU_CONCEITO.md). Versao 2026.10.07-abrigo1.
+
+## Combate, bolsa e acampamento com os conceitos
+
+2026.10.07-paineis1b: seis conceitos adaptados para oito telas, com dados e herois reais. Imagens 240x320 carregadas do SD para PSRAM na inicializacao; sem leitura por quadro. [Guia e teste na placa](docs/NOVAS_TELAS_CONCEITO.md). Atualize firmware e artes por Configuracoes > Atualizacao.
