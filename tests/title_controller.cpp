@@ -144,10 +144,10 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Bag||view.page==Page::TownBag){
     Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
-    if(hit(x,y,14,278,102)){view.page=back;say("");return;}
-    for(unsigned i=0;i<7;++i)if(hit(x,y,10+(i%3)*76,62+(i/3)*53,68,49)){view.choice=i;say("");return;}
-    if(hit(x,y,14,245,212,28)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
-    if(!hit(x,y,124,278,102))return;
+    if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
+    for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
+    if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
+    if(!panelUi::bagUse.contains(x,y))return;
     if(view.choice>=2){if(view.choice==6&&game.phase==rpg::Phase::Home&&!rpg::inDungeon(game)){openCamp();return;}say(view.choice==2?"Cristal: entrada nas Ruinas":"Racao e kit: use ao acampar");return;}
     bool mana=view.choice==1;
     if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
@@ -294,6 +294,19 @@ void tapped(int x,int y){
     if(boss&&game.ruinsWins<3){say("Venca 3 encontros primeiro");return;}
     if(rpg::explore(game,boss)){say("Seu turno");savedTransition(Page::Battle);}return;
   }
+  if(view.page==Page::Village&&game.city==0){
+    int choice=-1;for(int i=0;i<9;++i)if(panelUi::cityButtons[i].contains(x,y))choice=i;
+    if(choice==0){menu.storyReturn=int(Page::Village);view.page=Page::People;}
+    else if(choice==1)view.page=Page::Market;
+    else if(choice==2){view.choice=0;view.page=Page::TownBag;}
+    else if(choice==3)view.page=Page::Character;
+    else if(choice==4)view.page=Page::Explore;
+    else if(choice==5)view.page=Page::Guild;
+    else if(choice==6){openCamp();return;}
+    else if(choice==7){showMap();return;}
+    else if(choice==8)view.page=Page::Menu;
+    say("");return;
+  }
   if(view.page==Page::Village){
     if(hit(x,y,14,78,212,26)){menu.storyReturn=int(Page::Village);view.page=Page::People;say("");return;}
     if(hit(x,y,14,126,102)){view.page=Page::Market;say("");}
@@ -331,7 +344,7 @@ void tapped(int x,int y){
       else say(view.questAction==0?"Missao aceita":"Missao abandonada");savedTransition(Page::GuildMissions);
     }return;
   }
-  if(view.page==Page::Character){if(hit(x,y,14,270,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::Character){if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}
@@ -394,10 +407,11 @@ void tapped(int x,int y){
     else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
-  if(hit(x,y,14,220,102))action(rpg::Action::Attack);
-  else if(hit(x,y,124,220,102)){view.page=Page::Skills;say("");}
-  else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
-  else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
+  if(view.page!=Page::Battle)return;
+  if(panelUi::battleButtons[0].contains(x,y))action(rpg::Action::Attack);
+  else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
+  else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
+  else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
 int main(){
  auto pristine=nvs.blobs;bootTitle();assert(view.page==Page::Title&&!menu.hasContinue&&!canOfferEvents()&&nvs.blobs==pristine);
@@ -428,7 +442,7 @@ int main(){
  for(unsigned slot=0;slot<3;++slot){selectSlot(slot);game=rpg::create(slot,42);game.tutorial=true;assert(journal.save(game));}
  bootTitle();existing=nvs.blobs;newTitle();assert(view.page==Page::Slots&&menu.newGameSlots);
  tapped(80,75);assert(view.page==Page::SlotConfirm);tapped(80,190);assert(view.page==Page::SlotConfirm&&nvs.blobs==existing);
- tapped(80,240);assert(view.page==Page::DeleteSlot);tapped(40,290);assert(view.page==Page::SlotConfirm&&nvs.blobs==existing);
+ tapped(80,240);assert(view.page==Page::DeleteSlot);tapped(75,290);assert(view.page==Page::SlotConfirm&&nvs.blobs==existing);
  tapped(80,240);nvs.fail=true;tapped(170,290);assert(view.page==Page::DeleteSlot&&nvs.blobs==existing);nvs.fail=false;tapped(170,290);assert(view.page==Page::Race&&menu.activeSlot==0&&journal.active<0);
  for(auto key:{"a1","b1","a2","b2"}){auto it=existing.find(key);if(it!=existing.end())assert(nvs.blobs[key]==it->second);}
  tapped(40,280);continueTitle();assert(menu.activeSlot==1&&game.p.cls==1);
@@ -448,7 +462,7 @@ int main(){
  game=rpg::create(0,42);game.tutorial=true;assert(journal.save(game));existing=nvs.blobs;
  view.page=Page::Menu;tapped(120,147);assert(view.page==Page::Title&&nvs.blobs==existing);
  continueTitle();view.page=Page::Menu;tapped(120,176);assert(view.page==Page::Journal&&nvs.blobs==existing);
- tapped(40,290);tapped(120,204);assert(view.page==Page::People&&nvs.blobs==existing);
+ tapped(75,290);tapped(120,204);assert(view.page==Page::People&&nvs.blobs==existing);
   for(int i=0;i<7;++i){const auto& rect=scenicUi::ruinsButtons[i];assert(scenicUi::ruinsChoice(rect.x+rect.w/2,rect.y+rect.h/2)==i);}
  game=rpg::create(0,42);game.tutorial=true;game.city=1;game.ruinsWins=0;assert(journal.save(game));existing=nvs.blobs;view.page=Page::Ruins;
  tapped(170,223);assert(view.page==Page::Ruins&&nvs.blobs==existing&&game.ruinsWins==0);
@@ -457,5 +471,14 @@ int main(){
  view.page=Page::Ruins;tapped(190,293);assert(view.page==Page::Market);view.page=Page::Ruins;tapped(95,293);assert(view.page==Page::Map);
  for(int city=0;city<4;++city){tapped(places[city].x,places[city].y);assert(menu.destination==city&&view.page==Page::Map&&nvs.blobs==existing);}
  tapped(50,83);assert(view.page==Page::Continent&&game.city==1&&nvs.blobs==existing);
+ // Concept city controls are read-only; the nine visible rectangles open their real pages.
+ game=rpg::create(0,77);game.tutorial=true;game.city=0;auto uiBlobs=nvs.blobs;
+ const Page cityTargets[]={Page::People,Page::Market,Page::TownBag,Page::Character,Page::Explore,Page::Guild,Page::CampSetup,Page::Map,Page::Menu};
+ for(unsigned i=0;i<9;++i){view.page=Page::Village;auto rect=panelUi::cityButtons[i];tapped(rect.x+rect.w/2,rect.y+rect.h/2);assert(view.page==cityTargets[i]&&nvs.blobs==uiBlobs);}
+ view.page=Page::TownBag;game.crystals=3;game.rations=2;game.sleepKit=true;
+ for(unsigned i=0;i<7;++i){auto rect=panelUi::bagSlot(i);tapped(rect.x+10,rect.y+10);assert(view.choice==i&&game.crystals==3&&game.rations==2&&nvs.blobs==uiBlobs);}
+ tapped(110,270);assert(view.page==Page::BagGear);tapped(45,294);assert(view.page==Page::TownBag);tapped(70,290);assert(view.page==Page::Inventory&&nvs.blobs==uiBlobs);
+ view.page=Page::Character;tapped(120,289);assert(view.page==Page::Village&&nvs.blobs==uiBlobs);
+ game.phase=rpg::Phase::Hero;view.page=Page::Battle;combatFx.kind=Effect::None;tapped(170,254);assert(view.page==Page::Skills&&nvs.blobs==uiBlobs);tapped(120,290);assert(view.page==Page::Battle);tapped(65,286);assert(view.page==Page::Bag&&nvs.blobs==uiBlobs);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }

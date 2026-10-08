@@ -11,8 +11,8 @@ firmware=Path('build/RPG_POKET_2.ino.bin').read_bytes()
 assert 0<len(firmware)<=0x300000, 'Firmware nao cabe em uma particao OTA'
 artpath=Path('cartao/RPGPOKET/artes.pak')
 if not artpath.exists():
- import gzip
- artpath.write_bytes(gzip.decompress(Path(str(artpath)+'.gz').read_bytes()))
+ import runpy
+ runpy.run_path('tools/unpack_art.py')
 art=artpath.read_bytes()
 magic,size,crc,count=struct.unpack('<4sIII',art[:16]);assert magic==b'PKA1' and size==len(art)-16 and zlib.crc32(art[16:])==crc
 catalog=Path('firmware/RPG_POKET_2/AssetCatalog.h').read_text()

@@ -144,10 +144,10 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Bag||view.page==Page::TownBag){
     Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
-    if(hit(x,y,14,278,102)){view.page=back;say("");return;}
-    for(unsigned i=0;i<7;++i)if(hit(x,y,10+(i%3)*76,62+(i/3)*53,68,49)){view.choice=i;say("");return;}
-    if(hit(x,y,14,245,212,28)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
-    if(!hit(x,y,124,278,102))return;
+    if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
+    for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
+    if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
+    if(!panelUi::bagUse.contains(x,y))return;
     if(view.choice>=2){if(view.choice==6&&game.phase==rpg::Phase::Home&&!rpg::inDungeon(game)){openCamp();return;}say(view.choice==2?"Cristal: entrada nas Ruinas":"Racao e kit: use ao acampar");return;}
     bool mana=view.choice==1;
     if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
@@ -294,6 +294,19 @@ void tapped(int x,int y){
     if(boss&&game.ruinsWins<3){say("Venca 3 encontros primeiro");return;}
     if(rpg::explore(game,boss)){say("Seu turno");savedTransition(Page::Battle);}return;
   }
+  if(view.page==Page::Village&&game.city==0){
+    int choice=-1;for(int i=0;i<9;++i)if(panelUi::cityButtons[i].contains(x,y))choice=i;
+    if(choice==0){menu.storyReturn=int(Page::Village);view.page=Page::People;}
+    else if(choice==1)view.page=Page::Market;
+    else if(choice==2){view.choice=0;view.page=Page::TownBag;}
+    else if(choice==3)view.page=Page::Character;
+    else if(choice==4)view.page=Page::Explore;
+    else if(choice==5)view.page=Page::Guild;
+    else if(choice==6){openCamp();return;}
+    else if(choice==7){showMap();return;}
+    else if(choice==8)view.page=Page::Menu;
+    say("");return;
+  }
   if(view.page==Page::Village){
     if(hit(x,y,14,78,212,26)){menu.storyReturn=int(Page::Village);view.page=Page::People;say("");return;}
     if(hit(x,y,14,126,102)){view.page=Page::Market;say("");}
@@ -331,7 +344,7 @@ void tapped(int x,int y){
       else say(view.questAction==0?"Missao aceita":"Missao abandonada");savedTransition(Page::GuildMissions);
     }return;
   }
-  if(view.page==Page::Character){if(hit(x,y,14,270,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::Character){if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}
@@ -394,19 +407,20 @@ void tapped(int x,int y){
     else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
-  if(hit(x,y,14,220,102))action(rpg::Action::Attack);
-  else if(hit(x,y,124,220,102)){view.page=Page::Skills;say("");}
-  else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
-  else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
+  if(view.page!=Page::Battle)return;
+  if(panelUi::battleButtons[0].contains(x,y))action(rpg::Action::Attack);
+  else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
+  else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
+  else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
 int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);
  // First character, tutorial, menu, and refusal to create a phantom hero from an empty slot.
- tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(40,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Home&&game.tutorial);
+ tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(75,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Home&&game.tutorial);
  auto first=game;tapped(190,290);assert(view.page==Page::Menu);tapped(120,119);assert(view.page==Page::Slots&&menu.slots[0]==rpg::Load::Ok);
  tapped(80,130);assert(view.page==Page::SlotConfirm&&menu.slotChoice==1);tapped(80,190);assert(view.page==Page::Race&&menu.activeSlot==1);
  view.page=Page::Race;tapped(30,280);assert(view.page==Page::Menu);tapped(120,90);assert(view.page==Page::Menu&&journal.active<0);tapped(120,261);assert(view.page==Page::Race);tapped(170,280);
- tapped(130,220);tapped(130,220);tapped(100,280);tapped(170,290);tapped(40,290);tapped(100,280);assert(game.p.cls==2&&view.page==Page::Home);
+ tapped(130,220);tapped(130,220);tapped(100,280);tapped(170,290);tapped(75,290);tapped(100,280);assert(game.p.cls==2&&view.page==Page::Home);
  tapped(190,290);tapped(120,119);tapped(80,75);tapped(80,190);assert(menu.activeSlot==0&&game.p.cls==first.p.cls&&game.tutorial);
  // Cancellation must preserve both blobs. Confirmed deletion targets only slot2.
  view.page=Page::Menu;tapped(120,119);tapped(80,130);tapped(80,240);assert(view.page==Page::DeleteSlot);auto before=nvs.blobs;tapped(50,290);assert(nvs.blobs==before&&view.page==Page::SlotConfirm);
@@ -437,7 +451,7 @@ int main(){
  // Creation is preview-only until the final confirmation, with outfit and race per slot.
  auto savedBefore=nvs.blobs;view.page=Page::Race;tapped(150,170);assert(menu.draftRace==3&&nvs.blobs==savedBefore);tapped(170,280);tapped(80,280);assert(view.page==Page::Clothes&&nvs.blobs==savedBefore);tapped(170,190);tapped(170,235);assert(menu.draftShirt==1&&menu.draftPants==1&&nvs.blobs==savedBefore);
  // Do not replace the existing active hero in this test; cancel personalization.
- tapped(40,290);assert(view.page==Page::Choose&&nvs.blobs==savedBefore);
+ tapped(75,290);assert(view.page==Page::Choose&&nvs.blobs==savedBefore);
  game=rpg::create(1,33);game.p.gold=99;view.page=Page::Guild;tapped(80,190);assert(view.page==Page::GuildJoin);tapped(170,290);assert(!game.guildMember&&game.p.gold==99&&view.page==Page::GuildJoin);
  game.p.gold=100;tapped(170,290);assert(game.guildMember&&game.p.gold==0&&view.page==Page::Guild);auto joined=nvs.blobs;tapped(80,190);assert(view.page==Page::GuildMissions);tapped(80,290);assert(view.page==Page::Guild&&game.p.gold==0&&nvs.blobs==joined);
  tapped(80,240);assert(view.page==Page::Guild);view.page=Page::Tavern;tapped(80,235);assert(view.page==Page::Guild);tapped(80,190);tapped(80,135);assert(view.page==Page::Contract);
@@ -451,10 +465,10 @@ int main(){
  // Bag quantities survive reload, potions use once, crystal is not consumed by browsing.
  combatFx.kind=Effect::None;game.phase=rpg::Phase::Home;view.page=Page::Dungeon;game.p.hp=1;game.p.life=2;game.crystals=3;
  tapped(80,305);assert(view.page==Page::Bag);tapped(180,294);assert(game.p.life==1&&game.crystals==3&&game.p.hp>1);
- auto consumed=game.p.life;tapped(170,90);assert(view.choice==2);tapped(180,294);assert(game.crystals==3&&game.p.life==consumed);
- tapped(60,294);assert(view.page==Page::Dungeon);tapped(80,305);tapped(100,245);assert(view.page==Page::BagGear);tapped(60,294);assert(view.page==Page::Bag);
+ auto consumed=game.p.life;tapped(169,136);assert(view.choice==2);tapped(180,294);assert(game.crystals==3&&game.p.life==consumed);
+ tapped(60,294);assert(view.page==Page::Dungeon);tapped(80,305);tapped(110,270);assert(view.page==Page::BagGear);tapped(60,294);assert(view.page==Page::Bag);
  // Bag equipment is accessible in the dungeon, saved and not automatically consumed.
- game.owned|=1;view.page=Page::Bag;tapped(80,245);assert(view.page==Page::BagGear);view.choice=0;view.gearIndex=0;tapped(110,294);assert(game.equipped[0]==1&&view.page==Page::BagGear);
+ game.owned|=1;view.page=Page::Bag;tapped(110,270);assert(view.page==Page::BagGear);view.choice=0;view.gearIndex=0;tapped(110,294);assert(game.equipped[0]==1&&view.page==Page::BagGear);
  tapped(40,294);game.p.hp=1;auto potionCount=game.p.life;nvs.fail=true;view.choice=0;tapped(180,294);assert(view.page==Page::SaveError&&game.p.life==potionCount-1);nvs.fail=false;tapped(100,265);assert(view.page==Page::Bag&&game.p.life==potionCount-1);
  rpg::Journal<NvsBackend> bagRestart(backend);rpg::Game bagCopy;assert(bagRestart.load(bagCopy)==rpg::Load::Ok&&bagCopy.p.life==game.p.life&&bagCopy.crystals==3&&bagCopy.equipped[0]==1);
  // Boss victory is explicit and resumable; reward/mask applied once on the chosen exit.
@@ -475,16 +489,16 @@ int main(){
  game.p.hp=1;openCamp();tapped(180,290);game.campRoll=1;menu.rollReady=true;tapped(100,290);assert(view.page==Page::Battle&&game.campStage==2&&game.enemyId==5);game.enemyHp=0;rpg::finish(game);view.page=currentPage();tapped(100,285);assert(view.page==Page::CampRest&&game.campStage==3);
  rpg::finishCamp(game);savedTransition(Page::Ruins);
  // Sale confirmation and save retry never pay twice; equipped and foreign-class gear are distinct.
- game.owned|=1u<<(rpg::gearOffer(1,1)-1);view.page=Page::BagGear;view.gearIndex=0;view.choice=0;tapped(180,295);assert(view.page==Page::GearSell);tapped(40,290);assert(view.page==Page::BagGear);tapped(180,295);auto saleGold=game.p.gold;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.p.gold>saleGold);auto paid=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::BagGear&&game.p.gold==paid);
+ game.owned|=1u<<(rpg::gearOffer(1,1)-1);view.page=Page::BagGear;view.gearIndex=0;view.choice=0;tapped(180,295);assert(view.page==Page::GearSell);tapped(75,290);assert(view.page==Page::BagGear);tapped(180,295);auto saleGold=game.p.gold;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.p.gold>saleGold);auto paid=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::BagGear&&game.p.gold==paid);
  // Narrative navigation must not mutate any save, reroll, charge or heal a veteran.
  game=rpg::create(0,42);game.tutorial=true;game.ruinsWins=3;game.guardianDefeated=true;game.dungeonClears=1;game.p.gold=123;assert(journal.save(game));auto narrativeBlobs=nvs.blobs;
- view.page=Page::Menu;tapped(120,176);assert(view.page==Page::Journal&&menu.chapterIndex==3);tapped(180,290);assert(view.page==Page::Campaign);tapped(100,240);assert(view.page==Page::Prologue&&menu.storyReplay);for(unsigned i=0;i<4;++i)tapped(180,290);assert(view.page==Page::Campaign&&game.tutorial&&nvs.blobs==narrativeBlobs);tapped(40,290);assert(view.page==Page::Journal);
- tapped(40,290);tapped(120,204);assert(view.page==Page::People);tapped(80,100);assert(view.page==Page::Dialogue);tapped(80,290);tapped(80,290);assert(view.page==Page::Menu&&nvs.blobs==narrativeBlobs);
- showMap();tapped(50,83);assert(view.page==Page::Continent);tapped(180,240);assert(menu.regionIndex==1);tapped(180,290);assert(view.page==Page::Continent&&game.city==0);tapped(40,290);assert(view.page==Page::Map&&nvs.blobs==narrativeBlobs);
+ view.page=Page::Menu;tapped(120,176);assert(view.page==Page::Journal&&menu.chapterIndex==3);tapped(180,290);assert(view.page==Page::Campaign);tapped(100,240);assert(view.page==Page::Prologue&&menu.storyReplay);for(unsigned i=0;i<4;++i)tapped(180,290);assert(view.page==Page::Campaign&&game.tutorial&&nvs.blobs==narrativeBlobs);tapped(75,290);assert(view.page==Page::Journal);
+ tapped(75,290);tapped(120,204);assert(view.page==Page::People);tapped(80,100);assert(view.page==Page::Dialogue);tapped(80,290);tapped(80,290);assert(view.page==Page::Menu&&nvs.blobs==narrativeBlobs);
+ showMap();tapped(50,83);assert(view.page==Page::Continent);tapped(180,240);assert(menu.regionIndex==1);tapped(180,290);assert(view.page==Page::Continent&&game.city==0);tapped(75,290);assert(view.page==Page::Map&&nvs.blobs==narrativeBlobs);
  game=rpg::create(0,7);assert(currentPage()==Page::Prologue);rpg::begin(game);assert(currentPage()==Page::Battle);game=rpg::create(0,8);game.tutorial=true;assert(currentPage()==Page::Home);
- view.page=Page::Settings;auto clockBlobs=nvs.blobs;tapped(180,240);assert(view.page==Page::TimeSettings);tapped(180,130);assert(menu.utcOffset==-2);tapped(40,130);assert(menu.utcOffset==-3);tapped(180,290);assert(view.page==Page::TimeEdit);tapped(180,240);assert(menu.clockField==1);tapped(40,290);assert(view.page==Page::TimeSettings);tapped(40,290);assert(view.page==Page::Settings&&nvs.blobs==clockBlobs);
+ view.page=Page::Settings;auto clockBlobs=nvs.blobs;tapped(180,240);assert(view.page==Page::TimeSettings);tapped(180,130);assert(menu.utcOffset==-2);tapped(40,130);assert(menu.utcOffset==-3);tapped(180,290);assert(view.page==Page::TimeEdit);tapped(180,240);assert(menu.clockField==1);tapped(75,290);assert(view.page==Page::TimeSettings);tapped(75,290);assert(view.page==Page::Settings&&nvs.blobs==clockBlobs);
  // A letter cannot interrupt activities, and completion is one save transaction.
  game=rpg::create(0,42);game.tutorial=true;game.city=2;assert(rpg::offerEvent(game,20733,10));assert(journal.save(game));view.page=Page::Menu;tapped(120,233);assert(view.page==Page::Letters);now=10000;tapped(100,235);assert(view.page==Page::Letter);tapped(180,290);assert(game.eventStage==1);now+=451;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.eventStage==2&&game.city==0);nvs.fail=false;tapped(100,265);assert(view.page==Page::EventTravel);assert(currentPage()==Page::Battle);view.page=currentPage();combatFx.kind=Effect::None;game.enemyHp=0;rpg::finish(game);assert(game.phase==rpg::Phase::Won&&game.questProgress==0&&game.ruinsWins==0);view.page=currentPage();assert(view.page==Page::EventResult);auto eventGold=game.p.gold;auto eventXp=game.p.xp;nvs.fail=true;tapped(100,290);assert(view.page==Page::SaveError&&game.eventStage==3&&game.city==2&&game.p.gold==eventGold+25&&game.p.xp==eventXp+20);auto paidEventGold=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::Menu&&game.p.gold==paidEventGold&&!rpg::finishEvent(game));
- assert(rpg::offerEvent(game,20734,10));menu.sessionStarted=true;view.page=Page::Clock;clockReturn=Page::Explore;menu.clockIdle=true;tapped(10,10);assert(view.page==Page::Letter&&!menu.clockIdle);now+=451;tapped(40,290);assert(view.page==Page::LetterRefuse);tapped(40,290);assert(game.eventStage==1);tapped(40,290);tapped(180,290);assert(game.eventStage==4&&view.page==Page::Letters);assert(!rpg::offerEvent(game,20734,20));
+ assert(rpg::offerEvent(game,20734,10));menu.sessionStarted=true;view.page=Page::Clock;clockReturn=Page::Explore;menu.clockIdle=true;tapped(10,10);assert(view.page==Page::Letter&&!menu.clockIdle);now+=451;tapped(75,290);assert(view.page==Page::LetterRefuse);tapped(75,290);assert(game.eventStage==1);tapped(75,290);tapped(180,290);assert(game.eventStage==4&&view.page==Page::Letters);assert(!rpg::offerEvent(game,20734,20));
  puts("PASS: actual sketch controller; create/tutorial, slot switch/delete/cancel/failure, empty-slot guard, settings/card/test/keyboard controls, travel input lock, saved destination and save retry.");
 }

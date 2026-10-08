@@ -1,4 +1,4 @@
-// Waveshare SKU29667 ONLY. 2026.10.07-abrigo1. Manual USB upload only.
+// Waveshare SKU29667 ONLY. 2026.10.07-paineis1. Manual USB upload only.
 // Separate NVS namespace pkt2_slice; never imports or clears Heltec saves.
 #include <Arduino.h>
 #ifndef ARDUINO_ESP32S3_DEV
@@ -202,10 +202,10 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Bag||view.page==Page::TownBag){
     Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:Page::Inventory;
-    if(hit(x,y,14,278,102)){view.page=back;say("");return;}
-    for(unsigned i=0;i<7;++i)if(hit(x,y,10+(i%3)*76,62+(i/3)*53,68,49)){view.choice=i;say("");return;}
-    if(hit(x,y,14,245,212,28)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
-    if(!hit(x,y,124,278,102))return;
+    if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
+    for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
+    if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
+    if(!panelUi::bagUse.contains(x,y))return;
     if(view.choice>=2){if(view.choice==6&&game.phase==rpg::Phase::Home&&!rpg::inDungeon(game)){openCamp();return;}say(view.choice==2?"Cristal: entrada nas Ruinas":"Racao e kit: use ao acampar");return;}
     bool mana=view.choice==1;
     if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
@@ -352,6 +352,19 @@ void tapped(int x,int y){
     if(boss&&game.ruinsWins<3){say("Venca 3 encontros primeiro");return;}
     if(rpg::explore(game,boss)){say("Seu turno");savedTransition(Page::Battle);}return;
   }
+  if(view.page==Page::Village&&game.city==0){
+    int choice=-1;for(int i=0;i<9;++i)if(panelUi::cityButtons[i].contains(x,y))choice=i;
+    if(choice==0){menu.storyReturn=int(Page::Village);view.page=Page::People;}
+    else if(choice==1)view.page=Page::Market;
+    else if(choice==2){view.choice=0;view.page=Page::TownBag;}
+    else if(choice==3)view.page=Page::Character;
+    else if(choice==4)view.page=Page::Explore;
+    else if(choice==5)view.page=Page::Guild;
+    else if(choice==6){openCamp();return;}
+    else if(choice==7){showMap();return;}
+    else if(choice==8)view.page=Page::Menu;
+    say("");return;
+  }
   if(view.page==Page::Village){
     if(hit(x,y,14,78,212,26)){menu.storyReturn=int(Page::Village);view.page=Page::People;say("");return;}
     if(hit(x,y,14,126,102)){view.page=Page::Market;say("");}
@@ -389,7 +402,7 @@ void tapped(int x,int y){
       else say(view.questAction==0?"Missao aceita":"Missao abandonada");savedTransition(Page::GuildMissions);
     }return;
   }
-  if(view.page==Page::Character){if(hit(x,y,14,270,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::Character){if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}
@@ -452,10 +465,11 @@ void tapped(int x,int y){
     else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
-  if(hit(x,y,14,220,102))action(rpg::Action::Attack);
-  else if(hit(x,y,124,220,102)){view.page=Page::Skills;say("");}
-  else if(hit(x,y,14,270,102)){view.choice=0;view.page=Page::Bag;say("");}
-  else if(hit(x,y,124,270,102))action(rpg::Action::Flee);
+  if(view.page!=Page::Battle)return;
+  if(panelUi::battleButtons[0].contains(x,y))action(rpg::Action::Attack);
+  else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
+  else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
+  else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
 #include "ClubRadio.h"
 void setup(){

@@ -40,6 +40,16 @@ int main(int argc,char** argv){
   for(unsigned frame:{0,5,13,24}){render(c,g,v,frame);c.save(root+"/scenic-d20-"+std::to_string(frame)+".ppm");}
   menu.rollReady=true;render(c,g,v,24);c.save(root+"/scenic-d20-result.ppm");menu.journey.start(0,3,0);v.page=Page::Travel;
   for(unsigned now:{0,750,1500,2250,3000}){menu.journey.tick(now);render(c,g,v,now/120);c.save(root+"/scenic-travel-"+std::to_string(now)+".ppm");}
+  g=rpg::create(0,1);g.city=1;g.p.hp=1;v.message="";
+  for(auto page:{Page::CampSetup,Page::CampRoll,Page::CampRest}){v.page=page;menu.rollReady=true;g.campRoll=13;render(c,g,v,4);c.save(root+"/panels-camp-"+std::to_string(int(page))+".ppm");}
+  v.page=Page::TownBag;for(unsigned i=0;i<7;++i){v.choice=i;render(c,g,v);c.save(root+"/panels-bag-"+std::to_string(i)+".ppm");}v.choice=0;
+  // Every new concept uses the real hero and read-only live state.
+  for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race){g=rpg::create(cls,32);g.race=race;g.shirt=2;g.trousers=3;g.city=1;g.p.gold=999999;v.message="";
+   uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,12,before);
+   for(auto page:{Page::Battle,Page::Skills,Page::TownBag,Page::Character,Page::CampSetup,Page::CampRoll,Page::CampRest}){v.page=page;render(c,g,v,4);c.save(root+"/panels-"+std::to_string(int(page))+"-"+std::to_string(cls)+"-"+std::to_string(race)+".ppm");}
+   rpg::encode(g,12,after);assert(!memcmp(before,after,sizeof(before)));
+  }
+  for(unsigned effect=1;effect<=6;++effect){g=rpg::create(0,4);g.city=1;g.enemyId=5;g.enemyHp=42;v.page=Page::Battle;v.effect=Effect(effect);for(unsigned f=0;f<8;++f){v.effectFrame=f;render(c,g,v,f);c.save(root+"/panels-fx-"+std::to_string(effect)+"-"+std::to_string(f)+".ppm");}}v.effect=Effect::None;
   g=rpg::create(0,32);v.message="";
    const Page pages[]={Page::Choose,Page::Help,Page::Home,Page::Battle,Page::Skills,Page::Bag,Page::Result,Page::SaveError,Page::Blocked};
   const char* names[]={"classe","guia","refugio","batalha","habilidades","pocoes","vitoria","erro-save","save-bloqueado"};

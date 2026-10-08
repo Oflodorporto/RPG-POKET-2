@@ -40,12 +40,13 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "EventView.h"
 #include "HippogriffArt.h"
 #include "MagicView.h"
-#include "CampView.h"
 #include "DungeonView.h"
 #include "BagView.h"
 #include "NarrativeView.h"
 #include "TitleView.h"
 #include "ScenicView.h"
+#include "PanelView.h"
+#include "CampView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -68,13 +69,17 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Home){drawScenicHome(c,g,v,frame);return;}
   if(v.page==Page::Map){drawScenicMap(c,g,v,frame);return;}
   if(v.page==Page::Ruins){drawScenicRuins(c,g,v,frame);return;}
+  if(v.page==Page::Skills){drawPanelSkills(c,g,v);return;}
+  if(v.page==Page::Bag||v.page==Page::TownBag){drawPanelBag(c,g,v);return;}
+  if(v.page==Page::Character){drawPanelCharacter(c,g);return;}
+  if(v.page==Page::Village&&g.city==0){drawPanelVillage(c,g,v);return;}
   if(v.page==Page::Prologue||v.page==Page::Journal||v.page==Page::People||v.page==Page::Dialogue||v.page==Page::Continent||v.page==Page::Campaign){drawNarrative(c,g,v);return;}
   if(v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest){drawCamp(c,g,v,frame);return;}
   if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}
   bool outside=v.page==Page::Map||v.page==Page::Travel||v.page==Page::EventTravel||v.page==Page::TravelRoll||v.page==Page::Home||v.page==Page::Village||v.page==Page::Ruins||v.page==Page::Explore||v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest||v.page==Page::Battle;
   backdropPeriod=outside&&menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
-  char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
+  char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page==Page::Battle){PANEL_IMAGE(c,battle);if(g.city!=1){drawBackdrop(c,backdropFor(v.page,g));panelImage(c,panelArt::battlePalette,panelArt::battleAsset,0,66);panelImage(c,panelArt::battlePalette,panelArt::battleAsset,192,320);}}else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
   if(renderEvent(c,g,int(v.page),text,center,box,button,frame))return;
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
@@ -306,26 +311,28 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
         const char* desc=i?(g.p.cls<2?"Bloqueia 75% do proximo golpe":g.p.cls==3?"Cura 25% HP / bloqueia 50%":"Bloqueia 50% do proximo golpe"):(g.p.cls==0?"Dano +80% / ignora defesa":g.p.cls==3?"Dano dobrado":g.p.cls==2?"Dano +50% / nao erra":"Dano +50%");center(y+24,desc);}}
     button(14,270,212,"Voltar");return;
   }
-  const auto& foe=rpg::enemySpec(g.enemyId);center(7,foe.name,2,UI_GOLD);snprintf(b,sizeof(b),"HP %u/%u",g.enemyHp,foe.hp);center(29,b);
-  c.fillRect(14,40,212,4,UI_PANEL);c.fillRect(14,40,212*g.enemyHp/foe.hp,4,UI_RED);
-  personalSprite(c,g,12,46,v.heroFrame%6);
+  const auto& foe=rpg::enemySpec(g.enemyId);
+  panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,foe.hp);panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,foe.hp,UI_RED);
+  personalSprite(c,g,8,77,v.heroFrame%6);
   const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
-  sprite(148,76,foeFrame,80,86,true);
+  magicSprite(c,foeFrame,80,86,145,99,75,80);
+  PanelEffectCanvas<Canvas> effectCanvas{c};
   if(v.effect==Effect::Rage){
     // Furia: broad axe-like sweep, red trails and expanding impact. No new art RAM.
     unsigned f=std::min(7u,v.effectFrame);int reach=90+int(f)*17;
-    for(int trail=0;trail<3;++trail)for(int k=0;k<55;++k){int x=reach-k,y=52+k+trail*9;if(x>=45&&x<232)c.fillRect(x,y,7,5,trail==0?0xffe0:trail==1?0xfd20:0xf800);}
-    if(f>=3){int r=9+int(f-3)*7;int cx=184,cy=111;for(int k=-r;k<=r;++k){int y=r-abs(k);c.fillRect(cx+k,cy-y,3,3,0xfd20);c.fillRect(cx+k,cy+y,3,3,0xf800);}c.fillRect(178,96,12,29,0xffe0);c.fillRect(169,106,30,8,0xffe0);}
+    for(int trail=0;trail<3;++trail)for(int k=0;k<55;++k){int x=reach-k,y=52+k+trail*9;if(x>=45&&x<232)effectCanvas.fillRect(x,y,7,5,trail==0?0xffe0:trail==1?0xfd20:0xf800);}
+    if(f>=3){int r=9+int(f-3)*7;int cx=184,cy=111;for(int k=-r;k<=r;++k){int y=r-abs(k);effectCanvas.fillRect(cx+k,cy-y,3,3,0xfd20);effectCanvas.fillRect(cx+k,cy+y,3,3,0xf800);}effectCanvas.fillRect(178,96,12,29,0xffe0);effectCanvas.fillRect(169,106,30,8,0xffe0);}
   }
-  else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning){magicEffect(c,v,false);}
-  else if(v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)c.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){c.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
-  else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)c.fillRect(104+x*2,18+y*2,2,2,color);}}else sprite(v.effectOnHero?22:156,82,fx,64,72);}
-  c.fillRect(0,168,240,45,UI_INK);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);text(14,171,b,2);
-  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);text(156,176,b);
-  center(195,v.message,1,g.phase==rpg::Phase::Enemy?UI_GOLD:UI_WHITE);
-  if(v.effect!=Effect::None){center(248,"Acao em andamento...",1,UI_GOLD);}
-  else if(g.phase==rpg::Phase::Enemy){center(248,"Turno do inimigo...",1,UI_GOLD);center(277,"Aguarde",2,UI_MUTED);}
-  else{button(14,220,102,"Atacar");button(124,220,102,"Tecnicas");button(14,270,102,"Bolsa");button(124,270,102,"Fugir");}
+  else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning){magicEffect(effectCanvas,v,false);}
+  else if(v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)effectCanvas.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){effectCanvas.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
+  else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)effectCanvas.fillRect(104+x*2,18+y*2,2,2,color);}}else magicSprite(effectCanvas,fx,64,72,v.effectOnHero?22:156,82,64,72);}
+  // Panels and buttons retain the concept; all combat data remains live.
+  c.fillRect(69,196,63,33,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
+  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,68,216,65,b);panelBar(c,70,225,62,g.p.mp,g.p.maxmp,UI_BLUE);
+  panelHero(c,g,22,199,41,33);panelLabel(c,140,211,84,v.effect!=Effect::None?"Animando...":g.phase==rpg::Phase::Enemy?"Turno inimigo":"Seu turno",UI_GOLD);
+  if(*v.message)panelLabel(c,4,310,232,v.message,g.phase==rpg::Phase::Enemy?UI_GOLD:UI_WHITE);
+  if(v.effect!=Effect::None||g.phase!=rpg::Phase::Hero){for(auto r:panelUi::battleButtons){c.drawRect(r.x,r.y,r.w,r.h,UI_MUTED);} }
+
 }
 // Inclusive lower and exclusive upper bounds match the visible controls.
 inline bool hit(int x,int y,int left,int top,int width,int height=40){return x>=left&&x<left+width&&y>=top&&y<top+height;}
