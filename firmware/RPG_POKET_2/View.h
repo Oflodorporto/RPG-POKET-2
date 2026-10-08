@@ -118,7 +118,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(206,exit?"": "Toque na cena: interagir / atacar");center(237,v.message,1,UI_RED);
     button(14,272,102,"Voltar");button(124,272,102,buy?"Comprar":exit?"Sair":"Entrar");return;
   }
-  if(v.page==Page::DungeonMenu){center(14,"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);if(g.dndProgression&&g.p.cls<2){box(14,40,212,34);center(52,"Poderes de classe >",1,UI_GOLD);}
+  if(v.page==Page::DungeonMenu){center(14,"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);if(g.dndProgression){box(14,40,212,34);center(52,"Poderes de classe >",1,UI_GOLD);}
     button(14,86,102,"Tecnica");button(124,86,102,"Defesa");button(14,134,212,"Bolsa");button(14,182,212,"Fugir do inimigo");button(14,230,212,"Sair da dungeon");button(14,278,212,"Voltar");return;}
   if(v.page==Page::SaveError||v.page==Page::Blocked){
     center(30,"RPG POKET 2.0",2,UI_GOLD);center(88,"PROGRESSO PROTEGIDO",1,UI_RED);
@@ -334,7 +334,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   // Panels and buttons retain the concept; all combat data remains live.
   c.fillRect(69,196,63,33,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
   snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,68,216,65,b);panelBar(c,70,225,62,g.p.mp,g.p.maxmp,UI_BLUE);
-  panelHero(c,g,22,199,41,33);panelLabel(c,140,211,84,v.effect!=Effect::None?"Animando...":g.phase==rpg::Phase::Enemy?"Turno inimigo":"Seu turno",UI_GOLD);
+  panelHero(c,g,22,199,41,33);char turn[24];snprintf(turn,sizeof(turn),"Furia: %u",g.rageTurns);panelLabel(c,140,211,84,v.effect!=Effect::None?"Animando...":g.phase==rpg::Phase::Enemy?"Turno inimigo":g.surgePending?"Acao extra":g.rageTurns?turn:"Seu turno",UI_GOLD);
   snprintf(b,sizeof(b),"Risco ate %u HP",rpg::incomingCeiling(g,g.guard));panelLabel(c,132,227,101,b,UI_GOLD);
   if(*v.message)panelLabel(c,4,310,232,v.message,g.phase==rpg::Phase::Enemy?UI_GOLD:UI_WHITE);
   if(v.effect!=Effect::None||g.phase!=rpg::Phase::Hero){for(auto r:panelUi::battleButtons){c.drawRect(r.x,r.y,r.w,r.h,UI_MUTED);} }

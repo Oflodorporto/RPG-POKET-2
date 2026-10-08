@@ -51,3 +51,5 @@ Outros juramentos e subclasses; auras e punição divina completa; mais magias, 
 
 This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
 Traduções resumidas e adaptações de combate/progressão para RPGPOKET por este projeto. Dungeons&Dragons não é a marca deste jogo.
+
+Atualização martiais1: recursos do Guerreiro e Bárbaro integrados; [regras, níveis, usos e adaptações](PODERES_MARCIAIS.md). Escrita Save14, leitura1–14; poderes1 e direcao1 acima são o histórico das etapas.

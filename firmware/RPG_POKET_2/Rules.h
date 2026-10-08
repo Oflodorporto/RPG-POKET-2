@@ -7,7 +7,7 @@
 // Economy, UI, World and Gear. Network/calendar are not part of this slice.
 namespace rpg {
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
-enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead };
+enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
 inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0}};return e[id<14?id:2];}
 struct Player {
@@ -31,6 +31,7 @@ struct Game {
   uint8_t guard=0,enemyId=2,ruinsWins=0;
   bool guardianDefeated=false;bool dndProgression=false,tough=false;uint8_t attributes[6]={8,12,14,16,12,10},advancementSpent=0;
   uint8_t oath=0,laySpent=0,sacredTurns=0,turnedTurns=0;bool channelSpent=false;
+  uint8_t windSpent=0,surgeSpent=0,rageSpent=0,rageTurns=0;bool surgePending=false,surgeTurnUsed=false;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;
   uint8_t gainGold=0;
@@ -119,7 +120,7 @@ inline const Contract& contract(uint8_t id){static const Contract q[]={{"PATRULH
 inline uint16_t contractXp(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?uint32_t(xpNeeded(level))*contract(id).percent/100:0;}
 inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){return g.dndProgression&&id>=1&&id<=3&&level?uint32_t(dndXpNeeded(level))*contract(id).percent/100:contractXp(id,level);}
 inline uint16_t contractGold(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?contract(id).gold+uint16_t(level-1)*2:0;}
-inline void levelUp(Game& g){while(g.p.level<(g.dndProgression?20:99)&&g.p.xp>=xpNeeded(g)){g.p.xp-=xpNeeded(g);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535u,unsigned(g.p.maxhp)+(g.dndProgression?hpPerLevel(g):2u)));if(g.p.atk<255)++g.p.atk;}if(g.dndProgression&&g.p.level==20)g.p.xp=0;}
+inline void levelUp(Game& g){while(g.p.level<(g.dndProgression?20:99)&&g.p.xp>=xpNeeded(g)){g.p.xp-=xpNeeded(g);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535u,unsigned(g.p.maxhp)+(g.dndProgression?hpPerLevel(g):2u)));if(g.p.atk<255)++g.p.atk;}if(g.dndProgression&&g.p.level==20){g.p.xp=0;if(g.p.cls==3)g.rageSpent=0;}}
 inline bool questComplete(const Game& g){return g.questId>=1&&g.questId<=3&&g.questProgress>=contract(g.questId).count;}
 inline const char* acceptQuest(Game& g,uint8_t id){
   if(g.phase!=Phase::Home)return "Volte para a vila";if(id<1||id>3)return "Contrato indisponivel";
@@ -150,20 +151,30 @@ inline Game create(uint8_t c,uint32_t seed) {
   g.p.life=2;g.rations=1;g.p.mp=g.p.maxmp=totalMana(g);return g;
 }
 inline uint32_t random(Game& g){uint32_t x=g.randomState;x^=x<<13;x^=x>>17;x^=x<<5;return g.randomState=x;}
-inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::TurnUndead);}
-inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";default:return "Poder";}}
-inline unsigned powerLevel(Action a){return a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
+inline unsigned surgeUses(const Game& g){return g.p.level<2?0:g.p.level>=17?2:1;}
+inline unsigned rageUses(const Game& g){return g.p.level>=20?255:g.p.level>=17?6:g.p.level>=12?5:g.p.level>=6?4:g.p.level>=3?3:2;}
+inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2;}
+// Spectres and the Arconte deal magical damage; other current encounters are physical.
+inline bool physicalEnemy(unsigned id){return id!=5&&id!=8;}
+inline void clearMartialCombat(Game& g){g.rageTurns=0;g.surgePending=g.surgeTurnUsed=false;}
+inline void endHeroAction(Game& g){if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}else g.phase=Phase::Enemy;}
+inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::RagePower);}
+inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";case Action::SecondWind:return "Segundo folego";case Action::ActionSurge:return "Surto de acao";case Action::RagePower:return "Furia de batalha";default:return "Poder";}}
+inline unsigned powerLevel(Action a){return a==Action::ActionSurge?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
 inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell?3:0;}
 inline bool undead(unsigned id){return id==2||id==5||id==8||id==9;}
 inline unsigned layRemaining(const Game& g){return g.dndProgression&&g.p.cls==1?5u*g.p.level-g.laySpent:0;}
-inline void refreshPowers(Game& g){g.laySpent=0;g.channelSpent=false;g.sacredTurns=g.turnedTurns=0;}
+inline void refreshPowers(Game& g){g.laySpent=0;g.channelSpent=false;g.sacredTurns=g.turnedTurns=0;g.windSpent=g.surgeSpent=g.rageSpent=0;clearMartialCombat(g);}
 inline const char* swearDevotion(Game& g){if(!g.dndProgression||g.p.cls!=1)return "Somente novo Paladino";if(g.p.level<3)return "Juramento no nivel 3";if(g.oath)return "Juramento ja firmado";if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Firme na cidade ou abrigo";g.oath=1;return nullptr;}
 inline const char* powerError(const Game& g,Action a){
  if(!powerAction(a))return "Poder invalido";if(!g.dndProgression)return "Heroi usa regras antigas";
- bool pal=uint8_t(a)>=uint8_t(Action::LayHands);if(g.p.cls!=(pal?1:0))return "Poder de outra classe";
+ unsigned cls=a==Action::RagePower?3:a==Action::SecondWind||a==Action::ActionSurge?2:uint8_t(a)>=uint8_t(Action::LayHands)?1:0;if(g.p.cls!=cls)return "Poder de outra classe";
  if(g.p.level<powerLevel(a))return "Nivel insuficiente";
- if(g.phase!=Phase::Hero&&!(a==Action::LayHands&&g.phase==Phase::Home&&!g.tripStage&&!g.campStage&&g.clubStage!=1&&g.clubStage!=2))return "Use no seu turno";
+ if(g.phase!=Phase::Hero&&!((a==Action::LayHands||a==Action::SecondWind)&&g.phase==Phase::Home&&!g.tripStage&&!g.campStage&&g.clubStage!=1&&g.clubStage!=2))return "Use no seu turno";
  if(g.p.mp<powerCost(a))return "Mana insuficiente";
+ if(a==Action::SecondWind){if(g.windSpent)return "Folego esgotado: descanse";if(g.p.hp>=g.p.maxhp)return "HP ja esta cheio";}
+ if(a==Action::ActionSurge){if(g.surgeSpent>=surgeUses(g))return "Surto esgotado: descanse";if(g.surgeTurnUsed)return "Um surto por turno";}
+ if(a==Action::RagePower){if(g.rageTurns)return "Furia ja esta ativa";if(g.p.level<20&&g.rageSpent>=rageUses(g))return "Furias esgotadas: descanse";}
  if(a==Action::LayHands){if(!layRemaining(g))return "Cura esgotada: descanse";if(g.p.hp>=g.p.maxhp)return "HP ja esta cheio";}
  if(a==Action::SacredWeapon||a==Action::TurnUndead){if(!g.oath)return "Firme o juramento antes";if(g.channelSpent)return "Canalizar esgotado: descanse";}
  if(a==Action::TurnUndead&&!undead(g.enemyId))return "Alvo nao e morto-vivo";return nullptr;
@@ -171,6 +182,9 @@ inline const char* powerError(const Game& g,Action a){
 inline const char* usePower(Game& g,Action a){
  if(auto err=powerError(g,a))return err;
  g.p.mp-=powerCost(a);g.damage=0;g.crit=g.dodge=false;
+ if(a==Action::SecondWind){g.damage=std::min<unsigned>(g.p.maxhp-g.p.hp,1+random(g)%10+g.p.level);g.p.hp+=g.damage;g.windSpent=1;return nullptr;}
+ if(a==Action::ActionSurge){++g.surgeSpent;g.surgePending=g.surgeTurnUsed=true;return nullptr;}
+ if(a==Action::RagePower){if(g.p.level<20)++g.rageSpent;g.rageTurns=3;return nullptr;}
  if(a==Action::LayHands){g.damage=std::min<unsigned>(layRemaining(g),g.p.maxhp-g.p.hp);g.p.hp+=g.damage;g.laySpent+=g.damage;if(g.phase==Phase::Hero)g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::ShieldSpell){g.guard=75;g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::SacredWeapon){g.channelSpent=true;g.sacredTurns=3;g.phase=Phase::Enemy;return nullptr;}
@@ -185,7 +199,7 @@ inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&id<2?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&g.enemyId<2?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.sacredTurns=g.turnedTurns=0;g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>13||(id>=10&&g.eventStage!=2)||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
@@ -199,13 +213,13 @@ inline void finish(Game& g){
     if(g.eventStage!=2&&g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}
     if(g.eventStage!=2&&g.p.mana<99 && (g.enemyId==3||random(g)%100<25)){++g.p.mana;g.dropMana=true;}
     if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1&&g.questId&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
-    levelUp(g);
-  }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g)/20)));g.p.xp-=g.gainXp;}
+    levelUp(g);clearMartialCombat(g);
+  }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g)/20)));g.p.xp-=g.gainXp;clearMartialCombat(g);}
 }
 // Return nullptr on accepted action; rejected actions do not consume a turn.
 inline const char* act(Game& g,Action a){
   if(g.phase!=Phase::Hero)return "Aguarde seu turno";
-  if(uint8_t(a)>uint8_t(Action::TurnUndead))return "Acao invalida";
+  if(uint8_t(a)>uint8_t(Action::RagePower))return "Acao invalida";
   if(g.dndProgression&&g.p.cls==0&&a==Action::Offensive)a=Action::MagicMissile;
   if(g.dndProgression&&g.p.cls==0&&a==Action::Defensive)a=Action::ShieldSpell;
   if(powerAction(a)){auto err=usePower(g,a);if(!err)finish(g);return err;}
@@ -216,38 +230,41 @@ inline const char* act(Game& g,Action a){
   if(a==Action::Life||a==Action::Mana){
     bool m=a==Action::Mana;auto &v=m?g.p.mp:g.p.hp;auto &count=m?g.p.mana:g.p.life;
     if(!count)return "Sem pocoes";uint16_t heal=recovery(v,m?g.p.maxmp:g.p.maxhp,m);if(!heal)return "Ja esta cheio";
-    v+=heal;--count;clearFeedback(g);g.damage=heal;g.phase=Phase::Enemy;return nullptr;
+    v+=heal;--count;clearFeedback(g);g.damage=heal;endHeroAction(g);return nullptr;
   }
   clearFeedback(g);
-  if(a==Action::Flee){g.phase=random(g)%100<65?Phase::Fled:Phase::Enemy;return nullptr;}
+  if(a==Action::Flee){g.phase=random(g)%100<65?Phase::Fled:Phase::Enemy;if(g.phase==Phase::Fled)clearMartialCombat(g);else if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}return nullptr;}
   if(a==Action::Defensive){
     g.guard=g.p.cls<2?75:50;
     if(g.p.cls==3)g.p.hp=std::min<uint16_t>(g.p.maxhp,g.p.hp+std::max<uint16_t>(1,g.p.maxhp/4));
-    g.phase=Phase::Enemy;return nullptr;
+    endHeroAction(g);return nullptr;
   }
   bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def);
   if(g.dndProgression&&!skill)damage*=attacksPerAction(g);
   if(g.dndProgression&&g.p.cls==3&&g.crit&&g.p.level>=9)damage+=g.p.level>=17?3:g.p.level>=13?2:1;
   if(skill)damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;
+  if(g.rageTurns)damage+=rageBonus(g)*(skill?1:attacksPerAction(g));
   if(g.sacredTurns){damage+=std::max(1,abilityMod(g.attributes[5]));--g.sacredTurns;}
   g.dodge=!(skill&&g.p.cls==2)&&random(g)%100<6;
   if(!g.dodge){g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;}
-  g.phase=Phase::Enemy;finish(g);return nullptr;
+  endHeroAction(g);finish(g);return nullptr;
 }
 // Public upper bound, including critical hits. Does not advance the RNG.
 inline unsigned incomingCeiling(const Game& g,unsigned guard=0){
  if(g.turnedTurns)return 0;
  int damage=std::max(1,int(encounterAttack(g))+2-effectiveDefense(g)/3);
- damage+=damage/2;return (damage*(100-std::min(75u,guard))+99)/100;
+ damage+=damage/2;damage=(damage*(100-std::min(75u,guard))+99)/100;if(g.rageTurns&&physicalEnemy(g.enemyId))damage/=2;return damage;
 }
 inline bool enemy(Game& g){
   if(g.phase!=Phase::Enemy)return false;clearFeedback(g);if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;return true;}int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));
+  g.surgeTurnUsed=false;
   if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
+  if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;--g.rageTurns;}
   g.dodge=random(g)%100<6;
   if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;}
   g.phase=Phase::Hero;finish(g);return true;
 }
-inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.sacredTurns=g.turnedTurns=0;if(!g.p.hp)g.p.hp=1;if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
+inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);return true;}
 // Economy.cpp shopLong / UI.cpp invLong: prices and limits from Heltec.
 inline uint8_t potionPrice(bool mana){return mana?12:10;}

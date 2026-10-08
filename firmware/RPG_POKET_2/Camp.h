@@ -16,7 +16,7 @@ inline bool campValid(const Game& g){
 inline const char* buySleepKit(Game& g){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags)return "Termine a acao atual";if(g.sleepKit)return "Voce ja tem um kit";if(g.p.gold<80)return "Precisa de 80 ouro";g.p.gold-=80;g.sleepKit=true;return nullptr;}
 inline const char* startCamp(Game& g,bool ration,bool kit){
   if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";
-  if(g.p.hp==g.p.maxhp&&g.p.mp==g.p.maxmp&&!g.laySpent&&!g.channelSpent)return "HP e MP ja estao cheios";
+  if(g.p.hp==g.p.maxhp&&g.p.mp==g.p.maxmp&&!g.laySpent&&!g.channelSpent&&!g.windSpent&&!g.surgeSpent&&!g.rageSpent)return "HP e MP ja estao cheios";
   if(ration&&!g.rations)return "Sem racoes";if(kit&&!g.sleepKit)return "Sem kit de dormir";
   g.campStage=1;g.campRation=ration;g.campKit=kit;if(ration)--g.rations;g.campRoll=1+random(g)%20;return nullptr;
 }

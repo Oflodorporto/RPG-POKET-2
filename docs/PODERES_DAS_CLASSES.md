@@ -50,7 +50,7 @@ Depois de salvar nesta versão, firmware anterior não lê o novo checkpoint: n�
 
 Teste físico ainda necessário: novo Mago no nível 1; verificar raios bloqueados até 3 e bola até 5; novo Paladino cura até esgotar, Devoção no nível 3, Arma sagrada/Expulsar compartilhando uso; descansar e conferir recuperação; retomar após reinício e usar pela dungeon. Sem apagar heróis antigos para testar.
 
-Próximas etapas: punição divina e auras; tradição/recuperação arcana e magias preparadas; recursos reais do Guerreiro/Bárbaro; balanceamento da campanha 1–20. Aeldra ainda precisa de clímax e desfecho para lançamento completo.
+Próximas etapas: punição divina e auras; tradição/recuperação arcana e magias preparadas; subclasses e recursos avançados do Guerreiro/Bárbaro; balanceamento da campanha 1–20. Aeldra ainda precisa de clímax e desfecho para lançamento completo.
 
 ## Referências e atribuição
 
@@ -59,3 +59,5 @@ Próximas etapas: punição divina e auras; tradição/recuperação arcana e ma
 This work includes material taken from the System Reference Document 5.1 (“SRD 5.1”) by Wizards of the Coast LLC and available at https://dnd.wizards.com/resources/systems-reference-document. The SRD 5.1 is licensed under the Creative Commons Attribution 4.0 International License available at https://creativecommons.org/licenses/by/4.0/legalcode.
 
 Publicação confirmada: CI 37766115238 aprovou 20 suítes, compilação ESP32 e Release. Programa 2.636.222 bytes (83%); globais 53.628 bytes (16%). Firmware baixado: 2.636.368 bytes, SHA-256 75621f8a124dfd1cbddee30d5140575946174fcdddac55de59c4391ffe10782a. Pacote de artes compatível conferido contra manifesto. Teste físico pendente.
+
+Continuação implementada em martiais1: Segundo Fôlego, Surto de Ação e Fúria. Veja [PODERES_MARCIAIS.md](PODERES_MARCIAIS.md) para regras e Save14 atuais. A validação e versão acima correspondem à entrega poderes1.

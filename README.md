@@ -65,3 +65,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Grimório e Devoção
 
 2026.10.08-poderes1: cinco magias de Mago, Impor as mãos e Juramento da Devoção com dois poderes e uso compartilhado. [Controles, custos, saves e limites da adaptação](docs/PODERES_DAS_CLASSES.md). Saves13, leitura1–13; heróis antigos preservados. Artes inalteradas.
+
+## Guerreiro e Bárbaro
+
+2026.10.08-martiais1: Segundo Fôlego, Surto de Ação e Fúria com usos por descanso, duração e retomada persistida. [Regras, controles, adaptações e teste na placa](docs/PODERES_MARCIAIS.md). 21 suítes; Save14/leitura1–14; artes inalteradas.

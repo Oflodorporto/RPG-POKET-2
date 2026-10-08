@@ -47,7 +47,9 @@ void action(rpg::Action a){
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Offensive)a=rpg::Action::MagicMissile;
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Defensive)a=rpg::Action::ShieldSpell;
   const char* err=rpg::act(game,a);if(err){say(err);return;}
-  if(a==rpg::Action::LayHands)snprintf(message,sizeof(message),"Impor as maos: +%u HP",game.damage);
+  if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
+  else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
+  else if(a==rpg::Action::RagePower)say("Furia: 3 rodadas; resiste fisico");
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)snprintf(message,sizeof(message),"%s ativado",rpg::powerName(a));
   else if(a==rpg::Action::Life||a==rpg::Action::Mana)snprintf(message,sizeof(message),"Recuperou %u %s",game.damage,a==rpg::Action::Life?"HP":"MP");
   else if(a==rpg::Action::Defensive)snprintf(message,sizeof(message),"%s ativado",rpg::skillName(game.p.cls,true));
@@ -55,7 +57,8 @@ void action(rpg::Action a){
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
   if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
-  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands)beginEffect(Effect::Shield,true);
+  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true);
+  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true);
   else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false);
   else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false);
   else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
@@ -176,7 +179,7 @@ void tapped(int x,int y){
   if(view.page==Page::DungeonMenu){
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
-    if(game.dndProgression&&game.p.cls<2&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
+    if(game.dndProgression&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
     if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
     int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,182,212)?5:-1;
     if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
@@ -374,7 +377,7 @@ void tapped(int x,int y){
     if(powersUi::use.contains(x,y)){auto a=powersUi::action(game.p.cls,view.powerIndex);
       if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&a!=rpg::Action::LayHands){view.page=Page::OathConfirm;say("");return;}
       if(game.phase==rpg::Phase::Hero){action(a);return;}
-      auto err=rpg::usePower(game,a);if(err)say(err);else {say("Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
+      auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
   }
   if(view.page==Page::Evolution){
     if(hit(x,y,10,120,220,18)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
@@ -443,7 +446,7 @@ void tapped(int x,int y){
   if(view.page==Page::Result){if(game.campStage==2){if(hit(x,y,14,268,212)&&rpg::resolveCamp(game)){say(game.campStage?"Descanso depois da batalha":"Acampamento interrompido");savedTransition(game.campStage?Page::CampRest:game.city==1?Page::Ruins:Page::Explore);}return;}if(hit(x,y,14,268,212)&&rpg::home(game)){say("");savedTransition(game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}return;}
   if(game.phase!=rpg::Phase::Hero)return;
   if(view.page==Page::Skills){
-    if(game.dndProgression&&game.p.cls<2&&hit(x,y,26,54,188,28)){view.powersReturn=Page::Skills;view.powerIndex=0;view.page=Page::Powers;say("");return;}
+    if(game.dndProgression&&hit(x,y,26,54,188,28)){view.powersReturn=Page::Skills;view.powerIndex=0;view.page=Page::Powers;say("");return;}
     if(hit(x,y,14,172,212))action(rpg::Action::Offensive);
     else if(hit(x,y,14,218,212))action(rpg::Action::Defensive);
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
@@ -454,7 +457,6 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
-
 int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);
  // First character, tutorial, menu, and refusal to create a phantom hero from an empty slot.

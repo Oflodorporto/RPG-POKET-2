@@ -1,4 +1,3 @@
 #pragma once
-constexpr const char* FW_VERSION="2026.10.08-poderes1";
-constexpr uint32_t FW_BUILD=2026100802u;
-
+constexpr const char* FW_VERSION="2026.10.08-martiais1";
+constexpr uint32_t FW_BUILD=2026100803u;
