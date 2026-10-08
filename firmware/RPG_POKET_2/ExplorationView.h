@@ -11,6 +11,7 @@ template<class C>void drawMimic(C& c,int x,int y,unsigned frame,bool alive){
  else {c.fillRect(x+34,y+39,9,14,UI_GOLD);c.fillRect(x+37,y+44,3,5,UI_INK);}
 }
 template<class C>void drawDiscovery(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
+ backdropPeriod=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
  auto bg=g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;drawBackdrop(c,bg);c.setTextWrap(false);
  auto label=[&](int y,const char* s,uint16_t color=UI_WHITE,int size=1){scenicPanel(c,10,y-4,220,8*size+10);c.setTextColor(color);c.setTextSize(size);c.setCursor((240-int(strlen(s))*6*size)/2,y);c.print(s);};
  auto button=[&](int x,int y,int w,const char* s){scenicPanel(c,x,y,w,40);c.setTextSize(1);c.setTextColor(UI_WHITE);c.setCursor(x+(w-int(strlen(s))*6)/2,y+16);c.print(s);};

@@ -10,7 +10,7 @@ Baús oferecem Abrir/Deixar. Cinco por cento dos baús escondem mímicos, cerca 
 
 Sucata tem pilha separada de até9; não ocupa espaço de cristais ou poções. Bolsa > Sucata permite vender a pilha por2 ouro/unidade ou descartar. A transação e o recibo são persistidos, sem conceder novamente após reinício.
 
-Dia/noite altera a provisão dos encontros locais quando o relógio e o ciclo estiverem ativos. Essa entrega não inclui oito eventos diários, novos mapas, gazuas ou fechaduras; esses permanecem nos pacotes posteriores.
+As telas acompanham o ciclo de iluminação. Dia/noite altera a provisão dos encontros locais quando o relógio e o ciclo estiverem ativos. Essa entrega não inclui oito eventos diários, novos mapas, gazuas ou fechaduras; esses permanecem nos pacotes posteriores.
 
 Save18 mantém128 bytes e CRC124. Bytes60–63 (não usados nos saves modernos anteriores) guardam estado da descoberta, conteúdo, quantidade e sucata. Lê formatos1–18 e conserva valores antigos; campos novos começam zerados. Descoberta é salva antes da tela; recibo antes de continuar. Falha de gravação pausa para repetir o mesmo save, sem sortear nem premiar novamente. Firmware anterior não lê save18: não fazer downgrade após salvar sem backup compatível.
 
