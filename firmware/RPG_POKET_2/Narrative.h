@@ -1,5 +1,6 @@
 #pragma once
 #include "Campaign.h"
+#include "OriginStory.h"
 namespace story {
 struct Scene {const char* speaker;const char* lines[4];};
 constexpr Scene portScenes[2][4]={
@@ -37,7 +38,7 @@ inline bool arconteKnown(const rpg::Game& g){return rpg::campaignMemory(g);}
 inline const char* classVoice(unsigned cls){const char* lines[]={"Voce sente ecos nos cristais.","Um juramento pode salvar vidas.","Uma estrada segura e uma vitoria.","A terra pede que voce a escute."};return lines[cls%4];}
 struct Objective {const char* title;const char* place;const char* lines[4];};
 inline Objective objective(const rpg::Game& g){
- if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Seu primeiro abrigo e nas Brasas.","O sino anuncia uma nova jornada."}};
+ if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Converse com Elarin e Borin.","Sua primeira pista e a cinza branca."}};
  if(g.campaignFlags==3)return {"JURAMENTOS DE AURORA","Aurora / Liora Valcer",{"Voce salvou os refugiados de Mares.","Maelis abriu os registros da Guilda.","Leve a verdade a Liora em Aurora.","O ato de Aurora sera a proxima etapa."}};
  if(g.campaignFlags&1)return {"O FAROL APAGADO","Mares / Sabela Marebrava",{"A carga prova o roubo de memorias.","A tempestade apagou o Farol Caminho.","Refugiados estao presos no cais.","Sabela precisa de voce no resgate."}};
  if(arconteKnown(g))return {"O LIVRO DAS VIGILIAS","Mares / Sabela Marebrava",{"O livro liga cristais a memorias.","Sabela procura provas no porto.","Converse com ela em Mares.","Sabela oferece uma missao no porto."}};
@@ -51,7 +52,7 @@ inline const char* smith(unsigned city){const char* n[]={"Borin Caldaferrea","Ca
 inline unsigned knownChapter(const rpg::Game& g){return g.campaignFlags==3?4:arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
 constexpr const char* chapterNames[]={"O sino em Carvalho","A floresta ferida","Os mortos tem ordens","O porto e as cinzas","Juramentos de Aurora","A primeira luz"};
 constexpr Scene chapters[]={
- {"PROLOGO",{"Nara oferece abrigo nas Brasas.","Uma carta pede ajuda nas estradas.","Sua origem nao define seu destino.","Aeldra e sua primeira aventura."}},
+ {"PROLOGO",{"Nara oferece abrigo nas Brasas.","Uma carta pede ajuda nas estradas.","Cinza branca tomou as raizes.","Elarin e Borin investigam a origem."}},
  {"ATO I / CARVALHO",{"Elarin viu cinza nas raizes.","Borin reconhece pecas dos farois.","Os animais fogem de algo maior.","Converse com ambos e investigue."}},
  {"ATO II / VESPERA",{"Iria investiga as antigas ordens.","Venca encontros nas Ruinas.","O Guardiao protege o limiar.","Um cristal abre a Cripta."}},
  {"ATO III / MARES",{"Voce encontrou o Livro das Vigilias.","Os cristais guardam memorias.","Sabela investiga cargas no porto.","Procure-a em Mares."}},

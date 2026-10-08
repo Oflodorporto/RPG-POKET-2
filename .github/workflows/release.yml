@@ -28,6 +28,9 @@ jobs:
           requested=os.environ.get("REQUESTED_VERSION")
           assert not requested or requested==version, "Versao diferente do firmware"
           print("RELEASE_VERSION="+version)
+          header=Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()
+          package=re.search(r'FW_PACKAGE="([^"]+)"',header)
+          print("RELEASE_PACKAGE="+(package.group(1) if package else version))
           PY
       - name: Testar regras, saves e telas
         run: bash tools/test_native.sh
@@ -41,6 +44,7 @@ jobs:
             build/screens/lore-*.ppm
             build/screens/day-*.ppm
             build/screens/event-*.ppm
+            build/screens/origens-*.ppm
             build/screens/campaign-*.ppm
             build/screens/launch-*.ppm
             build/screens/powers-*.ppm
@@ -65,4 +69,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --title "RPG POKET $RELEASE_VERSION" --notes "Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Saves preservados."
+        run: gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --title "RPG POKET - $RELEASE_PACKAGE" --notes "$RELEASE_PACKAGE ($RELEASE_VERSION). Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Saves preservados."

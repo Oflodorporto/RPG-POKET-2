@@ -77,3 +77,7 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## A campanha chega a Mares
 
 2026.10.08-mares1: duas missões de Sabela depois da Cripta, nível10+, provas da Mão de Cinza e resgate dos refugiados. [Como jogar e limites](docs/CAMPANHA_MARES.md). 23 suítes, save16/importação1–15, mesmas artes. Aurora e o final ainda estão em desenvolvimento.
+
+## Pacote 1 — Origem e rostos
+
+2026.10.08-origens1: origem por classe, chegada a Carvalho, rostos dos NPCs e primeiro objetivo concreto. [Conteúdo, compatibilidade e testes na placa](docs/PACOTE_1_ORIGEM_E_ROSTOS.md). [Próximos pacotes](docs/ROADMAP_PACOTES_EXPERIENCIA.md).

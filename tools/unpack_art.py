@@ -10,3 +10,11 @@ if delta.exists():
  assert zlib.crc32(payload)==0x1a8982c3
  p.write_bytes(struct.pack('<4sIII',b'PKA1',len(payload),zlib.crc32(payload),425)+payload)
 else:p.write_bytes(base)
+
+# Pacote 1 - Origem e rostos: append portraits after the validated panels payload.
+portraits=Path('cartao/RPGPOKET/origens1.bin.gz')
+if portraits.exists():
+ previous=p.read_bytes();assert struct.unpack('<4sIII',previous[:16])==(b'PKA1',6772544,0x1a8982c3,425)
+ payload=previous[16:]+gzip.decompress(portraits.read_bytes())
+ assert len(payload)==6846528 and zlib.crc32(payload)==0x19aa0797
+ p.write_bytes(struct.pack('<4sIII',b'PKA1',len(payload),zlib.crc32(payload),459)+payload)

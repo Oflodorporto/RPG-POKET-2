@@ -197,6 +197,16 @@ int main(int argc,char** argv){
   g=rpg::create(2,77);g.p.xp=64000;rpg::levelUp(g);g.tutorial=true;g.city=2;g.dungeonClears=1;v.message="";v.effect=Effect::None;menu.personIndex=0;
   for(unsigned mission=1;mission<=2;++mission){g.campaignFlags=mission-1;v.campaignChoice=mission;v.page=Page::CampaignTask;render(c,g,v);c.save(root+"/campaign-task-"+std::to_string(mission)+".ppm");rpg::startCampaign(g,mission);g.enemyHp=0;rpg::finish(g);v.page=Page::CampaignResult;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);for(unsigned i=0;i<4;++i){v.campaignScene=i;render(c,g,v);c.save(root+"/campaign-result-"+std::to_string(mission)+"-"+std::to_string(i)+".ppm");}rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));rpg::resolveCampaign(g);}
   g.phase=rpg::Phase::Lost;g.campaignStage=2;v.page=Page::CampaignResult;render(c,g,v);c.save(root+"/campaign-loss.ppm");g.phase=rpg::Phase::Fled;render(c,g,v);g.campaignStage=0;g.phase=rpg::Phase::Home;g.campaignFlags=3;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/campaign-sabela.ppm");v.page=Page::Campaign;render(c,g,v);c.save(root+"/campaign-aurora.ppm");
+  // All origins, races, speaker faces and fallbacks use the shared renderer without mutating saves.
+  for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race){g=rpg::create(cls,71);g.originStory=true;g.race=race;v.page=Page::Prologue;menu.storyReplay=false;
+   uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);
+   for(unsigned i=0;i<story::originCount(g);++i){menu.storyIndex=i;render(c,g,v);if(!race)c.save(root+"/origens-intro-"+std::to_string(cls)+"-"+std::to_string(i)+".ppm");}
+   rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));
+  }
+  g=rpg::create(0,71);g.tutorial=true;g.dungeonClears=1;
+  for(unsigned city=0;city<4;++city){g.city=city;for(unsigned i=0;i<3;++i){menu.personIndex=i;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/origens-npc-"+std::to_string(city)+"-"+std::to_string(i)+".ppm");}}
+  g.city=1;g.dungeonClears=0;menu.personIndex=2;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/origens-desconhecido.ppm");
+  makeFallback();g.originStory=true;menu.storyIndex=4;v.page=Page::Prologue;render(c,g,v);c.save(root+"/origens-sem-cartao.ppm");
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

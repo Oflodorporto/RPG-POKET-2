@@ -37,6 +37,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
 struct ViewState {Page page=Page::Choose,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page guideReturn=Page::Menu;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "MenuView.h"
+#include "NpcArt.h"
 #include "EventView.h"
 #include "HippogriffArt.h"
 #include "MagicView.h"
@@ -129,7 +130,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(163,v.page==Page::SaveError?"Mantenha o aparelho ligado.":"Informe esta tela ao desenvolvedor.");
     if(v.page==Page::SaveError)button(14,250,212,"Tentar salvar");else button(14,250,212,"Menu");return;
   }
-  if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);center(37,"Grum Pedrafranca / entrada 25 ouro");
+  if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);npcPortrait(c,story::Npc::Grum,14,29,24);text(44,37,"Grum Pedrafranca / 25 ouro");
     auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
     else {center(95,arena.session.opponent.name,2);center(135,state==club::State::Incoming?"Aceitar duelo por 25 ouro?":"Aguardando outra placa...");if(state==club::State::Incoming){button(14,218,102,"Recusar");button(124,218,102,"Aceitar");}}
     center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
@@ -143,11 +144,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Clothes){center(10,"CORES DA ROUPA",2,UI_GOLD);auto draft=rpg::create(v.choice,1);draft.race=menu.draftRace;draft.shirt=menu.draftShirt;draft.trousers=menu.draftPants;personalSprite(c,draft,64,36,0);center(158,raceName(draft.race));
     button(14,177,102,"Roupa <");button(124,177,102,"Roupa >");button(14,224,102,"Calca <");button(124,224,102,"Calca >");
     button(14,272,102,"Voltar");button(124,272,102,"Criar");return;}
-  if(v.page==Page::Guild||v.page==Page::GuildJoin){center(12,"GUILDA",2,UI_GOLD);center(43,"DOS AVENTUREIROS",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(88,b);
-    center(103,"Maelis Voss / mestra da Guilda",1,UI_GOLD);center(123,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(145,v.message,1,UI_RED);
+  if(v.page==Page::Guild||v.page==Page::GuildJoin){center(12,"GUILDA",2,UI_GOLD);center(43,"DOS AVENTUREIROS",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(68,b);
+    npcPortrait(c,story::Npc::Maelis,14,84,48);text(76,88,"Maelis Voss",1,UI_GOLD);text(76,106,"Mestra da Guilda");center(141,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(156,v.message,1,UI_RED);
     if(v.page==Page::GuildJoin){center(182,"Pagar 100 ouro para se cadastrar?");button(14,272,102,"Cancelar");button(124,272,102,"Pagar");}
     else{button(14,170,212,g.guildMember?"Missoes":"Cadastrar");button(14,218,212,"Clube da luta");button(14,272,212,"Voltar");}return;}
-  if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);center(65,"Nara Veld / Refugio das Brasas",1,UI_GOLD);center(95,"Entre. A fogueira ainda esta acesa.");center(119,"Maelis cuida dos contratos na Guilda.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
+  if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);npcPortrait(c,story::Npc::Nara,14,45,48);text(76,55,"Nara Veld",1,UI_GOLD);text(76,75,"Dona do Refugio");center(112,"Entre. A fogueira ainda esta acesa.");center(140,"Maelis cuida dos contratos na Guilda.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
   if(v.page==Page::Choose){
     for(int y=8;y<26;y+=7)c.fillRect(8,y,20,3,UI_GOLD);center(12,"RPG POKET 2.0",2,UI_GOLD);center(38,"ESCOLHA SUA CLASSE");auto draft=g;draft.race=menu.draftRace;portrait(v.choice,80,57,&draft);
     center(136,rpg::className(v.choice),2);auto p=rpg::create(v.choice,1).p;

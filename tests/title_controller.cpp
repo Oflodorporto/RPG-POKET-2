@@ -35,7 +35,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -70,7 +70,7 @@ void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
-  backend.slot=slot;menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=0;menu.storyReplay=false;
+  backend.slot=slot;menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
 }
 void openTitle(){
@@ -102,8 +102,11 @@ void tapped(int x,int y){
   if(combatFx.active()||menu.journey.active)return;
   if(view.page==Page::CampRest)return;
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
-    if(x<120||menu.storyIndex==3){view.page=menu.storyReplay?Page(menu.storyReturn):Page::Help;menu.storyIndex=0;}
-    else ++menu.storyIndex;say("");}return;}
+    bool finish=x<120?menu.storyIndex==0:menu.storyIndex+1>=story::originCount(game);
+    if(finish){if(menu.storyReplay){view.page=Page(menu.storyReturn);menu.storyIndex=0;say("");}
+      else {if(game.originStory)game.originPage=8;menu.storyIndex=0;say("");if(game.originStory)savedTransition(Page::Help);else view.page=Page::Help;}}
+    else {menu.storyIndex+=x<120?-1:1;say("");if(!menu.storyReplay&&game.originStory){game.originPage=menu.storyIndex;savedTransition(Page::Prologue);}}
+   }return;}
   if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&game.city==0&&hit(x,y,10,80,220,30))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
   if(view.page==Page::Journal){if(hit(x,y,14,272,102))view.page=Page::Menu;
     else if(hit(x,y,124,272,102)){view.objectiveReturn=Page::Journal;view.page=Page::Campaign;}
@@ -317,7 +320,7 @@ void tapped(int x,int y){
     }return;
   }
   if(view.page==Page::Race){if(hit(x,y,14,263,102)){if(menu.creationFromTitle)openTitle();else {view.page=Page::Menu;say("");}}else if(hit(x,y,124,263,102)){view.page=Page::Choose;dirty=true;}else for(unsigned i=0;i<4;++i)if(hit(x,y,14+(i%2)*110,46+(i/2)*104,102,98)){menu.draftRace=i;dirty=true;}return;}
-  if(view.page==Page::Clothes){if(hit(x,y,14,272,102)){view.page=Page::Choose;dirty=true;}else if(hit(x,y,124,272,102)){if(journal.blocked||journal.active>=0){say("Crie em um slot vazio");return;}menu.sessionStarted=true;game=rpg::create(view.choice,esp_random());game.race=menu.draftRace;game.shirt=menu.draftShirt;game.trousers=menu.draftPants;menu.storyIndex=0;menu.storyReplay=false;savedTransition(Page::Prologue);}else if(hit(x,y,14,177,102)||hit(x,y,124,177,102)){menu.draftShirt=(menu.draftShirt+(x<120?7:1))%8;dirty=true;}else if(hit(x,y,14,224,102)||hit(x,y,124,224,102)){menu.draftPants=(menu.draftPants+(x<120?7:1))%8;dirty=true;}return;}
+  if(view.page==Page::Clothes){if(hit(x,y,14,272,102)){view.page=Page::Choose;dirty=true;}else if(hit(x,y,124,272,102)){if(journal.blocked||journal.active>=0){say("Crie em um slot vazio");return;}menu.sessionStarted=true;game=rpg::create(view.choice,esp_random());game.originStory=true;game.race=menu.draftRace;game.shirt=menu.draftShirt;game.trousers=menu.draftPants;menu.storyIndex=0;menu.storyReplay=false;savedTransition(Page::Prologue);}else if(hit(x,y,14,177,102)||hit(x,y,124,177,102)){menu.draftShirt=(menu.draftShirt+(x<120?7:1))%8;dirty=true;}else if(hit(x,y,14,224,102)||hit(x,y,124,224,102)){menu.draftPants=(menu.draftPants+(x<120?7:1))%8;dirty=true;}return;}
   if(view.page==Page::Guild){if(hit(x,y,14,272,212)){view.page=Page::Village;say("");}else if(hit(x,y,14,170,212)){view.page=game.guildMember?Page::GuildMissions:Page::GuildJoin;say("");}else if(hit(x,y,14,218,212)){if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}}return;}
   if(view.page==Page::GuildJoin){if(hit(x,y,14,272,102)){view.page=Page::Guild;say("");}else if(hit(x,y,124,272,102)){if(!rpg::joinGuild(game)){say("Cadastro concluido");savedTransition(Page::Guild);}else say("Ouro insuficiente para cadastro");}return;}
   if(view.page==Page::Tavern){if(hit(x,y,14,220,212)){view.page=Page::Guild;say("");}else if(hit(x,y,14,272,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
@@ -493,6 +496,15 @@ int main(){
  tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);auto created=nvs.blobs;
  bootTitle();assert(view.page==Page::Title&&menu.hasContinue&&!canOfferEvents()&&nvs.blobs==created);
  tapped(160,190);assert(view.page==Page::Prologue&&menu.sessionStarted&&nvs.blobs==created);
+ // Origin pages checkpoint on deliberate navigation; reboot and save retry preserve progress.
+ assert(game.originStory&&game.originPage==0&&story::originCount(game)==8);
+ tapped(175,290);assert(view.page==Page::Prologue&&game.originPage==1&&menu.storyIndex==1);
+ bootTitle();continueTitle();assert(view.page==Page::Prologue&&menu.storyIndex==1&&game.originPage==1);
+ nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.originPage==2);nvs.fail=false;tapped(110,269);assert(view.page==Page::Prologue&&menu.storyIndex==2);
+ tapped(60,290);assert(menu.storyIndex==1&&game.originPage==1);tapped(60,290);tapped(60,290);assert(view.page==Page::Help&&game.originPage==8&&!game.tutorial);
+ bootTitle();continueTitle();assert(view.page==Page::Help&&game.originPage==8);
+ auto originSaved=nvs.blobs;menu.storyReplay=true;menu.storyReturn=int(Page::Campaign);menu.storyIndex=0;view.page=Page::Prologue;
+ for(unsigned i=0;i<story::originCount(game);++i)tapped(175,290);assert(view.page==Page::Campaign&&game.originPage==8&&nvs.blobs==originSaved);
  // Boot/resume preserves each committed gameplay state and only activates timers on Continue.
  for(unsigned state=0;state<5;++state){
   game=rpg::testHero(1,42);game.tutorial=true;
