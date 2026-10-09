@@ -34,7 +34,7 @@ inline const char* attemptLock(Game& g,bool pick){
 inline bool discoveryValid(const Game& g){
  if(!lockValid(g))return false;
  if(g.scrap>9||g.discovery>5)return false;
- if(!g.discovery)return !g.discoverLoot&&!g.discoverAmount&&(g.enemyId<14||g.phase==Phase::Home);
+ if(!g.discovery)return !g.discoverLoot&&!g.discoverAmount&&(g.enemyId<14||g.enemyId>17||g.phase==Phase::Home);
  if(g.tripStage||g.campStage||g.dungeonFlags||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2)return false;
  if(g.discoverLoot>7||!g.discoverAmount)return false;
  if(g.discoverLoot==7&&g.discovery!=2)return false;

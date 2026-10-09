@@ -2,6 +2,7 @@
 #include "Campaign.h"
 #include "OriginStory.h"
 #include "AnwenStory.h"
+#include "FinaleStory.h"
 namespace story {
 struct Scene {const char* speaker;const char* lines[4];};
 constexpr Scene portScenes[2][4]={
@@ -49,6 +50,7 @@ inline const char* classVoice(unsigned cls){const char* lines[]={"Voce sente eco
 struct Objective {const char* title;const char* place;const char* lines[4];};
 inline Objective objective(const rpg::Game& g){
  if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Converse com Elarin e Borin.","Sua primeira pista e a cinza branca."}};
+ if(g.campaignEnding==2)return {"AURORA LIVRE","Aeldra / campanha concluida",{"Os farois nao exigem novas vitimas.","As cidades reconhecem sua ajuda.","Guilda e exploracao continuam.","Releia o epilogo no objetivo."}};
  if(rpg::anwenReady(g))return {"O LEGADO DE ANWEN","Aurora / Liora Valcer",{"As quatro cidades reuniram seus aliados.","O projeto sem vitimas esta completo.","Liora recebe a equipe de restauracao.","Converse com ela no palacio."}};
  if(g.campaignFlags&4){unsigned city=rpg::contributionNextCity(g);const char* places[]={"Carvalho / Elarin Folhacinza","Vespera / Iria Sorel","Mares / Nilsa Bronzamar","Aurora / Dargan Setemartelos"};return {"O LEGADO DE ANWEN",places[city],{"Reuna as quatro ajudas para os farois.","Cada cidade oferece uma parte do plano.","O diario registra as entregas reais.","Nenhuma delas exige outra vitima."}};}
 
@@ -62,7 +64,7 @@ inline Objective objective(const rpg::Game& g){
 inline const Person& person(unsigned city,unsigned index){return people[city%4][index%3];}
 inline const char* supplier(unsigned city){const char* n[]={"Elarin Folhacinza","Caelen Vesper","Tomas Valevento","Seraphine Alvor"};return n[city%4];}
 inline const char* smith(unsigned city){const char* n[]={"Borin Caldaferrea","Caelen Vesper","Nilsa Bronzamar","Dargan Setemartelos"};return n[city%4];}
-inline unsigned knownChapter(const rpg::Game& g){return (g.campaignFlags&3)==3?4:arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
+inline unsigned knownChapter(const rpg::Game& g){return g.campaignEnding?5:(g.campaignFlags&3)==3?4:arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
 constexpr const char* chapterNames[]={"O sino em Carvalho","A floresta ferida","Os mortos tem ordens","O porto e as cinzas","Juramentos de Aurora","A primeira luz"};
 constexpr Scene chapters[]={
  {"PROLOGO",{"Nara oferece abrigo nas Brasas.","Uma carta pede ajuda nas estradas.","Cinza branca tomou as raizes.","Elarin e Borin investigam a origem."}},

@@ -127,7 +127,7 @@ void tapped(int x,int y){
     else if(hit(x,y,14,224,102))menu.chapterIndex=(menu.chapterIndex+5)%6;
     else if(hit(x,y,124,224,102))menu.chapterIndex=(menu.chapterIndex+1)%6;say("");return;}
   if(view.page==Page::Campaign){
-    if(game.campaignFlags&4){if(hit(x,y,124,272,102)){view.page=view.objectiveReturn;say("");return;}if(hit(x,y,14,272,102)){view.page=Page::Journal;menu.chapterIndex=4;say("");}else if(hit(x,y,14,224,212)){unsigned city=rpg::contributionNextCity(game);if(game.city==city){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}else {showMap();menu.destination=city;}say("");}return;}
+    if(game.campaignFlags&4){if(game.campaignEnding==2&&hit(x,y,14,224,212)){view.campaignScene=0;view.page=Page::Epilogue;say("");return;}if(hit(x,y,124,272,102)){view.page=view.objectiveReturn;say("");return;}if(hit(x,y,14,272,102)){view.page=Page::Journal;menu.chapterIndex=4;say("");}else if(hit(x,y,14,224,212)){unsigned city=rpg::contributionNextCity(game);if(game.city==city){menu.storyReturn=int(Page::Campaign);view.page=Page::People;}else {showMap();menu.destination=city;}say("");}return;}
 
     if(hit(x,y,14,198,212,24)){menu.storyReplay=true;menu.storyReturn=int(Page::Campaign);menu.storyIndex=0;view.page=Page::Prologue;say("");return;}
     if(hit(x,y,14,224,212)){
@@ -152,11 +152,12 @@ void tapped(int x,int y){
   if(view.page==Page::CampaignResult){
     if(!hit(x,y,14,272,212))return;
     bool won=game.phase==rpg::Phase::Won,lost=game.phase==rpg::Phase::Lost;
-    if(won&&view.campaignScene+1<(game.campaignStage>=4?story::contributionPages(game.campaignStage):rpg::campaignScenes(game.campaignStage))){++view.campaignScene;say("");return;}
+    if(won&&view.campaignScene+1<(game.campaignStage>=8?story::finalePages(game,game.campaignStage):game.campaignStage>=4?story::contributionPages(game.campaignStage):rpg::campaignScenes(game.campaignStage))){++view.campaignScene;say("");return;}
     if(rpg::resolveCampaign(game)){view.campaignScene=0;say(won?"Descoberta registrada no diario":"A missao pode ser tentada de novo");savedTransition(lost?Page::Recovery:Page::People);menu.storyReturn=int(game.city==1?Page::Ruins:Page::Village);}return;
   }
+  if(view.page==Page::Epilogue){if(hit(x,y,14,272,212)){if(view.campaignScene+1<story::finalePages(game,9))++view.campaignScene;else view.page=Page::Campaign;say("");}return;}
   if(view.page==Page::ContributionResult){if(hit(x,y,14,272,102)){if(view.campaignScene)--view.campaignScene;else view.page=Page::People;}else if(hit(x,y,124,272,102)){if(view.campaignScene+1<story::contributionPages(view.campaignChoice))++view.campaignScene;else view.page=Page::People;}say("");return;}
-  if(view.page==Page::Dialogue){if(hit(x,y,8,8,224,210)&&view.dialogueAnimate){view.dialogueAnimate=false;say("");return;}if(menu.personIndex==rpg::campaignPerson(rpg::campaignMission(game))&&rpg::campaignContact(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,102)){if(view.dialoguePage)--view.dialoguePage;else view.page=Page::People;}else if(hit(x,y,124,272,102)){if(view.dialoguePage+1<story::conversationPages(story::conversation(game,menu.personIndex)))++view.dialoguePage;else {view.dialoguePage=0;view.page=Page::People;}}say("");return;}
+  if(view.page==Page::Dialogue){if(hit(x,y,8,8,224,210)&&view.dialogueAnimate){view.dialogueAnimate=false;say("");return;}if(((menu.personIndex==rpg::campaignPerson(rpg::campaignMission(game))&&rpg::campaignContact(game))||(game.city==3&&menu.personIndex==0&&(game.campaignFlags&4)&&game.campaignEnding!=2))&&hit(x,y,14,225,212,32)){view.campaignChoice=game.city==3&&menu.personIndex==0&&(game.campaignFlags&4)?rpg::finaleMission(game):rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,102)){if(view.dialoguePage)--view.dialoguePage;else view.page=Page::People;}else if(hit(x,y,124,272,102)){if(view.dialoguePage+1<story::conversationPages(story::conversation(game,menu.personIndex)))++view.dialoguePage;else {view.dialoguePage=0;view.page=Page::People;}}say("");return;}
   if(view.page==Page::Continent){if(hit(x,y,14,272,102))showMap();
     else if(hit(x,y,124,272,102)){if(!menu.regionIndex)showMap();else say("Mapa de regiao futura");}
     else if(hit(x,y,14,224,102))menu.regionIndex=(menu.regionIndex+7)%8;
