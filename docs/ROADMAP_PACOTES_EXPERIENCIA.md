@@ -1,5 +1,7 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
+Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
+
 Estado atual09/10: primeira entrega do Pacote5 publicada em2026.10.09-aurora1, missão Arquivos da Coroa com Liora/Nv18/Sentinela e seis cenas. GuiaPACOTE_5_AURORA_ARQUIVOS_DA_COROA.md, save21 e34suítes. Continuam pendentes as quatro contribuições, confrontos finais e epílogos; próximo trabalho dentro do Pacote5.
 
 Estado09/10: Pacote4.6 — Bestiário publicado em2026.10.09-bestiario1. É a última entrega planejada do Pacote4; aguardamos validação física. A próxima etapa é Pacote5 — Aurora e fechamento da campanha. Poderes restantes do SRD e ajustes econômicos são trabalho futuro/contínuo, não novos subpacotes obrigatórios para iniciar5.

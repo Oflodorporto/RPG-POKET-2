@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote5 — Vozes de Aeldra,2026.10.09-vozes1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1) · [Guia](docs/PACOTE_5_VOZES_DE_AELDRA.md).12 NPCs, falas contínuas conforme progresso e pergaminho animado com retratos/cenários locais.35suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam planejados.
+
 **Entrega mais recente: Pacote5 — Aurora: Arquivos da Coroa,2026.10.09-aurora1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-aurora1) · [Guia](docs/PACOTE_5_AURORA_ARQUIVOS_DA_COROA.md). Liora/Nv18 após Mares, missão da Sentinela/seis cenas com retratos/diário.34suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; leitor anterior não abre21. Artes mantidas. Contribuições/confrontos/finais seguem próximos.
 
 **Última entrega planejada do Pacote4:4.6 — Bestiário do herói,2026.10.09-bestiario1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-bestiario1) · [Guia](docs/PACOTE_4_6_BESTIARIO_DO_HEROI.md). Menu > Bestiário: criaturas encontradas por personagem.33suítes/compilação/downloads conferidos; teste físico pendente. Save20 lê1–20; firmware anterior não abre save20. Arte mantida. Próximo: Pacote5 Aurora.

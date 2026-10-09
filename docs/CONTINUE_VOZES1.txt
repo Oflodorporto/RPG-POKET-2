@@ -1,0 +1,46 @@
+RPG POKET2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE5 — VOZES DE AELDRA
+Versão2026.10.09-vozes1/build2026100907.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1
+Commit firmware: 1a03820ad39d113055ae420a2c239f9180de83bb
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37966353896
+CI publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37966849157 — sucesso.
+Compilação: 2026-10-09T17:30:12.5369117Z Sketch uses 2704626 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T17:30:12.5369981Z Global variables use 53820 bytes (16%) of dynamic memory, leaving 273860 bytes for local variables. Maximum is 327680 bytes.
+35suítes e snapshot controlador real. Download SHA/tamanho/CRC/catálogo conferidos. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Falas: DialogueStory.h; pergaminho NarrativeView.h/View.h; controle RPG_POKET_2.ino
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_5_VOZES_DE_AELDRA.md
+Prévia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-vozes1.png
+Release verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-vozes1/VERIFICACAO.json
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT/guia, ROADMAP_PACOTES_EXPERIENCIA.md e LORE_CANONICA_RPG_POKET_2.md; conferir fonte/ReleaseVersion.h/Save.h/release atuais.
+2. Conferir relato físico: Pessoas>Nara/Iria/Sabela/Liora, abertura suave do pergaminho, toque para antecipar, retrato/cenário da cidade, texto grande, avançar/voltar/fechar. Conferir que personagem entende o motivo do próximo objetivo. Missão Sabela/Liora preserva requisitos e cancelamento; navegação não grava nem consome recursos. Nunca editar saves físicos para forçar testes.
+3. Próxima entrega do Pacote5: contribuições/projeto de Anwen, confrontos Odran/Coração do Véu, condições claras, final temporário reversível e final pleno/epílogo/exploração posterior. Usar falas contínuas desde o início, sem tópicos vagos. Apenas Arquivos da Coroa/missão3/flag4 e as novas conversas estão implementados. Não prometer finais prontos.
+4. Save21/128bytes/leitura1–21 inalterado. Flags120 válidos0,1,3,7; stage1210..3. Bestiário54/47alto/50alto; conservar baús60–63/acampamento90–91/origem122–123. Não inferir contribuições de visita/nível. Leitores antigos bloqueiam21. Pacote6 começa com novos inimigos/contratos regionais: lacuna confirmada no código, ainda não corrigida nesta release.
+5. Rodar35suítes/controlador real/render; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none, candidato antes de main e downloads verificados. Artes459 iguais à aurora1/carregadas em PSRAM; pergaminho é desenhado sem novos arquivos nem leituraSD por quadro. D20/deslocamento preservados. Registrar progresso e limitação física.
+
+RESTRIÇÕES: preservarHeltec; semflash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirmaOTA/grava cabo. Software não confirma placa física. Cânone: Odran responsável por escolhas, Véu não resolvido só matando criatura, Anwen sem novas vítimas, final incompleto reversível, futuras regiões não desfazem Aeldra.
+
+DETALHES:
+# Pacote5 — Vozes de Aeldra
+
+Versão2026.10.09-vozes1/build2026100907. Publicada e verificada:35suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
+
+Revisão pedida após Aurora: NPCs pareciam tópicos de planejamento, em vez de conversas, e o usuário se sentia perdido. Pessoas > NPC agora mostra discurso contínuo, com motivo pessoal, consequência concreta e próximo passo dentro do mundo. Os12 NPCs das quatro localidades ganham falas completas; Nara, Iria, Sabela, Liora e aliados reconhecem Livro/Guardião/cargas/resgate/arquivos conforme o progresso registrado. Evita revelar a Vigília antes dos arquivos. Vaelor mantém identidade/retrato ocultos antes do encontro; a tela explica quem procurar.
+
+Pergaminho claro com tinta escura abre em cerca de720ms sobre o cenário da cidade; retrato e texto aparecem ao terminar. Toque na folha antecipa a abertura; controles de página permanecem ativos. A abertura não se repete a cada página e não exige leituraSD por quadro. Fonte grande,18caracteres por linha, até7linhas por página, retrato48px, função e indicador de conversa. Anterior volta uma página; Voltar na primeira fecha. Próxima avança; Fechar na última retorna a Pessoas. Selecionar outro NPC começa na primeira página. O botão de missão de Sabela/Liora permanece separado abaixo do texto, disponível com os mesmos requisitos; leitura não é uma nova barreira obrigatória à campanha. Nenhum tempo limite para ler. Reinício descarta apenas a posição de leitura.
+
+72combinações de NPC/progresso,225páginas revisadas por teste de conteúdo/comprimento; renderer verifica todas as páginas e fonte/limites. Consulta/navegação não altera RNG/recursos/saves nem conta como missão concluída. Controladores reais sincronizados. Save21/128bytes/leitura1–21 e artes459 byte a byte preservados, sem leituraSD por quadro.35suítes incluem campanha/quests/baús/dungeon/mapa/D20/viagem/classes. Publicação exige compilação e downloads verificados. Nenhum flash automático/.rpg/eraseNVS/formataçãoSD/alteraçãoHeltec. Placa física é validada pelo usuário.
+
+Esta entrega não adiciona os finais, novos inimigos ou contratos regionais. A revisão tornou explícita uma lacuna: Mares tem só Saqueador e Aurora só Sentinela na exploração regular; os3 contratos continuam globais das Ruínas. Não chamar isso de variedade entregue. Não substituir o inimigo por um sprite diferente e vender isso como novo encontro.
+
+Planejamento revisto: Pacote5 conclui narrativa/contribuições/confrontos/finais com falas completas desde a primeira implementação. Pacote6 começa por variedade regional de encontros e contratos, antes de ampliar eventos diários. Pacotes7/8 verificam compreensão com jogadores novos, equilíbrio/repetição e apresentação/licenças. Conferir ROADMAP_PACOTES_EXPERIENCIA.md; critério será o jogador entender quem precisa dele, por quê e o que mudou após ajudar.
+
+Teste físico: atualizar > Pessoas > conversar com Nara/Iria/Sabela/Liora; ler, avançar, voltar e fechar; conferir os retratos/fonte, próxima ação e fala correspondente ao progresso. Em Sabela/Liora, confirmar que a missão aparece nos mesmos estados e pode ser aberta/cancelada. Conferir diário/objetivo/bolsa/bestiário/mapa/D20. Teste de narrativa: conseguir contar com suas palavras o problema da cidade e o motivo de partir, sem usar apenas o botão Objetivo.
+

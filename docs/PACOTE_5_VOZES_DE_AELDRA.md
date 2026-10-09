@@ -1,6 +1,6 @@
 # Pacote5 — Vozes de Aeldra
 
-Versão2026.10.09-vozes1/build2026100907. Candidata em validação.
+Versão2026.10.09-vozes1/build2026100907. Publicada e verificada:35suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Revisão pedida após Aurora: NPCs pareciam tópicos de planejamento, em vez de conversas, e o usuário se sentia perdido. Pessoas > NPC agora mostra discurso contínuo, com motivo pessoal, consequência concreta e próximo passo dentro do mundo. Os12 NPCs das quatro localidades ganham falas completas; Nara, Iria, Sabela, Liora e aliados reconhecem Livro/Guardião/cargas/resgate/arquivos conforme o progresso registrado. Evita revelar a Vigília antes dos arquivos. Vaelor mantém identidade/retrato ocultos antes do encontro; a tela explica quem procurar.
 
