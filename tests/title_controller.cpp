@@ -633,6 +633,12 @@ int main(){
     for(unsigned i:{2u,3u}){view.powerIndex=i;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(game,2,before);auto blobs=nvs.blobs;tapped(120,254);rpg::encode(game,2,after);assert(view.page==Page::Powers&&nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));}
     tapped(180,130);assert(view.powerIndex==0);tapped(120,290);assert(view.page==Page::Character);
   }
+  // Mage passive cards are information only; mastered spells keep normal turns.
+  for(unsigned lv:{9u,10u,17u,18u,20u}){combatFx.kind=Effect::None;game=rpg::create(0,73);game.p.xp=rpg::dndXp[lv-1];rpg::levelUp(game);game.p.mp=0;journal.blocked=false;assert(journal.save(game));view.page=Page::Powers;view.powersReturn=Page::Character;
+    for(unsigned i:{5u,6u}){view.powerIndex=i;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(game,2,before);auto blobs=nvs.blobs;tapped(120,254);rpg::encode(game,2,after);assert(view.page==Page::Powers&&nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));}
+    tapped(180,130);assert(view.powerIndex==0);tapped(120,290);assert(view.page==Page::Character);
+  }
+  combatFx.kind=Effect::None;game=rpg::create(0,91);game.p.xp=rpg::dndXp[17];rpg::levelUp(game);game.p.mp=0;rpg::begin(game,7);assert(journal.save(game));view.page=Page::Powers;view.powerIndex=0;nvs.fail=true;tapped(120,254);assert(view.page==Page::SaveError&&game.phase==rpg::Phase::Enemy&&!game.p.mp);auto masteredHp=game.enemyHp;auto masteredRng=game.randomState;nvs.fail=false;tapped(110,269);assert(view.page==Page::Battle&&game.enemyHp==masteredHp&&game.randomState==masteredRng&&!game.p.mp);rpg::Game masteredLoaded;assert(journal.load(masteredLoaded)==rpg::Load::Ok&&masteredLoaded.enemyHp==masteredHp);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

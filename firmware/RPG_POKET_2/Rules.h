@@ -168,6 +168,9 @@ inline const char* powerName(Action a){switch(a){case Action::MagicMissile:retur
 inline unsigned powerLevel(Action a){return a==Action::ActionSurge||a==Action::DivineSmite?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
 inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell||a==Action::DivineSmite?3:0;}
 inline bool undead(unsigned id){return id==2||id==5||id==8||id==9;}
+inline bool masteredSpell(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=18&&(a==Action::MagicMissile||a==Action::ScorchingRay);}
+inline unsigned powerCost(const Game& g,Action a){return masteredSpell(g,a)?0:powerCost(a);}
+inline unsigned evocationBonus(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=10&&(a==Action::MagicMissile||a==Action::BurningHands||a==Action::ScorchingRay||a==Action::Fireball)?std::max(0,abilityMod(g.attributes[3])):0;}
 inline unsigned layRemaining(const Game& g){return g.dndProgression&&g.p.cls==1?5u*g.p.level-g.laySpent:0;}
 inline void refreshPowers(Game& g){g.laySpent=0;g.channelSpent=false;g.sacredTurns=g.turnedTurns=0;g.windSpent=g.surgeSpent=g.rageSpent=0;clearMartialCombat(g);}
 inline const char* swearDevotion(Game& g){if(!g.dndProgression||g.p.cls!=1)return "Somente novo Paladino";if(g.p.level<3)return "Juramento no nivel 3";if(g.oath)return "Juramento ja firmado";if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Firme na cidade ou abrigo";g.oath=1;return nullptr;}
@@ -176,7 +179,7 @@ inline const char* powerError(const Game& g,Action a){
  unsigned cls=a==Action::RagePower?3:a==Action::SecondWind||a==Action::ActionSurge?2:uint8_t(a)>=uint8_t(Action::LayHands)?1:0;if(g.p.cls!=cls)return "Poder de outra classe";
  if(g.p.level<powerLevel(a))return "Nivel insuficiente";
  if(g.phase!=Phase::Hero&&!((a==Action::LayHands||a==Action::SecondWind)&&g.phase==Phase::Home&&!g.tripStage&&!g.campStage&&g.clubStage!=1&&g.clubStage!=2))return "Use no seu turno";
- if(g.p.mp<powerCost(a))return "Mana insuficiente";
+ if(g.p.mp<powerCost(g,a))return "Mana insuficiente";
  if(a==Action::SecondWind){if(g.windSpent)return "Folego esgotado: descanse";if(g.p.hp>=g.p.maxhp)return "HP ja esta cheio";}
  if(a==Action::ActionSurge){if(g.surgeSpent>=surgeUses(g))return "Surto esgotado: descanse";if(g.surgeTurnUsed)return "Um surto por turno";}
  if(a==Action::RagePower){if(g.rageTurns)return "Furia ja esta ativa";if(g.p.level<20&&g.rageSpent>=rageUses(g))return "Furias esgotadas: descanse";}
@@ -188,7 +191,7 @@ inline const char* act(Game& g,Action a);
 inline const char* usePower(Game& g,Action a){
  if(auto err=powerError(g,a))return err;
  if(a==Action::DivineSmite)return act(g,a);
- g.p.mp-=powerCost(a);g.damage=0;g.crit=g.dodge=false;
+ g.p.mp-=powerCost(g,a);g.damage=0;g.crit=g.dodge=false;
  if(a==Action::SecondWind){g.damage=std::min<unsigned>(g.p.maxhp-g.p.hp,1+random(g)%10+g.p.level);g.p.hp+=g.damage;g.windSpent=1;return nullptr;}
  if(a==Action::ActionSurge){++g.surgeSpent;g.surgePending=g.surgeTurnUsed=true;return nullptr;}
  if(a==Action::RagePower){if(g.p.level<20)++g.rageSpent;g.rageTurns=3;return nullptr;}
@@ -196,10 +199,11 @@ inline const char* usePower(Game& g,Action a){
  if(a==Action::ShieldSpell){g.guard=75;g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::SacredWeapon){g.channelSpent=true;g.sacredTurns=3;g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::TurnUndead){g.channelSpent=true;g.turnedTurns=2;g.phase=Phase::Enemy;return nullptr;}
- unsigned damage=0;
+ unsigned damage=0;bool saved=false;
  if(a==Action::MagicMissile){for(unsigned i=0;i<3;++i)damage+=2+random(g)%4;}
  else if(a==Action::ScorchingRay){for(unsigned i=0;i<3;++i){unsigned roll=random(g)%20+1;if(roll!=1&&(roll==20||int(roll)+abilityMod(g.attributes[3])+int(proficiency(g.p.level))>=10+enemySpec(g.enemyId).def/3))damage+=2+random(g)%6+random(g)%6;}}
- else {for(unsigned i=0;i<(a==Action::Fireball?8u:3u);++i)damage+=1+random(g)%6;if(int(random(g)%20+1)+2>=8+int(proficiency(g.p.level))+abilityMod(g.attributes[3]))damage/=2;}
+ else {for(unsigned i=0;i<(a==Action::Fireball?8u:3u);++i)damage+=1+random(g)%6;if(int(random(g)%20+1)+2>=8+int(proficiency(g.p.level))+abilityMod(g.attributes[3]))saved=true;}
+ if(damage)damage+=evocationBonus(g,a);if(saved)damage/=2;
  g.damage=std::min<unsigned>(g.enemyHp,damage);g.enemyHp-=g.damage;g.phase=Phase::Enemy;return nullptr;
 }
 // Percentage combat adaptation of the Champion milestones in SRD 5.1.

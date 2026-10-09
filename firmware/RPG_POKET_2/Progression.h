@@ -7,6 +7,8 @@ struct LevelBenefits {unsigned count=0;char lines[6][40]{};void add(const char* 
 inline LevelBenefits levelBenefits(const Game& g,unsigned level){
  LevelBenefits out;if(!g.dndProgression||level<1||level>20)return out;char b[40];
  for(unsigned a=unsigned(Action::MagicMissile);a<=unsigned(Action::DivineSmite);++a){auto action=Action(a);unsigned cls=action==Action::RagePower?3:action==Action::SecondWind||action==Action::ActionSurge?2:a>=unsigned(Action::LayHands)?1:0;if(cls==g.p.cls&&powerLevel(action)==level)out.add(powerName(action));}
+ if(g.p.cls==0&&level==10)out.add("Evocacao: +mod INT no dano");
+ if(g.p.cls==0&&level==18)out.add("Maestria: misseis e raios sem MP");
  if(g.p.cls==1&&level==2)out.add("Investida: tecnica de ataque");
  if(g.p.cls==1&&level==11)out.add("Punicao aprimorada: +1d8/golpe");
  if(g.p.cls==1&&level==3)out.add("Escolha o juramento nos Poderes");
