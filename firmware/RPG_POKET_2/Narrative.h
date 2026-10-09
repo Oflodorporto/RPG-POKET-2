@@ -72,7 +72,7 @@ constexpr Scene chapters[]={
  {"ATO II / VESPERA",{"Iria investiga as antigas ordens.","Venca encontros nas Ruinas.","O Guardiao protege o limiar.","Um cristal abre a Cripta."}},
  {"ATO III / MARES",{"Voce encontrou o Livro das Vigilias.","Os cristais guardam memorias.","Sabela investiga cargas no porto.","Procure-a em Mares."}},
  {"ATO IV / AURORA",{"O porto foi salvo; o farol respondeu.","Maelis confessou o uso dos recursos.","Os registros levam a Coroa.","Liora espera em Aurora."}},
- {"CAPITULO FUTURO",{"Os quatro farois estao ligados.","A historia continuara com aliados", "e novas escolhas em Aeldra.","As outras regioes ficam alem."}}
+ {"DESFECHO DE AELDRA",{"Odran responde por suas ordens.","Os aliados sustentam os farois.","Aeldra pode escolher seu amanha.","A jornada continua nas estradas."}}
 };
 struct Region {const char* name;const char* subtitle;const char* route;};
 constexpr Region regions[]={
