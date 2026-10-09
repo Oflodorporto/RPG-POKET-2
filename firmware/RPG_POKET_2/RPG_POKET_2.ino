@@ -159,10 +159,10 @@ void tapped(int x,int y){
   if(combatFx.active()||menu.journey.active)return;
   if(view.page==Page::CampRest)return;
   if(view.page==Page::ChestLock){
-    if(hit(x,y,14,284,212,32)){rpg::clearDiscovery(game);say("Bau deixado para tras");savedTransition(game.city==1?Page::Ruins:Page::Explore);return;}
-    if(game.chestLock==2){if(hit(x,y,14,240,212,38)){auto err=rpg::collectDiscovery(game);if(err)say(err);else {say("Guardado na bolsa");savedTransition(currentPage());}}return;}
+    if(hit(x,y,14,288,212,28)){rpg::clearDiscovery(game);say("Bau deixado para tras");savedTransition(game.city==1?Page::Ruins:Page::Explore);return;}
+    if(game.chestLock==2){if(hit(x,y,14,256,212,28)){auto err=rpg::collectDiscovery(game);if(err)say(err);else {say("Guardado na bolsa");savedTransition(currentPage());}}return;}
     if(game.chestLock==3)return;
-    bool pick=hit(x,y,14,240,212,38);if(!pick&&!hit(x,y,14,196,212,38))return;
+    bool pick=hit(x,y,14,256,212,28);if(!pick&&!hit(x,y,14,224,212,28))return;
     auto err=rpg::attemptLock(game,pick);if(err)say(err);else {say(rpg::lockSuccess(game)?"Fechadura aberta":game.chestTrap?"Armadilha: confira seu HP":"Tentativa falhou");savedTransition(Page::ChestLock);}return;
   }
   if(view.page==Page::Lockpicks){if(hit(x,y,14,270,102)){view.page=view.picksReturn;say("");}else if(hit(x,y,124,270,102)){auto err=rpg::buyGazua(game);if(err)say(err);else {say("Uma gazua guardada na bolsa");savedTransition(Page::Lockpicks);}}return;}
