@@ -49,7 +49,7 @@ template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
 }
 template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
  PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);scenicPanel(c,10,112,220,26);panelLabel(c,14,115,212,"Trilha de classe >",UI_GOLD);c.fillRect(54,139,132,18,0x0843);c.fillRect(55,161,63,19,0x0843);c.fillRect(124,161,63,19,0x0843);char b[64];
- unsigned next=rpg::nextBenefitLevel(g);if(next){auto gains=rpg::levelBenefits(g,next);snprintf(b,sizeof(b),"Nv %u: %s",next,gains.lines[0]);}else snprintf(b,sizeof(b),g.dndProgression?"Nivel maximo: jornada continua":"Heroi antigo: regras preservadas");panelLabel(c,14,126,212,b,UI_GREEN);
+ unsigned next=rpg::nextBenefitLevel(g);if(next){auto gains=rpg::levelBenefits(g,next);snprintf(b,sizeof(b),"Nv %u: %s",next,gains.lines[0]);}else if(g.dndProgression&&g.p.level<20)snprintf(b,sizeof(b),"Nv %u: mais HP, MP e ataque",unsigned(g.p.level)+1);else snprintf(b,sizeof(b),g.dndProgression?"Nivel maximo: jornada continua":"Heroi antigo: regras preservadas");panelLabel(c,14,126,212,b,UI_GREEN);
  snprintf(b,sizeof(b),"Nv %u  XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));panelLabel(c,40,142,160,b);panelBar(c,60,152,120,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
  snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,56,164,61,b);panelBar(c,59,175,56,g.p.hp,g.p.maxhp,UI_RED);
  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,124,164,63,b);panelBar(c,126,175,56,g.p.mp,g.p.maxmp,UI_BLUE);
