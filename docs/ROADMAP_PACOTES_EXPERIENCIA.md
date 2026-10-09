@@ -1,6 +1,8 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes avançados/bestiário/ajustes econômicos permanecem pendentes. Os pacotes5–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
+Estado09/10: Pacote4.6 — Bestiário publicado em2026.10.09-bestiario1. É a última entrega planejada do Pacote4; aguardamos validação física. A próxima etapa é Pacote5 — Aurora e fechamento da campanha. Poderes restantes do SRD e ajustes econômicos são trabalho futuro/contínuo, não novos subpacotes obrigatórios para iniciar5.
+
+Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes das quatro classes e bestiário entregues nos4.1–4.6; ajustes econômicos continuam conforme sessões reais. Os pacotes5–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
 ## O que permanece da revisão anterior
 
@@ -85,6 +87,8 @@ Ideias do usuário: cadeados/trancas, arrombar à força ou abrir com gazua.
 Critério: escolher método é relevante e legível, toda classe tem uma saída, e falhar cria uma consequência justa.
 
 ## Pacote4 — Crescer com vontade de enfrentar o próximo desafio
+
+Escopo fechado com4.6: progressão e decisões claras, identidades executáveis das quatro classes (4.1–4.4), ficha de inimigo (4.5) e bestiário por herói (4.6). Save20/128bytes e33suítes. As propostas abaixo permanecem como visão; não significam compromisso de implementar todo SRD antes de5.
 
 Desdobramento4.5 publicado:2026.10.09-inimigos1, ficha do adversário atual com intenção/tipo/dicas/limite de dano, consulta sem gastar turno/gravar.32suítes e guiaPACOTE_4_5_CONHECA_O_INIMIGO.md. Bestiário persistente, demais classes/balanceamento e Pacote5 Aurora continuam pendentes.
 
