@@ -49,7 +49,7 @@ void action(rpg::Action a){
   const char* err=rpg::act(game,a);if(err){say(err);return;}
   if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
   else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
-  else if(a==rpg::Action::RagePower)say("Furia: 3 rodadas; resiste fisico");
+  else if(a==rpg::Action::RagePower)say(rpg::persistentRage(game)?"Furia: ate o fim da luta":"Furia: 3 rodadas; resiste fisico");
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)snprintf(message,sizeof(message),"%s ativado",rpg::powerName(a));
   else if(a==rpg::Action::Life||a==rpg::Action::Mana)snprintf(message,sizeof(message),"Recuperou %u %s",game.damage,a==rpg::Action::Life?"HP":"MP");
   else if(a==rpg::Action::Defensive)snprintf(message,sizeof(message),"%s ativado",rpg::skillName(game.p.cls,true));
@@ -639,6 +639,16 @@ int main(){
     tapped(180,130);assert(view.powerIndex==0);tapped(120,290);assert(view.page==Page::Character);
   }
   combatFx.kind=Effect::None;game=rpg::create(0,91);game.p.xp=rpg::dndXp[17];rpg::levelUp(game);game.p.mp=0;rpg::begin(game,7);assert(journal.save(game));view.page=Page::Powers;view.powerIndex=0;nvs.fail=true;tapped(120,254);assert(view.page==Page::SaveError&&game.phase==rpg::Phase::Enemy&&!game.p.mp);auto masteredHp=game.enemyHp;auto masteredRng=game.randomState;nvs.fail=false;tapped(110,269);assert(view.page==Page::Battle&&game.enemyHp==masteredHp&&game.randomState==masteredRng&&!game.p.mp);rpg::Game masteredLoaded;assert(journal.load(masteredLoaded)==rpg::Load::Ok&&masteredLoaded.enemyHp==masteredHp);
+  for(unsigned lv:{8u,9u,13u,14u,15u,17u,20u}){combatFx.kind=Effect::None;game=rpg::create(3,73);game.p.xp=rpg::dndXp[lv-1];rpg::levelUp(game);journal.blocked=false;assert(journal.save(game));view.page=Page::Powers;view.powersReturn=Page::Character;
+    for(unsigned i:{1u,2u}){view.powerIndex=i;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(game,2,before);auto blobs=nvs.blobs;tapped(120,254);rpg::encode(game,2,after);assert(view.page==Page::Powers&&nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));}
+    tapped(180,130);assert(view.powerIndex==0);tapped(120,290);assert(view.page==Page::Character);
+  }
+  // A critical attack's random dice are committed once even after failed storage.
+  combatFx.kind=Effect::None;game=rpg::create(3,47);game.p.xp=rpg::dndXp[16];rpg::levelUp(game);game.p.hp=game.p.maxhp;game.p.mp=game.p.maxmp;assert(rpg::begin(game,7));game.tutorial=true;
+  bool gotCritical=false;for(unsigned seed=1;seed<1000;++seed){auto trial=game;trial.randomState=seed;rpg::act(trial,rpg::Action::Attack);if(trial.crit&&!trial.dodge&&trial.phase==rpg::Phase::Enemy){game.randomState=seed;gotCritical=true;break;}}assert(gotCritical);
+  journal.blocked=false;assert(journal.save(game));view.page=Page::Battle;nvs.fail=true;action(rpg::Action::Attack);assert(view.page==Page::SaveError&&game.crit&&!game.dodge);auto brutalHp=game.enemyHp;auto brutalRng=game.randomState;auto brutalTurn=game.phase;
+  nvs.fail=false;tapped(120,269);assert(game.enemyHp==brutalHp&&game.randomState==brutalRng&&game.phase==brutalTurn);rpg::Game brutalLoaded;assert(journal.load(brutalLoaded)==rpg::Load::Ok&&brutalLoaded.enemyHp==brutalHp&&brutalLoaded.randomState==brutalRng);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
+
 

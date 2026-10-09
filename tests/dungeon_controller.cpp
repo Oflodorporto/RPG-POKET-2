@@ -49,7 +49,7 @@ void action(rpg::Action a){
   const char* err=rpg::act(game,a);if(err){say(err);return;}
   if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
   else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
-  else if(a==rpg::Action::RagePower)say("Furia: 3 rodadas; resiste fisico");
+  else if(a==rpg::Action::RagePower)say(rpg::persistentRage(game)?"Furia: ate o fim da luta":"Furia: 3 rodadas; resiste fisico");
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)snprintf(message,sizeof(message),"%s ativado",rpg::powerName(a));
   else if(a==rpg::Action::Life||a==rpg::Action::Mana)snprintf(message,sizeof(message),"Recuperou %u %s",game.damage,a==rpg::Action::Life?"HP":"MP");
   else if(a==rpg::Action::Defensive)snprintf(message,sizeof(message),"%s ativado",rpg::skillName(game.p.cls,true));

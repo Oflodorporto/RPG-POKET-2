@@ -158,6 +158,11 @@ inline Game create(uint8_t c,uint32_t seed) {
 inline uint32_t random(Game& g){uint32_t x=g.randomState;x^=x<<13;x^=x>>17;x^=x<<5;return g.randomState=x;}
 inline unsigned surgeUses(const Game& g){return g.p.level<2?0:g.p.level>=17?2:1;}
 inline unsigned rageUses(const Game& g){return g.p.level>=20?255:g.p.level>=17?6:g.p.level>=12?5:g.p.level>=6?4:g.p.level>=3?3:2;}
+inline bool persistentRage(const Game& g){return g.dndProgression&&g.p.cls==3&&g.p.level>=15;}
+inline unsigned brutalDice(const Game& g){return g.dndProgression&&g.p.cls==3&&g.p.level>=9?(g.p.level>=17?3:g.p.level>=13?2:1):0;}
+// The current weapon engine has no item dice: each brutal die uses d6.
+inline unsigned brutalDamage(Game& g){unsigned damage=0;for(unsigned i=0;i<brutalDice(g);++i)damage+=1+random(g)%6;return damage;}
+inline void tickRage(Game& g){if(g.rageTurns&&!persistentRage(g))--g.rageTurns;}
 inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2;}
 // Spectres and the Arconte deal magical damage; other current encounters are physical.
 inline bool physicalEnemy(unsigned id){return id!=5&&id!=8;}
@@ -257,12 +262,12 @@ inline const char* act(Game& g,Action a){
   }
   bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def,weaponCriticalChance(g));
   if(g.dndProgression&&!skill)damage*=attacksPerAction(g);
-  if(g.dndProgression&&g.p.cls==3&&g.crit&&g.p.level>=9)damage+=g.p.level>=17?3:g.p.level>=13?2:1;
   if(skill)damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;
   if(g.rageTurns)damage+=rageBonus(g)*(skill?1:attacksPerAction(g));
   if(g.sacredTurns){damage+=std::max(1,abilityMod(g.attributes[5]));--g.sacredTurns;}
   g.dodge=!(skill&&g.p.cls==2)&&random(g)%100<6;
   if(!g.dodge){
+    if(g.crit)damage+=brutalDamage(g);
     // SRD 5.1 adaptation: select before the attack; charge mana only on a hit.
     // Extra Attack is aggregated by the existing engine. Smite applies once;
     // Improved Divine Smite applies to each melee hit in that action.
@@ -301,10 +306,10 @@ inline bool enemy(Game& g){
  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);g.surgeTurnUsed=false;
  if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;startHeroTurn(g);return true;}
  auto intent=enemyIntent(g);if(g.dndProgression)g.enemyBeat=(g.enemyBeat+1)%3;
- if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;if(g.rageTurns)--g.rageTurns;g.phase=Phase::Hero;startHeroTurn(g);return true;}
+ if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;tickRage(g);g.phase=Phase::Hero;startHeroTurn(g);return true;}
  int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));if(intent==Intent::Heavy)damage=damage*3/2;
  unsigned guard=g.guard;if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
- if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;--g.rageTurns;}
+ if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;tickRage(g);}
  g.dodge=random(g)%100<6;
  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
  g.phase=Phase::Hero;finish(g);if(g.phase==Phase::Hero)startHeroTurn(g);return true;
