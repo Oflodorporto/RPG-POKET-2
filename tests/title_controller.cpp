@@ -422,15 +422,24 @@ void tapped(int x,int y){
       if(game.phase==rpg::Phase::Hero){action(a);return;}
       auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
   }
-  if(view.page==Page::Evolution){
-    if(hit(x,y,10,120,220,18)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
-    if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
-    else if(hit(x,y,124,272,102)){auto err=rpg::learnTough(game);if(err)say(err);else {say("Talento Resistente aprendido");savedTransition(Page::Evolution);}}
-    else if(hit(x,y,14,92,102)){view.evolutionLevel=view.evolutionLevel==1?20:view.evolutionLevel-1;say("");}
-    else if(hit(x,y,124,92,102)){view.evolutionLevel=view.evolutionLevel%20+1;say("");}
-    else for(unsigned i=0;i<6;++i)if(hit(x,y,14+(i%2)*110,156+(i/2)*34,102,30)){auto err=rpg::improveAttribute(game,i);if(err)say(err);else {say("Atributo aumentado");savedTransition(Page::Evolution);}}return;
+  if(view.page==Page::Progression){
+    if(!game.dndProgression){if(hit(x,y,14,278,212,32)){view.page=Page::Character;say("");}return;}
+    if(hit(x,y,14,94,102,32)){view.evolutionLevel=std::max(1,int(view.evolutionLevel)-1);say("");}
+    else if(hit(x,y,124,94,102,32)){view.evolutionLevel=std::min(20,int(view.evolutionLevel)+1);say("");}
+    else if(hit(x,y,14,263,102,32)){view.page=Page::Evolution;say("");}
+    else if(hit(x,y,124,263,102,32)){view.powersReturn=Page::Progression;view.powerIndex=0;view.page=Page::Powers;say("");}
+    else if(hit(x,y,10,298,220,22)){view.page=Page::Character;say("");}return;
   }
-  if(view.page==Page::Character){if(panelUi::evolution.contains(x,y)){view.evolutionLevel=std::min(20u,unsigned(game.p.level));view.page=Page::Evolution;say("");return;}if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::AttributeInfo){if(hit(x,y,14,278,102,32)){view.page=Page::Evolution;say("");}else if(hit(x,y,124,278,102,32)){auto err=view.attributeIndex==6?rpg::learnTough(game):rpg::improveAttribute(game,view.attributeIndex);if(err)say(err);else {say("Evolucao confirmada");savedTransition(Page::Evolution);}}return;}
+  if(view.page==Page::Evolution){
+    if(hit(x,y,124,92,102,28)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
+    if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
+    else if(hit(x,y,124,272,102)){view.attributeIndex=6;view.page=Page::AttributeInfo;say("");}
+    else if(hit(x,y,14,92,102)){view.evolutionLevel=std::min(20u,unsigned(game.p.level)+1);view.page=Page::Progression;say("");}
+    
+    else for(unsigned i=0;i<6;++i)if(hit(x,y,14+(i%2)*110,156+(i/2)*34,102,30)){view.attributeIndex=i;view.page=Page::AttributeInfo;say("");}return;
+  }
+  if(view.page==Page::Character){if(panelUi::evolution.contains(x,y)){view.evolutionLevel=std::min(20u,unsigned(game.p.level)+1);view.page=Page::Progression;say("");return;}if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}
@@ -580,10 +589,10 @@ int main(){
   game=rpg::create(0,42);game.tutorial=true;combatFx.kind=Effect::None;view.page=Page::Home;auto untouched=nvs.blobs;tapped(110,150);assert(view.page==Page::Campaign);tapped(170,290);assert(view.page==Page::Home&&nvs.blobs==untouched);
   view.page=Page::Village;tapped(110,90);assert(view.page==Page::Campaign);tapped(120,240);assert(view.page==Page::Explore&&nvs.blobs==untouched);
   // Spending pauses on save failure; retry never grants the attribute a second time.
-  game.p.xp=2700;rpg::levelUp(game);view.page=Page::Character;tapped(120,125);assert(view.page==Page::Evolution);unsigned con=game.attributes[2];nvs.fail=true;journal.blocked=false;tapped(60,199);assert(view.page==Page::SaveError&&game.attributes[2]==con+1);nvs.fail=false;tapped(110,269);assert(view.page==Page::Evolution&&game.attributes[2]==con+1);rpg::Game loadedEvolution;assert(journal.load(loadedEvolution)==rpg::Load::Ok&&loadedEvolution.attributes[2]==con+1);
+  game.p.xp=2700;rpg::levelUp(game);view.page=Page::Character;tapped(120,125);assert(view.page==Page::Progression);tapped(60,278);assert(view.page==Page::Evolution);unsigned con=game.attributes[2];journal.blocked=false;tapped(60,199);assert(view.page==Page::AttributeInfo&&game.attributes[2]==con);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.attributes[2]==con+1);nvs.fail=false;tapped(110,269);assert(view.page==Page::Evolution&&game.attributes[2]==con+1);rpg::Game loadedEvolution;assert(journal.load(loadedEvolution)==rpg::Load::Ok&&loadedEvolution.attributes[2]==con+1);
   // Powers navigation is read-only; oath confirmation and healing retry save once.
   combatFx.kind=Effect::None;game=rpg::create(1,42);game.p.xp=900;rpg::levelUp(game);game.tutorial=true;journal.blocked=false;assert(journal.save(game));view.page=Page::Evolution;auto powerBlobs=nvs.blobs;
-  tapped(120,128);assert(view.page==Page::Powers&&nvs.blobs==powerBlobs);tapped(180,127);assert(view.powerIndex==1);tapped(120,254);assert(view.page==Page::OathConfirm&&!game.oath);tapped(120,291);assert(view.page==Page::Powers&&!game.oath&&nvs.blobs==powerBlobs);
+  tapped(175,106);assert(view.page==Page::Powers&&nvs.blobs==powerBlobs);tapped(180,127);assert(view.powerIndex==1);tapped(120,254);assert(view.page==Page::OathConfirm&&!game.oath);tapped(120,291);assert(view.page==Page::Powers&&!game.oath&&nvs.blobs==powerBlobs);
   tapped(120,254);nvs.fail=true;tapped(120,254);assert(view.page==Page::SaveError&&game.oath==1);nvs.fail=false;tapped(120,269);assert(view.page==Page::Powers&&game.oath==1);rpg::Game powerLoaded;assert(journal.load(powerLoaded)==rpg::Load::Ok&&powerLoaded.oath==1);
   view.powerIndex=0;game.p.hp=1;unsigned reserve=rpg::layRemaining(game);nvs.fail=true;tapped(120,254);auto curedHp=game.p.hp;assert(view.page==Page::SaveError&&game.laySpent>0&&rpg::layRemaining(game)<reserve);nvs.fail=false;tapped(120,269);assert(view.page==Page::Powers&&game.p.hp==curedHp);assert(journal.load(powerLoaded)==rpg::Load::Ok&&powerLoaded.p.hp==curedHp);
   game=rpg::create(0,42);game.p.xp=6500;rpg::levelUp(game);game.p.mp=game.p.maxmp;assert(rpg::begin(game,7));view.page=Page::Skills;combatFx.kind=Effect::None;tapped(120,65);assert(view.page==Page::Powers&&view.powersReturn==Page::Skills);view.powerIndex=4;unsigned powerMp=game.p.mp;tapped(120,254);assert(view.page==Page::Battle&&game.p.mp==powerMp-7&&combatFx.kind==Effect::FireBurst);auto powerPhase=game.phase;tapped(120,254);assert(game.p.mp==powerMp-7&&game.phase==powerPhase);
@@ -615,6 +624,8 @@ int main(){
   combatFx.kind=Effect::None;game=rpg::create(0,1);game.tutorial=true;game.p.gold=20;journal.blocked=false;assert(journal.save(game));view.page=Page::CityGoods;tapped(110,191);assert(view.page==Page::Lockpicks);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.gazuas==1&&game.p.gold==16);nvs.fail=false;tapped(110,269);assert(view.page==Page::Lockpicks&&game.gazuas==1&&game.p.gold==16);
   game.discovery=2;game.discoverLoot=0;game.discoverAmount=9;game.chestLock=1;assert(journal.save(game));view.page=currentPage();assert(view.page==Page::ChestLock);nvs.fail=true;tapped(120,269);assert(view.page==Page::SaveError&&game.gazuas==0&&game.chestLock==2);auto lockDie=game.chestRoll;nvs.fail=false;tapped(110,269);assert(view.page==Page::ChestLock&&game.chestRoll==lockDie&&!game.gazuas);rpg::Game lockLoaded;assert(journal.load(lockLoaded)==rpg::Load::Ok&&lockLoaded.chestLock==2);game=lockLoaded;view.page=currentPage();nvs.fail=true;tapped(120,269);assert(view.page==Page::SaveError&&game.discovery==5&&game.p.gold==25&&!game.chestLock);nvs.fail=false;tapped(110,269);assert(view.page==Page::Discovery&&game.p.gold==25);
   game=rpg::create(0,1);game.tutorial=true;game.gazuas=2;game.discovery=2;game.discoverLoot=1;game.discoverAmount=1;game.chestLock=1;game.chestTrap=true;assert(journal.save(game));view.page=currentPage();auto lockHp=game.p.hp;nvs.fail=true;tapped(120,237);assert(view.page==Page::SaveError&&game.chestLock==3&&game.p.hp==lockHp-2&&game.gazuas==2);auto trapHp=game.p.hp;nvs.fail=false;tapped(110,269);assert(view.page==Page::ChestLock&&game.p.hp==trapHp);auto lockState=game.randomState;tapped(120,269);assert(game.randomState==lockState&&game.gazuas==2&&game.p.hp==trapHp);assert(journal.load(lockLoaded)==rpg::Load::Ok&&lockLoaded.chestLock==3);tapped(120,299);assert(view.page==Page::Explore&&!game.discovery&&!game.chestLock);
+  // Preview/cancel/browse does not write; confirmed feat retries exactly once.
+  combatFx.kind=Effect::None;game=rpg::create(2,42);game.p.xp=2700;rpg::levelUp(game);game.tutorial=true;journal.blocked=false;assert(journal.save(game));view.page=Page::Character;auto progressionBlobs=nvs.blobs;auto progressionSeed=game.randomState;tapped(120,125);assert(view.page==Page::Progression);for(int i=0;i<30;++i)tapped(175,110);assert(view.evolutionLevel==20);for(int i=0;i<30;++i)tapped(65,110);assert(view.evolutionLevel==1);tapped(175,278);assert(view.page==Page::Powers&&view.powersReturn==Page::Progression);tapped(120,290);assert(view.page==Page::Progression);tapped(65,278);assert(view.page==Page::Evolution);tapped(65,199);assert(view.page==Page::AttributeInfo);tapped(65,290);assert(view.page==Page::Evolution&&nvs.blobs==progressionBlobs&&game.randomState==progressionSeed);tapped(175,290);assert(view.page==Page::AttributeInfo&&view.attributeIndex==6&&!game.tough);unsigned progressionHp=game.p.maxhp;nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.tough&&game.p.maxhp==progressionHp+8);nvs.fail=false;tapped(110,269);assert(view.page==Page::Evolution&&game.p.maxhp==progressionHp+8&&game.advancementSpent==2);rpg::Game progressionLoaded;assert(journal.load(progressionLoaded)==rpg::Load::Ok&&progressionLoaded.tough&&progressionLoaded.advancementSpent==2);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

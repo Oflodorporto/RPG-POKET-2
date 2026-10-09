@@ -47,6 +47,9 @@ jobs:
             build/screens/origens-*.ppm
             build/screens/exploration-*.ppm
             build/screens/locks-*.ppm
+            build/screens/progression-*.ppm
+            build/screens/attribute-*.ppm
+            build/progressao.csv
             build/screens/campaign-*.ppm
             build/screens/launch-*.ppm
             build/screens/powers-*.ppm

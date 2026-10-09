@@ -479,15 +479,24 @@ void tapped(int x,int y){
       if(game.phase==rpg::Phase::Hero){action(a);return;}
       auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
   }
-  if(view.page==Page::Evolution){
-    if(hit(x,y,10,120,220,18)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
-    if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
-    else if(hit(x,y,124,272,102)){auto err=rpg::learnTough(game);if(err)say(err);else {say("Talento Resistente aprendido");savedTransition(Page::Evolution);}}
-    else if(hit(x,y,14,92,102)){view.evolutionLevel=view.evolutionLevel==1?20:view.evolutionLevel-1;say("");}
-    else if(hit(x,y,124,92,102)){view.evolutionLevel=view.evolutionLevel%20+1;say("");}
-    else for(unsigned i=0;i<6;++i)if(hit(x,y,14+(i%2)*110,156+(i/2)*34,102,30)){auto err=rpg::improveAttribute(game,i);if(err)say(err);else {say("Atributo aumentado");savedTransition(Page::Evolution);}}return;
+  if(view.page==Page::Progression){
+    if(!game.dndProgression){if(hit(x,y,14,278,212,32)){view.page=Page::Character;say("");}return;}
+    if(hit(x,y,14,94,102,32)){view.evolutionLevel=std::max(1,int(view.evolutionLevel)-1);say("");}
+    else if(hit(x,y,124,94,102,32)){view.evolutionLevel=std::min(20,int(view.evolutionLevel)+1);say("");}
+    else if(hit(x,y,14,263,102,32)){view.page=Page::Evolution;say("");}
+    else if(hit(x,y,124,263,102,32)){view.powersReturn=Page::Progression;view.powerIndex=0;view.page=Page::Powers;say("");}
+    else if(hit(x,y,10,298,220,22)){view.page=Page::Character;say("");}return;
   }
-  if(view.page==Page::Character){if(panelUi::evolution.contains(x,y)){view.evolutionLevel=std::min(20u,unsigned(game.p.level));view.page=Page::Evolution;say("");return;}if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
+  if(view.page==Page::AttributeInfo){if(hit(x,y,14,278,102,32)){view.page=Page::Evolution;say("");}else if(hit(x,y,124,278,102,32)){auto err=view.attributeIndex==6?rpg::learnTough(game):rpg::improveAttribute(game,view.attributeIndex);if(err)say(err);else {say("Evolucao confirmada");savedTransition(Page::Evolution);}}return;}
+  if(view.page==Page::Evolution){
+    if(hit(x,y,124,92,102,28)){view.powersReturn=Page::Evolution;view.powerIndex=0;view.page=Page::Powers;say("");return;}
+    if(hit(x,y,14,272,102)){view.page=Page::Character;say("");}
+    else if(hit(x,y,124,272,102)){view.attributeIndex=6;view.page=Page::AttributeInfo;say("");}
+    else if(hit(x,y,14,92,102)){view.evolutionLevel=std::min(20u,unsigned(game.p.level)+1);view.page=Page::Progression;say("");}
+    
+    else for(unsigned i=0;i<6;++i)if(hit(x,y,14+(i%2)*110,156+(i/2)*34,102,30)){view.attributeIndex=i;view.page=Page::AttributeInfo;say("");}return;
+  }
+  if(view.page==Page::Character){if(panelUi::evolution.contains(x,y)){view.evolutionLevel=std::min(20u,unsigned(game.p.level)+1);view.page=Page::Progression;say("");return;}if(hit(x,y,70,277,101,24)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Market||view.page==Page::Inventory){
     bool shop=view.page==Page::Market;
     if(!shop&&hit(x,y,14,272,102)){view.page=Page::Menu;say("");return;}

@@ -1,8 +1,9 @@
 #pragma once
 #include "PanelArt.h"
+#include "Progression.h"
 namespace panelUi {
 constexpr scenicUi::Rect bagBack={40,281,82,26},bagUse={126,281,81,26},bagGear={46,263,156,17};
-constexpr scenicUi::Rect evolution={70,112,101,24};
+constexpr scenicUi::Rect evolution={10,112,220,26};
 inline scenicUi::Rect bagSlot(unsigned i){return {53+int(i%3)*47,125+int(i/3)*33,43,30};}
 constexpr scenicUi::Rect cityButtons[]={{26,180,91,23},{122,180,91,23},{26,204,91,23},{122,204,91,23},{26,228,91,23},{122,228,91,23},{26,252,91,23},{122,252,91,23},{70,278,112,21}};
 constexpr scenicUi::Rect battleButtons[]={{10,240,108,29},{122,240,108,29},{10,274,108,29},{122,274,108,29}};
@@ -47,8 +48,9 @@ template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
  if(*v.message)panelLabel(c,4,310,232,v.message,UI_RED);
 }
 template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
- PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);panelLabel(c,72,120,98,"Evolucao >",UI_GOLD);c.fillRect(54,139,132,18,0x0843);c.fillRect(55,161,63,19,0x0843);c.fillRect(124,161,63,19,0x0843);char b[64];
- snprintf(b,sizeof(b),"Nv %u  XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));panelLabel(c,54,142,132,b);panelBar(c,60,152,120,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
+ PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);scenicPanel(c,10,112,220,26);panelLabel(c,14,115,212,"Trilha de classe >",UI_GOLD);c.fillRect(54,139,132,18,0x0843);c.fillRect(55,161,63,19,0x0843);c.fillRect(124,161,63,19,0x0843);char b[64];
+ unsigned next=rpg::nextBenefitLevel(g);if(next){auto gains=rpg::levelBenefits(g,next);snprintf(b,sizeof(b),"Nv %u: %s",next,gains.lines[0]);}else snprintf(b,sizeof(b),g.dndProgression?"Nivel maximo: jornada continua":"Heroi antigo: regras preservadas");panelLabel(c,14,126,212,b,UI_GREEN);
+ snprintf(b,sizeof(b),"Nv %u  XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));panelLabel(c,40,142,160,b);panelBar(c,60,152,120,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
  snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,56,164,61,b);panelBar(c,59,175,56,g.p.hp,g.p.maxhp,UI_RED);
  snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,124,164,63,b);panelBar(c,126,175,56,g.p.mp,g.p.maxmp,UI_BLUE);
  snprintf(b,sizeof(b),"ATQ %u",unsigned(rpg::effectiveAttack(g)));panelLabel(c,73,191,43,b);snprintf(b,sizeof(b),"DEF %u",unsigned(rpg::effectiveDefense(g)));panelLabel(c,142,191,42,b);
