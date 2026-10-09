@@ -6,8 +6,9 @@ namespace rpg {
 struct LevelBenefits {unsigned count=0;char lines[6][40]{};void add(const char* s){if(count<6)snprintf(lines[count++],40,"%s",s);} };
 inline LevelBenefits levelBenefits(const Game& g,unsigned level){
  LevelBenefits out;if(!g.dndProgression||level<1||level>20)return out;char b[40];
- for(unsigned a=unsigned(Action::MagicMissile);a<=unsigned(Action::RagePower);++a){auto action=Action(a);unsigned cls=action==Action::RagePower?3:action==Action::SecondWind||action==Action::ActionSurge?2:a>=unsigned(Action::LayHands)?1:0;if(cls==g.p.cls&&powerLevel(action)==level)out.add(powerName(action));}
+ for(unsigned a=unsigned(Action::MagicMissile);a<=unsigned(Action::DivineSmite);++a){auto action=Action(a);unsigned cls=action==Action::RagePower?3:action==Action::SecondWind||action==Action::ActionSurge?2:a>=unsigned(Action::LayHands)?1:0;if(cls==g.p.cls&&powerLevel(action)==level)out.add(powerName(action));}
  if(g.p.cls==1&&level==2)out.add("Investida: tecnica de ataque");
+ if(g.p.cls==1&&level==11)out.add("Punicao aprimorada: +1d8/golpe");
  if(g.p.cls==1&&level==3)out.add("Escolha o juramento nos Poderes");
  if(level==1)return out;
  Game before=g,after=g;before.p.level=level-1;after.p.level=level;

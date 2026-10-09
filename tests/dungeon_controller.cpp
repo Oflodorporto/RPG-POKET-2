@@ -56,7 +56,9 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
+  if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false);
+  else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false);
+  else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
   else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true);
   else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true);
   else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false);
@@ -418,7 +420,7 @@ void tapped(int x,int y){
     unsigned count=powersUi::count(game.p.cls);if(!game.dndProgression||!count)return;
     if(powersUi::previous.contains(x,y)||powersUi::next.contains(x,y)){view.powerIndex=(view.powerIndex+(x<120?count-1:1))%count;say("");return;}
     if(powersUi::use.contains(x,y)){auto a=powersUi::action(game.p.cls,view.powerIndex);
-      if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&a!=rpg::Action::LayHands){view.page=Page::OathConfirm;say("");return;}
+      if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)){view.page=Page::OathConfirm;say("");return;}
       if(game.phase==rpg::Phase::Hero){action(a);return;}
       auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
   }

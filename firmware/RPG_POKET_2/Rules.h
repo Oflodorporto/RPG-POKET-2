@@ -7,7 +7,7 @@
 // Economy, UI, World and Gear. Network/calendar are not part of this slice.
 namespace rpg {
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
-enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower };
+enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower, DivineSmite };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
 inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0},{"MIMICO DO BOSQUE",18,5,2,14,9},{"MIMICO DAS RUINAS",45,9,6,40,20},{"MIMICO DO PORTO",85,14,10,95,35},{"MIMICO DO CASTELO",150,20,16,190,55}};return e[id<18?id:2];}
 struct Player {
@@ -163,10 +163,10 @@ inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2
 inline bool physicalEnemy(unsigned id){return id!=5&&id!=8;}
 inline void clearMartialCombat(Game& g){g.rageTurns=0;g.surgePending=g.surgeTurnUsed=false;}
 inline void endHeroAction(Game& g){if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}else g.phase=Phase::Enemy;}
-inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::RagePower);}
-inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";case Action::SecondWind:return "Segundo folego";case Action::ActionSurge:return "Surto de acao";case Action::RagePower:return "Furia de batalha";default:return "Poder";}}
-inline unsigned powerLevel(Action a){return a==Action::ActionSurge?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
-inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell?3:0;}
+inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::DivineSmite);}
+inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";case Action::SecondWind:return "Segundo folego";case Action::ActionSurge:return "Surto de acao";case Action::RagePower:return "Furia de batalha";case Action::DivineSmite:return "Punicao divina";default:return "Poder";}}
+inline unsigned powerLevel(Action a){return a==Action::ActionSurge||a==Action::DivineSmite?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
+inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell||a==Action::DivineSmite?3:0;}
 inline bool undead(unsigned id){return id==2||id==5||id==8||id==9;}
 inline unsigned layRemaining(const Game& g){return g.dndProgression&&g.p.cls==1?5u*g.p.level-g.laySpent:0;}
 inline void refreshPowers(Game& g){g.laySpent=0;g.channelSpent=false;g.sacredTurns=g.turnedTurns=0;g.windSpent=g.surgeSpent=g.rageSpent=0;clearMartialCombat(g);}
@@ -184,8 +184,10 @@ inline const char* powerError(const Game& g,Action a){
  if(a==Action::SacredWeapon||a==Action::TurnUndead){if(!g.oath)return "Firme o juramento antes";if(g.channelSpent)return "Canalizar esgotado: descanse";}
  if(a==Action::TurnUndead&&!undead(g.enemyId))return "Alvo nao e morto-vivo";return nullptr;
 }
+inline const char* act(Game& g,Action a);
 inline const char* usePower(Game& g,Action a){
  if(auto err=powerError(g,a))return err;
+ if(a==Action::DivineSmite)return act(g,a);
  g.p.mp-=powerCost(a);g.damage=0;g.crit=g.dodge=false;
  if(a==Action::SecondWind){g.damage=std::min<unsigned>(g.p.maxhp-g.p.hp,1+random(g)%10+g.p.level);g.p.hp+=g.damage;g.windSpent=1;return nullptr;}
  if(a==Action::ActionSurge){++g.surgeSpent;g.surgePending=g.surgeTurnUsed=true;return nullptr;}
@@ -224,10 +226,11 @@ inline void finish(Game& g){
 // Return nullptr on accepted action; rejected actions do not consume a turn.
 inline const char* act(Game& g,Action a){
   if(g.phase!=Phase::Hero)return "Aguarde seu turno";
-  if(uint8_t(a)>uint8_t(Action::RagePower))return "Acao invalida";
+  if(uint8_t(a)>uint8_t(Action::DivineSmite))return "Acao invalida";
   if(g.dndProgression&&g.p.cls==0&&a==Action::Offensive)a=Action::MagicMissile;
   if(g.dndProgression&&g.p.cls==0&&a==Action::Defensive)a=Action::ShieldSpell;
-  if(powerAction(a)){auto err=usePower(g,a);if(!err)finish(g);return err;}
+  if(a==Action::DivineSmite){if(auto err=powerError(g,a))return err;}
+  if(powerAction(a)&&a!=Action::DivineSmite){auto err=usePower(g,a);if(!err)finish(g);return err;}
   if(a==Action::Offensive||a==Action::Defensive){
     if(g.dndProgression&&g.p.cls==1&&a==Action::Offensive&&g.p.level<2)return "Desbloqueia no nivel 2";
     uint8_t cost=skillCost(g.p.cls,a==Action::Defensive);if(g.p.mp<cost)return "Mana insuficiente";g.p.mp-=cost;
@@ -251,7 +254,18 @@ inline const char* act(Game& g,Action a){
   if(g.rageTurns)damage+=rageBonus(g)*(skill?1:attacksPerAction(g));
   if(g.sacredTurns){damage+=std::max(1,abilityMod(g.attributes[5]));--g.sacredTurns;}
   g.dodge=!(skill&&g.p.cls==2)&&random(g)%100<6;
-  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;}
+  if(!g.dodge){
+    // SRD 5.1 adaptation: select before the attack; charge mana only on a hit.
+    // Extra Attack is aggregated by the existing engine. Smite applies once;
+    // Improved Divine Smite applies to each melee hit in that action.
+    if(g.dndProgression&&g.p.cls==1){
+      unsigned dice=g.p.level>=11?(skill?1:attacksPerAction(g)):0;
+      if(a==Action::DivineSmite){g.p.mp-=powerCost(a);dice+=2+unsigned(undead(g.enemyId));}
+      if(g.crit)dice*=2;
+      for(unsigned i=0;i<dice;++i)damage+=1+random(g)%8;
+    }
+    g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;
+  }
   endHeroAction(g);finish(g);return nullptr;
 }
 enum class Intent:uint8_t {Strike,Prepare,Heavy,Mend,Drain};

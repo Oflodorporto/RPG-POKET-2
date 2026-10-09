@@ -14,6 +14,16 @@ template<class Canvas> void magicEffect(Canvas& c,const ViewState& v,bool dungeo
       for(int py=0;py<size;++py)for(int px=0;px<size;++px){auto color=image[(py*40/size)*40+px*40/size];int x=cx-size/2+px,y=cy-size/2+py+dy;if(color==0xf81f||x<0||x>=240||y<0||y>=(dungeon?172:192))continue;if(v.effect==Effect::MagicDarts)color=(color&0x0400)?UI_WHITE:UI_BLUE;c.fillRect(x,y,1,1,color);}}
     return;
   }
+  if(v.effect==Effect::DivineSlash){
+    int cx=dungeon?120:180,cy=dungeon?86:108,r=20+int(step)*2;
+    for(int y=-r;y<=r;++y)for(int x=-r;x<=r;++x){
+      int d=x*x+y*y,inside=(x+9)*(x+9)+(y-5)*(y-5);
+      bool crescent=step<5&&d<=r*r&&inside>(r-5)*(r-5);
+      bool burst=step>=4&&(x==0||y==0||x==y||x==-y)&&d<=(r-5)*(r-5);
+      int px=cx+x,py=cy+y;
+      if((crescent||burst)&&px>=0&&px<240&&py>=0&&py<(dungeon?172:192))c.fillRect(px,py,1,1,(d>(r-2)*(r-2)||burst)?UI_WHITE:UI_GOLD);
+    }return;
+  }
   if(v.effect==Effect::Radiant){int cx=dungeon?120:v.effectOnHero?46:180,cy=dungeon?86:108;int radius=8+int(step)*5;for(int k=0;k<4;++k){int r=radius-k*2;c.drawRect(std::max(0,cx-r),std::max(0,cy-r),r*2,r*2,k%2?UI_WHITE:UI_GOLD);}return;}
   if(v.effect!=Effect::Projectile)return;
   // Small round fireball grows at the impact, with a clearly separate travel stage.
