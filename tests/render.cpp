@@ -220,6 +220,9 @@ int main(int argc,char** argv){
   for(unsigned city=0;city<4;++city){g.city=city;for(unsigned i=0;i<3;++i){menu.personIndex=i;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/origens-npc-"+std::to_string(city)+"-"+std::to_string(i)+".ppm");}}
   g.city=1;g.dungeonClears=0;menu.personIndex=2;v.page=Page::Dialogue;render(c,g,v);c.save(root+"/origens-desconhecido.ppm");
   makeFallback();g.originStory=true;menu.storyIndex=4;v.page=Page::Prologue;render(c,g,v);c.save(root+"/origens-sem-cartao.ppm");
+  pack.clear();pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES);g=rpg::create(0,77);g.p.xp=265000;rpg::levelUp(g);g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;g.tutorial=true;g.city=3;g.dungeonClears=1;g.campaignFlags=3;v=ViewState{};v.page=Page::CampaignTask;v.campaignChoice=3;render(c,g,v);c.save(root+"/aurora-task.ppm");assert(!rpg::startCampaign(g,3));g.enemyHp=0;rpg::finish(g);v.page=Page::CampaignResult;uint8_t auroraBefore[rpg::SAVE_SIZE],auroraAfter[rpg::SAVE_SIZE];rpg::encode(g,1,auroraBefore);for(unsigned i=0;i<6;++i){v.campaignScene=i;render(c,g,v);c.save(root+"/aurora-scene-"+std::to_string(i)+".ppm");}rpg::encode(g,1,auroraAfter);assert(!memcmp(auroraBefore,auroraAfter,sizeof(auroraBefore)));assert(rpg::resolveCampaign(g));v.page=Page::Campaign;render(c,g,v);c.save(root+"/aurora-objective.ppm");for(unsigned i=0;i<3;++i){v.page=Page::Dialogue;menu.personIndex=i;render(c,g,v);c.save(root+"/aurora-dialogue-"+std::to_string(i)+".ppm");}v.page=Page::Journal;menu.chapterIndex=4;render(c,g,v);c.save(root+"/aurora-journal.ppm");
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
+
+
 

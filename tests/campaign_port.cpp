@@ -15,7 +15,7 @@ int main(){
    g.enemyHp=0;finish(g);assert(g.phase==Phase::Won);g=reboot(g);auto xp=g.p.xp,gold=g.p.gold;unsigned bonus=campaignXp(g,mission);
    assert(resolveCampaign(g));assert(g.p.xp==xp+bonus&&g.p.gold==gold+campaignGold(mission)&&g.campaignFlags==((1u<<mission)-1));g=reboot(g);before=g;assert(!resolveCampaign(g)&&startCampaign(g,mission));assert(!memcmp(&before,&g,sizeof(g)));
   }
-  assert(!campaignMission(g)&&story::knownChapter(g)==4);assert(!strcmp(story::objective(g).place,"Aurora / Liora Valcer"));
+  assert(campaignMission(g)==3&&story::knownChapter(g)==4);assert(!strcmp(story::objective(g).place,"Aurora / Liora Valcer"));
  }
  auto g=prepared(0,0);for(auto phase:{Phase::Lost,Phase::Fled}){assert(!startCampaign(g,1));g.phase=phase;if(phase==Phase::Lost)g.p.hp=0;g=reboot(g);auto gold=g.p.gold,xp=g.p.xp;assert(resolveCampaign(g)&&!g.campaignFlags&&g.p.hp&&g.p.gold==gold&&g.p.xp==xp);g=reboot(g);}
  g=prepared(2,0);g.dungeonClears=0;auto before=g;assert(startCampaign(g,1)&&!memcmp(&before,&g,sizeof(g)));g=prepared(2,0);g.city=0;before=g;assert(startCampaign(g,1)&&!memcmp(&before,&g,sizeof(g)));g=prepared(2,0);g.p.level=9;g.p.mp=g.p.maxmp=totalMana(g);assert(startCampaign(g,1));g=prepared(2,0);assert(startCampaign(g,2));

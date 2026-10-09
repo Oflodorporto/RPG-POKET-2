@@ -13,6 +13,15 @@ constexpr Scene portScenes[2][4]={
   {"SABELA / A QUINTA TESTEMUNHA",{"Uma placa traz um nome: Anwen.","Ela propunha vinculos voluntarios.","As outras partes seguem para Aurora.","Liora precisa ver os registros."}},
   {"MAELIS VOSS / CARTA",{"Carvalho dara abrigo aos refugiados.","A Guilda vai responder pelo que fez.","Leve o Livro e os registros a Liora.","Nao vamos comprar outro amanhecer."}}}
 };
+constexpr Scene auroraScenes[]={
+ {"LIORA VALCER",{"A sentinela recua; abrimos o arquivo.","As ordens tem o selo do meu pai.","Nao sao erros de soldados perdidos.","Ele mandou recolher essas memorias."}},
+ {"SERAPHINE ALVOR",{"Esta ordem chama-se Vigilia Perpetua.","Todos pagariam com suas lembrancas.","Um juramento que exige isso", "deixou de proteger o reino."}},
+ {"DARGAN SETEMARTELOS",{"Guardei um desenho entre ferramentas.","Anwen queria farois sem prisioneiros.","Terra viva e vinculos voluntarios.","Meu trabalho vai ajudar a completa-lo."}},
+ {"ODRAN VALCER / REGISTRO",{"Ofereci primeiro minhas memorias.","Hoje nao lembro o rosto de Liora.","Se eu deixar o selo cair,", "tudo o que perdi tera sido em vao."}},
+ {"LIORA VALCER",{"Ele escreveu a ordem de me proteger.","Agora quer sacrificar outras familias.","A dor dele nao justifica essa escolha.","Vamos impedir a Vigilia, juntos."}},
+ {"SERAPHINE / PROXIMO PASSO",{"O Livro e os registros estao conosco.","Dargan conserva o projeto de Anwen.","Faltam reunir as quatro contribuicoes.","Nenhuma delas precisa de outra vitima."}}
+};
+inline const Scene& campaignScene(unsigned mission,unsigned index){return mission==3?auroraScenes[std::min(5u,index)]:portScenes[mission==2?1:0][std::min(3u,index)];}
 constexpr Scene opening[]={
  {"CARVALHO / AELDRA",{"A chuva cobre a estrada.","Voce empurra uma carroca quebrada.","Uma torre morta acende ao longe.","O sino toca. Ninguem esta la."}},
  {"NARA VELD",{"Entre. Ha uma cama e uma fogueira.","Quem fica na estrada depois", "desse sino acaba virando historia.","Seu nome ainda pode mudar isso."}},
@@ -39,7 +48,8 @@ inline const char* classVoice(unsigned cls){const char* lines[]={"Voce sente eco
 struct Objective {const char* title;const char* place;const char* lines[4];};
 inline Objective objective(const rpg::Game& g){
  if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Converse com Elarin e Borin.","Sua primeira pista e a cinza branca."}};
- if(g.campaignFlags==3)return {"JURAMENTOS DE AURORA","Aurora / Liora Valcer",{"Voce salvou os refugiados de Mares.","Maelis abriu os registros da Guilda.","Leve a verdade a Liora em Aurora.","O ato de Aurora sera a proxima etapa."}};
+ if(g.campaignFlags&4)return {"IMPEDIR A VIGILIA","Aurora / Seraphine e Dargan",{"As ordens do palacio foram recuperadas.","Odran quer consumir as lembrancas.","Anwen projetou outra forma de selar.","Prepararemos aliados na proxima etapa."}};
+ if((g.campaignFlags&3)==3)return {"JURAMENTOS DE AURORA","Aurora / Liora Valcer",{"Voce salvou os refugiados de Mares.","Maelis abriu os registros da Guilda.","Leve a verdade a Liora em Aurora.","Liora pede acesso aos arquivos reais."}};
  if(g.campaignFlags&1)return {"O FAROL APAGADO","Mares / Sabela Marebrava",{"A carga prova o roubo de memorias.","A tempestade apagou o Farol Caminho.","Refugiados estao presos no cais.","Sabela precisa de voce no resgate."}};
  if(arconteKnown(g))return {"O LIVRO DAS VIGILIAS","Mares / Sabela Marebrava",{"O livro liga cristais a memorias.","Sabela procura provas no porto.","Converse com ela em Mares.","Sabela oferece uma missao no porto."}};
  if(g.guardianDefeated)return {"A CONTA DOS ANTIGOS","Ruinas / Iria Sorel",{"O Guardiao deixou uma chave.","Leve um cristal a Cripta de Vaelor.","Busque selos, sobreviva aos andares.","O Arconte guarda mais que ouro."}};
@@ -49,7 +59,7 @@ inline Objective objective(const rpg::Game& g){
 inline const Person& person(unsigned city,unsigned index){return people[city%4][index%3];}
 inline const char* supplier(unsigned city){const char* n[]={"Elarin Folhacinza","Caelen Vesper","Tomas Valevento","Seraphine Alvor"};return n[city%4];}
 inline const char* smith(unsigned city){const char* n[]={"Borin Caldaferrea","Caelen Vesper","Nilsa Bronzamar","Dargan Setemartelos"};return n[city%4];}
-inline unsigned knownChapter(const rpg::Game& g){return g.campaignFlags==3?4:arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
+inline unsigned knownChapter(const rpg::Game& g){return (g.campaignFlags&3)==3?4:arconteKnown(g)?3:g.guardianDefeated||g.ruinsWins?2:g.tutorial?1:0;}
 constexpr const char* chapterNames[]={"O sino em Carvalho","A floresta ferida","Os mortos tem ordens","O porto e as cinzas","Juramentos de Aurora","A primeira luz"};
 constexpr Scene chapters[]={
  {"PROLOGO",{"Nara oferece abrigo nas Brasas.","Uma carta pede ajuda nas estradas.","Cinza branca tomou as raizes.","Elarin e Borin investigam a origem."}},
