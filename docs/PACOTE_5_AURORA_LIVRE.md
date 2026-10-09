@@ -1,6 +1,6 @@
 # Pacote 5 — Aurora Livre
 
-Versão 2026.10.09-auroralivre1/build2026100909. Candidata em validação.
+Versão 2026.10.09-auroralivre1/build2026100909. Publicada e verificada:37suítes, compilação ESP32-S3, downloads por tamanho/SHA-256/CRC e catálogo. Teste físico pendente do usuário.
 
 Conclusão jogável do Pacote5: após Arquivos da Coroa, Livro das Vigílias, tutorial e Nv18, Aurora>Pessoas>Liora oferece confronto com Odran. É possível voltar e preparar a bolsa. Vencer e registrar o relato tira Odran do poder; Liora oferece então a batalha separada contra o Coração do Véu. Pode descansar entre os dois encontros. Odran usa preparação/golpe forte; o Coração alterna golpe forte/preparação/drenagem de HP e MP. Intenção e ficha explicam os riscos. Retrato existente de Odran e cristal facetado pulsante desenhado pelo renderizador; nenhum arquivo adicional no SD.
 
@@ -12,7 +12,7 @@ Resultado narrativo paginado e registrado atomicamente. Ler páginas não altera
 
 Save23/128bytes/lê1–23: byte120 bit7 registra Odran derrotado, bits0–6 preservam campanhas/ajudas. Byte121: nibble baixo batalha1/2/3/5/6/8/9; alto final0/1temporário/2pleno. Final2 exige Odran+quatro ajudas; nunca inferido de flags127. Bits altos livres do byte58 guardam descobertas18/19; forja ocupa bits0–5. IDs novos18Odran/19Coração; mimicos permanecem14–17. Rejeita marcadores finais em formatos antigos. Preserva origem122–123, acampamento90–91, baús e CRC124. Não retornar a firmware leitor22 após gravar23.
 
-Validação:37suítes,64caminhos finais/quatro classes,800batalhas simuladas com preparação de Nv18 (arma/armadura/amuletos disponíveis,12poçõesHP por luta; mago usa maestria Raios Abrasadores), perda/fuga/reboot, escrita falha/prêmio uma vez, controlador real e renderer com limites de texto. Simulação confirma possibilidade com esta preparação; não promete vitória sem equipamento ou com qualquer estratégia. Telas e leitura não alteram save/RNG. Artes459/PSRAM mantidas, sem leituraSD por quadro; D20/deslocamento preservados. Compilação/candidata/downloads ainda em validação; teste físico depende do usuário.
+Validação:37suítes,64caminhos finais/quatro classes,800batalhas simuladas com preparação de Nv18 (arma/armadura/amuletos disponíveis,12poçõesHP por luta; mago usa maestria Raios Abrasadores), perda/fuga/reboot, escrita falha/prêmio uma vez, controlador real e renderer com limites de texto. Simulação confirma possibilidade com esta preparação; não promete vitória sem equipamento ou com qualquer estratégia. Telas e leitura não alteram save/RNG. Artes459/PSRAM mantidas, sem leituraSD por quadro; D20/deslocamento preservados. Compilação/candidata/downloads aprovados; teste físico depende do usuário.
 
 Teste físico: atualizar em Configurações>Atualização. Personagem Nv18 após arquivos pode conversar com Liora em Aurora; cancelar primeiro, preparar bolsa/poderes/descanso e enfrentar Odran. Ler/registrar, reiniciar para conferir que Liora oferece o Coração. Vencer/registrar com contribuições: Diário5/Aurora Livre/reler epílogo. Sem contribuições: voltar ao mundo, completar aliados e retornar para restauração; nenhuma contribuição perdida. Exploração continua. Não criar/editar saves físicos para forçar etapa.
 

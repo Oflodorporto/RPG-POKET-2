@@ -22,7 +22,7 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Entrega mais recente: Pacote5 — O Legado de Anwen,2026.10.09-anwen1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-anwen1) · [Guia](docs/PACOTE_5_LEGADO_DE_ANWEN.md).Quatro contribuições das cidades em ordem livre, custos/retomada/recompensas uma vez e reconhecimento de Liora; retratos/pergaminhos/diário.36suítes, compilação e downloads conferidos; teste físico pendente. Save22 lê1–22; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam próximos.
+**Entrega mais recente: Pacote5 concluído — Aurora Livre,2026.10.09-auroralivre1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-auroralivre1) · [Guia](docs/PACOTE_5_AURORA_LIVRE.md). Odran/Coração, final temporário reversível, pleno/epílogo/mundo aberto; explicação do Véu e reconstrução dos faróis.37suítes/compilação/downloads verificados; físico pendente. Save23 lê1–23; artes459 mantidas. Próximo: Pacote6 — variedade regional.
 
 **Entrega mais recente: Pacote5 — Vozes de Aeldra,2026.10.09-vozes1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1) · [Guia](docs/PACOTE_5_VOZES_DE_AELDRA.md).12 NPCs, falas contínuas conforme progresso e pergaminho animado com retratos/cenários locais.35suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam planejados.
 
