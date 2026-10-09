@@ -1,4 +1,40 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 4 — PROGRESSÃO RECOMPENSADORA — NÚCLEO DE CLAREZA E DECISÕES
+Versão2026.10.08-progressao1, build2026100809.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-progressao1
+Commit do firmware: 4f389a43a2a34fe52681fec9d4af64fccf4b4ed1
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37870376354 — sucesso.
+
+ENTREGUE: Personagem mostra próximo marco real da classe. Trilha de classe apresenta XP restante, ganhos reais1–20, recursos, poderes já implementados, pontos de atributo, ataques adicionais, proficiência e melhorias de viagem. Não promete marcos SRD sem regra executável. Atributos apresenta próximo marco de pontos; toque abre prévia de HP/ATQ/DEF/MP/modificador, custo e confirmação. Talento Resistente também passa por confirmação; cancelar/navegar não modifica save nem RNG. Confirmar salva uma vez; retry de gravação não repete ganho. Acesso Trilha/Atributos/Poderes e retornos testados; Paladino precisa juramento para canalizar. Heróis antigos mantêm regras.
+Não foram adicionados poderes avançados, bestiário ou alterações econômicas nesta primeira entrega do pacote4. Esses desdobramentos ficam registrados no roadmap. Próximo pacote principal:5 — Aurora e uma campanha que chega ao fim.
+27 suítes passaram. Benchmark40.960 combates em4classes×20níveis×4cidades×2políticas×64sementes; recursos cheios por combate, sem itens/forja/poções/pontos. Não é tempo de sessão nem taxa média de morte; inclui regiões inadequadas ao nível. Reporte em validacao/progressao-balance.csv. No nível5 nas Ruínas, Mago perdeu3/64 só atacando e0/64 com poderes; no10 em Mares5/64 e3/64. Manter XP/preços até medir sessões reais, equipamentos, descanso, contratos e custos de viagem.
+Save19/128bytes/CRC124/leitura1–19 permanece igual. Sem novo campo/migração. Arte SD byte a byte igual à trancas1:459 entradas,6.846.544bytes,CRC19aa0797. Mapa/D20/deslocamento, trancas, dungeon, campanha e animações conservados. Sem leitura por quadro.
+Compilação final: Sketch2682450 bytes (85% de3145728); globals53788 (16% de327680).
+Hashes/downloads: releases/2026.10.08-progressao1/VERIFICACAO.json. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Catálogo real: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/Progression.h
+Telas: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/ProgressionView.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_PROGRESSAO_RECOMPENSADORA.md
+Preview: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-progressao1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/progressao-balance.csv
+Firmware final: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.08-progressao1/firmware.bin
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT, PACOTE_4_PROGRESSAO_RECOMPENSADORA.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h/Save.h e a release antes de editar.
+2. Confirmar teste físico: Configurações > Atualização; Personagem > Trilha, XP1/20, ganhos das4classes; Atributos > prévia/cancelar/confirmar e Resistente; recursos/retornos/combate/mapa/dungeon/trancas. Corrigir este pacote se aparecer falha.
+3. Planejar Pacote5 — Aurora. Ler cânone/campanha existentes antes de criar Liora/Seraphine/Dargan/Odran e finais; preservar destinos0..3 e vitória de Aeldra. Desdobramentos4: poderes avançados/bestiário/balanceamento ainda não entregues.
+4. Para balancear, usar o CSV com suas limitações e observar sessões reais. Não transformar vitórias ideais em minutos, nem a taxa agregada em dificuldade da campanha. Garantir escolhas/poderes anunciados realmente implementados.
+5. Testar regras/save, snapshots do controlador e telas; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; validar candidato no GitHub, promover/verificar downloads e registrar continuidade. Bytes60–63/90–91/122–123 ocupados; não reutilizar.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático, .rpg, apagar NVS, formatar SD. Usuário instala por cabo ou confirma OTA. Build local antigo é preliminar: usar release verificada ou recompilar fontes atuais.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
 PACOTE 3 — TRANCAS E GAZUAS
 Versão2026.10.08-trancas1, build2026100808.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-trancas1

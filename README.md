@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote4 — Progressão recompensadora, 2026.10.08-progressao1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-progressao1) · [Guia](docs/PACOTE_4_PROGRESSAO_RECOMPENSADORA.md) · [Continuidade](docs/CONTINUE_PROGRESSAO1.txt). Trilha dos ganhos reais1–20, próximo marco/XP, prévia e confirmação de atributos/talento. As27 suítes, compilação e downloads foram verificados; teste físico aguarda o usuário. Save19/artes SD inalterados. Medição40.960 combates; novos poderes avançados/bestiário/balanceamento econômico ainda pendentes.
+
 **Entrega mais recente: Pacote3 — Trancas e gazuas, 2026.10.08-trancas1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-trancas1) · [Guia](docs/PACOTE_3_TRANCAS_E_GAZUAS.md) · [Continuidade](docs/CONTINUE_TRANCAS1.txt). Força/Destreza, ferramenta consumível, risco explícito e tentativas persistidas; Save19/leitura1–19. As26 suítes, compilação e downloads foram verificados; teste físico aguarda o usuário. Arte SD inalterada. Próximo: Pacote4 — Progressão recompensadora.
 
 **Entrega mais recente: Pacote2 — Exploração variada, 2026.10.08-exploracao1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-exploracao1) · [Guia e teste físico](docs/PACOTE_2_EXPLORACAO_VARIADA.md) · [Continuidade](docs/CONTINUE_EXPLORACAO1.txt). Achados, baús, mímicos e sucata; Save18 com leitura1–18. As25 suítes, compilação e downloads finais foram verificados; teste físico desta entrega aguarda o usuário. O pacote de artes permanece igual ao do Pacote1. As versões abaixo são histórico.

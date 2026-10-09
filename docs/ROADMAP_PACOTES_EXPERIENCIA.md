@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Os pacotes4–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
+Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes avançados/bestiário/ajustes econômicos permanecem pendentes. Os pacotes5–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
 ## O que permanece da revisão anterior
 
@@ -85,6 +85,8 @@ Ideias do usuário: cadeados/trancas, arrombar à força ou abrir com gazua.
 Critério: escolher método é relevante e legível, toda classe tem uma saída, e falhar cria uma consequência justa.
 
 ## Pacote4 — Crescer com vontade de enfrentar o próximo desafio
+
+Status: núcleo de clareza/decisão e medição entregue em2026.10.08-progressao1. Trilha com ganhos executáveis, próximo marco, XP, prévia e confirmação de atributos/talento;27 suítes/40.960 combates simulados. Novos poderes, bestiário e ajustes econômicos ainda pendentes; teste físico desta release aguarda o usuário.
 
 Da revisão anterior: balanceamento e escolhas avançadas de classes.
 

@@ -1,6 +1,6 @@
 # Pacote 4 — Progressão recompensadora
 
-Versão2026.10.08-progressao1, build2026100809. Candidata em validação.
+Versão2026.10.08-progressao1, build2026100809. Publicada e verificada. As27 suítes e a compilação passaram no GitHub; downloads conferidos por tamanho/SHA-256/CRC/catálogo. Teste físico fica com o usuário.
 
 Primeira entrega do pacote4: clareza dos ganhos reais, decisões de evolução e medição do equilíbrio. Não adiciona novos poderes avançados, bestiário ou novas recompensas; esses itens continuam como desdobramentos do pacote4. Próxima entrega de campanha: pacote5, Aurora.
 
@@ -18,6 +18,8 @@ Ganhos são adaptações já executadas do jogo. A tabela SRD de referência per
 ## Medição
 
 27 suítes, incluindo progressão/preview1–20 das4classes, save19, fluxo de toque real, cancelamento, confirmação, falha/repetição e limites de texto. Benchmark:40.960 combates,64 sementes por classe×nível×cidade×política. Duas políticas: ataque básico e rotação simples de poderes; inicia cada combate com HP/MP e poderes cheios, sem equipamento/forja, sem gasto de pontos ou poções. Paladino da política de poderes tem Devoção firmada no3. Usa roster/regras reais, sem alterar estado dos jogadores.
+
+Legenda do CSV: classe0 Mago,1 Paladino,2 Guerreiro,3 Bárbaro; cidade0 Carvalho,1 Ruínas,2 Mares,3 Aurora; política0 ataque básico,1 rotação simples de poderes.
 
 CSV em validacao/progressao-balance.csv, com vitórias, derrotas, turnos, XP/ouro de vencedores e estimativa ideal de vitórias para o próximo nível. Não é tempo de sessão nem dificuldade média do mundo: inclui regiões inadequadas ao nível, ignora viagens/baús/contratos/mortes/consumíveis e reinicia recursos por combate. Taxa agregada não serve como alvo de balanceamento.
 
