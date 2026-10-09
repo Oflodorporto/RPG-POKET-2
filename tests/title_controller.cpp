@@ -141,7 +141,7 @@ void tapped(int x,int y){
     else if(hit(x,y,124,272,102))view.page=view.objectiveReturn;say("");return;
   }
   if(view.page==Page::People){if(hit(x,y,14,272,212))view.page=Page(menu.storyReturn);
-    else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.page=Page::Dialogue;break;}say("");return;}
+    else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.dialoguePage=0;view.dialogueAnimate=true;view.dialogueStartFrame=millis()/120;view.page=Page::Dialogue;break;}say("");return;}
   if(view.page==Page::CampaignTask){
     if(hit(x,y,14,272,102)){view.page=Page::Dialogue;say("");}
     else if(hit(x,y,124,272,102)){const char* err=rpg::startCampaign(game,view.campaignChoice);if(err)say(err);else {view.campaignScene=0;say("");savedTransition(Page::Battle);}}return;
@@ -152,7 +152,7 @@ void tapped(int x,int y){
     if(won&&view.campaignScene+1<rpg::campaignScenes(game.campaignStage)){++view.campaignScene;say("");return;}
     if(rpg::resolveCampaign(game)){view.campaignScene=0;say(won?"Descoberta registrada no diario":"A missao pode ser tentada de novo");savedTransition(lost?Page::Recovery:Page::People);menu.storyReturn=int(Page::Village);}return;
   }
-  if(view.page==Page::Dialogue){if(menu.personIndex==0&&rpg::campaignContact(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,212))view.page=Page::People;say("");return;}
+  if(view.page==Page::Dialogue){if(hit(x,y,8,8,224,210)&&view.dialogueAnimate){view.dialogueAnimate=false;say("");return;}if(menu.personIndex==0&&rpg::campaignContact(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,102)){if(view.dialoguePage)--view.dialoguePage;else view.page=Page::People;}else if(hit(x,y,124,272,102)){if(view.dialoguePage+1<story::conversationPages(story::conversation(game,menu.personIndex)))++view.dialoguePage;else {view.dialoguePage=0;view.page=Page::People;}}say("");return;}
   if(view.page==Page::Continent){if(hit(x,y,14,272,102))showMap();
     else if(hit(x,y,124,272,102)){if(!menu.regionIndex)showMap();else say("Mapa de regiao futura");}
     else if(hit(x,y,14,224,102))menu.regionIndex=(menu.regionIndex+7)%8;
@@ -516,7 +516,6 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
-
 int main(){
  auto pristine=nvs.blobs;bootTitle();assert(view.page==Page::Title&&!menu.hasContinue&&!canOfferEvents()&&nvs.blobs==pristine);
  tapped(160,190);assert(view.page==Page::Title&&journal.active<0&&nvs.blobs==pristine);
@@ -663,6 +662,8 @@ int main(){
   tapped(175,290);assert(view.page==Page::Bestiary&&view.bestiaryIndex==2);tapped(175,128);assert(view.bestiaryIndex==17);tapped(175,128);assert(view.bestiaryIndex==2);tapped(65,128);assert(view.bestiaryIndex==17);tapped(120,294);assert(view.page==Page::Menu);rpg::encode(game,2,bestiaryAfter);assert(nvs.blobs==bestiaryBlobs&&!memcmp(bestiaryBefore,bestiaryAfter,sizeof(bestiaryBefore)));tapped(65,290);assert(view.page==Page::Guide);view.page=Page::Menu;journal.active=-1;tapped(175,290);assert(view.page==Page::Menu);
   // Aurora archive: readonly previews, six scenes and atomic reward retry.
   combatFx.kind=Effect::None;game=rpg::create(2,77);game.p.xp=265000;rpg::levelUp(game);game.p.hp=game.p.maxhp;game.p.mp=game.p.maxmp;game.tutorial=true;game.city=3;game.dungeonClears=1;game.campaignFlags=3;journal.blocked=false;assert(journal.save(game));view.page=Page::Campaign;auto auroraBlobs=nvs.blobs;tapped(120,240);assert(view.page==Page::People&&nvs.blobs==auroraBlobs);tapped(80,100);assert(view.page==Page::Dialogue);tapped(120,240);assert(view.page==Page::CampaignTask&&view.campaignChoice==3&&nvs.blobs==auroraBlobs);tapped(60,290);assert(view.page==Page::Dialogue);tapped(120,240);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.campaignStage==3&&game.enemyId==7);auto auroraSeed=game.randomState;nvs.fail=false;tapped(110,269);assert(view.page==Page::Battle&&game.randomState==auroraSeed);game.enemyHp=0;rpg::finish(game);assert(journal.save(game));view.page=currentPage();view.campaignScene=0;assert(view.page==Page::CampaignResult);auroraBlobs=nvs.blobs;auto auroraGold=game.p.gold,auroraXp=game.p.xp;for(unsigned i=0;i<5;++i)tapped(120,290);assert(view.campaignScene==5&&game.campaignFlags==3&&game.p.gold==auroraGold&&nvs.blobs==auroraBlobs);nvs.fail=true;tapped(120,290);assert(view.page==Page::SaveError&&game.campaignFlags==7&&game.p.gold==auroraGold+350&&game.p.xp==auroraXp+3500);nvs.fail=false;tapped(110,269);assert(view.page==Page::People&&!game.campaignStage);assert(journal.load(portLoaded)==rpg::Load::Ok&&portLoaded.campaignFlags==7);view.page=Page::Dialogue;menu.personIndex=0;auroraBlobs=nvs.blobs;tapped(120,240);assert(view.page==Page::Dialogue&&nvs.blobs==auroraBlobs);view.page=Page::Campaign;tapped(120,240);assert(view.page==Page::People);
+  // NPC page turns preserve game/save/RNG and opening a different NPC resets the page.
+  combatFx.kind=Effect::None;game=rpg::create(0,55);game.tutorial=true;view.page=Page::People;menu.personIndex=0;view.dialoguePage=3;tapped(80,100);assert(view.page==Page::Dialogue&&!view.dialoguePage);assert(view.dialogueAnimate);tapped(100,120);assert(!view.dialogueAnimate&&!view.dialoguePage);auto speechBlobs=nvs.blobs;uint8_t speechBefore[rpg::SAVE_SIZE],speechAfter[rpg::SAVE_SIZE];rpg::encode(game,1,speechBefore);unsigned speechPages=story::conversationPages(story::conversation(game,0));assert(speechPages>1);tapped(175,290);assert(view.dialoguePage==1);tapped(65,290);assert(!view.dialoguePage);for(unsigned i=1;i<speechPages;++i)tapped(175,290);assert(view.page==Page::Dialogue&&view.dialoguePage+1==speechPages);tapped(175,290);assert(view.page==Page::People);rpg::encode(game,1,speechAfter);assert(nvs.blobs==speechBlobs&&!memcmp(speechBefore,speechAfter,sizeof(speechBefore)));tapped(80,154);assert(menu.personIndex==1&&!view.dialoguePage);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

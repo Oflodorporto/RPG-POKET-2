@@ -1,6 +1,6 @@
 #pragma once
-#include "Narrative.h"
-template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const ViewState& v){
+#include "DialogueStory.h"
+template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
  auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.fillRect(x-2,y-2,int(strlen(s))*6*size+4,size*8+4,UI_INK);c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
  auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
  auto button=[&](int x,int y,int w,const char* s){c.fillRect(x,y,w,40,UI_PANEL);c.drawRect(x,y,w,40,UI_GOLD);text(x+(w-int(strlen(s))*6)/2,y+15,s);};
@@ -45,22 +45,27 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
    text(64,87+i*54,hidden?"Voz desconhecida":p.name,1,UI_GOLD);text(64,107+i*54,hidden?"Explore a Cripta":p.role);}
   center(249,"Toque no nome para conversar");button(14,272,212,"Voltar");return;
  }
- if(v.page==Page::Dialogue){const auto& p=story::person(g.city,menu.personIndex);bool hidden=g.city==1&&menu.personIndex==2&&!story::arconteKnown(g);center(14,hidden?"VOZ DESCONHECIDA":p.name,1,UI_GOLD);center(41,hidden?"Explore a Cripta":p.role);
-  if(!hidden){npcPortrait(c,story::cityNpc(g.city,menu.personIndex),88,60);center(129,"FALA DO PERSONAGEM",1,UI_MUTED);}
-  if(g.city==1&&menu.personIndex==2&&!story::arconteKnown(g)){center(144,"Um eco permanece na Cripta.");center(174,"Encontre-o antes de ouvir sua voz.");}
-  else if(g.city==0&&menu.personIndex==0){center(144,"Elarin achou cinza branca nas raizes.");center(164,"Borin viu a mesma cinza em metal.");center(184,g.guardianDefeated?"Voce abriu caminho em Vespera.":"Elarin e Borin precisam de voce.");center(204,story::arconteKnown(g)?"Leve as pistas para Mares.":"Fale com ambos antes de partir.");}
-  else if(g.city==1&&menu.personIndex==0&&g.guardianDefeated){center(144,"O Guardiao nao era o Arconte.");center(164,"Era a sentinela do Farol Memoria.");center(184,story::arconteKnown(g)?"O livro prova o custo do Pacto.":"Seu cristal abre a Cripta de Vaelor.");center(204,story::arconteKnown(g)?"Sabela precisa ouvir isso em Mares.":"Procure a verdade alem dos selos.");}
-  else if(g.city==2&&menu.personIndex==0&&(g.campaignFlags&3)==3){center(144,"O porto esta aberto aos refugiados.");center(164,"Nilsa religou o Farol do Caminho.");center(184,"Leve o Livro e os registros a Liora.");center(204,"Aurora deve responder pelas cargas.");}
-  else if(g.city==2&&menu.personIndex==0&&(g.campaignFlags&1)){center(144,"A prova liga as cargas a Coroa.");center(164,"Maelis abriu os arquivos da Guilda.");center(184,"Agora ha refugiados presos no cais.");center(204,"Ajude-nos a abrir a passagem.");}
-  else if(g.city==3&&(g.campaignFlags&4)){const char* const updates[3][4]={
-   {"As ordens revelam a Vigilia Perpetua.","Meu pai escolheu exigir esse preco.","Vamos ajuda-lo a responder por isso.","O projeto nao exige novas vitimas."},
-   {"Anwen unia terra e vinculos livres.","O selo precisa dos quatro farois.","Recuperamos a verdade dos arquivos.","Reunir aliados sera a proxima etapa."},
-   {"O desenho de Anwen esta protegido.","Nao e uma arma para vender na bolsa.","Vou construir outra base para o selo.","Minha lealdade continua com o povo."}};
-   for(unsigned i=0;i<4;++i)center(144+i*20,updates[menu.personIndex%3][i]);}
-  else if(g.city==3&&menu.personIndex==0&&(g.campaignFlags&3)==3){center(144,"Recebi os registros de Maelis.");center(164,"Meu pai sabia o preco do Pacto.");center(184,"Seraphine e Dargan vao nos ajudar.");center(204,"Abra caminho para os arquivos reais.");}
-  else for(unsigned i=0;i<4;++i)center(144+i*20,p.lines[i]);
-  if(menu.personIndex==0&&rpg::campaignContact(g)){c.fillRect(14,225,212,32,UI_PANEL);c.drawRect(14,225,212,32,UI_GOLD);center(236,rpg::campaignMission(g)==3?"Abrir arquivos da Coroa":g.campaignFlags&1?"Resgatar refugiados":"Investigar a carga",1,UI_GOLD);}
-  else center(223,"As Cinzas da Primeira Aurora",1,UI_GOLD);button(14,272,212,"Voltar");return;
+ if(v.page==Page::Dialogue){
+  bool hidden=g.city==1&&menu.personIndex==2&&!story::arconteKnown(g);auto npc=story::cityNpc(g.city,menu.personIndex);const auto& who=story::npcs[unsigned(npc)];const char* speech=story::conversation(g,menu.personIndex);unsigned pages=story::conversationPages(speech),page=std::min(unsigned(v.dialoguePage),pages-1);
+  // Opening is a short, nonblocking visual effect; the whole page stays readable afterwards.
+  unsigned age=frame-v.dialogueStartFrame;unsigned opening=v.dialogueAnimate?std::min(age,6u):6u;
+  const uint16_t paper=0xf6d4,ink=0x30e4,edge=0xa3c9;
+  int height=24+int(opening)*37,top=134-height/2;
+  c.fillRect(7,top+3,226,height,0x18c3);c.fillRect(10,top,220,height,paper);c.drawRect(10,top,220,height,edge);
+  for(int yy=top+12;yy<top+height-10;yy+=9)c.fillRect(14,yy,212,1,0xee72);
+  auto roll=[&](int yy){c.fillRect(5,yy,230,8,edge);c.fillRect(8,yy+1,224,3,0xff18);c.drawRect(5,yy,230,8,ink);};
+  roll(top-3);roll(top+height-4);
+  auto paperText=[&](int x,int y,const char* line,int size=1){c.setTextSize(size);c.setTextColor(ink);c.setCursor(x,y);c.print(line);};
+  auto paperCenter=[&](int y,const char* line){paperText((240-int(strlen(line))*6)/2,y,line);};
+  if(opening==6){
+   paperCenter(20,hidden?"VOZ DESCONHECIDA":who.name);
+   if(!hidden){npcPortrait(c,npc,16,38,48);paperText(74,46,who.role);paperText(74,67,"CONVERSA / ");paperText(74,78,placeName(g.city));}
+   else paperCenter(61,"Uma voz entre as pedras...");
+   snprintf(b,sizeof(b),"Pagina %u / %u",page+1,pages);paperCenter(89,b);c.fillRect(18,99,204,1,edge);
+   story::wrapStory(speech,18,[&](unsigned row,const char* line){if(row/7==page)paperText(12,105+(row%7)*17,line,2);});
+   if(menu.personIndex==0&&rpg::campaignContact(g)){c.fillRect(14,225,212,32,UI_PANEL);c.drawRect(14,225,212,32,UI_GOLD);center(236,rpg::campaignMission(g)==3?"Abrir arquivos da Coroa":g.campaignFlags&1?"Resgatar refugiados":"Investigar a carga",1,UI_GOLD);}
+  }
+  button(14,272,102,page?"Anterior":"Voltar");button(124,272,102,page+1<pages?"Proxima":"Fechar");return;
  }
  unsigned index=menu.chapterIndex%6;center(12,"DIARIO DE AELDRA",2,UI_GOLD);center(46,story::chapterNames[index],1,UI_GOLD);
  bool known=index<=story::knownChapter(g);const auto& chapter=story::chapters[index];center(73,known?chapter.speaker:"AINDA POR DESCOBRIR",1,known?UI_GREEN:UI_MUTED);

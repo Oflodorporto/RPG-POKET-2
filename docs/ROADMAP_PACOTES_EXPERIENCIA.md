@@ -124,6 +124,14 @@ Entregue: Arquivos da Coroa/missão3, Liora/Seraphine/Dargan e registro de Odran
 
 ## Pacote6 — Mundo vivo e eventos variados
 
+Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional. Código atual confirma1 inimigo regular em Mares e1 em Aurora e3 contratos repetidos das Ruínas. Esta lacuna não estava especificada suficientemente no plano anterior.
+
+- Mares: pelo menos3 inimigos regulares com comportamento/arte próprios, ligados à costa/cisternas/Mão de Cinza; evitar apenas repetir Saqueador com números maiores. Aurora: pelo menos3, ligados à guarda/mecanismo/Véu. Preservar IDs antigos e planejar migração/bestiário antes de ampliar catálogo. Mesclar situações de exploração existentes com encontros regionais; dia/noite altera a composição sem exigir presença em horário fixo.
+- Guilda: ofertas por cidade e faixa de nível, com motivos/NPCs/recompensas locais. Combinar combate, recuperar suprimento/documentos e escolta curta; objetivos executáveis, não só nome novo no mesmo contrato. Proposta:3 ofertas distintas por região. Registrar a origem do contrato para viajar sem mudar seu alvo; preservar missões antigas e impedir pagamento repetido/abandono para rerrolar prêmio.
+- Campanha e contratos continuam separados: pista principal garantida, contrato opcional não bloqueia finais. Maelis continua mestra única; agentes locais representam a mesma Guilda. Nenhum auto-complete fictício com base apenas em nível ou ida à cidade.
+- Critério: sessão curta em Mares/Aurora oferece diferenças visíveis de inimigo, decisão e objetivo. Medir ganho/tempo/mortes, testar retomada e slots, validar arte/memória/OTA e publicar antes de prometer variedade pronta.
+
+
 Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Hoje só o piloto do hipogrifo está implementado; não anunciar oito eventos prontos.
 
 Horário local e dia/noite podem variar ambiente e encontros, mas a campanha não deve exigir presença em uma hora específica. Oferecer/recusar sem culpa, não punir ausência e evitar bloquear a atualização ou o descanso por uma carta.

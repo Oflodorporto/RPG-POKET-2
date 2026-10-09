@@ -198,7 +198,7 @@ void tapped(int x,int y){
     else if(hit(x,y,124,272,102))view.page=view.objectiveReturn;say("");return;
   }
   if(view.page==Page::People){if(hit(x,y,14,272,212))view.page=Page(menu.storyReturn);
-    else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.page=Page::Dialogue;break;}say("");return;}
+    else for(unsigned i=0;i<3;++i)if(hit(x,y,14,78+i*54,212,48)){menu.personIndex=i;view.dialoguePage=0;view.dialogueAnimate=true;view.dialogueStartFrame=millis()/120;view.page=Page::Dialogue;break;}say("");return;}
   if(view.page==Page::CampaignTask){
     if(hit(x,y,14,272,102)){view.page=Page::Dialogue;say("");}
     else if(hit(x,y,124,272,102)){const char* err=rpg::startCampaign(game,view.campaignChoice);if(err)say(err);else {view.campaignScene=0;say("");savedTransition(Page::Battle);}}return;
@@ -209,7 +209,7 @@ void tapped(int x,int y){
     if(won&&view.campaignScene+1<rpg::campaignScenes(game.campaignStage)){++view.campaignScene;say("");return;}
     if(rpg::resolveCampaign(game)){view.campaignScene=0;say(won?"Descoberta registrada no diario":"A missao pode ser tentada de novo");savedTransition(lost?Page::Recovery:Page::People);menu.storyReturn=int(Page::Village);}return;
   }
-  if(view.page==Page::Dialogue){if(menu.personIndex==0&&rpg::campaignContact(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,212))view.page=Page::People;say("");return;}
+  if(view.page==Page::Dialogue){if(hit(x,y,8,8,224,210)&&view.dialogueAnimate){view.dialogueAnimate=false;say("");return;}if(menu.personIndex==0&&rpg::campaignContact(game)&&hit(x,y,14,225,212,32)){view.campaignChoice=rpg::campaignMission(game);view.page=Page::CampaignTask;say("");return;}if(hit(x,y,14,272,102)){if(view.dialoguePage)--view.dialoguePage;else view.page=Page::People;}else if(hit(x,y,124,272,102)){if(view.dialoguePage+1<story::conversationPages(story::conversation(game,menu.personIndex)))++view.dialoguePage;else {view.dialoguePage=0;view.page=Page::People;}}say("");return;}
   if(view.page==Page::Continent){if(hit(x,y,14,272,102))showMap();
     else if(hit(x,y,124,272,102)){if(!menu.regionIndex)showMap();else say("Mapa de regiao futura");}
     else if(hit(x,y,14,224,102))menu.regionIndex=(menu.regionIndex+7)%8;
@@ -617,7 +617,7 @@ void loop(){
     if(intent==rpg::Intent::Prepare)snprintf(message,sizeof(message),"Inimigo prepara um golpe forte");else if(intent==rpg::Intent::Mend)snprintf(message,sizeof(message),"Inimigo recomposto: %u HP",game.enemyHp);else if(intent==rpg::Intent::Drain&&!game.dodge)snprintf(message,sizeof(message),"Drenagem: -%u HP; confira MP",game.damage);
     view.message=message;savedTransition(currentPage());beginEffect(intent==rpg::Intent::Mend?Effect::Radiant:intent==rpg::Intent::Prepare?Effect::Shield:game.enemyId==5?Effect::Projectile:Effect::Slash,intent!=rpg::Intent::Mend&&intent!=rpg::Intent::Prepare);
   }
-  if(lcdReady&&(dirty||((view.page==Page::Title||view.page==Page::Home||view.page==Page::Menu||view.page==Page::Ruins||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
+  if(lcdReady&&(dirty||(((view.page==Page::Dialogue&&view.dialogueAnimate&&unsigned(now/120-view.dialogueStartFrame)<7)||view.page==Page::Title||view.page==Page::Home||view.page==Page::Menu||view.page==Page::Ruins||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
   if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}
 
   delay(1);
