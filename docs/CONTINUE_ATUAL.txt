@@ -1,4 +1,37 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 3 — TRANCAS E GAZUAS
+Versão2026.10.08-trancas1, build2026100808.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-trancas1
+Commit do firmware: c54815d014baecdbfdb027576ece6030187c37f2
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37868753003 — sucesso.
+
+ENTREGUE: cerca de7,5% das explorações geram baú trancado. CD regional12/14/16/18, Força ou Destreza e chance visíveis. Forçar falha inutiliza; gazua consome1, máximo2 tentativas totais; depois da primeira gazua pode forçar. Armadilha indicada (25% dos trancados), dano até2/3/4/5HP sem matar. Recolher/Deixar, prêmio persistido uma vez. Gazuas na bolsa até9, comprar via Suprimentos ou slot da bolsa, preços4/7/6/10g. Nenhuma proficiência extra inventada. Natural1/20 é adaptação do jogo. Trancas nunca bloqueiam campanha.
+Save19/128 bytes/CRC124, lê1–19. Campos de exploração compactados nos bits dos bytes60–63; save18 importa sem trancar baú antigo. Bytes90/91 e122/123 preservados. Firmware antigo não lê save19; não fazer downgrade após salvar sem backup compatível. Resultado/consumo/dano persistidos antes da tela; falha de save repete a mesma transação, nunca a rolagem.
+26 suítes passaram, incluindo6400 tentativas em4classes/4cidades e50.000 explorações (3751 trancas/921 armadilhas). Controlador real testado para falha de save/reinício/recompensa única; renderer com limites de texto e pureza. Compilação final: Sketch2677630 bytes (85% de3145728); globals53756 (16% de327680).
+Artes inalteradas:459 entradas,6.846.544 bytes, CRC19aa0797. Sem nova leitura por quadro. Mapa/D20/deslocamento/animações/dungeon/campanha mantidos. Downloads e hashes em releases/2026.10.08-trancas1/VERIFICACAO.json. Teste físico pendente.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/Exploration.h
+Telas: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/LocksView.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_3_TRANCAS_E_GAZUAS.md
+Preview: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-trancas1.png
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git).
+Firmware final: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.08-trancas1/firmware.bin
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT, PACOTE_3_TRANCAS_E_GAZUAS.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h/Save.h e release atual antes de editar.
+2. Confirmar teste físico do usuário: Configurações > Atualização; herói antigo, compra/bolsa, tranca com ambos métodos, dano/reinício/recolher/Deixar; mapa/D20/dungeon. Corrigir esta entrega primeiro se surgir erro.
+3. Iniciar Pacote4 — Progressão recompensadora. Conferir habilidades reais e painel do herói; escolher uma entrega limitada e coerente, sem prometer poderes não implementados. Tabelas e origens existentes devem ser preservadas.
+4. Medir progressão/economia antes de alterar recompensas; criar testes de cenários e persistência compatível. Bytes60–63 compactados e90/91/122/123 ocupados; não reutilizar.
+5. Rodar testes relevantes, conferir snapshots do controlador e telas; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; validar candidato no GitHub, promover e verificar downloads. Registrar próxima continuidade.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático, .rpg, NVS erase, formatação SD. Usuário instala pelo cabo ou confirma OTA na placa. Build local antigo não deve ser usado; preferir firmware final da release verificada.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
 PACOTE 2 — EXPLORAÇÃO VARIADA
 Versão2026.10.08-exploracao1, build2026100807.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-exploracao1

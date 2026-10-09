@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Os pacotes3–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
+Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Os pacotes4–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
 ## O que permanece da revisão anterior
 

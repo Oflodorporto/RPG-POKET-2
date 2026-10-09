@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote3 — Trancas e gazuas, 2026.10.08-trancas1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-trancas1) · [Guia](docs/PACOTE_3_TRANCAS_E_GAZUAS.md) · [Continuidade](docs/CONTINUE_TRANCAS1.txt). Força/Destreza, ferramenta consumível, risco explícito e tentativas persistidas; Save19/leitura1–19. As26 suítes, compilação e downloads foram verificados; teste físico aguarda o usuário. Arte SD inalterada. Próximo: Pacote4 — Progressão recompensadora.
+
 **Entrega mais recente: Pacote2 — Exploração variada, 2026.10.08-exploracao1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-exploracao1) · [Guia e teste físico](docs/PACOTE_2_EXPLORACAO_VARIADA.md) · [Continuidade](docs/CONTINUE_EXPLORACAO1.txt). Achados, baús, mímicos e sucata; Save18 com leitura1–18. As25 suítes, compilação e downloads finais foram verificados; teste físico desta entrega aguarda o usuário. O pacote de artes permanece igual ao do Pacote1. As versões abaixo são histórico.
 
 2026.10.07-lore1: primeira integracao de As Cinzas da Primeira Aurora, abertura com Nara e carta de Maelis, Diario por progresso existente, Pessoas com dialogos locais e atlas de Valdaria. [Uso e limites](docs/REORGANIZACAO_AELDRA.md). Save10/96bytes e artes SD permanecem iguais; a leitura da historia nao altera recompensas ou personagens. Novas regioes, eventos diarios e campanha completa serao etapas posteriores. [Lore](docs/LORE_CANONICA_RPG_POKET_2.md) e [continente](docs/CONTINENTE_VALDARIA.md).
