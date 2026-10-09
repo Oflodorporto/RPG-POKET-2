@@ -1,4 +1,57 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE4.4 — BÁRBARO: FÚRIA ANCESTRAL
+Versão2026.10.09-barbaro1/build2026100903
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-barbaro1
+Commit firmware: f788bc97afc5d4233b95673034c3181f55d3a56f
+CI publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37921083260 — sucesso.
+Compilação: 2026-10-09T11:00:06.3525094Z Sketch uses 2687930 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T11:00:06.3526209Z Global variables use 53788 bytes (16%) of dynamic memory, leaving 273892 bytes for local variables. Maximum is 327680 bytes.
+Arquivos baixados e verificados por tamanho/SHA/CRC; VERIFICACAO.json registra detalhes. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras/Poderes/Trilha: Rules.h/PowersView.h/Progression.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_4_FURIA_ANCESTRAL.md
+Prévia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-barbaro1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/barbaro-balance.csv
+Release verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-barbaro1
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT/guia e ROADMAP_PACOTES_EXPERIENCIA.md. Conferir ReleaseVersion.h/Save.h/fontes/release atuais antes de editar.
+2. Conferir teste físico pelo usuário: Bárbaro9/13/17 críticos,15 Fúria >3rodadas/reboot/fim/fuga; níveis anteriores mantidos; fichas passivas sem ações; demais classes mantidas. Corrigir relatos antes de ampliar.
+3. Escolher próximo recurso de classe ou balanceamento de sessão, com SRD/cânone. Pendentes: Fúria implacável, Força indomável/Campeão primitivo e Caminhos; demais classes também têm lacunas. Pacote5 Aurora/finais continua planejado. Para Força indomável, evitar revalidar retrospectivamente baús resolvidos de save19; escolher persistência/migração antes de codificar.
+4. Comparar benchmark40.960batalhas (6502derrotas agregadas) sem confundir recursos cheios/equipamentos ausentes/regiões inadequadas com campanha real. Não inferir minutos ou metas de dificuldade global. XP/preços inalterados.
+5. Rodar31suítes/controller snapshot/render, compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; candidato antes de publicar; verificar downloads. Registrar progresso. Bytes60–63/90–91/122–123 ocupados; não reutilizar.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirma OTA ou grava cabo. Compilação/software não confirma funcionamento físico. Build local preliminar; usar release verificada ou recompilar atuais.
+
+DETALHES DA ENTREGA:
+# Pacote 4.4 — Bárbaro: Fúria ancestral
+
+Versão 2026.10.09-barbaro1, build2026100903. Publicada e verificada: 31 suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
+
+Crítico brutal agora usa dados reais: +1d6 no nível9, +2d6 no13 e +3d6 no17, apenas quando o ataque ou a técnica com arma acerta e é crítico. Substitui o bônus fixo+1/+2/+3 antigo. O bônus entra uma vez por ação, depois do multiplicador da técnica: não é duplicado por Ataque extra nem pela técnica. Não altera a chance de crítico12%. Não gasta mana nem rola dados extras em golpes esquivados. Fúria/Armas conservam seus demais bônus.
+
+Nível15, Fúria persistente: uma Fúria ativada deixa de expirar após três rodadas e dura até terminar o combate. Vitória/derrota/fuga limpa o efeito; entrar em outro combate exige ativar de novo. Não restaura usos; no20 continua sem limite. Descanso completo continua restaurando os recursos. Ações de cura, preparação inimiga, ataque mágico e retomada do save não encerram a Fúria persistente. Antes15 mantém três rodadas.
+
+Poderes do Bárbaro passam a ter três fichas: Fúria e duas passivas, com níveis/estado/explicação. Tocar uma passiva não executa Fúria, gasta recurso ou grava save. A ficha ativa e a mensagem de ativação mostram a duração correta. Trilha/próximo marco anunciam ganhos executáveis9/13/15/17.
+
+Referência oficial2014: https://www.dndbeyond.com/sources/dnd/basic-rules-2014/classes#Barbarian. Crítico brutal9/13/17 acrescenta1/2/3 dados de arma; o motor atual não possui dado por equipamento, portanto esta entrega usa d6 fixo e uma rolagem agregada por ação. Fúria persistente15 é adaptada ao encontro, encerrando também ao fugir/terminar a batalha. Não é implementação integral do Bárbaro de mesa. Fúria implacável11, Força indomável18, aumento de atributos de Campeão primitivo20, Ataque imprudente e Caminhos permanecem pendentes. Força indomável exige atenção à validação de baús já resolvidos: não invalidar saves19 antigos mudando retroativamente seu resultado.
+
+31suítes mais render:14.000 ataques do Bárbaro, limites de dados, níveis/classes/legados, esquiva sem dados extras, persistência14/15/20, resistências/cadência, término/retomada, recompensas únicas e saves19. Testes do controlador real verificam fichas passivas sem gravação; prévias e limites de texto9/13/15/17 e adjacentes. Comparação controlada40.960combates embarbaro-balance.csv: recursos cheios por combate, sem equipamento/poções/forja/pontos e inclui regiões inadequadas; não é sessão real ou alvo global de dificuldade. XP/preços permanecem iguais.
+
+Save19/128bytes/leitura1–19: nenhuma alteração de formato/campo/migração. Fúria ativa de um save antigo no15+ preserva seu valor e passa a persistir. Demais classes e legados preservados.459artes iguais àarcano1; sem leituraSD por quadro. Sem flash automático/.rpg/eraseNVS/formataçãoSD/alteraçãoHeltec.
+
+Teste físico pelo usuário: Configurações > Atualização. Bárbaro > Poderes: confira fichas e estados antes/depois9/13/15/17. No15, ative Fúria e jogue mais de três rodadas, incluindo cura/preparação; confirme que permanece e termina ao vencer/perder/fugir. Retome o jogo durante a luta e confira usos/duração. Antes15 deve terminar em três rodadas. Ataques críticos recebem dado(s) extra; demais ataques não. Mago/Paladino/Guerreiro conservam seus poderes. Testes/compilação não confirmam placa física.
+
+Próxima etapa: priorizar recursos pendentes com compatibilidade e balanceamento de sessões reais; Pacote5 Aurora/finais permanece planejado.
+
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
 PACOTE 4.3 — MAGO: DOMÍNIO ARCANO
 Versão 2026.10.09-arcano1, build 2026100902.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-arcano1

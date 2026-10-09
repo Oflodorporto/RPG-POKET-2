@@ -1,3 +1,33 @@
+RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE4.4 — BÁRBARO: FÚRIA ANCESTRAL
+Versão2026.10.09-barbaro1/build2026100903
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-barbaro1
+Commit firmware: f788bc97afc5d4233b95673034c3181f55d3a56f
+CI publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37921083260 — sucesso.
+Compilação: 2026-10-09T11:00:06.3525094Z Sketch uses 2687930 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T11:00:06.3526209Z Global variables use 53788 bytes (16%) of dynamic memory, leaving 273892 bytes for local variables. Maximum is 327680 bytes.
+Arquivos baixados e verificados por tamanho/SHA/CRC; VERIFICACAO.json registra detalhes. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras/Poderes/Trilha: Rules.h/PowersView.h/Progression.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_4_FURIA_ANCESTRAL.md
+Prévia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-barbaro1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/barbaro-balance.csv
+Release verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-barbaro1
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT/guia e ROADMAP_PACOTES_EXPERIENCIA.md. Conferir ReleaseVersion.h/Save.h/fontes/release atuais antes de editar.
+2. Conferir teste físico pelo usuário: Bárbaro9/13/17 críticos,15 Fúria >3rodadas/reboot/fim/fuga; níveis anteriores mantidos; fichas passivas sem ações; demais classes mantidas. Corrigir relatos antes de ampliar.
+3. Escolher próximo recurso de classe ou balanceamento de sessão, com SRD/cânone. Pendentes: Fúria implacável, Força indomável/Campeão primitivo e Caminhos; demais classes também têm lacunas. Pacote5 Aurora/finais continua planejado. Para Força indomável, evitar revalidar retrospectivamente baús resolvidos de save19; escolher persistência/migração antes de codificar.
+4. Comparar benchmark40.960batalhas (6502derrotas agregadas) sem confundir recursos cheios/equipamentos ausentes/regiões inadequadas com campanha real. Não inferir minutos ou metas de dificuldade global. XP/preços inalterados.
+5. Rodar31suítes/controller snapshot/render, compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; candidato antes de publicar; verificar downloads. Registrar progresso. Bytes60–63/90–91/122–123 ocupados; não reutilizar.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirma OTA ou grava cabo. Compilação/software não confirma funcionamento físico. Build local preliminar; usar release verificada ou recompilar atuais.
+
+DETALHES DA ENTREGA:
 # Pacote 4.4 — Bárbaro: Fúria ancestral
 
 Versão 2026.10.09-barbaro1, build2026100903. Publicada e verificada: 31 suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
@@ -17,3 +47,5 @@ Save19/128bytes/leitura1–19: nenhuma alteração de formato/campo/migração. 
 Teste físico pelo usuário: Configurações > Atualização. Bárbaro > Poderes: confira fichas e estados antes/depois9/13/15/17. No15, ative Fúria e jogue mais de três rodadas, incluindo cura/preparação; confirme que permanece e termina ao vencer/perder/fugir. Retome o jogo durante a luta e confira usos/duração. Antes15 deve terminar em três rodadas. Ataques críticos recebem dado(s) extra; demais ataques não. Mago/Paladino/Guerreiro conservam seus poderes. Testes/compilação não confirmam placa física.
 
 Próxima etapa: priorizar recursos pendentes com compatibilidade e balanceamento de sessões reais; Pacote5 Aurora/finais permanece planejado.
+
+
