@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote5 — Aurora: Arquivos da Coroa,2026.10.09-aurora1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-aurora1) · [Guia](docs/PACOTE_5_AURORA_ARQUIVOS_DA_COROA.md). Liora/Nv18 após Mares, missão da Sentinela/seis cenas com retratos/diário.34suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; leitor anterior não abre21. Artes mantidas. Contribuições/confrontos/finais seguem próximos.
+
 **Última entrega planejada do Pacote4:4.6 — Bestiário do herói,2026.10.09-bestiario1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-bestiario1) · [Guia](docs/PACOTE_4_6_BESTIARIO_DO_HEROI.md). Menu > Bestiário: criaturas encontradas por personagem.33suítes/compilação/downloads conferidos; teste físico pendente. Save20 lê1–20; firmware anterior não abre save20. Arte mantida. Próximo: Pacote5 Aurora.
 
 **Entrega mais recente: Pacote4.5 — Conheça o inimigo,2026.10.09-inimigos1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-inimigos1) · [Guia](docs/PACOTE_4_5_CONHECA_O_INIMIGO.md). Ficha do adversário atual/intenção/tipo/dicas/limite de dano, sem gastar turno.32suítes/compilação/downloads conferidos; teste físico pendente. Save19/artes mantidos.

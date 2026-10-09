@@ -1,4 +1,58 @@
 RPG POKET2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE5 — AURORA: ARQUIVOS DA COROA — PRIMEIRA ENTREGA
+Versão2026.10.09-aurora1/build2026100906.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-aurora1
+Commit firmware: ee681d20dccc4bab2a7ede1236c536921a147ebf
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37961831613
+CI publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37962265956 — sucesso.
+Compilação: 2026-10-09T16:55:51.4079304Z Sketch uses 2695906 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T16:55:51.4080331Z Global variables use 53804 bytes (16%) of dynamic memory, leaving 273876 bytes for local variables. Maximum is 327680 bytes.
+34suítes e snapshot controlador real. Download SHA/tamanho/CRC/catálogo conferidos. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Missão/regras: Campaign.h; diálogos/objetivo/diário Narrative.h/NarrativeView.h; persistência Save.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_5_AURORA_ARQUIVOS_DA_COROA.md
+Prévia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-aurora1.png
+Release verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-aurora1/VERIFICACAO.json
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT/guia, ROADMAP_PACOTES_EXPERIENCIA.md e LORE_CANONICA_RPG_POKET_2.md; conferir fonte/ReleaseVersion.h/Save.h/release atuais.
+2. Conferir relato físico: completar Mares, nível18, viajar Aurora, Pessoas>Liora>Abrir arquivos da Coroa; preview/cancel/start; Sentinela; seis cenas; Registrar no diário. Conferir bolsa/poderes/Ficha/bestiário/D20/deslocamento e reinício. Sem criar/editar saves físicos para forçar pré-requisitos.
+3. Próxima entrega do Pacote5: quatro contribuições e projeto de Anwen, confrontos Odran/Coração do Véu, aviso das condições, final temporário reversível e final pleno/epílogo, exploração depois. Não publicar tudo como pronto: apenas Arquivos da Coroa/missão3/flag4 está implementado. Definir missões concretas e persistência antes da arte/combate final. Não reabrir subpacotes4; eram suficientes para esta etapa.
+4. Save21/128bytes/leitura1–21: flag120 válidos0,1,3,7; stage1210..3. Bestiário54/47alto/50alto; conservar baús60–63/acampamento90–91/origem122–123. Formatos<=20 rejeitam campos novos. Nunca inferir contribuições de cidades sem evidência. Leitores antigos bloqueiam21: manter firmware compatível. Missão3cidade3/Nv18/inimigo7, recompensas350gold/3500XP atual ou350legado além da batalha; seis cenas só leem, resolve uma vez.
+5. Rodar34suítes/controlador real/render; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none, candidato antes de main e downloads verificados. Artes459 iguais à bestiario1/carregadas em PSRAM; sem leituraSD por quadro. Registrar progresso e limitação física.
+
+RESTRIÇÕES: preservarHeltec; semflash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirmaOTA/grava cabo. Software não confirma placa física. Cânone: Odran responsável por escolhas, Véu não resolvido só matando criatura, Anwen sem novas vítimas, final incompleto reversível, outras regiões futuras não desfazem Aeldra.
+
+DETALHES:
+# Pacote5 — Aurora: Arquivos da Coroa
+
+Versão2026.10.09-aurora1/build2026100906. Publicada e verificada:34suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
+
+Primeira entrega do Pacote5. Após concluir as duas missões de Sabela em Mares e alcançar nível18, viaje até Aurora e converse com Liora em Pessoas. O botão Abrir arquivos da Coroa mostra objetivo, requisito e recompensa antes de começar. O Livro das Vigílias continua obrigatório; heróis antigos com a cripta concluída conservam o reconhecimento desse marco. Sem taxa de Guilda adicional nem consumo de cristais para esta missão.
+
+Derrote a Sentinela do bloqueio para que Liora, Seraphine e Dargan entrem nos arquivos. A mesma Sentinela existente é um encontro dedicado da campanha; vencer uma sentinela comum não conclui a missão. A criatura é registrada normalmente no bestiário. Usa bolsa/poderes/Ficha e animações atuais; não há novo inimigo nem alteração das regras de ataque.
+
+Seis cenas com retratos mostram as ordens de Odran, a Vigília Perpétua, o desenho protegido por Dargan, um registro escrito pelo regente e a decisão de Liora de impedir o sacrifício de outras famílias. Odran não participa de uma conversa presente: sua fala está identificada como Registro do palácio. Sua perda não o absolve. As contribuições e confrontos finais seguem para a próxima entrega, não aparecem como liberados nesta versão.
+
+Concluir as seis páginas registra a descoberta no diário e concede350ouro/+3500XP para progressão atual, ou350XP legado, além da recompensa normal da batalha. Os documentos são informação de campanha, não equipamento aleatório vendável. Pessoas, objetivo e diário reconhecem o novo progresso. Após a descoberta o objetivo diz explicitamente que reunir aliados será a próxima etapa; finais/epílogo ainda não foram implementados.
+
+Preview/cancelamento/páginas de diálogo são somente leitura. Missão salva ao começar; após vitória, permanece pendente até registrar o diário. Reinício retoma combate/resultado, reiniciando apenas a leitura das páginas. Derrota/fuga preservam as provas de Mares e permitem tentar novamente, sem recompensa do contrato. Falha de gravação segue SaveError/repetir: não rola outro encontro nem paga duas vezes. Sem perda irreversível de NPCs por falhar.
+
+Save21 continua128bytes/leitura1–21. Usa bit2 de campaignFlags(byte120) para arquivos recuperados e stage3(byte121) para missão ativa. Flags válidas0,1,3,7 preservam ordem de missões; formatos anteriores não aceitam os novos valores. Bestiário permanece nos bits reservados do20; dados de baús/acampamento/origem/progressão intactos. Leitura de save antigo não fabrica missão completa nem escreve automaticamente. Depois de gravar21, leitores antigos20/19 bloqueiam com segurança; não fazer downgrade para abrir21.
+
+34suítes incluindo campanha de Aurora nas16combinações classe/raça, requisito/pureza, vitória/perda/fuga, reinício, save20, bits inválidos, isolamento de encontros comuns, recompensa única e falha/repetição. Controlador real confirma previews e seis cenas sem escrita/RNG, retorno e retry; renderer cobre missão/seis retratos/objetivo/diário/diálogos. Compilação e downloads conferidos. Artes459 mantidas, carregadas em PSRAM; nenhuma leituraSD por quadro. Mapa/D20/deslocamento preservados.
+
+Teste físico: atualizar em Configurações > Atualização; conferir slot/bestiário. Com Livro, duas missões de Mares eNv18, Mapa > Aurora > Conversar/Pessoas > Liora > Abrir arquivos da Coroa. Ler/cancelar preview; começar, combater, conferir seis cenas/retratos e Registrar no diário. Conferir recompensa/objetivo/diário e retorno. Reiniciar em combate ou resultado deve retomar sem repetir recompensa. Sem criar heróiNv18 automaticamente. Teste físico do usuário separado dos testes de software.
+
+Próxima etapa do Pacote5: contribuições das quatro cidades e projeto de Anwen, confrontos com Odran/Coração do Véu, aviso das condições, final temporário reversível e final pleno/epílogo; exploração continua depois. Preparar essas regras e persistência antes de prometer finais prontos. Preservar Heltec; nenhum flash automático/.rpg/eraseNVS/formataçãoSD.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET2 — CONTINUIDADE ATUAL — 09/10/2026
 PACOTE4.6 — BESTIÁRIO DO HERÓI — ÚLTIMA ENTREGA PLANEJADA DO PACOTE4
 Versão2026.10.09-bestiario1/build2026100905.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-bestiario1

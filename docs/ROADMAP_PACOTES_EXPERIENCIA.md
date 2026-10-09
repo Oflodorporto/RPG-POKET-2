@@ -1,5 +1,7 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
+Estado atual09/10: primeira entrega do Pacote5 publicada em2026.10.09-aurora1, missão Arquivos da Coroa com Liora/Nv18/Sentinela e seis cenas. GuiaPACOTE_5_AURORA_ARQUIVOS_DA_COROA.md, save21 e34suítes. Continuam pendentes as quatro contribuições, confrontos finais e epílogos; próximo trabalho dentro do Pacote5.
+
 Estado09/10: Pacote4.6 — Bestiário publicado em2026.10.09-bestiario1. É a última entrega planejada do Pacote4; aguardamos validação física. A próxima etapa é Pacote5 — Aurora e fechamento da campanha. Poderes restantes do SRD e ajustes econômicos são trabalho futuro/contínuo, não novos subpacotes obrigatórios para iniciar5.
 
 Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes das quatro classes e bestiário entregues nos4.1–4.6; ajustes econômicos continuam conforme sessões reais. Os pacotes5–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
@@ -111,6 +113,8 @@ Da revisão anterior: balanceamento e escolhas avançadas de classes.
 - Acrescentar registro simples de descobertas e inimigos, desbloqueado ao encontrá-los. Sem revelar chefes futuros nem exigir atividade diária.
 
 ## Pacote5 — Aurora e uma campanha que chega ao fim
+
+Entregue: Arquivos da Coroa/missão3, Liora/Seraphine/Dargan e registro de Odran, Vigília Perpétua e desenho de Anwen. As etapas abaixo de contribuições/confrontos/finais seguem planejadas, não disponíveis nesta release.
 
 - Liora, Seraphine e Dargan com objetivos próprios; revelar a Vigília Perpétua e tornar Odran responsável por suas decisões.
 - Recuperar as quatro contribuições e o projeto de Anwen por ações concretas, acompanhadas no diário.
