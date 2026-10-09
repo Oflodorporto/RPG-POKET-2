@@ -1,6 +1,6 @@
 # Pacote 4.1 — Paladino: luz contra as sombras
 
-Versão2026.10.08-paladino1, build2026100810. Candidata em validação.
+Versão2026.10.08-paladino1, build2026100810. Publicada e verificada:28suítes e compilaçãoESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Poderes > Paladino passa a ter Punição divina, disponível no nível2. Ataque corpo a corpo com +2d8 de dano radiante; contra mortos-vivos do bestiário atual (IDs2/5/8/9), +1d8 adicional. Custo3MP somente se acertar; esquiva gasta o turno mas conserva mana. Não requer juramento. Arma sagrada/Expulsar continuam exigindo Devoção e compartilhando seu uso de canalização. No nível11, Punição aprimorada acrescenta automaticamente1d8 por golpe corpo a corpo, sem mana, tanto no ataque quanto na Investida; soma com Punição divina. Críticos dobram os dados radiantes.
 

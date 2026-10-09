@@ -1,0 +1,33 @@
+RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
+PACOTE 4.1 — PALADINO: LUZ CONTRA AS SOMBRAS
+Versão2026.10.08-paladino1, build2026100810.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-paladino1
+Commit do firmware: 037577baa5bee196f35577fa776ceaada3c76527
+Publicação CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37874107728 — sucesso.
+
+ENTREGUE: Punição divina em Poderes no nível2: ataque corpo a corpo +2d8, morto-vivo+1d8;3MP somente no acerto. Não requer Devoção. Punição aprimorada no11:1d8 por golpe agregado de Ataque/Investida, sem mana, soma com Punição ativa; críticos dobram dados radiantes. Novas animações douradas de1050ms em combate/dungeon; Trilha/next-milestone atualizados. Seleção de juramento na cidade restrita aos poderes de canalização. Adaptação2014/SRD5.1: mana fixa em lugar de slot, escolha antes do golpe; uma rolagem de acerto para a ação agregada existente. Sem auras/elevação de slot nesta entrega.
+28suítes passaram,4.990casos da habilidade e40.960combates de benchmark (recursos cheios, sem equipamentos/poções/forja/pontos; não equivale a sessão real). Arte SD459 entradas/6.846.544bytes/CRC19aa0797 byte a byte igual à progressao1. Save19/128bytes/leitura1–19 sem campos novos. Legados preservados. Sem leituras por quadro.
+Compilação: 2026-10-09T02:18:32.5910729Z Sketch uses 2683986 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T02:18:32.5912077Z Global variables use 53788 bytes (16%) of dynamic memory, leaving 273892 bytes for local variables. Maximum is 327680 bytes.
+Hashes/downloads em releases/2026.10.08-paladino1/VERIFICACAO.json. Teste físico fica com o usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/Rules.h
+Poderes/Trilha: PowersView.h / Progression.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_1_PALADINO.md
+Preview: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-paladino1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/paladino-balance.csv
+Firmware: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.08-paladino1/firmware.bin
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT, PACOTE_4_1_PALADINO.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h, Save.h e release atual.
+2. Verificar relato físico: Paladino2 > Poderes > Punição divina; custo/acerto/esquiva/mortos-vivos; Paladino11 bônus automático/efeito na dungeon; juramento/recursos/saves preservados. Corrigir falhas antes de ampliar.
+3. Próximo desdobramento de4: escolher identidade avançada de Guerreiro/Mago/Bárbaro sem prometer poderes não implementados. Pacote5 Aurora continua planejado; ler cânone/campanha antes de mexer nos finais.
+4. Usar validacao/paladino-balance.csv para comparar combate controlado, não minutos ou dificuldade média. XP/preços inalterados até observar sessões com recursos/viagens/itens reais.
+5. Testar regras/save e snapshots reais do controlador; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; candidato GitHub, publicação e conferência de downloads. Bytes60–63/90–91/122–123 ocupados; não reutilizar. Registrar continuidade.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirma OTA ou grava pelo cabo. Compilação/testes de software não são validação física. Build local antigo é preliminar; usar firmware desta release ou recompilar fontes atuais.
+
