@@ -1,5 +1,7 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
+Estado atual09/10: O Legado de Anwen publicada em2026.10.09-anwen1.Quatro contribuições reais em ordem livre, projeto de Anwen e reconhecimento de Liora;36suítes, save22/artes mantidas. Próximo: confrontos/finais/epílogos para concluir Pacote5; variedade de inimigos/contratos abre Pacote6.
+
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
 Estado atual09/10: primeira entrega do Pacote5 publicada em2026.10.09-aurora1, missão Arquivos da Coroa com Liora/Nv18/Sentinela e seis cenas. GuiaPACOTE_5_AURORA_ARQUIVOS_DA_COROA.md, save21 e34suítes. Continuam pendentes as quatro contribuições, confrontos finais e epílogos; próximo trabalho dentro do Pacote5.

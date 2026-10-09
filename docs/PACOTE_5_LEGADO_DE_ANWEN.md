@@ -1,6 +1,6 @@
 # Pacote 5 — O Legado de Anwen
 
-Versão 2026.10.09-anwen1/build2026100908. Candidata em validação.
+Versão 2026.10.09-anwen1/build2026100908. Publicada e verificada:36suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Depois de Arquivos da Coroa, reunir quatro ajudas concretas, em qualquer ordem. Requer Livro, tutorial e nível18 como a missão anterior. Conversas com os contatos locais abrem uma confirmação; consultar ou cancelar não consome recursos. Objetivo mostra as quatro contribuições e conduz ao próximo aliado faltante pelo mapa normal: mantém D20 e deslocamento. Diário, capítulo4, registra pronta/pendente.
 

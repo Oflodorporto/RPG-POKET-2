@@ -1,4 +1,59 @@
 RPG POKET2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE5 — O LEGADO DE ANWEN
+Versão2026.10.09-anwen1/build2026100908.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-anwen1
+Commit firmware: 0902668521f8f69fb8b8c36a8d545dc5ebcdf877
+CI candidata: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37974991373
+CI publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37991979027 — sucesso.
+Compilação: 2026-10-09T18:44:12.9785880Z Sketch uses 2713930 bytes (86%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T18:44:12.9786803Z Global variables use 53820 bytes (16%) of dynamic memory, leaving 273860 bytes for local variables. Maximum is 327680 bytes.
+36suítes e snapshot controlador real. Download SHA/tamanho/CRC/catálogo conferidos. Teste físico pendente do usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras: Campaign.h; falas AnwenStory.h/DialogueStory.h; telas NarrativeView.h; save22 Save.h; controle RPG_POKET_2.ino
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_5_LEGADO_DE_ANWEN.md
+Prévia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-anwen1.png
+Release verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-anwen1/VERIFICACAO.json
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT/guia, ROADMAP_PACOTES_EXPERIENCIA.md e LORE_CANONICA_RPG_POKET_2.md; conferir fonte/ReleaseVersion.h/Save.h/release atuais.
+2. Conferir relato físico: personagem após Arquivos da Coroa/Nv18; Objetivo/Seguir leva a Elarin em Carvalho(3rações), Iria em Vespera(espectro), Nilsa em Mares(saqueador), Dargan em Aurora(150ouro). Pode fazer em qualquer ordem. Cancelar prévia não cobra; confirmar entrega grava custo/prova juntos; escoltas só ganham contribuição ao Registrar no diário. Ler agradecimentos/avançar/voltar/fechar; Diário4/Objetivo mostram pronta/pendente. Reiniciar e conferir recursos/provas, sem criar saves físicos artificiais.
+3. Próxima entrega conclui Pacote5: Odran/Coração do Véu, condições claras, final temporário reversível e final pleno/epílogo/exploração posterior. As quatro contribuições/projeto estão implementados agora; finais NÃO. Liora reconhece os aliados quando flags127. Manter diálogos contínuos e retratos, sem tópicos vagos.
+4. Save22/128bytes/leitura1–22. Byte120 flags0/1/3 ou base7 mais bits3–6 das ajudas;127=projeto completo, bit7 rejeitado. Byte121 estágios de batalha1/2/3/5/6;4/7 não persistem como batalha, doações gravam flag/recurso atomicamente. Preservar bestiário54/47alto/50alto, baús60–63, camp90–91, origem122–123, CRC124. Não inferir prova por visita/nível/combate normal. Saves<=21 rejeitam novas flags/estágios; firmware antigo bloqueia22. Futuro final exige estado próprio e migração explícita: não inferir final de flags127, que significam apenas projeto pronto. Variedade inimigos/contratos regional permanece Pacote6.
+5. Rodar36suítes/controlador real/render; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none, candidato antes de main e downloads verificados. Artes459 iguais à vozes1/carregadas em PSRAM; as contribuições usam o catálogo atual sem novos arquivos nem leituraSD por quadro. D20/deslocamento preservados. Registrar progresso e limitação física.
+
+RESTRIÇÕES: preservarHeltec; semflash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirmaOTA/grava cabo. Software não confirma placa física. Cânone: Odran responsável por escolhas, Véu não resolvido só matando criatura, Anwen sem novas vítimas, final incompleto reversível, futuras regiões não desfazem Aeldra.
+
+DETALHES:
+# Pacote 5 — O Legado de Anwen
+
+Versão 2026.10.09-anwen1/build2026100908. Publicada e verificada:36suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
+
+Depois de Arquivos da Coroa, reunir quatro ajudas concretas, em qualquer ordem. Requer Livro, tutorial e nível18 como a missão anterior. Conversas com os contatos locais abrem uma confirmação; consultar ou cancelar não consome recursos. Objetivo mostra as quatro contribuições e conduz ao próximo aliado faltante pelo mapa normal: mantém D20 e deslocamento. Diário, capítulo4, registra pronta/pendente.
+
+| Local/aliado | Ação | Registro e recompensa |
+|---|---|---|
+| Carvalho/Elarin | Entregar3 rações; provisões para quem sustenta as raízes vivas | Raízes vivas; +1000XP atual/+100legado |
+| Vespera/Iria | Proteger a arqueóloga de um Espectro ao abrir os registros | Memórias libertas; +100ouro/+1000XP atual/+100legado, além da batalha |
+| Mares/Nilsa | Escoltar voluntários contra o Saqueador do cais | Rotas abertas; mesma recompensa da escolta de Iria |
+| Aurora/Dargan | Financiar componentes,150ouro; oficina oferece o trabalho | Estrutura renovada/projeto; +1000XP atual/+100legado |
+
+Contribuições permanecem com os aliados; são progresso de missão no diário, não equipamento vendável/equipável na bolsa. Não se obtêm apenas visitando cidades, lendo falas ou vencendo um inimigo aleatório. Raízes/Nomes/Rotas/Estrutura formam o projeto de Anwen sem novas vítimas; Liora reconhece a equipe quando todas estão prontas. Odran/Coração do Véu e finais ainda são a próxima entrega do Pacote5, não estão implementados nesta release. A variedade regional/contratos continua início do Pacote6.
+
+NPCs falam em texto contínuo, retratos e pergaminho regional. Resultados de escolta pedem Registrar no diário ao final da leitura antes de liberar prova/recompensa. Entregas de suprimentos/componentes gravam o custo e a prova juntos e depois mostram agradecimento; fechar a fala não repete pagamento. Perder/fugir da escolta deixa a contribuição pendente, aliados em segurança e nova tentativa disponível. SaveError: repetir a gravação mantém o mesmo custo/resultado; reboot antes de confirmar gravação retorna ao checkpoint. Nunca marcar memória/rota como obtida só por restaurar um combate normal.
+
+Save22,128bytes,leitura1–22: bits3–6 de campaignFlags no byte120 registram quatro contribuições; bits0–2 preservam Mares/arquivos; bit7 rejeitado. Flags0/1/3 ou base7 com qualquer subconjunto dos bits3–6;127 completo. Byte121 aceita batalhas1/2/3/5/6, nunca estados transitórios de doação4/7. Saves<=21 rejeitam flags>7/stage>3; leitores antigos bloqueiam22. Não ocupa bytes de acampamento/origem/bestiário/CRC, não aumenta payload, não migra fatos por inferência.
+
+36suítes:384campanhas/permutação/classe/raça, custos exatos, ordem livre, gating, perda/fuga/retomada, saves21/marcadores adulterados, falha de gravação/doação e recompensa uma vez; controlador real cobre contato/cancelar/retry/paginação; renderer percorre confirmação/agradecimentos/progresso/diário/perda e limites de texto. Sem alterar artes459, sem leituraSD por quadro, D20/deslocamento e XP1–20 preservados. Compilar/downloads antes de publicar; físico depende do usuário. Sem flash automático/.rpg/eraseNVS/formatação/Heltec.
+
+Teste físico: Configurações>Atualização, continuar personagem após Arquivos da Coroa. Objetivo>Seguir: Carvalho>Elarin, Vespera>Iria, Mares>Nilsa, Aurora>Dargan. Conferir custo e cancelar; entregar/escoltar e ler; diário muda só após ação concluída. Reiniciar para conferir provas/custos, sem preparar saves físicos artificialmente. Pode fazer em outra ordem. Após quatro, Objetivo>Encontrar Liora: reconhecimento da equipe. Próxima etapa é o confronto e os finais, preservando estas provas.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET2 — CONTINUIDADE ATUAL — 09/10/2026
 PACOTE5 — VOZES DE AELDRA
 Versão2026.10.09-vozes1/build2026100907.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1

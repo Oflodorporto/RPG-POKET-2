@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote5 — O Legado de Anwen,2026.10.09-anwen1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-anwen1) · [Guia](docs/PACOTE_5_LEGADO_DE_ANWEN.md).Quatro contribuições das cidades em ordem livre, custos/retomada/recompensas uma vez e reconhecimento de Liora; retratos/pergaminhos/diário.36suítes, compilação e downloads conferidos; teste físico pendente. Save22 lê1–22; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam próximos.
+
 **Entrega mais recente: Pacote5 — Vozes de Aeldra,2026.10.09-vozes1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1) · [Guia](docs/PACOTE_5_VOZES_DE_AELDRA.md).12 NPCs, falas contínuas conforme progresso e pergaminho animado com retratos/cenários locais.35suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam planejados.
 
 **Entrega mais recente: Pacote5 — Aurora: Arquivos da Coroa,2026.10.09-aurora1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-aurora1) · [Guia](docs/PACOTE_5_AURORA_ARQUIVOS_DA_COROA.md). Liora/Nv18 após Mares, missão da Sentinela/seis cenas com retratos/diário.34suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; leitor anterior não abre21. Artes mantidas. Contribuições/confrontos/finais seguem próximos.
