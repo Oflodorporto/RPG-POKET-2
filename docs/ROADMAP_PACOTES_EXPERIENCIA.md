@@ -86,6 +86,8 @@ Critério: escolher método é relevante e legível, toda classe tem uma saída,
 
 ## Pacote4 — Crescer com vontade de enfrentar o próximo desafio
 
+Desdobramento4.2 publicado:2026.10.09-campeao1, Guerreiro com críticos3/15 e Sobrevivente18, fichas passivas e29suítes; guiaPACOTE_4_2_CAMPEAO.md. Mago/Bárbaro e outros recursos/bestiário/balanceamento permanecem pendentes.
+
 Desdobramento4.1 publicado:2026.10.08-paladino1, Punição divina2/aprimorada11, efeitos e28suítes; guiaPACOTE_4_1_PALADINO.md. Outros poderes avançados/bestiário/balanceamento ainda pendentes.
 
 Status: núcleo de clareza/decisão e medição entregue em2026.10.08-progressao1. Trilha com ganhos executáveis, próximo marco, XP, prévia e confirmação de atributos/talento;27 suítes/40.960 combates simulados. Novos poderes, bestiário e ajustes econômicos ainda pendentes; teste físico desta release aguarda o usuário.

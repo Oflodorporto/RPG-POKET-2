@@ -1,6 +1,6 @@
 # Pacote 4.2 — Guerreiro: Trilha do Campeão
 
-Versão2026.10.09-campeao1, build2026100901. Candidata em validação.
+Versão2026.10.09-campeao1, build2026100901. Publicada e verificada:29suítes e compilaçãoESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Guerreiros com progressão D&D agora recebem três marcos passivos:
 

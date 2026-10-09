@@ -1,3 +1,40 @@
+RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE 4.2 — GUERREIRO: TRILHA DO CAMPEÃO
+Versão2026.10.09-campeao1, build2026100901.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-campeao1
+Commit do firmware: d1d2dff73060b6addfa1fca1356534bdbfcf3b13
+Publicação CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37910116229 — sucesso.
+
+ENTREGUE: Guerreiro D&D recebe crítico aprimorado20% no3, superior30% no15 e Sobrevivente no18: cura5+modCON no início do turno, vivo e com HP<=metade antes da cura. Pode ultrapassar metade; limitado ao máximo. Sem mana. Cura uma vez na entrada do combate/depois da ação inimiga, inclusive preparação/cura; não na navegação/reboot/Surto. Não ressuscita. Fichas passivas em Poderes/Trilha, sem uso manual/gravação. Não existe seleção permanente de subclasse nesta versão.
+Adaptação2014/SRD5.1: níveis3/15/18 e regra da recuperação. Críticos de mesa19–20/18–20 não foram copiados como10%/15%, pois o motor atual tem base12% e dano+50%; chances20%/30% preservam melhoria real. Inimigo/outras classes/legados mantêm12%. Ataques adicionais agregados numa rolagem. Atleta notável, estilo adicional e Indomável permanecem pendentes.
+29suítes passaram;30.000 ataques deram1179/1976/3027críticos nos três níveis; thresholds/turno/morte/Surto/save/cards testados. Renderer passou após corrigir nome longo do pacote na tela de atualização. Benchmark40.960combates emcampeao-balance.csv:6544derrotas agregadas, inclui regiões inadequadas, recursos cheios, sem equipamento/poções/forja/pontos; não equivale à campanha nem alvo global de dificuldade.
+Arte SD459 entradas/6.846.544bytes/CRC19aa0797 byte a byte igual àpaladino1. Save19/128bytes/leitura1–19 sem novo campo/migração. Legados preservados. Sem leitura SD por quadro. XP/preços inalterados.
+Compilação: 2026-10-09T09:14:11.6650038Z Sketch uses 2685350 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T09:14:11.6650896Z Global variables use 53788 bytes (16%) of dynamic memory, leaving 273892 bytes for local variables. Maximum is 327680 bytes.
+Hashes/downloads em releases/2026.10.09-campeao1/VERIFICACAO.json. Teste físico fica com o usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/Rules.h
+Poderes/Trilha: PowersView.h / Progression.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_2_CAMPEAO.md
+Preview: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-campeao1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/campeao-balance.csv
+Firmware: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-campeao1/firmware.bin
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT, PACOTE_4_2_CAMPEAO.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h, Save.h e release atual antes de editar.
+2. Conferir relato físico: atualizar pelo menu; Guerreiro3/15 Poderes chance/críticos; Guerreiro18 HP baixo/novo turno/Surto/retomada; menus não curam; Paladino e demais heróis mantidos. Corrigir falhas antes de ampliar.
+3. Próximo desdobramento4: Mago/Bárbaro e habilidades executáveis. Antes de anunciar benefícios, escolher adaptação adequada a mana/turnos e compatibilidade. Não usar campos ocupados nem prometer arquétipos não implementados. Pacote5 Aurora continua planejado; ler cânone/campanha antes de avançar finais.
+4. Comparar CSV controlado com limitação explícita e observar sessões com recursos/viagens/itens reais. Não traduzir vitórias ideais em minutos ou usar taxa agregada como dificuldade da campanha.
+5. Testar regras/save/snapshots do controlador/render; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; candidato noGitHub, publicação e conferência dos downloads. Registrar continuidade. Bytes60–63/90–91/122–123 ocupados; não reutilizar.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirma OTA ou grava cabo. Testes/compilação de software não confirmam funcionamento físico. Build local antigo é preliminar; usar release desta versão ou recompilar fontes atuais.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
 RPG POKET 2 — CONTINUIDADE ATUAL — 08/10/2026
 PACOTE 4.1 — PALADINO: LUZ CONTRA AS SOMBRAS
 Versão2026.10.08-paladino1, build2026100810.
