@@ -35,6 +35,7 @@ struct Game {
   uint8_t campaignFlags=0,campaignStage=0;
   bool originStory=false;uint8_t originPage=0;
   uint8_t discovery=0,discoverLoot=0,discoverAmount=0,scrap=0;
+  uint8_t gazuas=0,chestLock=0,chestTries=0,chestRoll=0;bool chestPick=false,chestTrap=false;
   uint8_t windSpent=0,surgeSpent=0,rageSpent=0,rageTurns=0;bool surgePending=false,surgeTurnUsed=false;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;
@@ -286,7 +287,7 @@ inline bool enemy(Game& g){
  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
  g.phase=Phase::Hero;finish(g);return true;
 }
-inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4)g.discovery=g.discoverLoot=g.discoverAmount=0;if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
+inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);return true;}
 // Economy.cpp shopLong / UI.cpp invLong: prices and limits from Heltec.
 inline uint8_t potionPrice(bool mana){return mana?12:10;}

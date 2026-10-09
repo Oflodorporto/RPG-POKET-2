@@ -12,6 +12,7 @@ int main(){
   ++kinds[g.discovery];unsigned rng=g.randomState;auto before=g;
   assert(!startDiscovery(g));assert(g.randomState==rng);assert(!eventSafe(g));
   if(g.discovery==2){++chests;if(g.discoverLoot==7)++mimics;}
+  if(g.chestLock){g.gazuas=2;while(g.chestLock==1)assert(!attemptLock(g,true));roundtrip(g);if(g.chestLock==3){clearDiscovery(g);roundtrip(g);continue;}}
   assert(!collectDiscovery(g));roundtrip(g);
   if(g.discovery==4){assert(g.enemyId==14+g.city);g.enemyHp=0;finish(g);roundtrip(g);auto rewarded=g;finish(g);assert(g.p.gold==rewarded.p.gold&&g.p.xp==rewarded.p.xp);assert(home(g));assert(!g.discovery);roundtrip(g);}
   else {gold+=g.p.gold;auto collected=g;assert(collectDiscovery(g));assert(g.p.gold==collected.p.gold&&g.scrap==collected.scrap);clearDiscovery(g);roundtrip(g);}
