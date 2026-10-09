@@ -1,0 +1,42 @@
+[
+  {
+    "name": "sentinela-coral",
+    "prompt": "Use case: stylized-concept. Asset type: original fantasy RPG enemy sprite on real transparent background. Primary request: a hulking animated coral-armored sentinel, copper trident, teal seaweed joints, glowing amber eye. 16-bit pixel art suited to a 240x320 handheld RPG and first-person dungeon. Single full-body creature centered, front view slightly three-quarter facing viewer/left, feet aligned, readable silhouette and crisp chunky pixels, detailed but legible at 48x64. No backdrop, no ground shadow, no lettering, no watermark, no HUD. Consistent navy/teal/gold palette with strong contrast. Generous transparent margins; weapon entirely inside image. Static idle pose. Original RPG POKET art, do not imitate a copyrighted character.",
+    "transparent_background": true
+  },
+  {
+    "name": "arraia-runar",
+    "prompt": "Use case: stylized-concept. Asset type: original fantasy RPG enemy sprite on real transparent background. Primary request: a hovering magical manta ray, deep indigo body, turquoise runic markings, purple electric tail, menacing. 16-bit pixel art suited to a 240x320 handheld RPG and first-person dungeon. Single full-body creature centered, front view slightly three-quarter facing viewer/left, feet aligned, readable silhouette and crisp chunky pixels, detailed but legible at 48x64. No backdrop, no ground shadow, no lettering, no watermark, no HUD. Consistent navy/teal/gold palette with strong contrast. Generous transparent margins; weapon entirely inside image. Static idle pose. Original RPG POKET art, do not imitate a copyrighted character.",
+    "transparent_background": true
+  },
+  {
+    "name": "corsario-afogado",
+    "prompt": "Use case: stylized-concept. Asset type: original fantasy RPG enemy sprite on real transparent background. Primary request: an undead drowned pirate in torn nautical coat, green skeletal face, curved bronze cutlass, wet rope belt. 16-bit pixel art suited to a 240x320 handheld RPG and first-person dungeon. Single full-body creature centered, front view slightly three-quarter facing viewer/left, feet aligned, readable silhouette and crisp chunky pixels, detailed but legible at 48x64. No backdrop, no ground shadow, no lettering, no watermark, no HUD. Consistent navy/teal/gold palette with strong contrast. Generous transparent margins; weapon entirely inside image. Static idle pose. Original RPG POKET art, do not imitate a copyrighted character.",
+    "transparent_background": true
+  },
+  {
+    "name": "oraculo-abisso",
+    "prompt": "Use case: stylized-concept. Asset type: original fantasy RPG enemy sprite on real transparent background. Primary request: an abyssal hooded oracle, violet robes, coral staff with luminous cyan pearl, humanoid sea spirit. 16-bit pixel art suited to a 240x320 handheld RPG and first-person dungeon. Single full-body creature centered, front view slightly three-quarter facing viewer/left, feet aligned, readable silhouette and crisp chunky pixels, detailed but legible at 48x64. No backdrop, no ground shadow, no lettering, no watermark, no HUD. Consistent navy/teal/gold palette with strong contrast. Generous transparent margins; weapon entirely inside image. Static idle pose. Original RPG POKET art, do not imitate a copyrighted character.",
+    "transparent_background": true
+  },
+  {
+    "name": "thalvor",
+    "prompt": "Use case: stylized-concept. Asset type: original fantasy RPG enemy sprite on real transparent background. Primary request: Thalvor the Tidekeeper, imposing ancient armored sea giant boss, basalt and coral armor, gold crown of anchors, huge cyan crystal halberd, glowing turquoise eyes. 16-bit pixel art suited to a 240x320 handheld RPG and first-person dungeon. Single full-body creature centered, front view slightly three-quarter facing viewer/left, feet aligned, readable silhouette and crisp chunky pixels, detailed but legible at 48x64. No backdrop, no ground shadow, no lettering, no watermark, no HUD. Consistent navy/teal/gold palette with strong contrast. Generous transparent margins; weapon entirely inside image. Static idle pose. Original RPG POKET art, do not imitate a copyrighted character.",
+    "transparent_background": true
+  },
+  {
+    "name": "floor1",
+    "prompt": "Use case: stylized-concept. Asset type: seamless square 16-bit pixel-art dungeon wall texture for a handheld first-person RPG. aged turquoise-grey marine stone blocks with subtle coral and barnacles, copper joints, no plants obscuring geometry. Flat straight-on orthographic material surface, fills entire square edge to edge; repeated blocks should tile, simple chunky 32x32-readable clusters, original fantasy nautical dungeon, crisp pixels with navy shadows. No perspective, no props, no characters, no lettering, no framing, no watermark. Square.",
+    "transparent_background": false
+  },
+  {
+    "name": "floor2",
+    "prompt": "Use case: stylized-concept. Asset type: seamless square 16-bit pixel-art dungeon wall texture for a handheld first-person RPG. dark indigo basalt bricks with thin amber trap mechanisms inset, copper rivets, restrained warning runes. Flat straight-on orthographic material surface, fills entire square edge to edge; repeated blocks should tile, simple chunky 32x32-readable clusters, original fantasy nautical dungeon, crisp pixels with navy shadows. No perspective, no props, no characters, no lettering, no framing, no watermark. Square.",
+    "transparent_background": false
+  },
+  {
+    "name": "floor3",
+    "prompt": "Use case: stylized-concept. Asset type: seamless square 16-bit pixel-art dungeon wall texture for a handheld first-person RPG. pale pearlescent temple stone with teal and gold geometric inlays and cracks, solemn ancient throne vault. Flat straight-on orthographic material surface, fills entire square edge to edge; repeated blocks should tile, simple chunky 32x32-readable clusters, original fantasy nautical dungeon, crisp pixels with navy shadows. No perspective, no props, no characters, no lettering, no framing, no watermark. Square.",
+    "transparent_background": false
+  }
+]

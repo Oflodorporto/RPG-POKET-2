@@ -9,7 +9,7 @@ namespace rpg {
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
 enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower, DivineSmite };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
-inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0},{"MIMICO DO BOSQUE",18,5,2,14,9},{"MIMICO DAS RUINAS",45,9,6,40,20},{"MIMICO DO PORTO",85,14,10,95,35},{"MIMICO DO CASTELO",150,20,16,190,55},{"ODRAN",180,20,17,220,65},{"CORACAO DO VEU",240,22,18,250,80}};return e[id<20?id:2];}
+inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0},{"MIMICO DO BOSQUE",18,5,2,14,9},{"MIMICO DAS RUINAS",45,9,6,40,20},{"MIMICO DO PORTO",85,14,10,95,35},{"MIMICO DO CASTELO",150,20,16,190,55},{"ODRAN",180,20,17,220,65},{"CORACAO DO VEU",240,22,18,250,80},{"SENTINELA CORAL",145,20,19,120,45},{"ARRAIA RUNAR",132,21,15,135,48},{"CORSARIO AFOGADO",160,21,18,145,55},{"ORACULO ABISSAL",175,22,16,170,65},{"THALVOR",255,24,22,255,120}};return e[id<25?id:2];}
 struct Player {
   uint8_t cls=0, level=3, atk=6, def=4, life=0, mana=2;
   uint16_t hp=18,maxhp=18,mp=14,maxmp=14;
@@ -31,7 +31,7 @@ struct Game {
   uint8_t guard=0,enemyId=2,ruinsWins=0;
   bool guardianDefeated=false;bool dndProgression=false,tough=false;uint8_t attributes[6]={8,12,14,16,12,10},advancementSpent=0;
   uint8_t oath=0,laySpent=0,sacredTurns=0,turnedTurns=0;bool channelSpent=false;
-  uint8_t enemyBeat=0;
+  uint8_t enemyBeat=0,islandTraps=0;bool islandCleared=false;
   uint8_t campaignFlags=0,campaignStage=0,campaignEnding=0;
   bool originStory=false;uint8_t originPage=0;
   uint8_t discovery=0,discoverLoot=0,discoverAmount=0,scrap=0;
@@ -166,14 +166,14 @@ inline unsigned brutalDamage(Game& g){unsigned damage=0;for(unsigned i=0;i<bruta
 inline void tickRage(Game& g){if(g.rageTurns&&!persistentRage(g))--g.rageTurns;}
 inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2;}
 // Spectres and the Arconte deal magical damage; other current encounters are physical.
-inline bool physicalEnemy(unsigned id){return id!=5&&id!=8&&id!=19;}
+inline bool physicalEnemy(unsigned id){return id!=5&&id!=8&&id!=19&&id!=21&&id!=23;}
 inline void clearMartialCombat(Game& g){g.rageTurns=0;g.surgePending=g.surgeTurnUsed=false;}
 inline void endHeroAction(Game& g){if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}else g.phase=Phase::Enemy;}
 inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::DivineSmite);}
 inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";case Action::SecondWind:return "Segundo folego";case Action::ActionSurge:return "Surto de acao";case Action::RagePower:return "Furia de batalha";case Action::DivineSmite:return "Punicao divina";default:return "Poder";}}
 inline unsigned powerLevel(Action a){return a==Action::ActionSurge||a==Action::DivineSmite?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
 inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell||a==Action::DivineSmite?3:0;}
-inline bool undead(unsigned id){return id==2||id==5||id==8||id==9;}
+inline bool undead(unsigned id){return id==2||id==5||id==8||id==9||id==22;}
 inline bool masteredSpell(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=18&&(a==Action::MagicMissile||a==Action::ScorchingRay);}
 inline unsigned powerCost(const Game& g,Action a){return masteredSpell(g,a)?0:powerCost(a);}
 inline unsigned evocationBonus(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=10&&(a==Action::MagicMissile||a==Action::BurningHands||a==Action::ScorchingRay||a==Action::Fireball)?std::max(0,abilityMod(g.attributes[3])):0;}
@@ -220,7 +220,7 @@ inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>19||(id>=18&&g.campaignStage!=(id==18?8:9))||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&id<18&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>24||(id>=20&&(!(g.dungeonFlags&16)||g.campaignEnding!=2))||(id>=18&&id<=19&&g.campaignStage!=(id==18?8:9))||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&id<18&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
@@ -286,6 +286,7 @@ enum class Intent:uint8_t {Strike,Prepare,Heavy,Mend,Drain};
 inline Intent enemyIntent(const Game& g){
  if(!g.dndProgression||g.turnedTurns)return Intent::Strike;
  if(g.enemyId==2||g.enemyId==9)return g.enemyBeat==1?Intent::Mend:Intent::Strike;
+ if(g.enemyId==21||g.enemyId==23)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Drain:Intent::Strike;
  if(g.enemyId==19)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Drain:Intent::Heavy;
  if(g.enemyId==5)return g.enemyBeat==2?Intent::Drain:Intent::Strike;
  if(g.enemyId==1||g.enemyId==3||g.enemyId==4||g.enemyId==7||g.enemyId==8||g.enemyId>=10)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Heavy:Intent::Strike;

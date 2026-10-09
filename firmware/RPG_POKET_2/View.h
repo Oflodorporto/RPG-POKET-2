@@ -12,7 +12,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Prologue:return bg_tavern;case Page::Journal:return bg_character;case Page::People:case Page::Dialogue:return bg_village;case Page::Continent:return bg_world;
@@ -105,6 +105,13 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     else {magicSprite(c,campArt::kit,48,48,84,55,72,72);center(146,"Preco: 80 ouro",2,UI_GOLD);center(180,"Reutilizavel / +2 no teste");center(204,"Saco de dormir ao lado do heroi.");}
     center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
   }
+  if(v.page==Page::IslandEntry){
+    center(18,"ILHA DAS MARES",2,UI_GOLD);center(66,"As aguas revelaram um santuario.");
+    center(94,"3 andares / nivel recomendado: 20");center(124,"Alavancas abrem os caminhos.");
+    center(150,"Cuidado com o segundo andar.");center(178,"Thalvor guarda a ultima sala.");
+    center(210,"Entrada livre. Saque na bolsa.");center(239,v.message,1,UI_RED);
+    button(14,272,102,"Voltar");button(124,272,102,"Entrar");return;
+  }
   if(v.page==Page::DungeonLoot){
     center(18,"BAU ABERTO",2,UI_GOLD);box(86,55,68,68);if(v.itemId)sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);else magicSprite(c,dungeonArt::props[1],32,32,92,61,56,56);
     center(143,v.message,1,UI_GREEN);center(170,v.itemId?"Guardado em Bolsa > Equipamentos":"O ouro foi somado a sua bolsa.");
@@ -112,12 +119,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
   }
   if(v.page==Page::DungeonVictory){
-    center(18,"VAELOR DERROTADO!",2,UI_GOLD);
+    center(18,rpg::islandDungeon(g)?"THALVOR VENCIDO!":"VAELOR DERROTADO!",2,UI_GOLD);
     center(76,"A cripta foi conquistada.");
     snprintf(b,sizeof(b),"+%u XP / +%u ouro",g.gainXp,g.gainGold);center(108,b,2,UI_GREEN);
-    center(148,"O Livro das Vigilias foi revelado.");
+    center(148,rpg::islandDungeon(g)?"O tesouro do santuario esta livre.":"O Livro das Vigilias foi revelado.");
     center(174,"Continue para buscar o saque");center(190,"ou saia com suas recompensas.");
-    center(202,"Descoberta registrada no Diario.",1,UI_GREEN);
+    center(202,rpg::islandDungeon(g)?"Vitoria preservada no personagem.":"Descoberta registrada no Diario.",1,UI_GREEN);
     button(14,218,212,"Explorar");button(14,272,212,"Sair");return;
   }
   if(v.page==Page::DungeonEntry||v.page==Page::CrystalBuy||v.page==Page::DungeonExit){
@@ -125,7 +132,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(16,buy?"CRISTAL DA CRIPTA":exit?"SAIR DA CRIPTA?":"CRIPTA DO ARCONTE",2,UI_GOLD);
     snprintf(b,sizeof(b),"Cristais: %u / ouro: %lu",g.crystals,(unsigned long)g.p.gold);center(64,b);
     center(98,buy?"Preco: 300 ouro":exit?"Seu saque sera preservado.":"Entrada: consome 1 cristal");
-    center(124,buy?"Guardiao tambem deixa cristal.":exit?"Nova entrada custa outro cristal.":"2 andares + sala do chefe");
+    center(124,buy?"Guardiao tambem deixa cristal.":exit?(rpg::islandDungeon(g)?"Voce voltara ao mapa.":"Nova entrada custa outro cristal."):"2 andares + sala do chefe");
     center(152,buy?"Compra limitada a 9 cristais.":exit?"O labirinto sera reiniciado.":"Nivel recomendado: 8+");
     center(182,exit?"Confirme somente para sair.":"Setas: mover / girar / andar de lado");
     center(206,exit?"": "Toque na cena: interagir / atacar");center(237,v.message,1,UI_RED);
@@ -337,7 +344,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,78,90,"Ficha >",UI_GOLD);
   personalSprite(c,g,8,77,v.heroFrame%6);
   const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
-  if(g.enemyId>=18)finaleFoe(c,g.enemyId,145,99,frame);else if(g.enemyId>=14)drawMimic(c,145,99,frame,true);else magicSprite(c,foeFrame,80,86,145,99,75,80);
+  if(g.enemyId>=20)magicSprite(c,islandArt::enemy(g.enemyId),48,64,145,99,75,80);else if(g.enemyId>=18)finaleFoe(c,g.enemyId,145,99,frame);else if(g.enemyId>=14)drawMimic(c,145,99,frame,true);else magicSprite(c,foeFrame,80,86,145,99,75,80);
   PanelEffectCanvas<Canvas> effectCanvas{c};
   if(v.effect==Effect::Rage){
     // Furia: broad axe-like sweep, red trails and expanding impact. No new art RAM.

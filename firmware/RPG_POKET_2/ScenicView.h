@@ -76,6 +76,7 @@ template<class C>void scenicWorld(C& c,bool ruins,worldClock::Period period){
 }
 template<class C>void drawScenicMap(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
  auto period=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;scenicWorld(c,false,period);
+ if(rpg::islandUnlocked(g)){magicSprite(c,islandArt::map_island(),32,32,16,136,32,32);c.drawRect(14,134,36,36,(frame&1)?UI_GOLD:UI_BLUE);scenicText(c,20,174,"ILHA",1,UI_GOLD);}
  const auto& selected=places[menu.destination<4?menu.destination:0];c.drawRect(selected.x-8,selected.y-8,17,17,UI_GOLD);c.drawRect(selected.x-10,selected.y-10,21,21,UI_INK);
  const auto& here=places[g.city<4?g.city:0];c.fillRect(here.x-2,here.y-2,5,5,UI_GREEN);
  c.fillRect(55,246,132,25,0x0843);char b[64];snprintf(b,sizeof(b),"Destino Nv %u+ / CD %u",rpg::cityLevel(menu.destination),rpg::routeDifficulty(g.city,menu.destination));scenicText(c,(240-int(strlen(b))*6)/2,249,b,1,g.p.level<rpg::cityLevel(menu.destination)?UI_RED:UI_WHITE);

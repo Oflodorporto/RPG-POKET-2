@@ -18,3 +18,12 @@ if portraits.exists():
  payload=previous[16:]+gzip.decompress(portraits.read_bytes())
  assert len(payload)==6846528 and zlib.crc32(payload)==0x19aa0797
  p.write_bytes(struct.pack('<4sIII',b'PKA1',len(payload),zlib.crc32(payload),459)+payload)
+
+# Post-campaign island: append only; all459 previous asset offsets remain stable.
+island=Path('cartao/RPGPOKET/ilha1.bin.gz.b64')
+if island.exists():
+ import base64
+ previous=p.read_bytes();assert struct.unpack('<4sIII',previous[:16])==(b'PKA1',6846528,0x19aa0797,459)
+ payload=previous[16:]+gzip.decompress(base64.b64decode(island.read_text()))
+ assert len(payload)==6910016 and zlib.crc32(payload)==0x415cb17d
+ p.write_bytes(struct.pack('<4sIII',b'PKA1',len(payload),zlib.crc32(payload),480)+payload)

@@ -1,0 +1,178 @@
+{
+  "source": "Built-in imagegen; original PNGs preserved; deterministic RGB565 conversion, code-native lever/trap/map icons",
+  "assets": [
+    {
+      "id": 459,
+      "name": "sentinela_coral",
+      "width": 48,
+      "height": 64,
+      "bytes": 6144,
+      "sha256": "ded68e7712a63179bcc8312609ad786878b76d00258658261edc841efaed1858"
+    },
+    {
+      "id": 460,
+      "name": "arraia_runar",
+      "width": 48,
+      "height": 64,
+      "bytes": 6144,
+      "sha256": "2b2fea7af8e58ce72cea81a32f0767070aaec638fcbc69d437d9ce49e44f3863"
+    },
+    {
+      "id": 461,
+      "name": "corsario_afogado",
+      "width": 48,
+      "height": 64,
+      "bytes": 6144,
+      "sha256": "0e4c60c4de51872adb0ac3752663886113fdf73db47d8d94256cfb9062443a03"
+    },
+    {
+      "id": 462,
+      "name": "oraculo_abisso",
+      "width": 48,
+      "height": 64,
+      "bytes": 6144,
+      "sha256": "94e065050106d98ef023a3e3c2383b36d51eb9da34b978ce2934217da14772c2"
+    },
+    {
+      "id": 463,
+      "name": "thalvor",
+      "width": 48,
+      "height": 64,
+      "bytes": 6144,
+      "sha256": "d8831cbbc231632b16975eff7dd756428ab1a651719bf18e0d2821fbaa0bbd1b"
+    },
+    {
+      "id": 464,
+      "name": "f0_wall",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "ee0851a9972c78f2498c01704422422d9bad4e3dcd4aaf2eb142dddc83d35aa0"
+    },
+    {
+      "id": 465,
+      "name": "f0_floor",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "e022d0bd6d57b952bfb023c1cf7012f64794a4a7c834819cbbc1d2c0b72d5935"
+    },
+    {
+      "id": 466,
+      "name": "f0_ceiling",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "f133a49d9b3ce3e167fb2aa96fd7826ae14d4a148dfb0aa7afe7cb20de0a1890"
+    },
+    {
+      "id": 467,
+      "name": "f0_door",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "8aea784b6a8243d5e5405d4e54655a9a8a374fc39d63dcc33b5a6f81f96ed96d"
+    },
+    {
+      "id": 468,
+      "name": "f1_wall",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "e0fc886508eede1820d6a96a32bb17b8ad6d12ca7e840518134119084d3791a9"
+    },
+    {
+      "id": 469,
+      "name": "f1_floor",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "15ad427e4291ed3a61083c11c924ba1eb1fb4dd2c7d81dbf0a187e2db2dce514"
+    },
+    {
+      "id": 470,
+      "name": "f1_ceiling",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "5cdb6367044ebadb431dedd02c77fdc7e3c07c308e7e5bad73788443d551eb80"
+    },
+    {
+      "id": 471,
+      "name": "f1_door",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "7bce27c4230367fc4722bae6480460ca52d925a89b9ce1bdabe2753f2ffde9bf"
+    },
+    {
+      "id": 472,
+      "name": "f2_wall",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "8a9a4d3a2d4836bcf71043bc452c8aee895af058c4eca8d80aefea1856dd863b"
+    },
+    {
+      "id": 473,
+      "name": "f2_floor",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "923993362dbe2d814b23dda9c891ea21cf4668771c9c59cea7621bbb0c65dce8"
+    },
+    {
+      "id": 474,
+      "name": "f2_ceiling",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "a2bf19916fa4ec5e0583ee465e2fb8c6623c75a8440d0d971c1f8f47dc2db978"
+    },
+    {
+      "id": 475,
+      "name": "f2_door",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "04677932e9baf8642ba9361229b2b404ea9f16a67f0469290200809d0ef7843d"
+    },
+    {
+      "id": 476,
+      "name": "lever_off",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "77fddda45c20729eee199e8b2591a50b7d201980a07bc06f40da953df91cc215"
+    },
+    {
+      "id": 477,
+      "name": "lever_on",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "0a73a9cea099a015fb619dd66fecfd34ab7436012230c85d6d3c6e93d8dc7e3a"
+    },
+    {
+      "id": 478,
+      "name": "trap",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "0b41ce6411885b03d1196296033ddd4416151c39b0f996c09afba8af2abaaaf3"
+    },
+    {
+      "id": 479,
+      "name": "map_island",
+      "width": 32,
+      "height": 32,
+      "bytes": 2048,
+      "sha256": "7c14dbda20f9c442682a35d2b82e7066e8cc601af352cf35fc09fbe217a42ce2"
+    }
+  ],
+  "count": 21,
+  "total_assets": 480,
+  "bytes": 6910032,
+  "crc": "415cb17d",
+  "sha256": "44e559812fe4092d5928cde00981019e598c1c152888369da394fbd3b2862302"
+}

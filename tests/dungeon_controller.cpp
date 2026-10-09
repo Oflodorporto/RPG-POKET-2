@@ -35,7 +35,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return game.phase==rpg::Phase::Won&&game.enemyId==8?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -174,13 +174,17 @@ void tapped(int x,int y){
     if(hit(x,y,14,272,102)){view.page=back;say("");}
     else if(hit(x,y,124,272,102)){auto err=selling?rpg::sellGear(game,view.itemId):rpg::buySleepKit(game);if(err)say(err);else {if(!selling)menu.campKit=true;say(selling?"Item vendido":"Kit comprado");savedTransition(back);}}return;
   }
+  if(view.page==Page::IslandEntry){
+    if(hit(x,y,14,272,102)){showMap();return;}
+    if(hit(x,y,124,272,102)){auto err=rpg::enterIsland(game);if(err)say(err);else {say("Explore o santuario");savedTransition(Page::Dungeon);}}return;
+  }
   if(view.page==Page::DungeonEntry||view.page==Page::CrystalBuy||view.page==Page::DungeonExit){
     Page page=view.page;if(hit(x,y,14,272,102)){view.page=page==Page::DungeonExit?Page::Dungeon:page==Page::CrystalBuy?Page::CityGoods:Page::Ruins;say("");}
-    else if(hit(x,y,124,272,102)){if(page==Page::DungeonExit){if(rpg::leaveDungeon(game)){say("Saque preservado");savedTransition(Page::Ruins);}}
+    else if(hit(x,y,124,272,102)){if(page==Page::DungeonExit){bool island=rpg::islandDungeon(game);if(rpg::leaveDungeon(game)){say("Saque preservado");savedTransition(island?Page::Map:Page::Ruins);}}
       else {const char* err=page==Page::CrystalBuy?rpg::buyCrystal(game):rpg::enterDungeon(game);if(err)say(err);else {say(page==Page::CrystalBuy?"Cristal comprado":"Explore e encontre o selo");savedTransition(page==Page::CrystalBuy?Page::CityGoods:Page::Dungeon);}}}return;}
   if(view.page==Page::DungeonVictory){
     if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
-      if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?Page::Ruins:Page::Dungeon);}}return;
+      bool island=rpg::islandDungeon(game);if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?(island?Page::Map:Page::Ruins):Page::Dungeon);}}return;
   }
   if(view.page==Page::DungeonLoot){
     if(hit(x,y,14,272,212)){view.page=Page::Dungeon;say("");return;}
@@ -227,17 +231,19 @@ void tapped(int x,int y){
     if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
       if(game.phase!=rpg::Phase::Home){bool lost=game.phase==rpg::Phase::Lost;rpg::dungeonResolve(game);say("");savedTransition(lost?Page::Recovery:rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
-      if(rpg::dungeonCell(rpg::dungeonFloor(game),rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
-      int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawns[enemy].id);say("Seu turno");savedTransition(Page::Dungeon);return;}
-      uint8_t before=game.dungeonLoot;uint32_t oldOwned=game.owned;const char* notice=rpg::dungeonCollect(game);view.itemId=0;for(uint8_t id=1;id<=rpg::GEAR_COUNT;++id)if(rpg::gearOwns(game.owned,id)&&!rpg::gearOwns(oldOwned,id))view.itemId=id;if(before!=game.dungeonLoot){say(notice);savedTransition((game.dungeonLoot&128)&&!(before&128)?Page::DungeonLoot:Page::Dungeon);return;}if(notice){say(notice);return;}
+      if(rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
+      int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawn(game,enemy).id);say("Seu turno");savedTransition(Page::Dungeon);return;}
+      if(rpg::dungeonUseLever(game)){say("Alavanca acionada! Caminho aberto");savedTransition(Page::Dungeon);return;}
+      uint8_t before=game.dungeonLoot;uint32_t oldOwned=game.owned;const char* notice=rpg::dungeonCollect(game);view.itemId=0;for(uint8_t id=1;id<=rpg::GEAR_COUNT;++id)if(rpg::gearOwns(game.owned,id)&&!rpg::gearOwns(oldOwned,id))view.itemId=id;if(before!=game.dungeonLoot){say(notice);savedTransition((game.dungeonLoot&rpg::dungeonChestBit(game))&&!(before&rpg::dungeonChestBit(game))?Page::DungeonLoot:Page::Dungeon);return;}if(notice){say(notice);return;}
       if(rpg::dungeonStairs(game)){say("Escadas: novo andar");savedTransition(Page::Dungeon);return;}
+      if(rpg::islandDungeon(game)&&rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='S'){say("Encontre a alavanca deste andar");return;}
       say("Nada para interagir aqui");return;
     }
     if(game.phase!=rpg::Phase::Home)return;
     int forward=0,side=0,turn=0;
     if(hit(x,y,4,202,74,35))turn=-1;else if(hit(x,y,82,202,74,35))forward=1;else if(hit(x,y,160,202,76,35))turn=1;
     else if(hit(x,y,4,241,74,35))side=-1;else if(hit(x,y,82,241,74,35))forward=-1;else if(hit(x,y,160,241,76,35))side=1;else return;
-    const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
+    auto trapsBefore=game.islandTraps;const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {if(trapsBefore!=game.islandTraps){char msg[48];snprintf(msg,sizeof(msg),game.damage?"Armadilha: -%u HP":"Armadilha evitada!",game.damage);say(msg);}else say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
   }
   if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
   if(view.page==Page::TravelRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptTrip(game)){say("");savedTransition(currentPage());}return;}
@@ -326,7 +332,7 @@ void tapped(int x,int y){
     if(launchUi::cancel.contains(x,y)){view.page=Page::Map;say("Viagem cancelada");}
     else if(launchUi::confirm.contains(x,y)){auto err=rpg::tripError(game,view.tripDestination);if(!err)err=rpg::prepareTrip(game,view.tripDestination);if(err)say(err);else {say("");savedTransition(Page::TravelRoll);}}return;
   }
-  if(view.page==Page::Map){if(scenicUi::atlasChoice(x,y)){menu.regionIndex=0;view.page=Page::Continent;say("");return;}for(uint8_t i=0;i<4;++i)if(hit(x,y,places[i].x-30,places[i].y-14,60,42)){menu.destination=i;dirty=true;return;}
+  if(view.page==Page::Map){if(rpg::islandUnlocked(game)&&hit(x,y,12,132,40,44)){view.page=Page::IslandEntry;say("");return;}if(scenicUi::atlasChoice(x,y)){menu.regionIndex=0;view.page=Page::Continent;say("");return;}for(uint8_t i=0;i<4;++i)if(hit(x,y,places[i].x-30,places[i].y-14,60,42)){menu.destination=i;dirty=true;return;}
     if(scenicUi::mapButtons[1].contains(x,y)){view.page=Page::Menu;say("");}
     else if(scenicUi::mapButtons[0].contains(x,y)){if(menu.destination==game.city){view.page=game.city==1?Page::Ruins:Page::Village;say("");}
       else {const char* err=rpg::tripError(game,menu.destination);if(err)say(err);else {view.tripDestination=menu.destination;view.page=Page::TravelConfirm;say("");}}}
@@ -521,6 +527,7 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
+
 int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);
  // First character, tutorial, menu, and refusal to create a phantom hero from an empty slot.
