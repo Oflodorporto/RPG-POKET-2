@@ -2,7 +2,7 @@
 template<class C>void drawLocks(C& c,const rpg::Game& g,const ViewState& v){
  backdropPeriod=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
  drawBackdrop(c,g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3);c.setTextWrap(false);
- auto label=[&](int y,const char* s,uint16_t color=UI_WHITE,int size=1){scenicPanel(c,4,y-5,232,8*size+14);c.setTextColor(color);c.setTextSize(size);c.setCursor((240-int(strlen(s))*6*size)/2,y);c.print(s);};
+ auto label=[&](int y,const char* s,uint16_t color=UI_WHITE,int size=1){scenicPanel(c,4,y-5,232,8*size+14);c.setTextColor(color);c.setTextSize(size);c.setCursor((240-int(strlen(s))*6*size)/2,y+2);c.print(s);};
  auto button=[&](int y,const char* s,bool enabled=true,int height=28){scenicPanel(c,14,y,212,height);c.setTextSize(1);c.setTextColor(enabled?UI_GOLD:UI_MUTED);c.setCursor((240-int(strlen(s))*6)/2,y+(height-8)/2);c.print(s);};
  char b[64];bool shop=v.page==Page::Lockpicks;
  label(12,shop?"GAZUAS":"BAU TRANCADO",UI_GOLD,2);label(42,*v.message?v.message:placeName(g.city),*v.message?UI_RED:UI_WHITE);
