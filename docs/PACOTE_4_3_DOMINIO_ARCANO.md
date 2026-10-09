@@ -1,6 +1,6 @@
 # Pacote 4.3 — Mago: Domínio arcano
 
-Versão2026.10.09-arcano1, build2026100902. Candidata em validação.
+Versão2026.10.09-arcano1, build2026100902. Publicada e verificada: 30 suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Dois marcos funcionais para Magos com progressão D&D:
 

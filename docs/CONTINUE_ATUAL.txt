@@ -1,4 +1,42 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
+PACOTE 4.3 — MAGO: DOMÍNIO ARCANO
+Versão 2026.10.09-arcano1, build 2026100902.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-arcano1
+Commit do firmware: cf4af88e2a1c28f4535ecd7dbf54027a26f9ba5b
+Publicação CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/37918141541 — sucesso.
+
+ENTREGUE: Mago D&D Nv10 Evocação aprimorada: +max(0,modINT) uma vez por conjuração de Mísseis mágicos, Mãos flamejantes, Raios abrasadores e Bola de fogo. Não soma por dardo/raio; todos os raios errados não causam bônus. Nas magias com resistência, soma antes de dividir pela metade. Cajado e Escudo não recebem bônus. Nv18 Maestria em magia: Mísseis e Raios custam0MP, inclusive mana0, preservando dados/dano/alcance/testes/turno. Demais magias custam normalmente. Grimório7 fichas, passivas10/18 legíveis e sem ação/gravação; Técnicas exibem custo real do atalho; Trilha inclui os dois marcos.
+SRD5.1/2014: níveis10/18 e bônus de INT; mana substitui slots. Par fixo de maestria: Mísseis1ºcírculo/Raios2ºcírculo. Não existe seleção permanente de tradição, escolha livre do par, amplificação de círculo ou AOE. Recuperação arcana, outros recursos de tradição e Magias de assinatura continuam pendentes. Não anunciar como ganhos executáveis.
+30 suítes passaram:4.000 comparações com mesma RNG, bônus único, resistência/miss-all/INT/classes/legados; custos0/turno/save19/recompensa única; controlador real passivas e repetição após falha de save; render níveis9/10/17/18/20 e mana0. Snapshot do controlador conferido com .ino real. Preview inspecionada.
+Benchmark40.960 combates em arcano-balance.csv:6502 derrotas agregadas, inclui regiões inadequadas, recursos cheios por combate, sem equipamento/poções/forja/pontos. No18 política usa Raios grátis quando mana não permite Bola de fogo. Não equivale à campanha nem alvo global de dificuldade. XP/preços inalterados.
+Arte SD459 entradas/6.846.544bytes/CRC19aa0797 byte a byte igual àcampeao1. Save19/128bytes/leitura1–19 sem campo/migração. Legados preservados. Sem leitura SD por quadro.
+Compilação: 2026-10-09T10:30:25.8179623Z Sketch uses 2686566 bytes (85%) of program storage space. Maximum is 3145728 bytes.
+2026-10-09T10:30:25.8180292Z Global variables use 53788 bytes (16%) of dynamic memory, leaving 273892 bytes for local variables. Maximum is 327680 bytes.
+Hashes/downloads em releases/2026.10.09-arcano1/VERIFICACAO.json. Teste físico fica com o usuário.
+
+CAMINHOS:
+Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Fonte: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/Rules.h
+Poderes/Trilha: PowersView.h / Progression.h; atalhos PanelView.h
+Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_4_3_DOMINIO_ARCANO.md
+Preview: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-arcano1.png
+Medição: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/arcano-balance.csv
+Firmware: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.09-arcano1/firmware.bin
+Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git).
+
+CINCO PRIMEIROS COMANDOS DE TRABALHO:
+1. Ler este TXT, PACOTE_4_3_DOMINIO_ARCANO.md e ROADMAP_PACOTES_EXPERIENCIA.md; conferir ReleaseVersion.h/Save.h e release atual antes de editar.
+2. Conferir relato físico: Configurações > Atualização; Mago10 bônus nas quatro magias, sem cajado/escudo; Mago18 Mísseis/Raios0MP e turno normal; passivas sem ação; navegação/retomada; Guerreiro/Paladino/Bárbaro preservados. Corrigir falhas antes de ampliar.
+3. Próximo desdobramento4: Bárbaro e recursos executáveis pendentes. Escolher adaptação ao combate/mana/turnos com SRD e compatibilidade; não reutilizar campos nem prometer seleções inexistentes. Pacote5 Aurora continua planejado; consultar cânone antes de avançar finais.
+4. Comparar CSV controlado com limitações e observar sessões reais com recursos/viagens/itens. Não traduzir vitórias ideais em minutos ou taxa agregada em dificuldade da campanha.
+5. Testar regras/save/snapshot real/render; compilar ESP32S3/OPI/16MB/app3M_fat9M_16MB/EraseFlash=none; validar candidato antes de publicar e conferir downloads. Registrar continuidade. Bytes60–63/90–91/122–123 ocupados; não reutilizar.
+
+RESTRIÇÕES: preservar Heltec; sem flash automático/.rpg/eraseNVS/formataçãoSD. Usuário confirma OTA ou grava cabo. Testes/compilação não confirmam funcionamento físico. Build local antigo preliminar; usar release desta versão ou recompilar fontes atuais.
+
+HISTÓRICO ANTERIOR — SOMENTE REFERÊNCIA
+
+RPG POKET 2 — CONTINUIDADE ATUAL — 09/10/2026
 PACOTE 4.2 — GUERREIRO: TRILHA DO CAMPEÃO
 Versão2026.10.09-campeao1, build2026100901.
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-campeao1

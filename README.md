@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote4.3 — Domínio arcano,2026.10.09-arcano1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-arcano1) · [Guia](docs/PACOTE_4_3_DOMINIO_ARCANO.md). Mago: bônus de INT10 e Mísseis/Raios gratuitos18, fichas passivas/custos reais.30suítes/compilação/downloads conferidos; teste físico pendente. Save19/artes mantidos.
+
 **Entrega mais recente: Pacote4.2 — Trilha do Campeão,2026.10.09-campeao1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-campeao1) · [Guia](docs/PACOTE_4_2_CAMPEAO.md). Guerreiro: crítico3/15 e Sobrevivente18, fichas passivas sem custo.29suítes/compilação/downloads conferidos; teste físico pendente. Save19 e artes mantidos.
 
 **Entrega mais recente: Pacote4.1 — Paladino,2026.10.08-paladino1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.08-paladino1) · [Guia](docs/PACOTE_4_1_PALADINO.md). Punição divina2/aprimorada11 e corte de luz.28suítes/compilação/downloads conferidos; teste físico pendente. Save19 e artes mantidos.

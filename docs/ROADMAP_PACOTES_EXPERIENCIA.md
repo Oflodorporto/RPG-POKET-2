@@ -86,6 +86,8 @@ Critério: escolher método é relevante e legível, toda classe tem uma saída,
 
 ## Pacote4 — Crescer com vontade de enfrentar o próximo desafio
 
+Desdobramento4.3 publicado:2026.10.09-arcano1, Mago com Evocação aprimorada10/Maestria18, fichas passivas/custos reais e30suítes; guiaPACOTE_4_3_DOMINIO_ARCANO.md. Bárbaro, demais recursos/bestiário/balanceamento e Pacote5 Aurora continuam pendentes.
+
 Desdobramento4.2 publicado:2026.10.09-campeao1, Guerreiro com críticos3/15 e Sobrevivente18, fichas passivas e29suítes; guiaPACOTE_4_2_CAMPEAO.md. Mago/Bárbaro e outros recursos/bestiário/balanceamento permanecem pendentes.
 
 Desdobramento4.1 publicado:2026.10.08-paladino1, Punição divina2/aprimorada11, efeitos e28suítes; guiaPACOTE_4_1_PALADINO.md. Outros poderes avançados/bestiário/balanceamento ainda pendentes.
