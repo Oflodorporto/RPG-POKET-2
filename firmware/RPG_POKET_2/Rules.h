@@ -202,11 +202,15 @@ inline const char* usePower(Game& g,Action a){
  else {for(unsigned i=0;i<(a==Action::Fireball?8u:3u);++i)damage+=1+random(g)%6;if(int(random(g)%20+1)+2>=8+int(proficiency(g.p.level))+abilityMod(g.attributes[3]))damage/=2;}
  g.damage=std::min<unsigned>(g.enemyHp,damage);g.enemyHp-=g.damage;g.phase=Phase::Enemy;return nullptr;
 }
-inline int rollDamage(Game& g,int atk,int def){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<12;return g.crit?d+(d>>1):d;}
+// Percentage combat adaptation of the Champion milestones in SRD 5.1.
+inline unsigned weaponCriticalChance(const Game& g){return g.dndProgression&&g.p.cls==2&&g.p.level>=3?(g.p.level>=15?30:20):12;}
+inline unsigned survivorRecovery(const Game& g){return g.dndProgression&&g.p.cls==2&&g.p.level>=18&&g.phase==Phase::Hero&&g.p.hp&&unsigned(g.p.hp)*2<=g.p.maxhp?std::min<unsigned>(g.p.maxhp-g.p.hp,std::max(0,5+abilityMod(g.attributes[2]))):0;}
+inline void startHeroTurn(Game& g){g.p.hp+=survivorRecovery(g);}
+inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<criticalChance;return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>17||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>17||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
@@ -247,7 +251,7 @@ inline const char* act(Game& g,Action a){
     if(g.p.cls==3)g.p.hp=std::min<uint16_t>(g.p.maxhp,g.p.hp+std::max<uint16_t>(1,g.p.maxhp/4));
     endHeroAction(g);return nullptr;
   }
-  bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def);
+  bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def,weaponCriticalChance(g));
   if(g.dndProgression&&!skill)damage*=attacksPerAction(g);
   if(g.dndProgression&&g.p.cls==3&&g.crit&&g.p.level>=9)damage+=g.p.level>=17?3:g.p.level>=13?2:1;
   if(skill)damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;
@@ -291,15 +295,15 @@ inline unsigned incomingCeiling(const Game& g,unsigned guard=0){
 }
 inline bool enemy(Game& g){
  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);g.surgeTurnUsed=false;
- if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;return true;}
+ if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;startHeroTurn(g);return true;}
  auto intent=enemyIntent(g);if(g.dndProgression)g.enemyBeat=(g.enemyBeat+1)%3;
- if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;if(g.rageTurns)--g.rageTurns;g.phase=Phase::Hero;return true;}
+ if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;if(g.rageTurns)--g.rageTurns;g.phase=Phase::Hero;startHeroTurn(g);return true;}
  int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));if(intent==Intent::Heavy)damage=damage*3/2;
  unsigned guard=g.guard;if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
  if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;--g.rageTurns;}
  g.dodge=random(g)%100<6;
  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
- g.phase=Phase::Hero;finish(g);return true;
+ g.phase=Phase::Hero;finish(g);if(g.phase==Phase::Hero)startHeroTurn(g);return true;
 }
 inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);return true;}

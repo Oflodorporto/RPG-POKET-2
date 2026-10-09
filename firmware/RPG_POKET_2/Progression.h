@@ -17,6 +17,9 @@ inline LevelBenefits levelBenefits(const Game& g,unsigned level){
  if(attacksPerAction(after)>attacksPerAction(before)){snprintf(b,sizeof(b),"Ataque: %u golpes por acao",attacksPerAction(after));out.add(b);}
  if(proficiency(level)>proficiency(level-1)){snprintf(b,sizeof(b),"Proficiencia +%u",proficiency(level));out.add(b);}
  if(g.p.cls==1){snprintf(b,sizeof(b),"Impor as maos: reserva %u HP",5*level);out.add(b);}
+ if(g.p.cls==2&&level==3)out.add("Campeao: criticos em 20%");
+ if(g.p.cls==2&&level==15)out.add("Critico superior: 30%");
+ if(g.p.cls==2&&level==18)out.add("Sobrevivente: cura 5 + mod CON");
  if(g.p.cls==2&&level==17)out.add("Surto: 2 usos por descanso");
  if(g.p.cls==3){if(level==20)out.add("Furia: usos sem limite");else if(rageUses(after)>rageUses(before)&&level!=1){snprintf(b,sizeof(b),"Furia: %u usos por descanso",rageUses(after));out.add(b);}if(rageBonus(after)>rageBonus(before)){snprintf(b,sizeof(b),"Furia: +%u dano por golpe",rageBonus(after));out.add(b);}}
  if(survival(after)>survival(before)){snprintf(b,sizeof(b),"Sobrevivencia +%u",survival(after)-survival(before));out.add(b);}

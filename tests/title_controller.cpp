@@ -419,7 +419,7 @@ void tapped(int x,int y){
     if(powersUi::back.contains(x,y)){view.page=view.powersReturn;say("");return;}
     unsigned count=powersUi::count(game.p.cls);if(!game.dndProgression||!count)return;
     if(powersUi::previous.contains(x,y)||powersUi::next.contains(x,y)){view.powerIndex=(view.powerIndex+(x<120?count-1:1))%count;say("");return;}
-    if(powersUi::use.contains(x,y)){auto a=powersUi::action(game.p.cls,view.powerIndex);
+    if(powersUi::use.contains(x,y)){if(powersUi::passive(game.p.cls,view.powerIndex)){say("Efeito passivo: uso automatico");return;}auto a=powersUi::action(game.p.cls,view.powerIndex);
       if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)){view.page=Page::OathConfirm;say("");return;}
       if(game.phase==rpg::Phase::Hero){action(a);return;}
       auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
@@ -628,6 +628,11 @@ int main(){
   game=rpg::create(0,1);game.tutorial=true;game.gazuas=2;game.discovery=2;game.discoverLoot=1;game.discoverAmount=1;game.chestLock=1;game.chestTrap=true;assert(journal.save(game));view.page=currentPage();auto lockHp=game.p.hp;nvs.fail=true;tapped(120,237);assert(view.page==Page::SaveError&&game.chestLock==3&&game.p.hp==lockHp-2&&game.gazuas==2);auto trapHp=game.p.hp;nvs.fail=false;tapped(110,269);assert(view.page==Page::ChestLock&&game.p.hp==trapHp);auto lockState=game.randomState;tapped(120,269);assert(game.randomState==lockState&&game.gazuas==2&&game.p.hp==trapHp);assert(journal.load(lockLoaded)==rpg::Load::Ok&&lockLoaded.chestLock==3);tapped(120,299);assert(view.page==Page::Explore&&!game.discovery&&!game.chestLock);
   // Preview/cancel/browse does not write; confirmed feat retries exactly once.
   combatFx.kind=Effect::None;game=rpg::create(2,42);game.p.xp=2700;rpg::levelUp(game);game.tutorial=true;journal.blocked=false;assert(journal.save(game));view.page=Page::Character;auto progressionBlobs=nvs.blobs;auto progressionSeed=game.randomState;tapped(120,125);assert(view.page==Page::Progression);for(int i=0;i<30;++i)tapped(175,110);assert(view.evolutionLevel==20);for(int i=0;i<30;++i)tapped(65,110);assert(view.evolutionLevel==1);tapped(175,278);assert(view.page==Page::Powers&&view.powersReturn==Page::Progression);tapped(120,290);assert(view.page==Page::Progression);tapped(65,278);assert(view.page==Page::Evolution);tapped(65,199);assert(view.page==Page::AttributeInfo);tapped(65,290);assert(view.page==Page::Evolution&&nvs.blobs==progressionBlobs&&game.randomState==progressionSeed);tapped(175,290);assert(view.page==Page::AttributeInfo&&view.attributeIndex==6&&!game.tough);unsigned progressionHp=game.p.maxhp;nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.tough&&game.p.maxhp==progressionHp+8);nvs.fail=false;tapped(110,269);assert(view.page==Page::Evolution&&game.p.maxhp==progressionHp+8&&game.advancementSpent==2);rpg::Game progressionLoaded;assert(journal.load(progressionLoaded)==rpg::Load::Ok&&progressionLoaded.tough&&progressionLoaded.advancementSpent==2);
+  // Passive cards never execute the active power they share navigation with.
+  for(unsigned lv:{1u,3u,15u,18u,20u}){combatFx.kind=Effect::None;game=rpg::create(2,73);game.p.xp=rpg::dndXp[lv-1];rpg::levelUp(game);game.p.hp=1;journal.blocked=false;assert(journal.save(game));view.page=Page::Powers;view.powersReturn=Page::Character;
+    for(unsigned i:{2u,3u}){view.powerIndex=i;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(game,2,before);auto blobs=nvs.blobs;tapped(120,254);rpg::encode(game,2,after);assert(view.page==Page::Powers&&nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));}
+    tapped(180,130);assert(view.powerIndex==0);tapped(120,290);assert(view.page==Page::Character);
+  }
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

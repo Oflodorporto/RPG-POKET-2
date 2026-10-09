@@ -17,6 +17,7 @@ struct Canvas {
   void setTextSize(int s){size=s;}
   void setCursor(int x,int y){tx=x;ty=y;}
   void print(const char* s){
+    if(!(tx>=0&&ty>=0&&tx+int(strlen(s))*6*size<=240&&ty+8*size<=320))fprintf(stderr,"Text overflow: x=%d y=%d size=%d text=%s\n",tx,ty,size,s);
     assert(tx>=0&&ty>=0&&tx+int(strlen(s))*6*size<=240&&ty+8*size<=320);
     while(*s){unsigned ch=(unsigned char)*s++;for(int i=0;i<5;++i)for(int j=0;j<8;++j)if(font[ch*5+i]&(1<<j))fillRect(tx+i*size,ty+j*size,size,size,color);tx+=6*size;}
   }
@@ -192,7 +193,7 @@ int main(int argc,char** argv){
   v.page=Page::Dialogue;g.city=0;menu.personIndex=0;for(unsigned cls=0;cls<4;++cls){g.p.cls=cls;render(c,g,v);c.save(root+"/title-nara-"+std::to_string(cls)+".ppm");}
   for(unsigned cls=0;cls<4;++cls){g=rpg::create(cls,42);v.page=Page::Evolution;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);for(unsigned lv=1;lv<=20;++lv){v.evolutionLevel=lv;render(c,g,v,0);if(lv==1||lv==4||lv==20)c.save(root+"/evolution-"+std::to_string(cls)+"-"+std::to_string(lv)+".ppm");}rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));}
   v.message="";v.effect=Effect::None;menu.connected=false;
-  for(unsigned cls=0;cls<4;++cls)for(unsigned lv:{1u,2u,3u,5u,17u,20u}){g=rpg::create(cls,42);g.p.xp=rpg::dndXp[lv-1];rpg::levelUp(g);g.p.mp=g.p.maxmp;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);v.page=Page::Powers;for(unsigned i=0;i<powersUi::count(cls);++i){v.powerIndex=i;render(c,g,v);c.save(root+"/powers-"+std::to_string(cls)+"-"+std::to_string(lv)+"-"+std::to_string(i)+".ppm");}rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));}
+  for(unsigned cls=0;cls<4;++cls)for(unsigned lv:{1u,2u,3u,5u,15u,17u,18u,20u}){g=rpg::create(cls,42);g.p.xp=rpg::dndXp[lv-1];rpg::levelUp(g);g.p.mp=g.p.maxmp;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);v.page=Page::Powers;for(unsigned i=0;i<powersUi::count(cls);++i){v.powerIndex=i;render(c,g,v);c.save(root+"/powers-"+std::to_string(cls)+"-"+std::to_string(lv)+"-"+std::to_string(i)+".ppm");}rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));}
   g=rpg::create(1,42);g.p.xp=900;rpg::levelUp(g);v.page=Page::OathConfirm;render(c,g,v);c.save(root+"/powers-oath.ppm");
   g=rpg::create(0,42);rpg::begin(g,7);v.page=Page::Battle;for(auto effect:{Effect::MagicDarts,Effect::FlameVolley,Effect::FireBurst,Effect::Radiant,Effect::DivineSlash})for(unsigned frame=0;frame<8;++frame){v.effect=effect;v.effectFrame=frame;v.effectOnHero=effect==Effect::Radiant;render(c,g,v);if(frame==4)c.save(root+"/powers-effect-"+std::to_string(int(effect))+".ppm");}
   g=rpg::create(1,42);g.p.xp=rpg::dndXp[10];rpg::levelUp(g);rpg::begin(g,7);v.page=Page::Battle;v.effect=Effect::DivineSlash;v.effectOnHero=false;

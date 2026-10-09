@@ -476,7 +476,7 @@ void tapped(int x,int y){
     if(powersUi::back.contains(x,y)){view.page=view.powersReturn;say("");return;}
     unsigned count=powersUi::count(game.p.cls);if(!game.dndProgression||!count)return;
     if(powersUi::previous.contains(x,y)||powersUi::next.contains(x,y)){view.powerIndex=(view.powerIndex+(x<120?count-1:1))%count;say("");return;}
-    if(powersUi::use.contains(x,y)){auto a=powersUi::action(game.p.cls,view.powerIndex);
+    if(powersUi::use.contains(x,y)){if(powersUi::passive(game.p.cls,view.powerIndex)){say("Efeito passivo: uso automatico");return;}auto a=powersUi::action(game.p.cls,view.powerIndex);
       if(game.p.cls==1&&!game.oath&&game.p.level>=3&&game.phase==rpg::Phase::Home&&(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)){view.page=Page::OathConfirm;say("");return;}
       if(game.phase==rpg::Phase::Hero){action(a);return;}
       auto err=rpg::usePower(game,a);if(err)say(err);else {say(game.p.cls==2?"Segundo folego: HP recuperado":"Impor as maos: HP recuperado");savedTransition(Page::Powers);}}return;
