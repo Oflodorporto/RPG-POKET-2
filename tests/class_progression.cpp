@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "../firmware/RPG_POKET_2/ClassProgression.h"
 #include "TestHero.h"
@@ -16,7 +17,7 @@ int main(){
  }
  auto g=create(1,11);assert(begin(g,0));auto mp=g.p.mp;auto seed=g.randomState;assert(act(g,Action::Offensive)&&g.p.mp==mp&&g.randomState==seed&&g.phase==Phase::Hero);
  g=create(0,11);assert(explore(g)&&g.enemyHp==6&&g.enemyId<2);auto state=g.randomState;unsigned bound=incomingCeiling(g);assert(g.randomState==state);for(unsigned seed=1;seed<500;++seed){auto copy=g;copy.randomState=seed;copy.phase=Phase::Enemy;copy.p.hp=copy.p.maxhp=100;assert(enemy(copy)&&copy.damage<=bound);}
- auto old=testHero(2,42);uint8_t b[SAVE_SIZE];encode(old,10,b);put16(b,4,11);put32(b,124,crc(b,124));uint32_t seq;Game h;assert(decode(b,h,seq)==Decode::Ok&&!h.dndProgression&&h.p.level==3&&h.p.maxhp==20);roundtrip(h);
+ auto old=testHero(2,42);uint8_t b[SAVE_SIZE];encode(old,10,b);legacyFormat(b,11);put32(b,124,crc(b,124));uint32_t seq;Game h;assert(decode(b,h,seq)==Decode::Ok&&!h.dndProgression&&h.p.level==3&&h.p.maxhp==20);roundtrip(h);
  for(unsigned cls=1;cls<4;++cls){g=create(cls,1);g.p.level=5;assert(attacksPerAction(g)==2);}g=create(2,1);g.p.level=11;assert(attacksPerAction(g)==3);g.p.level=20;assert(attacksPerAction(g)==4);
  // Incomplete spending cannot turn a single remaining point into a whole feat.
  g=create(0,1);g.p.xp=2700;levelUp(g);assert(g.p.level==4);assert(!improveAttribute(g,0));assert(learnTough(g));roundtrip(g);

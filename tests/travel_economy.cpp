@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "TestHero.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include <cassert>
@@ -21,7 +22,7 @@ int main(){
  assert(safe&&failed&&one&&twenty);
  for(bool flee:{false,true}){g=testHero(0,1);for(unsigned seed=1;seed<100;++seed){g=testHero(0,seed);prepareTrip(g,3);if(!tripSafe(g))break;}acceptTrip(g);if(flee)g.phase=Phase::Fled;else {g.p.hp=0;finish(g);}roundtrip(g);home(g);assert(flee?g.tripStage==3:!g.tripStage);assert(g.city==0);roundtrip(g);}
  // v7 checkpoints import without altering race, outfit, guild, inventory or city.
- g=testHero(2,90);g.city=2;g.guildMember=true;g.shirt=6;g.trousers=7;uint8_t b[SAVE_SIZE];encode(g,18,b);put16(b,4,7);put16(b,6,96);put32(b,92,crc(b,92));Game copy;uint32_t seq;assert(decode(b,copy,seq)==Decode::Ok&&!copy.tripStage&&copy.city==2&&copy.shirt==6&&copy.guildMember);roundtrip(copy);
+ g=testHero(2,90);g.city=2;g.guildMember=true;g.shirt=6;g.trousers=7;uint8_t b[SAVE_SIZE];encode(g,18,b);legacyFormat(b,7);put16(b,6,96);put32(b,92,crc(b,92));Game copy;uint32_t seq;assert(decode(b,copy,seq)==Decode::Ok&&!copy.tripStage&&copy.city==2&&copy.shirt==6&&copy.guildMember);roundtrip(copy);
  for(unsigned city=0;city<4;++city){g=testHero(0,1);g.city=city;assert(explore(g));assert(g.enemyId==(city==0?4:city==1?5:city==2?6:7));assert(valid(g));}
  puts("PASS: 4752 persisted journeys; natural 1/20, survival/luck/supplies, no reroll, loss/flee/arrival, v7 migration, regional enemies, stocks and transaction prices.");
 }

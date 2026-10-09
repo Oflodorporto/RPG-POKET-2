@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "TestHero.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "../firmware/RPG_POKET_2/TouchGate.h"
@@ -58,7 +59,7 @@ int main(){
   mem.failWrite=true;auto beforeSeq=reboot.seq;assert(!reboot.save(g)&&reboot.seq==beforeSeq);mem.failWrite=false;
   mem.data[1][22]^=1;Journal<Memory> recovery(mem);assert(recovery.load(loaded)==Load::Recovered);same(checkpoint,loaded);
   assert(recovery.save(g));Journal<Memory> r2(mem);assert(r2.load(loaded)==Load::Ok);same(g,loaded);
-  mem.data[0][4]=20;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
+  mem.data[0][4]=21;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
   Memory corrupt;corrupt.exists[0]=true;Journal<Memory> bad(corrupt);assert(bad.load(loaded)==Load::Blocked&&!bad.save(g));
   Memory inaccessible;inaccessible.failRead=true;Journal<Memory> broken(inaccessible);assert(broken.load(loaded)==Load::Blocked);
   // Readback failure must not be reported as successful even if NVS wrote.
@@ -87,12 +88,12 @@ int main(){
     auto old=testHero(1,123);old.p.gold=37;old.p.life=4;old.tutorial=true;old.phase=Phase(phase);
     if(old.phase==Phase::Won){old.enemyHp=0;old.gainGold=6;old.gainXp=12;}
     if(old.phase==Phase::Lost)old.p.hp=0;
-    uint8_t bytes[SAVE_SIZE];encode(old,19,bytes);put16(bytes,4,1);rpg::put16(bytes,6,64);memset(bytes+48,0,12);put32(bytes,60,crc(bytes,60));
+    uint8_t bytes[SAVE_SIZE];encode(old,19,bytes);legacyFormat(bytes,1);rpg::put16(bytes,6,64);memset(bytes+48,0,12);put32(bytes,60,crc(bytes,60));
     Memory legacy;legacy.exists[0]=true;memcpy(legacy.data[0],bytes,SAVE_SIZE);
-    Journal<Memory> migration(legacy);assert(migration.load(loaded)==Load::Ok);same(old,loaded);
+    Journal<Memory> migration(legacy);assert(migration.load(loaded)==Load::Ok);old.seenEnemies=old.phase==Phase::Home?0:1u<<2;same(old,loaded);
     assert(loaded.enemyId==2&&loaded.ruinsWins==0&&!loaded.guardianDefeated);
     legacy.failWrite=true;assert(!migration.save(loaded));assert(!memcmp(bytes,legacy.data[0],SAVE_SIZE));
-    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==19);
+    legacy.failWrite=false;assert(migration.save(loaded));assert(get16(legacy.data[1],4)==20);
     Journal<Memory> migrated(legacy);assert(migrated.load(g)==Load::Ok);same(old,g);
     if(old.phase==Phase::Enemy){enemy(old);enemy(g);same(old,g);}
   }

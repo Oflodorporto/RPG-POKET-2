@@ -49,7 +49,7 @@ int main(){
     if(version>=3){assert(!buyGear(g,4)&&!equipGear(g,4));assert(!buyGear(g,16)&&!equipGear(g,16));}
     if(version>=4)assert(!upgradeForge(g,2));g.phase=Phase(phase);if(phase==3)g.enemyHp=0;if(phase==4)g.p.hp=0;
     uint8_t bytes[rpg::SAVE_SIZE];encode(g,11,bytes);put16(bytes,4,version);rpg::put16(bytes,6,64);put32(bytes,60,crc(bytes,60));uint32_t seq;
-    assert(decode(bytes,loaded,seq)==Decode::Ok&&seq==11);same(g,loaded);assert(!loaded.questId&&!loaded.questProgress&&!loaded.questLevel);
+    assert(decode(bytes,loaded,seq)==Decode::Ok&&seq==11);g.seenEnemies=g.phase==Phase::Home?0:1u<<g.enemyId;same(g,loaded);assert(!loaded.questId&&!loaded.questProgress&&!loaded.questLevel);
     if(phase==2){enemy(g);enemy(loaded);same(g,loaded);}
   }
   // Contract fields and gear bits coexist through all possible mission progress values.

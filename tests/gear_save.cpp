@@ -67,9 +67,9 @@ int main(){
     uint8_t bytes[SAVE_SIZE];encode(g,18,bytes);put16(bytes,4,version);rpg::put16(bytes,6,64);memset(bytes+51,0,9);
     if(version==1)memset(bytes+48,0,12);put32(bytes,60,crc(bytes,60));
     Memory mem;mem.exists[0]=true;memcpy(mem.bytes[0],bytes,SAVE_SIZE);Journal<Memory> j(mem);Game loaded;
-    assert(j.load(loaded)==Load::Ok);same(g,loaded);assert(!loaded.owned&&!loaded.equipped[0]&&!loaded.equipped[1]&&!loaded.equipped[2]);
+    assert(j.load(loaded)==Load::Ok);g.seenEnemies=(g.phase==Phase::Home?0:1u<<g.enemyId)|(g.guardianDefeated?1u<<3:0);same(g,loaded);assert(!loaded.owned&&!loaded.equipped[0]&&!loaded.equipped[1]&&!loaded.equipped[2]);
     mem.fail=true;assert(!j.save(loaded));assert(get16(mem.bytes[0],4)==version);
-    mem.fail=false;assert(j.save(loaded)&&get16(mem.bytes[1],4)==19);Journal<Memory> boot(mem);assert(boot.load(loaded)==Load::Ok);same(g,loaded);
+    mem.fail=false;assert(j.save(loaded)&&get16(mem.bytes[1],4)==20);Journal<Memory> boot(mem);assert(boot.load(loaded)==Load::Ok);same(g,loaded);
     if(g.phase==Phase::Enemy){enemy(g);enemy(loaded);same(g,loaded);}
   }
   // Atomic purchase/save retry never charges twice; reboot sees the whole old/new state.

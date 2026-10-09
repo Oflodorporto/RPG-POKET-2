@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "TestHero.h"
 #include <cassert>
@@ -17,7 +18,7 @@ int main(){
  for(auto a:{Action::MagicMissile,Action::BurningHands,Action::ShieldSpell,Action::ScorchingRay,Action::Fireball}){g=atLevel(0,powerLevel(a));begin(g,7);auto mp=g.p.mp;assert(!act(g,a));assert(g.p.mp==mp-powerCost(a));g=checkpoint(g);if(a==Action::MagicMissile)assert(g.damage>=6&&g.damage<=15&&!g.dodge&&!g.crit);if(a==Action::ShieldSpell)assert(g.guard==75);if(powerLevel(a)>1){g=atLevel(0,powerLevel(a)-1);begin(g,7);rejected(g,a);}g=atLevel(0,powerLevel(a));begin(g,7);g.p.mp=0;rejected(g,a);}
  g=atLevel(0,1);begin(g,0);rejected(g,Action::LayHands);g=testHero(0,1);begin(g,0);rejected(g,Action::MagicMissile);
  // Save12 migration preserves every old field and leaves new powers unused.
- g=atLevel(1,3);uint8_t b[SAVE_SIZE];encode(g,2,b);put16(b,4,12);put32(b,124,crc(b,124));Game copy;uint32_t seq;assert(decode(b,copy,seq)==Decode::Ok&&!copy.oath&&!copy.laySpent&&!copy.channelSpent&&copy.p.level==3&&copy.dndProgression);copy=checkpoint(copy);
+ g=atLevel(1,3);uint8_t b[SAVE_SIZE];encode(g,2,b);legacyFormat(b,12);put32(b,124,crc(b,124));Game copy;uint32_t seq;assert(decode(b,copy,seq)==Decode::Ok&&!copy.oath&&!copy.laySpent&&!copy.channelSpent&&copy.p.level==3&&copy.dndProgression);copy=checkpoint(copy);
  for(unsigned offset=109;offset<114;++offset){encode(g,2,b);b[offset]=255;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);}
  puts("PASS: oath choice, level/class/MP gates, no mutation on reject, heal pool/rest, shared channel, sacred duration, undead two turns, 5 spells and save13/read12.");
 }

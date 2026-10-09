@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "TestHero.h"
 #include <cassert>
@@ -24,7 +25,7 @@ int main(){
  // Camp resources restore only on completion, even if HP and MP were already full.
  for(unsigned cls:{2u,3u}){g=level(cls,2);if(cls==2)g.windSpent=g.surgeSpent=1;else g.rageSpent=1;assert(!startCamp(g,false,false));g=boot(g);assert(g.windSpent||g.rageSpent);g.campStage=3;assert(finishCamp(g)&&!g.windSpent&&!g.surgeSpent&&!g.rageSpent);g=boot(g);}
  // Import save13 without any new resources; reserved bytes and impossible buffs are rejected.
- g=level(2,2);uint8_t b[SAVE_SIZE];encode(g,2,b);put16(b,4,13);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&!h.windSpent&&!h.surgePending);h=boot(h);
+ g=level(2,2);uint8_t b[SAVE_SIZE];encode(g,2,b);legacyFormat(b,13);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&!h.windSpent&&!h.surgePending);h=boot(h);
  for(unsigned off=114;off<124;++off){encode(g,2,b);b[off]=255;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);}
  g=testHero(2,47);begin(g,7);reject(g,Action::SecondWind);reject(g,Action::ActionSurge);g=testHero(3,47);begin(g,7);reject(g,Action::RagePower);
  puts("PASS: Fighter heal/extra action, once per turn, level17 uses, rage levels/3 rounds/damage types, deterministic bounds, cap20 unlimited, camp, legacy rules and save14/read13.");

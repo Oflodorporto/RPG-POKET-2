@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "../firmware/RPG_POKET_2/OriginStory.h"
 #include <cassert>
@@ -11,7 +12,7 @@ int main(){
   }
  }
  auto g=rpg::create(2,51);g.tutorial=true;g.p.gold=313;g.shirt=4;g.crystals=2;g.rations=3;
- uint8_t b[rpg::SAVE_SIZE];rpg::encode(g,19,b);rpg::put16(b,4,16);rpg::put32(b,124,rpg::crc(b,124));rpg::Game h;uint32_t seq;
+ uint8_t b[rpg::SAVE_SIZE];rpg::encode(g,19,b);rpg::legacyFormat(b,16);rpg::put32(b,124,rpg::crc(b,124));rpg::Game h;uint32_t seq;
  assert(rpg::decode(b,h,seq)==rpg::Decode::Ok&&!h.originStory&&!h.originPage&&h.tutorial&&h.p.gold==313&&h.crystals==2&&h.rations==3&&h.shirt==4);
  assert(story::originCount(h)==5&&story::originPage(h,0).npc==story::Npc::None);
  for(unsigned byte:{122u,123u}){rpg::encode(g,19,b);b[byte]=byte==122?2:9;rpg::put32(b,124,rpg::crc(b,124));assert(rpg::decode(b,h,seq)==rpg::Decode::Corrupt);}

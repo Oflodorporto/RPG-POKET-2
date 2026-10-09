@@ -245,7 +245,9 @@ void tapped(int x,int y){
     if(launchUi::back.contains(x,y)){view.page=view.guideReturn;say("");}
     else if(launchUi::previous.contains(x,y)||launchUi::next.contains(x,y)){view.guideIndex=(view.guideIndex+(x<120?launchUi::guideCount-1:1))%launchUi::guideCount;say("");}return;
   }
-  if((view.page==Page::Menu&&hit(x,y,63,281,115,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&hit(x,y,14,143,48,29))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
+  if((view.page==Page::Menu&&hit(x,y,14,281,102,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&hit(x,y,14,143,48,29))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
+  if(view.page==Page::Bestiary){if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}else if(hit(x,y,14,114,102,28)||hit(x,y,124,114,102,28)){view.bestiaryIndex=rpg::bestiaryStep(game,view.bestiaryIndex,x<120?-1:1);say("");}return;}
+  if(view.page==Page::Menu&&hit(x,y,124,281,102,28)){if(journal.blocked||journal.active<0){say("Escolha ou crie um personagem");return;}view.bestiaryIndex=rpg::bestiaryFirst(game);view.page=Page::Bestiary;say("");return;}
   if(view.page==Page::Menu){int choice=scenicUi::menuChoice(x,y);
     if(choice==0){if(journal.blocked||journal.active<0)say("Escolha ou crie um personagem");else showMap();}
     else if(choice==1){refreshSlots();menu.newGameSlots=false;menu.creationFromTitle=false;menu.slotsReturn=int(Page::Menu);view.page=Page::Slots;menu.notice="";dirty=true;}
@@ -656,6 +658,8 @@ int main(){
     view.page=Page::DungeonMenu;tapped(120,14);assert(view.page==Page::EnemyInfo&&view.enemyReturn==Page::DungeonMenu);tapped(120,294);assert(view.page==Page::DungeonMenu);rpg::encode(game,2,after);assert(nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));
   }
   game.phase=rpg::Phase::Enemy;view.page=Page::Battle;combatFx.kind=Effect::None;tapped(120,82);assert(view.page==Page::Battle);
+  combatFx.kind=Effect::None;game=rpg::create(0,71);game.seenEnemies=(1u<<2)|(1u<<17);journal.blocked=false;assert(journal.save(game));view.page=Page::Menu;auto bestiaryBlobs=nvs.blobs;uint8_t bestiaryBefore[rpg::SAVE_SIZE],bestiaryAfter[rpg::SAVE_SIZE];rpg::encode(game,2,bestiaryBefore);
+  tapped(175,290);assert(view.page==Page::Bestiary&&view.bestiaryIndex==2);tapped(175,128);assert(view.bestiaryIndex==17);tapped(175,128);assert(view.bestiaryIndex==2);tapped(65,128);assert(view.bestiaryIndex==17);tapped(120,294);assert(view.page==Page::Menu);rpg::encode(game,2,bestiaryAfter);assert(nvs.blobs==bestiaryBlobs&&!memcmp(bestiaryBefore,bestiaryAfter,sizeof(bestiaryBefore)));tapped(65,290);assert(view.page==Page::Guide);view.page=Page::Menu;journal.active=-1;tapped(175,290);assert(view.page==Page::Menu);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

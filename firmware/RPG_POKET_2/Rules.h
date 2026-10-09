@@ -37,6 +37,7 @@ struct Game {
   uint8_t discovery=0,discoverLoot=0,discoverAmount=0,scrap=0;
   uint8_t gazuas=0,chestLock=0,chestTries=0,chestRoll=0;bool chestPick=false,chestTrap=false;
   uint8_t windSpent=0,surgeSpent=0,rageSpent=0,rageTurns=0;bool surgePending=false,surgeTurnUsed=false;
+  uint32_t seenEnemies=0;
   uint32_t randomState=1;
   uint16_t gainXp=0,damage=0;
   uint8_t gainGold=0;
@@ -219,7 +220,7 @@ inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>17||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>17||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
 inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}

@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include <cassert>
 #include <cstdio>
@@ -15,7 +16,7 @@ int main(){unsigned success[2]={},locked=0,trapped=0;
  assert(locked>3400&&locked<4200&&trapped>750&&trapped<1150);
  Game g=create(2,42);g.p.gold=100;assert(!buyGazua(g)&&g.gazuas==1&&g.p.gold==96);g.gazuas=9;assert(buyGazua(g));g.gazuas=0;g.discovery=2;g.discoverLoot=1;g.discoverAmount=1;g.chestLock=1;auto rng=g.randomState;assert(attemptLock(g,true)&&g.randomState==rng&&!g.chestTries);assert(buyGazua(g));clearDiscovery(g);
  // An actual save18 discovery imports unchanged and unlocked; new19 fields default0.
- g.discovery=2;g.discoverLoot=0;g.discoverAmount=9;g.scrap=3;uint8_t b[SAVE_SIZE];encode(g,1,b);put16(b,4,18);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&h.discovery==2&&h.discoverAmount==9&&h.scrap==3&&!h.chestLock&&!h.gazuas);assert(!collectDiscovery(h)&&h.p.gold==g.p.gold+9);
+ g.discovery=2;g.discoverLoot=0;g.discoverAmount=9;g.scrap=3;uint8_t b[SAVE_SIZE];encode(g,1,b);legacyFormat(b,18);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&h.discovery==2&&h.discoverAmount==9&&h.scrap==3&&!h.chestLock&&!h.gazuas);assert(!collectDiscovery(h)&&h.p.gold==g.p.gold+9);
  // Reject inconsistent packed state even with a repaired CRC.
  clearDiscovery(g);for(unsigned byte:{60u,61u,62u,63u}){encode(g,1,b);b[byte]=255;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);}
  g.discovery=2;g.discoverLoot=0;g.discoverAmount=1;g.chestLock=1;g.chestTrap=true;g.p.hp=1;g.gazuas=1;assert(!attemptLock(g,true)&&g.p.hp==1);checkpoint(g);

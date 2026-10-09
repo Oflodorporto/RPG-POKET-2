@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "TestHero.h"
 #include "../firmware/RPG_POKET_2/Slots.h"
 #include "../firmware/RPG_POKET_2/World.h"
@@ -21,7 +22,8 @@ struct Store {
 struct Reader {std::vector<uint8_t> bytes;unsigned pos=0;int fail=-1,calls=0;unsigned size(){return bytes.size();}int read(uint8_t* out,unsigned n){if(calls++==fail)return 0;if(pos+n>bytes.size())return 0;memcpy(out,bytes.data()+pos,n);pos+=n;return n;}};
 int main(){
   Store base;SlotBackend<Store> io(base);rpg::Game g;
-  for(unsigned i=0;i<3;++i){io.slot=i;rpg::Journal<SlotBackend<Store>> j(io);assert(j.load(g)==rpg::Load::Empty);g=rpg::testHero(i,17+i);g.p.gold=100+i;assert(j.save(g));assert(j.save(g));}
+  for(unsigned i=0;i<3;++i){io.slot=i;rpg::Journal<SlotBackend<Store>> j(io);assert(j.load(g)==rpg::Load::Empty);g=rpg::testHero(i,17+i);g.p.gold=100+i;g.seenEnemies=1u<<i;assert(j.save(g));assert(j.save(g));}
+  for(unsigned i=0;i<3;++i){io.slot=i;rpg::Journal<SlotBackend<Store>> j(io);assert(j.load(g)==rpg::Load::Ok&&g.seenEnemies==(1u<<i));}
   auto slot0a=base.blobs["a"],slot0b=base.blobs["b"],slot2a=base.blobs["a2"],slot2b=base.blobs["b2"];
   // Every interruption in delete cleanup: marker failure preserves, success never revives.
   for(int fail=0;fail<3;++fail){Store s=base;s.fail=fail;s.operations=0;SlotBackend<Store> b(s);b.slot=1;bool deleted=b.remove();s.fail=-1;
@@ -29,12 +31,12 @@ int main(){
     if(deleted)assert(s.tomb[1]);}
   // Every interrupted recreation either stays empty or contains only the new hero.
   for(int fail=0;fail<9;++fail){Store s=base;SlotBackend<Store> b(s);b.slot=1;assert(b.remove());rpg::Journal<SlotBackend<Store>> j(b);assert(j.load(g)==rpg::Load::Empty);auto fresh=rpg::testHero(3,98);fresh.p.gold=7;s.fail=fail;s.operations=0;bool ok=j.save(fresh);s.fail=-1;
-    rpg::Journal<SlotBackend<Store>> resumed(b);auto loaded=resumed.load(g);assert(loaded==rpg::Load::Empty||loaded==rpg::Load::Ok);if(loaded==rpg::Load::Ok)assert(g.p.cls==3&&g.p.gold==7);if(ok)assert(loaded==rpg::Load::Ok);
+    rpg::Journal<SlotBackend<Store>> resumed(b);auto loaded=resumed.load(g);assert(loaded==rpg::Load::Empty||loaded==rpg::Load::Ok);if(loaded==rpg::Load::Ok)assert(g.p.cls==3&&g.p.gold==7&&g.seenEnemies==0);if(ok)assert(loaded==rpg::Load::Ok);
     assert(s.blobs["a"]==slot0a&&s.blobs["b"]==slot0b&&s.blobs["a2"]==slot2a&&s.blobs["b2"]==slot2b);}
   uint8_t bytes[rpg::SAVE_SIZE];uint32_t seq=0;
   for(unsigned city=0;city<4;++city){g=rpg::testHero(0,32);g.city=city;rpg::encode(g,18,bytes);rpg::Game loaded;assert(rpg::decode(bytes,loaded,seq)==rpg::Decode::Ok&&loaded.city==city);}
   // Existing save5 is upgraded without resetting equipment, mission or player.
-  g=rpg::testHero(2,77);g.p.gold=123;assert(!rpg::acceptQuest(g,2));g.questProgress=1;rpg::encode(g,9,bytes);rpg::put16(bytes,4,5);rpg::put16(bytes,6,64);rpg::put32(bytes,60,rpg::crc(bytes,60));rpg::Game old;assert(rpg::decode(bytes,old,seq)==rpg::Decode::Ok&&old.city==0&&old.questProgress==1&&old.p.gold==123&&seq==9);
+  g=rpg::testHero(2,77);g.p.gold=123;assert(!rpg::acceptQuest(g,2));g.questProgress=1;rpg::encode(g,9,bytes);rpg::legacyFormat(bytes,5);rpg::put16(bytes,6,64);rpg::put32(bytes,60,rpg::crc(bytes,60));rpg::Game old;assert(rpg::decode(bytes,old,seq)==rpg::Decode::Ok&&old.city==0&&old.questProgress==1&&old.p.gold==123&&seq==9);
   bytes[53]|=0x40;rpg::put32(bytes,60,rpg::crc(bytes,60));assert(rpg::decode(bytes,old,seq)==rpg::Decode::Corrupt);
   for(uint8_t a=0;a<4;++a)for(uint8_t b=0;b<4;++b){Journey j;assert(j.start(a,b,UINT32_MAX-500)==(a!=b));if(a==b)continue;assert(j.position().x==places[a].x);int previous=0;
     for(unsigned t=0;t<=3000;t+=10){j.tick(uint32_t(UINT32_MAX-500+t));Point p=j.position();assert(p.x>=0&&p.x<240&&p.y>=40&&p.y<225&&int(j.progress)>=previous);previous=j.progress;}assert(!j.active&&j.position().x==places[b].x&&j.position().y==places[b].y);}

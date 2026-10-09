@@ -49,7 +49,7 @@ template<class C>void drawScenicMenu(C& c,const rpg::Game& g,const ViewState& v,
  scenicBackdrop(c,true,frame,worldClock::Period::Night);
  // Each button is an actual raster crop of the concept, with shared live hit regions.
  uint16_t row[115];for(int i=0;i<7;++i){int y=scenicUi::menuYs[i];for(int dy=0;dy<25;++dy){for(int dx=0;dx<115;++dx)row[dx]=scenicArt::menuPalette[scenicArt::menuPixels[(y+dy)*240+63+dx]];c.draw16bitRGBBitmap(63,y+dy,row,115,1);}if(i==5&&g.eventStage==1&&frame%12<6)c.fillRect(172,y+10,3,3,UI_GREEN);}
- scenicPanel(c,63,281,115,28);scenicText(c,96,290,"Guia >",1,UI_GOLD);
+ scenicPanel(c,14,281,102,28);scenicText(c,40,290,"Guia >",1,UI_GOLD);scenicPanel(c,124,281,102,28);scenicText(c,128,290,"Bestiario >",1,UI_GOLD);
  if(*v.message){c.fillRect(2,310,236,10,UI_INK);scenicText(c,(240-int(strlen(v.message))*6)/2,311,v.message,1,UI_RED);}
 }
 template<class C>void drawScenicHome(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){

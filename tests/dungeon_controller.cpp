@@ -245,7 +245,9 @@ void tapped(int x,int y){
     if(launchUi::back.contains(x,y)){view.page=view.guideReturn;say("");}
     else if(launchUi::previous.contains(x,y)||launchUi::next.contains(x,y)){view.guideIndex=(view.guideIndex+(x<120?launchUi::guideCount-1:1))%launchUi::guideCount;say("");}return;
   }
-  if((view.page==Page::Menu&&hit(x,y,63,281,115,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&hit(x,y,14,143,48,29))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
+  if((view.page==Page::Menu&&hit(x,y,14,281,102,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&hit(x,y,14,143,48,29))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
+  if(view.page==Page::Bestiary){if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}else if(hit(x,y,14,114,102,28)||hit(x,y,124,114,102,28)){view.bestiaryIndex=rpg::bestiaryStep(game,view.bestiaryIndex,x<120?-1:1);say("");}return;}
+  if(view.page==Page::Menu&&hit(x,y,124,281,102,28)){if(journal.blocked||journal.active<0){say("Escolha ou crie um personagem");return;}view.bestiaryIndex=rpg::bestiaryFirst(game);view.page=Page::Bestiary;say("");return;}
   if(view.page==Page::Menu){int choice=scenicUi::menuChoice(x,y);
     if(choice==0){if(journal.blocked||journal.active<0)say("Escolha ou crie um personagem");else showMap();}
     else if(choice==1){refreshSlots();menu.newGameSlots=false;menu.creationFromTitle=false;menu.slotsReturn=int(Page::Menu);view.page=Page::Slots;menu.notice="";dirty=true;}

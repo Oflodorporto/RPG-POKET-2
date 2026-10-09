@@ -1,3 +1,4 @@
+#include "LegacySave.h"
 #include "../firmware/RPG_POKET_2/Save.h"
 #include "TestHero.h"
 #include <cassert>
@@ -16,7 +17,7 @@ int main(){
  for(unsigned city=0;city<4;++city)for(unsigned dest=0;dest<4;++dest)for(unsigned bits=0;bits<8;++bits){if(city==dest)continue;g=create(0,47);g.city=city;g.rations=bits&1;g.charts=(bits>>1)&1;g.charms=(bits>>2)&1;auto before=g;unsigned chance=tripSafety(g,dest);assert(chance>=5&&chance<=95&&!memcmp(&before,&g,sizeof(g)));assert(!prepareTrip(g,dest));unsigned safe=0;for(unsigned die=1;die<=20;++die){g.tripRoll=die;g.tripTotal=die+g.tripSurvival+g.tripLuck;safe+=tripSafe(g);}assert(safe*5==chance);}
  g=create(2,47);g.p.level=4;g.p.maxmp=totalMana(g);g.p.mp=g.p.maxmp;g.owned=1u<<6;g.equipped[0]=7;auto before=g;auto preview=gearPreview(g,8);assert(effectiveAttack(preview)==effectiveAttack(g)+2&&!memcmp(&g,&before,sizeof(g))&&!gearOwns(g.owned,8));assert(gearPreview(g,2).equipped[0]==7);
  // Save14 imports without enemy cadence; future/reserved bytes remain protected.
- uint8_t b[SAVE_SIZE];g=create(2,47);encode(g,1,b);put16(b,4,14);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&!h.enemyBeat);h=boot(h);
+ uint8_t b[SAVE_SIZE];g=create(2,47);encode(g,1,b);legacyFormat(b,14);put32(b,124,crc(b,124));Game h;uint32_t seq;assert(decode(b,h,seq)==Decode::Ok&&!h.enemyBeat);h=boot(h);
  encode(g,1,b);b[119]=3;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);b[122]=2;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);
  puts("PASS: intentions/cadence/restart, windup/healing/drain, deterministic danger bounds, legacy battles, exact read-only D20 chance, equipment comparison and save15/read14.");
 }
