@@ -86,6 +86,8 @@ Critério: escolher método é relevante e legível, toda classe tem uma saída,
 
 ## Pacote4 — Crescer com vontade de enfrentar o próximo desafio
 
+Desdobramento4.5 publicado:2026.10.09-inimigos1, ficha do adversário atual com intenção/tipo/dicas/limite de dano, consulta sem gastar turno/gravar.32suítes e guiaPACOTE_4_5_CONHECA_O_INIMIGO.md. Bestiário persistente, demais classes/balanceamento e Pacote5 Aurora continuam pendentes.
+
 Desdobramento4.4 publicado:2026.10.09-barbaro1, Bárbaro com dados de Crítico brutal9/13/17 e Fúria persistente15, fichas passivas e31suítes. GuiaPACOTE_4_4_FURIA_ANCESTRAL.md. Demais recursos de classe/bestiário/balanceamento e Pacote5 Aurora continuam pendentes.
 
 Desdobramento4.3 publicado:2026.10.09-arcano1, Mago com Evocação aprimorada10/Maestria18, fichas passivas/custos reais e30suítes; guiaPACOTE_4_3_DOMINIO_ARCANO.md. Bárbaro, demais recursos/bestiário/balanceamento e Pacote5 Aurora continuam pendentes.

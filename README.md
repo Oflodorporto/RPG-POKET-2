@@ -22,6 +22,8 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
+**Entrega mais recente: Pacote4.5 — Conheça o inimigo,2026.10.09-inimigos1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-inimigos1) · [Guia](docs/PACOTE_4_5_CONHECA_O_INIMIGO.md). Ficha do adversário atual/intenção/tipo/dicas/limite de dano, sem gastar turno.32suítes/compilação/downloads conferidos; teste físico pendente. Save19/artes mantidos.
+
 **Entrega mais recente: Pacote4.4 — Fúria ancestral,2026.10.09-barbaro1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-barbaro1) · [Guia](docs/PACOTE_4_4_FURIA_ANCESTRAL.md). Bárbaro: Crítico brutal com1/2/3d6 nos níveis9/13/17 e Fúria persistente15.31suítes/compilação/downloads conferidos; teste físico pendente. Save19/artes mantidos.
 
 **Entrega mais recente: Pacote4.3 — Domínio arcano,2026.10.09-arcano1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-arcano1) · [Guia](docs/PACOTE_4_3_DOMINIO_ARCANO.md). Mago: bônus de INT10 e Mísseis/Raios gratuitos18, fichas passivas/custos reais.30suítes/compilação/downloads conferidos; teste físico pendente. Save19/artes mantidos.

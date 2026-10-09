@@ -1,6 +1,6 @@
 # Pacote4.5 — Conheça o inimigo
 
-Versão2026.10.09-inimigos1/build2026100904. Candidata em validação.
+Versão2026.10.09-inimigos1/build2026100904. Publicada e verificada: 32 suítes e compilação ESP32-S3 passaram; downloads conferidos por tamanho/SHA-256/CRC. Teste físico pendente do usuário.
 
 Ficha de combate acessível no seu turno pelo nome/HP do inimigo ou pelo atalho Ficha >. Na dungeon, abra Menu e toque no cabeçalho Ficha do inimigo >. Voltar retorna à origem. A ficha mostra o sprite do adversário atual, HP atual/máximo do encontro, ataque e defesa, tipo físico/mágico, natureza morto-vivo ou criatura, intenção atual e limite superior de dano do próximo golpe com sua defesa e proteção atuais.
 
