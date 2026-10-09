@@ -1,6 +1,7 @@
 #pragma once
 #include "Campaign.h"
 #include "OriginStory.h"
+#include "AnwenStory.h"
 namespace story {
 struct Scene {const char* speaker;const char* lines[4];};
 constexpr Scene portScenes[2][4]={
@@ -48,7 +49,9 @@ inline const char* classVoice(unsigned cls){const char* lines[]={"Voce sente eco
 struct Objective {const char* title;const char* place;const char* lines[4];};
 inline Objective objective(const rpg::Game& g){
  if(!g.tutorial)return {"UMA CAMA E UM NOME","Carvalho / Nara Veld",{"Termine o guia de Nara.","Aprenda a lutar e preparar a bolsa.","Converse com Elarin e Borin.","Sua primeira pista e a cinza branca."}};
- if(g.campaignFlags&4)return {"IMPEDIR A VIGILIA","Aurora / Seraphine e Dargan",{"As ordens do palacio foram recuperadas.","Odran quer consumir as lembrancas.","Anwen projetou outra forma de selar.","Converse com Seraphine e Dargan."}};
+ if(rpg::anwenReady(g))return {"O LEGADO DE ANWEN","Aurora / Liora Valcer",{"As quatro cidades reuniram seus aliados.","O projeto sem vitimas esta completo.","Liora recebe a equipe de restauracao.","Converse com ela no palacio."}};
+ if(g.campaignFlags&4){unsigned city=rpg::contributionNextCity(g);const char* places[]={"Carvalho / Elarin Folhacinza","Vespera / Iria Sorel","Mares / Nilsa Bronzamar","Aurora / Dargan Setemartelos"};return {"O LEGADO DE ANWEN",places[city],{"Reuna as quatro ajudas para os farois.","Cada cidade oferece uma parte do plano.","O diario registra as entregas reais.","Nenhuma delas exige outra vitima."}};}
+
  if((g.campaignFlags&3)==3)return {"JURAMENTOS DE AURORA","Aurora / Liora Valcer",{"Voce salvou os refugiados de Mares.","Maelis abriu os registros da Guilda.","Leve a verdade a Liora em Aurora.","Liora pede acesso aos arquivos reais."}};
  if(g.campaignFlags&1)return {"O FAROL APAGADO","Mares / Sabela Marebrava",{"A carga prova o roubo de memorias.","A tempestade apagou o Farol Caminho.","Refugiados estao presos no cais.","Sabela precisa de voce no resgate."}};
  if(arconteKnown(g))return {"O LIVRO DAS VIGILIAS","Mares / Sabela Marebrava",{"O livro liga cristais a memorias.","Sabela procura provas no porto.","Converse com ela em Mares.","Sabela oferece uma missao no porto."}};

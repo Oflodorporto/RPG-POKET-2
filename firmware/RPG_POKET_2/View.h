@@ -12,7 +12,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::Prologue:return bg_tavern;case Page::Journal:return bg_character;case Page::People:case Page::Dialogue:return bg_village;case Page::Continent:return bg_world;
@@ -90,7 +90,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Bag||v.page==Page::TownBag){drawPanelBag(c,g,v);return;}
   if(v.page==Page::Character){drawPanelCharacter(c,g);return;}
   if(v.page==Page::Village&&g.city==0){drawPanelVillage(c,g,v);return;}
-  if(v.page==Page::Prologue||v.page==Page::Journal||v.page==Page::People||v.page==Page::Dialogue||v.page==Page::Continent||v.page==Page::Campaign||v.page==Page::CampaignTask||v.page==Page::CampaignResult){drawNarrative(c,g,v,frame);return;}
+  if(v.page==Page::Prologue||v.page==Page::Journal||v.page==Page::People||v.page==Page::Dialogue||v.page==Page::Continent||v.page==Page::Campaign||v.page==Page::CampaignTask||v.page==Page::CampaignResult||v.page==Page::ContributionResult){drawNarrative(c,g,v,frame);return;}
   if(v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest){drawCamp(c,g,v,frame);return;}
   if(v.page==Page::Dungeon){drawDungeon(c,g,v);return;}
   if(v.page==Page::Bag||v.page==Page::TownBag||v.page==Page::BagGear){drawBag(c,g,v);return;}

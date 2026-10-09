@@ -54,7 +54,7 @@ inline bool valid(const Game& g){
   return true;
 }
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,21);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,22);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
@@ -65,7 +65,7 @@ inline void encode(const Game& g,uint32_t seq,uint8_t* b){
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>21)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
+  if((get16(b,4)<1||get16(b,4)>22)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
   if(get32(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)||(get16(b,4)<20&&b[47]>31))return Decode::Corrupt;
   if(get16(b,4)<8&&get16(b,4)>=2&&b[48]>3)return Decode::Corrupt;
   if(get16(b,4)==8&&b[48]>7)return Decode::Corrupt;
@@ -86,7 +86,7 @@ inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(get16(b,4)>=19){t.discovery=b[60]&7;t.chestLock=(b[60]>>3)&3;t.chestTrap=b[60]&32;t.chestTries=b[60]>>6;t.discoverLoot=b[61]&7;t.chestRoll=b[61]>>3;t.discoverAmount=b[62]&127;t.chestPick=b[62]&128;t.scrap=b[63]&15;t.gazuas=b[63]>>4;}
   else if(get16(b,4)>=18){t.discovery=b[60];t.discoverLoot=b[61];t.discoverAmount=b[62];t.scrap=b[63];}
   if(get16(b,4)>=17){if(b[122]>1)return Decode::Corrupt;t.originStory=b[122];t.originPage=b[123];}
-  if(get16(b,4)>=16){if(get16(b,4)<21&&(b[120]>3||b[121]>2))return Decode::Corrupt;t.campaignFlags=b[120];t.campaignStage=b[121];}
+  if(get16(b,4)>=16){if(get16(b,4)<22&&(b[120]>7||b[121]>3))return Decode::Corrupt;if(get16(b,4)<21&&(b[120]>3||b[121]>2))return Decode::Corrupt;t.campaignFlags=b[120];t.campaignStage=b[121];}
   if(get16(b,4)>=15)t.enemyBeat=b[119];
     if(get16(b,4)>=14){if(b[116]>3)return Decode::Corrupt;t.windSpent=b[114];t.surgeSpent=b[115];t.surgePending=b[116]&1;t.surgeTurnUsed=b[116]&2;t.rageSpent=b[117];t.rageTurns=b[118];}
     if(get16(b,4)>=13){if(b[111]>1)return Decode::Corrupt;t.oath=b[109];t.laySpent=b[110];t.channelSpent=b[111];t.sacredTurns=b[112];t.turnedTurns=b[113];}

@@ -4,6 +4,15 @@ namespace story {
 // Continuous speech, selected from facts already recorded for this hero.
 inline const char* conversation(const rpg::Game& g,unsigned person){
  person%=3;
+ if((g.campaignFlags&7)==7&&person==rpg::campaignPerson(4+g.city)){
+  if(rpg::contribution(g,g.city))return contributionSpeech(4+g.city);
+  if(g.city==0)return "Borin mostrou o desenho de Anwen. Ainda ha raizes vivas sob a cinza, mas precisamos cuidar delas ate a restauracao. Traga tres racoes para alimentar os voluntarios; eu preparo as mudas. Nara ofereceu o abrigo, e Borin vai levar as ferramentas. Esta sera a ajuda de Carvalho. Nao precisa tirar comida da propria boca: compre as provisoes e volte quando estiver pronto.";
+  if(g.city==1)return "O Livro explicou o pacto, mas os nomes das vitimas ainda estao presos aos registros. Preciso abrir uma sala antiga; um espectro continua guardando a porta. Venha comigo e mantenha-o longe enquanto liberto as memorias. Nao vamos consumir esses ecos para acender outro farol. Vamos devolver a cada lembranca o direito de partir ou de voltar para casa.";
+  if(g.city==2)return "Tenho uma equipe pronta para trabalhar nos farois. Sao voluntarios, inclusive algumas pessoas que voce resgatou. A Mao de Cinza bloqueou o cais para impedir nossa partida. Preciso que nos escolte ate a rota segura; Sabela cuidara do porto enquanto estivermos fora. Depois de tanto transportar caixas fechadas, Mares vai levar gente que sabe por que esta viajando.";
+  return "O projeto de Anwen precisa de uma estrutura nova, sem as celas do mecanismo antigo. Seraphine reunira os juramentos voluntarios; eu construo a parte que deve sustenta-los. Os componentes custam cento e cinquenta moedas. Minha equipe oferece o trabalho. Confira sua bolsa e decida quando puder ajudar; nao vou tomar sua arma nem sua armadura para montar o farol.";
+ }
+ if(rpg::anwenReady(g)&&g.city==3&&person==0)return "Elarin leva as raizes, Iria protege os nomes, Nilsa mantem o caminho aberto e Dargan terminou a estrutura. Voce fez mais que reunir objetos: deu a estas pessoas uma razao para confiar umas nas outras. Vou receber a equipe no palacio. Meu pai tera de ouvir o que escolhemos construir, e tera de responder pelo que decidiu destruir. Desta vez, Aeldra tera voz.";
+
  if(g.city==0){
   if(person==0){if(g.campaignFlags&4)return "Sente um pouco. Voce trouxe a verdade de Aurora, mas ainda precisa comer. Nao vou deixar que enfrente um rei de barriga vazia. Quando tudo acabar, quero ouvir sua historia aqui, ao lado do fogo, com todos os nomes que o Pacto tentou apagar.";
    if(arconteKnown(g))return "Eu achava que estava ficando velha quando esqueci quem me ensinou esta receita. Agora voce diz que os cristais levavam nossas lembrancas... Entendo por que Iria mandou voce a Mares. Procure Sabela no porto. E volte para me contar o que descobrir; sua cama continua aqui.";
