@@ -206,7 +206,9 @@ void tapped(int x,int y){
     auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
     if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(view.page);return;
   }
+  if(view.page==Page::EnemyInfo){if(hit(x,y,14,278,212))view.page=view.enemyReturn;say("");return;}
   if(view.page==Page::DungeonMenu){
+    if(game.phase==rpg::Phase::Hero&&hit(x,y,14,0,212,32)){view.enemyReturn=Page::DungeonMenu;view.page=Page::EnemyInfo;say("");return;}
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
     if(game.dndProgression&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
@@ -506,6 +508,7 @@ void tapped(int x,int y){
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
   if(view.page!=Page::Battle)return;
+  if(game.phase==rpg::Phase::Hero&&hit(x,y,10,0,220,90)){view.enemyReturn=Page::Battle;view.page=Page::EnemyInfo;say("");return;}
   if(panelUi::battleButtons[0].contains(x,y))action(rpg::Action::Attack);
   else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
@@ -648,6 +651,11 @@ int main(){
   bool gotCritical=false;for(unsigned seed=1;seed<1000;++seed){auto trial=game;trial.randomState=seed;rpg::act(trial,rpg::Action::Attack);if(trial.crit&&!trial.dodge&&trial.phase==rpg::Phase::Enemy){game.randomState=seed;gotCritical=true;break;}}assert(gotCritical);
   journal.blocked=false;assert(journal.save(game));view.page=Page::Battle;nvs.fail=true;action(rpg::Action::Attack);assert(view.page==Page::SaveError&&game.crit&&!game.dodge);auto brutalHp=game.enemyHp;auto brutalRng=game.randomState;auto brutalTurn=game.phase;
   nvs.fail=false;tapped(120,269);assert(game.enemyHp==brutalHp&&game.randomState==brutalRng&&game.phase==brutalTurn);rpg::Game brutalLoaded;assert(journal.load(brutalLoaded)==rpg::Load::Ok&&brutalLoaded.enemyHp==brutalHp&&brutalLoaded.randomState==brutalRng);
+  for(unsigned id=0;id<18;++id){combatFx.kind=Effect::None;game=rpg::create(0,73);game.enemyId=id;game.enemyHp=rpg::encounterHp(game,id);game.phase=rpg::Phase::Hero;view.page=Page::Battle;journal.blocked=false;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(game,2,before);auto blobs=nvs.blobs;
+    tapped(120,82);assert(view.page==Page::EnemyInfo&&view.enemyReturn==Page::Battle);tapped(120,150);assert(view.page==Page::EnemyInfo);tapped(120,294);assert(view.page==Page::Battle);rpg::encode(game,2,after);assert(nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));
+    view.page=Page::DungeonMenu;tapped(120,14);assert(view.page==Page::EnemyInfo&&view.enemyReturn==Page::DungeonMenu);tapped(120,294);assert(view.page==Page::DungeonMenu);rpg::encode(game,2,after);assert(nvs.blobs==blobs&&!memcmp(before,after,sizeof(before)));
+  }
+  game.phase=rpg::Phase::Enemy;view.page=Page::Battle;combatFx.kind=Effect::None;tapped(120,82);assert(view.page==Page::Battle);
   puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 

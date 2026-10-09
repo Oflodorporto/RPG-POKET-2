@@ -263,7 +263,9 @@ void tapped(int x,int y){
     auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
     if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(view.page);return;
   }
+  if(view.page==Page::EnemyInfo){if(hit(x,y,14,278,212))view.page=view.enemyReturn;say("");return;}
   if(view.page==Page::DungeonMenu){
+    if(game.phase==rpg::Phase::Hero&&hit(x,y,14,0,212,32)){view.enemyReturn=Page::DungeonMenu;view.page=Page::EnemyInfo;say("");return;}
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
     if(game.dndProgression&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
@@ -563,6 +565,7 @@ void tapped(int x,int y){
     else if(hit(x,y,14,270,212)){view.page=Page::Battle;say("Seu turno");}return;
   }
   if(view.page!=Page::Battle)return;
+  if(game.phase==rpg::Phase::Hero&&hit(x,y,10,0,220,90)){view.enemyReturn=Page::Battle;view.page=Page::EnemyInfo;say("");return;}
   if(panelUi::battleButtons[0].contains(x,y))action(rpg::Action::Attack);
   else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
