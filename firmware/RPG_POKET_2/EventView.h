@@ -9,9 +9,21 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
   auto ink=[&](int y,const char* words,uint16_t color=0x4208){c.setTextColor(color);c.setTextSize(1);c.setCursor((240-int(strlen(words))*6)/2,y);c.print(words);};
   center(11,"CARTA DE MAELIS",2,UI_GOLD);npcPortrait(c,story::Npc::Maelis,18,45,24);ink(51,"Guilda dos Aventureiros",0x8a65);ink(74,rpg::eventTitle(g),0x7800);
   ink(97,"Caro aventureiro,");
-  if(g.eventKind==1){const char* why[]={"Nara precisa de ervas do pomar.","Iria perdeu cadernos nas pedras.","Tomas busca uma carga na costa.","Liora precisa de registros."};ink(114,why[g.eventTier]);ink(131,"Recupere duas cargas na regiao.");ink(148,"As trilhas guardam perigos.");ink(165,"Traga o que puder encontrar.");}
-  else if(g.eventKind==2){const char* who[]={"", "Iria envia uma testemunha.","Tomas precisa seguir viagem.","Liora confiou-nos um mensageiro."};ink(114,who[g.eventTier]);snprintf(b,sizeof(b),"Leve-o de %s a %s.",rpg::eventCityName(g.eventTier),rpg::eventCityName(rpg::eventDestination(g)));ink(131,b);ink(148,"Ele teme viajar sem protecao.");ink(165,"Nao deixe a estrada leva-lo.");}
-  else {ink(114,"Um hipogrifo assustado ameaca");ink(131,rpg::eventPlace(g.eventTier));ink(148,"Afaste-o antes que alguem se fira.");ink(165,"Ha uma luz estranha nas penas.");}ink(183,*menu.notice?menu.notice:"Passagem paga / 2-4 min",*menu.notice?0xa800:0x4208);snprintf(b,sizeof(b),"Recompensa: %u ouro / %u XP",rpg::eventGold(g),rpg::eventXp(g));ink(206,b,0x0320);button(14,222,212,"Fechar carta");
+  const char* ending="Passagem paga / 2-4 min";
+  if(g.eventKind==1){const char* lines[4][5]={
+   {"Uma carroca tombou no pomar.","Nara precisa das ervas perdidas","para tratar duas criancas.","Traga duas cargas. Os lobos","ainda rondam a trilha."},
+   {"Iria deixou seus cadernos","ao fugir de um desabamento.","Sem eles, perderemos relatos","dos farois. Recupere dois","volumes entre as pedras."},
+   {"Tomas perdeu carga quando o","cais cedeu. As familias do porto","dependem desses sacos. Traga","duas cargas pelas trilhas","junto ao mar."},
+   {"Liora escondeu dois registros","para salva-los de uma patrulha.","Eles podem provar abusos da","guarda. Traga as duas cargas.","As familias merecem respostas."}};
+   for(unsigned i=0;i<4;++i)ink(114+i*17,lines[g.eventTier][i]);ending=lines[g.eventTier][4];
+  }else if(g.eventKind==2){const char* lines[4][5]={
+   {"","","","",""},
+   {"Iria resgatou uma testemunha.","Ela viu sinais da Mao de Cinza.","Escolte-a de Ruinas a Carvalho.","Preciso ouvir seu relato.","Ela nao ousa viajar sozinha."},
+   {"Tomas precisa entregar mapas","que revelam rotas escondidas.","Escolte-o de Mares a Ruinas.","Ha saqueadores na estrada;","ele nao pode perder os mapas."},
+   {"Liora nos confiou uma mensagem","destinada aos aliados de Mares.","Escolte o mensageiro de Aurora","a Mares. A guarda segue seus","passos. Nao o deixe sozinho."}};
+   for(unsigned i=0;i<4;++i)ink(114+i*17,lines[g.eventTier][i]);ending=lines[g.eventTier][4];
+  }else {ink(114,"Um hipogrifo assustado ameaca");ink(131,rpg::eventPlace(g.eventTier));ink(148,"Afaste-o antes que alguem se fira.");ink(165,"Ha uma luz estranha nas penas.");}
+  ink(183,*menu.notice?menu.notice:ending,*menu.notice?0xa800:0x4208);snprintf(b,sizeof(b),"Recompensa: %u ouro / %u XP",rpg::eventGold(g),rpg::eventXp(g));ink(206,b,0x0320);button(14,222,212,"Fechar carta");
   button(14,272,102,"Recusar");button(124,272,102,"Aceitar");return true;}
  if(page==75){center(12,"RECUSAR CARTA?",2,UI_GOLD);center(99,"Voce pode recusar sem punicao.");center(124,"Esta carta sera encerrada.");center(149,"Nao ha troca da mesma oferta.");center(185,g.eventOfferSlot?"Nova oportunidade em outro dia.":"A segunda carta chega apos 18h.");button(14,272,102,"Cancelar");button(124,272,102,"Recusar");return true;}
  if(page==76){center(18,"PASSAGEM DA GUILDA",2,UI_GOLD);center(100,"Maelis providenciou sua passagem.");center(132,rpg::eventPlace(g.eventTier));center(170,g.eventKind==1?"A busca comeca nas trilhas...":g.eventKind==2?"Seu passageiro aguarda...":"Prepare sua arma...");c.fillRect(34,210,172,3,UI_GOLD);unsigned progress=std::min(700u,unsigned(uint32_t(menu.renderNow-menu.letterStarted)));c.fillRect(31+172*progress/700,202,9,18,UI_WHITE);return true;}
