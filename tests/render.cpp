@@ -236,6 +236,9 @@ int main(int argc,char** argv){
   uint8_t paperBefore[rpg::SAVE_SIZE],paperAfter[rpg::SAVE_SIZE];rpg::encode(g,1,paperBefore);std::vector<uint16_t> paperClosed,paperOpen;
   for(unsigned tick=0;tick<=7;++tick){render(c,g,v,100+tick);c.save(root+"/island-paper-"+std::to_string(tick)+".ppm");if(!tick)paperClosed.assign(c.pixels,c.pixels+240*320);if(tick==6)paperOpen.assign(c.pixels,c.pixels+240*320);}
   assert(paperClosed!=paperOpen&&!memcmp(c.pixels,paperOpen.data(),240*320*2));rpg::encode(g,1,paperAfter);assert(!memcmp(paperBefore,paperAfter,sizeof(paperBefore)));
+  for(unsigned city=0;city<4;++city)for(unsigned slot=0;slot<3;++slot){g=rpg::create(0,33);g.city=city;g.guildMember=true;v=ViewState{};v.questChoice=rpg::contractOffer(city,slot);v.page=Page::Contract;render(c,g,v);c.save(root+"/regional-contract-"+std::to_string(v.questChoice)+".ppm");v.page=Page::QuestConfirm;render(c,g,v);v.page=Page::GuildMissions;render(c,g,v);}
+  for(unsigned id=25;id<29;++id){g=rpg::create(0,77);g.city=id<27?2:3;rpg::begin(g,id);v=ViewState{};v.page=Page::Battle;render(c,g,v);c.save(root+"/regional-enemy-"+std::to_string(id)+".ppm");v.effect=Effect::Slash;v.effectOnHero=true;render(c,g,v);v.page=Page::EnemyInfo;render(c,g,v);v.page=Page::Bestiary;v.bestiaryIndex=id;render(c,g,v);}
+  g=rpg::create(0,77);g.guildMember=true;rpg::acceptQuest(g,5);g.discovery=6;g.discoverLoot=3;g.discoverAmount=1;v.page=Page::Discovery;render(c,g,v);rpg::collectDiscovery(g);render(c,g,v);
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

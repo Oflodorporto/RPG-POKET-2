@@ -9,7 +9,7 @@ namespace rpg {
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
 enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower, DivineSmite };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
-inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0},{"MIMICO DO BOSQUE",18,5,2,14,9},{"MIMICO DAS RUINAS",45,9,6,40,20},{"MIMICO DO PORTO",85,14,10,95,35},{"MIMICO DO CASTELO",150,20,16,190,55},{"ODRAN",180,20,17,220,65},{"CORACAO DO VEU",240,22,18,250,80},{"SENTINELA CORAL",145,20,19,120,45},{"ARRAIA RUNAR",132,21,15,135,48},{"CORSARIO AFOGADO",160,21,18,145,55},{"ORACULO ABISSAL",175,22,16,170,65},{"THALVOR",255,24,22,255,120}};return e[id<25?id:2];}
+inline const EnemySpec& enemySpec(uint8_t id){static const EnemySpec e[]={{"GOBLIN",12,4,2,8,4},{"LOBO",14,5,2,10,5},{"ESQUELETO",17,5,4,12,6},{"GUARDIAO",28,6,6,25,15},{"JAVALI",20,6,3,14,6},{"ESPECTRO",42,9,7,38,15},{"SAQUEADOR",76,13,10,85,28},{"SENTINELA",124,19,16,180,48},{"ARCONTE",92,10,7,190,65},{"VIGIA OSSUDO",35,7,5,30,9},{"HIPOGRIFO JOVEM",20,5,3,0,0},{"HIPOGRIFO",45,8,6,0,0},{"HIPOGRIFO MARCADO",90,13,10,0,0},{"HIPOGRIFO ALFA",160,21,16,0,0},{"MIMICO DO BOSQUE",18,5,2,14,9},{"MIMICO DAS RUINAS",45,9,6,40,20},{"MIMICO DO PORTO",85,14,10,95,35},{"MIMICO DO CASTELO",150,20,16,190,55},{"ODRAN",180,20,17,220,65},{"CORACAO DO VEU",240,22,18,250,80},{"SENTINELA CORAL",145,20,19,120,45},{"ARRAIA RUNAR",132,21,15,135,48},{"CORSARIO AFOGADO",160,21,18,145,55},{"ORACULO ABISSAL",175,22,16,170,65},{"THALVOR",255,24,22,255,120},{"CARANGUEJO FERREO",70,12,15,80,24},{"MAO DE CINZA",62,14,8,90,30},{"AUTOMATO DOURADO",112,18,20,170,44},{"ECO DO VEU",100,20,12,185,50}};return e[id<29?id:2];}
 struct Player {
   uint8_t cls=0, level=3, atk=6, def=4, life=0, mana=2;
   uint16_t hp=18,maxhp=18,mp=14,maxmp=14;
@@ -121,23 +121,59 @@ inline unsigned hpPerLevel(const Game& g){const unsigned avg[]={4,6,6,7};return 
 inline unsigned spellCircle(const Game& g){return g.p.cls==0?std::min(9u,(unsigned(g.p.level)+1)/2):g.p.cls==1&&g.p.level>=2?std::min(5u,(unsigned(g.p.level)+3)/4):0;}
 inline const char* improveAttribute(Game& g,unsigned i){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(i>=6||!advancementPoints(g))return "Sem pontos disponiveis";if(g.attributes[i]>=20)return "Limite de atributo: 20";int old=abilityMod(g.attributes[i]);++g.attributes[i];++g.advancementSpent;if(i==2){unsigned gain=(abilityMod(g.attributes[i])-old)*g.p.level;g.p.maxhp+=gain;g.p.hp+=gain;}g.p.maxmp=totalMana(g);return nullptr;}
 inline const char* learnTough(Game& g){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(g.tough)return "Talento ja aprendido";if(advancementPoints(g)<2||g.advancementSpent%2)return "Requer 2 pontos do mesmo marco";g.tough=true;g.advancementSpent+=2;g.p.maxhp+=g.p.level*2;g.p.hp+=g.p.level*2;return nullptr;}
+// IDs1..3 are legacy Ruins contracts: their objectives and rewards never change.
+enum class ContractKind:uint8_t {Combat,Recover,Escort};
 struct Contract {const char* name;const char* objective;int8_t enemy;uint8_t count,gold,percent;};
-inline const Contract& contract(uint8_t id){static const Contract q[]={{"PATRULHA","Vencer 3 inimigos nas ruinas",-1,3,15,25},{"OSSOS DAS RUINAS","Vencer 2 esqueletos",2,2,18,35},{"O GUARDIAO","Vencer 1 Guardiao",3,1,35,60}};return q[id>=1&&id<=3?id-1:0];}
-inline uint16_t contractXp(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?uint32_t(xpNeeded(level))*contract(id).percent/100:0;}
-inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){return g.dndProgression&&id>=1&&id<=3&&level?uint32_t(dndXpNeeded(level))*contract(id).percent/100:contractXp(id,level);}
-inline uint16_t contractGold(uint8_t id,uint8_t level){return id>=1&&id<=3&&level?contract(id).gold+uint16_t(level-1)*2:0;}
+inline const Contract& contract(uint8_t id){static const Contract q[]={
+ {"PATRULHA","Vencer 3 inimigos nas ruinas",-1,3,15,25},{"OSSOS DAS RUINAS","Vencer 2 esqueletos",2,2,18,35},{"O GUARDIAO","Vencer 1 Guardiao",3,1,35,60},
+ {"TRILHA DOS LENHADORES","Venca 3 feras em Carvalho",-1,3,18,15},{"FARINHA PERDIDA","Recupere 2 sacos ao explorar",-1,2,20,12},{"A CARAVANA DE IRIA","Escolte Carvalho -> Ruinas",-1,1,28,18},
+ {"OSSOS SEM DESCANSO","Venca 2 esqueletos nas Ruinas",2,2,28,15},{"CADERNOS DE IRIA","Recupere 2 cadernos nas Ruinas",-1,2,30,12},{"LEVAR AS TESTEMUNHAS","Escolte Ruinas -> Carvalho",-1,1,32,18},
+ {"AS CISTERNAS DE MARES","Venca 2 caranguejos ferreos",25,2,58,15},{"CARGA ENTRE AS PEDRAS","Recupere 2 caixas em Mares",-1,2,52,12},{"O CARTOGRAFO DE ELIAN","Escolte Mares -> Ruinas",-1,1,65,18},
+ {"MAQUINAS SEM JURAMENTO","Venca 2 automatos em Aurora",27,2,85,15},{"REGISTROS DA GUARDA","Recupere 2 registros em Aurora",-1,2,78,12},{"A TESTEMUNHA DE ANWEN","Escolte Aurora -> Mares",-1,1,95,18}};return q[id>=1&&id<=15?id-1:0];}
+inline unsigned contractCity(unsigned id){return id>=4&&id<=15?(id-4)/3:1;}
+inline ContractKind contractKind(unsigned id){return id>=4&&id<=15?ContractKind((id-4)%3):ContractKind::Combat;}
+inline unsigned contractDestination(unsigned id){const unsigned n[]={1,0,1,2};return n[contractCity(id)];}
+inline unsigned contractOffer(unsigned city,unsigned slot){return 4+std::min(city,3u)*3+std::min(slot,2u);}
+inline unsigned contractVisibleOffer(const Game& g,unsigned slot){
+ if(!g.questId)return contractOffer(g.city,slot);if(!slot)return g.questId;
+ unsigned skip=slot-1;for(unsigned i=0;i<3;++i){unsigned id=contractOffer(g.city,i);if(id!=g.questId){if(!skip)return id;--skip;}}return g.questId;
+}
+inline unsigned contractLevel(unsigned id){return id>=7?cityLevel(contractCity(id)):1;}
+inline const char* contractAgent(unsigned id){const char* n[]={"Maelis Voss","Iria Sorel","Elian Vey","Anwen Valcor"};return n[contractCity(id)];}
+inline const char* contractStory(unsigned id,unsigned line){
+ const char* stories[12][3]={
+ {"Os lenhadores temem voltar a trilha.","As feras tomaram o caminho da vila.","Abra passagem para eles voltarem."},
+ {"O carro da farinha perdeu um eixo.","Dois sacos ficaram entre as arvores.","Encontre-os antes da proxima chuva."},
+ {"Iria precisa de comida nas Ruinas.","Um carreteiro levara a nossa carga.","Viaje com ele e proteja a estrada."},
+ {"Reconheci os ossos de dois guardas.","O Veu nao lhes permite descansar.","Liberte-os; recolherei seus nomes."},
+ {"A minha equipe fugiu do nevoeiro.","Dois cadernos ficaram nas pedras.","Sem eles perderemos meses de estudo."},
+ {"Dois ajudantes pediram para sair.","Estao abalados pelo que viram aqui.","Leve-os em seguranca a Carvalho."},
+ {"As bombas de agua estao paradas.","Caranguejos romperam as comportas.","Sem agua, o porto nao resiste."},
+ {"A ultima mare levou nossa carga.","Duas caixas encalharam nas pedras.","Procure-as pela costa de Mares."},
+ {"Meu cartografo encontrou uma rota.","Iria precisa examinar suas marcas.","Leve-o de Mares ate as Ruinas."},
+ {"A guarda perdeu o controle do portao.","Dois automatos ignoram nossas ordens.","Impeca que ataquem outra patrulha."},
+ {"Nossos registros foram espalhados.","Dois volumes sumiram na cidade alta.","Ache-os antes que a Cinza os queime."},
+ {"Uma testemunha quer falar com Elian.","Ela conhece os homens da Cinza.","Proteja sua viagem de Aurora a Mares."}};
+ if(id<4||id>15)return line==0?"Maelis mantem o seu contrato antigo.":line==1?contract(id).objective:"Sua recompensa continua garantida.";
+ return stories[id-4][std::min(line,2u)];
+}
+inline uint16_t contractXp(uint8_t id,uint8_t level){return id>=1&&id<=15&&level?uint32_t(xpNeeded(level))*contract(id).percent/100:0;}
+inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){return g.dndProgression&&id>=1&&id<=15&&level?uint32_t(dndXpNeeded(level))*contract(id).percent/100:contractXp(id,level);}
+inline uint16_t contractGold(uint8_t id,uint8_t level){return id>=1&&id<=15&&level?contract(id).gold+uint16_t(level-1)*2:0;}
 inline void levelUp(Game& g){while(g.p.level<(g.dndProgression?20:99)&&g.p.xp>=xpNeeded(g)){g.p.xp-=xpNeeded(g);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535u,unsigned(g.p.maxhp)+(g.dndProgression?hpPerLevel(g):2u)));if(g.p.atk<255)++g.p.atk;}if(g.dndProgression&&g.p.level==20){g.p.xp=0;if(g.p.cls==3)g.rageSpent=0;}}
-inline bool questComplete(const Game& g){return g.questId>=1&&g.questId<=3&&g.questProgress>=contract(g.questId).count;}
+inline bool questComplete(const Game& g){return g.questId>=1&&g.questId<=15&&g.questProgress>=contract(g.questId).count;}
 inline const char* acceptQuest(Game& g,uint8_t id){
-  if(g.phase!=Phase::Home)return "Volte para a vila";if(id<1||id>3)return "Contrato indisponivel";
+  if(g.phase!=Phase::Home)return "Volte para a vila";if(id<1||id>15)return "Contrato indisponivel";
+  if(id>=4&&(!g.guildMember||g.city!=contractCity(id)||g.p.level<contractLevel(id)))return "Contrato exige guilda e nivel local";
+  if(g.discovery||g.tripStage||g.campStage||g.dungeonFlags||g.campaignStage||g.eventStage==2)return "Termine a acao atual";
   if(g.questId)return "Outra missao ativa";g.questId=id;g.questProgress=0;g.questLevel=g.p.level;return nullptr;
 }
 inline const char* abandonQuest(Game& g){
-  if(g.phase!=Phase::Home)return "Volte para a vila";if(!g.questId)return "Nenhuma missao ativa";
+  if(g.phase!=Phase::Home)return "Volte para a vila";if(g.discovery||g.tripStage||g.campStage||g.dungeonFlags||g.campaignStage||g.eventStage==2)return "Termine a acao atual";if(!g.questId)return "Nenhuma missao ativa";
   if(questComplete(g))return "Receba a recompensa";g.questId=g.questProgress=g.questLevel=0;return nullptr;
 }
 inline const char* claimQuest(Game& g){
-  if(g.phase!=Phase::Home)return "Volte para a vila";if(!g.questId)return "Nenhuma missao ativa";
+  if(g.phase!=Phase::Home)return "Volte para a vila";if(g.discovery||g.tripStage||g.campStage||g.dungeonFlags||g.campaignStage||g.eventStage==2)return "Termine a acao atual";if(!g.questId)return "Nenhuma missao ativa";
   if(!questComplete(g))return "Missao ainda incompleta";
   uint16_t gold=contractGold(g.questId,g.questLevel),xp=contractXp(g,g.questId,g.questLevel);
   if(g.p.gold>999999u-gold)return "Gaste ouro antes de receber";
@@ -166,14 +202,14 @@ inline unsigned brutalDamage(Game& g){unsigned damage=0;for(unsigned i=0;i<bruta
 inline void tickRage(Game& g){if(g.rageTurns&&!persistentRage(g))--g.rageTurns;}
 inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2;}
 // Spectres and the Arconte deal magical damage; other current encounters are physical.
-inline bool physicalEnemy(unsigned id){return id!=5&&id!=8&&id!=19&&id!=21&&id!=23;}
+inline bool physicalEnemy(unsigned id){return id!=5&&id!=8&&id!=19&&id!=21&&id!=23&&id!=26&&id!=28;}
 inline void clearMartialCombat(Game& g){g.rageTurns=0;g.surgePending=g.surgeTurnUsed=false;}
 inline void endHeroAction(Game& g){if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}else g.phase=Phase::Enemy;}
 inline bool powerAction(Action a){return uint8_t(a)>=uint8_t(Action::MagicMissile)&&uint8_t(a)<=uint8_t(Action::DivineSmite);}
 inline const char* powerName(Action a){switch(a){case Action::MagicMissile:return "Misseis magicos";case Action::BurningHands:return "Maos flamejantes";case Action::ShieldSpell:return "Escudo arcano";case Action::ScorchingRay:return "Raios abrasadores";case Action::Fireball:return "Bola de fogo";case Action::LayHands:return "Impor as maos";case Action::SacredWeapon:return "Arma sagrada";case Action::TurnUndead:return "Expulsar profanos";case Action::SecondWind:return "Segundo folego";case Action::ActionSurge:return "Surto de acao";case Action::RagePower:return "Furia de batalha";case Action::DivineSmite:return "Punicao divina";default:return "Poder";}}
 inline unsigned powerLevel(Action a){return a==Action::ActionSurge||a==Action::DivineSmite?2:a==Action::ScorchingRay||a==Action::SacredWeapon||a==Action::TurnUndead?3:a==Action::Fireball?5:1;}
 inline unsigned powerCost(Action a){return a==Action::ScorchingRay?5:a==Action::Fireball?7:a==Action::MagicMissile||a==Action::BurningHands||a==Action::ShieldSpell||a==Action::DivineSmite?3:0;}
-inline bool undead(unsigned id){return id==2||id==5||id==8||id==9||id==22;}
+inline bool undead(unsigned id){return id==2||id==5||id==8||id==9||id==22||id==28;}
 inline bool masteredSpell(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=18&&(a==Action::MagicMissile||a==Action::ScorchingRay);}
 inline unsigned powerCost(const Game& g,Action a){return masteredSpell(g,a)?0:powerCost(a);}
 inline unsigned evocationBonus(const Game& g,Action a){return g.dndProgression&&g.p.cls==0&&g.p.level>=10&&(a==Action::MagicMissile||a==Action::BurningHands||a==Action::ScorchingRay||a==Action::Fireball)?std::max(0,abilityMod(g.attributes[3])):0;}
@@ -220,11 +256,17 @@ inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
 inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
-inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>24||(id>=20&&(!(g.dungeonFlags&16)||g.campaignEnding!=2))||(id>=18&&id<=19&&g.campaignStage!=(id==18?8:9))||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&id<18&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
-inline bool explore(Game& g,bool boss=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=g.city==0?(g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1)):g.city==1?(n%2?5:2):g.city==2?6:7;return begin(g,boss?3:id);}
+inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>28||(id>=20&&id<=24&&(!(g.dungeonFlags&16)||g.campaignEnding!=2))||(id>=18&&id<=19&&g.campaignStage!=(id==18?8:9))||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&id<18&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
+inline uint8_t regionalEnemy(const Game& g,unsigned n,bool night=false){
+ if(g.city==0)return g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1);
+ if(g.city==1)return n%2?5:2;
+ if(g.city==2){const uint8_t day[]={6,25,6,26},dark[]={26,6,25,26};return (night?dark:day)[n%4];}
+ const uint8_t day[]={7,27,7,28},dark[]={28,7,27,28};return (night?dark:day)[n%4];
+}
+inline bool explore(Game& g,bool boss=false,bool night=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=regionalEnemy(g,n,night);return begin(g,boss?3:id);}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";g.tripStage=1;g.tripTo=dest;g.tripSurvival=survival(g);g.tripLuck=luck(g);if(g.rations){--g.rations;g.tripSurvival+=2;}if(g.charts){--g.charts;++g.tripSurvival;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool acceptTrip(Game& g){if(g.tripStage!=1||g.phase!=Phase::Home)return false;if(tripSafe(g)){g.tripStage=3;return true;}if(!begin(g,g.tripEnemy))return false;g.tripStage=2;return true;}
-inline bool arriveTrip(Game& g){if(g.tripStage!=3||g.phase!=Phase::Home)return false;g.city=g.tripTo;clearTrip(g);return true;}
+inline bool arriveTrip(Game& g){if(g.tripStage!=3||g.phase!=Phase::Home)return false;if(g.questId&&contractKind(g.questId)==ContractKind::Escort&&g.city==contractCity(g.questId)&&g.tripTo==contractDestination(g.questId))g.questProgress=1;g.city=g.tripTo;clearTrip(g);return true;}
 inline void finish(Game& g){
   if(g.phase!=Phase::Hero&&g.phase!=Phase::Enemy)return;
   if(!g.enemyHp){
@@ -233,7 +275,7 @@ inline void finish(Game& g){
     if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1){if(g.enemyId==3){g.guardianDefeated=true;if(g.crystals<9)++g.crystals;}else if(g.ruinsWins<3)++g.ruinsWins;}
     if(g.eventStage!=2&&g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}
     if(g.eventStage!=2&&g.p.mana<99 && (g.enemyId==3||random(g)%100<25)){++g.p.mana;g.dropMana=true;}
-    if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1&&g.questId&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
+    if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.questId&&g.city==contractCity(g.questId)&&contractKind(g.questId)==ContractKind::Combat&&g.questProgress<contract(g.questId).count&&(contract(g.questId).enemy<0||contract(g.questId).enemy==g.enemyId))++g.questProgress;
     levelUp(g);clearMartialCombat(g);
   }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g)/20)));g.p.xp-=g.gainXp;clearMartialCombat(g);}
 }
@@ -287,6 +329,10 @@ inline Intent enemyIntent(const Game& g){
  if(!g.dndProgression||g.turnedTurns)return Intent::Strike;
  if(g.enemyId==2||g.enemyId==9)return g.enemyBeat==1?Intent::Mend:Intent::Strike;
  if(g.enemyId==21||g.enemyId==23)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Drain:Intent::Strike;
+ if(g.enemyId==25)return g.enemyBeat==1?Intent::Mend:Intent::Strike;
+ if(g.enemyId==26)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Drain:Intent::Strike;
+ if(g.enemyId==27)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Heavy:Intent::Strike;
+ if(g.enemyId==28)return g.enemyBeat==2?Intent::Drain:Intent::Strike;
  if(g.enemyId==19)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Drain:Intent::Heavy;
  if(g.enemyId==5)return g.enemyBeat==2?Intent::Drain:Intent::Strike;
  if(g.enemyId==1||g.enemyId==3||g.enemyId==4||g.enemyId==7||g.enemyId==8||g.enemyId>=10)return g.enemyBeat==1?Intent::Prepare:g.enemyBeat==2?Intent::Heavy:Intent::Strike;
@@ -317,7 +363,7 @@ inline bool enemy(Game& g){
  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
  g.phase=Phase::Hero;finish(g);if(g.phase==Phase::Hero)startHeroTurn(g);return true;
 }
-inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost)clearTrip(g);else g.tripStage=3;}return true;}
+inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;bool escaped=g.phase==Phase::Fled;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost||(escaped&&g.questId&&contractKind(g.questId)==ContractKind::Escort))clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);return true;}
 // Economy.cpp shopLong / UI.cpp invLong: prices and limits from Heltec.
 inline uint8_t potionPrice(bool mana){return mana?12:10;}

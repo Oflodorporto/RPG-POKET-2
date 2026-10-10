@@ -28,10 +28,10 @@ template<class C>void drawDiscovery(C& c,const rpg::Game& g,const ViewState& v,u
   else if(g.discoverLoot==6){magicSprite(c,gear_icons[rpg::gearFamily(g.discoverAmount)],56,56,88,85,64,64);}
   else {unsigned prop=g.discoverLoot==1?6:7;magicSprite(c,dungeonArt::props[prop],32,32,88,85,64,64);}
   if(g.discovery==2){label(166,"Bau antigo. Pode conter surpresas.");label(191,g.discoverLoot==7?"Voce ouve algo se mexer dentro...":"A tampa esta solta. Vai abrir?",UI_GOLD);}
-  else {const char* local[]={"Um viajante divide seus mantimentos.","Uma expedicao deixou provisoes.","Um marinheiro agradece sua ajuda.","Um vigia oferece suas provisoes."};label(166,g.discovery==3?local[g.city]:"Voce encontrou algo no caminho.");
-   snprintf(b,sizeof(b),"%s x%u",g.discoverLoot==6?rpg::gearName(g.discoverAmount):rpg::lootName(g.discoverLoot),g.discoverLoot==6?1:g.discoverAmount);label(191,b,UI_GOLD);}
+  else {const char* local[]={"Um viajante divide seus mantimentos.","Uma expedicao deixou provisoes.","Um marinheiro agradece sua ajuda.","Um vigia oferece suas provisoes."};label(166,g.discovery>=6?"Voce encontra parte da carga perdida.":g.discovery==3?local[g.city]:"Voce encontrou algo no caminho.");
+   snprintf(b,sizeof(b),"%s x%u",g.discovery>=6?"Entrega da guilda":g.discoverLoot==6?rpg::gearName(g.discoverAmount):rpg::lootName(g.discoverLoot),g.discoverLoot==6?1:g.discoverAmount);label(191,b,UI_GOLD);}
   label(235,v.message,UI_RED);
-  if(g.discovery==5)button(14,270,212,"Continuar");else {button(14,270,102,"Deixar");button(124,270,102,g.discovery==2?"Abrir":"Recolher");}
+  if(g.discovery==5||g.discovery==7)button(14,270,212,"Continuar");else {button(14,270,102,"Deixar");button(124,270,102,g.discovery==2?"Abrir":"Recolher");}
  }
  if(scrap&&*v.message)label(247,v.message,UI_GREEN);
 }

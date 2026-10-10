@@ -113,7 +113,7 @@ void tapped(int x,int y){
   if(view.page==Page::Lockpicks){if(hit(x,y,14,270,102)){view.page=view.picksReturn;say("");}else if(hit(x,y,124,270,102)){auto err=rpg::buyGazua(game);if(err)say(err);else {say("Uma gazua guardada na bolsa");savedTransition(Page::Lockpicks);}}return;}
   if(view.page==Page::Discovery){
     if(hit(x,y,14,270,102)){rpg::clearDiscovery(game);say("Exploracao concluida");savedTransition(game.city==1?Page::Ruins:Page::Explore);}
-    else if(hit(x,y,124,270,102)){if(game.discovery==5){rpg::clearDiscovery(game);say("");savedTransition(game.city==1?Page::Ruins:Page::Explore);}else {auto err=rpg::collectDiscovery(game);if(err)say(err);else {say(game.discovery==4?"O bau era um mimico!":"Guardado na bolsa");savedTransition(currentPage());}}}return;}
+    else if(hit(x,y,124,270,102)){if(game.discovery==5||game.discovery==7){rpg::clearDiscovery(game);say("");savedTransition(game.city==1?Page::Ruins:Page::Explore);}else {auto err=rpg::collectDiscovery(game);if(err)say(err);else {say(game.discovery==4?"O bau era um mimico!":game.discovery==7?"Carga guardada para a guilda":"Guardado na bolsa");savedTransition(currentPage());}}}return;}
   if(view.page==Page::Scrap){if(hit(x,y,14,270,102)){view.page=Page::TownBag;say("");}else if(hit(x,y,124,270,102)||hit(x,y,14,216,212)){auto err=rpg::sellScrap(game,y<260);if(err)say(err);else {say(y<260?"Sucata descartada":"Sucata vendida");savedTransition(Page::Scrap);}}return;}
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
     bool finish=x<120?menu.storyIndex==0:menu.storyIndex+1>=story::originCount(game);
@@ -406,7 +406,7 @@ void tapped(int x,int y){
   if(view.page==Page::GuildMissions){
     if(!game.guildMember){view.page=Page::Guild;say("Cadastre-se primeiro");return;}
     if(hit(x,y,14,272,212)){view.page=Page::Guild;say("");return;}
-    for(uint8_t id=1;id<=3;++id)if(hit(x,y,14,124+(id-1)*44,212)){view.questChoice=id;view.page=Page::Contract;say("");return;}return;
+    for(unsigned slot=0;slot<3;++slot)if(hit(x,y,14,124+slot*44,212)){view.questChoice=rpg::contractVisibleOffer(game,slot);view.page=Page::Contract;say("");return;}return;
   }
   if(view.page==Page::Contract){
     if(hit(x,y,14,272,212)){view.page=Page::GuildMissions;say("");return;}
@@ -527,7 +527,6 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
-
 int main(){
  auto pristine=nvs.blobs;bootTitle();assert(view.page==Page::Title&&!menu.hasContinue&&!canOfferEvents()&&nvs.blobs==pristine);
  tapped(160,190);assert(view.page==Page::Title&&journal.active<0&&nvs.blobs==pristine);

@@ -4,6 +4,7 @@
 #include "BackgroundArt.h"
 #include "SpriteArt.h"
 #include "RegionalArt.h"
+#include "WorldEnemyArt.h"
 #include "HeroArt.h"
 #include "PersonalArt.h"
 #include "ClubUi.h"
@@ -202,29 +203,30 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(12,"MISSOES",2,UI_GOLD);center(43,"Contratos de Maelis Voss",1,UI_GOLD);center(109,v.message,1,UI_GREEN);
     center(69,g.questId?"CONTRATO ATIVO":"ESCOLHA UM CONTRATO",1,UI_GOLD);
     if(g.questId){snprintf(b,sizeof(b),"%s: %u/%u",rpg::contract(g.questId).name,g.questProgress,rpg::contract(g.questId).count);center(91,b);}
-    else center(91,"Uma missao por vez / ruinas.");
-    for(uint8_t id=1;id<=3;++id){int y=124+(id-1)*44;box(14,y,212,40);center(y+6,rpg::contract(id).name,1,UI_GOLD);
+    else center(91,placeName(g.city));
+    for(unsigned slot=0;slot<3;++slot){uint8_t id=rpg::contractVisibleOffer(g,slot);int y=124+slot*44;box(14,y,212,40);center(y+6,rpg::contract(id).name,1,UI_GOLD);
       if(g.questId==id)snprintf(b,sizeof(b),"%u/%u / %s",g.questProgress,rpg::contract(id).count,rpg::questComplete(g)?"RECEBER":"EM ANDAMENTO");
-      else snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(id,g.p.level),rpg::contractGold(id,g.p.level));center(y+24,b);}
+      else if(g.p.level<rpg::contractLevel(id))snprintf(b,sizeof(b),"Disponivel no nivel %u",rpg::contractLevel(id));else snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,g.p.level),rpg::contractGold(id,g.p.level));center(y+24,b);}
     button(14,272,212,"Voltar");return;
   }
   if(v.page==Page::Contract){
-    uint8_t id=v.questChoice;if(id<1||id>3){center(100,"Contrato indisponivel");return;}
+    uint8_t id=v.questChoice;if(id<1||id>15){center(100,"Contrato indisponivel");return;}
     bool active=g.questId==id;uint8_t level=active?g.questLevel:g.p.level;
-    center(12,"CONTRATO",2,UI_GOLD);center(39,"Maelis Voss / Guilda");center(60,rpg::contract(id).name,2);center(89,rpg::contract(id).objective);center(108,"REGIAO: RUINAS",1,UI_GOLD);
-    snprintf(b,sizeof(b),"Progresso: %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(132,b,2);
-    snprintf(b,sizeof(b),"Recompensa: %u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(164,b,1,UI_GOLD);
-    snprintf(b,sizeof(b),"Calculada no nivel %u",level);center(185,b);center(201,v.message,1,UI_RED);
+    center(12,"CONTRATO",2,UI_GOLD);center(36,rpg::contractAgent(id));center(57,rpg::contract(id).name,1,UI_GOLD);
+    for(unsigned line=0;line<3;++line)center(80+line*13,rpg::contractStory(id,line));
+    center(127,rpg::contract(id).objective);snprintf(b,sizeof(b),"Origem: %s / Nv %u+",placeName(rpg::contractCity(id)),rpg::contractLevel(id));center(145,b);
+    snprintf(b,sizeof(b),"Progresso %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(162,b);
+    snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(180,b,1,UI_GOLD);center(201,v.message,1,UI_RED);
     button(14,220,212,active?(rpg::questComplete(g)?"Receber":"Abandonar"):"Aceitar");button(14,272,212,"Voltar");return;
   }
   if(v.page==Page::QuestConfirm){
-    uint8_t id=v.questChoice,action=v.questAction;if(id<1||id>3||action>2){center(100,"Contrato indisponivel");return;}
+    uint8_t id=v.questChoice,action=v.questAction;if(id<1||id>15||action>2){center(100,"Contrato indisponivel");return;}
     uint8_t level=action==0?g.p.level:g.questLevel;
     center(12,action==0?"ACEITAR MISSAO":action==1?"RECEBER PREMIO":"ABANDONAR MISSAO",2,UI_GOLD);
-    center(72,rpg::contract(id).name,2);center(105,rpg::contract(id).objective);
+    center(72,rpg::contract(id).name,1);center(105,rpg::contract(id).objective);
     if(action==2){center(146,"O progresso sera perdido.",1,UI_RED);center(176,"Voce nao recebera recompensa.");center(205,"Podera aceitar novamente do zero.");}
     else{snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(148,b,2,UI_GOLD);
-      if(action==0){center(181,"Contam apenas as novas vitorias.");center(207,"Volte aqui para receber depois.");}
+      if(action==0){center(181,"O objetivo vale a partir de agora.");center(207,"Volte aqui para receber depois.");}
       else{snprintf(b,sizeof(b),"Ouro: %lu -> %lu",(unsigned long)g.p.gold,(unsigned long)(g.p.gold+rpg::contractGold(id,level)));center(184,b);
         auto preview=g;rpg::claimQuest(preview);snprintf(b,sizeof(b),"Nivel: %u -> %u",g.p.level,preview.p.level);center(207,b);}}
     center(245,v.message,1,UI_RED);button(14,270,102,"Cancelar");button(124,270,102,action==0?"Aceitar":action==1?"Receber":"Desistir");return;
@@ -347,7 +349,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,78,90,"Ficha >",UI_GOLD);
   personalSprite(c,g,8,77,v.heroFrame%6);
   const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
-  if(g.enemyId>=20)magicSprite(c,islandArt::enemy(g.enemyId),48,64,145,99,75,80);else if(g.enemyId>=18)finaleFoe(c,g.enemyId,145,99,frame);else if(g.enemyId>=14)drawMimic(c,145,99,frame,true);else magicSprite(c,foeFrame,80,86,145,99,75,80);
+  if(g.enemyId>=25)magicSprite(c,worldEnemyFrame(g.enemyId,v.effectOnHero&&v.effect!=Effect::None?1:0),64,80,145,99,75,80);else if(g.enemyId>=20)magicSprite(c,islandArt::enemy(g.enemyId),48,64,145,99,75,80);else if(g.enemyId>=18)finaleFoe(c,g.enemyId,145,99,frame);else if(g.enemyId>=14)drawMimic(c,145,99,frame,true);else magicSprite(c,foeFrame,80,86,145,99,75,80);
   PanelEffectCanvas<Canvas> effectCanvas{c};
   if(v.effect==Effect::Rage){
     // Furia: broad axe-like sweep, red trails and expanding impact. No new art RAM.
