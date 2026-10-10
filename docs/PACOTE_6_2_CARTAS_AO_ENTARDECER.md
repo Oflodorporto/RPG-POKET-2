@@ -11,3 +11,5 @@ Save26 continua em128bytes e lê1..26. Byte97: bits0..1 mantêm o tier; bit2 é 
 Verificação prevista:39 suítes nativas, migração de todos os seis estados antigos, carta pendente após meia-noite, abertura tardia, segunda oferta, limite e relógio regressivo, pagamento único e escrita interrompida. CompilaçãoESP32-S3 e confirmação física são verificações separadas.
 
 Teste na placa: com hora local válida e tutorial concluído, abrir Cartas; recusar ou concluir a primeira, conferir segunda após18h, reiniciar com carta pendente e confirmar que permanece. Receber uma recompensa uma vez. Confirmar contratos, camping, três slots e a surpresa da ilha preservados. Sem precisar mudar o relógio do aparelho; os casos de horários foram simulados nos testes de software.
+
+Correção solicitada durante os testes: a tela de vitória, derrota e fuga agora mantém as recompensas no pergaminho. Removido o retângulo preto legado que escondia a tinta escura; XP e ouro em linhas separadas, com testes de contraste do fundo, limites de texto e ausência de alterações no save.

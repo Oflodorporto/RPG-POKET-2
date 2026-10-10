@@ -326,10 +326,10 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,270,102,"Cancelar");button(124,270,102,"Comprar");return;
   }
   if(v.page==Page::Result){
-    c.fillRect(12,65,216,77,UI_INK);
+    // Rewards use dark ink on the shared parchment; no dark overlay.
     center(15,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
-    if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP  +%u ouro",g.gainXp,g.gainGold);center(79,b,2);
-      center(110,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(125,g.dropMana?"Encontrou uma pocao de MP.":"");}
+    if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP",g.gainXp);center(77,b,2);snprintf(b,sizeof(b),"+%u ouro",g.gainGold);center(99,b,2);
+      center(124,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(137,g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou do encontro.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}
     snprintf(b,sizeof(b),"Nv %u / XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(151,b,1,UI_GOLD);panelBar(c,25,165,190,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
     auto goal=story::objective(g);center(183,goal.title,1,UI_GOLD);center(198,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,g.phase==rpg::Phase::Lost?"Prepare-se antes de tentar de novo.":"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.phase==rpg::Phase::Lost?"Recuperar forcas":g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
