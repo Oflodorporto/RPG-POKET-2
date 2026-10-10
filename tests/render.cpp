@@ -1,3 +1,4 @@
+#include "LegacyEventOffer.h"
 #include "TestHero.h"
 #include "../firmware/RPG_POKET_2/View.h"
 #include "../firmware/RPG_POKET_2/src/GFX/font/glcdfont.h"
@@ -188,9 +189,9 @@ int main(int argc,char** argv){
   menu.clockValid=true;snprintf(menu.clockTime,sizeof(menu.clockTime),"21:30:00");snprintf(menu.clockDate,sizeof(menu.clockDate),"07/10/2026");g=rpg::testHero(0,42);v.message="";
   for(unsigned period=0;period<4;++period){menu.worldPeriod=worldClock::Period(period);snprintf(menu.clockTime,sizeof(menu.clockTime),"%02u:30:00",period==0?5:period==1?12:period==2?18:22);for(Page pg:{Page::Home,Page::Map,Page::Village,Page::Explore,Page::CampSetup,Page::Clock,Page::TimeSettings,Page::TimeEdit}){v.page=pg;render(c,g,v);c.save(root+"/day-period-"+std::to_string(period)+"-"+std::to_string(int(pg))+".ppm");}}
   menu.clockValid=false;v.page=Page::TimeSettings;render(c,g,v);c.save(root+"/day-unsynced.ppm");v.page=Page::Clock;render(c,g,v);c.save(root+"/day-clock-unsynced.ppm");
-  menu.sessionStarted=true;menu.clockValid=true;menu.notice="";menu.renderNow=1000;menu.letterStarted=0;g=rpg::testHero(0,42);g.tutorial=true;rpg::offerEvent(g,20733,10);
+  menu.sessionStarted=true;menu.clockValid=true;menu.notice="";menu.renderNow=1000;menu.letterStarted=0;g=rpg::testHero(0,42);g.tutorial=true;rpg::offerLegacyEvent(g,20733,10);
   for(unsigned tier=0;tier<4;++tier){g.eventTier=tier;for(Page pg:{Page::Letters,Page::Letter,Page::LetterRefuse,Page::EventTravel,Page::Clock}){v.page=pg;render(c,g,v);c.save(root+"/event-page-"+std::to_string(tier)+"-"+std::to_string(int(pg))+".ppm");}
-   rpg::acceptEvent(g,49);v.page=Page::Battle;for(unsigned i=0;i<4;++i){v.effect=i>=2?Effect::Slash:Effect::None;v.effectOnHero=i>=2;v.effectFrame=i;render(c,g,v,i);c.save(root+"/event-battle-"+std::to_string(tier)+"-"+std::to_string(i)+".ppm");}v.effect=Effect::None;v.page=Page::EventResult;for(auto result:{rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled}){g.phase=result;render(c,g,v);c.save(root+"/event-result-"+std::to_string(tier)+"-"+std::to_string(int(result))+".ppm");}g=rpg::testHero(0,42);g.tutorial=true;rpg::offerEvent(g,20733,10);
+   rpg::acceptEvent(g,49);v.page=Page::Battle;for(unsigned i=0;i<4;++i){v.effect=i>=2?Effect::Slash:Effect::None;v.effectOnHero=i>=2;v.effectFrame=i;render(c,g,v,i);c.save(root+"/event-battle-"+std::to_string(tier)+"-"+std::to_string(i)+".ppm");}v.effect=Effect::None;v.page=Page::EventResult;for(auto result:{rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled}){g.phase=result;render(c,g,v);c.save(root+"/event-result-"+std::to_string(tier)+"-"+std::to_string(int(result))+".ppm");}g=rpg::testHero(0,42);g.tutorial=true;rpg::offerLegacyEvent(g,20733,10);
   }v.page=Page::Letter;for(unsigned t:{0u,120u,240u,440u,450u}){menu.renderNow=t;render(c,g,v);c.save(root+"/event-scroll-"+std::to_string(t)+".ppm");}
 
   // Title frames are independent of SD and do not alter the character or save bytes.
@@ -247,6 +248,17 @@ int main(int argc,char** argv){
   for(unsigned city=0;city<4;++city)for(unsigned slot=0;slot<3;++slot){g=rpg::create(0,33);g.city=city;g.guildMember=true;v=ViewState{};v.questChoice=rpg::contractOffer(city,slot);v.page=Page::Contract;render(c,g,v);c.save(root+"/regional-contract-"+std::to_string(v.questChoice)+".ppm");v.page=Page::QuestConfirm;render(c,g,v);v.page=Page::GuildMissions;render(c,g,v);}
   for(unsigned id=25;id<29;++id){g=rpg::create(0,77);g.city=id<27?2:3;rpg::begin(g,id);v=ViewState{};v.page=Page::Battle;render(c,g,v);c.save(root+"/regional-enemy-"+std::to_string(id)+".ppm");v.effect=Effect::Slash;v.effectOnHero=true;render(c,g,v);v.page=Page::EnemyInfo;render(c,g,v);v.page=Page::Bestiary;v.bestiaryIndex=id;render(c,g,v);}
   g=rpg::create(0,77);g.guildMember=true;rpg::acceptQuest(g,5);g.discovery=6;g.discoverLoot=3;g.discoverAmount=1;v.page=Page::Discovery;render(c,g,v);rpg::collectDiscovery(g);render(c,g,v);
+  // All new event kinds use real portraits, readable parchment and read-only live data.
+  for(unsigned level:{1u,5u,10u,18u})for(unsigned kind=0;kind<3;++kind){if(kind==2&&level<5)continue;
+   g=rpg::create(0,42);g.p.xp=rpg::dndXp[level-1];rpg::levelUp(g);g.p.hp=g.p.maxhp;g.tutorial=true;assert(rpg::offerEvent(g,20733,10));g.eventKind=kind;v=ViewState{};menu.notice="";menu.renderNow=1000;menu.letterStarted=0;
+   for(auto page:{Page::Letters,Page::Letter}){v.page=page;render(c,g,v,10);c.save(root+"/events3-letter-"+std::to_string(level)+"-"+std::to_string(kind)+"-"+std::to_string(int(page))+".ppm");}
+   assert(!rpg::acceptEvent(g,49));if(kind){
+    uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,7,before);
+    for(auto page:{Page::EventMission,Page::EventAbandon}){v.page=page;render(c,g,v,10);c.save(root+"/events3-mission-"+std::to_string(level)+"-"+std::to_string(kind)+"-"+std::to_string(int(page))+".ppm");}
+    rpg::encode(g,7,after);assert(!memcmp(before,after,sizeof(before)));
+    g.eventProgress=kind==1?2:1;if(kind==2)g.city=rpg::eventDestination(g);v.page=Page::EventResult;render(c,g,v,10);c.save(root+"/events3-complete-"+std::to_string(level)+"-"+std::to_string(kind)+".ppm");
+   }
+  }
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 

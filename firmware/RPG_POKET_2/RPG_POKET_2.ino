@@ -93,7 +93,7 @@ void beginEffect(Effect effect,bool onHero){
   combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
-Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
+Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2){if(game.eventKind&&game.phase==rpg::Phase::Home){if(game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return rpg::eventReady(game)?Page::EventResult:Page::EventMission;}return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;}if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
@@ -125,7 +125,7 @@ void action(rpg::Action a){
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
-void openCamp(){menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
+void openCamp(){if(game.eventStage==2){say("Termine a missao da carta");return;}menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
 void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
@@ -261,8 +261,8 @@ void tapped(int x,int y){
   if(view.page==Page::Bag||view.page==Page::TownBag){
     Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:view.bagReturn;
     if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
-    if(panelUi::bagSlot(8).contains(x,y)){view.picksReturn=view.page;view.page=Page::Lockpicks;say("");return;}
-    if(game.phase==rpg::Phase::Home&&panelUi::bagSlot(7).contains(x,y)){view.page=Page::Scrap;say("");return;}
+    if(panelUi::bagSlot(8).contains(x,y)){if(game.eventStage==2){say("Use depois da missao");return;}view.picksReturn=view.page;view.page=Page::Lockpicks;say("");return;}
+    if(game.phase==rpg::Phase::Home&&panelUi::bagSlot(7).contains(x,y)){if(game.eventStage==2){say("Use depois da missao");return;}view.page=Page::Scrap;say("");return;}
     for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
     if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
     if(!panelUi::bagUse.contains(x,y))return;
@@ -340,8 +340,14 @@ void tapped(int x,int y){
     if(hit(x,y,14,272,102)){view.page=Page::LetterRefuse;dirty=true;return;}
     if(hit(x,y,124,272,102)){if(arena.opened||updateInfo.busy){say("Termine a acao atual primeiro");return;}const char* err=rpg::acceptEvent(game,menu.eventReturn);if(err){menu.notice=err;dirty=true;return;}menu.notice="";menu.letterStarted=millis();say("");savedTransition(Page::EventTravel);}return;}
   if(view.page==Page::LetterRefuse){if(hit(x,y,14,272,102)){menu.letterStarted=millis()-450;view.page=Page::Letter;dirty=true;}else if(hit(x,y,124,272,102)&&rpg::refuseEvent(game)){say("");savedTransition(Page::Letters);}return;}
+  if(view.page==Page::EventMission){
+    if(hit(x,y,14,216,212)){const char* err=game.eventKind==1?rpg::searchEvent(game,menu.clockValid&&menu.dayCycle&&menu.worldPeriod==worldClock::Period::Night):rpg::prepareTrip(game,rpg::eventDestination(game));if(err)say(err);else {menu.notice="";say("");savedTransition(currentPage());}return;}
+    if(hit(x,y,14,272,102)){view.bagReturn=Page::EventMission;view.choice=0;view.page=Page::TownBag;say("");return;}
+    if(hit(x,y,124,272,102)){view.page=Page::EventAbandon;say("");return;}return;
+  }
+  if(view.page==Page::EventAbandon){if(hit(x,y,14,272,102)){view.page=Page::EventMission;say("");}else if(hit(x,y,124,272,102)&&rpg::abandonEvent(game)){auto back=Page(game.eventOriginPage);rpg::finishEvent(game);say("Missao encerrada");savedTransition(back);}return;}
   if(view.page==Page::EventTravel)return;
-  if(view.page==Page::EventResult){if(hit(x,y,14,272,212)){auto back=Page(game.eventOriginPage);bool lost=game.phase==rpg::Phase::Lost;if(rpg::finishEvent(game)){say("Missao encerrada");savedTransition(lost?Page::Recovery:back);}}return;}
+  if(view.page==Page::EventResult){if(hit(x,y,14,272,212)){if(game.eventKind&&game.phase==rpg::Phase::Won){if(rpg::resumeEventBattle(game)){say("");savedTransition(currentPage());}return;}auto back=Page(game.eventOriginPage);bool lost=game.phase==rpg::Phase::Lost;if(rpg::finishEvent(game)){say("Missao encerrada");savedTransition(lost?Page::Recovery:back);}}return;}
   if(view.page==Page::TimeSettings){
     if(hit(x,y,14,272,102)){view.page=Page::Settings;dirty=true;return;}
     if(hit(x,y,124,272,102)){prepareClockEdit();view.page=Page::TimeEdit;dirty=true;return;}
@@ -609,7 +615,7 @@ void loop(){
   if(tickUpdater())dirty=true;
   tickClub(now);
   if(!arena.opened&&uint32_t(now-wifiPollAt)>=250){wifiPollAt=now;if(tickWifi())dirty=true;}
-  if(menu.journey.tick(now)){rpg::arriveTrip(game);pendingTouch=false;gate=TouchGate{};savedTransition(game.city==1?Page::Ruins:Page::Village);}
+  if(menu.journey.tick(now)){rpg::arriveTrip(game);pendingTouch=false;gate=TouchGate{};savedTransition(game.eventStage==2?currentPage():game.city==1?Page::Ruins:Page::Village);}
   if((view.page==Page::TravelRoll||view.page==Page::CampRoll)&&!menu.rollReady&&uint32_t(now-menu.rollStarted)>=1800){menu.rollReady=true;pendingTouch=false;gate=TouchGate{};dirty=true;}
   if(view.page==Page::CampRest&&game.campStage==3&&uint32_t(now-menu.campStarted)>=4500){rpg::finishCamp(game);say("Descanso concluido");savedTransition(game.city==1?Page::Ruins:Page::Explore);}
   if(view.page==Page::EventTravel&&uint32_t(now-menu.letterStarted)>=700){view.page=currentPage();pendingTouch=false;gate=TouchGate{};dirty=true;}
