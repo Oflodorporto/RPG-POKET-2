@@ -34,8 +34,9 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
+#include "StoryPaper.h"
 #include "MenuView.h"
 #include "NpcArt.h"
 #include "EventView.h"
@@ -67,7 +68,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::ChestLock||v.page==Page::Lockpicks){drawLocks(c,g,v);return;}
   if(v.page==Page::Discovery||v.page==Page::Scrap){drawDiscovery(c,g,v,frame);return;}
   if(v.page==Page::TravelConfirm||v.page==Page::Recovery||v.page==Page::Guide){drawLaunch(c,g,v);return;}
-  auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){if(*s)c.fillRect(x-3,y-2,int(strlen(s))*6*size+6,8*size+4,UI_INK);c.setTextColor(color);c.setTextSize(size);c.setCursor(x,y);c.print(s);};
+  auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextColor(storyPaperPage(v.page)&&y<262?storyInk(color):color);c.setTextSize(size);c.setCursor(x,y);c.print(s);};
   auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
   auto box=[&](int x,int y,int w,int h){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);c.drawRect(x+2,y+2,w-4,h-4,0x3186);};
   auto button=[&](int x,int y,int w,const char* s){box(x,y,w,40);c.setTextColor(UI_WHITE);int size=int(strlen(s))*12<=w-6?2:1;c.setTextSize(size);c.setCursor(x+(w-int(strlen(s))*6*size)/2,y+(40-8*size)/2);c.print(s);};
@@ -97,6 +98,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   bool outside=v.page==Page::Map||v.page==Page::Travel||v.page==Page::EventTravel||v.page==Page::TravelRoll||v.page==Page::Home||v.page==Page::Village||v.page==Page::Ruins||v.page==Page::Explore||v.page==Page::CampSetup||v.page==Page::CampRoll||v.page==Page::CampRest||v.page==Page::Battle;
   backdropPeriod=outside&&menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;
   char b[64];if(v.page==Page::Travel||v.page==Page::TravelRoll)scenicWorld(c,false,backdropPeriod);else if(v.page==Page::Battle){PANEL_IMAGE(c,battle);if(g.city==1)panelBattleArena(c);if(g.city!=1){drawBackdrop(c,backdropFor(v.page,g));panelImage(c,panelArt::battlePalette,panelArt::battleAsset,0,66);panelImage(c,panelArt::battlePalette,panelArt::battleAsset,192,320);}}else if(v.page!=Page::Clock)drawBackdrop(c,backdropFor(v.page,g));c.setTextWrap(false);if(v.touchFeedback)c.fillRect(232,3,5,5,UI_GREEN);
+  if(storyPaperPage(v.page)&&!drawStoryPaper(c,v,frame))return;
   if(renderEvent(c,g,int(v.page),text,center,box,button,frame))return;
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
@@ -106,11 +108,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
   }
   if(v.page==Page::IslandEntry){
-    center(18,"ILHA DAS MARES",2,UI_GOLD);center(66,"As aguas revelaram um santuario.");
-    center(94,"3 andares / nivel recomendado: 20");center(124,"Alavancas abrem os caminhos.");
-    center(150,"Cuidado com o segundo andar.");center(178,"Thalvor guarda a ultima sala.");
-    center(210,"Entrada livre. Saque na bolsa.");center(239,v.message,1,UI_RED);
-    button(14,272,102,"Voltar");button(124,272,102,"Entrar");return;
+    center(21,"DIANTE DO DESCONHECIDO",1,UI_GOLD);
+    const char* speech="Voce encontra pedras tomadas pelo sal. Um frio atravessa sua roupa. Do interior vem um som que voce nao reconhece. A passagem espera.";
+    story::wrapStory(speech,18,[&](unsigned row,const char* line){c.setTextSize(2);c.setTextColor(STORY_INK);c.setCursor(12,58+row*17);c.print(line);});
+    if(*v.message)center(248,v.message,1,UI_RED);
+    button(14,272,102,"Recuar");button(124,272,102,"Entrar");return;
   }
   if(v.page==Page::DungeonLoot){
     center(18,"BAU ABERTO",2,UI_GOLD);box(86,55,68,68);if(v.itemId)sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);else magicSprite(c,dungeonArt::props[1],32,32,92,61,56,56);

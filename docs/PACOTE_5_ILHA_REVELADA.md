@@ -1,6 +1,6 @@
 # Pacote5 adicional — A Ilha Revelada
 
-Versão2026.10.09-ilha1. Candidata em validação; não gravada automaticamente.
+Versão2026.10.09-ilha2. Candidata em validação; não gravada automaticamente.
 
 A Ilha das Marés não aparece nem é mencionada durante a campanha. Somente final completo (campaignEnding=2, quatro contribuições e reconstrução) revela o novo ponto no mar. Final temporário não libera. Entrar pelo novo ponto do mapa; entrada livre, recomendada para nível20. O mundo e destinos0..3 não mudam.
 
@@ -13,3 +13,5 @@ Save24 mantém128bytes e lê1..24. Byte67: guildMember bit0/descobertas20..24 bi
 Artes480: carga6910016bytes; somente63488bytes adicionados após os459 anteriores. PSRAM carrega no início; sem leituras de cartão a cada quadro. Sprites originais gerados com imagegen integrado, originais e prévia em assets/island1. Sem.rpg, flash automático, formataçãoSD, NVS erase ou alteração Heltec.
 
 Teste físico: atualizar firmware e imagens; terminar os quatro faróis normalmente. Confirmar ausência da ilha antes do final, entrada após o pleno, alavancas/toque na cena, subida/descida, armadilhas, XP, reinício no meio da dungeon, vitória/baú/saída ao mapa. Os testes de software não substituem essa etapa.
+
+Ajusteilha2: entrada em pergaminho animado narra somente sensações, sem revelar andares, alavancas, armadilhas, nome do chefe ou nível recomendado. Pergaminho adotado nas telas de narrativa, decisões e resultados. Removidas tarjas individuais de textos, mantendo molduras dos botões e HUD.
