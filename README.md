@@ -22,7 +22,7 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Entrega mais recente: A Ilha Revelada,2026.10.09-ilha2.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-ilha2) · [Guia](docs/PACOTE_5_ILHA_REVELADA.md). Dungeon surpresa após o final pleno,3andares/alavancas/armadilhas,5inimigos originais e XP nas duasdungeons;38suítes/compilação/downloads verificados; físico pendente. Save24 lê1..24;480artes. Próximo: Pacote6 — variedade regional.
+**Entrega mais recente: Pacote6 — Caminhos Vivos,2026.10.10-mundovivo1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-mundovivo1) · [Guia](docs/PACOTE_6_CAMINHOS_VIVOS.md). Mares/Aurora com3inimigos cada,12contratos porcidade decombate/recuperação/escolta real;39suítes/compilação/downloadsverificados;teste físico pendente. Save25 lê1..25;488artes. Próximo:8eventos/2ofertas diárias doPacote6, ainda nãoimplementados.
 
 **Entrega mais recente: Pacote5 — Vozes de Aeldra,2026.10.09-vozes1.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.09-vozes1) · [Guia](docs/PACOTE_5_VOZES_DE_AELDRA.md).12 NPCs, falas contínuas conforme progresso e pergaminho animado com retratos/cenários locais.35suítes, compilação e downloads conferidos; teste físico pendente. Save21 lê1–21; artes459 mantidas. Pacote5 finais e Pacote6 variedade continuam planejados.
 

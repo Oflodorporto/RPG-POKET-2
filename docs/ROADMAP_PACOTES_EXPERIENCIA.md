@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual09/10: Pacote5 concluído + A Ilha Revelada publicada em2026.10.09-ilha2. Dungeon surpresa pós-final pleno,3andares/alavancas/armadilhas/5inimigos originais, XP nas duasdungeons,38suítes/save24/artes480. Próximo: Pacote6 — variedade regional de inimigos e contratos.
+Estado atual 10/10: primeira entrega do Pacote 6 — Caminhos Vivos publicada em 2026.10.10-mundovivo1. Mares e Aurora têm três inimigos cada; 12 contratos locais de combate, coleta e escolta; 39 suítes, save 25 e 488 artes. Próximo: restante do Pacote 6 — oito eventos variados e duas ofertas diárias. O hipogrifo ainda é o único evento diário. Teste físico pendente.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
@@ -128,7 +128,7 @@ Entregue: Arquivos da Coroa/missão3, Liora/Seraphine/Dargan e registro de Odran
 
 ## Pacote6 — Mundo vivo e eventos variados
 
-Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional. Código atual confirma1 inimigo regular em Mares e1 em Aurora e3 contratos repetidos das Ruínas. Esta lacuna não estava especificada suficientemente no plano anterior.
+Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional. Lacuna histórica resolvida: Mares/Aurora têm três inimigos cada, 12 novos contratos locais e três antigos preservados. Esta lacuna não estava especificada suficientemente no plano anterior.
 
 - Mares: pelo menos3 inimigos regulares com comportamento/arte próprios, ligados à costa/cisternas/Mão de Cinza; evitar apenas repetir Saqueador com números maiores. Aurora: pelo menos3, ligados à guarda/mecanismo/Véu. Preservar IDs antigos e planejar migração/bestiário antes de ampliar catálogo. Mesclar situações de exploração existentes com encontros regionais; dia/noite altera a composição sem exigir presença em horário fixo.
 - Guilda: ofertas por cidade e faixa de nível, com motivos/NPCs/recompensas locais. Combinar combate, recuperar suprimento/documentos e escolta curta; objetivos executáveis, não só nome novo no mesmo contrato. Proposta:3 ofertas distintas por região. Registrar a origem do contrato para viajar sem mudar seu alvo; preservar missões antigas e impedir pagamento repetido/abandono para rerrolar prêmio.
