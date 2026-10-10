@@ -2,7 +2,7 @@
 #include "CampArt.h"
 template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame){
   panelCampBackdrop(c,g,v);
-  c.setTextWrap(false);auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.fillRect(x-2,y-2,int(strlen(s))*6*size+4,8*size+4,UI_INK);c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
+  c.setTextWrap(false);auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
   auto center=[&](int y,const char* s,int size=1,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6*size)/2,y,s,size,color);};
   auto box=[&](int x,int y,int w,int h){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);};
   auto button=[&](int x,int y,int w,const char* s){box(x,y,w,40);text(x+(w-int(strlen(s))*12)/2,y+12,s,2);};char b[64];

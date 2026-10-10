@@ -232,6 +232,10 @@ int main(int argc,char** argv){
   g.campaignEnding=2;render(c,g,v);assert(memcmp(c.pixels,hidden.data(),240*320*2));c.save(root+"/island-map.ppm");v.page=Page::IslandEntry;render(c,g,v);c.save(root+"/island-entry.ppm");assert(!rpg::enterIsland(g));g.dungeonLoot=192;g.dungeonEnemies=255;
   for(unsigned f=0;f<3;++f){rpg::dungeonSetFloor(g,f);g.dungeonXY=0x13;rpg::dungeonFace(g,0);v.page=Page::Dungeon;render(c,g,v);c.save(root+"/island-floor-"+std::to_string(f)+".ppm");}
   for(unsigned id=20;id<=24;++id){g.enemyId=id;v.page=Page::EnemyInfo;render(c,g,v);c.save(root+"/island-enemy-"+std::to_string(id)+".ppm");}
+  g=rpg::create(0,71);g.dungeonClears=1;g.campaignFlags=255;g.campaignEnding=2;v=ViewState{};v.page=Page::IslandEntry;v.paperAnimate=true;v.paperStartFrame=100;
+  uint8_t paperBefore[rpg::SAVE_SIZE],paperAfter[rpg::SAVE_SIZE];rpg::encode(g,1,paperBefore);std::vector<uint16_t> paperClosed,paperOpen;
+  for(unsigned tick=0;tick<=7;++tick){render(c,g,v,100+tick);c.save(root+"/island-paper-"+std::to_string(tick)+".ppm");if(!tick)paperClosed.assign(c.pixels,c.pixels+240*320);if(tick==6)paperOpen.assign(c.pixels,c.pixels+240*320);}
+  assert(paperClosed!=paperOpen&&!memcmp(c.pixels,paperOpen.data(),240*320*2));rpg::encode(g,1,paperAfter);assert(!memcmp(paperBefore,paperAfter,sizeof(paperBefore)));
   puts("PASS: shared firmware renderer; text bounds; regional camp scenes, kit slot, 56 distinct backgrounds; travel frames; full-frame pixel parity; optional card states, contracts, forge, equipment and combat.");
 }
 
