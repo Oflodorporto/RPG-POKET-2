@@ -346,6 +346,8 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,270,212,"Voltar");return;
   }
   const auto& foe=rpg::enemySpec(g.enemyId);
+  // A single framed panel replaces the concept's baked-in enemy name/level.
+  scenicPanel(c,42,24,156,62);
   panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,78,90,"Ficha >",UI_GOLD);
   personalSprite(c,g,8,77,v.heroFrame%6);
   const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
@@ -362,7 +364,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)effectCanvas.fillRect(104+x*2,18+y*2,2,2,color);}}else magicSprite(effectCanvas,fx,64,72,v.effectOnHero?22:156,82,64,72);}
   panelLabel(c,4,181,232,rpg::intentName(g),UI_GOLD);
   // Panels and buttons retain the concept; all combat data remains live.
-  c.fillRect(69,196,63,33,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
+  c.fillRect(65,193,170,44,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
   snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,68,216,65,b);panelBar(c,70,225,62,g.p.mp,g.p.maxmp,UI_BLUE);
   panelHero(c,g,22,199,41,33);char turn[24];snprintf(turn,sizeof(turn),"Furia: %u",g.rageTurns);panelLabel(c,140,211,84,v.effect!=Effect::None?"Animando...":g.phase==rpg::Phase::Enemy?"Turno inimigo":g.surgePending?"Acao extra":g.rageTurns?turn:"Seu turno",UI_GOLD);
   snprintf(b,sizeof(b),"Risco ate %u HP",rpg::incomingCeiling(g,g.guard));panelLabel(c,132,227,101,b,UI_GOLD);

@@ -689,7 +689,10 @@ int main(){
   game.campaignEnding=2;tapped(32,152);assert(view.page==Page::IslandEntry&&nvs.blobs==islandBlobs);tapped(60,290);assert(view.page==Page::Map&&nvs.blobs==islandBlobs);tapped(32,152);tapped(175,290);assert(view.page==Page::Dungeon&&rpg::islandDungeon(game));
   game.dungeonXY=0x13;rpg::dungeonFace(game,0);assert(journal.save(game));nvs.fail=true;tapped(120,90);assert(view.page==Page::SaveError&&(game.dungeonLoot&64));nvs.fail=false;tapped(110,269);assert(view.page==Page::Dungeon&&(game.dungeonLoot&64));tapped(120,90);assert(game.dungeonLoot==64);
   view.page=Page::DungeonExit;tapped(175,290);assert(view.page==Page::Map&&!rpg::inDungeon(game));
-  puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
+  combatFx.kind=Effect::None;game=rpg::create(2,81);game.tutorial=true;game.guildMember=true;game.city=2;game.p.xp=64000;rpg::levelUp(game);game.p.hp=game.p.maxhp;game.p.mp=game.p.maxmp;assert(journal.save(game));view.page=Page::GuildMissions;
+  tapped(100,140);assert(view.page==Page::Contract&&view.questChoice==10);tapped(120,240);assert(view.page==Page::QuestConfirm);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.questId==10);nvs.fail=false;tapped(110,269);assert(view.page==Page::GuildMissions&&game.questId==10&&!game.questProgress);
+  game.city=3;view.page=Page::GuildMissions;tapped(100,140);assert(view.page==Page::Contract&&view.questChoice==10);tapped(120,240);assert(view.page==Page::QuestConfirm&&view.questAction==2);tapped(60,290);assert(view.page==Page::Contract&&game.questId==10);
+    puts("PASS: actual title controller; read-only boot/resume in five states; disabled Continue; empty/fallback/all-full/protected/recovered slots; confirmed deletion failures; no overwrite; settings return; narrative compass");
 }
 
 

@@ -53,7 +53,9 @@ inline bool startDiscovery(Game& g,bool night=false){
  unsigned reward=random(g)%100;
  g.discoverLoot=reward<48?0:reward<62?1:reward<75?2:reward<86?3:reward<93?4:reward<98?5:6;
  g.discoverAmount=g.discoverLoot==0?uint8_t(3+g.city*4+random(g)%6):g.discoverLoot==6?uint8_t(g.p.cls*3+1+random(g)%std::min<unsigned>(g.city+1,g.p.level>=8?3:g.p.level>=4?2:1)):1;
- if(g.discovery==3){g.discoverLoot=night?2:3;g.discoverAmount=1;if(g.questId>=4&&contractKind(g.questId)==ContractKind::Recover&&g.city==contractCity(g.questId)&&!questComplete(g)){g.discovery=6;g.discoverLoot=3;}}
+ if(g.discovery==3){g.discoverLoot=night?2:3;g.discoverAmount=1;}
+ // Active recovery:20% finds+10% local meetings become tracked cargo.
+ if((g.discovery==1||g.discovery==3)&&g.questId>=4&&contractKind(g.questId)==ContractKind::Recover&&g.city==contractCity(g.questId)&&!questComplete(g)){g.discovery=6;g.discoverLoot=3;g.discoverAmount=1;}
  // Mimic outcome is fixed at discovery, concealed behind its warning.
  if(g.discovery==2&&random(g)%100<5)g.discoverLoot=7;
  if(g.discovery==2&&g.discoverLoot!=7&&random(g)%100<40){g.chestLock=1;g.chestTrap=random(g)%100<25;if(g.discoverLoot==0)g.discoverAmount+=8+g.city*4;}
