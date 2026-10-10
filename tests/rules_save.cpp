@@ -59,7 +59,7 @@ int main(){
   mem.failWrite=true;auto beforeSeq=reboot.seq;assert(!reboot.save(g)&&reboot.seq==beforeSeq);mem.failWrite=false;
   mem.data[1][22]^=1;Journal<Memory> recovery(mem);assert(recovery.load(loaded)==Load::Recovered);same(checkpoint,loaded);
   assert(recovery.save(g));Journal<Memory> r2(mem);assert(r2.load(loaded)==Load::Ok);same(g,loaded);
-  mem.data[0][4]=26;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
+  mem.data[0][4]=27;Journal<Memory> future(mem);assert(future.load(loaded)==Load::Blocked&&!future.save(g));
   Memory corrupt;corrupt.exists[0]=true;Journal<Memory> bad(corrupt);assert(bad.load(loaded)==Load::Blocked&&!bad.save(g));
   Memory inaccessible;inaccessible.failRead=true;Journal<Memory> broken(inaccessible);assert(broken.load(loaded)==Load::Blocked);
   // Readback failure must not be reported as successful even if NVS wrote.
