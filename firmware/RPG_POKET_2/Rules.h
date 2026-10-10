@@ -128,8 +128,8 @@ inline const Contract& contract(uint8_t id){static const Contract q[]={
  {"PATRULHA","Vencer 3 inimigos nas ruinas",-1,3,15,25},{"OSSOS DAS RUINAS","Vencer 2 esqueletos",2,2,18,35},{"O GUARDIAO","Vencer 1 Guardiao",3,1,35,60},
  {"TRILHA DOS LENHADORES","Venca 3 feras em Carvalho",-1,3,18,15},{"FARINHA PERDIDA","Recupere 2 sacos ao explorar",-1,2,20,12},{"A CARAVANA DE IRIA","Escolte Carvalho -> Ruinas",-1,1,28,18},
  {"OSSOS SEM DESCANSO","Venca 2 esqueletos nas Ruinas",2,2,28,15},{"CADERNOS DE IRIA","Recupere 2 cadernos nas Ruinas",-1,2,30,12},{"LEVAR AS TESTEMUNHAS","Escolte Ruinas -> Carvalho",-1,1,32,18},
- {"AS CISTERNAS DE MARES","Venca 2 caranguejos ferreos",25,2,58,15},{"CARGA ENTRE AS PEDRAS","Recupere 2 caixas em Mares",-1,2,52,12},{"O CARTOGRAFO DE ELIAN","Escolte Mares -> Ruinas",-1,1,65,18},
- {"MAQUINAS SEM JURAMENTO","Venca 2 automatos em Aurora",27,2,85,15},{"REGISTROS DA GUARDA","Recupere 2 registros em Aurora",-1,2,78,12},{"A TESTEMUNHA DE ANWEN","Escolte Aurora -> Mares",-1,1,95,18}};return q[id>=1&&id<=15?id-1:0];}
+ {"AS CISTERNAS DE MARES","Venca 2 caranguejos ferreos",25,2,58,15},{"CARGA ENTRE AS PEDRAS","Recupere 2 caixas em Mares",-1,2,52,12},{"O CARTOGRAFO DE TOMAS","Escolte Mares -> Ruinas",-1,1,65,18},
+ {"MAQUINAS SEM JURAMENTO","Venca 2 automatos em Aurora",27,2,85,15},{"REGISTROS DA GUARDA","Recupere 2 registros em Aurora",-1,2,78,12},{"A TESTEMUNHA DE LIORA","Escolte Aurora -> Mares",-1,1,95,18}};return q[id>=1&&id<=15?id-1:0];}
 inline unsigned contractCity(unsigned id){return id>=4&&id<=15?(id-4)/3:1;}
 inline ContractKind contractKind(unsigned id){return id>=4&&id<=15?ContractKind((id-4)%3):ContractKind::Combat;}
 inline unsigned contractDestination(unsigned id){const unsigned n[]={1,0,1,2};return n[contractCity(id)];}
@@ -139,7 +139,7 @@ inline unsigned contractVisibleOffer(const Game& g,unsigned slot){
  unsigned skip=slot-1;for(unsigned i=0;i<3;++i){unsigned id=contractOffer(g.city,i);if(id!=g.questId){if(!skip)return id;--skip;}}return g.questId;
 }
 inline unsigned contractLevel(unsigned id){return id>=7?cityLevel(contractCity(id)):1;}
-inline const char* contractAgent(unsigned id){const char* n[]={"Maelis Voss","Iria Sorel","Elian Vey","Anwen Valcor"};return n[contractCity(id)];}
+inline const char* contractAgent(unsigned id){const char* n[]={"Maelis Voss","Iria Sorel","Tomas Valevento","Liora Valcer"};return n[contractCity(id)];}
 inline const char* contractStory(unsigned id,unsigned line){
  const char* stories[12][3]={
  {"Os lenhadores temem voltar a trilha.","As feras tomaram o caminho da vila.","Abra passagem para eles voltarem."},
@@ -153,7 +153,7 @@ inline const char* contractStory(unsigned id,unsigned line){
  {"Meu cartografo encontrou uma rota.","Iria precisa examinar suas marcas.","Leve-o de Mares ate as Ruinas."},
  {"A guarda perdeu o controle do portao.","Dois automatos ignoram nossas ordens.","Impeca que ataquem outra patrulha."},
  {"Nossos registros foram espalhados.","Dois volumes sumiram na cidade alta.","Ache-os antes que a Cinza os queime."},
- {"Uma testemunha quer falar com Elian.","Ela conhece os homens da Cinza.","Proteja sua viagem de Aurora a Mares."}};
+ {"Uma testemunha quer falar com Tomas.","Ela conhece os homens da Cinza.","Proteja sua viagem de Aurora a Mares."}};
  if(id<4||id>15)return line==0?"Maelis mantem o seu contrato antigo.":line==1?contract(id).objective:"Sua recompensa continua garantida.";
  return stories[id-4][std::min(line,2u)];
 }

@@ -212,7 +212,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Contract){
     uint8_t id=v.questChoice;if(id<1||id>15){center(100,"Contrato indisponivel");return;}
     bool active=g.questId==id;uint8_t level=active?g.questLevel:g.p.level;
-    center(12,"CONTRATO",2,UI_GOLD);center(36,rpg::contractAgent(id));center(57,rpg::contract(id).name,1,UI_GOLD);
+    center(12,"CONTRATO",2,UI_GOLD);const story::Npc agents[]={story::Npc::Maelis,story::Npc::Iria,story::Npc::Tomas,story::Npc::Liora};npcPortrait(c,agents[rpg::contractCity(id)],18,31,24);center(36,rpg::contractAgent(id));center(57,rpg::contract(id).name,1,UI_GOLD);
     for(unsigned line=0;line<3;++line)center(80+line*13,rpg::contractStory(id,line));
     center(127,rpg::contract(id).objective);snprintf(b,sizeof(b),"Origem: %s / Nv %u+",placeName(rpg::contractCity(id)),rpg::contractLevel(id));center(145,b);
     snprintf(b,sizeof(b),"Progresso %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(162,b);
