@@ -1,52 +1,35 @@
 RPG POKET2 — CONTINUIDADE ATUAL — 10/10/2026
-Entrega regional do Pacote 6: Caminhos Vivos. O pacote inteiro ainda não está concluído: existe somente o evento diário do hipogrifo; faltam oito tipos de eventos e duas ofertas por dia.
-Versão 2026.10.10-mundovivo1 / build 2026101001 / save 25, com 128 bytes e leitura dos formatos 1 a 25.
-Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-mundovivo1
-Fontecommit: d3d0765613ba649292d97ffd40d374e4e5860a81
-CandidataCI: 38021747516 / publicaçãoCI: 38021958602 — sucesso.
-Compilação: 2026-10-10T03:49:23.1105545Z Sketch uses 2748258 bytes (87%) of program storage space. Maximum is 3145728 bytes.
-2026-10-10T03:49:23.1106536Z Global variables use 53940 bytes (16%) of dynamic memory, leaving 273740 bytes for local variables. Maximum is 327680 bytes.
-39 suítes de software, controle real, renderização e 480 batalhas de referência. Downloads, SHA-256, tamanhos, CRC, catálogo e preservação das 480 artes anteriores conferidos. Teste físico pendente do usuário.
+Pacote6.2: Cartas ao Entardecer. Versão2026.10.10-cartas2/build2026101002/save26,128bytes, leitura1..26.
+Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas2
+Fonte:ab17bf2679d10c311d3160a13b38ed2032e5666a
+CandidataCI:38066476828 / PublicaçãoCI:38066803410 — sucesso.
+Compilação:2026-10-10T16:16:00.9604798Z Sketch uses 2748822 bytes (87%) of program storage space. Maximum is 3145728 bytes.
+2026-10-10T16:16:00.9605562Z Global variables use 53940 bytes (16%) of dynamic memory, leaving 273740 bytes for local variables. Maximum is 327680 bytes.
+39 suítes de software, controles reais, renderer, migração de todos os estados de evento e contraste da recompensa. Downloads/tamanhos/SHA-256, CRC/catalogo/artes idênticas a mundovivo1 conferidos. Validação física pendente do usuário.
+
+IMPLEMENTADO NESTA ENTREGA:
+1. Duas oportunidades por dia local,09h e18h. Entrar tarde permite responder primeira e receber segunda. Uma carta pendente não é substituída, mesmo em outro dia; missão ativa também permanece. Dia registrado não retrocede. Recusa sem punição, sem terceira oferta ou troca da mesma carta.
+2. Cartas com pergaminho e indicação da oportunidade. Confirmação de recusa informa próxima disponibilidade.
+3. Vitória/derrota/fuga: retângulo preto legado removido; texto escuro legível no pergaminho. XP e ouro em linhas separadas. Teste de fundo/limites e ausência de mutação.
+4. Save26:byte97 bits0..1tier,bit2oportunidade0/1;bits3..7rejeitados. ≤25 exige97≤3 e migra para oportunidade0 preservando todos os seis estágios antigos. Nada sobrescreve os contratos.
+5. As488artes e6991936bytes de carga continuam iguais a mundovivo1. Sem leiturasSD por quadro ou novos assets.
+
+LIMITE: os oito tipos de eventos ainda NÃO estão implementados. Duas cartas usam o hipogrifo do piloto. Doze contratos regionais continuam separados dos eventos. Esta é uma entrega parcial do Pacote6, não fechamento do pacote. Próximo: persistência própria para tipo/progresso/recompensa e objetivos de coleta/escolta/expedição realmente jogáveis.
 
 CAMINHOS:
-Raiz: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
-Sketch: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
-Regras/contratos/roster: Rules.h; coleta:Exploration.h;persistência:Save.h;arte:WorldEnemyArt.h/AssetCatalog.h
-Guia: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_CAMINHOS_VIVOS.md
-Artes/promptsexatos/originais: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/assets/mundovivo1
-Prévia real: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-caminhos-vivos.png
-Releasebaixada/verificada: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-mundovivo1
-Mirror: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkout Git)
-Teste novo: C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/tests/regional_world.cpp;tools/test_native.sh roda39;check_controller_snapshot.py compara corpo real .ino.
+Raiz:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+Sketch:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Regras de cartas:GuildEvents.h;slot:Rules.h;persistência:Save.h;UI:EventView.h;resultado:View.h.
+Guia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_2_CARTAS_AO_ENTARDECER.md
+Prévias:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-cartas-entardecer.png e previa-vitoria-pergaminho.png
+Release verificada:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-cartas2
+Mirror GitHub:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkoutGit).
 
 CINCO PRIMEIROS COMANDOS DE TRABALHO:
-1. Ler este TXT, o guia, ROADMAP_PACOTES_EXPERIENCIA.md e a lore canônica. Conferir ReleaseVersion.h, Save.h e o manifesto da última Release. A variedade regional foi implementada; os oito eventos ainda não. Maelis, Iria, Tomás e Liora são NPCs existentes; Anwen permanece uma testemunha histórica.
-2. Conferir os testes físicos após atualizar firmware e artes: três inimigos em Mares/Aurora, três contratos por cidade, níveis de acesso, duas coletas e viagem de escolta. Testar D20, animações, toque, reinício, retomada, pagamento único e três slots. Fugir ou perder durante uma escolta cancela a viagem e não entrega o passageiro. Software não comprova funcionamento físico.
-3. Planejar o restante do Pacote 6: oito eventos variados, duas ofertas por dia, recusa sem punição e horário local. Desenhar persistência e migração antes de alterar a oferta atual. A campanha não exige conexão ou presença em horário exato. Preservar contratos e o piloto existentes; não reutilizar campos ocupados do save.
-4. Implementar eventos com objetivos reais e retorno seguro: coleta, combate, escolta e expedição, com recompensas fixadas no aceite. Reusar NPCs, retratos, pergaminho animado e ações de exploração/viagem; preservar o D20. A ilha só aparece com campaignEnding=2 e quatro contribuições reais, sem antecipar andares, alavancas ou perigos.
-5. Rodar as 39 suítes, comparação do controlador real e renderização. Compilar para ESP32-S3, 16 MB, OPI, app3M_fat9M_16MB e EraseFlash=none; validar candidata antes de publicar em main, baixar e conferir a Release. Save 25/128 bytes: byte 67 guarda guilda no bit 0 e descobertas 20..26 nos bits 1..7; byte 119 mantém intenção 0..1, armadilhas 2..4, vitória da ilha 5 e descobertas 27..28 em 6..7. QuestId: dois bits em packed51 e dois em 116 bits 2..3; poderes do guerreiro continuam em 116 bits 0..1. Discovery 6=carga, 7=recibo. Preservar 90/91 (acampamento), 122/123 (origem), 124 (CRC), cidades 0..3 e inimigos 0..24. Firmware leitor 24 não entende saves 25. Artes: 488 entradas, payload de 6991936 bytes; 81920 bytes novos após as 480 anteriores. Carga na PSRAM no início, sem SD por quadro. Registrar o progresso.
+1. Ler esteTXT, guia, ROADMAP_PACOTES_EXPERIENCIA.md e cânone. Conferir ReleaseVersion.h/Save.h/manifesto publicado. Não anunciar oito eventos prontos. Maelis/Iria/Tomás/Liora são NPCs reais existentes.
+2. Validar fisicamente vitória/XP/ouro, primeira/segunda carta após18h, pendência/reinício e pagamento único. Conferir contratos/bolsa/camp/slots e ilha oculta. Os casos de horário e falha de save foram simulados; não alterar o relógio do aparelho só para testar.
+3. Planejar save de oito tipos de eventos com progresso próprio e recompensa fixada no aceite. Preservar piloto aceito e contratos; o slot diário agora está97bit2. Não reutilizar90/91camp,122/123origem,124CRC. Bytes67/119bestiário,116contratos/poderes continuam ocupados. IDs cidades0..3 e inimigos0..28 estáveis. Reader25 não entende gravações26.
+4. Implementar primeiro eventos de coleta/escolta com ações existentes e retorno seguro, depois dungeon/expedição; nenhuma missão de coleta deve ser um combate apenas renomeado. Preservar D20/deslocamento e surpresa da ilha (campaignEnding2+quatro contribuições). Pergaminho animado padrão. Memória de arte já está próxima do limite; preferir assets existentes pequenos.
+5. Rodar39suítes e comparação do corpo real do controlador, renderizar e inspecionar. Compilar ESP32-S3/core3.3.12/16MB/OPI/app3M_fat9M_16MB/EraseFlash=none. Publicar candidata, validar exatoSHA, só então promover main e verificar Release porhash/tamanho/CRC. ShellCI emLF. Registrar progresso; não repetir scripts históricos de implementação cegamente.
 
-RESTRIÇÕES: preservar a Heltec; não gravar placas automaticamente, gerar .rpg, apagar NVS, formatar SD ou fabricar saves físicos. O usuário confirma OTA ou grava pelo cabo. Publicação no GitHub autorizada. Arquivos shell da CI usam LF. Não repetir scripts antigos de implementação: nem todos podem ser executados novamente com segurança.
-
-# Pacote 6 — Caminhos Vivos
-
-Versão2026.10.10-mundovivo1/build2026101001 publicada e verificada.39 suítes, controle real, compilação ESP32-S3, SHA-256/tamanho/CRC/catálogo/480 entradas anteriores preservadas. Teste físico pendente do usuário; não gravada automaticamente.
-
-Mares passa a ter Saqueador, Caranguejo Férreo e Mão de Cinza. Aurora: Sentinela, Autômato Dourado e Eco do Véu. Caranguejo recompõe a carapaça; Mão de Cinza prepara e drena mana; Autômato prepara golpe pesado; Eco drena sem preparação. Intenções visíveis; danos físicos/mágicos e mortos-vivos coerentes. Dia/noite muda os pesos (50% inimigo-base de dia;50% nova criatura noturna à noite); nenhum objetivo depende da hora.
-
-Doze contratos novos, três por cidade: combate específico, recuperação de carga/cadernos/registros ao explorar e escolta entre locais reais. Carvalho Nv1+, Ruínas5+, Mares10+, Aurora18+. Cadastro da Guilda100 ouro permanece. Maelis coordena; Iria, Tomás e Liora assinam os contratos locais. Uma missão ativa; ela aparece primeiro em qualquer quadro. Região e destino são derivados do ID permanente, não da cidade atual. Viajar não muda o objetivo.
-
-Recuperação: quando o contrato correspondente está ativo na origem, os achados (20%) e encontros locais (10%) passam a oferecer a carga: 30% de chance por exploração. Fora desse contrato, permanece a distribuição de 50% combate, 20% achado, 20% baú e 10% encontro local. Cada coleta incrementa uma de duas partes; carga vinculada ao contrato, sem criar ração na bolsa. Desistir deixa a carga; após coletar, recibo salvo e nenhuma coleta repetida. Escolta: inicia na origem, termina na chegada ao destino; D20 e animação de viagem preservados. Em falha enfrenta inimigo da estrada. Perder ou fugir durante escolta cancela a viagem, não entrega o passageiro; pode tentar novamente. Contratos1..3 antigos continuam com objetivos/recompensas idênticos.
-
-XP/ouro fixados pelo nível de aceitação; pagamento único e abandono não sorteia recompensa. Contratos novos dão12/15/18% do XP até o próximo nível conforme categoria;a campanha não depende desses contratos. Repetição permitida como trabalho da Guilda, sem progressão retroativa. Carregamento do cartão/OTA e animação do papel mantidos.
-
-Save25 continua128 bytes e lê1..25. IDs cidades0..3/enemies0..24 preservados; novos25..28. Byte67 bit0 guild, bits1..7 descobertas20..26;119 bits6..7 descobertas27..28, demaisbitsilha/intenções preservados. QuestId bits0..1 no packed51, bits2..3 em116 bits2..3;surgebits0..1 preservados. Discovery6 carga/7 recibo;ambos cabem nos3 bits existentes60. Antigos≤24 rejeitam extensões; nenhum save físico artificial. Bytes90/91 camp,122/123 origem e124 CRC preservados. NÃO voltar ao firmware leitor24 após gravar25.
-
-Artes488/carga6991936 bytes;81920 bytes incrementais após480 anteriores. Oito poses originais geradas pela ferramenta imagegen integrada, fontes/prompts/prévia em assets/mundovivo1. Cartão libera espaço flash, carga únicaPSRAMno início, sem leituraSD por quadro. Arte+framebuffer7145536 bytes, abaixo8 MiB antes dos demais buffers; conferir a placa física.
-
-Limites deste pacote: fundação regional implementada, eventos diários continuam o piloto do hipogrifo. As oito categorias e duas ofertas/dia ainda são próxima etapa. Não anunciar isso como pronto. Ilha pós-final pleno continua oculta e sem spoilers.
-
-Teste físico: atualizar firmware+artes em Configurações>Atualização; confirmar3 inimigos em Mares/Aurora, contratos por cidade e nível, coletar2 cargas, escolta comD20/viagem/combate, reiniciar no encontro/contrato/viagem e receber uma vez. Visitar bestiário/ficha de cada inimigo, confirmar direção esquerda, poses de ataque. Software não substitui estes testes.
-
-Validação de balanceamento:480batalhas das quatro classes em níveis10/18 com equipamento tier3, seis poções de vida e três de mana;nenhuma derrota, média5passos de ação. Este é um cenário equipado, não prova de dificuldade com personagem sem equipamentos. Prévias reais:validacao/previa-caminhos-vivos.png. Fontesoriginais/imagegenintegrado/prompts completos:assets/mundovivo1.
-
+RESTRIÇÕES: preservarHeltec; sem gravação automática de placa,.rpg,apagamentoNVS,formataçãoSD,saves físicos fabricados. Usuário confirmaOTA ou grava pelo cabo. GitHub autorizado. Testes de computador não comprovam funcionamento físico.

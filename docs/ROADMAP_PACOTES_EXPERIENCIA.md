@@ -136,7 +136,7 @@ Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional
 - Critério: sessão curta em Mares/Aurora oferece diferenças visíveis de inimigo, decisão e objetivo. Medir ganho/tempo/mortes, testar retomada e slots, validar arte/memória/OTA e publicar antes de prometer variedade pronta.
 
 
-Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Hoje só o piloto do hipogrifo está implementado; não anunciar oito eventos prontos.
+Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Cartas ao Entardecer implementa duas oportunidades (09h/18h), pendência e migração save26; o conteúdo continua sendo o piloto do hipogrifo. Faltam os oito tipos com objetivos próprios; não anunciar oito eventos prontos.
 
 Horário local e dia/noite podem variar ambiente e encontros, mas a campanha não deve exigir presença em uma hora específica. Oferecer/recusar sem culpa, não punir ausência e evitar bloquear a atualização ou o descanso por uma carta.
 

@@ -13,3 +13,5 @@ Verificação prevista:39 suítes nativas, migração de todos os seis estados a
 Teste na placa: com hora local válida e tutorial concluído, abrir Cartas; recusar ou concluir a primeira, conferir segunda após18h, reiniciar com carta pendente e confirmar que permanece. Receber uma recompensa uma vez. Confirmar contratos, camping, três slots e a surpresa da ilha preservados. Sem precisar mudar o relógio do aparelho; os casos de horários foram simulados nos testes de software.
 
 Correção solicitada durante os testes: a tela de vitória, derrota e fuga agora mantém as recompensas no pergaminho. Removido o retângulo preto legado que escondia a tinta escura; XP e ouro em linhas separadas, com testes de contraste do fundo, limites de texto e ausência de alterações no save.
+
+Validação concluída:39 suítes nativas, controle real e renderização. Compilação para ESP32-S3, partiçõesOTA3MiB,16MiBflash e8MiBOPI confirmada. Downloads da Release verificados por tamanho e SHA-256; artes exatamente iguais à versão anterior, CRC e catálogo conferidos. Validação física desta entrega fica com o usuário.
