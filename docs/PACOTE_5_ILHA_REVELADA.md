@@ -1,6 +1,6 @@
 # Pacote5 adicional — A Ilha Revelada
 
-Versão2026.10.09-ilha2. Candidata em validação; não gravada automaticamente.
+Versão2026.10.09-ilha2. Publicada e verificada:38suítes, compilação ESP32-S3, downloads por tamanho/SHA-256/CRC/catálogo. Teste físico pendente do usuário; não gravada automaticamente.
 
 A Ilha das Marés não aparece nem é mencionada durante a campanha. Somente final completo (campaignEnding=2, quatro contribuições e reconstrução) revela o novo ponto no mar. Final temporário não libera. Entrar pelo novo ponto do mapa; entrada livre, recomendada para nível20. O mundo e destinos0..3 não mudam.
 
@@ -15,3 +15,5 @@ Artes480: carga6910016bytes; somente63488bytes adicionados após os459 anteriore
 Teste físico: atualizar firmware e imagens; terminar os quatro faróis normalmente. Confirmar ausência da ilha antes do final, entrada após o pleno, alavancas/toque na cena, subida/descida, armadilhas, XP, reinício no meio da dungeon, vitória/baú/saída ao mapa. Os testes de software não substituem essa etapa.
 
 Ajusteilha2: entrada em pergaminho animado narra somente sensações, sem revelar andares, alavancas, armadilhas, nome do chefe ou nível recomendado. Pergaminho adotado nas telas de narrativa, decisões e resultados. Removidas tarjas individuais de textos, mantendo molduras dos botões e HUD.
+
+Direção de RPG do usuário: mostrar percepção e sensação antes de uma estrutura desconhecida; nenhuma ficha de dungeon, aviso de andar, quantidade de galerias ou mecanismo ainda não visto. Descobertas vêm de explorar e agir. HUD da ilha mostra somente galeria atual e direção; reação da alavanca é um estrondo ao longe. StoryPaper.h é o padrão de narração/decisão: folha única, animação breve sem bloqueio nem SD por quadro, letras escuras e botões com molduras legíveis. Removidas tarjas individuais genéricas, de acampamento e panelLabel. Preserve isso nos próximos pacotes.

@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual09/10: Pacote5 concluído/publicado em2026.10.09-auroralivre1. Odran/Coração, final temporário reversível, Aurora Livre/epílogo/mundo aberto, explicação do Véu/faróis;37suítes/save23/artes mantidas. Próximo: Pacote6 — variedade regional de inimigos e contratos.
+Estado atual09/10: Pacote5 concluído + A Ilha Revelada publicada em2026.10.09-ilha2. Dungeon surpresa pós-final pleno,3andares/alavancas/armadilhas/5inimigos originais, XP nas duasdungeons,38suítes/save24/artes480. Próximo: Pacote6 — variedade regional de inimigos e contratos.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
