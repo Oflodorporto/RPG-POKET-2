@@ -61,7 +61,7 @@ inline const char* dungeonMove(Game& g,int forward,int side,int turn){
  if(!inDungeon(g)||g.phase!=Phase::Home)return "Termine o combate";unsigned d=(dungeonHeading(g)+turn+4)%4;
  if(turn){dungeonFace(g,d);return nullptr;}
  int x=dungeonX(g)+forward*dungeonDx[d]+side*dungeonDx[(d+1)%4],y=dungeonY(g)+forward*dungeonDy[d]+side*dungeonDy[(d+1)%4];
- if(dungeonWall(g,x,y))return dungeonCell(g,x,y)=='D'?(islandDungeon(g)?"Porta: encontre a alavanca":"Porta: encontre o selo"):"Parede de pedra";
+ if(dungeonWall(g,x,y))return dungeonCell(g,x,y)=='D'?(islandDungeon(g)?"A passagem esta selada":"Porta: encontre o selo"):"Parede de pedra";
  int target=dungeonEnemyAt(g,x,y);if(target>=0){if(forward<0)d=(d+2)%4;else if(side)d=(d+(side>0?1:3))%4;dungeonFace(g,d);begin(g,dungeonSpawn(g,target).id);return nullptr;}
  g.dungeonXY=x|(y<<4);
  if(islandDungeon(g)&&dungeonFloor(g)==1)for(unsigned i=0;i<3;++i){auto t=islandTrapCells[i];if(x==t.x&&y==t.y&&!(g.islandTraps&(1u<<i))){g.islandTraps|=1u<<i;unsigned roll=1+random(g)%20;int bonus=g.dndProgression?abilityMod(g.attributes[1]):int(luck(g));bool safe=roll==20||(roll!=1&&int(roll)+bonus>=14);g.damage=safe?0:std::min<unsigned>(g.p.hp-1,std::max(1u,unsigned(g.p.maxhp)/8));g.p.hp-=g.damage;}}

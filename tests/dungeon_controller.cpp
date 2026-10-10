@@ -233,10 +233,10 @@ void tapped(int x,int y){
       if(game.phase!=rpg::Phase::Home){bool lost=game.phase==rpg::Phase::Lost;rpg::dungeonResolve(game);say("");savedTransition(lost?Page::Recovery:rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
       if(rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
       int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawn(game,enemy).id);say("Seu turno");savedTransition(Page::Dungeon);return;}
-      if(rpg::dungeonUseLever(game)){say("Alavanca acionada! Caminho aberto");savedTransition(Page::Dungeon);return;}
+      if(rpg::dungeonUseLever(game)){say("Um estrondo ecoa ao longe");savedTransition(Page::Dungeon);return;}
       uint8_t before=game.dungeonLoot;uint32_t oldOwned=game.owned;const char* notice=rpg::dungeonCollect(game);view.itemId=0;for(uint8_t id=1;id<=rpg::GEAR_COUNT;++id)if(rpg::gearOwns(game.owned,id)&&!rpg::gearOwns(oldOwned,id))view.itemId=id;if(before!=game.dungeonLoot){say(notice);savedTransition((game.dungeonLoot&rpg::dungeonChestBit(game))&&!(before&rpg::dungeonChestBit(game))?Page::DungeonLoot:Page::Dungeon);return;}if(notice){say(notice);return;}
       if(rpg::dungeonStairs(game)){say("Escadas: novo andar");savedTransition(Page::Dungeon);return;}
-      if(rpg::islandDungeon(game)&&rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='S'){say("Encontre a alavanca deste andar");return;}
+      if(rpg::islandDungeon(game)&&rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='S'){say("A escada esta bloqueada");return;}
       say("Nada para interagir aqui");return;
     }
     if(game.phase!=rpg::Phase::Home)return;
