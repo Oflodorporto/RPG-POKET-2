@@ -1,35 +1,33 @@
-RPG POKET2 — CONTINUIDADE ATUAL — 10/10/2026
-Pacote6.2: Cartas ao Entardecer. Versão2026.10.10-cartas2/build2026101002/save26,128bytes, leitura1..26.
-Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas2
-Fonte:ab17bf2679d10c311d3160a13b38ed2032e5666a
-CandidataCI:38066476828 / PublicaçãoCI:38066803410 — sucesso.
-Compilação:2026-10-10T16:16:00.9604798Z Sketch uses 2748822 bytes (87%) of program storage space. Maximum is 3145728 bytes.
-2026-10-10T16:16:00.9605562Z Global variables use 53940 bytes (16%) of dynamic memory, leaving 273740 bytes for local variables. Maximum is 327680 bytes.
-39 suítes de software, controles reais, renderer, migração de todos os estados de evento e contraste da recompensa. Downloads/tamanhos/SHA-256, CRC/catalogo/artes idênticas a mundovivo1 conferidos. Validação física pendente do usuário.
+RPG POKET 2 — CONTINUIDADE ATUAL — 10/10/2026
+Pacote6.3: Vidas na Estrada. Versão2026.10.10-cartas3/build2026101003/save27,128bytes,leitura1..27.
+Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas3
+Fonte:51dc25425c62a1fafc16df4b0645732440626f77
+CandidataCI:38086055429 / PublicaçãoCI:38086361810 — sucesso.
+Compilação:2026-10-10T21:05:27.6341835Z Sketch uses 2756066 bytes (87%) of program storage space. Maximum is 3145728 bytes.
+2026-10-10T21:05:27.6342720Z Global variables use 53956 bytes (16%) of dynamic memory, leaving 273724 bytes for local variables. Maximum is 327680 bytes.
+40 suítes, controles reais, renderização, migração/corrupção/pagamento único. Downloads/tamanhos/SHA-256 eCRC/artes idênticas a cartas2 conferidos. Teste físico pendente.
 
-IMPLEMENTADO NESTA ENTREGA:
-1. Duas oportunidades por dia local,09h e18h. Entrar tarde permite responder primeira e receber segunda. Uma carta pendente não é substituída, mesmo em outro dia; missão ativa também permanece. Dia registrado não retrocede. Recusa sem punição, sem terceira oferta ou troca da mesma carta.
-2. Cartas com pergaminho e indicação da oportunidade. Confirmação de recusa informa próxima disponibilidade.
-3. Vitória/derrota/fuga: retângulo preto legado removido; texto escuro legível no pergaminho. XP e ouro em linhas separadas. Teste de fundo/limites e ausência de mutação.
-4. Save26:byte97 bits0..1tier,bit2oportunidade0/1;bits3..7rejeitados. ≤25 exige97≤3 e migra para oportunidade0 preservando todos os seis estágios antigos. Nada sobrescreve os contratos.
-5. As488artes e6991936bytes de carga continuam iguais a mundovivo1. Sem leiturasSD por quadro ou novos assets.
-
-LIMITE: os oito tipos de eventos ainda NÃO estão implementados. Duas cartas usam o hipogrifo do piloto. Doze contratos regionais continuam separados dos eventos. Esta é uma entrega parcial do Pacote6, não fechamento do pacote. Próximo: persistência própria para tipo/progresso/recompensa e objetivos de coleta/escolta/expedição realmente jogáveis.
+IMPLEMENTADO:
+Três tipos diários: hipogrifo, busca de duas cargas e escolta real. Duas oportunidades09h/18h, segunda diferente da primeira. Nv1..4 combate/coleta; escoltaNv5+. Recompensas fixadas no nível da oferta, antes do aceite. Cartas antigas preservam recompensa original.
+Coleta:50% achar carga/50% combate local dia/noite. Vitória dáXP/ouro normal e retoma missão; duas cargas entregam bônus. Sem avançar contratos/campanha/guardião/cristais. Escolta: D20 e rota verdadeira; vitória em emboscada retoma o mesmo teste, somente chegada conclui. Contrato paralelo preservado. Bolsa e desistência confirmada. Perda/fuga retorna à origem sem bônus.
+Carroça com rodas animadas atrás do herói nas cartas e contratos regionais de escolta. Viagem7s versus3s normal; passos lentos. Modo reconstruído pela missão salva. Código de pixels, sem assets novos, SD não é lido por quadro. D20/deslocamento preservados.
+Save27:97bits0..1tier,2slot,3..4tipo,5..6progresso,7reservado;92..93dia16bits,94nível0..20,95reservado0. <=26 migra dia32bits e tipo0/nível0/progresso0 preservando todos os estados/slot/recompensa. NÃO usar leitor26 após salvar27.
+Faltam cinco dos oito tipos diários: Pacote6 ainda parcial. Expedição/dungeon e outros objetivos precisam de desenho próprio, não combate renomeado.
 
 CAMINHOS:
 Raiz:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
 Sketch:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
-Regras de cartas:GuildEvents.h;slot:Rules.h;persistência:Save.h;UI:EventView.h;resultado:View.h.
-Guia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_2_CARTAS_AO_ENTARDECER.md
-Prévias:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-cartas-entardecer.png e previa-vitoria-pergaminho.png
-Release verificada:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-cartas2
-Mirror GitHub:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkoutGit).
+Regras:GuildEvents.h,Rules.h;save:Save.h;UI:EventView.h,MenuView.h;animação:World.h.
+Guia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_3_VIDAS_NA_ESTRADA.md
+Prévias:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-vidas-na-estrada.png e previa-escolta-carroca.png
+Release verificada:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-cartas3/VERIFICACAO.json
+Mirror:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkoutGit).
 
 CINCO PRIMEIROS COMANDOS DE TRABALHO:
-1. Ler esteTXT, guia, ROADMAP_PACOTES_EXPERIENCIA.md e cânone. Conferir ReleaseVersion.h/Save.h/manifesto publicado. Não anunciar oito eventos prontos. Maelis/Iria/Tomás/Liora são NPCs reais existentes.
-2. Validar fisicamente vitória/XP/ouro, primeira/segunda carta após18h, pendência/reinício e pagamento único. Conferir contratos/bolsa/camp/slots e ilha oculta. Os casos de horário e falha de save foram simulados; não alterar o relógio do aparelho só para testar.
-3. Planejar save de oito tipos de eventos com progresso próprio e recompensa fixada no aceite. Preservar piloto aceito e contratos; o slot diário agora está97bit2. Não reutilizar90/91camp,122/123origem,124CRC. Bytes67/119bestiário,116contratos/poderes continuam ocupados. IDs cidades0..3 e inimigos0..28 estáveis. Reader25 não entende gravações26.
-4. Implementar primeiro eventos de coleta/escolta com ações existentes e retorno seguro, depois dungeon/expedição; nenhuma missão de coleta deve ser um combate apenas renomeado. Preservar D20/deslocamento e surpresa da ilha (campaignEnding2+quatro contribuições). Pergaminho animado padrão. Memória de arte já está próxima do limite; preferir assets existentes pequenos.
-5. Rodar39suítes e comparação do corpo real do controlador, renderizar e inspecionar. Compilar ESP32-S3/core3.3.12/16MB/OPI/app3M_fat9M_16MB/EraseFlash=none. Publicar candidata, validar exatoSHA, só então promover main e verificar Release porhash/tamanho/CRC. ShellCI emLF. Registrar progresso; não repetir scripts históricos de implementação cegamente.
+1. Ler esteTXT, guia, ROADMAP_PACOTES_EXPERIENCIA.md e cânone. Conferir fonte/manifesto/save27; não anunciar oito eventos completos. Comparar GitHub/main atual antes de publicar.
+2. Validar placa: coleta1/2 e reinício, batalha e retomada; escolta com carroça7s e viagem normal3s; D20, fuga e retorno original; bolsa, contratos separados e pagamento único. Usuário instalaOTA ou cabo.
+3. Planejar próximos cinco tipos, com conteúdo local coerente e retratos existentes. Maelis/Iria/Tomás/Liora/Nara mantêm cânone. Expedição exige objetivos reais e migração segura; manter limite de duas oportunidades, pendências e recompensas fixadas.
+4. Preservar campos90/91camp,122/123origem,124CRC,67/119bestiário,116contratos/poderes, eventos92..99; IDs0..3cidades e0..28inimigos. Ilha oculta até campaignEnding2+quatro contribuições.488artes6991936bytes; PSRAM próxima do limite, sem SD por quadro. Não rerodar scripts históricos de implementação.
+5. Executar40suítes com controles reais/snapshots, renderizar e inspecionar. Compilar core3.3.12/ESP32S3/16MB/OPI/app3M_fat9M_16MB/EraseFlash=none. CI candidata noSHA exato, depois main, baixar/verificar Release e registrar progresso. Separar teste software de placa.
 
-RESTRIÇÕES: preservarHeltec; sem gravação automática de placa,.rpg,apagamentoNVS,formataçãoSD,saves físicos fabricados. Usuário confirmaOTA ou grava pelo cabo. GitHub autorizado. Testes de computador não comprovam funcionamento físico.
+RESTRIÇÕES: preservarHeltec; sem gravação automática,.rpg,apagamentoNVS,formataçãoSD ou saves físicos fabricados. GitHub autorizado. Testes de computador não comprovam funcionamento físico.

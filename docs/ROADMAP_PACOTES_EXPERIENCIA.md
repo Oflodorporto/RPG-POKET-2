@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual 10/10: primeira entrega do Pacote 6 — Caminhos Vivos publicada em 2026.10.10-mundovivo1. Mares e Aurora têm três inimigos cada; 12 contratos locais de combate, coleta e escolta; 39 suítes, save 25 e 488 artes. Próximo: restante do Pacote 6 — oito eventos variados e duas ofertas diárias. O hipogrifo ainda é o único evento diário. Teste físico pendente.
+Estado atual10/10: Pacote6.3 — Vidas na Estrada,2026.10.10-cartas3. Três tipos de evento diário e duas oportunidades09h/18h; coleta real/escolta com carroça7s/D20.40suítes,save27,488artes. Faltam cinco dos oito tipos;teste físico pendente.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
@@ -136,7 +136,7 @@ Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional
 - Critério: sessão curta em Mares/Aurora oferece diferenças visíveis de inimigo, decisão e objetivo. Medir ganho/tempo/mortes, testar retomada e slots, validar arte/memória/OTA e publicar antes de prometer variedade pronta.
 
 
-Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Cartas ao Entardecer implementa duas oportunidades (09h/18h), pendência e migração save26; o conteúdo continua sendo o piloto do hipogrifo. Faltam os oito tipos com objetivos próprios; não anunciar oito eventos prontos.
+Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Vidas na Estrada mantém duas oportunidades09h/18h e acrescenta recuperação de duas cargas e escolta real ao hipogrifo. Save27 preserva as cartas antigas. Três dos oito tipos estão prontos; faltam cinco, incluindo expedição/dungeon. Não anunciar o Pacote6 completo.
 
 Horário local e dia/noite podem variar ambiente e encontros, mas a campanha não deve exigir presença em uma hora específica. Oferecer/recusar sem culpa, não punir ausência e evitar bloquear a atualização ou o descanso por uma carta.
 
