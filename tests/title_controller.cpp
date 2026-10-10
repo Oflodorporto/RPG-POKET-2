@@ -37,7 +37,7 @@ void beginEffect(Effect effect,bool onHero){
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
 Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2){if(game.eventKind&&game.phase==rpg::Phase::Home){if(game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return rpg::eventReady(game)?Page::EventResult:Page::EventMission;}return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;}if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
-void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis());pendingTouch=false;gate=TouchGate{};}
+void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&game.tripStage==3)menu.journey.start(game.city,game.tripTo,millis(),rpg::escortTrip(game));pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
   afterSave=next;
   if(!journal.save(game)){view.page=Page::SaveError;Serial.println("SAVE FALHOU; jogo pausado para nova tentativa");}
@@ -715,7 +715,7 @@ int main(){
   assert(rpg::offerEvent(game,20734,10));game.eventKind=2;assert(!rpg::acceptEvent(game,27));assert(journal.save(game));view.page=currentPage();assert(view.page==Page::EventMission);
   tapped(100,235);assert(view.page==Page::TravelRoll&&!menu.rollReady&&game.tripStage==1&&!game.eventProgress);
   game.tripRoll=20;game.tripTotal=20+game.tripSurvival+game.tripLuck;assert(journal.save(game));menu.rollReady=true;tapped(100,290);assert(view.page==Page::Travel&&menu.journey.active&&!game.eventProgress);
-  assert(menu.journey.tick(millis()+3000)&&rpg::arriveTrip(game));view.page=currentPage();assert(view.page==Page::EventResult&&rpg::eventReady(game)&&!game.questProgress);
+  assert(menu.journey.escort&&!menu.journey.tick(millis()+3000));assert(menu.journey.tick(millis()+7000)&&rpg::arriveTrip(game));view.page=currentPage();assert(view.page==Page::EventResult&&rpg::eventReady(game)&&!game.questProgress);
   tapped(100,290);assert(view.page==Page::Menu&&game.city==2&&game.questId==9&&!game.questProgress&&game.eventStage==3);
   // Bag potions remain usable; camping cannot leave an active objective in an invalid state.
   game=rpg::create(0,42);game.tutorial=true;assert(rpg::offerEvent(game,20735,10));game.eventKind=1;assert(!rpg::acceptEvent(game,27));game.p.life=1;game.p.hp=1;assert(journal.save(game));view.page=currentPage();

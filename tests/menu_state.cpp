@@ -40,6 +40,8 @@ int main(){
   bytes[53]|=0x40;rpg::put32(bytes,60,rpg::crc(bytes,60));assert(rpg::decode(bytes,old,seq)==rpg::Decode::Corrupt);
   for(uint8_t a=0;a<4;++a)for(uint8_t b=0;b<4;++b){Journey j;assert(j.start(a,b,UINT32_MAX-500)==(a!=b));if(a==b)continue;assert(j.position().x==places[a].x);int previous=0;
     for(unsigned t=0;t<=3000;t+=10){j.tick(uint32_t(UINT32_MAX-500+t));Point p=j.position();assert(p.x>=0&&p.x<240&&p.y>=40&&p.y<225&&int(j.progress)>=previous);previous=j.progress;}assert(!j.active&&j.position().x==places[b].x&&j.position().y==places[b].y);}
+  for(uint8_t a=0;a<4;++a)for(uint8_t b=0;b<4;++b){if(a==b)continue;Journey j;assert(j.start(a,b,UINT32_MAX-500,true));assert(j.escort&&!j.tick(uint32_t(UINT32_MAX-500+3000)));assert(j.progress==428);
+    for(unsigned t=0;t<7000;t+=100){j.tick(uint32_t(UINT32_MAX-500+t));Point hero=j.position(),wagon=j.wagonPosition();assert(abs(hero.x-wagon.x)+abs(hero.y-wagon.y)>=18);assert(j.active);}assert(j.tick(uint32_t(UINT32_MAX-500+7000))&&!j.active&&j.progress==1000);assert(!j.tick(10000));}
   Journey invalid;assert(!invalid.start(0,4,0));CombatFx fx;fx.start(Effect::Lightning,false,100);assert(!fx.expire(1299)&&fx.frame(1299)==7);assert(fx.expire(1300));
   artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();std::vector<uint8_t> fallback(artMemory,artMemory+ART_BYTES);
   std::ifstream file("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);if(!file)file.open("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(file);Reader r;r.bytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(file),{});assert(readArt(r)==ArtStatus::Ready);

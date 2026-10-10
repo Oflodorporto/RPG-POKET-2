@@ -73,7 +73,7 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     center(144,menu.art==ArtStatus::Ready?"Artes do cartao: OK":"Artes simplificadas: ativas",1,menu.art==ArtStatus::Ready?UI_GREEN:UI_GOLD);
     snprintf(b,sizeof(b),"Tela %lums / toque %lums",(unsigned long)menu.frameMs,(unsigned long)menu.pollMs);center(198,b);center(177,menu.memoryTest<0?"Teste PSRAM: ainda nao feito":menu.memoryTest?"Teste 64 KiB PSRAM: OK":"Teste PSRAM: falhou",1,menu.memoryTest==1?UI_GREEN:UI_WHITE);
     button(14,222,212,"Testar memoria");button(14,272,212,"Voltar");return true;}
-  if(page==35||page==14||page==46){bool roll=page==46;bool travel=page==35;if(roll||travel){c.fillRect(0,272,240,48,UI_INK);c.fillRect(53,245,134,26,UI_INK);box(35,4,170,48);}center(21,roll?"TESTE DE VIAGEM":travel?"EM VIAGEM":"AELDRA",1,UI_GOLD);
+  if(page==35||page==14||page==46){bool roll=page==46;bool travel=page==35;if(roll||travel){c.fillRect(0,272,240,48,UI_INK);c.fillRect(53,245,134,26,UI_INK);box(35,4,170,48);}center(21,roll?"TESTE DE VIAGEM":travel?(menu.journey.escort?"EM ESCOLTA":"EM VIAGEM"):"AELDRA",1,UI_GOLD);
     if(!roll&&!travel){box(150,30,80,24);text(158,38,"Continente");text(8,38,"Valdaria");}
     auto line=[&](Point p,Point q,uint16_t color){int dx=abs(q.x-p.x),sx=p.x<q.x?1:-1,dy=-abs(q.y-p.y),sy=p.y<q.y?1:-1,err=dx+dy;for(;;){c.fillRect(p.x-1,p.y-1,3,3,color);if(p.x==q.x&&p.y==q.y)break;int e=2*err;if(e>=dy){err+=dy;p.x+=sx;}if(e<=dx){err+=dx;p.y+=sy;}}};
     for(unsigned i=0;i<9;++i)line(roadPoints[i],roadPoints[i+1],UI_GOLD);
@@ -89,7 +89,11 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
       snprintf(b,sizeof(b),"D20 + Sobrev %u + Sorte %u",g.tripSurvival,g.tripLuck);center(231,b);
       if(menu.rollReady){snprintf(b,sizeof(b),"%u + %u + %u = %u / CD %u",g.tripRoll,g.tripSurvival,g.tripLuck,g.tripTotal,g.tripDifficulty);center(250,b,1,UI_GOLD);button(14,272,212,rpg::tripSafe(g)?"Continuar viagem":"Enfrentar inimigo");}
       else center(281,"Rolando o dado...",1,UI_GOLD);
-    }else if(travel){Point p=menu.journey.position();for(int y=0;y<24;++y)for(int x=0;x<22;++x){auto color=personalPixel(g,frame%6,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y-int(frame%2),1,1,color);}c.fillRect(p.x-6-int(frame%3),p.y+1,3,2,UI_MUTED);
+    }else if(travel){Point p=menu.journey.position();if(menu.journey.escort){Point q=menu.journey.wagonPosition();q.x=std::max(14,std::min(225,q.x));q.y=std::max(70,std::min(218,q.y));line(q,p,0x9b86);int x=q.x-12,y=q.y-17+int(frame%2);
+      // Small code-native pixel wagon: canvas hood, timber bed, cargo and rotating wheels.
+      c.fillRect(x+2,y+3,22,12,0x51e3);c.fillRect(x+4,y+1,18,10,0xd5f3);c.fillRect(x+6,y,14,2,0xff19);c.fillRect(x+11,y+2,2,9,0x9b86);c.fillRect(x+3,y+12,20,2,0xb3c8);
+      for(int wheel:{x+4,x+18}){c.fillRect(wheel-1,y+14,7,6,UI_INK);c.drawRect(wheel,y+15,5,4,UI_GOLD);c.fillRect(wheel+2,y+15+int(frame%2),1,2,0xff19);}}
+      unsigned step=menu.journey.escort?frame/2:frame;for(int y=0;y<24;++y)for(int x=0;x<22;++x){auto color=personalPixel(g,step%6,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y-int(step%2),1,1,color);}c.fillRect(p.x-6-int(step%3),p.y+1,3,2,UI_MUTED);
       snprintf(b,sizeof(b),"%s -> %s",placeName(menu.journey.from),placeName(menu.journey.to));center(245,b);box(14,277,212,20);c.fillRect(17,280,206*menu.journey.progress/1000,14,UI_GREEN);}
     else{snprintf(b,sizeof(b),"Destino Nv %u+ / CD %u",rpg::cityLevel(menu.destination),rpg::routeDifficulty(g.city,menu.destination));center(231,b,1,g.p.level<rpg::cityLevel(menu.destination)?UI_RED:UI_WHITE);snprintf(b,sizeof(b),"Farol: %s",menu.destination==0?"Raiz":menu.destination==1?"Memoria":menu.destination==2?"Caminho":"Juramento");center(250,b,1,UI_GOLD);button(14,272,102,menu.destination==g.city?"Entrar":"Viajar");button(124,272,102,"Voltar");}return true;}
   return false;
