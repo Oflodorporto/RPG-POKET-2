@@ -22,7 +22,7 @@ struct Game {
   uint8_t tripStage=0,tripTo=0,tripRoll=0,tripDifficulty=0,tripTotal=0,tripEnemy=0,tripSurvival=0,tripLuck=0;
   uint8_t rations=0,charts=0,charms=0;
   uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
-  uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0;
+  uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0,eventOfferSlot=0;
   uint8_t crystals=0,dungeonFlags=0,dungeonXY=0,dungeonLoot=0,dungeonEnemies=0,dungeonClears=0;
   uint32_t owned=0;
   uint8_t equipped[3]={},forge[3]={};

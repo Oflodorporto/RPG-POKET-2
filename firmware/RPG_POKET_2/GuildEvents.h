@@ -1,7 +1,8 @@
 #pragma once
 #include "Rules.h"
 namespace rpg {
-// Pilot: one offer per valid local day, available at 09h; maximum date never decreases.
+// Two opportunities per local day: 09h and 18h. Pending letters never expire.
+// Slot 0 is the first offer, slot 1 the second; the recorded day never decreases.
 // Stage 0=none,1=pending,2=mission,3=completed,4=refused,5=lost,6=fled.
 inline uint8_t eventTierFor(uint8_t level){return level<5?0:level<10?1:level<18?2:3;}
 inline unsigned eventGold(uint8_t tier){static const unsigned n[]={25,70,150,300};return n[tier<4?tier:0];}
@@ -10,15 +11,21 @@ inline const char* eventPlace(uint8_t tier){static const char* n[]={"Pomar de Ca
 inline bool eventSafe(const Game& g){return !g.discovery&&g.tutorial&&!g.campaignStage&&g.phase==Phase::Home&&g.p.hp&&!g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2;}
 inline bool eventReturnPage(uint8_t p){return p==2||p==9||p==27||p==36||p==49;}
 inline bool eventValid(const Game& g){
- if(g.eventStage>6||g.eventTier>3||g.eventOriginCity>3)return false;
- if(!g.eventStage)return !g.eventDay&&!g.eventTier&&!g.eventOriginCity&&!g.eventOriginPage&&(g.enemyId<10||g.enemyId>=14);
+ if(g.eventStage>6||g.eventTier>3||g.eventOriginCity>3||g.eventOfferSlot>1)return false;
+ if(!g.eventStage)return !g.eventOfferSlot&&!g.eventDay&&!g.eventTier&&!g.eventOriginCity&&!g.eventOriginPage&&(g.enemyId<10||g.enemyId>=14);
  if(g.eventDay<20454||g.eventDay>47481)return false;
  if(g.eventStage==1)return !g.eventOriginCity&&!g.eventOriginPage&&(g.enemyId<10||g.enemyId>=14);
  if(!eventReturnPage(g.eventOriginPage)&&g.eventStage!=4)return false;
  if(g.eventStage==2)return !g.tripStage&&!g.campStage&&!g.dungeonFlags&&g.clubStage!=1&&g.clubStage!=2&&g.phase!=Phase::Home&&g.enemyId==10+g.eventTier&&g.city==g.eventTier;
  return (g.enemyId<10||g.enemyId>=14);
 }
-inline bool offerEvent(Game& g,uint32_t day,unsigned hour){if(!eventSafe(g)||g.eventStage==2||hour<9||day<20454||day>47481||day<=g.eventDay)return false;g.eventDay=day;g.eventStage=1;g.eventTier=eventTierFor(g.p.level);g.eventOriginCity=g.eventOriginPage=0;return true;}
+inline bool offerEvent(Game& g,uint32_t day,unsigned hour){
+ if(!eventSafe(g)||g.eventStage==1||g.eventStage==2||hour<9||hour>23||day<20454||day>47481||day<g.eventDay)return false;
+ const bool sameDay=day==g.eventDay;
+ if(sameDay&&(g.eventOfferSlot==1||hour<18))return false;
+ // A late login can answer the first letter, then receive the evening letter.
+ g.eventOfferSlot=sameDay?1:0;g.eventDay=day;g.eventStage=1;g.eventTier=eventTierFor(g.p.level);g.eventOriginCity=g.eventOriginPage=0;return true;
+}
 inline const char* acceptEvent(Game& g,uint8_t page){if(g.eventStage!=1)return "Carta indisponivel";if(!eventSafe(g))return "Termine a acao atual primeiro";g.eventOriginCity=g.city;g.eventOriginPage=eventReturnPage(page)?page:2;g.city=g.eventTier;g.eventStage=2;if(!begin(g,10+g.eventTier))return "Nao foi possivel iniciar";return nullptr;}
 inline bool refuseEvent(Game& g){if(g.eventStage!=1)return false;g.eventStage=4;return true;}
 inline bool finishEvent(Game& g){if(g.eventStage!=2||(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled))return false;
