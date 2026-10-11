@@ -5,3 +5,10 @@ for name in ['title_controller','dungeon_controller']:
  test=(root/'tests'/f'{name}.cpp').read_text().split('void beginEffect(',1)[1].split('int main(',1)[0]
  assert body.strip()==test.strip(),name
  print('PASS: actual controller matches '+name)
+
+# The hint dispatcher is also shared verbatim with the controller fixtures.
+sketch=(root/'firmware/RPG_POKET_2/RPG_POKET_2.ino').read_text()
+helper=sketch.split('bool offerFirstHint()',1)[1].split('void beginEffect(',1)[0]
+for name in ['title_controller','dungeon_controller']:
+ test=(root/'tests'/f'{name}.cpp').read_text().split('bool offerFirstHint()',1)[1].split('void beginEffect(',1)[0]
+ assert helper.strip()==test.strip(),name+' hints'

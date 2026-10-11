@@ -31,6 +31,13 @@ const char* buyStockGear(rpg::Game& g,uint8_t id){uint8_t old=g.city;if(!rpg::ci
 int main(int argc,char** argv){
   assert(argc==2);artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);makeFallback();
   std::ifstream pack("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);if(!pack)pack.open("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);Canvas c;rpg::Game g=rpg::testHero(0,32);ViewState v;std::string root=argv[1];
+  for(unsigned cls=0;cls<4;++cls)for(unsigned i=0;i<firstExperience::count;++i){
+   g=rpg::create(cls,42);v=ViewState{};v.page=Page::FirstTip;v.hintIndex=i;v.hintReturn=Page::Village;
+   uint8_t a[rpg::SAVE_SIZE],b[rpg::SAVE_SIZE];rpg::encode(g,1,a);
+   for(unsigned frame=0;frame<=7;++frame)render(c,g,v,frame);
+   rpg::encode(g,1,b);assert(!memcmp(a,b,sizeof(a)));if(cls==0)c.save(root+"/experience72-"+std::to_string(i)+".ppm");
+   v.hintError=true;render(c,g,v,10);
+  }
   // Rewards remain legible on parchment for all outcomes, including large values.
   for(auto phase:{rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled}){
    g=rpg::testHero(0,42);g.phase=phase;g.gainXp=3276;g.gainGold=255;g.dropLife=g.dropMana=true;v.page=Page::Result;

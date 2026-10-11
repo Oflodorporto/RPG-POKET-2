@@ -13,7 +13,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::IslandEntry:return bg_explore1;
@@ -36,7 +36,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "StoryPaper.h"
 #include "MenuView.h"
@@ -59,6 +59,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "LaunchView.h"
 #include "ExplorationView.h"
 #include "LocksView.h"
+#include "FirstExperience.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -79,6 +80,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
+  if(v.page==Page::FirstTip){drawFirstExperience(c,g,v,frame);return;}
   if(v.page==Page::Title){drawTitle(c,frame);return;}
   if(v.page==Page::Menu){drawScenicMenu(c,g,v,frame);return;}
   if(v.page==Page::Home){drawScenicHome(c,g,v,frame);return;}
@@ -179,13 +181,12 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,211,102,"< Voltar");button(124,211,102,"Proxima>");button(14,263,212,"Personalizar");return;
   }
   if(v.page==Page::Help){
-    center(14,"NARA VELD / GUIA",2,UI_GOLD);center(43,"Refugio das Brasas / Carvalho");
-    c.fillRect(10,64,220,82,UI_INK);text(19,75,"Um toque, uma acao.",1);
-    text(19,92,"Ataque e aguarde o inimigo.");text(19,109,"Habilidades consomem mana.");text(19,126,"Pocoes tambem usam um turno.");
-    center(162,"Carvalho: explore ate nivel 5.");center(184,"Depois: mapa > Ruinas > Guardiao.");center(205,"O progresso e salvo a cada turno.");
+    center(14,"UMA PORTA ABERTA",1,UI_GOLD);npcPortrait(c,story::Npc::Nara,88,39,48);
+    center(101,"Nara Veld / Refugio das Brasas");
+    story::wrapStory("Carvalho precisa de ajuda. Procure Elarin e Borin em Conversar. Eles conhecem a estrada e podem indicar trabalho. Objetivo guarda seu proximo passo.",33,[&](unsigned row,const char* line){text(20,126+row*14,line);});
+    center(216,"Suas acoes salvam o progresso.",1,UI_MUTED);
     scenicPanel(c,14,233,212,27);panelLabel(c,18,242,204,"Abrir guia completo >",UI_GOLD);
-    center(216,v.recovered?"Checkpoint anterior recuperado.":"Reiniciar retoma sua aventura.",1,UI_MUTED);
-    button(14,268,212,"Continuar");return;
+    button(14,268,102,"Sem dicas");button(124,268,102,"Com dicas");return;
   }
   if(v.page==Page::CityGoods||v.page==Page::GoodsBuy){bool buy=v.page==Page::GoodsBuy;uint8_t id=rpg::localGood(g.city);auto preview=g;
     center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));

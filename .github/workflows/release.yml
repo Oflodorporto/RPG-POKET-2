@@ -53,6 +53,7 @@ jobs:
             build/screens/campaign-*.ppm
             build/screens/launch-*.ppm
             build/screens/powers-*.ppm
+            build/screens/experience72-*.ppm
             build/screens/title-*.ppm
             build/screens/scenic-*.ppm
             build/screens/panels-*.ppm

@@ -22,7 +22,7 @@ constexpr OriginPage arrival[]={
  {"UMA PORTA ABERTA",Npc::Nara,"Entre, tire a capa molhada. Tenho sopa e uma cama. Amanha Elarin e Borin podem lhe indicar trabalho."},
  {"O MENSAGEIRO",Npc::Messenger,"Feras tomaram a estrada! A carta e da Guilda. Vi cinza branca nas raizes e ouvi o sino da torre vazia."},
  {"UMA CARTA DE MAELIS",Npc::Maelis,"Precisamos investigar a cinza e manter a estrada aberta. Fale com Elarin e Borin. Carvalho precisa de ajuda."},
- {"SEU PRIMEIRO OBJETIVO",Npc::Nara,"Primeiro, aprenda a lutar e usar sua bolsa. Depois fale com Elarin e Borin. Ajude Carvalho e fique mais forte."}
+ {"SEU PRIMEIRO OBJETIVO",Npc::Nara,"Abra Conversar em Carvalho. Procure Elarin e Borin: eles conhecem a estrada. Seu primeiro trabalho comeca aqui."}
 };
 inline const char* nextUnlock(unsigned cls){constexpr const char* label[]={"Nv 3: Raios abrasadores","Nv 3: Arma sagrada","Nv 2: Surto de acao","Nv 5: Ataque extra"};return label[cls%4];}
 inline unsigned originCount(const rpg::Game& g){return g.originStory?8:5;}

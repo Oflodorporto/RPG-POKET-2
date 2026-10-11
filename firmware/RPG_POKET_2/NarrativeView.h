@@ -50,7 +50,7 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
   else {center(45,g.originStory&&menu.storyIndex<3?"VOCE / ANTES DA JORNADA":"NARRADOR",1,UI_GREEN);center(68,rpg::className(g.p.cls),1,UI_GOLD);}
   story::wrapStory(page.text,18,[&](unsigned row,const char* line){c.setTextSize(2);c.setTextColor(STORY_INK);c.setCursor(12,92+row*17);c.print(line);});
   if(menu.storyIndex+1==story::originCount(g)&&g.dndProgression&&g.p.level==1)center(235,story::nextUnlock(g.p.cls),1,UI_GREEN);
-  snprintf(b,sizeof(b),"Pagina %u / %u",menu.storyIndex+1,story::originCount(g));center(249,b,1,UI_MUTED);
+  snprintf(b,sizeof(b),"Pagina %u / %u",menu.storyIndex+1,story::originCount(g));center(243,b,1,UI_MUTED);if(!menu.storyReplay){c.fillRect(14,254,212,14,UI_PANEL);c.setTextColor(UI_WHITE);c.setTextSize(1);c.setCursor(75,257);c.print("Pular historia");}
   button(14,272,102,menu.storyIndex?"Voltar":menu.storyReplay?"Fechar":"Pular");button(124,272,102,menu.storyIndex+1==story::originCount(g)?"Continuar":"Avancar");return;
  }
 
