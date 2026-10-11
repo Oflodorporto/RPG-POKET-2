@@ -390,7 +390,7 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Help){if(hit(x,y,14,268,102)||hit(x,y,124,268,102)){
     if(x<120&&(firstHints.bits&firstExperience::active)&&!firstHints.acknowledge(0,true)){say("Falha ao guardar suas dicas");return;}
-    say("");if(!game.tutorial){game.tutorial=true;savedTransition(helpReturn);}else{view.page=helpReturn;dirty=true;}
+    say("");if(!game.tutorial){bool newArrival=firstHints.bits&&game.originStory&&game.originPage==8&&game.city==0;game.tutorial=true;savedTransition(newArrival?Page::Village:helpReturn);}else{view.page=helpReturn;dirty=true;}
   }return;}
   if(view.page==Page::Home){int choice=scenicUi::homeChoice(x,y);
     if(choice==0){showMap();}

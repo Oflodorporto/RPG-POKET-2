@@ -390,7 +390,7 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Help){if(hit(x,y,14,268,102)||hit(x,y,124,268,102)){
     if(x<120&&(firstHints.bits&firstExperience::active)&&!firstHints.acknowledge(0,true)){say("Falha ao guardar suas dicas");return;}
-    say("");if(!game.tutorial){game.tutorial=true;savedTransition(helpReturn);}else{view.page=helpReturn;dirty=true;}
+    say("");if(!game.tutorial){bool newArrival=firstHints.bits&&game.originStory&&game.originPage==8&&game.city==0;game.tutorial=true;savedTransition(newArrival?Page::Village:helpReturn);}else{view.page=helpReturn;dirty=true;}
   }return;}
   if(view.page==Page::Home){int choice=scenicUi::homeChoice(x,y);
     if(choice==0){showMap();}
@@ -561,7 +561,7 @@ void tapped(int x,int y){
 int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);
  // First character, tutorial, menu, and refusal to create a phantom hero from an empty slot.
- tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(75,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Home&&game.tutorial);
+ tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(75,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Village&&game.tutorial);
  auto first=game;tapped(190,290);assert(view.page==Page::Menu);tapped(120,119);assert(view.page==Page::Slots&&menu.slots[0]==rpg::Load::Ok);
  tapped(80,130);assert(view.page==Page::SlotConfirm&&menu.slotChoice==1);tapped(80,190);assert(view.page==Page::Race&&menu.activeSlot==1);
  view.page=Page::Race;tapped(30,280);assert(view.page==Page::Menu);tapped(120,90);assert(view.page==Page::Menu&&journal.active<0);tapped(120,261);assert(view.page==Page::Race);tapped(170,280);

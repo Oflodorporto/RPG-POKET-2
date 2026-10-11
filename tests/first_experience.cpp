@@ -35,7 +35,7 @@ int main(){
  tapped(175,290);assert(view.page==Page::Prologue&&game.p.level==1&&game.originPage==0);
  tapped(175,290);assert(game.originPage==1);selectSlot(0);assert(view.page==Page::Prologue&&menu.storyIndex==1);
  tapped(120,259);assert(view.page==Page::Help&&game.originPage==8&&!game.tutorial);
- tapped(65,290);assert(game.tutorial&&!firstHints.pending(0));selectSlot(0);assert(view.page==Page::Home&&!offerFirstHint());
+ tapped(65,290);assert(view.page==Page::Village&&game.tutorial&&!firstHints.pending(0));selectSlot(0);assert(view.page==Page::Home&&!offerFirstHint());
  for(unsigned i=0;i<firstExperience::count;++i){unsigned lines=story::wrapStory(firstExperience::tips[i].text,33,[](unsigned,const char* s){assert(strlen(s)<=33);});assert(lines<=9);}
  puts("PASS: first-experience controller, all 10 contexts, skip/restart, three slots, failed hint writes, unchanged Save28/gameplay and creation checkpoints");
 }

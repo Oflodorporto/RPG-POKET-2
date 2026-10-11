@@ -47,7 +47,8 @@ template<class C>void drawFirstExperience(C& c,const rpg::Game& g,const ViewStat
  auto text=[&](int x,int y,const char* s,int size=1){c.setTextColor(STORY_INK);c.setTextSize(size);c.setCursor(x,y);c.print(s);};
  text((240-int(strlen(tip.title))*6)/2,22,tip.title);
  npcPortrait(c,story::Npc::Nara,16,40,40);text(68,48,"NARA VELD");text(68,65,"Uma dica para sua jornada");
- story::wrapStory(tip.text,33,[&](unsigned row,const char* line){text(20,96+row*15,line);});
+ const char* speech=v.hintIndex==0&&v.hintReturn==Page::Home?"No abrigo, abra Mapa, escolha Carvalho e toque Entrar. Na cidade, Conversar apresenta Elarin e Borin. Objetivo lembra seu proximo passo.":tip.text;
+ story::wrapStory(speech,33,[&](unsigned row,const char* line){text(20,96+row*15,line);});
  text(32,235,"Nada foi escolhido por voce.");
  if(v.hintError)text(20,250,"Falha ao guardar; tente de novo.");
  auto button=[&](int x,const char* label){c.fillRect(x,272,102,40,UI_PANEL);c.drawRect(x,272,102,40,UI_GOLD);c.setTextColor(UI_WHITE);c.setTextSize(1);c.setCursor(x+(102-int(strlen(label))*6)/2,287);c.print(label);};
