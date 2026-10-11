@@ -1,0 +1,46 @@
+RPG POKET2 — PACOTE7.4 / PROGRESSÃO REGIONAL
+Versão candidata:2026.10.11-balance74/build2026101102. Base:experience72; auditoria7.3 sem novaRelease.
+Estado:48suítes nativas locais aprovadas antes do ajuste final de escolta/aviso; validação CI/compilação/publicação pendentes.
+
+AUDITORIA E ALTERAÇÕES
+Alta:contrato fácil usava a diferença de XP do nível atual do herói. EmCarvalho,Nv12,o bônus de caça era3000XP; repetição continuava rendendo em níveis altos. Novo:nível fixo da tarefa, desconto para tarefa fraca, ouro limitado ao nível da tarefa.
+Média:combates fáceis mantinham o mesmo XP independentemente do herói; agora existe desconto gradual. Inimigos fortes em cidade inicial não sofrem penalidade geográfica.
+Média:hipogrifos das cartas pagavam0XP em combate; personagens D&D agora recebem XP da luta e o bônus final separado, uma vez cada.
+Design:missões regionais/campanha agora compensam mais em dificuldade adequada. Objetivos, diálogos, história, inimigos, atributos, itens, probabilidade de loot, poderes e curva D&D intactos.
+
+FÓRMULAS
+Antes:combateD&D=EnemySpec.xp*10; contrato=XPpara próximo nível no aceite*percentual15/12/18 (IDs1..3:25/35/60%). Ouro=base+2*(nívelaceite-1).
+Agora:catálogo de dificuldade por inimigo, independente de cidade. Goblin1,lobo2,esqueleto/javali/mímicoCarvalho3,guardião/espectro/vigia/hipogrifo5,Arconte8,saqueador/criaturasMares10,sentinela/criaturasAurora/ilha18,coração/Thalvor19. Hipogrifo jovem2,marcado10,alfa18.
+XPbase=max(20,deltaD&D(dificuldade)/15),dobrado só paraGuardião/Arconte/Odran/Coração/Thalvor; limitado3276 para manter o recibo Save28 válido.
+Desconto:gap=max(0,nívelHerói-dificuldade-2); XP=max(1,base/2^gap),truncado. Faixa de tolerância2níveis. XP não cresce com o nível do herói. Lv20 segue máximo e não acumula novo XP.
+Contrato:nívelCarvalho1,Ruínas5,Mares10,Aurora18; IDsantigos1/2=3,3=5. Bônusbase=max(200,deltaD&D(tarefa)*25%caça/20%coleta/10%escolta). Aplica mesmo desconto usando nível registrado no aceite, mínimo10XP. Ourobase+2*(min(nívelaceite,dificuldade)-1). O contrato já aceito mantém ID,quantidade e nível de referência; a recompensa ainda não recebida segue a fórmula nova.
+Escoltas são mais curtas:10%,evitando bonificação desproporcional em viagens seguras repetidas. Cartas de escolta continuam superiores por serem limitadas a2oportunidades/dia.
+CartasD&D:max(200,deltaD&D(níveldaoferta)*20%);30%paraescolta/expedição/resgate/defesa. Lv20bonus0. Ouro,duas ofertas/dia,níveldaoferta registrado e prevenção de duplicatas preservados. Cartas antigas sem eventLevel e todos personagens nãoD&D preservam fórmulas históricas de bônus. Combate legado com recompensa zero recebe piso1XP.
+CampanhaD&D:missões1/2=5250XP (25%Nv10),3=10000XP (25%Nv18),4..7=4000XP (10%Nv18). São recompensas únicas. Finais8/9 continuam sem bônus extra deXP; recompensas de combate seguem regra nova. Ouro e flags de final preservados.
+Exploração:achados/baús/carga não dão XP gratuito; item/ouro/probabilidades intactos. Mímicos,viagem,acampamento e ambas dungeons usam o mesmo cálculo de combate.
+PvP:não concede XP; entrada25g,vitória45g/empate25g,devolução/controle de sessão intactos.
+Slots legados nãoD&D mantêm XP/ouro antigos e curva antiga,exceto piso1XP em combates anteriormente sem recompensa; saves D&D recebidos após formato12 usam as regras futuras novas.
+
+EXEMPLOS
+GoblinNv1:80->20XP. GoblinNv12:80->1XP. EspectroNv5:380->500XP; mesmo inimigo emNv12:15XP. SentinelaNv12:1800->2666XP,mesmo se enfrentada emCarvalho.
+CaçaCarvalhoNv1:45->200XP extras; Nv12:3000->10. CaçaAuroraNv18:6000->10000 extras. Guarda dos contratos antigos não apaga seus objetivos.
+Caça de3goblinsNv1,modelo30s/luta+60sGuilda:antes285XP/ciclo=6840XP/h;depois260=6240XP/h. Exploração só de goblins:9600->2400XP/h. Bônus é separado das3lutas. Esse é exemplo compatível,não a distribuição completa de encontros.
+Nv12,mesmo ciclo3goblins:3240->13XP (77760->312XP/h). Isso remove o farm de personagem avançado na primeira região.
+CaçaAurora2sentinelasNv18:9600->15332XP (288000->459960XP/h em120s); só lutas:216000->319920XP/h. São estimativas ideais,sem perdas ou descansos.
+EscoltaRuínasNv5:bônus1350->750XP; ouro40inalterado. EscoltaAuroraNv18:7200->4000XP; ouro129inalterado. Viagem dura7s mais navegação e possíveis combates. A missão não deve valer como uma caça longa.
+As taxas acima usam hipóteses explícitas, não tempo medido da placa. Benefício da missão depende também de encontrar os alvos/cargas,vitórias,rota,restos e leitura.
+
+MEDIÇÕES E PRESERVAÇÃO
+40.960combates antes e40.960depois:6.202derrotas em ambos; mudança de recompensa não muda a luta. Quatro classes,20níveis,4cidades,64sementes,ataque básico/poderes; HP/MP novos e sem equipamento.
+PACOTE_7_4_MEDICOES.json:32comparações dos níveis1,3,5,8,12,15,18,20 nas4cidades; taxas brutas usando passos reais e estimativa3s/ação+16s/encontro. Não inclui recursos/resto,perdaXP,achados e tempo de leitura. Não é previsão de sessão real.
+48suítes:regressõesanteriores e balance74. Novo teste232combinações,limites,desconto por inimigo,invariância entre cidades,recibos antigos inalterados,bytesSave28 iguais,contrato não duplicado,legados e PvP. Render inclui aviso curto no pergaminho:XP menor:inimigo fraco.
+Saves:nenhuma mudança emSave.h,formato28/128bytes/leituras1..28; sem migração,sem recálculo de XP antigo,sem dados fictícios na placa. Os três slots/jornal/recuperação seguem intactos. Payouts novos só em ações futuras.
+Artes488 preservadas,SHA256:bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8. Nenhuma leitura SD nova,nenhuma nova alocação/renderização de artes.
+
+TESTE FÍSICO PENDENTE / USUÁRIO
+1.Anote nível/XP/ouro/equipamento dos slots existentes; atualize porConfigurações>Atualização e confira os mesmos valores após reiniciar. Não delete slots.
+2.Com personagem existente avançado,vença inimigo inicial:XP pequeno/aviso legível. Vença inimigo adequado:recompensa integral.
+3.Em slot realmente vazio,se desejar,crieNv1:vença inimigo,aceite missão,confira bônus separado e custo de recuperação. Não sobrescreva outro personagem.
+4.Receba contrato/umaCarta/uma missão de campanha que já estejam disponíveis; volte à tela e reinicie após gravação concluída:sem bônus duplicado. Não repita história completada.
+5.Dungeons/viagens/acampamento/PvP:controle/recursos/retomada preservados. Verifique legibilidade dos números maiores e sensação de duração da progressão.
+Não desligue durante gravação ouOTA. O agente não testou a placa. Nenhuma gravação automática,NVSapagada,SDformatado,.rpg ou mudançaHeltec.7.5/8não iniciados.

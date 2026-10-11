@@ -11,7 +11,7 @@ inline unsigned contributionNextCity(const Game& g){for(unsigned city=0;city<4;+
 inline const char* contributionName(unsigned city){const char* names[]={"Raizes vivas","Memorias libertas","Rotas abertas","Estrutura renovada"};return names[city%4];}
 inline bool campaignDonation(unsigned mission){return mission==4||mission==7;}
 inline unsigned campaignGold(unsigned mission){return mission==1?120:mission==2?180:mission==3?350:mission==5||mission==6?100:0;}
-inline unsigned campaignXp(const Game& g,unsigned mission){return (mission==1?100:mission==2?150:mission==3?350:mission>=4&&mission<=7?100:0)*(g.dndProgression?10:1);}
+inline unsigned campaignXp(const Game& g,unsigned mission){return g.dndProgression?(mission==1||mission==2?5250:mission==3?10000:mission>=4&&mission<=7?4000:0):(mission==1?100:mission==2?150:mission==3?350:mission>=4&&mission<=7?100:0);}
 inline const char* campaignTitle(unsigned mission){return mission==1?"A CARGA DE CINZAS":mission==2?"O FAROL APAGADO":mission==3?"ARQUIVOS DA COROA":mission==4?"A RAIZ QUE RESISTE":mission==5?"NOMES ENTRE AS PEDRAS":mission==6?"O CAMINHO DOS VOLUNTARIOS":mission==7?"A FORJA DA PRIMEIRA LUZ":mission==8?"O REGENTE DA VIGILIA":"O CORACAO DO VEU";}
 inline unsigned campaignCity(unsigned mission){return mission>=8?3:mission>=4?mission-4:mission==3?3:2;}
 inline unsigned campaignLevel(unsigned mission){return mission>=3?18:10;}

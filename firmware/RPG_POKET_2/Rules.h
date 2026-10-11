@@ -116,13 +116,26 @@ inline const char* equipGear(Game& g,uint8_t id){
 inline uint16_t dndXpNeeded(unsigned l){return l<20?uint16_t(dndXp[std::max(1u,l)]-dndXp[std::max(1u,l)-1]):1;}
 inline uint16_t xpNeeded(uint8_t l){return uint16_t(std::min(uint32_t(65535),30u+uint32_t(l)*l*10));}
 inline uint16_t xpNeeded(const Game& g){return g.dndProgression?dndXpNeeded(g.p.level):xpNeeded(g.p.level);}
+// Reward difficulty follows the enemy, not the city hosting the encounter.
+inline unsigned enemyRewardLevel(unsigned id){static const uint8_t levels[]={1,2,3,5,3,5,10,18,8,5,2,5,10,18,3,5,10,18,18,19,18,18,18,18,19,10,10,18,18};return id<29?levels[id]:3;}
+inline unsigned weakReward(unsigned base,unsigned heroLevel,unsigned challenge,unsigned floor=1){
+ unsigned gap=heroLevel>challenge+2?heroLevel-challenge-2:0;
+ return std::max(floor,base>>std::min(15u,gap));
+}
+inline unsigned combatXpBase(unsigned id){
+ unsigned base=std::max(20u,unsigned(dndXpNeeded(enemyRewardLevel(id)))/15);
+ if(id==3||id==8||id==18||id==19||id==24)base*=2;
+ return std::min(3276u,base); // Existing Save28 reward receipt limit.
+}
+inline uint16_t combatXp(const Game& g){return g.dndProgression?weakReward(combatXpBase(g.enemyId),g.p.level,enemyRewardLevel(g.enemyId)):std::max(1u,unsigned(enemySpec(g.enemyId).xp));}
+inline bool reducedCombatXp(const Game& g){return g.dndProgression&&g.phase==Phase::Won&&g.gainXp>0&&g.gainXp<combatXpBase(g.enemyId);}
 inline uint32_t totalExperience(const Game& g){return g.dndProgression?dndXp[std::min(20u,unsigned(g.p.level))-1]+g.p.xp:g.p.xp;}
 inline unsigned attacksPerAction(const Game& g){if(!g.dndProgression||g.p.cls==0)return 1;if(g.p.cls==2)return g.p.level>=20?4:g.p.level>=11?3:g.p.level>=5?2:1;return g.p.level>=5?2:1;}
 inline unsigned hpPerLevel(const Game& g){const unsigned avg[]={4,6,6,7};return std::max(1,int(avg[g.p.cls])+abilityMod(g.attributes[2]))+unsigned(g.tough)*2;}
 inline unsigned spellCircle(const Game& g){return g.p.cls==0?std::min(9u,(unsigned(g.p.level)+1)/2):g.p.cls==1&&g.p.level>=2?std::min(5u,(unsigned(g.p.level)+3)/4):0;}
 inline const char* improveAttribute(Game& g,unsigned i){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(i>=6||!advancementPoints(g))return "Sem pontos disponiveis";if(g.attributes[i]>=20)return "Limite de atributo: 20";int old=abilityMod(g.attributes[i]);++g.attributes[i];++g.advancementSpent;if(i==2){unsigned gain=(abilityMod(g.attributes[i])-old)*g.p.level;g.p.maxhp+=gain;g.p.hp+=gain;}g.p.maxmp=totalMana(g);return nullptr;}
 inline const char* learnTough(Game& g){if(g.phase!=Phase::Home||g.tripStage||g.campStage||g.dungeonFlags)return "Termine a acao atual";if(g.tough)return "Talento ja aprendido";if(advancementPoints(g)<2||g.advancementSpent%2)return "Requer 2 pontos do mesmo marco";g.tough=true;g.advancementSpent+=2;g.p.maxhp+=g.p.level*2;g.p.hp+=g.p.level*2;return nullptr;}
-// IDs1..3 are legacy Ruins contracts: their objectives and rewards never change.
+// Contract IDs/objectives and non-D&D rewards remain compatible with old saves.
 enum class ContractKind:uint8_t {Combat,Recover,Escort};
 struct Contract {const char* name;const char* objective;int8_t enemy;uint8_t count,gold,percent;};
 inline const Contract& contract(uint8_t id){static const Contract q[]={
@@ -159,8 +172,14 @@ inline const char* contractStory(unsigned id,unsigned line){
  return stories[id-4][std::min(line,2u)];
 }
 inline uint16_t contractXp(uint8_t id,uint8_t level){return id>=1&&id<=15&&level?uint32_t(xpNeeded(level))*contract(id).percent/100:0;}
-inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){return g.dndProgression&&id>=1&&id<=15&&level?uint32_t(dndXpNeeded(level))*contract(id).percent/100:contractXp(id,level);}
+inline unsigned contractRewardLevel(unsigned id){return id<=3?(id==3?5:3):contractLevel(id);}
+inline uint16_t contractXp(const Game& g,uint8_t id,uint8_t level){
+ if(!g.dndProgression)return contractXp(id,level);if(id<1||id>15||!level)return 0;
+ unsigned challenge=contractRewardLevel(id),percent=contractKind(id)==ContractKind::Escort?10:contractKind(id)==ContractKind::Recover?20:25;
+ return weakReward(std::max(200u,unsigned(dndXpNeeded(challenge))*percent/100),level,challenge,10);
+}
 inline uint16_t contractGold(uint8_t id,uint8_t level){return id>=1&&id<=15&&level?contract(id).gold+uint16_t(level-1)*2:0;}
+inline uint16_t contractGold(const Game& g,uint8_t id,uint8_t level){return contractGold(id,g.dndProgression?std::min<unsigned>(level,contractRewardLevel(id)):level);}
 inline void levelUp(Game& g){while(g.p.level<(g.dndProgression?20:99)&&g.p.xp>=xpNeeded(g)){g.p.xp-=xpNeeded(g);++g.p.level;g.p.maxmp=totalMana(g);g.p.maxhp=uint16_t(std::min(65535u,unsigned(g.p.maxhp)+(g.dndProgression?hpPerLevel(g):2u)));if(g.p.atk<255)++g.p.atk;}if(g.dndProgression&&g.p.level==20){g.p.xp=0;if(g.p.cls==3)g.rageSpent=0;}}
 inline bool questComplete(const Game& g){return g.questId>=1&&g.questId<=15&&g.questProgress>=contract(g.questId).count;}
 inline const char* acceptQuest(Game& g,uint8_t id){
@@ -176,7 +195,7 @@ inline const char* abandonQuest(Game& g){
 inline const char* claimQuest(Game& g){
   if(g.phase!=Phase::Home)return "Volte para a vila";if(g.discovery||g.tripStage||g.campStage||g.dungeonFlags||g.campaignStage||g.eventStage==2)return "Termine a acao atual";if(!g.questId)return "Nenhuma missao ativa";
   if(!questComplete(g))return "Missao ainda incompleta";
-  uint16_t gold=contractGold(g.questId,g.questLevel),xp=contractXp(g,g.questId,g.questLevel);
+  uint16_t gold=contractGold(g,g.questId,g.questLevel),xp=contractXp(g,g.questId,g.questLevel);
   if(g.p.gold>999999u-gold)return "Gaste ouro antes de receber";
   g.p.gold+=gold;g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);
   g.questId=g.questProgress=g.questLevel=0;return nullptr;
@@ -272,7 +291,7 @@ inline bool arriveTrip(Game& g){if(g.tripStage!=3||g.phase!=Phase::Home)return f
 inline void finish(Game& g){
   if(g.phase!=Phase::Hero&&g.phase!=Phase::Enemy)return;
   if(!g.enemyHp){
-    g.phase=Phase::Won;const auto& e=enemySpec(g.enemyId);g.gainXp=uint16_t(e.xp)*(g.dndProgression?10:1);g.gainGold=uint8_t(std::min<uint32_t>(e.gold,999999u-g.p.gold));g.p.gold+=g.gainGold;
+    g.phase=Phase::Won;const auto& e=enemySpec(g.enemyId);g.gainXp=combatXp(g);g.gainGold=uint8_t(std::min<uint32_t>(e.gold,999999u-g.p.gold));g.p.gold+=g.gainGold;
     g.p.xp=g.p.xp>UINT32_MAX-g.gainXp?UINT32_MAX:g.p.xp+g.gainXp;
     if(g.eventStage!=2&&!g.tripStage&&!g.dungeonFlags&&g.city==1){if(g.enemyId==3){g.guardianDefeated=true;if(g.crystals<9)++g.crystals;}else if(g.ruinsWins<3)++g.ruinsWins;}
     if(g.eventStage!=2&&g.p.life<99 && (g.enemyId==3||random(g)%100<50)){++g.p.life;g.dropLife=true;}

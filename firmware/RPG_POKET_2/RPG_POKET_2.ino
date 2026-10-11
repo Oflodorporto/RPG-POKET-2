@@ -498,14 +498,14 @@ void tapped(int x,int y){
     if(hit(x,y,14,272,212)){view.page=Page::GuildMissions;say("");return;}
     if(!hit(x,y,14,220,212))return;
     if(game.questId&&game.questId!=view.questChoice){say("Outra missao ativa");return;}
-    if(game.questId&&rpg::questComplete(game)&&game.p.gold>999999u-rpg::contractGold(game.questId,game.questLevel)){say("Gaste ouro antes de receber");return;}
+    if(game.questId&&rpg::questComplete(game)&&game.p.gold>999999u-rpg::contractGold(game,game.questId,game.questLevel)){say("Gaste ouro antes de receber");return;}
     view.questAction=game.questId?(rpg::questComplete(game)?1:2):0;view.page=Page::QuestConfirm;say("");return;
   }
   if(view.page==Page::QuestConfirm){
     if(hit(x,y,14,270,102)){view.page=Page::Contract;say("Acao cancelada");}
     else if(hit(x,y,124,270,102)){
       if(view.questAction&&game.questId!=view.questChoice){say("Contrato mudou");return;}
-      uint16_t xp=rpg::contractXp(game,game.questId,game.questLevel),gold=rpg::contractGold(game.questId,game.questLevel);
+      uint16_t xp=rpg::contractXp(game,game.questId,game.questLevel),gold=rpg::contractGold(game,game.questId,game.questLevel);
       const char* err=view.questAction==0?rpg::acceptQuest(game,view.questChoice):view.questAction==1?rpg::claimQuest(game):rpg::abandonQuest(game);
       if(err){say(err);return;}
       if(view.questAction==1){snprintf(message,sizeof(message),"+%u XP / +%u ouro",xp,gold);view.message=message;}

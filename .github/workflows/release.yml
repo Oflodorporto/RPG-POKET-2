@@ -50,6 +50,7 @@ jobs:
             build/screens/progression-*.ppm
             build/screens/attribute-*.ppm
             build/progressao.csv
+            build/balance74-rewards.csv
             build/screens/campaign-*.ppm
             build/screens/launch-*.ppm
             build/screens/powers-*.ppm

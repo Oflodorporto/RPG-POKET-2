@@ -208,7 +208,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     else center(91,placeName(g.city));
     for(unsigned slot=0;slot<3;++slot){uint8_t id=rpg::contractVisibleOffer(g,slot);int y=124+slot*44;box(14,y,212,40);center(y+6,rpg::contract(id).name,1,UI_GOLD);
       if(g.questId==id)snprintf(b,sizeof(b),"%u/%u / %s",g.questProgress,rpg::contract(id).count,rpg::questComplete(g)?"RECEBER":"EM ANDAMENTO");
-      else if(g.p.level<rpg::contractLevel(id))snprintf(b,sizeof(b),"Disponivel no nivel %u",rpg::contractLevel(id));else snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,g.p.level),rpg::contractGold(id,g.p.level));center(y+24,b);}
+      else if(g.p.level<rpg::contractLevel(id))snprintf(b,sizeof(b),"Disponivel no nivel %u",rpg::contractLevel(id));else snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,g.p.level),rpg::contractGold(g,id,g.p.level));center(y+24,b);}
     button(14,272,212,"Voltar");return;
   }
   if(v.page==Page::Contract){
@@ -218,7 +218,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(unsigned line=0;line<3;++line)center(80+line*13,rpg::contractStory(id,line));
     center(127,rpg::contract(id).objective);snprintf(b,sizeof(b),"Origem: %s / Nv %u+",placeName(rpg::contractCity(id)),rpg::contractLevel(id));center(145,b);
     snprintf(b,sizeof(b),"Progresso %u/%u",active?g.questProgress:0,rpg::contract(id).count);center(162,b);
-    snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(180,b,1,UI_GOLD);center(201,v.message,1,UI_RED);
+    snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(g,id,level));center(180,b,1,UI_GOLD);center(201,v.message,1,UI_RED);
     button(14,220,212,active?(rpg::questComplete(g)?"Receber":"Abandonar"):"Aceitar");button(14,272,212,"Voltar");return;
   }
   if(v.page==Page::QuestConfirm){
@@ -227,9 +227,9 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(12,action==0?"ACEITAR MISSAO":action==1?"RECEBER PREMIO":"ABANDONAR MISSAO",2,UI_GOLD);
     center(72,rpg::contract(id).name,1);center(105,rpg::contract(id).objective);
     if(action==2){center(146,"O progresso sera perdido.",1,UI_RED);center(176,"Voce nao recebera recompensa.");center(205,"Podera aceitar novamente do zero.");}
-    else{snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(id,level));center(148,b,2,UI_GOLD);
+    else{snprintf(b,sizeof(b),"%u XP / %u ouro",rpg::contractXp(g,id,level),rpg::contractGold(g,id,level));center(148,b,2,UI_GOLD);
       if(action==0){center(181,"O objetivo vale a partir de agora.");center(207,"Volte aqui para receber depois.");}
-      else{snprintf(b,sizeof(b),"Ouro: %lu -> %lu",(unsigned long)g.p.gold,(unsigned long)(g.p.gold+rpg::contractGold(id,level)));center(184,b);
+      else{snprintf(b,sizeof(b),"Ouro: %lu -> %lu",(unsigned long)g.p.gold,(unsigned long)(g.p.gold+rpg::contractGold(g,id,level)));center(184,b);
         auto preview=g;rpg::claimQuest(preview);snprintf(b,sizeof(b),"Nivel: %u -> %u",g.p.level,preview.p.level);center(207,b);}}
     center(245,v.message,1,UI_RED);button(14,270,102,"Cancelar");button(124,270,102,action==0?"Aceitar":action==1?"Receber":"Desistir");return;
   }
@@ -331,7 +331,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     // Rewards use dark ink on the shared parchment; no dark overlay.
     center(15,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
     if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP",g.gainXp);center(77,b,2);snprintf(b,sizeof(b),"+%u ouro",g.gainGold);center(99,b,2);
-      center(124,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(137,g.dropMana?"Encontrou uma pocao de MP.":"");}
+      center(124,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(137,rpg::reducedCombatXp(g)?"XP menor: inimigo fraco":g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou do encontro.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}
     snprintf(b,sizeof(b),"Nv %u / XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(151,b,1,UI_GOLD);panelBar(c,25,165,190,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
     auto goal=story::objective(g);center(183,goal.title,1,UI_GOLD);center(198,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,g.phase==rpg::Phase::Lost?"Prepare-se antes de tentar de novo.":"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.phase==rpg::Phase::Lost?"Recuperar forcas":g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;

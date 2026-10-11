@@ -45,6 +45,8 @@ int main(int argc,char** argv){
    assert(c.pixels[70*240+12]==STORY_PAPER&&!memcmp(before,after,sizeof(before)));
    c.save(root+"/reward-paper-"+std::to_string(int(phase))+".ppm");
   }
+  g=rpg::create(2,42);g.p.xp=100000;rpg::levelUp(g);g.phase=rpg::Phase::Won;g.enemyId=0;g.enemyHp=0;g.gainXp=1;g.gainGold=4;v.page=Page::Result;
+  {uint8_t a[rpg::SAVE_SIZE],b[rpg::SAVE_SIZE];rpg::encode(g,1,a);render(c,g,v,10);rpg::encode(g,1,b);assert(!memcmp(a,b,sizeof(a)));c.save(root+"/balance74-weak-reward.ppm");}
   for(unsigned cls=0;cls<4;++cls)for(unsigned level:{1u,5u,10u,18u})for(unsigned kind=3;kind<8;++kind){
    g=rpg::create(cls,42);g.p.xp=rpg::dndXp[level-1];rpg::levelUp(g);g.tutorial=true;assert(rpg::offerEvent(g,20733,21));g.eventKind=kind;v=ViewState{};v.page=Page::Letter;menu.letterStarted=0;menu.renderNow=1000;render(c,g,v,10);if(cls==0)c.save(root+"/events8-letter-"+std::to_string(level)+"-"+std::to_string(kind)+".ppm");assert(!rpg::acceptEvent(g,27));
    for(unsigned step=0;step<rpg::eventGoal(kind);++step){g.eventProgress=step;if(kind==6&&step)g.eventFlags|=7;if(kind==7&&step)g.eventFlags|=1;for(auto page:{Page::EventMission,Page::EventChoice,Page::EventAbandon}){if(page==Page::EventChoice&&!eventNeedsChoice(g))continue;v.page=page;uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,1,before);render(c,g,v,10);rpg::encode(g,1,after);assert(!memcmp(before,after,sizeof(before)));if(cls==0&&level==10)c.save(root+"/events8-state-"+std::to_string(kind)+"-"+std::to_string(step)+"-"+std::to_string(int(page))+".ppm");}}

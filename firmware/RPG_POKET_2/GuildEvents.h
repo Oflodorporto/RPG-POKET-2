@@ -16,7 +16,7 @@ inline unsigned eventGoal(unsigned kind){const unsigned n[]={0,2,1,1,3,4,3,3};re
 inline bool eventReady(const Game& g){return g.eventStage==2&&g.eventKind&&g.phase==Phase::Home&&g.eventProgress==eventGoal(g.eventKind);}
 inline uint8_t eventDestination(const Game& g){return g.eventTier?g.eventTier-1:0;}
 inline unsigned eventGold(const Game& g){return g.eventLevel?30+8*g.eventLevel+10*g.eventKind:eventGold(g.eventTier);}
-inline unsigned eventXp(const Game& g){if(!g.eventLevel)return eventXp(g.eventTier);if(g.dndProgression&&g.eventLevel==20)return 0;unsigned next=g.dndProgression?dndXpNeeded(g.eventLevel):xpNeeded(g.eventLevel);return std::max(20u,next*((g.eventKind==2||g.eventKind==3||g.eventKind==5||g.eventKind==7)?10u:8u)/100);}
+inline unsigned eventXp(const Game& g){if(!g.eventLevel)return eventXp(g.eventTier);if(g.dndProgression&&g.eventLevel==20)return 0;unsigned next=g.dndProgression?dndXpNeeded(g.eventLevel):xpNeeded(g.eventLevel);return std::max(g.dndProgression?200u:20u,next*((g.eventKind==2||g.eventKind==3||g.eventKind==5||g.eventKind==7)?(g.dndProgression?30u:10u):(g.dndProgression?20u:8u))/100);}
 inline const char* eventTitle(const Game& g){const char* names[]={"ASAS SOBRE OS TELHADOS","O QUE A ESTRADA LEVOU","NINGUEM VIAJA SOZINHO","O SINO SOB A PEDRA","UMA LUZ PARA QUEM VOLTA","AS RODAS NA NEBLINA","NOMES GRAVADOS EM CINZA","UMA CHAMA CONTRA A NOITE"};return names[g.eventKind<8?g.eventKind:0];}
 inline bool eventNight(const Game& g){return g.eventFlags&16;}
 inline bool eventValid(const Game& g){
