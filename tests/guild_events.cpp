@@ -48,7 +48,7 @@ int main(){
  // Reject unsupported high bits in both new and legacy records, even with good CRC.
  g=testHero(0,42);g.tutorial=true;assert(offerLegacyEvent(g,20733,10));encode(g,1,b);
  b[97]|=64;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
- encode(g,1,b);b[97]|=4;legacyFormat(b,25);put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
+ encode(g,1,b);legacyFormat(b,25);b[97]|=4;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
  // A failed write cannot consume the second opportunity on reboot.
  Mem slots;Journal<Mem> daily(slots);assert(daily.load(copy)==Load::Empty);
  assert(refuseEvent(g)&&daily.save(g));slots.fail=true;
