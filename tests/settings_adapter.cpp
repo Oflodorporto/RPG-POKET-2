@@ -38,5 +38,9 @@ int main(){
  artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);std::ifstream input("outputs/RPG_POKET_2_0_Waveshare/cartao_preparado/RPGPOKET/artes.pak",std::ios::binary);if(!input)input.open("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(input);packBytes=std::vector<uint8_t>(std::istreambuf_iterator<char>(input),{});
  assert(loadSdArt()==ArtStatus::Ready&&cardEnds==1&&closes==1&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
  cardAvailable=false;assert(loadSdArt()==ArtStatus::Missing&&cardEnds==2);cardAvailable=true;fileExists=false;assert(loadSdArt()==ArtStatus::Missing&&cardEnds==3);fileExists=true;badRead=10;assert(loadSdArt()==ArtStatus::Invalid&&cardEnds==4&&closes==2);badRead=-1;assert(loadSdArt()==ArtStatus::Ready&&cardEnds==5&&closes==3);
+ // Corrupt versioned candidates fall back to an intact original, with no premature cleanup.
+ char named[48];updater::artPath(named,sizeof(named),ART_CRC);extraFiles[named]=packBytes;extraFiles[named][0]^=1;extraFiles["/RPGPOKET/artes_00000001.pak"]={1};extraFiles["/RPGPOKET/artes.part"]={2};extraFiles["/RPGPOKET/not-ours.pak"]={3};auto filesBefore=extraFiles;
+ assert(loadSdArt()==ArtStatus::Ready&&extraFiles==filesBefore&&fileExists&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
+ extraFiles[named]=packBytes;assert(loadSdArt()==ArtStatus::Ready&&peakFiles==2&&!extraFiles.count("/RPGPOKET/artes_00000001.pak")&&extraFiles.count(named)&&extraFiles.count("/RPGPOKET/artes.part")&&extraFiles.count("/RPGPOKET/not-ours.pak")&&!fileExists);
  free(artMemory);puts("PASS: actual settings adapter; PWM/persistence failures, async Wi-Fi scan/password/open network/timeout/restart, complete credential commit, volatile PSRAM test, read-only shared SPI art load/absence/read-error/retry/unmount.");
 }

@@ -18,10 +18,13 @@ inline void initSettings(){settingsReady=settings.begin("pkt2_ui",false);menu.ac
 inline bool rememberSlot(uint8_t slot){if(slot>2||!settingsReady||settings.putUChar("slot",slot)!=1)return false;menu.activeSlot=slot;return true;}
 inline ArtStatus loadSdArt(){
   if(!artMemory)return ArtStatus::Memory;makeFallback();pinMode(41,OUTPUT);digitalWrite(41,HIGH);digitalWrite(45,HIGH);
-  if(!SD.begin(41,SPI,4000000,"/sd",1,false)){SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
+  if(!SD.begin(41,SPI,4000000,"/sd",2,false)){SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
   char named[48];updater::artPath(named,sizeof(named),ART_CRC);bool versioned=SD.exists(named);File f=SD.open(versioned?named:"/RPGPOKET/artes.pak",FILE_READ);ArtStatus status=ArtStatus::Missing;
   if(f){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{f};status=readArt(reader);f.close();}
-  if(versioned&&status==ArtStatus::Ready){
+  // A damaged versioned candidate must not hide a valid original installation pack.
+  bool namedReady=versioned&&status==ArtStatus::Ready;
+  if(versioned&&!namedReady){File legacy=SD.open("/RPGPOKET/artes.pak",FILE_READ);if(legacy){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{legacy};ArtStatus fallback=readArt(reader);legacy.close();if(fallback==ArtStatus::Ready)status=fallback;}}
+  if(namedReady){
     // Incomplete downloads may belong to a newer release: preserve them for resume.
     // FAT has no journal: close each file before deleting it; never format or touch saves.
     File dir=SD.open("/RPGPOKET");if(dir){File entry=dir.openNextFile();while(entry){char candidate[48];snprintf(candidate,sizeof(candidate),"/RPGPOKET/%s",entry.name());bool regular=!entry.isDirectory();entry.close();const char* name=strrchr(candidate,'/');name=name?name+1:candidate;

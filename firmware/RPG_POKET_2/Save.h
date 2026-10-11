@@ -5,6 +5,7 @@
 #include "Campaign.h"
 #include "Exploration.h"
 #include <string.h>
+#include "SaveVersion.h"
 namespace rpg {
 constexpr unsigned SAVE_SIZE=128;
 inline void put16(uint8_t* b,unsigned o,uint16_t v){b[o]=uint8_t(v);b[o+1]=uint8_t(v>>8);}
@@ -54,7 +55,7 @@ inline bool valid(const Game& g){
   return true;
 }
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,28);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,CURRENT_SAVE_FORMAT);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
@@ -65,7 +66,8 @@ inline void encode(const Game& g,uint32_t seq,uint8_t* b){
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>28)||get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Unsupported;
+  if((get16(b,4)<1||get16(b,4)>CURRENT_SAVE_FORMAT))return Decode::Unsupported;
+  if(get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Corrupt;
   if(get32(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)||(get16(b,4)<20&&b[47]>31))return Decode::Corrupt;
   if(get16(b,4)==24&&(b[48]>24||b[67]>63||b[119]>63||b[116]>3||b[60]%8>5))return Decode::Corrupt;
   if(get16(b,4)<24&&(b[48]>19||b[70]>15||(get16(b,4)>=15&&b[119]>2)))return Decode::Corrupt;
@@ -101,7 +103,7 @@ inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(get16(b,4)>=25)t.seenEnemies|=uint32_t(b[119]>>6)<<27;
   if(!valid(t))return Decode::Corrupt;g=t;return Decode::Ok;
 }
-enum class Read{Missing,Ok,Error};
+enum class Read{Missing,Ok,Error,Corrupt};
 enum class Load{Empty,Ok,Recovered,Blocked};
 // Backend pads legacy 64/96-byte records into 128-byte buffers; writes save28/128 bytes.
 // Two atomic NVS blobs with CRC and readback. No erase, format or legacy import.
