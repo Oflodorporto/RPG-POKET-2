@@ -562,11 +562,11 @@ int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);
  // First character, tutorial, menu, and refusal to create a phantom hero from an empty slot.
  tapped(130,220);assert(view.choice==1);tapped(100,280);tapped(170,290);assert(view.page==Page::Prologue&&journal.active>=0);tapped(75,290);assert(view.page==Page::Help);tapped(100,280);assert(view.page==Page::Village&&game.tutorial);
- auto first=game;tapped(190,290);assert(view.page==Page::Menu);tapped(120,119);assert(view.page==Page::Slots&&menu.slots[0]==rpg::Load::Ok);
+ auto first=game;tapped(120,290);assert(view.page==Page::Menu);tapped(120,119);assert(view.page==Page::Slots&&menu.slots[0]==rpg::Load::Ok);
  tapped(80,130);assert(view.page==Page::SlotConfirm&&menu.slotChoice==1);tapped(80,190);assert(view.page==Page::Race&&menu.activeSlot==1);
  view.page=Page::Race;tapped(30,280);assert(view.page==Page::Menu);tapped(120,90);assert(view.page==Page::Menu&&journal.active<0);tapped(120,261);assert(view.page==Page::Race);tapped(170,280);
- tapped(130,220);tapped(130,220);tapped(100,280);tapped(170,290);tapped(75,290);tapped(100,280);assert(game.p.cls==2&&view.page==Page::Home);
- tapped(190,290);tapped(120,119);tapped(80,75);tapped(80,190);assert(menu.activeSlot==0&&game.p.cls==first.p.cls&&game.tutorial);
+ tapped(130,220);tapped(130,220);tapped(100,280);tapped(170,290);tapped(75,290);tapped(100,280);assert(game.p.cls==2&&view.page==Page::Village);
+ tapped(120,290);tapped(120,119);tapped(80,75);tapped(80,190);assert(menu.activeSlot==0&&game.p.cls==first.p.cls&&game.tutorial);
  // Cancellation must preserve both blobs. Confirmed deletion targets only slot2.
  view.page=Page::Menu;tapped(120,119);tapped(80,130);tapped(80,240);assert(view.page==Page::DeleteSlot);auto before=nvs.blobs;tapped(50,290);assert(nvs.blobs==before&&view.page==Page::SlotConfirm);
  tapped(80,240);tapped(170,290);assert(menu.activeSlot==0&&view.page==Page::Slots&&menu.slots[1]==rpg::Load::Empty&&menu.slots[0]==rpg::Load::Ok);
