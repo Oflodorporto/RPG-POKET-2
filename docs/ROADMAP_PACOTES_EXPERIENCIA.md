@@ -169,3 +169,5 @@ Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade
 Pacote7.2 publicado:chegadaCarvalho,dicascontextuaisopcionais10contextos,Save28/artes488preservados,45suítes/compilação aprovadas. ConsultePACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt. Os seis testes físicos7.2 foram aprovados pelo usuário. Etapa7.3 solicitada e auditada; sem mudança de firmware ou novaRelease.
 
 Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suítes/seis sanitizadores e compilação aprovados. Sem defeito novo de firmware comprovado. Testes/documentação ampliados,experience72 permanece vigente. Validação física prolongada pendente; parar em7.3,sem iniciar7.4/8.
+
+Pacote7.4 concluído:2026.10.11-balance74,48suítes/sete sanitizadores/compilação/download aprovados. Recompensas futuras por dificuldade,Save28 e488artes preservados; relatório PACOTE_7_4_PROGRESSAO.txt. Teste físico pendente. Parar em7.4,sem iniciar7.5/8.

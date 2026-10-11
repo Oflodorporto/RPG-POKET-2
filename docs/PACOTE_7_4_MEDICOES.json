@@ -28,7 +28,9 @@
       "new_xp": 7680,
       "old_gross_xp_hour": 16203.2,
       "new_gross_xp_hour": 5401.1,
-      "gold_hour": 810.2
+      "gold_hour": 810.2,
+      "old_ideal_wins_next_level": 3.3,
+      "new_ideal_wins_next_level": 10.0
     },
     {
       "level": 1,
@@ -41,7 +43,9 @@
       "new_xp": 17360,
       "old_gross_xp_hour": 9976.7,
       "new_gross_xp_hour": 10260.4,
-      "gold_hour": 489.4
+      "gold_hour": 489.4,
+      "old_ideal_wins_next_level": 2.3,
+      "new_ideal_wins_next_level": 2.3
     },
     {
       "level": 1,
@@ -54,7 +58,9 @@
       "new_xp": 0,
       "old_gross_xp_hour": 0.0,
       "new_gross_xp_hour": 0.0,
-      "gold_hour": 0.0
+      "gold_hour": 0.0,
+      "old_ideal_wins_next_level": null,
+      "new_ideal_wins_next_level": null
     },
     {
       "level": 1,
@@ -67,7 +73,9 @@
       "new_xp": 0,
       "old_gross_xp_hour": 0.0,
       "new_gross_xp_hour": 0.0,
-      "gold_hour": 0.0
+      "gold_hour": 0.0,
+      "old_ideal_wins_next_level": null,
+      "new_ideal_wins_next_level": null
     },
     {
       "level": 3,
@@ -80,7 +88,9 @@
       "new_xp": 20480,
       "old_gross_xp_hour": 18979.2,
       "new_gross_xp_hour": 12652.8,
-      "gold_hour": 869.9
+      "gold_hour": 869.9,
+      "old_ideal_wins_next_level": 15.0,
+      "new_ideal_wins_next_level": 22.5
     },
     {
       "level": 3,
@@ -93,7 +103,9 @@
       "new_xp": 72360,
       "old_gross_xp_hour": 32119.2,
       "new_gross_xp_hour": 39607.1,
-      "gold_hour": 1356.4
+      "gold_hour": 1356.4,
+      "old_ideal_wins_next_level": 7.4,
+      "new_ideal_wins_next_level": 6.0
     },
     {
       "level": 3,
@@ -106,7 +118,9 @@
       "new_xp": 110600,
       "old_gross_xp_hour": 29044.8,
       "new_gross_xp_hour": 47838.5,
-      "gold_hour": 934.3
+      "gold_hour": 934.3,
+      "old_ideal_wins_next_level": 2.1,
+      "new_ideal_wins_next_level": 1.3
     },
     {
       "level": 3,
@@ -119,7 +133,9 @@
       "new_xp": 0,
       "old_gross_xp_hour": 0.0,
       "new_gross_xp_hour": 0.0,
-      "gold_hour": 0.0
+      "gold_hour": 0.0,
+      "old_ideal_wins_next_level": null,
+      "new_ideal_wins_next_level": null
     },
     {
       "level": 5,
@@ -132,7 +148,9 @@
       "new_xp": 17920,
       "old_gross_xp_hour": 19869.2,
       "new_gross_xp_hour": 11590.4,
-      "gold_hour": 910.7
+      "gold_hour": 910.7,
+      "old_ideal_wins_next_level": 62.5,
+      "new_ideal_wins_next_level": 107.1
     },
     {
       "level": 5,
@@ -145,7 +163,9 @@
       "new_xp": 79360,
       "old_gross_xp_hour": 39197.0,
       "new_gross_xp_hour": 48604.3,
-      "gold_hour": 1646.3
+      "gold_hour": 1646.3,
+      "old_ideal_wins_next_level": 30.0,
+      "new_ideal_wins_next_level": 24.2
     },
     {
       "level": 5,
@@ -158,7 +178,9 @@
       "new_xp": 296800,
       "old_gross_xp_hour": 90740.5,
       "new_gross_xp_hour": 149000.1,
-      "gold_hour": 2939.8
+      "gold_hour": 2939.8,
+      "old_ideal_wins_next_level": 8.8,
+      "new_ideal_wins_next_level": 5.4
     },
     {
       "level": 5,
@@ -171,7 +193,9 @@
       "new_xp": 277264,
       "old_gross_xp_hour": 84272.3,
       "new_gross_xp_hour": 126540.4,
-      "gold_hour": 2231.7
+      "gold_hour": 2231.7,
+      "old_ideal_wins_next_level": 4.2,
+      "new_ideal_wins_next_level": 2.8
     },
     {
       "level": 8,
@@ -184,7 +208,9 @@
       "new_xp": 2176,
       "old_gross_xp_hour": 19869.2,
       "new_gross_xp_hour": 1407.4,
-      "gold_hour": 910.7
+      "gold_hour": 910.7,
+      "old_ideal_wins_next_level": 116.7,
+      "new_ideal_wins_next_level": 1647.1
     },
     {
       "level": 8,
@@ -197,7 +223,9 @@
       "new_xp": 33920,
       "old_gross_xp_hour": 39806.5,
       "new_gross_xp_hour": 21097.4,
-      "gold_hour": 1671.9
+      "gold_hour": 1671.9,
+      "old_ideal_wins_next_level": 56.0,
+      "new_ideal_wins_next_level": 105.7
     },
     {
       "level": 8,
@@ -210,7 +238,9 @@
       "new_xp": 351400,
       "old_gross_xp_hour": 112916.8,
       "new_gross_xp_hour": 185980.6,
-      "gold_hour": 3651.9
+      "gold_hour": 3651.9,
+      "old_ideal_wins_next_level": 16.5,
+      "new_ideal_wins_next_level": 10.0
     },
     {
       "level": 8,
@@ -223,7 +253,9 @@
       "new_xp": 506540,
       "old_gross_xp_hour": 152394.0,
       "new_gross_xp_hour": 227374.6,
-      "gold_hour": 4048.9
+      "gold_hour": 4048.9,
+      "old_ideal_wins_next_level": 7.8,
+      "new_ideal_wins_next_level": 5.3
     },
     {
       "level": 12,
@@ -236,7 +268,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 19922.9,
       "new_gross_xp_hour": 166.0,
-      "gold_hour": 913.1
+      "gold_hour": 913.1,
+      "old_ideal_wins_next_level": 166.7,
+      "new_ideal_wins_next_level": 20000.0
     },
     {
       "level": 12,
@@ -249,7 +283,9 @@
       "new_xp": 2048,
       "old_gross_xp_hour": 40930.9,
       "new_gross_xp_hour": 1309.8,
-      "gold_hour": 1719.1
+      "gold_hour": 1719.1,
+      "old_ideal_wins_next_level": 80.0,
+      "new_ideal_wins_next_level": 2500.0
     },
     {
       "level": 12,
@@ -262,7 +298,9 @@
       "new_xp": 358400,
       "old_gross_xp_hour": 121828.9,
       "new_gross_xp_hour": 200659.4,
-      "gold_hour": 3941.5
+      "gold_hour": 3941.5,
+      "old_ideal_wins_next_level": 23.5,
+      "new_ideal_wins_next_level": 14.3
     },
     {
       "level": 12,
@@ -275,7 +313,9 @@
       "new_xp": 618512,
       "old_gross_xp_hour": 205374.4,
       "new_gross_xp_hour": 306531.3,
-      "gold_hour": 5455.5
+      "gold_hour": 5455.5,
+      "old_ideal_wins_next_level": 11.2,
+      "new_ideal_wins_next_level": 7.5
     },
     {
       "level": 15,
@@ -288,7 +328,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 19944.5,
       "new_gross_xp_hour": 166.2,
-      "gold_hour": 914.1
+      "gold_hour": 914.1,
+      "old_ideal_wins_next_level": 250.0,
+      "new_ideal_wins_next_level": 30000.0
     },
     {
       "level": 15,
@@ -301,7 +343,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 40996.4,
       "new_gross_xp_hour": 164.0,
-      "gold_hour": 1721.9
+      "gold_hour": 1721.9,
+      "old_ideal_wins_next_level": 120.0,
+      "new_ideal_wins_next_level": 30000.0
     },
     {
       "level": 15,
@@ -314,7 +358,9 @@
       "new_xp": 44800,
       "old_gross_xp_hour": 125699.6,
       "new_gross_xp_hour": 25879.3,
-      "gold_hour": 4066.8
+      "gold_hour": 4066.8,
+      "old_ideal_wins_next_level": 35.3,
+      "new_ideal_wins_next_level": 171.4
     },
     {
       "level": 15,
@@ -327,7 +373,9 @@
       "new_xp": 666500,
       "old_gross_xp_hour": 230027.2,
       "new_gross_xp_hour": 343212.7,
-      "gold_hour": 6111.4
+      "gold_hour": 6111.4,
+      "old_ideal_wins_next_level": 16.8,
+      "new_ideal_wins_next_level": 11.3
     },
     {
       "level": 18,
@@ -340,7 +388,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 19955.3,
       "new_gross_xp_hour": 166.3,
-      "gold_hour": 914.6
+      "gold_hour": 914.6,
+      "old_ideal_wins_next_level": 333.3,
+      "new_ideal_wins_next_level": 40000.0
     },
     {
       "level": 18,
@@ -353,7 +403,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 40996.4,
       "new_gross_xp_hour": 164.0,
-      "gold_hour": 1721.9
+      "gold_hour": 1721.9,
+      "old_ideal_wins_next_level": 160.0,
+      "new_ideal_wins_next_level": 40000.0
     },
     {
       "level": 18,
@@ -366,7 +418,9 @@
       "new_xp": 5376,
       "old_gross_xp_hour": 128482.9,
       "new_gross_xp_hour": 3174.3,
-      "gold_hour": 4156.8
+      "gold_hour": 4156.8,
+      "old_ideal_wins_next_level": 47.1,
+      "new_ideal_wins_next_level": 1904.8
     },
     {
       "level": 18,
@@ -379,7 +433,9 @@
       "new_xp": 682496,
       "old_gross_xp_hour": 240912.5,
       "new_gross_xp_hour": 359313.5,
-      "gold_hour": 6401.9
+      "gold_hour": 6401.9,
+      "old_ideal_wins_next_level": 22.4,
+      "new_ideal_wins_next_level": 15.0
     },
     {
       "level": 20,
@@ -392,7 +448,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 19955.3,
       "new_gross_xp_hour": 166.3,
-      "gold_hour": 914.6
+      "gold_hour": 914.6,
+      "old_ideal_wins_next_level": 0.0,
+      "new_ideal_wins_next_level": 0.0
     },
     {
       "level": 20,
@@ -405,7 +463,9 @@
       "new_xp": 256,
       "old_gross_xp_hour": 40996.4,
       "new_gross_xp_hour": 164.0,
-      "gold_hour": 1721.9
+      "gold_hour": 1721.9,
+      "old_ideal_wins_next_level": 0.0,
+      "new_ideal_wins_next_level": 0.0
     },
     {
       "level": 20,
@@ -418,7 +478,9 @@
       "new_xp": 1280,
       "old_gross_xp_hour": 130407.9,
       "new_gross_xp_hour": 767.1,
-      "gold_hour": 4219.1
+      "gold_hour": 4219.1,
+      "old_ideal_wins_next_level": 0.0,
+      "new_ideal_wins_next_level": 0.0
     },
     {
       "level": 20,
@@ -431,9 +493,1244 @@
       "new_xp": 682496,
       "old_gross_xp_hour": 245984.8,
       "new_gross_xp_hour": 366878.5,
-      "gold_hour": 6536.7
+      "gold_hour": 6536.7,
+      "old_ideal_wins_next_level": 0.0,
+      "new_ideal_wins_next_level": 0.0
     }
   ],
   "arts_sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8",
-  "save": "Save28,128bytes,read1..28; no migration or writes to physical device"
+  "save": "Save28,128bytes,read1..28; no migration or writes to physical device",
+  "contract_reward_cases": [
+    {
+      "hero_level": 1,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 75,
+      "new_xp": 450,
+      "old_gold": 15,
+      "new_gold": 15
+    },
+    {
+      "hero_level": 1,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 105,
+      "new_xp": 450,
+      "old_gold": 18,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 1,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 180,
+      "new_xp": 1875,
+      "old_gold": 35,
+      "new_gold": 35
+    },
+    {
+      "hero_level": 1,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 45,
+      "new_xp": 200,
+      "old_gold": 18,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 1,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 36,
+      "new_xp": 200,
+      "old_gold": 20,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 1,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 54,
+      "new_xp": 200,
+      "old_gold": 28,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 1,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 45,
+      "new_xp": 1875,
+      "old_gold": 28,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 1,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 36,
+      "new_xp": 1500,
+      "old_gold": 30,
+      "new_gold": 30
+    },
+    {
+      "hero_level": 1,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 54,
+      "new_xp": 750,
+      "old_gold": 32,
+      "new_gold": 32
+    },
+    {
+      "hero_level": 1,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 45,
+      "new_xp": 5250,
+      "old_gold": 58,
+      "new_gold": 58
+    },
+    {
+      "hero_level": 1,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 36,
+      "new_xp": 4200,
+      "old_gold": 52,
+      "new_gold": 52
+    },
+    {
+      "hero_level": 1,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 54,
+      "new_xp": 2100,
+      "old_gold": 65,
+      "new_gold": 65
+    },
+    {
+      "hero_level": 1,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 45,
+      "new_xp": 10000,
+      "old_gold": 85,
+      "new_gold": 85
+    },
+    {
+      "hero_level": 1,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 36,
+      "new_xp": 8000,
+      "old_gold": 78,
+      "new_gold": 78
+    },
+    {
+      "hero_level": 1,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 54,
+      "new_xp": 4000,
+      "old_gold": 95,
+      "new_gold": 95
+    },
+    {
+      "hero_level": 3,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 450,
+      "new_xp": 450,
+      "old_gold": 19,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 3,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 630,
+      "new_xp": 450,
+      "old_gold": 22,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 3,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 1080,
+      "new_xp": 1875,
+      "old_gold": 39,
+      "new_gold": 39
+    },
+    {
+      "hero_level": 3,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 270,
+      "new_xp": 200,
+      "old_gold": 22,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 3,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 216,
+      "new_xp": 200,
+      "old_gold": 24,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 3,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 324,
+      "new_xp": 200,
+      "old_gold": 32,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 3,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 270,
+      "new_xp": 1875,
+      "old_gold": 32,
+      "new_gold": 32
+    },
+    {
+      "hero_level": 3,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 216,
+      "new_xp": 1500,
+      "old_gold": 34,
+      "new_gold": 34
+    },
+    {
+      "hero_level": 3,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 324,
+      "new_xp": 750,
+      "old_gold": 36,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 3,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 270,
+      "new_xp": 5250,
+      "old_gold": 62,
+      "new_gold": 62
+    },
+    {
+      "hero_level": 3,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 216,
+      "new_xp": 4200,
+      "old_gold": 56,
+      "new_gold": 56
+    },
+    {
+      "hero_level": 3,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 324,
+      "new_xp": 2100,
+      "old_gold": 69,
+      "new_gold": 69
+    },
+    {
+      "hero_level": 3,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 270,
+      "new_xp": 10000,
+      "old_gold": 89,
+      "new_gold": 89
+    },
+    {
+      "hero_level": 3,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 216,
+      "new_xp": 8000,
+      "old_gold": 82,
+      "new_gold": 82
+    },
+    {
+      "hero_level": 3,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 324,
+      "new_xp": 4000,
+      "old_gold": 99,
+      "new_gold": 99
+    },
+    {
+      "hero_level": 5,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 1875,
+      "new_xp": 450,
+      "old_gold": 23,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 5,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 2625,
+      "new_xp": 450,
+      "old_gold": 26,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 5,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 4500,
+      "new_xp": 1875,
+      "old_gold": 43,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 5,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 1125,
+      "new_xp": 50,
+      "old_gold": 26,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 5,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 900,
+      "new_xp": 50,
+      "old_gold": 28,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 5,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 1350,
+      "new_xp": 50,
+      "old_gold": 36,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 5,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 1125,
+      "new_xp": 1875,
+      "old_gold": 36,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 5,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 900,
+      "new_xp": 1500,
+      "old_gold": 38,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 5,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 1350,
+      "new_xp": 750,
+      "old_gold": 40,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 5,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 1125,
+      "new_xp": 5250,
+      "old_gold": 66,
+      "new_gold": 66
+    },
+    {
+      "hero_level": 5,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 900,
+      "new_xp": 4200,
+      "old_gold": 60,
+      "new_gold": 60
+    },
+    {
+      "hero_level": 5,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 1350,
+      "new_xp": 2100,
+      "old_gold": 73,
+      "new_gold": 73
+    },
+    {
+      "hero_level": 5,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 1125,
+      "new_xp": 10000,
+      "old_gold": 93,
+      "new_gold": 93
+    },
+    {
+      "hero_level": 5,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 900,
+      "new_xp": 8000,
+      "old_gold": 86,
+      "new_gold": 86
+    },
+    {
+      "hero_level": 5,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 1350,
+      "new_xp": 4000,
+      "old_gold": 103,
+      "new_gold": 103
+    },
+    {
+      "hero_level": 8,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 3500,
+      "new_xp": 56,
+      "old_gold": 29,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 8,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 4900,
+      "new_xp": 56,
+      "old_gold": 32,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 8,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 8400,
+      "new_xp": 937,
+      "old_gold": 49,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 8,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 2100,
+      "new_xp": 10,
+      "old_gold": 32,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 8,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 1680,
+      "new_xp": 10,
+      "old_gold": 34,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 8,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 2520,
+      "new_xp": 10,
+      "old_gold": 42,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 8,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 2100,
+      "new_xp": 937,
+      "old_gold": 42,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 8,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 1680,
+      "new_xp": 750,
+      "old_gold": 44,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 8,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 2520,
+      "new_xp": 375,
+      "old_gold": 46,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 8,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 2100,
+      "new_xp": 5250,
+      "old_gold": 72,
+      "new_gold": 72
+    },
+    {
+      "hero_level": 8,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 1680,
+      "new_xp": 4200,
+      "old_gold": 66,
+      "new_gold": 66
+    },
+    {
+      "hero_level": 8,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 2520,
+      "new_xp": 2100,
+      "old_gold": 79,
+      "new_gold": 79
+    },
+    {
+      "hero_level": 8,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 2100,
+      "new_xp": 10000,
+      "old_gold": 99,
+      "new_gold": 99
+    },
+    {
+      "hero_level": 8,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 1680,
+      "new_xp": 8000,
+      "old_gold": 92,
+      "new_gold": 92
+    },
+    {
+      "hero_level": 8,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 2520,
+      "new_xp": 4000,
+      "old_gold": 109,
+      "new_gold": 109
+    },
+    {
+      "hero_level": 12,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 5000,
+      "new_xp": 10,
+      "old_gold": 37,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 12,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 7000,
+      "new_xp": 10,
+      "old_gold": 40,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 12,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 12000,
+      "new_xp": 58,
+      "old_gold": 57,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 12,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 3000,
+      "new_xp": 10,
+      "old_gold": 40,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 12,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 2400,
+      "new_xp": 10,
+      "old_gold": 42,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 12,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 3600,
+      "new_xp": 10,
+      "old_gold": 50,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 12,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 3000,
+      "new_xp": 58,
+      "old_gold": 50,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 12,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 2400,
+      "new_xp": 46,
+      "old_gold": 52,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 12,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 3600,
+      "new_xp": 23,
+      "old_gold": 54,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 12,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 3000,
+      "new_xp": 5250,
+      "old_gold": 80,
+      "new_gold": 76
+    },
+    {
+      "hero_level": 12,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 2400,
+      "new_xp": 4200,
+      "old_gold": 74,
+      "new_gold": 70
+    },
+    {
+      "hero_level": 12,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 3600,
+      "new_xp": 2100,
+      "old_gold": 87,
+      "new_gold": 83
+    },
+    {
+      "hero_level": 12,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 3000,
+      "new_xp": 10000,
+      "old_gold": 107,
+      "new_gold": 107
+    },
+    {
+      "hero_level": 12,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 2400,
+      "new_xp": 8000,
+      "old_gold": 100,
+      "new_gold": 100
+    },
+    {
+      "hero_level": 12,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 3600,
+      "new_xp": 4000,
+      "old_gold": 117,
+      "new_gold": 117
+    },
+    {
+      "hero_level": 15,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 7500,
+      "new_xp": 10,
+      "old_gold": 43,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 15,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 10500,
+      "new_xp": 10,
+      "old_gold": 46,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 15,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 18000,
+      "new_xp": 10,
+      "old_gold": 63,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 15,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 4500,
+      "new_xp": 10,
+      "old_gold": 46,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 15,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 3600,
+      "new_xp": 10,
+      "old_gold": 48,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 15,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 5400,
+      "new_xp": 10,
+      "old_gold": 56,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 15,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 4500,
+      "new_xp": 10,
+      "old_gold": 56,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 15,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 3600,
+      "new_xp": 10,
+      "old_gold": 58,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 15,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 5400,
+      "new_xp": 10,
+      "old_gold": 60,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 15,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 4500,
+      "new_xp": 656,
+      "old_gold": 86,
+      "new_gold": 76
+    },
+    {
+      "hero_level": 15,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 3600,
+      "new_xp": 525,
+      "old_gold": 80,
+      "new_gold": 70
+    },
+    {
+      "hero_level": 15,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 5400,
+      "new_xp": 262,
+      "old_gold": 93,
+      "new_gold": 83
+    },
+    {
+      "hero_level": 15,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 4500,
+      "new_xp": 10000,
+      "old_gold": 113,
+      "new_gold": 113
+    },
+    {
+      "hero_level": 15,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 3600,
+      "new_xp": 8000,
+      "old_gold": 106,
+      "new_gold": 106
+    },
+    {
+      "hero_level": 15,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 5400,
+      "new_xp": 4000,
+      "old_gold": 123,
+      "new_gold": 123
+    },
+    {
+      "hero_level": 18,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 10000,
+      "new_xp": 10,
+      "old_gold": 49,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 18,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 14000,
+      "new_xp": 10,
+      "old_gold": 52,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 18,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 24000,
+      "new_xp": 10,
+      "old_gold": 69,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 18,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 6000,
+      "new_xp": 10,
+      "old_gold": 52,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 18,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 4800,
+      "new_xp": 10,
+      "old_gold": 54,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 18,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 7200,
+      "new_xp": 10,
+      "old_gold": 62,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 18,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 6000,
+      "new_xp": 10,
+      "old_gold": 62,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 18,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 4800,
+      "new_xp": 10,
+      "old_gold": 64,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 18,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 7200,
+      "new_xp": 10,
+      "old_gold": 66,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 18,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 6000,
+      "new_xp": 82,
+      "old_gold": 92,
+      "new_gold": 76
+    },
+    {
+      "hero_level": 18,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 4800,
+      "new_xp": 65,
+      "old_gold": 86,
+      "new_gold": 70
+    },
+    {
+      "hero_level": 18,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 7200,
+      "new_xp": 32,
+      "old_gold": 99,
+      "new_gold": 83
+    },
+    {
+      "hero_level": 18,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 6000,
+      "new_xp": 10000,
+      "old_gold": 119,
+      "new_gold": 119
+    },
+    {
+      "hero_level": 18,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 4800,
+      "new_xp": 8000,
+      "old_gold": 112,
+      "new_gold": 112
+    },
+    {
+      "hero_level": 18,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 7200,
+      "new_xp": 4000,
+      "old_gold": 129,
+      "new_gold": 129
+    },
+    {
+      "hero_level": 20,
+      "contract": 1,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 53,
+      "new_gold": 19
+    },
+    {
+      "hero_level": 20,
+      "contract": 2,
+      "challenge": 3,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 56,
+      "new_gold": 22
+    },
+    {
+      "hero_level": 20,
+      "contract": 3,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 73,
+      "new_gold": 43
+    },
+    {
+      "hero_level": 20,
+      "contract": 4,
+      "challenge": 1,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 56,
+      "new_gold": 18
+    },
+    {
+      "hero_level": 20,
+      "contract": 5,
+      "challenge": 1,
+      "kind": 1,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 58,
+      "new_gold": 20
+    },
+    {
+      "hero_level": 20,
+      "contract": 6,
+      "challenge": 1,
+      "kind": 2,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 66,
+      "new_gold": 28
+    },
+    {
+      "hero_level": 20,
+      "contract": 7,
+      "challenge": 5,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 66,
+      "new_gold": 36
+    },
+    {
+      "hero_level": 20,
+      "contract": 8,
+      "challenge": 5,
+      "kind": 1,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 68,
+      "new_gold": 38
+    },
+    {
+      "hero_level": 20,
+      "contract": 9,
+      "challenge": 5,
+      "kind": 2,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 70,
+      "new_gold": 40
+    },
+    {
+      "hero_level": 20,
+      "contract": 10,
+      "challenge": 10,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 20,
+      "old_gold": 96,
+      "new_gold": 76
+    },
+    {
+      "hero_level": 20,
+      "contract": 11,
+      "challenge": 10,
+      "kind": 1,
+      "old_xp": 0,
+      "new_xp": 16,
+      "old_gold": 90,
+      "new_gold": 70
+    },
+    {
+      "hero_level": 20,
+      "contract": 12,
+      "challenge": 10,
+      "kind": 2,
+      "old_xp": 0,
+      "new_xp": 10,
+      "old_gold": 103,
+      "new_gold": 83
+    },
+    {
+      "hero_level": 20,
+      "contract": 13,
+      "challenge": 18,
+      "kind": 0,
+      "old_xp": 0,
+      "new_xp": 10000,
+      "old_gold": 123,
+      "new_gold": 119
+    },
+    {
+      "hero_level": 20,
+      "contract": 14,
+      "challenge": 18,
+      "kind": 1,
+      "old_xp": 0,
+      "new_xp": 8000,
+      "old_gold": 116,
+      "new_gold": 112
+    },
+    {
+      "hero_level": 20,
+      "contract": 15,
+      "challenge": 18,
+      "kind": 2,
+      "old_xp": 0,
+      "new_xp": 4000,
+      "old_gold": 133,
+      "new_gold": 129
+    }
+  ],
+  "mission_hour_examples": [
+    {
+      "level": 1,
+      "kill_xp_old": 80,
+      "kill_xp_new": 20,
+      "kind": "3 compatible goblins + first hunt bonus",
+      "seconds": 150,
+      "old_xp_hour": 6840,
+      "new_xp_hour": 6240,
+      "old_explore_xp_hour": 9600,
+      "new_explore_xp_hour": 2400
+    },
+    {
+      "level": 12,
+      "kind": "3 weak goblins + first hunt bonus",
+      "seconds": 150,
+      "old_xp_hour": 77760,
+      "new_xp_hour": 312
+    },
+    {
+      "level": 18,
+      "kind": "2 Aurora automatons (actual contract target) + hunt bonus",
+      "seconds": 120,
+      "old_xp_hour": 282000,
+      "new_xp_hour": 459960,
+      "old_explore_xp_hour": 204000,
+      "new_explore_xp_hour": 319920
+    }
+  ],
+  "hour_caveat": "Analytical examples30s per won combat+60s Guild navigation. Hunt count honored. Actual target/search probability changes these rates; quests during normal exploration also get combat XP. Escort7s base+navigation+possible fight; bonus uses10% instead of hunt25%. All eight event kinds have2-opportunities/day cap.",
+  "ci_csv_note": "balance74-rewards.csv lists per-enemy rewards with a hypothetical hunt of that enemy; rows are not evidence of completing a named contract against a wrong target. Actual target restrictions are unchanged and verified by regional_world. The report examples use exact targets."
 }

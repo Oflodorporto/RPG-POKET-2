@@ -1,0 +1,21 @@
+RPG POKET 2.0 — CONTINUIDADE DO PACOTE 7.4
+Versão:2026.10.11-balance74/build2026101102. Publicada e verificada. CI38114311747 e38114649102 aprovados.
+Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-balance74
+Firmware2.771.984bytes,Save28,488artes;download eSHA256confirmados.
+Save28/128bytes/lê1..28,488artes preservadas; sem migração,sem recálculo de XP conquistado.
+Mudanças:recompensas futuras por inimigo/contrato,desconto de alvo fraco,bônus de missões/cartas/campanha. D&D1..20,objetivos,combate,OTA e Heltec preservados.
+O usuário aprovou os seis testes físicos7.2. O agente não testou nem gravou a placa. Validação física7.4 pendente.
+RAIZ:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
+SKETCH:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
+RELATÓRIO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_4_PROGRESSAO.txt
+MEDIÇÕES:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_4_MEDICOES.json
+VALIDAÇÃO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_4_VALIDACAO.json
+TESTES:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/tests/balance74.cpp e suítes existentes
+PUBLICAÇÃO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao
+
+CINCO PRIMEIROS COMANDOS DE CONTINUIDADE
+1.Ler relatório,medições,validação; conferir Release e main atuais. Não repetir implementações antigas.
+2.Confirmar publicação completa e arquivos/hash/488artes; usar Configurações>Atualização somente com Release verificada.
+3.O usuário deve conferir os três slots sem excluir dados e comparar nível,XP,ouro e equipamento apósOTA.
+4.Testar XP de inimigo fraco/forte,contrato e Carta pagos uma vez; registrar o tempo real de uma sequência exploração+missão para avaliar as estimativas. Reiniciar só após concluir salvamento.
+5.Se surgir regressão, reproduzir com48suítes/sete sanitizadores e FQBN real. Não iniciar7.5/8sem pedido. Sem auto-flash,.rpg,formataçãoSD,apagamentoNVS ou dados fictícios na placa.
