@@ -22,7 +22,11 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Entrega atual: Pacote7.1 — Auditoria de Confiabilidade,2026.10.10-audit71.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-audit71) · [Relatório](docs/PACOTE_7_1_AUDITORIA.txt). Recuperação da cópia válida do save, compatibilidade OTA e artes de reserva;44suítes, sanitizadores e compilação aprovados. Save28 e488artes intactos. Validação física desta versão pendente; Pacote6/preservação do personagem confirmados pelo usuário. Etapa7.2 não iniciada.
+**Firmware atual: Pacote 7.2 — Primeira experiência, 2026.10.11-experience72.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72) · [Relatório 7.2](docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt). Os seis testes físicos desta versão foram aprovados pelo usuário. Save28 e 488 artes preservados.
+
+**Pacote 7.3 — Auditoria de sessões prolongadas concluída em software.** [Relatório](docs/PACOTE_7_3_ESTABILIDADE.txt) · [Evidências](docs/PACOTE_7_3_EVIDENCIAS.json) · [Validação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38111881866). 47 suítes, seis alvos com sanitizadores e compilação Waveshare aprovados. Nenhuma falha nova de firmware comprovada; acrescentados testes e corrigida documentação. Nenhuma nova Release: continue usando experience72. Testes prolongados físicos e medição de memória/latência na placa ainda pendentes. Etapas7.4/8 não iniciadas.
+
+**Entrega anterior: Pacote 7.1 — Auditoria de Confiabilidade, 2026.10.10-audit71.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-audit71) · [Relatório](docs/PACOTE_7_1_AUDITORIA.txt). Recuperação NVS, compatibilidade OTA e artes de reserva; aprovado na placa pelo usuário.
 
 **Entrega anterior: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-eventos8) · [Guia](docs/PACOTE_6_OITO_CAMINHOS.txt). Oito tipos de cartas, decisões e expedição em primeira pessoa.42suítes, compilação e downloads verificados; save28 lê1..28,488artes preservadas. Teste físico desta versão pendente; cartas3 aprovada pelo usuário. Próximo:Pacote7.
 

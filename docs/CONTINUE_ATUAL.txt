@@ -1,16 +1,17 @@
-RPG POKET2 — CONTINUIDADE ATUAL — PACOTE7.2
-Versão2026.10.11-experience72/build2026101101/Save28,128bytes,lê1..28.
+RPG POKET2 — CONTINUIDADE ATUAL — PACOTE7.3
+Auditoria7.3 concluída:47suítes/seis sanitizadores/compilaçãoESP32 aprovados; nenhuma falha nova de firmware comprovada. Somente testes/documentação alterados. NÃO houve novaRelease.
+Firmware vigente:2026.10.11-experience72/build2026101101/Save28,128bytes,lê1..28.
 Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72
-Fonte:f9b78c94c01f64eca549714762ec4ce8135d5b32 / CIcandidata38108002981 / publicação38108262870 — sucesso.
-45suítes+ASan/UBSan,compilaçãoWaveshare eRelease conferida. Artes488idênticas. audit71 aprovada na placa pelo usuário;7.2 aguarda testes físicos específicos.
+O usuário confirmou os seis testes físicos7.2; sessões prolongadas físicas7.3 ainda precisam ser realizadas pelo usuário. O agente não testou/gravou a placa.
+CI7.3:https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38111881866
 RAIZ:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
 SKETCH:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
-RELATÓRIO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt
-IMPLEMENTADO:novos personagens chegam direto à cidadeCarvalho;história pode ser pulada,releitura preservada;acolhimentoNara,Com/Sem dicas;10orientaçõescontextuais/Entendi/Pular dicas,Guia mantido.
-DICAS:FirstExperience.h;NVS h0,h1,h2(4bytes)fora dosaves;ausente/inválido=desativado;reinício preserva dicas vistas/pendentes,sem promessa de restaurar menu transitório. Save.h,SaveVersion.h,Rules.h inalterados. Fonte0..3cidades/0..28inimigos,origin122/123,camp90/91,eventos92..99,CRC124 preservados. Segredos não revelados.
+RELATÓRIO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_3_ESTABILIDADE.txt
+EVIDÊNCIAS:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_3_EVIDENCIAS.json
+TESTES:tests/long_session.cpp e render_session.cpp; tools/test_native.sh no espelho github_publicacao. 480ciclos/4.056retomadas/239falhasNVS/96Cartas/3.456quadros extras. Firmware96arquivos eartes488 iguais à base. SemleiturasSD novas.
 CINCO PRIMEIROS COMANDOS:
-1.Ler relatório7.2,verificarRelease/manifesto e comparar fonte/main. Não rerodar scripts históricos.
-2.Registrar validação física7.2:personagens antigos semdicas;se houver slot vazio,criação,origem,pular,dicas,Carvalho/Conversar/Objetivo;sem excluir saves para testar.
-3.Conferirretomadaapósavançohistória/confirmardicas e acesso normal combate,bolsa,viagem,acampar,missão. Registrar problemas concretos antes de alterar.
-4.Reutilizar45suítes/tools/test_native.sh;firmware3.3.12,ESP32S3,16MB,OPI,app3M_fat9M_16MB,EraseFlashnone. Simulação não comprova toque/heap reais.
-5.Aguardar pedido antes dePacote7.3. Não iniciar automaticamente. Atualização autorizada não permite auto-flash,apagamentoNVS,formataçãoSD,.rpg,Heltec ou personagens físicos fictícios.
+1.Ler relatório7.3 e evidências; conferir main/Release vigente antes de alterar. Não rerodar scripts históricos de features.
+2.Registrar teste contínuo físico60–90min naexperience72, sem reinstalação nem exclusão de personagem, alternando sistemas e anotando falhas concretas.
+3.Conferir retomadas após ações confirmadas e isolamento3slots; não criar dados fictícios na placa ou cortar energia durante gravação/OTA.
+4.Se houver falha, reproduzir com testes existentes e corrigir só a causa; reutilizar47suítes/seis sanitizadores e FQBN real. Publicar novaRelease só com correção justificada e validação completa.
+5.Aguardar pedido antes de7.4/8. PreservarHeltec,NVS,Save28,artes488,OTA,tutorial. Semauto-flash,formataçãoSD,.rpg.

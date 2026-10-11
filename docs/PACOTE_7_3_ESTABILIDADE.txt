@@ -1,0 +1,59 @@
+RPG POKET 2.0 — PACOTE 7.3 — ESTABILIDADE PROLONGADA
+Concluído em software em 11/10/2026. Escopo encerrado em 7.3.
+Firmware mantido: 2026.10.11-experience72 / build 2026101101.
+Release vigente: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72
+Base main: 990b0628e9f8e8ba2d93d37b321e942f6890612d.
+Código de firmware publicado: f9b78c94c01f64eca549714762ec4ce8135d5b32.
+Teste candidato: 57ad26e32faa16d13624147b432a4010b0e690fc.
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38111881866 — aprovado.
+
+DECISÃO DE PUBLICAÇÃO
+Não foi demonstrada falha de firmware nos casos exercitados. Portanto, nenhum arquivo de firmware ou arte foi alterado e nenhuma nova Release foi criada. O número de versão/build permanece igual; não há atualização necessária na placa para esta auditoria. Foram acrescentados testes de regressão e corrigida documentação desatualizada. Isso não é prova de ausência absoluta de bugs nem conclusão dos testes prolongados físicos.
+O usuário confirmou os seis testes físicos do Pacote 7.2 antes desta etapa. A confirmação é do usuário; esta execução não testou nem gravou a placa.
+
+PROBLEMAS ENCONTRADOS E CORRIGIDOS
+Críticos/altos/médios: nenhum defeito novo comprovado nos caminhos auditados.
+Baixo, documentação: README ainda apresentava audit71 como entrega atual e 7.2 como não iniciada, apesar da Release experience72 publicada; continuidade/roadmap ainda aguardavam os seis testes físicos agora aprovados pelo usuário. Estado atual e procedimentos corrigidos.
+As duas falhas iniciais da nova simulação eram diferenças da fixture em relação ao controlador: ela gravava entre abandonar e concluir a expedição, que no jogo são uma transação; e finalizava escolta sem concluir primeiro a animação Journey. Ajustada a simulação às fronteiras reais. Nenhuma mudança desnecessária foi aplicada ao jogo por esses falsos positivos.
+
+TESTES NOVOS — SIMULAÇÃO NO COMPUTADOR
+1. long_session.cpp: controlador, regras, Journal e slots reais com NVS/tempo simulados. 480 ciclos mistos, 12 personagens nas quatro classes, três slots por sessão, níveis iniciais 1/10/20. 471 combates, 1.235 turnos reais do motor, 4.056 gravações/retomadas, 239 falhas de gravação seguidas de retry. 96 Cartas, cobertura dos oito tipos. Conferência byte a byte do Save28 a cada retomada e isolamento dos outros slots. A exploração usa seus resultados aleatórios reais, incluindo baús/trancas/loot; acampamento e viagem seguem os resultados dos dados, inclusive derrota. Menus/Guia não escrevem saves. Campanha, finais, vitórias nas ruínas, contratos e contagem de dungeons não são contaminados pelos eventos. A saída de expedição é exercitada neste teste; os percursos completos continuam cobertos pelas suítes de dungeon/expedição existentes.
+2. render_session.cpp: 3.456 quadros em 18 telas, quatro classes/quatro locais, personagem avançado e ouro/poções nos limites. Verifica textos dentro de 240×320, estado de jogo imutável e endereço fixo do buffer de artes. Usa fallback no teste adicional; a suíte render existente valida as 488 artes reais e as capturas completas.
+3. Journey normal e escolta cruzam o rollover de millis, conservam progresso/coordenadas e encerram uma vez. Reinícios simulados passam por Título/Continuar/seleção real do slot; menus transitórios não são prometidos como persistidos.
+Os números acima são ciclos e tempo virtual, não horas de execução nem medidas de FPS na placa. Não se criaram personagens fictícios em hardware.
+
+REGRESSÕES EXISTENTES E MEMÓRIA
+47 suítes aprovadas: 45 existentes e as duas novas. tools/check_controller_snapshot.py confere o controlador replicado nas fixtures contra o sketch; ferramentas de arte foram reutilizadas. Cobertura anterior de saves antigos/corrompidos, slots, criação/tutorial, progressão 1..20, poderes, equipamentos, contratos/campanha/finais, ambas as dungeons, oito eventos, recompensa única, OTA/SD e menus preservada.
+AddressSanitizer/UndefinedBehaviorSanitizer: seis alvos aprovados — long_session, render_session, first_experience, persistence_adapter, update_adapter e render. Sem violações ou vazamentos detectados nesses executáveis. Sanitizadores nativos não medem fragmentação do heap ESP32, TLS real, consumo de energia ou qualidade do toque.
+Revisão dos recursos: artes e framebuffer alocados na inicialização; não houve nova alocação por quadro nem leitura SD introduzida. A camada de renderização continua usando RAM/PSRAM. O SD guarda/atualiza artes e é lido na carga ou nas ações de manutenção existentes; não foi removida sua função.
+
+COMPILAÇÃO E PARTIÇÃO
+Core Espressif 3.3.12, ESP32S3 Dev Module, flash16MiB, OPI PSRAM8MiB, QIO, 240MHz, USB CDC, EraseFlash=none, app3M_fat9M_16MB.
+FQBN: esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none
+Sketch uses 2771482 bytes (88%) of program storage space. Maximum is 3145728 bytes.
+Global variables use 54116 bytes (16%) of dynamic memory, leaving 273564 bytes for local variables. Maximum is 327680 bytes.
+OTA: limite 3.145.728 bytes; etapa de preparo/verificação do manifesto aprovada. Nenhum upload foi executado. A compilação recompila a experience72 sem alterar sua versão; não constitui nova Release.
+PSRAM fixa para artes+framebuffer: 7.145.536 bytes, antes dos demais usos/alocadores. É orçamento estático, não medição de heap livre do hardware.
+
+SAVES E ARTES PRESERVADOS
+96 arquivos de firmware conferidos pelo hash de blob Git contra a base publicada, sem diferenças (normalização apenas de finais de linha quando necessário). Save28, 128bytes, leitores1..28; Save.h/SaveVersion.h/Rules.h/layouts intactos. Nenhuma migração, NVS apagada, formataçãoSD, .rpg ou alteraçãoHeltec.
+488 artes, arquivo6.991.952 bytes, payload6.991.936, CRC53dcc3a5. SHA256 bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8. Pacote local igual byte a byte ao da Release experience72. Retratos, pergaminhos, narrativa, balanceamento, tutorial e OTA intactos.
+
+ARQUIVOS ALTERADOS
+tests/long_session.cpp (novo), tests/render_session.cpp (novo), tools/test_native.sh (47 suítes/seis sanitizadores).
+README.md, docs/ROADMAP_PACOTES_EXPERIENCIA.md, docs/CONTINUE_ATUAL.txt, docs/PACOTE_7_3_ESTABILIDADE.txt (este relatório), docs/PACOTE_7_3_EVIDENCIAS.json.
+Cópias locais de continuidade/roadmap/relatório/evidências no diretório raiz do projeto; fonte de tests na pasta tests e espelho github_publicacao. Firmware/cartao sem alterações.
+
+LIMITES E PENDÊNCIAS — PLACA REAL
+Não há regressão nova conhecida nos casos testados. Restam medições de heap livre/PSRAM, frame/toque/loop, estabilidade térmica e Wi-Fi real em uma sessão contínua. Não se declara ausência absoluta de fragmentação ou travamentos. FAT32 com corte de energia e firmware que não inicialize continuam limites de recuperação já documentados; não foram provocados na placa. Os testes de atualização usam os adaptadores reais com I/O/TLS simulados e não substituem a validação física.
+
+VALIDAÇÃO FÍSICA RECOMENDADA, SEM NOVA INSTALAÇÃO
+1. Manter experience72. Jogar 60–90min alternando explorar, combate/habilidades/poções, bolsa/menu, mapa/viagens, acampamento e Cartas. Observar travamentos, toque repetido, atraso crescente e perda de leitura das artes.
+2. Em Configurações/Testes, comparar tempos e erros antes/depois da sessão; se possível registrar saída Serial, inclusive heap livre obtido por diagnóstico externo, sem editar saves.
+3. Reiniciar normalmente após ações já confirmadas em exploração, combate, dado/viagem ou acampamento. Continuar e conferir HP/MP, ouro, XP, itens, missão e estado salvo. Não cortar energia durante escrita/OTA para este teste.
+4. Conferir personagens existentes nos três slots, sem apagar ou criar para preencher slots ocupados. Reabrir uma recompensa já recebida e confirmar que não é paga novamente.
+5. Após ler Carta ou retornar de dungeon, conferir objetivo de campanha/contrato e retorno ao local esperado. Registrar nome da Carta, classe/nível, tela, ação e condição de rede se surgir falha.
+Não é necessário repetir os seis testes básicos7.2 já aprovados; foco agora é uso contínuo. Não iniciar7.4 ou8 automaticamente.
+
+OBSERVAÇÃO DE REPRODUTIBILIDADE
+O teste otimizado O2 produziu os mesmos contadores no compilador local e no CI:471combates/4.056retomadas. O executável O1 com sanitizadores no CI percorreu483combates/3.968retomadas, com234retries; todas as invariantes de save, slots, progresso e recompensas passaram. A causa da diferença entre configurações não foi determinada nesta etapa. As evidências guardam ambos os resultados; não se afirma identidade de trajetórias entre compiladores/instrumentação e não se alterou o RNG/balanceamento sem uma falha funcional demonstrada. Fica como observação técnica pendente.

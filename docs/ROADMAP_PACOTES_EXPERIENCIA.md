@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual: Pacote7.1 — Auditoria de Confiabilidade,2026.10.10-audit71. Três correções justificadas,44suítes +sanitizadores,save28/488artes preservados. Teste físico7.1 pendente. Pacote7.2 não iniciado.
+Estado atual: Pacote7.3 auditado em software, sem nova Release por ausência de falha de firmware comprovada. Firmware2026.10.11-experience72, aprovado pelo usuário nos seis testes físicos7.2. Relatório PACOTE_7_3_ESTABILIDADE.txt;47suítes/seis sanitizadores/compilação aprovados. Sessões prolongadas físicas7.3 pendentes.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
@@ -166,4 +166,6 @@ Cinco próximos comandos de continuidade:
 
 Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade OTA e reserva de artes. Consulte PACOTE_7_1_AUDITORIA.txt. O usuário confirmou preservação do personagem após o Pacote6; não repetir sem falha concreta. audit71 aprovada na placa pelo usuário; etapa7.2 solicitada e concluída.
 
-Pacote7.2 publicado:chegadaCarvalho,dicascontextuaisopcionais10contextos,Save28/artes488preservados,45suítes/compilação aprovadas. ConsultePACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt. Testes físicos7.2pendentes. Parar em7.2; não iniciar7.3.
+Pacote7.2 publicado:chegadaCarvalho,dicascontextuaisopcionais10contextos,Save28/artes488preservados,45suítes/compilação aprovadas. ConsultePACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt. Os seis testes físicos7.2 foram aprovados pelo usuário. Etapa7.3 solicitada e auditada; sem mudança de firmware ou novaRelease.
+
+Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suítes/seis sanitizadores e compilação aprovados. Sem defeito novo de firmware comprovado. Testes/documentação ampliados,experience72 permanece vigente. Validação física prolongada pendente; parar em7.3,sem iniciar7.4/8.
