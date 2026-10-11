@@ -18,6 +18,12 @@ inline char dungeonCell(unsigned floor,int x,int y){
  return floor<2&&x>=0&&x<9&&y>=0&&y<9?maps[floor][y][x]:'#';
 }
 inline char dungeonCell(const Game& g,int x,int y){
+ if(eventExpedition(g)){
+  static const char* maps[2][5]={{"#####","#..S#","#.#.#","#E..#","#####"},{"#####","#..B#","#.#.#","#U..#","#####"}};
+  unsigned floor=dungeonFloor(g);if(x<0||x>=5||y<0||y>=5||floor>unsigned(g.eventTier>0))return '#';
+  if(!g.eventTier&&x==3&&y==1)return 'B';return maps[floor][y][x];
+ }
+
  if(!islandDungeon(g))return dungeonCell(dungeonFloor(g),x,y);
  static const char* maps[3][9]={
  {"#########","#...#..S#","#.#.#.#.#","#.#...#.#","#.###.#.#","#...#...#","###.#.###","#E......#","#########"},
@@ -32,13 +38,15 @@ constexpr DungeonSpawn dungeonPickups[]={{0,1,5,0},{0,5,3,6},{0,5,1,7},{0,3,1,5}
 constexpr DungeonSpawn islandSpawns[]={{0,3,7,20},{0,5,5,21},{0,7,3,22},{1,3,7,22},{1,1,3,23},{1,7,3,20},{2,5,5,23},{2,7,1,24}};
 constexpr DungeonSpawn islandPickups[]={{0,1,5,0},{0,5,3,6},{1,3,1,7},{1,7,5,1},{2,3,1,7},{2,7,2,2}};
 constexpr DungeonSpawn islandTrapCells[]={{1,3,5,0},{1,5,7,1},{1,7,5,2}};
-inline unsigned dungeonSpawnCount(const Game& g){return islandDungeon(g)?8:7;}
-inline unsigned dungeonPickupCount(const Game& g){return islandDungeon(g)?6:8;}
-inline DungeonSpawn dungeonSpawn(const Game& g,unsigned i){return islandDungeon(g)?islandSpawns[i%8]:dungeonSpawns[i%7];}
+inline unsigned dungeonSpawnCount(const Game& g){return eventExpedition(g)?(g.eventTier?3:2):islandDungeon(g)?8:7;}
+inline unsigned dungeonPickupCount(const Game& g){return eventExpedition(g)?0:islandDungeon(g)?6:8;}
+inline DungeonSpawn dungeonSpawn(const Game& g,unsigned i){
+ if(eventExpedition(g)){uint8_t id=g.eventTier==0?(g.eventLevel<3?0:1):g.eventTier==1?(i==2?5:2):g.eventTier==2?(i==2?26:25):(i==2?28:27);return i==0?DungeonSpawn{0,1,1,id}:i==1?DungeonSpawn{0,3,uint8_t(g.eventTier?2:1),id}:DungeonSpawn{1,3,1,id};}
+ return islandDungeon(g)?islandSpawns[i%8]:dungeonSpawns[i%7];}
 inline DungeonSpawn dungeonPickup(const Game& g,unsigned i){return islandDungeon(g)?islandPickups[i%6]:dungeonPickups[i%8];}
 inline unsigned dungeonBossIndex(const Game& g){return dungeonSpawnCount(g)-1;}
 inline unsigned dungeonChestBit(const Game& g){return islandDungeon(g)?32:128;}
-inline bool dungeonBossWon(const Game& g){return inDungeon(g)&&g.phase==Phase::Won&&g.enemyId==(islandDungeon(g)?24:8);}
+inline bool dungeonBossWon(const Game& g){return !eventExpedition(g)&&inDungeon(g)&&g.phase==Phase::Won&&g.enemyId==(islandDungeon(g)?24:8);}
 inline int dungeonEnemyAt(const Game& g,int x,int y){for(unsigned i=0;i<dungeonSpawnCount(g);++i){auto s=dungeonSpawn(g,i);if(!(g.dungeonEnemies&(1u<<i))&&s.floor==dungeonFloor(g)&&s.x==x&&s.y==y)return i;}return -1;}
 inline int dungeonEnemyAhead(const Game& g){unsigned d=dungeonHeading(g);return dungeonEnemyAt(g,dungeonX(g)+dungeonDx[d],dungeonY(g)+dungeonDy[d]);}
 inline void clearDungeon(Game& g){g.dungeonFlags=g.dungeonXY=g.dungeonLoot=g.dungeonEnemies=g.islandTraps=0;}
@@ -48,6 +56,13 @@ inline const char* enterIsland(Game& g){if(!islandUnlocked(g))return "Entrada in
 inline bool dungeonValid(const Game& g){
  if(g.crystals>9||g.dungeonFlags>63||g.islandTraps>7||(g.islandCleared&&!islandUnlocked(g)))return false;
  if(!inDungeon(g))return !g.dungeonFlags&&!g.dungeonXY&&!g.dungeonLoot&&!g.dungeonEnemies&&!g.islandTraps;
+ if(eventExpedition(g)){
+  unsigned count=dungeonSpawnCount(g),mask=(1u<<count)-1;
+  if(g.city!=g.eventTier||islandDungeon(g)||dungeonFloor(g)>unsigned(g.eventTier>0)||g.dungeonEnemies>mask||g.dungeonLoot>1||g.islandTraps||g.tripStage||g.campStage||g.campaignStage||g.clubStage==1||g.clubStage==2||dungeonWall(g,dungeonX(g),dungeonY(g))||dungeonEnemyAt(g,dungeonX(g),dungeonY(g))>=0)return false;
+  if(dungeonFloor(g)&&((g.dungeonEnemies&3)!=3))return false;
+  if(g.eventProgress!=g.dungeonLoot||(g.dungeonLoot&&g.dungeonEnemies!=mask))return false;
+  if(g.phase!=Phase::Home){int target=dungeonEnemyAhead(g);if(target<0||g.enemyId!=dungeonSpawn(g,target).id)return false;}return true;
+ }
  bool secret=islandDungeon(g);if(secret?!islandUnlocked(g)||dungeonFloor(g)>2: g.city!=1||dungeonFloor(g)>1||g.dungeonEnemies>127||g.islandTraps)return false;
  if(g.tripStage||g.campStage||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2||dungeonWall(g,dungeonX(g),dungeonY(g))||dungeonEnemyAt(g,dungeonX(g),dungeonY(g))>=0)return false;
  unsigned boss=1u<<dungeonBossIndex(g);if((g.dungeonEnemies&boss)&&!(g.dungeonLoot&(secret?192:8)))return false;
@@ -67,11 +82,11 @@ inline const char* dungeonMove(Game& g,int forward,int side,int turn){
  if(islandDungeon(g)&&dungeonFloor(g)==1)for(unsigned i=0;i<3;++i){auto t=islandTrapCells[i];if(x==t.x&&y==t.y&&!(g.islandTraps&(1u<<i))){g.islandTraps|=1u<<i;unsigned roll=1+random(g)%20;int bonus=g.dndProgression?abilityMod(g.attributes[1]):int(luck(g));bool safe=roll==20||(roll!=1&&int(roll)+bonus>=14);g.damage=safe?0:std::min<unsigned>(g.p.hp-1,std::max(1u,unsigned(g.p.maxhp)/8));g.p.hp-=g.damage;}}
  return nullptr;
 }
-inline bool dungeonLeverVisible(const Game& g,int x,int y){return islandDungeon(g)&&dungeonFloor(g)<2&&x==3&&y==0;}
+inline bool dungeonLeverVisible(const Game& g,int x,int y){if(eventExpedition(g))return dungeonFloor(g)==unsigned(g.eventTier>0)&&x==3&&y==0;return islandDungeon(g)&&dungeonFloor(g)<2&&x==3&&y==0;}
 inline bool dungeonLeverAhead(const Game& g){unsigned d=dungeonHeading(g);return dungeonLeverVisible(g,dungeonX(g)+dungeonDx[d],dungeonY(g)+dungeonDy[d]);}
-inline bool dungeonUseLever(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home||!dungeonLeverAhead(g))return false;unsigned bit=64u<<dungeonFloor(g);if(g.dungeonLoot&bit)return false;g.dungeonLoot|=bit;return true;}
+inline bool dungeonUseLever(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home||!dungeonLeverAhead(g))return false;if(eventExpedition(g)){if(g.dungeonEnemies!=(1u<<dungeonSpawnCount(g))-1||g.eventProgress)return false;g.eventProgress=1;g.dungeonLoot=1;return true;}unsigned bit=64u<<dungeonFloor(g);if(g.dungeonLoot&bit)return false;g.dungeonLoot|=bit;return true;}
 inline const char* dungeonCollect(Game& g){
- if(!inDungeon(g)||g.phase!=Phase::Home)return "Termine o combate";const char* notice=nullptr;bool secret=islandDungeon(g);
+ if(!inDungeon(g)||g.phase!=Phase::Home)return "Termine o combate";if(eventExpedition(g))return nullptr;const char* notice=nullptr;bool secret=islandDungeon(g);
  for(unsigned i=0;i<dungeonPickupCount(g);++i){auto s=dungeonPickup(g,i);if((g.dungeonLoot&(1u<<i))||s.floor!=dungeonFloor(g)||s.x!=dungeonX(g)||s.y!=dungeonY(g))continue;
   bool chest=i==dungeonPickupCount(g)-1;
   if(chest&&!(g.dungeonEnemies&(1u<<dungeonBossIndex(g))))return "Bau protegido pelo chefe";
@@ -85,8 +100,9 @@ inline const char* dungeonCollect(Game& g){
  return nullptr;
 }
 inline bool dungeonStairs(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home)return false;char cell=dungeonCell(g,dungeonX(g),dungeonY(g));unsigned floor=dungeonFloor(g);
+ if(eventExpedition(g)){if(cell=='S'&&g.eventTier&&!floor&&(g.dungeonEnemies&3)==3){dungeonSetFloor(g,1);dungeonFace(g,0);g.dungeonXY=0x31;return true;}if(cell=='U'&&floor){dungeonSetFloor(g,0);dungeonFace(g,2);g.dungeonXY=0x13;return true;}return false;}
  if(islandDungeon(g)){if(cell=='S'&&floor<2&&(g.dungeonLoot&(64u<<floor))){dungeonSetFloor(g,floor+1);dungeonFace(g,0);g.dungeonXY=0x71;return true;}if(cell=='U'&&floor){dungeonSetFloor(g,floor-1);dungeonFace(g,2);g.dungeonXY=0x17;return true;}return false;}
  if(cell!='S')return false;bool down=!floor;g.dungeonFlags=down?7:9;g.dungeonXY=down?0x71:0x17;return true;}
-inline bool dungeonResolve(Game& g){if(!inDungeon(g)||g.phase==Phase::Home||g.phase==Phase::Hero||g.phase==Phase::Enemy)return false;int e=dungeonEnemyAhead(g);bool won=g.phase==Phase::Won,lost=g.phase==Phase::Lost;if(won&&e>=0){g.dungeonEnemies|=1u<<e;if(unsigned(e)==dungeonBossIndex(g)){if(islandDungeon(g))g.islandCleared=true;else if(g.dungeonClears<255)++g.dungeonClears;}}home(g);if(lost)clearDungeon(g);return true;}
+inline bool dungeonResolve(Game& g){if(!inDungeon(g)||g.phase==Phase::Home||g.phase==Phase::Hero||g.phase==Phase::Enemy)return false;int e=dungeonEnemyAhead(g);bool won=g.phase==Phase::Won,lost=g.phase==Phase::Lost;if(won&&e>=0){g.dungeonEnemies|=1u<<e;if(!eventExpedition(g)&&unsigned(e)==dungeonBossIndex(g)){if(islandDungeon(g))g.islandCleared=true;else if(g.dungeonClears<255)++g.dungeonClears;}}if(eventExpedition(g)){if(won)home(g);return true;}home(g);if(lost)clearDungeon(g);return true;}
 inline bool leaveDungeon(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home)return false;clearDungeon(g);return true;}
 }

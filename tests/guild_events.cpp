@@ -19,7 +19,7 @@ int main(){
  auto g=testHero(0,42);g.tutorial=true;g.tripStage=1;assert(!offerLegacyEvent(g,20733,10));g=testHero(0,42);g.tutorial=true;g.campStage=1;assert(!offerLegacyEvent(g,20733,10));g=testHero(0,42);assert(!offerLegacyEvent(g,20733,10));g.tutorial=true;offerLegacyEvent(g,20733,10);begin(g,2);assert(acceptEvent(g,2)&&g.eventStage==1&&g.enemyId==2);
  // Genuine save10 size/CRC, including occupied camp bytes, migrates without an event.
  g=testHero(0,55);g.sleepKit=true;g.rations=3;g.city=1;g.p.hp=1;startCamp(g,true,true);uint8_t b[SAVE_SIZE];encode(g,19,b);legacyFormat(b,10);put16(b,6,96);put32(b,92,crc(b,92));Game copy;uint32_t seq;assert(decode(b,copy,seq)==Decode::Ok&&!copy.eventDay&&copy.campStage==g.campStage&&copy.campRoll==g.campRoll&&copy.sleepKit&&copy.rations==2);
- g=testHero(0,42);g.tutorial=true;offerLegacyEvent(g,20733,10);acceptEvent(g,9);encode(g,1,b);b[124]^=1;assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);b[99]=255;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);b[100]=1;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);put16(b,4,28);assert(decode(b,copy,seq)==Decode::Unsupported);
+ g=testHero(0,42);g.tutorial=true;offerLegacyEvent(g,20733,10);acceptEvent(g,9);encode(g,1,b);b[124]^=1;assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);b[99]=255;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);b[100]=1;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);encode(g,1,b);put16(b,4,29);assert(decode(b,copy,seq)==Decode::Unsupported);
 
  // Pending letters survive midnight, clock rollback, reboot and late logins.
  g=testHero(0,42);g.tutorial=true;
@@ -47,7 +47,7 @@ int main(){
  }
  // Reject unsupported high bits in both new and legacy records, even with good CRC.
  g=testHero(0,42);g.tutorial=true;assert(offerLegacyEvent(g,20733,10));encode(g,1,b);
- b[97]|=8;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
+ b[97]|=64;put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
  encode(g,1,b);b[97]|=4;legacyFormat(b,25);put32(b,124,crc(b,124));assert(decode(b,copy,seq)==Decode::Corrupt);
  // A failed write cannot consume the second opportunity on reboot.
  Mem slots;Journal<Mem> daily(slots);assert(daily.load(copy)==Load::Empty);

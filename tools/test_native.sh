@@ -3,7 +3,7 @@ set -eu
 python3 tools/check_controller_snapshot.py
 python3 tools/unpack_art.py
 mkdir -p build/tests build/screens
-for name in event_objectives regional_world island_save club_protocol club_duel guild_save guild_events camp_loot dungeon_save dungeon_controller title_controller travel_economy rules_save gear_save forge_save quests_save card_read menu_state settings_adapter sd_adapter class_progression class_powers martial_powers launch_readiness campaign_port origin_story exploration_save locks_save progression_journey paladin_smite champion_progression arcane_progression barbarian_progression enemy_info bestiary_save campaign_aurora campaign_anwen campaign_finale dialogue_story render; do
+for name in event_catalog event_expedition event_objectives regional_world island_save club_protocol club_duel guild_save guild_events camp_loot dungeon_save dungeon_controller title_controller travel_economy rules_save gear_save forge_save quests_save card_read menu_state settings_adapter sd_adapter class_progression class_powers martial_powers launch_readiness campaign_port origin_story exploration_save locks_save progression_journey paladin_smite champion_progression arcane_progression barbarian_progression enemy_info bestiary_save campaign_aurora campaign_anwen campaign_finale dialogue_story render; do
   extras=()
   if [[ "$name" == club_protocol || "$name" == club_duel ]]; then extras+=(firmware/RPG_POKET_2/ClubProtocol.cpp firmware/RPG_POKET_2/ClubDuel.cpp -Ifirmware/RPG_POKET_2); fi
   if [[ "$name" == settings_adapter ]]; then extras+=(-Itests/settings_fake); fi

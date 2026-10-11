@@ -22,7 +22,7 @@ struct Game {
   uint8_t tripStage=0,tripTo=0,tripRoll=0,tripDifficulty=0,tripTotal=0,tripEnemy=0,tripSurvival=0,tripLuck=0;
   uint8_t rations=0,charts=0,charms=0;
   uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
-  uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0,eventOfferSlot=0,eventKind=0,eventProgress=0,eventLevel=0;
+  uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0,eventOfferSlot=0,eventKind=0,eventProgress=0,eventLevel=0,eventFlags=0,eventRoll=0;
   uint8_t crystals=0,dungeonFlags=0,dungeonXY=0,dungeonLoot=0,dungeonEnemies=0,dungeonClears=0;
   uint32_t owned=0;
   uint8_t equipped[3]={},forge[3]={};
@@ -44,6 +44,7 @@ struct Game {
   bool crit=false,dodge=false,dropLife=false,dropMana=false,tutorial=false;
 };
 
+inline bool eventExpedition(const Game& g){return g.eventStage==2&&g.eventKind==3;}
 constexpr uint32_t dndXp[]={0,300,900,2700,6500,14000,23000,34000,48000,64000,85000,100000,120000,140000,165000,195000,225000,265000,305000,355000};
 inline int abilityMod(unsigned score){return int(score)/2-5;}
 inline unsigned proficiency(unsigned level){return 2+(std::min(20u,std::max(1u,level))-1)/4;}
@@ -356,7 +357,7 @@ inline bool enemy(Game& g){
  if(g.phase!=Phase::Enemy)return false;clearFeedback(g);g.surgeTurnUsed=false;
  if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;startHeroTurn(g);return true;}
  auto intent=enemyIntent(g);if(g.dndProgression)g.enemyBeat=(g.enemyBeat+1)%3;
- if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);g.guard=0;tickRage(g);g.phase=Phase::Hero;startHeroTurn(g);return true;}
+ if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);if(g.eventStage!=2||g.eventKind!=7)g.guard=0;tickRage(g);g.phase=Phase::Hero;startHeroTurn(g);return true;}
  int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));if(intent==Intent::Heavy)damage=damage*3/2;
  unsigned guard=g.guard;if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
  if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;tickRage(g);}

@@ -3,7 +3,7 @@
 constexpr uint16_t STORY_PAPER=0xf6d4,STORY_INK=0x30e4,STORY_EDGE=0xa3c9;
 inline bool storyPaperPage(Page p){switch(p){
 case Page::Prologue:case Page::Dialogue:case Page::Journal:case Page::People:case Page::Continent:case Page::Campaign:case Page::CampaignTask:case Page::CampaignResult:case Page::ContributionResult:case Page::Epilogue:
-case Page::IslandEntry:case Page::DungeonEntry:case Page::DungeonVictory:case Page::DungeonLoot:case Page::DungeonExit:case Page::CrystalBuy:case Page::Help:case Page::Result:case Page::Contract:case Page::QuestConfirm:case Page::GuildJoin:case Page::Letters:case Page::LetterRefuse:case Page::EventResult:case Page::EventMission:case Page::EventAbandon:case Page::SlotConfirm:case Page::DeleteSlot:case Page::ForgetWifi:return true;
+case Page::IslandEntry:case Page::DungeonEntry:case Page::DungeonVictory:case Page::DungeonLoot:case Page::DungeonExit:case Page::CrystalBuy:case Page::Help:case Page::Result:case Page::Contract:case Page::QuestConfirm:case Page::GuildJoin:case Page::Letters:case Page::LetterRefuse:case Page::EventResult:case Page::EventMission:case Page::EventChoice:case Page::EventAbandon:case Page::SlotConfirm:case Page::DeleteSlot:case Page::ForgetWifi:return true;
 default:return false;}}
 inline uint16_t storyInk(uint16_t color){return color==UI_RED?0xa000:color==UI_GREEN?0x0320:color==UI_BLUE?0x21b0:color==UI_MUTED?0x6b08:color==UI_GOLD?0x72a4:STORY_INK;}
 template<class C>bool drawStoryPaper(C& c,const ViewState& v,unsigned frame){

@@ -10,7 +10,7 @@ Game letter(unsigned cls,unsigned level,unsigned kind,unsigned seed=42){auto g=h
 int main(){
  unsigned seen=0,pairs=0;
  for(unsigned level:{1u,5u,10u,18u})for(unsigned seed=1;seed<80;++seed){auto g=hero(0,level,seed);assert(offerEvent(g,20733,10));unsigned a=g.eventKind;seen|=1u<<a;assert(level>=5||a!=2);g=reboot(g);assert(refuseEvent(g)&&offerEvent(g,20733,22));assert(g.eventKind!=a);++pairs;assert(refuseEvent(g)&&!offerEvent(g,20733,23));}
- assert(seen==7&&pairs==316);
+ assert(seen==255&&pairs==316);
  for(unsigned cls=0;cls<4;++cls)for(unsigned level:{1u,5u,10u,18u}){
   auto g=letter(cls,level,1);auto gold=eventGold(g),xp=eventXp(g);unsigned attempts=0,fights=0;
   assert(!finishEvent(g)&&prepareTrip(g,0)&&!startDiscovery(g)&&startCamp(g,false,false));
@@ -49,6 +49,6 @@ int main(){
  for(unsigned stage=1;stage<=6;++stage){g=testHero(0,42);g.tutorial=true;assert(offerEvent(g,20733,10));g.eventKind=g.eventLevel=0;g.eventOfferSlot=1;if(stage==4)refuseEvent(g);else if(stage!=1){assert(!acceptEvent(g,49));if(stage!=2){if(stage==3){g.enemyHp=0;finish(g);}else if(stage==5){g.p.hp=0;finish(g);}else g.phase=Phase::Fled;assert(finishEvent(g));}}
   encode(g,1,b);legacyFormat(b,26);put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Ok&&!h.eventKind&&!h.eventLevel&&h.eventOfferSlot==1&&h.eventStage==stage&&eventGold(h)==eventGold(h.eventTier));
  }
- g=letter(0,5,1);encode(g,1,b);b[95]=1;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);b[97]|=128;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);b[97]=(b[97]&~24)|24;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);legacyFormat(b,26);put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);
+ g=letter(0,5,1);encode(g,1,b);b[95]=7;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);b[97]|=128;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);b[97]|=64;put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);encode(g,1,b);put16(b,4,26);put32(b,124,crc(b,124));assert(decode(b,h,seq)==Decode::Corrupt);
  puts("PASS: three event types,316 distinct daily pairs; real search/escort, regional combat, D20 and trip resume; contract/supply isolation; loss/flee/abandon, atomic payment, save27/26 compatibility and corruption guards");
 }
