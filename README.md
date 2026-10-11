@@ -22,7 +22,9 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Entrega atual: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-eventos8) · [Guia](docs/PACOTE_6_OITO_CAMINHOS.txt). Oito tipos de cartas, decisões e expedição em primeira pessoa.42suítes, compilação e downloads verificados; save28 lê1..28,488artes preservadas. Teste físico desta versão pendente; cartas3 aprovada pelo usuário. Próximo:Pacote7.
+**Entrega atual: Pacote7.1 — Auditoria de Confiabilidade,2026.10.10-audit71.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-audit71) · [Relatório](docs/PACOTE_7_1_AUDITORIA.txt). Recuperação da cópia válida do save, compatibilidade OTA e artes de reserva;44suítes, sanitizadores e compilação aprovados. Save28 e488artes intactos. Validação física desta versão pendente; Pacote6/preservação do personagem confirmados pelo usuário. Etapa7.2 não iniciada.
+
+**Entrega anterior: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-eventos8) · [Guia](docs/PACOTE_6_OITO_CAMINHOS.txt). Oito tipos de cartas, decisões e expedição em primeira pessoa.42suítes, compilação e downloads verificados; save28 lê1..28,488artes preservadas. Teste físico desta versão pendente; cartas3 aprovada pelo usuário. Próximo:Pacote7.
 
 **Entrega anterior: Pacote6.3 — Vidas na Estrada,2026.10.10-cartas3.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas3) · [Guia](docs/PACOTE_6_3_VIDAS_NA_ESTRADA.md). Coleta real e escolta comD20/carroça/viagem7s, três tipos diários distintos e duas oportunidades.40suítes, compilação e downloads verificados; teste físico pendente. Save27 lê1..27;488artes preservadas. Faltam cinco dos oito tipos do Pacote6.
 

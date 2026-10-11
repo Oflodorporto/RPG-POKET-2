@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual10/10: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8. Oito tipos de eventos com objetivos próprios; duas oportunidades09h/18h.42suítes,save28,488artes;teste físico da nova versão pendente. Próximo:Pacote7.
+Estado atual: Pacote7.1 — Auditoria de Confiabilidade,2026.10.10-audit71. Três correções justificadas,44suítes +sanitizadores,save28/488artes preservados. Teste físico7.1 pendente. Pacote7.2 não iniciado.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
@@ -163,3 +163,5 @@ Cinco próximos comandos de continuidade:
 3. Testar pacote1 com novos jogadores, saves antigos e SD ausente; publicar após testes/ESP32/inspeção de telas, sem upload automático.
 4. Implementar pacote2 com descoberta e loot persistidos; medir as probabilidades e retomadas antes de acrescentar trancas/mímicos mais complexos.
 5. Entregar pacote3 e avançar balanceamento4/Aurora5, mantendo esta lista atualizada com estados reais e validação física.
+
+Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade OTA e reserva de artes. Consulte PACOTE_7_1_AUDITORIA.txt. O usuário confirmou preservação do personagem após o Pacote6; não repetir sem falha concreta. Parar na etapa7.1; próximas etapas requerem solicitação.

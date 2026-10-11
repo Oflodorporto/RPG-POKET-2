@@ -1,0 +1,83 @@
+RPG POKET 2.0 — PACOTE 7.1 — AUDITORIA DE CONFIABILIDADE
+Referência: 2026.10.10-eventos8, fonte029493f4f63370f66a150787f16126962b237c1f.
+GitHub/main verificado antes da auditoria:450cf376554906b62c7c43656e7d873035d28b41.
+O usuário confirmou atualização e preservação do personagem do Pacote6 na placa. Essa validação não foi refeita. Esta auditoria usa dados de teste exclusivamente no computador; não acessa nem altera personagens físicos.
+
+PROBLEMAS ENCONTRADOS E CORRIGIDOS
+
+A1 — ALTA / disponibilidade do personagem, sem apagamento comprovado.
+O adaptador NVS classificava tamanho malformado e cabeçalho de comprimento divergente como erro de I/O. O Journal interrompia a leitura sem consultar a outra cópia, mesmo que íntegra. O decoder também tratava formato conhecido com tamanho incompatível como versão não suportada, bloqueando a cópia boa. Reprodução com o leitor anterior falhou na recuperação esperada; o novo teste passa nos três slots.
+Correção: leitura real compartilhada por NvsRecord.h e pelo sketch. Registro incompleto/malformado limitado a128bytes é Corrupt; o diário pode carregar a cópia válida sem gravar na carga. Formato conhecido com comprimento incorreto é Corrupt. Erro real de leitura, versão futura, ambos os registros corrompidos e blob maior que128bytes continuam protegidos/bloqueados. Nenhum desses estados dispara exclusão, personagem padrão ou save automático. Um blob maior pode pertencer a formato futuro e não é substituído automaticamente. Somente uma ação normal posterior do jogador pode gravar o personagem recuperado na cópia inativa.
+
+A2 — ALTA / instalação potencialmente incompatível com personagens.
+O atualizador verificava save_format=7, identificador legado do protocolo OTA, mas ignorava writes_save_format e reads_save_formats, que descrevem o formato real. Um manifesto de build maior sem leitor Save28 podia ser aceito apesar dos três slots precisarem dele. Não houve esse problema no manifesto correto de eventos8; uma reprodução compilada com o parser e as regras anteriores confirmou que um manifesto sem os metadados reais de save era aceito. O novo cenário é recusado.
+Correção: parsear o formato escrito e exigir declaração de leitura de todos os formatos1..28, para cobrir quaisquer personagens nos três slots, antes de oferecer instalação. Formato escrito deve ser pelo menos28. Versões futuras podem escrever formato maior desde que declarem leitura de toda a base existente. Campo compartilhado CURRENT_SAVE_FORMAT=28 evita divergência entre decoder e contrato OTA. Faltas, formato errado, números inválidos, partição insuficiente e artes maiores quePSRAM são recusados. Save28/128bytes e seu layout NÃO mudaram.
+
+A3 — MÉDIA / artes de reserva ignoradas.
+Se um arquivo artes_<CRC>.pak existia, mesmo danificado, loadSdArt não tentava o pacote original artes.pak válido. Isso podia mostrar a arte simplificada apesar de haver imagens íntegras no cartão. Reprodução com adaptador anterior falhou no novo cenário.
+Correção: após falha do candidato versionado, tentar o pacote original com a mesma validação de cabeçalho/tamanho/CRC. A reserva usada permanece intacta. Limpeza de arquivos antigos só acontece quando o arquivo versionado correto é integralmente validado. Arquivos .part e outros arquivos do usuário não são removidos pela limpeza.
+
+HIPÓTESE DESCARTADA: limite de arquivos na enumeração do cartão.
+A simulação inicial contava diretórios no limite max_files. A conferência do VFS/FAT oficial e do ArduinoFS mostrou que opendir mantém contexto próprio, fora da tabela dos arquivos regulares. A configuração original de um arquivo aberto atende a enumeração sequencial. A simulação foi corrigida e o limite original mantido. Essa hipótese NÃO é defeito encontrado/corrigido. Referência: https://raw.githubusercontent.com/espressif/esp-idf/v5.5.5/components/fatfs/vfs/vfs_fat.c (vfs_fat_opendir). Não modificar sistema correto com base numa simulação incompleta.
+
+SISTEMAS MANTIDOS
+História, classes, habilidades, valores de XP/ouro, probabilidades, cidades, campanha, contratos, oito cartas, viagens/D20/carroça, acampamento, dungeons, retratos e pergaminhos. Save28 escreve os mesmos128bytes e lê1..28. IDs de cidades0..3/inimigos0..28 e os488assets preservados. Nenhuma mudança de interface foi necessária: a regressão e as verificações de limites não reproduziram corte, sobreposição ou botão inacessível nos cenários cobertos. O toque físico ainda precisa de validação humana.
+
+VERIFICAÇÕES AUTOMATIZADAS
+44 suítes: as42 existentes, persistence_adapter e update_adapter. Controladores reais comparados ao sketch; criação/carga, slots isolados, cancelamento/exclusão confirmada e falhas de gravação; combate/poções/poderes/quatro classes; progressão1..20; equipamentos/inventário/recompensas; cidades/exploração/viagens/acampar; dungeons/contratos/campanha; oito tipos de cartas. Retomada, isolamento de progressos e pagamento único nos casos cobertos. Migrações históricas nas suítes existentes, sem saves fabricados na placa.
+Teste NVS: comprimentos inválidos0/1/63/65/95/97/127; cabeçalhos divergentes, CRC, versão futura, blob256bytes, erro real de leitura, duas cópias inválidas, gravação falha e2048 mutações de campos com verificação de CRC e roundtrip dos estados aceitos.
+Teste OTA: parser cJSON real; metadados Save28; partição/PSRAM; resposta truncada e retomada em4096bytes; cinco tentativas esgotadas e conclusão numa tentativa posterior; Content-Range errado e servidor que responde200 em vez de206; HTTP500, cartão ausente/sem espaço, leitura/gravação/integridade/rename; esp_ota_begin/write/end/set_boot_partition falhando; instalação normal e só artes. Cada saída fecha arquivos/handle OTA e mantém arquivo ativo e dados sentinela. NVS não integra nem é referenciado pelo instalador. Não se modela falha elétrica real.
+A simulação usa digest determinístico para verificar comparação e ordem dos passos; NÃO testa o algoritmo mbedTLS SHA-256, TLS, driverFAT ou rádio reais. Os arquivos publicados são conferidos adicionalmente com SHA-256 real no computador e CRC32 real das artes. cJSON v1.7.19 é usado somente nos testes; origem/licençaMIT conservada: https://github.com/DaveGamble/cJSON/tree/v1.7.19 . Nenhuma dependência adicional é incluída no firmware.
+CI inclui AddressSanitizer e UndefinedBehaviorSanitizer em persistência, OTA e renderização. Todos passaram na candidata e na publicação; isso não equivale a medir heap do equipamento.
+
+MEMÓRIA E ESTABILIDADE
+Catálogo488: payload6991936bytes; framebuffer153600bytes; total fixo emPSRAM7145536bytes, antes de outras alocações/overhead. Os buffers persistem entre quadros; não foram adicionados assets nem alocações por quadro. O worker OTA conserva stack24576bytes e buffers4096bytes; pico real de heap/TLS, fragmentação longa, bateria e temperatura dependem da placa. A compilação informa flash/RAM estática, não RAM livre durante uma conexão. Partição OTA3MiB,flash16MiB,OPIPSRAM8MiB,core3.3.12,EraseFlashnone.
+
+ARQUIVOS MODIFICADOS
+firmware/RPG_POKET_2/DeviceSettings.h
+firmware/RPG_POKET_2/NvsRecord.h
+firmware/RPG_POKET_2/ReleaseVersion.h
+firmware/RPG_POKET_2/RPG_POKET_2.ino
+firmware/RPG_POKET_2/Save.h
+firmware/RPG_POKET_2/SaveVersion.h
+firmware/RPG_POKET_2/UpdateDevice.h
+firmware/RPG_POKET_2/UpdateModel.h
+tests/camp_loot.cpp
+tests/persistence_adapter.cpp
+tests/settings_adapter.cpp
+tests/update_adapter.cpp
+tests/settings_fake/SD.h
+tests/update_fake/cJSON.c
+tests/update_fake/cJSON.h
+tests/update_fake/esp_ota_ops.h
+tests/update_fake/FakeDevice.h
+tests/update_fake/HTTPClient.h
+tests/update_fake/manifest.json
+tests/update_fake/NetworkClientSecure.h
+tests/update_fake/README.txt
+tests/update_fake/mbedtls/sha256.h
+tools/test_native.sh
+Documentação adicional: este relatório, CONTINUE_ATUAL.txt, roadmap e README. Arte/cartão/Heltec não modificados.
+
+PENDÊNCIAS E LIMITES
+Sem promessa de rollback automático de firmware que não inicializa ou de recuperação de qualquer corte de energia emFAT32. Os casos de falha de rede/SD/OTA tratados deixam personagens e arquivos ativos intactos; um cartão fisicamente defeituoso exige intervenção humana. Blobs futuros/maiores e dois saves inválidos continuam bloqueados, sem sobrescrita. Não foram encontrados novos defeitos de jogabilidade que justificassem alterações. Estabilidade prolongada e teste com usuários continuam pendentes; NÃO iniciarPacote7.2 automaticamente.
+
+TESTES QUE O USUÁRIO DEVE REALIZAR NA PLACA
+1. Instalar pelo menu Configurações→Atualização, conferir o personagem existente (nível,XP,ouro,atributos,bolsa,equipamentos) e, se já houver personagens nos demais slots, alternar entre eles. Não apagar slots para testar.
+2. Em sessões normais, reiniciar após salvar um passo de exploração, turno de combate, viagem, acampamento e objetivo de uma carta/dungeon. Conferir retomada e prêmio único. Não forçar save durante escrita nem gerar personagens fictícios para simular migração.
+3. Em uma atualização futura disponível, interromper apenas o Wi-Fi durante download, manter alimentação, restabelecer rede e escolher continuar. Conferir personagem e artes. Não cortar alimentação durante gravação/instalação para tentar reproduzir falta de energia.
+4. Testar toque curto/segurado, botões, voltar/cancelar e textos em240x320; jogar30–60min com alternância de telas/bolsa/batalhas. Registrar travamentos ou perda de comandos, se ocorrerem.
+5. Teste opcional de ausênciaSD: desligar normalmente, retirar cartão, ligar e conferir tratamento sem apagar personagens; desligar e recolocar. Não remover durante leitura/escrita. Nenhum cartão precisa ser corrompido artificialmente. Durante funcionamento normal, conferir memória/diagnóstico e acompanhar aquecimento/bateria.
+
+STATUS FINAL DE PUBLICAÇÃO
+Versão 2026.10.10-audit71/build2026101005 publicada.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-audit71
+Fonte: c1cd2855fc91eccfa49a00d326f9a4e78ab334f3
+CandidataCI: 38106211816 / PublicaçãoCI: 38106511854 — sucesso.
+44 suítes e sanitizadores de persistência/OTA/renderização aprovados no SHA da publicação.
+2026-10-11T02:50:23.1126401Z Sketch uses 2766510 bytes (87%) of program storage space. Maximum is 3145728 bytes.
+2026-10-11T02:50:23.1127218Z Global variables use 54108 bytes (16%) of dynamic memory, leaving 273572 bytes for local variables. Maximum is 327680 bytes.
+Firmware 2766656 bytes (<3145728); manifesto, SHA-256/tamanhos dos dois arquivos e CRC das artes conferidos. Artes6991952bytes,488entradas,CRC53dcc3a5 e identidade byte a byte com eventos8. PayloadPSRAM6991936bytes e framebuffer153600bytes mantidos.
+SHA firmware: 738dda63298925a03bf844dae6fd3bbbeec8f20d31ee2a25887e7d71deec5925
+SHA artes: bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8
+O Pacote6 foi atualizado e preservou o personagem na placa, conforme confirmado pelo usuário. Pacote7.1 ainda depende dos testes físicos listados acima. Nenhum flash automático,.rpg,apagamentoNVS ou formataçãoSD. Pacote7.2 NÃO foi iniciado.
