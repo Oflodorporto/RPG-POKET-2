@@ -1,6 +1,6 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual10/10: Pacote6.3 — Vidas na Estrada,2026.10.10-cartas3. Três tipos de evento diário e duas oportunidades09h/18h; coleta real/escolta com carroça7s/D20.40suítes,save27,488artes. Faltam cinco dos oito tipos;teste físico pendente.
+Estado atual10/10: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8. Oito tipos de eventos com objetivos próprios; duas oportunidades09h/18h.42suítes,save28,488artes;teste físico da nova versão pendente. Próximo:Pacote7.
 
 Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
 
@@ -136,7 +136,7 @@ Revisão solicitada09/10: antes dos eventos diários, preencher o mundo regional
 - Critério: sessão curta em Mares/Aurora oferece diferenças visíveis de inimigo, decisão e objetivo. Medir ganho/tempo/mortes, testar retomada e slots, validar arte/memória/OTA e publicar antes de prometer variedade pronta.
 
 
-Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Vidas na Estrada mantém duas oportunidades09h/18h e acrescenta recuperação de duas cargas e escolta real ao hipogrifo. Save27 preserva as cartas antigas. Três dos oito tipos estão prontos; faltam cinco, incluindo expedição/dungeon. Não anunciar o Pacote6 completo.
+Retomar o plano anterior de oito tipos de eventos e pelo menos dois momentos diários, com recompensas por nível: combate, coleta, expedição, escolta, ajuda local e descoberta. Vidas na Estrada mantém duas oportunidades09h/18h e acrescenta recuperação de duas cargas e escolta real ao hipogrifo. Save27 preserva as cartas antigas. Atualizado em10/10: eventos8 implementa os oito tipos, incluindo expedição real, reparo, resgate, investigação e defesa. O catálogo do Pacote6 está completo em software; validação física desta entrega ainda pendente. Consulte PACOTE_6_OITO_CAMINHOS.txt. O próximo pacote é7, confiabilidade e primeira experiência.
 
 Horário local e dia/noite podem variar ambiente e encontros, mas a campanha não deve exigir presença em uma hora específica. Oferecer/recusar sem culpa, não punir ausência e evitar bloquear a atualização ou o descanso por uma carta.
 

@@ -1,33 +1,30 @@
 RPG POKET 2 — CONTINUIDADE ATUAL — 10/10/2026
-Pacote6.3: Vidas na Estrada. Versão2026.10.10-cartas3/build2026101003/save27,128bytes,leitura1..27.
-Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas3
-Fonte:51dc25425c62a1fafc16df4b0645732440626f77
-CandidataCI:38086055429 / PublicaçãoCI:38086361810 — sucesso.
-Compilação:2026-10-10T21:05:27.6341835Z Sketch uses 2756066 bytes (87%) of program storage space. Maximum is 3145728 bytes.
-2026-10-10T21:05:27.6342720Z Global variables use 53956 bytes (16%) of dynamic memory, leaving 273724 bytes for local variables. Maximum is 327680 bytes.
-40 suítes, controles reais, renderização, migração/corrupção/pagamento único. Downloads/tamanhos/SHA-256 eCRC/artes idênticas a cartas2 conferidos. Teste físico pendente.
+Pacote6 — Oito Caminhos de Aeldra. Versão2026.10.10-eventos8/build2026101004/save28,128bytes,lê1..28.
+Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-eventos8
+Fonte:029493f4f63370f66a150787f16126962b237c1f
+CandidataCI:38102473324 / PublicaçãoCI:38102702305 — sucesso.
+2026-10-11T01:40:17.5148967Z Sketch uses 2765810 bytes (87%) of program storage space. Maximum is 3145728 bytes.
+2026-10-11T01:40:17.5149511Z Global variables use 54100 bytes (16%) of dynamic memory, leaving 273580 bytes for local variables. Maximum is 327680 bytes.
+42suítes e Release verificada. O usuário aprovou cartas3 na placa no início desta tarefa. Eventos8 ainda não foi testada fisicamente. Nenhuma gravação automática.
 
-IMPLEMENTADO:
-Três tipos diários: hipogrifo, busca de duas cargas e escolta real. Duas oportunidades09h/18h, segunda diferente da primeira. Nv1..4 combate/coleta; escoltaNv5+. Recompensas fixadas no nível da oferta, antes do aceite. Cartas antigas preservam recompensa original.
-Coleta:50% achar carga/50% combate local dia/noite. Vitória dáXP/ouro normal e retoma missão; duas cargas entregam bônus. Sem avançar contratos/campanha/guardião/cristais. Escolta: D20 e rota verdadeira; vitória em emboscada retoma o mesmo teste, somente chegada conclui. Contrato paralelo preservado. Bolsa e desistência confirmada. Perda/fuga retorna à origem sem bônus.
-Carroça com rodas animadas atrás do herói nas cartas e contratos regionais de escolta. Viagem7s versus3s normal; passos lentos. Modo reconstruído pela missão salva. Código de pixels, sem assets novos, SD não é lido por quadro. D20/deslocamento preservados.
-Save27:97bits0..1tier,2slot,3..4tipo,5..6progresso,7reservado;92..93dia16bits,94nível0..20,95reservado0. <=26 migra dia32bits e tipo0/nível0/progresso0 preservando todos os estados/slot/recompensa. NÃO usar leitor26 após salvar27.
-Faltam cinco dos oito tipos diários: Pacote6 ainda parcial. Expedição/dungeon e outros objetivos precisam de desenho próprio, não combate renomeado.
+IMPLEMENTADO: oito tipos diários: hipogrifo, coleta, escolta, expedição, reparo, resgate, investigação e defesa. Duas oportunidades09h/18h, segundo tipo diferente, pendências preservadas. Nv1..4 sete tipos; escoltaNv5+. Expedição real1andar/2inimigos ou2andares/3inimigos, sino por alavanca; entrada paga pela Guilda e isolada das dungeons permanentes. Reparo comINT/Sobrevivência; resgate com curativo grátis/poção e retorno; investigação três pistas/ordem regional/eco sem farm; defesa barricadas ou ração/duas ondas/proteção até golpe real/ração extra. Todas com decisões persistidas, retratos, pergaminhos e pagamento único. Coleta no máximo8buscas. Origem/contratos/campanha/cristais preservados. ViagemD20/carroça7s e normal3s intactos. Sem novos assets ou leiturasSD por quadro.
+Save28:92..93dia,94nível,95progresso0..2+flags3..7,96estágio0..2+roll3..7,97tier0..1+slot2+tipo3..5(reservados6..7). Migração1..27 explicitamente testada. NÃO usar leitor27 depois de salvar28. Campos90/91camp,98/99retorno,122/123origem,124CRC intactos.
 
 CAMINHOS:
 Raiz:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
 Sketch:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
-Regras:GuildEvents.h,Rules.h;save:Save.h;UI:EventView.h,MenuView.h;animação:World.h.
-Guia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_3_VIDAS_NA_ESTRADA.md
-Prévias:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-vidas-na-estrada.png e previa-escolta-carroca.png
-Release verificada:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-cartas3/VERIFICACAO.json
+Guia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_6_OITO_CAMINHOS.txt
+Regras:GuildEvents.h,Dungeon.h,Rules.h,Save.h. UI:EventCatalog.h,EventView.h,DungeonView.h.
+Teste:event_catalog.cpp,event_expedition.cpp,title_controller.cpp,render.cpp e demais42suítes.
+Release:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-eventos8/VERIFICACAO.json
+Prévia:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/validacao/previa-oito-caminhos.png
 Mirror:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/github_publicacao (não é checkoutGit).
 
 CINCO PRIMEIROS COMANDOS DE TRABALHO:
-1. Ler esteTXT, guia, ROADMAP_PACOTES_EXPERIENCIA.md e cânone. Conferir fonte/manifesto/save27; não anunciar oito eventos completos. Comparar GitHub/main atual antes de publicar.
-2. Validar placa: coleta1/2 e reinício, batalha e retomada; escolta com carroça7s e viagem normal3s; D20, fuga e retorno original; bolsa, contratos separados e pagamento único. Usuário instalaOTA ou cabo.
-3. Planejar próximos cinco tipos, com conteúdo local coerente e retratos existentes. Maelis/Iria/Tomás/Liora/Nara mantêm cânone. Expedição exige objetivos reais e migração segura; manter limite de duas oportunidades, pendências e recompensas fixadas.
-4. Preservar campos90/91camp,122/123origem,124CRC,67/119bestiário,116contratos/poderes, eventos92..99; IDs0..3cidades e0..28inimigos. Ilha oculta até campaignEnding2+quatro contribuições.488artes6991936bytes; PSRAM próxima do limite, sem SD por quadro. Não rerodar scripts históricos de implementação.
-5. Executar40suítes com controles reais/snapshots, renderizar e inspecionar. Compilar core3.3.12/ESP32S3/16MB/OPI/app3M_fat9M_16MB/EraseFlash=none. CI candidata noSHA exato, depois main, baixar/verificar Release e registrar progresso. Separar teste software de placa.
+1.Ler esteTXT,guia,cânone eROADMAP; comparar GitHubmain/fonte/manifesto. CatálogoPacote6 completo emsoftware; não afirmar teste físicoeventos8 nem janelas aleatórias/histórico3dias.
+2.Validar na placa cartas novas, retomar objetivo/escolhas/expedição/batalha após reinício, desistir/perder sem bônus e receber apenas uma vez. AtualizaçãoOTA pelo usuário; não forçar saves nem relógio físico para gerar cartas automaticamente.
+3.IniciarPacote7: confiabilidade e experiência real. Validar sessões longas/bateria/toque/SD ausente/corrompido/WiFi ruim/atualização interrompida; observar novos jogadores, fontes e áreas de toque. Não prometer rollback de firmware que não inicializa.
+4.PreservarIDs0..3cidades/0..28inimigos,slots/Heltec/ilhasurpresa.488artes6991936payload+153600framebuffer;PSRAM próxima8MiB. Não rerodar scripts históricos de implantação. Progredir paraPacote8(créditos,licenças,manual e lançamento) após validação.
+5.Executar42suítes,comparar controladores reais,renderizar240x320,compilarcore3.3.12/ESP32S3/16MB/OPI/app3M_fat9M_16MB/EraseFlashnone. CandidataCI noSHAexato,main,baixarRelease/conferirhashes e registrar avanço.
 
-RESTRIÇÕES: preservarHeltec; sem gravação automática,.rpg,apagamentoNVS,formataçãoSD ou saves físicos fabricados. GitHub autorizado. Testes de computador não comprovam funcionamento físico.
+RESTRIÇÕES: preservarHeltec; sem auto-flash,.rpg,apagamentoNVS,formataçãoSD,saves físicos fabricados. GitHub autorizado. Separar testessoftware de validaçãoplaca.

@@ -1,0 +1,24 @@
+# Pacote 6 — Oito Caminhos de Aeldra
+
+Versão 2026.10.10-eventos8, build2026101004. O catálogo diário agora contém oito tipos reais: hipogrifo, recuperação de carga, escolta, expedição, reparo, resgate, investigação e defesa de acampamento. A versão anterior cartas3 foi aprovada pelo usuário na placa. A validação física desta versão ainda depende de novos testes do usuário.
+
+Os cinco novos caminhos:
+- O sino sob a pedra (Iria Sorel): expedição em primeira pessoa. Níveis1..4 têm um andar e dois inimigos;5+ têm dois andares e três inimigos. É preciso limpar a passagem e silenciar o sino pela corda/alavanca da parede. A Guilda custeia a entrada, sem consumir cristal pessoal. Não altera as duas dungeons permanentes, o número de conclusões, os faróis nem a ilha oculta.
+- Uma luz para quem volta (Nilsa): recuperar lente, ajustar o encaixe usando Inteligência ou Sobrevivência e defender um marco da estrada. Falhas melhoram a tentativa seguinte; após duas falhas de ajuste o encaixe fica resolvido. O marco não é um dos quatro grandes faróis.
+- As rodas na neblina (Sabela): seguir rastros, libertar uma caravana, tratar feridos e conduzi-los de volta. Curativo improvisado é gratuito; gastar uma poção pessoal dá+4 ao teste de retorno. Uma falha pode causar emboscada.
+- Nomes gravados em cinza (Seraphine): ler três inscrições, compreender a ordem e libertar as lembranças de um eco. Ordem errada provoca no máximo um combate punitivo; repetições não geram XP infinito. A ordem correta varia por região e está nas pistas.
+- Uma chama contra a noite (Grum): preparar barricadas gratuitas ou gastar uma ração em tochas, depois proteger viajantes em duas ondas. A preparação reduz o primeiro golpe de cada onda em50% ou75%; um turno de preparação do inimigo não consome essa proteção. A conclusão também entrega uma ração, limitada a9 na bolsa.
+
+Duas oportunidades por dia local, às09h e18h; duas cartas diferentes no mesmo dia, pendências e tarefas em andamento nunca sobrescritas. Nv1..4 têm sete tipos; escolta exigeNv5. Ofertas capturam nível e variante dia/noite, mantendo recompensas e ambientação após reiniciar. Aceite leva à região adequada e a conclusão retorna à tela/cidade original. Poções e equipamentos disponíveis pela bolsa. Perder, fugir ou desistir não paga bônus da carta; XP/ouro de combates vencidos permanece. Recompensa única e gravação transacional. Coleta garante cada carga após no máximo quatro buscas (duas cargas, oito buscas), evitando sequência interminável de batalhas.
+
+Ouro=30+8*nível+10*tipo. XP=8% do custo do próximo nível,10% em escolta/expedição/resgate/defesa, mínimo20; no tetoD&D20,zero. Cartas antigas com nível de oferta0 preservam recompensa original. Inimigos regionais existentes, variantes dia/noite, retratos e texturas reutilizados; nenhum novo asset, nenhum acessoSD por quadro. Catálogo488 artes, payload6991936bytes.
+
+Save28,128bytes, lê1..28. Dia92..93;nível94;95progresso bits0..2 e flags bits3..7;96estágio bits0..2 e D20 bits3..7;97tier bits0..1, oportunidade bit2, tipo bits3..5, bits6..7reservados. Flags capturam noite(bit4), decisões e passos locais. Saves27 e anteriores são convertidos pela estrutura antiga, preservando os três eventos existentes. Bytes90/91acampamento,98/99retorno,122/123origem e124CRC preservados. Não usar leitor27 depois de salvar28. Contratos, bolsa, bestiário, classes, poderes e campanha não são reaproveitados como estado da carta.
+
+O planejamento original previa horários dentro de janelas aleatórias e histórico de três dias. Esta entrega mantém o calendário já validado09h/18h e evita repetir o tipo apenas no mesmo dia; não implementa essas opções adicionais. Nenhum spoiler ou referência à ilha aparece nas cartas.
+
+Teste físico sugerido: atualize em Configurações→Atualização. Em Cartas da Guilda, aceite os tipos oferecidos naturalmente. Reinicie durante um objetivo, escolha de inscrições, expedição e batalha; confira retomada. Experimente curativo grátis/poção, ração ausente, ordem incorreta e correta; conclua e veja pagamento único/retorno. Confira que expedição não gasta cristal nem aumenta conclusões da dungeon normal. Não há menu de forçar evento ou saves artificiais enviados à placa.
+
+Verificação final:42 suítes locais e CI,1996 pares diários distintos,1280 caminhos de decisões,20 expedições com navegação real,499 coletas limitadas a oito buscas, controles reais e inspeção visual240x320. CompilaçãoESP32-S3/core3.3.12/OPI/16MB/OTA3MiB confirmada. Release baixada e tamanhos/SHA-256/CRC conferidos. Artes idênticas a cartas3. Teste físico desta versão pendente.
+2026-10-11T01:40:17.5148967Z Sketch uses 2765810 bytes (87%) of program storage space. Maximum is 3145728 bytes.
+2026-10-11T01:40:17.5149511Z Global variables use 54100 bytes (16%) of dynamic memory, leaving 273580 bytes for local variables. Maximum is 327680 bytes.

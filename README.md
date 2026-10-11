@@ -22,7 +22,9 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Entrega atual: Pacote6.3 — Vidas na Estrada,2026.10.10-cartas3.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas3) · [Guia](docs/PACOTE_6_3_VIDAS_NA_ESTRADA.md). Coleta real e escolta comD20/carroça/viagem7s, três tipos diários distintos e duas oportunidades.40suítes, compilação e downloads verificados; teste físico pendente. Save27 lê1..27;488artes preservadas. Faltam cinco dos oito tipos do Pacote6.
+**Entrega atual: Pacote6 — Oito Caminhos de Aeldra,2026.10.10-eventos8.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-eventos8) · [Guia](docs/PACOTE_6_OITO_CAMINHOS.txt). Oito tipos de cartas, decisões e expedição em primeira pessoa.42suítes, compilação e downloads verificados; save28 lê1..28,488artes preservadas. Teste físico desta versão pendente; cartas3 aprovada pelo usuário. Próximo:Pacote7.
+
+**Entrega anterior: Pacote6.3 — Vidas na Estrada,2026.10.10-cartas3.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas3) · [Guia](docs/PACOTE_6_3_VIDAS_NA_ESTRADA.md). Coleta real e escolta comD20/carroça/viagem7s, três tipos diários distintos e duas oportunidades.40suítes, compilação e downloads verificados; teste físico pendente. Save27 lê1..27;488artes preservadas. Faltam cinco dos oito tipos do Pacote6.
 
 **Entrega anterior: Pacote6.2 — Cartas ao Entardecer,2026.10.10-cartas2.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-cartas2) · [Guia](docs/PACOTE_6_2_CARTAS_AO_ENTARDECER.md). Duas oportunidades por dia, cartas pendentes preservadas, vitória comXP/ouro legíveis no pergaminho.39suítes, compilação e downloads verificados; teste físico pendente. Save26 lê1..26;488artes iguais a mundovivo1. Oito tipos de eventos ainda faltam.
 

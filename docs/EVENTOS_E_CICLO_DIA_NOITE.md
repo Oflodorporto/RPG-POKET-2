@@ -1,3 +1,5 @@
+> Estado atualizado10/10/2026: catálogo de oito tipos implementado em2026.10.10-eventos8/save28. Duas oportunidades09h/18h, diferença entre tipos no mesmo dia e pendências preservadas. Janelas aleatórias e histórico de três dias abaixo são propostas históricas, não funcionalidades desta versão. Validação física pendente; detalhes em PACOTE_6_OITO_CAMINHOS.txt.
+
 # Eventos da Guilda e ciclo de dia/noite
 
 **Plano e acompanhamento — 07/10/2026.** Conectado ao cânone `LORE_CANONICA_RPG_POKET_2.md`. A narrativa inicial foi integrada em lore1. A entrega dia1 implementa hora/fuso/ajuste manual e paletas de período, documentados em HORA_E_DIA_NOITE.md. Cartas1 acrescenta o piloto do hipogrifo, uma oferta diária após09h, pergaminho no relógio e persistência Save11; o uso está em CARTAS_E_HIPOGRIFO.md. Duas ofertas distintas, os outros sete eventos e novos inimigos continuam posteriores; o restante deste documento descreve o objetivo completo.
