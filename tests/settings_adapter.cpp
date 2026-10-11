@@ -41,6 +41,6 @@ int main(){
  // Corrupt versioned candidates fall back to an intact original, with no premature cleanup.
  char named[48];updater::artPath(named,sizeof(named),ART_CRC);extraFiles[named]=packBytes;extraFiles[named][0]^=1;extraFiles["/RPGPOKET/artes_00000001.pak"]={1};extraFiles["/RPGPOKET/artes.part"]={2};extraFiles["/RPGPOKET/not-ours.pak"]={3};auto filesBefore=extraFiles;
  assert(loadSdArt()==ArtStatus::Ready&&extraFiles==filesBefore&&fileExists&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
- extraFiles[named]=packBytes;assert(loadSdArt()==ArtStatus::Ready&&peakFiles==2&&!extraFiles.count("/RPGPOKET/artes_00000001.pak")&&extraFiles.count(named)&&extraFiles.count("/RPGPOKET/artes.part")&&extraFiles.count("/RPGPOKET/not-ours.pak")&&!fileExists);
+ extraFiles[named]=packBytes;assert(loadSdArt()==ArtStatus::Ready&&peakFiles==1&&!extraFiles.count("/RPGPOKET/artes_00000001.pak")&&extraFiles.count(named)&&extraFiles.count("/RPGPOKET/artes.part")&&extraFiles.count("/RPGPOKET/not-ours.pak")&&!fileExists);
  free(artMemory);puts("PASS: actual settings adapter; PWM/persistence failures, async Wi-Fi scan/password/open network/timeout/restart, complete credential commit, volatile PSRAM test, read-only shared SPI art load/absence/read-error/retry/unmount.");
 }

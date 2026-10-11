@@ -18,7 +18,7 @@ inline void initSettings(){settingsReady=settings.begin("pkt2_ui",false);menu.ac
 inline bool rememberSlot(uint8_t slot){if(slot>2||!settingsReady||settings.putUChar("slot",slot)!=1)return false;menu.activeSlot=slot;return true;}
 inline ArtStatus loadSdArt(){
   if(!artMemory)return ArtStatus::Memory;makeFallback();pinMode(41,OUTPUT);digitalWrite(41,HIGH);digitalWrite(45,HIGH);
-  if(!SD.begin(41,SPI,4000000,"/sd",2,false)){SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
+  if(!SD.begin(41,SPI,4000000,"/sd",1,false)){SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
   char named[48];updater::artPath(named,sizeof(named),ART_CRC);bool versioned=SD.exists(named);File f=SD.open(versioned?named:"/RPGPOKET/artes.pak",FILE_READ);ArtStatus status=ArtStatus::Missing;
   if(f){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{f};status=readArt(reader);f.close();}
   // A damaged versioned candidate must not hide a valid original installation pack.
