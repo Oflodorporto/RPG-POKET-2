@@ -164,4 +164,6 @@ Cinco próximos comandos de continuidade:
 4. Implementar pacote2 com descoberta e loot persistidos; medir as probabilidades e retomadas antes de acrescentar trancas/mímicos mais complexos.
 5. Entregar pacote3 e avançar balanceamento4/Aurora5, mantendo esta lista atualizada com estados reais e validação física.
 
-Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade OTA e reserva de artes. Consulte PACOTE_7_1_AUDITORIA.txt. O usuário confirmou preservação do personagem após o Pacote6; não repetir sem falha concreta. Parar na etapa7.1; próximas etapas requerem solicitação.
+Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade OTA e reserva de artes. Consulte PACOTE_7_1_AUDITORIA.txt. O usuário confirmou preservação do personagem após o Pacote6; não repetir sem falha concreta. audit71 aprovada na placa pelo usuário; etapa7.2 solicitada e concluída.
+
+Pacote7.2 publicado:chegadaCarvalho,dicascontextuaisopcionais10contextos,Save28/artes488preservados,45suítes/compilação aprovadas. ConsultePACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt. Testes físicos7.2pendentes. Parar em7.2; não iniciar7.3.

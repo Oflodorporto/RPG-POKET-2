@@ -1,0 +1,62 @@
+RPG POKET 2.0 — PACOTE 7.2 — PRIMEIRA EXPERIÊNCIA
+Versão 2026.10.11-experience72 / build2026101101 / Save28,128bytes,lê1..28.
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72
+Fonte: f9b78c94c01f64eca549714762ec4ce8135d5b32
+CandidataCI: 38108002981 / PublicaçãoCI: 38108262870 — sucesso.
+BASE: audit71 aprovada nos testes físicos pelo usuário nesta solicitação. Não repetimos essa validação nem acessamos saves da placa. Os testes físicos específicos de7.2 permanecem pendentes.
+
+AUDITORIA DA PRIMEIRA EXPERIÊNCIA
+A origem de cada uma das quatro classes, oito páginas de chegada,17retratos, diálogos longos em pergaminho, Objetivo, Diário e Guia já estavam implementados. Reutilizados, sem criar novas cenas, retratos, imagens ou um tutorial de batalha paralelo. A página final da introdução agora indica Conversar/Elarin/Borin, em vez de pedir aprendizado abstrato antes de procurar trabalho.
+A chegada antiga levava ao abrigo: seus botões são Mapa, Descanso e Menu, sem Conversar. Só os novos personagens criados nesta versão entram diretamente na cidade Carvalho ao terminar/pular a história e escolher as dicas. Assim a orientação corresponde ao botão real. Retomadas antigas mantêm o abrigo existente. A dica do abrigo explica Mapa→Carvalho→Entrar; a da cidade indica Conversar→Elarin/Borin. Nenhuma recompensa ou ação é disparada pelo tutorial.
+
+IMPLEMENTADO
+1.Pular história na introdução inicial; Anterior/Próxima e releitura existente preservados. O avanço e o salto continuam usando o journal de saves. Nenhuma revelação antecipada de ilhas/regiões/eventos secretos.
+2.Acolhimento de Nara em pergaminho, retrato e indicação concreta do primeiro objetivo. Botões Com dicas/Sem dicas; Guia completo acessível antes de continuar.
+3.Dez dicas contextuais curtas: chegada/cidade,menus,exploração,mapa/viagens,combate,bolsa,acampar,missões/recompensas,progressão,controles da dungeon. Cada uma aparece uma vez ao acessar o contexto adequado, sem aula em sequência.
+4.Entendi fecha apenas essa dica; Pular dicas dispensa todas as seguintes. Guia permanece disponível para releitura. Dicas usam o pergaminho animado,cenário do contexto e retrato de Nara existentes.
+5.Combate/gestos/animações não são executados por uma dica. Turno inimigo não roda enquanto a dica está aberta; não se capturam comandos para executar depois. Nenhum toque na narrativa gasta recursos, rola dados, entrega missão ou modifica personagem. Não se abre dica durante viagem/efeito nem no turno inimigo.
+
+PERSISTÊNCIA E RETOMADA
+Save.h,SaveVersion.h e Rules.h idênticos byte a byte à audit71. Nenhum campo Game, layout Save28, equipamento,inventário,XP,ouro,campanha ou slot foi migrado/modificado para guardar dicas.
+Três metadados NVS independentes (h0,h1,h2,4bytes cada) na namespace existente guardam somente dicas vistas/dispensadas, com bits permitidos e complemento para detectar registros inválidos. Personagens antigos não possuem esse marcador e não recebem as novas dicas — inclusive personagem antigo de nível1.
+O marcador começa apenas na criação expressamente solicitada num slot vazio. Recriação reseta as dicas só daquele slot; exclusão dos personagens continua exigindo a confirmação existente. Registro ausente/corrompido/desconhecido desativa dicas, sem criar/apagar personagem. Falha ao confirmar dica exibe tentativa novamente; não altera save nem o marcador confirmado. Falha inicial de gravação do marcador deixa dicas desativadas, não prejudica os saves.
+Reiniciar antes de confirmar uma dica a mantém pendente; após confirmar, ela não reaparece. A tela de título/Continuar segue o comportamento existente: retoma o estado de jogo salvo, sem promessa de restaurar toda tela de menu transitória. A dica pendente reaparece quando seu contexto for acessado de novo. A origem retoma a página persistida e o salto é persistido pelo journal.
+
+RECURSOS E SISTEMAS PRESERVADOS
+488artes idênticas byte a byte a eventos8/audit71. Nenhuma imagem nova ou leituraSD por quadro. Textos e pequenas estruturas das dicas são locais; não externalizados ao cartão, evitando I/O na renderização. OTA,partição3MiB,flash16MiB,8MiBOPIPSRAM e core3.3.12 preservados. Não houve gravação automática,apagamentoNVS,formataçãoSD,.rpg ou mudançasHeltec.
+
+TESTES AUTOMATIZADOS
+45suítes:44existentes+first_experience. Controladores de title_controller e dungeon_controller são verificados contra o sketch real, incluindo offerFirstHint. Todos aprovados no SHA da candidata/publicação.
+Novo teste:10contextos,ignorados/completos,reinício antes/depois de confirmar,isolamento3slots,registro inválido,falha de gravação das dicas,nível1 antigo sem dicas,criação,página persistida,salto,acolhimento e entrada emCarvalho. Compara bytes do Save28 e blobs de personagem antes/depois das dicas. Corrigidas coordenadas da regressão para o Menu real deCarvalho após a chegada.
+Renderização:4classes×10dicas,quadros de abertura0..7 e falha de gravação. Limites de texto/pixels240×320,preservação do estado e capturas. Inspeção visual de exemplos de chegada e combate; retratos/pergaminhos preservados. Os testes de texto existentes também cobrem origem,diálogos,menus e sistemas anteriores.
+Regressão completa cobre combate/habilidades/poções,inventário/equipamentos,recompensas únicas,níveis1..20,viagens/cidades/descanso,dungeons/campanha/contratos/oitoCartas. AddressSanitizer/UndefinedBehaviorSanitizer: first_experience,persistence_adapter,update_adapter,render — aprovados no GitHub.
+Uma candidata inicial foi impedida antes da compilação por terminadoresCRLF no script Linux; publicação normalizada paraLF. Outra regressão ainda apontava o botão do abrigo em vez do Menu deCarvalho; ajustada para a nova chegada e aprovada. Nenhuma candidata falha foi publicada comoRelease.
+
+COMPILAÇÃO E PUBLICAÇÃO
+2026-10-11T03:22:31.8863460Z Sketch uses 2771482 bytes (88%) of program storage space. Maximum is 3145728 bytes.
+2026-10-11T03:22:31.8864186Z Global variables use 54116 bytes (16%) of dynamic memory, leaving 273564 bytes for local variables. Maximum is 327680 bytes.
+Firmware publicado:2771632bytes, cabe na partiçãoOTA3145728bytes.
+SHA firmware:1d988a938ef09b81c082a144e26871e457088727ce15d724f77ecf04aa695065
+Artes:6991952bytes/488entradas/CRC53dcc3a5.
+SHA artes:bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8
+Manifesto confirma escritaSave28/leitura1..28; tamanho/SHA dos dois arquivos eCRC das artes conferidos após baixar aRelease.
+
+ARQUIVOS MODIFICADOS
+firmware/RPG_POKET_2/FirstExperience.h — novo,modelo de dicas,persistência separada e renderização.
+firmware/RPG_POKET_2/RPG_POKET_2.ino — adapterNVS,disparo/fechamento,chegada e salto da história.
+firmware/RPG_POKET_2/View.h — página/apresentação/acolhimento.
+firmware/RPG_POKET_2/StoryPaper.h — nova página no pergaminho existente.
+firmware/RPG_POKET_2/OriginStory.h — última fala com primeiro passo concreto.
+firmware/RPG_POKET_2/NarrativeView.h — botão de salto da história.
+firmware/RPG_POKET_2/ReleaseVersion.h — versão/build/pacote.
+tests/first_experience.cpp,tests/render.cpp,tests/title_controller.cpp,tests/dungeon_controller.cpp.
+tools/test_native.sh,tools/check_controller_snapshot.py,.github/workflows/release.yml.
+README,docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt,docs/CONTINUE_ATUAL.txt,docs/ROADMAP_PACOTES_EXPERIENCIA.md.
+
+TESTES FÍSICOS DO USUÁRIO — AINDA PENDENTES
+1.Atualizar pelo menuConfigurações→Atualização e conferir personagem antigo/slots existentes sem repetir introdução nem perder itens/progresso. Não apagar personagens para testar.
+2.Se houver slot vazio,criar personagemNv1,ler/pular história,escolherCom dicas e conferir chegada aCarvalho,Conversar,Elarin/Borin,Objetivo/Diário. Jogar normalmente e conferir dicas nos primeiros acessos; Entendi não deve escolher ações.
+3.Reiniciar normalmente após avanço/salto da história e após confirmar dica. Conferir página persistida,personagem e que dicas confirmadas não voltam. Dica não confirmada permanece pendente ao voltar ao contexto; menus transitórios não são checkpoint.
+4.TestarSem dicas/Pular dicas se desejar outra criação em slot vazio,sem apagar os existentes. Guia deve continuar acessível noMenu. Conferir bolsa,poção/turno,HP/MP,campanha/contrato,descanso e viagem sem ação indevida causada pela orientação.
+5.Testar botões/toque curto/segurado/cancelamento e legibilidade real. Código e limites visuais foram simulados; contato do dedo,película,brilho e leitura real exigem placa. Não cortar alimentação durante save/instalação,não criar dados fictícios,não corromper saves ou retirar cartão em funcionamento.
+ENCERRAMENTO: somentePacote7.2. Pacote7.3 não iniciado. Sem novas funcionalidades de narrativa,balanceamento ou outros sistemas.

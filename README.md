@@ -113,3 +113,9 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 ## Pacote 1 — Origem e rostos
 
 2026.10.08-origens1: origem por classe, chegada a Carvalho, rostos dos NPCs e primeiro objetivo concreto. [Conteúdo, compatibilidade e testes na placa](docs/PACOTE_1_ORIGEM_E_ROSTOS.md). [Próximos pacotes](docs/ROADMAP_PACOTES_EXPERIENCIA.md).
+
+## Versão atual — Pacote 7.2: Primeira Experiência
+
+[2026.10.11-experience72](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72): novos personagens chegam diretamente a Carvalho; história pode ser pulada, dicas contextuais são opcionais e o Guia continua disponível. Personagens existentes não são obrigados a repetir as orientações. Dez contextos reutilizam retrato, pergaminhos e cenários existentes. Save28 e as488artes preservados.
+
+45suítes, verificações de memória e compilaçãoWaveshare aprovadas. audit71 foi aprovada na placa pelo usuário; validação física de7.2 ainda pendente. [Relatório e testes físicos](docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt). Não iniciarPacote7.3 automaticamente.
