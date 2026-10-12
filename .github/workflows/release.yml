@@ -1,8 +1,8 @@
 name: Publicar versão
 on:
   push:
-    branches: [main, bolsa-dungeon, camp-development, lore-development, abrigo-development, paineis-development, paineis-development]
-    paths: ["firmware/**", "cartao/**", "tests/**", "tools/**", ".github/workflows/release.yml"]
+    branches: [main]
+    paths: ["firmware/**", "cartao/**", "assets/enemies-original1/**", "tests/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
     inputs:
       version:
@@ -11,12 +11,21 @@ on:
         type: string
 permissions:
   contents: write
+  actions: read
+concurrency:
+  group: release77-main
+  cancel-in-progress: false
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 35
+    env:
+      RPG_DETECT_LEAKS: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: arduino/setup-arduino-cli@v2
       - name: Identificar versao
         env:
@@ -28,40 +37,25 @@ jobs:
           version=re.search(r'FW_VERSION="([^"]+)"',Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()).group(1)
           requested=os.environ.get("REQUESTED_VERSION")
           assert not requested or requested==version, "Versao diferente do firmware"
+          assert version == "2026.10.12-visual77", "Somente a identidade final 7.7 qualificada"
           print("RELEASE_VERSION="+version)
           header=Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()
           package=re.search(r'FW_PACKAGE="([^"]+)"',header)
           print("RELEASE_PACKAGE="+(package.group(1) if package else version))
           PY
+      - name: Exigir qualificacao deste commit exato
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/release77-check.yml/runs?branch=feat%2Fvisual77-final&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 - <<'PY'
+          import json,os
+          runs=json.load(open(os.environ['RUNNER_TEMP']+'/qualification.json'))['workflow_runs']
+          assert any(r['head_sha']==os.environ['GITHUB_SHA'] and r['head_branch']=='feat/visual77-final' and r['path']=='.github/workflows/release77-check.yml' and r['conclusion']=='success' for r in runs), 'Fonte sem qualificacao exata'
+          PY
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')" = 0
       - name: Testar regras, saves e telas
         run: bash tools/test_native.sh
-      - name: Guardar previas da dungeon
-        uses: actions/upload-artifact@v4
-        with:
-          name: dungeon-previews
-          path: |
-            build/screens/dungeon-*.ppm
-            build/screens/camp-*.ppm
-            build/screens/lore-*.ppm
-            build/screens/day-*.ppm
-            build/screens/event-*.ppm
-            build/screens/origens-*.ppm
-            build/screens/exploration-*.ppm
-            build/screens/locks-*.ppm
-            build/screens/progression-*.ppm
-            build/screens/attribute-*.ppm
-            build/commerce75-economy.csv
-            build/screens/commerce75-*.ppm
-            build/progressao.csv
-            build/balance74-rewards.csv
-            build/screens/campaign-*.ppm
-            build/screens/launch-*.ppm
-            build/screens/powers-*.ppm
-            build/screens/experience72-*.ppm
-            build/screens/title-*.ppm
-            build/screens/scenic-*.ppm
-            build/screens/panels-*.ppm
-            build/screens/panels-*.ppm
       - name: Instalar ESP32
         run: |
           arduino-cli config init
@@ -78,6 +72,9 @@ jobs:
           python3 tools/release_manifest.py
           python3 tools/verify_release.py
           build/tests/update_adapter release/manifest.json
+          python3 tests/release77_verifier.py
+          python3 tools/test_release77_ota.py release
+          python3 tools/test_release77_ota.py release --sanitizers
       - name: Publicar Release
         if: github.ref == 'refs/heads/main'
         env:
@@ -86,4 +83,20 @@ jobs:
           # Refuse to reuse an existing tag; pin new tags to this tested source commit.
           existing=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')
           test "$existing" = 0
-          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes "$RELEASE_PACKAGE ($RELEASE_VERSION). Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Save28 e 488 artes preservados. Teste fisico 7.6 e memoria em execucao pendentes; publicacao autorizada pelo proprietario sem teste na placa. Fadiga auxiliar incerta reinicia em zero, preservando o heroi. Downgrade com exclusao/recriacao identica nao e garantido. Regras, recuperacao e limites: https://github.com/Oflodorporto/RPG-POKET-2/blob/$GITHUB_SHA/docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt"
+          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes-file docs/RELEASE_7_7_NOTAS.txt --latest
+      - name: Conferir downloads publicados e manifesto latest
+        run: |
+          mkdir -p build/published77
+          for name in firmware.bin artes.pak manifest.json; do
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v$RELEASE_VERSION/$name"
+            cmp "release/$name" "build/published77/$name"
+          done
+          python3 tools/verify_release.py build/published77
+          python3 tools/test_release77_ota.py build/published77
+          matched=0
+          for attempt in $(seq 1 12); do
+            if curl --fail --location --retry 2 --output build/published77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published77/latest.json; then matched=1; break; fi
+            sleep 10
+          done
+          test "$matched" = 1
+          echo "PASS: three public downloads byte-identical to tested outputs; SHA256, old/new real OTA adapters and latest manifest verified"

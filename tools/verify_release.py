@@ -1,4 +1,4 @@
-"""Verify prepared/downloaded 7.6 assets without changing or publishing them."""
+"""Verify the exact final 7.7 firmware/art pair, including downloaded copies."""
 from pathlib import Path
 import hashlib
 import json
@@ -8,14 +8,16 @@ import sys
 import zlib
 
 root = Path(sys.argv[1] if len(sys.argv) == 2 else "release")
+assert len(sys.argv) <= 2
 header = Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()
 version = re.search(r'FW_VERSION="([^"]+)"', header).group(1)
 build = int(re.search(r'FW_BUILD=(\d+)u', header).group(1))
 package = re.search(r'FW_PACKAGE="([^"]+)"', header).group(1)
+assert version == "2026.10.12-visual77" and build == 2026101208
+assert package == "7.7 - Herois e inimigos autorais" and len(version) < 40
 raw = (root / "manifest.json").read_bytes()
-m = json.loads(raw)
 assert 0 < len(raw) <= 4096
-assert version == "2026.10.12-fatigue76" and build == 2026101203
+m = json.loads(raw)
 assert m["version"] == version and m["build"] == build and m["package_name"] == package
 assert m["schema"] == 2 and m["board"] == "Waveshare-29667"
 assert m["partition"] == "app3M_fat9M_16MB"
@@ -31,14 +33,24 @@ for key, name in (("firmware", "firmware.bin"), ("art", "artes.pak")):
     print(f"PASS: {name} {len(data)} bytes SHA256 {m[key]['sha256']}")
 fw = (root / "firmware.bin").read_bytes()
 assert 24 <= len(fw) <= 3145728 and fw[0] == 0xE9
+assert len(fw) - 2780464 <= 65536, "Exceeds the qualified +64 KiB growth budget"
 assert struct.unpack_from("<H", fw, 12)[0] == 9, "Expected ESP32-S3 image"
-assert version.encode() + b"\0" in fw and b"fatigue76-dev" not in fw
+assert version.encode() + b"\0" in fw
+assert b"visual77-combined-dev" not in fw and b"enemy77-dev" not in fw
 art = (root / "artes.pak").read_bytes()
 magic, size, crc, count = struct.unpack("<4sIII", art[:16])
-assert magic == b"PKA1" and size == len(art) - 16 and zlib.crc32(art[16:]) == crc
-assert count == m["art"]["assets"] == 488 and m["art"]["payload_crc32"] == f"{crc:08x}"
-assert m["art"]["sha256"] == "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8"
-assert m["minimum_psram_bytes"] == size + 153600 == 7145536
-assert len(art) + 153600 < 8 * 1024 * 1024
-print(f"PASS: final identity; Save28/1..28; 488 unchanged arts; OTA margin {3145728-len(fw)}; fixed PSRAM 7145536")
+assert magic == b"PKA1" and size == len(art) - 16 == 6661440
+assert zlib.crc32(art[16:]) == crc == 0x0B84D93F
+assert count == m["art"]["assets"] == 636
+assert m["art"]["payload_crc32"] == f"{crc:08x}"
+assert m["art"]["sha256"] == "5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1"
+catalog = Path("firmware/RPG_POKET_2/AssetCatalog.h").read_text()
+assert int(re.search(r'ART_BYTES=(\d+)', catalog).group(1)) == size
+assert int(re.search(r'ART_CRC=0x([a-f0-9]+)', catalog).group(1), 16) == crc
+assert int(re.search(r'ART_COUNT=(\d+)', catalog).group(1)) == count
+workspace = int(re.search(r'WORKSPACE_BYTES=(\d+)', Path("firmware/RPG_POKET_2/EnemyArt.h").read_text()).group(1))
+assert workspace == 13760
+assert m["minimum_psram_bytes"] == size + 153600 + workspace == 6828800
+assert m["minimum_psram_bytes"] < 8 * 1024 * 1024
+print(f"PASS: final 7.7 identity; Save28/1..28; 636 paired assets; OTA margin {3145728-len(fw)}; known PSRAM 6828800 (static estimate, not free heap)")
 print(raw.decode(), end="")

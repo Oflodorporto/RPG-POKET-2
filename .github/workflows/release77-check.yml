@@ -1,0 +1,45 @@
+name: Qualificar Release 7.7 sem publicar
+on:
+  push:
+    branches: [feat/visual77-final]
+    paths: ["firmware/**", "assets/enemies-original1/**", "tests/**", "tools/**", ".github/workflows/release77-check.yml", ".github/workflows/release.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: release77-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/visual77-final'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Testar regras, controlador, persistencia e telas
+        # Existing runner deterministically reconstructs artes.pak from tracked compressed assets.
+        run: bash tools/test_native.sh
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar o mesmo core ESP32 da versao 7.5
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar para validacao, sem gravar nem publicar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Preparar e conferir manifesto final sem publicar
+        run: |
+          python3 tools/release_manifest.py
+          build/tests/update_adapter release/manifest.json
+          python3 tools/verify_release.py
+          python3 tests/release77_verifier.py
+          python3 tools/test_release77_ota.py release
+          python3 tools/test_release77_ota.py release --sanitizers

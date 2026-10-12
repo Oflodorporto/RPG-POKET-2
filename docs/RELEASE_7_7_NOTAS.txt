@@ -1,0 +1,18 @@
+7.7 — Heróis e inimigos autorais (2026.10.12-visual77)
+
+Waveshare ESP32-S3-Touch-LCD-2, SKU 29667. Depois da instalação inicial pelo cabo, atualize em Configurações > Atualização. Confirme a instalação pela placa com microSD presente, espaço livre e alimentação estável. Não retire o cartão durante a atualização.
+
+- 29 inimigos originais: 116 poses e 56 quadros de efeitos, acesso compacto 4 bpp e catálogo de 636 entradas.
+- Coreografias por ação/poder dos heróis; mãos e armas existentes ampliadas nas dungeons; contato dos efeitos ajustado ao corpo real do alvo.
+- Telas de viagem/OTA mais legíveis; 428 artes não inimigas preservadas.
+- Regras, tempos de combate, RNG, PvP, fadiga e Save28/leitura1..28 mantidos. Firmware e artes pareados por tamanho, SHA-256 e CRC.
+
+Validação em software: 63 suítes nativas, 22 alvos ASan/UBSan, catálogo/canários, carregadores antigo/novo, parser e instalação simulada 7.6→7.7, composição visual e compilação ESP32. O proprietário autorizou a publicação antes do teste físico 7.7. O teste rápido 7.6 não valida esta versão. Placa/LCD, FPS/toque, memória livre/maior bloco, ensaios prolongados e falhas físicas continuam pendentes.
+
+PSRAM conhecida por conta estática: 6.828.800 bytes, incluindo artes, framebuffer e área de decodificação. Não é medição de memória livre nem garantia contra fragmentação. Firmware exige a configuração de placa com 8 MiB OPI PSRAM. O parser antigo não usa o campo informativo minimum_psram_bytes; os limites reais da plataforma e o catálogo pareado foram testados.
+
+Artes ausentes/erradas/corruptas usam fallback simplificado e reparo pela atualização. Falha da área opcional de decodificação omite inimigos; falha da alocação principal de arte ainda interrompe a inicialização. A limpeza após pacote válido remove outros CRCs; boot antigo pode remover arte nova preparada, e rollback pode ficar com arte simplificada. Não se promete retenção completa para downgrade. Fadiga auxiliar incerta reinicia em zero sem sobrescrever o herói; downgrade com exclusão/recriação idêntica não é garantido.
+
+Quatro poses desenhadas por inimigo; recuperação reutiliza repouso e derrota usa fade. Novos desenhos completos dos antebraços/mãos, cidades, acampamento e reformulação integral das dungeons ficam para etapas posteriores. Não foi feita gravação automática na placa, formatação de SD ou exclusão de personagens.
+
+Fonte, evidências e limites desta versão: https://github.com/Oflodorporto/RPG-POKET-2/blob/v2026.10.12-visual77/docs/PACOTE_7_7_RELEASE.txt

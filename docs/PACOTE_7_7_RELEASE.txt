@@ -1,0 +1,31 @@
+RPG POKET — RELEASE 7.7: HERÓIS E INIMIGOS AUTORAIS
+12/10/2026 | 2026.10.12-visual77 | build 2026101208
+
+AUTORIZAÇÃO E ESCOPO
+O proprietário autorizou validar a identidade final, integrar main e publicar para atualização por Wi-Fi. Nenhuma placa será gravada pelo agente. A candidata aprovada está em feat/visual77-combined, fonte ad677def6a6a514ce9700c45cae4392c4b2d3327, CI 38310626603. A qualificação final usa feat/visual77-final, uma identidade pública inédita, sem reutilizar o binário -dev.
+
+QUALIFICAÇÃO LOCAL DA IDENTIDADE FINAL
+15 testes focados do verificador passaram com fixture sintética ESP32 explicitamente identificada. Parser/instalador7.6 e final passaram normal e ASan/UBSan: sete casos de instalação antiga e dois de reparo final, com pack636 real e firmware sintético. LeakSanitizer local bloqueado por ptrace; CI mantém detecção ativa. Snapshots de controlador e preservação de código/arte confirmados; revisão independente de identidade/verificador/publicador concluída sem bloqueios. Esses resultados não substituem a compilação e os arquivos finais reais.
+
+RELEASE EM QUALIFICAÇÃO, AINDA NÃO PUBLICADA
+Fonte final, CI final/publicador, tamanho/hash final e downloads serão registrados após os respectivos resultados. O CI da candidata não é aprovação do binário final.
+
+ENTREGA PRESERVADA
+29 inimigos originais, quatro poses cada (116); sete famílias/56 efeitos. Recuperação usa repouso, derrota fade. Coreografias por ação/poder do herói, primeiro plano com mãos/armas existentes ampliadas, raiz e contato dos efeitos ligados ao corpo renderizado. Quatro raças/classes e 428 artes não inimigas preservadas. Save28/leitura1..28, regras, RNG, tempos, PvP e fadiga permanecem iguais à candidata revisada.
+Artes: PKA1/schema2; 636 entradas; payload 6.661.440 bytes; arquivo 6.661.456; CRC32 0b84d93f; SHA256 5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1. Uma área reutilizável de decodificação de 13.760 bytes, sem alocação/SD por quadro.
+
+GATES DA IDENTIDADE FINAL
+- 63 suítes nativas e 22 alvos ASan/UBSan, leak detection ativa no CI; dez testes Python de catálogo e 58 casos pareados de carregador em cada modo. A revisão/oclusão da candidata continua aplicável porque pixels, geometria e regras não mudaram.
+- Compilação ESP32-S3/core 3.3.12, partição app3M_fat9M_16MB, flash16MB/PSRAM OPI.
+- tools/verify_release.py exige versão/build/pacote finais exatos, binário ESP32-S3 com versão compilada, Save28, tamanho/hash de ambos os arquivos, catálogo636/CRC/hash específico e área de decodificação. Rejeita mistura de pacote488 e firmware636. Limite OTA3MiB e crescimento máximo64KiB ante7.6.
+- Parser e adaptador OTA reais de7.6 e da versão final, com falhas e transição simuladas. O adaptador usa digest de teste para controle de fluxo; Python confere SHA-256 real dos arquivos. Não se confunde com flash/rede física.
+- Publicador restrito a main: exige uma qualificação bem-sucedida do mesmo SHA em feat/visual77-final, reexecuta gates finais, recusa tag já existente e cria tag apontando exatamente para GITHUB_SHA. Sem prévias extras; somente firmware.bin, artes.pak e manifest.json.
+- Após publicação: baixar os três arquivos e o manifesto latest; verificar igualdade/hash e parser antigo novamente antes de afirmar disponibilidade.
+
+MEMÓRIA E RECUPERAÇÃO
+PSRAM conhecida por conta estática: 6.828.800 bytes = artes6.661.440 + framebuffer153.600 + decoder13.760. Campo minimum_psram_bytes registra essa conta; não inclui todas as alocações transitórias do sistema nem mede heap livre/maior bloco. A plataforma exigida tem8MiB OPI PSRAM. O parser7.6 não usa esse campo; valida arte+framebuffer contra PSRAM total. Catálogo novo reduz a necessidade conhecida em316.736 bytes ante7.6. Sem alteração do instalador nesta etapa.
+Pacote ausente/errado/corrupto permite fallback simplificado/reparo existente. Falha do decoder opcional omite inimigos; artMemory principal ausente ainda interrompe a inicialização. Após carregar arte válida, a limpeza apaga outros CRCs e o genérico; boot antigo pode apagar novo pacote preparado, e rollback pode ter somente arte simplificada. Não prometer retenção integral nem proteção universal contra corte de energia.
+
+PENDÊNCIAS FÍSICAS E VISUAIS
+O usuário aprovou o smoke7.6, não esta versão. Placa/LCD, legibilidade, FPS/toque, heap/PSRAM livre/maior bloco, sessões longas e falhas físicas permanecem pendentes. Sem formatação de SD/NVS ou exclusão de personagens.
+Novos desenhos completos de mãos/antebraços, cidades, acampamento e remodelação integral de dungeons não estão nesta entrega. A direção visual7.7 ampla permanece parcial. Referência detalhada: PACOTE_7_7_COMBINADO.txt e PACOTE_7_7_COMBINADO_VALIDACAO.json.
