@@ -4,11 +4,11 @@
 
 Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; os testes físicos de 7.5 foram aprovados pelo usuário em 12/10/2026. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
 
-Em desenvolvimento: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), autorizado em branch separado com registro auxiliar por personagem. Save28 permanece intacto; sem punição por ausência ou alteração de XP. Main, Release e eventual migração continuam dependendo de aprovação própria.
+Em validação final: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), autorizado em branch separado com registro auxiliar por personagem. Save28 permanece intacto; sem punição por ausência ou alteração de XP. O usuário autorizou main/Release se a validação final passar, sem teste físico agora. Save28 não será migrado; teste físico7.6 continua pendente.
 
 ## Fila de trabalho futura, sem promessa de implementação
 
-- 7.6: ciclo de exploração, efeitos graduais leves, rações e acampamento com HP/MP; reaproveitar sistemas reais e esclarecer persistência antes de codificar.
+- 7.6: implementação concluída; validar identidade final2026.10.12-fatigue76/build2026101203, integrar/publicar se passar e conferir OTA. Teste físico continua pendente.
 - 7.7: artes e atualização em segundo plano, textos renderizados pelo firmware e recuperação utilizável sem SD. A OTA atual ainda precisa do cartão; esse requisito futuro não está entregue. Medir memória, SPI, rede e recuperação antes de ampliar assets.
 - Pets: coleção permanente por espécie com um ativo. Definir catálogo, regras e experiência primeiro; persistência/migração exigem aprovação específica. Não ocupar campos existentes silenciosamente.
 - Coop: ESP-NOW para dois jogadores primeiro, depois três; preservar PvP. Protocolos, reconexão, autoridade das recompensas e persistência precisam de desenho/teste próprios.
@@ -176,8 +176,8 @@ Cada pacote precisa ter comportamento revisável, testes de persistência, prév
 Cinco próximos passos de continuidade:
 
 1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
-2. 7.5 física aprovada pelo usuário em 12/10/2026; 7.6 desenvolvido em branch separado, com55 suítes/14 sanitizadores/compilação aprovados no CI38288575276; publicação e placa7.6 pendentes.
-3. Validar a persistência auxiliar7.6 autorizada, mantendo Save28 intacto; conferir CI exato antes de propor publicação.
+2. 7.5 física aprovada pelo usuário em 12/10/2026; 7.6 desenvolvido em branch separado, com55 suítes/14 sanitizadores/compilação aprovados no CI38288575276; publicação autorizada se CI final passar; placa7.6 pendente.
+3. Validar a persistência auxiliar7.6 autorizada, mantendo Save28 intacto; conferir CI final, manifesto e hashes antes de integrar/publicar.
 4. Se houver regressão7.5, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
 5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar7.7/pets/coop por consequência de preparar7.6.
 
@@ -191,5 +191,5 @@ Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suí
 
 Pacote7.4 concluído:2026.10.11-balance74,48suítes/sete sanitizadores/compilação/download aprovados. Recompensas futuras por dificuldade,Save28 e488artes preservados; relatório PACOTE_7_4_PROGRESSAO.txt. Os seis testes físicos7.4 foram aprovados pelo usuário antes de7.5.
 
-Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5 física aprovada pelo usuário em12/10/2026. 7.6 autorizado para implementação em branch separado com persistência auxiliar, sem alterar Save28; publicação depende de aprovação. Ver documento técnico vinculado acima.
+Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5 física aprovada pelo usuário em12/10/2026. 7.6 autorizado para implementação em branch separado com persistência auxiliar, sem alterar Save28; publicação autorizada condicionalmente à validação final; física7.6 pendente. Ver documento técnico vinculado acima.
 

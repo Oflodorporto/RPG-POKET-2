@@ -14,6 +14,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: arduino/setup-arduino-cli@v2
@@ -73,9 +74,16 @@ jobs:
           --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
           --output-dir build firmware/RPG_POKET_2
       - name: Preparar arquivos e manifesto
-        run: python3 tools/release_manifest.py
+        run: |
+          python3 tools/release_manifest.py
+          python3 tools/verify_release.py
+          build/tests/update_adapter release/manifest.json
       - name: Publicar Release
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --title "RPG POKET - $RELEASE_PACKAGE" --notes "$RELEASE_PACKAGE ($RELEASE_VERSION). Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Saves preservados."
+        run: |
+          # Refuse to reuse an existing tag; pin new tags to this tested source commit.
+          existing=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')
+          test "$existing" = 0
+          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes "$RELEASE_PACKAGE ($RELEASE_VERSION). Waveshare SKU29667. Instale a primeira versao pelo cabo; depois Configuracoes > Atualizacao. Firmware e artes com SHA-256. Save28 e 488 artes preservados. Teste fisico 7.6 e memoria em execucao pendentes; publicacao autorizada pelo proprietario sem teste na placa. Fadiga auxiliar incerta reinicia em zero, preservando o heroi. Downgrade com exclusao/recriacao identica nao e garantido. Regras, recuperacao e limites: https://github.com/Oflodorporto/RPG-POKET-2/blob/$GITHUB_SHA/docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt"

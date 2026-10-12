@@ -1,12 +1,12 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 12/10/2026. Pacote 7.5 aprovado na placa pelo usuário; 7.6 em desenvolvimento separado.
+Atualização: 12/10/2026. Pacote 7.5 aprovado na placa pelo usuário; 7.6 em validação final com publicação autorizada.
 
 ESTADO CONFERIDO
 - Release vigente: 2026.10.12-commerce75 / build 2026101201, fonte 553f2ea523628472c5fd717c6187c9a6a49314fb.
 - Main conferida: d63f8441f941b816eb362ef6dc622cd61acdf8b8. Não foi alterada por este desenvolvimento.
 - CI publicado 38270406291 valida somente 7.5: 50 suítes/nove sanitizadores/compilação ESP32 e arquivos. Não usar esse resultado para declarar 7.6 compilado.
 - O usuário confirmou em 12/10/2026 que os testes físicos7.5 passaram e autorizou persistência auxiliar de fadiga, mantendo Save28 intacto.
-- Branch remoto de desenvolvimento: feat/fatigue76, código e7b011b848a35f54d4d283c995938f64daf7a459, baseado na revisão documental e437dde54df26f211c2b54ccd35f5a5ad4d62386. Identificação 2026.10.12-fatigue76-dev / build 2026101202; nenhuma Release nova.
+- Branch de preparação: feat/fatigue76; código de desenvolvimento e7b011b848a35f54d4d283c995938f64daf7a459. Identificação final2026.10.12-fatigue76/build2026101203. O usuário autorizou validar, integrar main e publicar se passar; não pode testar a placa agora. Ainda é necessário verificar o CI final e publicação.
 - Save28/128 bytes/leitura1..28 e 488 artes preservados. Fadiga usa registro separado pareado com o snapshot exato. Limitação de downgrade/recriação idêntica descrita no documento7.6.
 - O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago.
 
@@ -26,5 +26,5 @@ PRÓXIMAS AÇÕES
 1. Ler o documento7.6 e verificar HEAD/diff atuais. Não repetir auditoria/compilações sem motivo ou reutilizar CI de outro commit.
 2. Agregado local e CI final aprovados:55 suítes/14 alvos ASan/UBSan. LeakSanitizer indisponível localmente sob ptrace, mas habilitado e aprovado no CI. Revisão estática concluída; somente branch separado foi enviado.
 3. Binário de desenvolvimento2.780.480/3.145.728bytes, margem365.248; RAM estática54.164bytes. CI do commit exato e7b011b aprovado. Quota remanescente de CI não exposta; nenhum plano pago ativado. Atualização final de documentação não exige repetir esse build.
-4. Main+Release dependem de aprovação própria. FW_VERSION contém -dev: remover esse sufixo exige preparar a versão final e validar seu novo commit/compilação/manifesto/hashes antes de main/Release. Teste físico7.6 permanece pendente. Não apagar personagens ou provocar cortes na placa para imitar testes sintéticos.
+4. Main+Release autorizados condicionalmente à validação final. Identidade sem -dev, build2026101203: conferir novo CI/compilação/manifesto/hashes antes de integrar; pipeline existente publica e exige verificação posterior de tag/commit/latest/downloads. Teste físico7.6 permanece pendente. Não apagar personagens ou provocar cortes na placa para imitar testes sintéticos.
 5. Preservar PvP, três slots, raças/classes/cores, XP/poderes, comércio/contratos, campanha/Cartas, dungeons e artes. 7.7, pets e coop permanecem futuros. Port web segue separado; DLC de novos mapas/histórias é intenção futura.

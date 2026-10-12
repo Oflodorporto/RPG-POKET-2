@@ -31,14 +31,8 @@ jobs:
           arduino-cli compile --jobs 4
           --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
           --output-dir build firmware/RPG_POKET_2
-      - name: Conferir limite OTA e artes preservadas
+      - name: Preparar e conferir manifesto final sem publicar
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import hashlib
-          firmware = Path('build/RPG_POKET_2.ino.bin').read_bytes()
-          assert 0 < len(firmware) <= 3145728, 'Firmware excede particao OTA'
-          art = Path('cartao/RPGPOKET/artes.pak').read_bytes()
-          assert hashlib.sha256(art).hexdigest() == 'bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8'
-          print(f'PASS: firmware {len(firmware)} / 3145728 bytes; artes 488 intactas')
-          PY
+          python3 tools/release_manifest.py
+          python3 tools/verify_release.py
+          build/tests/update_adapter release/manifest.json

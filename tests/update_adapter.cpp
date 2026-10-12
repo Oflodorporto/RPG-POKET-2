@@ -12,7 +12,19 @@ void reset(){disk.clear();disk["/RPGPOKET/artes.pak"]=oldArt;disk["/sentinel-sav
 void preserved(){assert(disk["/RPGPOKET/artes.pak"]==oldArt&&disk["/sentinel-save"]==std::vector<uint8_t>({1,2,3,4})&&!openFiles&&!otaOpen);}
 void plan(){updatePlan=updater::Plan{};strcpy(updatePlan.version,"2026.10.10-audit71");updatePlan.build=FW_BUILD+1;updatePlan.saveFormat=7;updatePlan.writesSaveFormat=28;updatePlan.readsCurrentSaves=true;updatePlan.assets=1;updatePlan.artCrc=rpg::crc(art.data()+16,art.size()-16);for(auto pair:{std::pair<updater::Package*,std::vector<uint8_t>*>(&updatePlan.firmware,&firmware),{&updatePlan.art,&art}}){auto& p=*pair.first;p.bytes=pair.second->size();strcpy(p.sha,digest(*pair.second).c_str());strcpy(p.url,"https://github.com/Oflodorporto/RPG-POKET-2/releases/download/vtest/file.bin");}}
 void cached(){disk["/RPGPOKET/firmware.part"]=firmware;tag("/RPGPOKET/firmware.part",updatePlan.firmware);disk["/RPGPOKET/artes.part"]=art;tag("/RPGPOKET/artes.part",updatePlan.art);}
-int main(){
+int main(int argc,char** argv){
+ if(argc==2){
+  std::ifstream input(argv[1]);assert(input);std::stringstream ss;ss<<input.rdbuf();const auto raw=ss.str();assert(!raw.empty()&&raw.size()<=4096);
+  updater::Plan p;assert(parseUpdate(raw.c_str(),p)&&updater::valid(p,target.size,ESP.getPsramSize()));
+  assert(!strcmp(p.version,FW_VERSION)&&p.build==FW_BUILD&&p.build>2026101202u);
+  assert(p.assets==ART_COUNT&&p.artCrc==ART_CRC&&p.art.bytes==ART_BYTES+16&&p.writesSaveFormat==28);
+  initUpdater();reset();replies.push_back({200,{raw.begin(),raw.end()}});checkUpdate();
+  assert(updateWorker.state==updater::State::Current&&updateWorker.artOnly&&!beginCalls&&!bootCalls&&!ESP.restarted);preserved();
+  reset();menu.art=ArtStatus::Missing;replies.push_back({200,{raw.begin(),raw.end()}});checkUpdate();
+  assert(updateWorker.state==updater::State::Available&&updateWorker.artOnly&&!beginCalls&&!bootCalls&&!ESP.restarted);preserved();
+  puts("PASS: release manifest accepted by real OTA parser/checkUpdate; same-build current/art repair; Save28, art identity, OTA and PSRAM limits; no device installation");return 0;
+ }
+ assert(argc==1);
  initUpdater();firmware.resize(10000);for(unsigned i=0;i<firmware.size();++i)firmware[i]=i*7;art.resize(128,0x35);memcpy(art.data(),"PKA1",4);rpg::put32(art.data(),4,112);rpg::put32(art.data(),8,rpg::crc(art.data()+16,112));rpg::put32(art.data(),12,1);oldArt={9,8,7,6};plan();
  // Real cJSON parses published shape, migration coverage, malformed and huge/fractional numbers.
  std::ifstream input("outputs/RPG_POKET_2_0_Waveshare/releases/2026.10.10-eventos8/manifest.json");if(!input)input.open("tests/update_fake/manifest.json");assert(input);std::stringstream ss;ss<<input.rdbuf();auto raw=ss.str();updater::Plan parsed;assert(parseUpdate(raw.c_str(),parsed)&&parsed.readsCurrentSaves&&parsed.writesSaveFormat==28);parsed.build=FW_BUILD+1;assert(updater::valid(parsed,target.size,ESP.getPsramSize()));
