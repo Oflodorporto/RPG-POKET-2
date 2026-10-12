@@ -1,0 +1,30 @@
+{
+  "enemy_count": 29,
+  "drawn_body_poses": 116,
+  "body_dimensions": [
+    80,
+    86
+  ],
+  "enemy_palettes": 29,
+  "opaque_colors_per_enemy_max": 15,
+  "body_rgb565_bytes": 1596160,
+  "body_index4_with_palettes_bytes": 399968,
+  "effect_families": 7,
+  "effect_frames": 56,
+  "effect_dimensions": [
+    32,
+    32
+  ],
+  "effects_rgb565_bytes": 114688,
+  "effects_index4_with_palettes_bytes": 28896,
+  "total_index4_bytes": 428864,
+  "proposed_512KiB_margin_bytes": 95424,
+  "index_codec_currently_supported": false,
+  "one_rgb565_body_decode_buffer_bytes": 13760,
+  "notes": [
+    "Indexed bytes alone are below the proposed 512 KiB envelope; metadata, decode workspace, allocator and other game resources are not included.",
+    "No runtime performance or hardware memory measurement was performed.",
+    "Direct RGB565 files are raw candidates; catalog mappings, frame selection and asset package have not been changed.",
+    "Do not append the full RGB565 batch without a revised measured memory plan."
+  ]
+}

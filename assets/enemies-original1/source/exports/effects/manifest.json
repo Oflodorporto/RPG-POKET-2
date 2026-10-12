@@ -1,0 +1,55 @@
+{
+  "effects": [
+    {
+      "kind": "slash",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "bite",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "charge",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "claw",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "magic",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "pulse",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    },
+    {
+      "kind": "crush",
+      "frames": 8,
+      "index_bytes": 4096,
+      "palette_bytes": 32,
+      "rgb565_bytes": 16384
+    }
+  ],
+  "total_indexed_bytes": 28896,
+  "runtime_integrated": false
+}

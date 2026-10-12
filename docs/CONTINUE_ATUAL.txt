@@ -18,6 +18,8 @@ Retorno físico e regras 7.5: docs/PACOTE_7_5_COMERCIO.txt
 Evidências históricas 7.5: docs/PACOTE_7_5_VALIDACAO.json
 Economia preservada: docs/PACOTE_7_5_ECONOMIA.csv
 Primeira fatia 7.7 em branch separado: docs/PACOTE_7_7_APRESENTACAO.txt
+Fatia de29 inimigos autorais: docs/PACOTE_7_7_INIMIGOS_AUTORAIS.txt
+Candidata combinada7.7: docs/PACOTE_7_7_COMBINADO.txt
 Roadmap: docs/ROADMAP_PACOTES_EXPERIENCIA.md
 Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
 
@@ -25,4 +27,4 @@ PRÓXIMAS AÇÕES
 1. Conferir HEAD/tag/latest antes de qualquer novo trabalho. Não reutilizar CI de outro código nem repetir a auditoria completa sem motivo.
 2. Smoke físico 7.6 confirmado pelo usuário; detalhamento e ensaios prolongados permanecem para quando puder. Não presumir que testou todos os slots, descanso, reinício, viagem ou interface. Medições reais de memória/latência continuam pendentes. Não apagar personagens nem provocar cortes na placa.
 3. Se houver regressão, reproduzir de modo focado e distinguir software, CI e placa. Preservar limitações explícitas de downgrade e recuperação auxiliar.
-4. Após o retorno físico rápido, o usuário autorizou continuar a direção visual aprovada. A primeira fatia 7.7 está isolada em feat/visual77-presentation: ler docs/PACOTE_7_7_APRESENTACAO.txt para escopo e validação. Sem nova publicação/main; artes novas e acampamento completo não entram nesta fatia. Pets/coop, port web e DLC continuam separados.
+4. Após o retorno físico rápido, o usuário autorizou continuar a direção visual aprovada. A primeira fatia 7.7 está isolada em feat/visual77-presentation: ler docs/PACOTE_7_7_APRESENTACAO.txt para escopo e validação. Sem nova publicação/main; artes novas e acampamento completo não entram nesta fatia. A fatia seguinte integra29 inimigos/116 poses/56 efeitos em feat/visual77-original-enemies, candidata enemy77-dev/build2026101205,636 assets. As fatias isoladas passaram e foram combinadas em feat/visual77-combined, visual77-combined-dev/build2026101207. Ler PACOTE_7_7_COMBINADO.txt: 63 suítes nativas/22 ASan/UBSan, oclusão e revisão independente aprovadas; ESP32/CI e placa pendentes. Pets/coop, port web e DLC continuam separados.

@@ -1,0 +1,5413 @@
+{
+  "schema": 1,
+  "format": "PKA1",
+  "baseline": {
+    "assets": 488,
+    "payload_bytes": 6991936,
+    "crc32": "53dcc3a5",
+    "pack_sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8"
+  },
+  "assets": 636,
+  "payload_bytes": 6661440,
+  "file_bytes": 6661456,
+  "crc32": "0b84d93f",
+  "pack_sha256": "5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1",
+  "retired_enemy_assets": [
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    401,
+    402,
+    403,
+    404,
+    405,
+    406,
+    407,
+    408,
+    409,
+    410,
+    411,
+    412,
+    413,
+    414,
+    415,
+    416,
+    459,
+    460,
+    461,
+    462,
+    463,
+    480,
+    481,
+    482,
+    483,
+    484,
+    485,
+    486,
+    487
+  ],
+  "retired_bytes": 759360,
+  "replacement_bytes": 428864,
+  "unchanged_non_enemy_assets": 428,
+  "pixel_exact_reference_frames": 172,
+  "distinct_body_pose_pngs": 116,
+  "embedded_fallback_bytes": 151169,
+  "body_decode_workspace_bytes": 13760,
+  "framebuffer_bytes": 153600,
+  "known_psram_bytes": 6828800,
+  "theoretical_8mib_headroom_bytes": 1559808,
+  "hardware_measured": false,
+  "effect_family_order": [
+    "slash",
+    "bite",
+    "charge",
+    "claw",
+    "magic",
+    "pulse",
+    "crush"
+  ],
+  "reference_frames": [
+    {
+      "asset_id": 92,
+      "reference": "exports/enemies/00_goblin/idle.rgb565le",
+      "sha256": "ff4d5d2b184527b4ccc7f65ad753fde4434abd9a8e4f7dcb11a580caf80a17f3"
+    },
+    {
+      "asset_id": 93,
+      "reference": "exports/enemies/00_goblin/anticipation.rgb565le",
+      "sha256": "1a64f343b4cb8ed122f1598fb29d77ad4e0a7c63e3a51dad282cc0258b5dfb4a"
+    },
+    {
+      "asset_id": 94,
+      "reference": "exports/enemies/00_goblin/attack.rgb565le",
+      "sha256": "3c94069ccd4c6c2a2f3165bab65ab3d9a1a2971f93ad7fcbf26ca35c40b1c66a"
+    },
+    {
+      "asset_id": 95,
+      "reference": "exports/enemies/00_goblin/hurt.rgb565le",
+      "sha256": "8aa5d93f4a30c7f410fb53ce2679094491a76e3703b77ae8a49f718f0d781546"
+    },
+    {
+      "asset_id": 96,
+      "reference": "exports/enemies/01_lobo/idle.rgb565le",
+      "sha256": "7cc28132f87f72efe328c38bfad496c7ccf1617aa9b09c355c6ac031a8da65ae"
+    },
+    {
+      "asset_id": 97,
+      "reference": "exports/enemies/01_lobo/anticipation.rgb565le",
+      "sha256": "41cc67b50f717f87143f6d3dc14bdb532daf3cd8f1754e63874566b6245423cd"
+    },
+    {
+      "asset_id": 98,
+      "reference": "exports/enemies/01_lobo/attack.rgb565le",
+      "sha256": "f4972c5273de54afdd1e861249b365832279060095aad869cf7468290a88aa63"
+    },
+    {
+      "asset_id": 99,
+      "reference": "exports/enemies/01_lobo/hurt.rgb565le",
+      "sha256": "b303a4a2ecd8fde1b0cd365344b7800788330ebc8861af3ce78fa7f386fa06aa"
+    },
+    {
+      "asset_id": 100,
+      "reference": "exports/enemies/02_esqueleto/idle.rgb565le",
+      "sha256": "0451a75d99738a8807664cb6e7213a6456f5c8cf6095908f36fa5a855a13596d"
+    },
+    {
+      "asset_id": 101,
+      "reference": "exports/enemies/02_esqueleto/anticipation.rgb565le",
+      "sha256": "f553bad5d6f1d08909a85d9706005555c77f36edf1c1f740043dec09d95fd41a"
+    },
+    {
+      "asset_id": 102,
+      "reference": "exports/enemies/02_esqueleto/attack.rgb565le",
+      "sha256": "2fd21917b2b3c9b5e2f7a23c87e886e7b5a4743c14cf50c2b5ec60a98e14147f"
+    },
+    {
+      "asset_id": 103,
+      "reference": "exports/enemies/02_esqueleto/hurt.rgb565le",
+      "sha256": "90b5018ee260fbc8cf74bd438585fc5572154b7aa4bd6fbfe05cdaa9b84c1726"
+    },
+    {
+      "asset_id": 104,
+      "reference": "exports/enemies/03_guardiao/idle.rgb565le",
+      "sha256": "04251078e999202a3785b5d80ab517f62d776b258e044f8ea09b6a0e685d3f33"
+    },
+    {
+      "asset_id": 105,
+      "reference": "exports/enemies/03_guardiao/anticipation.rgb565le",
+      "sha256": "df548628058160135c2b997222c1712f651b8d0414f7e5992f1a9a20ffbf6a92"
+    },
+    {
+      "asset_id": 106,
+      "reference": "exports/enemies/03_guardiao/attack.rgb565le",
+      "sha256": "93c36a3b5dae87ed50ee1f38f40fc53318a707c75350bc456e56e0615ce8fc98"
+    },
+    {
+      "asset_id": 107,
+      "reference": "exports/enemies/03_guardiao/hurt.rgb565le",
+      "sha256": "95a8406146be113aae917d39a00f54a0557c1cc001d6dc3e243f71cc3c6b25e3"
+    },
+    {
+      "asset_id": 108,
+      "reference": "exports/enemies/04_javali/idle.rgb565le",
+      "sha256": "d08f39b46de09dc0f306bcfb1e87949df302311ed7d7020e0ad308e8b7e89179"
+    },
+    {
+      "asset_id": 109,
+      "reference": "exports/enemies/04_javali/anticipation.rgb565le",
+      "sha256": "9abc76531af55e9cd8d447b929d289413c477bd5ca9646a417d7713089161bb8"
+    },
+    {
+      "asset_id": 110,
+      "reference": "exports/enemies/04_javali/attack.rgb565le",
+      "sha256": "7765d1da89b70984a880c4b48ab4b22a0e47e2f0dd299662b0ebec9b622fe471"
+    },
+    {
+      "asset_id": 111,
+      "reference": "exports/enemies/04_javali/hurt.rgb565le",
+      "sha256": "7841859846063173127ff53210a088b9365daad76ddb047983676144105beea3"
+    },
+    {
+      "asset_id": 112,
+      "reference": "exports/enemies/05_espectro/idle.rgb565le",
+      "sha256": "0980d326c690e2156ac85d7ee4c1c8c4b2f98c42b40ddc1048ea8973a636e06c"
+    },
+    {
+      "asset_id": 113,
+      "reference": "exports/enemies/05_espectro/anticipation.rgb565le",
+      "sha256": "f90bf316604d75666788ade3fa8fd986b39cec6e6d82b32d0dd9b0b13563c962"
+    },
+    {
+      "asset_id": 114,
+      "reference": "exports/enemies/05_espectro/attack.rgb565le",
+      "sha256": "3ce0d2846f2834c5e2d1b70446b401497fd8d59fadcf6ab5e2f7befea1b27980"
+    },
+    {
+      "asset_id": 115,
+      "reference": "exports/enemies/05_espectro/hurt.rgb565le",
+      "sha256": "d377f4eefee6a2a657bb62c4cf29be66e9a833367dd568bc5b2ddab7573fb680"
+    },
+    {
+      "asset_id": 116,
+      "reference": "exports/enemies/06_saqueador/idle.rgb565le",
+      "sha256": "0b2c85fcea6dfc3678850bca5c449ea3897763d297d36492ed3b95a72ac07f96"
+    },
+    {
+      "asset_id": 117,
+      "reference": "exports/enemies/06_saqueador/anticipation.rgb565le",
+      "sha256": "8bfcabb9948cd04dae3e3db72176260b7e49808eee65ef57295f81d9f0e2d2fc"
+    },
+    {
+      "asset_id": 118,
+      "reference": "exports/enemies/06_saqueador/attack.rgb565le",
+      "sha256": "c6968efafeea132089eabde803817844aa3e117270bf9286d47d4da422252ae7"
+    },
+    {
+      "asset_id": 119,
+      "reference": "exports/enemies/06_saqueador/hurt.rgb565le",
+      "sha256": "7553d2b42df8a37beceff6a0c7b9c2f3335a694936850d5dc4b0e0287664439d"
+    },
+    {
+      "asset_id": 120,
+      "reference": "exports/enemies/07_sentinela/idle.rgb565le",
+      "sha256": "71ce8c1cd86897448aa729ea1a131a695ac4328fb0c5ed94607c73c437008a3a"
+    },
+    {
+      "asset_id": 121,
+      "reference": "exports/enemies/07_sentinela/anticipation.rgb565le",
+      "sha256": "a74f431a877d6821eac8527fdf1793ba125428d0187e98ae842b4cb44fb5162f"
+    },
+    {
+      "asset_id": 122,
+      "reference": "exports/enemies/07_sentinela/attack.rgb565le",
+      "sha256": "655df617a30ee0df056904955089eea25d638200b2c5dc1fde0278efa576e9ff"
+    },
+    {
+      "asset_id": 401,
+      "reference": "exports/enemies/07_sentinela/hurt.rgb565le",
+      "sha256": "8e995a4356bdc318dcbdcab11a0f127295388a1a4fc091398db11c13466e26c0"
+    },
+    {
+      "asset_id": 402,
+      "reference": "exports/enemies/08_arconte/idle.rgb565le",
+      "sha256": "2cd987c7400aa146f5d56bba1b784d6f90ad4d6cba99cb8f7eb4432f072452ee"
+    },
+    {
+      "asset_id": 403,
+      "reference": "exports/enemies/08_arconte/anticipation.rgb565le",
+      "sha256": "23fdbe28ed641730aefd0a2c116f2698b3494efce18ec52fcfce64d7b8795c21"
+    },
+    {
+      "asset_id": 404,
+      "reference": "exports/enemies/08_arconte/attack.rgb565le",
+      "sha256": "96ee5a9ea637c82ffdf223cf5b757776274b9127b91c021e66278ed8dc44ea39"
+    },
+    {
+      "asset_id": 405,
+      "reference": "exports/enemies/08_arconte/hurt.rgb565le",
+      "sha256": "39a67aef0097e2e5f5a3ea254e454f1e81d1460fdb8e79c3869f014d7717f2c9"
+    },
+    {
+      "asset_id": 406,
+      "reference": "exports/enemies/09_vigia_ossudo/idle.rgb565le",
+      "sha256": "2310af2518a4f0ecfe91b3a37860cbab047e4c1e714bd4a7b8842eb0621c231b"
+    },
+    {
+      "asset_id": 407,
+      "reference": "exports/enemies/09_vigia_ossudo/anticipation.rgb565le",
+      "sha256": "e0c07ab3bf3a3bd51578ea8fa38489b168576f0b52c6fabf49d81e4d1eb6fde9"
+    },
+    {
+      "asset_id": 408,
+      "reference": "exports/enemies/09_vigia_ossudo/attack.rgb565le",
+      "sha256": "8cd09802532aabd3e56d6d92be33e0ffd91ee38e8c40d414097f29851f3e11e6"
+    },
+    {
+      "asset_id": 409,
+      "reference": "exports/enemies/09_vigia_ossudo/hurt.rgb565le",
+      "sha256": "fe18c8590ec755c25b04dc68ccbbb56c2fba0d7d75516cd3dc807353d7a039ee"
+    },
+    {
+      "asset_id": 410,
+      "reference": "exports/enemies/10_hipogrifo_jovem/idle.rgb565le",
+      "sha256": "fc2b7380bc385f761f7eec9902644617a3a528ee5bcebc2a80f8dd0e896fd4ae"
+    },
+    {
+      "asset_id": 411,
+      "reference": "exports/enemies/10_hipogrifo_jovem/anticipation.rgb565le",
+      "sha256": "867d4f77bbbc143eb9c08b39ef220b73ccb6b06c915ebcd443356dc2a4dcda2f"
+    },
+    {
+      "asset_id": 412,
+      "reference": "exports/enemies/10_hipogrifo_jovem/attack.rgb565le",
+      "sha256": "7f786c8c6eee35148d4b6493fe4cc87db39bd515da1ca6fbaa9aafb805f20eab"
+    },
+    {
+      "asset_id": 413,
+      "reference": "exports/enemies/10_hipogrifo_jovem/hurt.rgb565le",
+      "sha256": "9eeeb44cc66b2680bc6650c2c70b957a6fca3673a3052cc032f738f38f9d4eb6"
+    },
+    {
+      "asset_id": 414,
+      "reference": "exports/enemies/11_hipogrifo/idle.rgb565le",
+      "sha256": "ce95cc0939a999a1f7a1d7fa407cfc7d1b9d0c5b1da2872011536cc8b5218d93"
+    },
+    {
+      "asset_id": 415,
+      "reference": "exports/enemies/11_hipogrifo/anticipation.rgb565le",
+      "sha256": "206cbf5a6a637f27e1d164740f8799e4170937bb7a9398f8a1ef2186eae3aa4c"
+    },
+    {
+      "asset_id": 416,
+      "reference": "exports/enemies/11_hipogrifo/attack.rgb565le",
+      "sha256": "e222295026cc6f3330c89fa3a10b13df54c256c9c86d64a3adde257e75f231a7"
+    },
+    {
+      "asset_id": 459,
+      "reference": "exports/enemies/11_hipogrifo/hurt.rgb565le",
+      "sha256": "3379258131bfa606dbc4da0cfd90919e52430ee72aaa0686dcf229c03cf45d9b"
+    },
+    {
+      "asset_id": 460,
+      "reference": "exports/enemies/12_hipogrifo_marcado/idle.rgb565le",
+      "sha256": "710debb55897e835cd169ba0c1b3a593dc5556cacab54be25f92d3ff397d6a13"
+    },
+    {
+      "asset_id": 461,
+      "reference": "exports/enemies/12_hipogrifo_marcado/anticipation.rgb565le",
+      "sha256": "06a7ae1cc58069d8b50c69b5c381f4aaa005c0c506b287e5b5bd7e8c1baf5f45"
+    },
+    {
+      "asset_id": 462,
+      "reference": "exports/enemies/12_hipogrifo_marcado/attack.rgb565le",
+      "sha256": "ca5984f1e61de035449cc37c01719647b55381d5f06c74f8fde5b5fa2967e6d5"
+    },
+    {
+      "asset_id": 463,
+      "reference": "exports/enemies/12_hipogrifo_marcado/hurt.rgb565le",
+      "sha256": "4fed4c5bdaf476b5e9f8a4e27d6178d53141b1c00cf2f2bc67b590e7c0de53b4"
+    },
+    {
+      "asset_id": 480,
+      "reference": "exports/enemies/13_hipogrifo_alfa/idle.rgb565le",
+      "sha256": "03a81bfa3598d7e6f043f87530502d496766cbd94316667e7699905d6ce5b63b"
+    },
+    {
+      "asset_id": 481,
+      "reference": "exports/enemies/13_hipogrifo_alfa/anticipation.rgb565le",
+      "sha256": "220760422bcb940ae37c29f543dc0ba33057eddffed2583e83bbe419664753cc"
+    },
+    {
+      "asset_id": 482,
+      "reference": "exports/enemies/13_hipogrifo_alfa/attack.rgb565le",
+      "sha256": "6afc230c6aafd44b89c07f12024290c2da954a11f335ac0b9c6ea871efe363e4"
+    },
+    {
+      "asset_id": 483,
+      "reference": "exports/enemies/13_hipogrifo_alfa/hurt.rgb565le",
+      "sha256": "a44ec4fa439300aa035db5cdb614d35142a7dfec28fa9b6e9aab75df5ed23313"
+    },
+    {
+      "asset_id": 484,
+      "reference": "exports/enemies/14_mimico_do_bosque/idle.rgb565le",
+      "sha256": "cba32a2cbfd7feb76310bf67d5df2ead8a3d7a6a2a8a5366c6a9716695d50739"
+    },
+    {
+      "asset_id": 485,
+      "reference": "exports/enemies/14_mimico_do_bosque/anticipation.rgb565le",
+      "sha256": "db55bb40aa7bf25609d6537657708b8798a8ced13b81cfc5d4b8a672843f1f5c"
+    },
+    {
+      "asset_id": 486,
+      "reference": "exports/enemies/14_mimico_do_bosque/attack.rgb565le",
+      "sha256": "03b3c858a2eaae3b02f020112fc5b41326b333e5d72710f0df0001269c522b8a"
+    },
+    {
+      "asset_id": 487,
+      "reference": "exports/enemies/14_mimico_do_bosque/hurt.rgb565le",
+      "sha256": "1c6be49872a5e5531a883053a92dee16af331aadd920f9194c47d49bc63727e5"
+    },
+    {
+      "asset_id": 488,
+      "reference": "exports/enemies/15_mimico_das_ruinas/idle.rgb565le",
+      "sha256": "8616ba6dd0456d6e3a7eba8cb5ef63f88730331122a6c93f0ff6c2f157c6e15c"
+    },
+    {
+      "asset_id": 489,
+      "reference": "exports/enemies/15_mimico_das_ruinas/anticipation.rgb565le",
+      "sha256": "b685a8d2d4e3d2397424aedd178c9fba5633691bdd80c303ee13bdbfc6a19254"
+    },
+    {
+      "asset_id": 490,
+      "reference": "exports/enemies/15_mimico_das_ruinas/attack.rgb565le",
+      "sha256": "e6aa02849e27a7f35f1b678d584cb882ec193784c3865724af4224c40d8511a3"
+    },
+    {
+      "asset_id": 491,
+      "reference": "exports/enemies/15_mimico_das_ruinas/hurt.rgb565le",
+      "sha256": "14efb3e5c2a3385264a38ac6f309e0304427b22bf0167214443c74bd5d8b64e4"
+    },
+    {
+      "asset_id": 492,
+      "reference": "exports/enemies/16_mimico_do_porto/idle.rgb565le",
+      "sha256": "16d64f84db484edc0ec0e9989eb83b00719ab2d645328be15245be89416a2ee5"
+    },
+    {
+      "asset_id": 493,
+      "reference": "exports/enemies/16_mimico_do_porto/anticipation.rgb565le",
+      "sha256": "7064820af57b72f1826b929f8a43c4ea37cc8fe88feda0248378bb57f3a28505"
+    },
+    {
+      "asset_id": 494,
+      "reference": "exports/enemies/16_mimico_do_porto/attack.rgb565le",
+      "sha256": "d6e53fa60abade558a05841d1fe03a4ee5114030df892b51d64d8d6ae6cbfc6c"
+    },
+    {
+      "asset_id": 495,
+      "reference": "exports/enemies/16_mimico_do_porto/hurt.rgb565le",
+      "sha256": "e42dfe4b4fe84295ebde193780d46d5dbac3d81701961bcefbb818b3066424e7"
+    },
+    {
+      "asset_id": 496,
+      "reference": "exports/enemies/17_mimico_do_castelo/idle.rgb565le",
+      "sha256": "43839e7aad67e7c355406fa06a3f437477958831c6c967cae6156437d52a789a"
+    },
+    {
+      "asset_id": 497,
+      "reference": "exports/enemies/17_mimico_do_castelo/anticipation.rgb565le",
+      "sha256": "44f397ed49adab6be071f202e412fa59c491a803dc444eea1dd9512e721b5992"
+    },
+    {
+      "asset_id": 498,
+      "reference": "exports/enemies/17_mimico_do_castelo/attack.rgb565le",
+      "sha256": "0df19a8af4f65dd675b614a46b0a6892c46258298fd4c4a55b6a8c16f7f42bbd"
+    },
+    {
+      "asset_id": 499,
+      "reference": "exports/enemies/17_mimico_do_castelo/hurt.rgb565le",
+      "sha256": "69ee67e899b9ecf49b34f34e4863cd6066057b0e020ecbb29fe0a2c0c87bd039"
+    },
+    {
+      "asset_id": 500,
+      "reference": "exports/enemies/18_odran/idle.rgb565le",
+      "sha256": "631453de234aa5355a5149b9b033a9b5285aef6860a68105d2318483d649d0ce"
+    },
+    {
+      "asset_id": 501,
+      "reference": "exports/enemies/18_odran/anticipation.rgb565le",
+      "sha256": "fcd35fcc753d3aeeecca6756d4cd8e739e454dcc6f0070c2ee223eb16831aef2"
+    },
+    {
+      "asset_id": 502,
+      "reference": "exports/enemies/18_odran/attack.rgb565le",
+      "sha256": "f2e610b6abff3d630f375c3f6bf384e778f703ba3451068170d2aeb2087ebacc"
+    },
+    {
+      "asset_id": 503,
+      "reference": "exports/enemies/18_odran/hurt.rgb565le",
+      "sha256": "a94cfb777d55a8c283ea5fe46fcf1a047a81249c7a1f67d631caa73a8a0ec346"
+    },
+    {
+      "asset_id": 504,
+      "reference": "exports/enemies/19_coracao_do_veu/idle.rgb565le",
+      "sha256": "b9b939e2d6ebb7694ed8bb7a25ca14183196788fc462bc714227171e3e5fda5b"
+    },
+    {
+      "asset_id": 505,
+      "reference": "exports/enemies/19_coracao_do_veu/anticipation.rgb565le",
+      "sha256": "d7d8889c13e884c396a5fc700995c9b13c3491ee0b6ff5dcdb0d18cc6a3d4747"
+    },
+    {
+      "asset_id": 506,
+      "reference": "exports/enemies/19_coracao_do_veu/attack.rgb565le",
+      "sha256": "57fadee74a0d14f150cb4f769f9548e976467d51a9ffa6b5b28d69324b48be7e"
+    },
+    {
+      "asset_id": 507,
+      "reference": "exports/enemies/19_coracao_do_veu/hurt.rgb565le",
+      "sha256": "3f61a24adb6a102c704a9534cead4feed39e3282ac282f6bc768f1dda68f2f89"
+    },
+    {
+      "asset_id": 508,
+      "reference": "exports/enemies/20_sentinela_coral/idle.rgb565le",
+      "sha256": "b633a0d9a7bb6e4d65718b4c85806cb588e28d8a31c1adb318064fac54058d3c"
+    },
+    {
+      "asset_id": 509,
+      "reference": "exports/enemies/20_sentinela_coral/anticipation.rgb565le",
+      "sha256": "f9f4e2d2ef0fd334837d8e363285e90cdae0d9b5fa7473692ffb46fe814955f4"
+    },
+    {
+      "asset_id": 510,
+      "reference": "exports/enemies/20_sentinela_coral/attack.rgb565le",
+      "sha256": "39c67c0ada09b7707f9125f0b135c28180f4abdc6f37221cac453e7addb269ce"
+    },
+    {
+      "asset_id": 511,
+      "reference": "exports/enemies/20_sentinela_coral/hurt.rgb565le",
+      "sha256": "f24d68b96071ffd6bcedb0d2ef1b2fb107c29de9151d2ee6ee4db88a5150fa6f"
+    },
+    {
+      "asset_id": 512,
+      "reference": "exports/enemies/21_arraia_runar/idle.rgb565le",
+      "sha256": "eefe1b1a508b6b00c6acdb8429e3eba3e2c9151d2d14780bb7ab2ef712a3d822"
+    },
+    {
+      "asset_id": 513,
+      "reference": "exports/enemies/21_arraia_runar/anticipation.rgb565le",
+      "sha256": "54ff22778a598c609fc64dc38ec84811e1c02180fab83881a8f6b9703d8b980e"
+    },
+    {
+      "asset_id": 514,
+      "reference": "exports/enemies/21_arraia_runar/attack.rgb565le",
+      "sha256": "4f85cbe2aca41023d76119c8ec32154a51d314666f0c7747b9f97689afe82e39"
+    },
+    {
+      "asset_id": 515,
+      "reference": "exports/enemies/21_arraia_runar/hurt.rgb565le",
+      "sha256": "c9d0d8f2c3fb26bda5e2a81ca881a8de5e6e746a0c3e7c019948ff25ecdaaad4"
+    },
+    {
+      "asset_id": 516,
+      "reference": "exports/enemies/22_corsario_afogado/idle.rgb565le",
+      "sha256": "a49b3da845f1e46cedd5f58406e53175edd89fcbd51289c7fac4160c8636cd41"
+    },
+    {
+      "asset_id": 517,
+      "reference": "exports/enemies/22_corsario_afogado/anticipation.rgb565le",
+      "sha256": "2fb7c10ada4e3912de984aa9f57a84c1fd439684ee1e9dbfd4d62eb38a092f35"
+    },
+    {
+      "asset_id": 518,
+      "reference": "exports/enemies/22_corsario_afogado/attack.rgb565le",
+      "sha256": "c3b8b3665c728602fc9141a78dd1700a061faf4d7738f90582e5e38ab78c2c5d"
+    },
+    {
+      "asset_id": 519,
+      "reference": "exports/enemies/22_corsario_afogado/hurt.rgb565le",
+      "sha256": "ad1c613ca5b3d94131e66210372c0da67b39b93852c7ace68bc647c0e8d51be2"
+    },
+    {
+      "asset_id": 520,
+      "reference": "exports/enemies/23_oraculo_abissal/idle.rgb565le",
+      "sha256": "7a1b78db9435d3a189d7b820b93e1cffbf6b57c4222d2c56701d5983a27ac87e"
+    },
+    {
+      "asset_id": 521,
+      "reference": "exports/enemies/23_oraculo_abissal/anticipation.rgb565le",
+      "sha256": "378c73f7509e92c4158965a275b4508195a6f066f1759131a6362706aa847f03"
+    },
+    {
+      "asset_id": 522,
+      "reference": "exports/enemies/23_oraculo_abissal/attack.rgb565le",
+      "sha256": "e82aaecac83057a5cd6bcf7b9b60d426936c112d954628651460df53fbcb4d2d"
+    },
+    {
+      "asset_id": 523,
+      "reference": "exports/enemies/23_oraculo_abissal/hurt.rgb565le",
+      "sha256": "27a9cea8350c5358ca5947e18c70e80a51b9b00510bd5a4ff4d636724e019cab"
+    },
+    {
+      "asset_id": 524,
+      "reference": "exports/enemies/24_thalvor/idle.rgb565le",
+      "sha256": "2d843ff649fed5cf25aa43f02f43148c6c0b9601011daf7d6fb0fff6e1499075"
+    },
+    {
+      "asset_id": 525,
+      "reference": "exports/enemies/24_thalvor/anticipation.rgb565le",
+      "sha256": "132016361f85774d5574259e1623258dae030bc94a725033fd24ecc92ab4e702"
+    },
+    {
+      "asset_id": 526,
+      "reference": "exports/enemies/24_thalvor/attack.rgb565le",
+      "sha256": "a244246b0f3c1bb01e0b7fe5556fbf1c4b5d08d6bec85e74df85da6ac003603a"
+    },
+    {
+      "asset_id": 527,
+      "reference": "exports/enemies/24_thalvor/hurt.rgb565le",
+      "sha256": "51c033349f881b9de3c879825adf2b70978f6f7d6a039defc115dbcb6393e34f"
+    },
+    {
+      "asset_id": 528,
+      "reference": "exports/enemies/25_caranguejo_ferreo/idle.rgb565le",
+      "sha256": "2c174033d6c206816e0392701b5ea0a9b6e55e4ac6e1d662f3a421631820900a"
+    },
+    {
+      "asset_id": 529,
+      "reference": "exports/enemies/25_caranguejo_ferreo/anticipation.rgb565le",
+      "sha256": "bd557da4ecf38d866c20f76c6cc359bccea0a62e45ee9931785975fbcf1e891b"
+    },
+    {
+      "asset_id": 530,
+      "reference": "exports/enemies/25_caranguejo_ferreo/attack.rgb565le",
+      "sha256": "a2eae4f2f20a9b718cec65909234daf8c9f7e28094d5cf728476fb735f6138ed"
+    },
+    {
+      "asset_id": 531,
+      "reference": "exports/enemies/25_caranguejo_ferreo/hurt.rgb565le",
+      "sha256": "83efed2a37263df45a2252faf6faf50780e200883ce581be2668b52980244aaa"
+    },
+    {
+      "asset_id": 532,
+      "reference": "exports/enemies/26_mao_de_cinza/idle.rgb565le",
+      "sha256": "7254516e0d6ec6c526ce6f3f0147e8c8a5bdb23017b7f6eab69683ba45fead75"
+    },
+    {
+      "asset_id": 533,
+      "reference": "exports/enemies/26_mao_de_cinza/anticipation.rgb565le",
+      "sha256": "61dde4b352801d9f4c6540a58e1ec1a6dd1bd29fd63ee3c0ad783a0467a4de8b"
+    },
+    {
+      "asset_id": 534,
+      "reference": "exports/enemies/26_mao_de_cinza/attack.rgb565le",
+      "sha256": "7777a40206d3bf38294040a10ca10224a44dfc566d255d610fe34dcfe0030953"
+    },
+    {
+      "asset_id": 535,
+      "reference": "exports/enemies/26_mao_de_cinza/hurt.rgb565le",
+      "sha256": "61844ea9c1d66b985ed2e639a7d104ae882a26bc7d1cfaaad4d5c3ba6fa3e8d8"
+    },
+    {
+      "asset_id": 536,
+      "reference": "exports/enemies/27_automato_dourado/idle.rgb565le",
+      "sha256": "8ed9fb8c2831457495f68fe6e901d2b98b04d2e93463c9b2a0628bc362681912"
+    },
+    {
+      "asset_id": 537,
+      "reference": "exports/enemies/27_automato_dourado/anticipation.rgb565le",
+      "sha256": "c0759120694ce32d74b20f66e8404ef1f2cdbe58bb5555a08dd20f493e547cd4"
+    },
+    {
+      "asset_id": 538,
+      "reference": "exports/enemies/27_automato_dourado/attack.rgb565le",
+      "sha256": "d97b5b23d278b393ff7e1196b852850b0ab07eda4b4c9af2bf8b47d2069a734c"
+    },
+    {
+      "asset_id": 539,
+      "reference": "exports/enemies/27_automato_dourado/hurt.rgb565le",
+      "sha256": "f0eb4a378ab2d5b9d79a66bf23524f766e4d3a62238cfcbf55d3a71b0943c476"
+    },
+    {
+      "asset_id": 540,
+      "reference": "exports/enemies/28_eco_do_veu/idle.rgb565le",
+      "sha256": "18ffe4169b48342af108d47f9054dfea4c5cfb74ffba41f9bb06db6e41951195"
+    },
+    {
+      "asset_id": 541,
+      "reference": "exports/enemies/28_eco_do_veu/anticipation.rgb565le",
+      "sha256": "d8b5f26cf012e1c826564c7460e426fca24b4b3ef09e1db0aad2eea3acf59ae9"
+    },
+    {
+      "asset_id": 542,
+      "reference": "exports/enemies/28_eco_do_veu/attack.rgb565le",
+      "sha256": "3f0c65ba5c36f56747178d3090011bd9d31578261288962a2082f0aadd816233"
+    },
+    {
+      "asset_id": 543,
+      "reference": "exports/enemies/28_eco_do_veu/hurt.rgb565le",
+      "sha256": "ab986ffbbda1cbcc2ef4ceee0e83c9334c86ad2d3079302ea7aa4cd13a9fbcec"
+    },
+    {
+      "asset_id": 544,
+      "reference": "exports/effects/slash/00.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 545,
+      "reference": "exports/effects/slash/01.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 546,
+      "reference": "exports/effects/slash/02.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 547,
+      "reference": "exports/effects/slash/03.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 548,
+      "reference": "exports/effects/slash/04.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 549,
+      "reference": "exports/effects/slash/05.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 550,
+      "reference": "exports/effects/slash/06.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 551,
+      "reference": "exports/effects/slash/07.rgb565le",
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    {
+      "asset_id": 552,
+      "reference": "exports/effects/bite/00.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 553,
+      "reference": "exports/effects/bite/01.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 554,
+      "reference": "exports/effects/bite/02.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 555,
+      "reference": "exports/effects/bite/03.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 556,
+      "reference": "exports/effects/bite/04.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 557,
+      "reference": "exports/effects/bite/05.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 558,
+      "reference": "exports/effects/bite/06.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 559,
+      "reference": "exports/effects/bite/07.rgb565le",
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    {
+      "asset_id": 560,
+      "reference": "exports/effects/charge/00.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 561,
+      "reference": "exports/effects/charge/01.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 562,
+      "reference": "exports/effects/charge/02.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 563,
+      "reference": "exports/effects/charge/03.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 564,
+      "reference": "exports/effects/charge/04.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 565,
+      "reference": "exports/effects/charge/05.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 566,
+      "reference": "exports/effects/charge/06.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 567,
+      "reference": "exports/effects/charge/07.rgb565le",
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    {
+      "asset_id": 568,
+      "reference": "exports/effects/claw/00.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 569,
+      "reference": "exports/effects/claw/01.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 570,
+      "reference": "exports/effects/claw/02.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 571,
+      "reference": "exports/effects/claw/03.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 572,
+      "reference": "exports/effects/claw/04.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 573,
+      "reference": "exports/effects/claw/05.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 574,
+      "reference": "exports/effects/claw/06.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 575,
+      "reference": "exports/effects/claw/07.rgb565le",
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    {
+      "asset_id": 576,
+      "reference": "exports/effects/magic/00.rgb565le",
+      "sha256": "a5039ef5db4780af7dea4206d78764bf4923c9864a4b3155d9959531ff148a7b"
+    },
+    {
+      "asset_id": 577,
+      "reference": "exports/effects/magic/01.rgb565le",
+      "sha256": "e6b22e1eb041307b8f0b250e67901b0e3da2ed0d9d02a194c016b6a2a78181e9"
+    },
+    {
+      "asset_id": 578,
+      "reference": "exports/effects/magic/02.rgb565le",
+      "sha256": "27542f435689e4d6d2aba06c1152a4ac01c9a19f4b6d5122705c1d290185b1b4"
+    },
+    {
+      "asset_id": 579,
+      "reference": "exports/effects/magic/03.rgb565le",
+      "sha256": "8cbd2fc0a6d7a2215e4adafdb3bb8269afb1f125a0a50aba3b1c8d0bccd51a2b"
+    },
+    {
+      "asset_id": 580,
+      "reference": "exports/effects/magic/04.rgb565le",
+      "sha256": "e3027b5acdc4377badfc6b5a9bd6c1c5e0d20c12fa7d64784829c508deafc508"
+    },
+    {
+      "asset_id": 581,
+      "reference": "exports/effects/magic/05.rgb565le",
+      "sha256": "099d8c70ea450b4d8074b8bc653f20c2f408d439459c38c6c98b0055b96b7b62"
+    },
+    {
+      "asset_id": 582,
+      "reference": "exports/effects/magic/06.rgb565le",
+      "sha256": "09e6c2ad92550fccfbb7d363e13d05149c654a483d8de7535700f2161aa36cbc"
+    },
+    {
+      "asset_id": 583,
+      "reference": "exports/effects/magic/07.rgb565le",
+      "sha256": "7f839be65e571867883b80447ac35bc1f9992d867a26ec36118e1cc7a85ed77b"
+    },
+    {
+      "asset_id": 584,
+      "reference": "exports/effects/pulse/00.rgb565le",
+      "sha256": "a5039ef5db4780af7dea4206d78764bf4923c9864a4b3155d9959531ff148a7b"
+    },
+    {
+      "asset_id": 585,
+      "reference": "exports/effects/pulse/01.rgb565le",
+      "sha256": "e6b22e1eb041307b8f0b250e67901b0e3da2ed0d9d02a194c016b6a2a78181e9"
+    },
+    {
+      "asset_id": 586,
+      "reference": "exports/effects/pulse/02.rgb565le",
+      "sha256": "27542f435689e4d6d2aba06c1152a4ac01c9a19f4b6d5122705c1d290185b1b4"
+    },
+    {
+      "asset_id": 587,
+      "reference": "exports/effects/pulse/03.rgb565le",
+      "sha256": "8cbd2fc0a6d7a2215e4adafdb3bb8269afb1f125a0a50aba3b1c8d0bccd51a2b"
+    },
+    {
+      "asset_id": 588,
+      "reference": "exports/effects/pulse/04.rgb565le",
+      "sha256": "e3027b5acdc4377badfc6b5a9bd6c1c5e0d20c12fa7d64784829c508deafc508"
+    },
+    {
+      "asset_id": 589,
+      "reference": "exports/effects/pulse/05.rgb565le",
+      "sha256": "099d8c70ea450b4d8074b8bc653f20c2f408d439459c38c6c98b0055b96b7b62"
+    },
+    {
+      "asset_id": 590,
+      "reference": "exports/effects/pulse/06.rgb565le",
+      "sha256": "09e6c2ad92550fccfbb7d363e13d05149c654a483d8de7535700f2161aa36cbc"
+    },
+    {
+      "asset_id": 591,
+      "reference": "exports/effects/pulse/07.rgb565le",
+      "sha256": "7f839be65e571867883b80447ac35bc1f9992d867a26ec36118e1cc7a85ed77b"
+    },
+    {
+      "asset_id": 592,
+      "reference": "exports/effects/crush/00.rgb565le",
+      "sha256": "d042f8c69ff8ce39a6088e788525108af8ffd25dfd890a934682efe125413df6"
+    },
+    {
+      "asset_id": 593,
+      "reference": "exports/effects/crush/01.rgb565le",
+      "sha256": "39c07619849144571eb21b477d1434f2a1cb3a54ecd2001843899fb6989b4334"
+    },
+    {
+      "asset_id": 594,
+      "reference": "exports/effects/crush/02.rgb565le",
+      "sha256": "388aecd869701e6371a63614aa5caf793671fced9e218d60d305c14847f0a371"
+    },
+    {
+      "asset_id": 595,
+      "reference": "exports/effects/crush/03.rgb565le",
+      "sha256": "dce7c0e287d1a1fb2396d83f7c323be2f3c08fc93c6531eaf92751e0397a910e"
+    },
+    {
+      "asset_id": 596,
+      "reference": "exports/effects/crush/04.rgb565le",
+      "sha256": "59983f7e2c74dd22475b35918290a3f76276720fe9b2fa7f34365c7e7fca8fea"
+    },
+    {
+      "asset_id": 597,
+      "reference": "exports/effects/crush/05.rgb565le",
+      "sha256": "55bd9fc75d24c6abc66283a5930c52004de4877319b6e4ff29ad23893003e522"
+    },
+    {
+      "asset_id": 598,
+      "reference": "exports/effects/crush/06.rgb565le",
+      "sha256": "ca11c5a9a423a6d1c0816f234c88415bf61f0fb604d74a0c66b024900e2e94ec"
+    },
+    {
+      "asset_id": 599,
+      "reference": "exports/effects/crush/07.rgb565le",
+      "sha256": "30035989377f8bdc8b1de7ae33a2b89cc387ee3439c215f37e08b96d67f2db50"
+    }
+  ],
+  "catalog": [
+    {
+      "id": 0,
+      "unchanged_from_baseline": true,
+      "offset": 0,
+      "bytes": 256,
+      "sha256": "af8214fdf488f5e914241295ce26b0c648bba84972165036bbd564c30487e0b6"
+    },
+    {
+      "id": 1,
+      "unchanged_from_baseline": true,
+      "offset": 256,
+      "bytes": 19200,
+      "sha256": "b5684ca8b95ac51c2e5717b65c3fdb460fec7824bd2dc1d9630c5310433a387c"
+    },
+    {
+      "id": 2,
+      "unchanged_from_baseline": true,
+      "offset": 19456,
+      "bytes": 256,
+      "sha256": "5c3e78bdfb1456558531593cc4908a9c9ecc1508d4b594833c6a4ab92a6c8d50"
+    },
+    {
+      "id": 3,
+      "unchanged_from_baseline": true,
+      "offset": 19712,
+      "bytes": 19200,
+      "sha256": "5eb858bb016a21b1e94b45edf30368ecb8af6028e549a697578049ca2f55ca95"
+    },
+    {
+      "id": 4,
+      "unchanged_from_baseline": true,
+      "offset": 38912,
+      "bytes": 256,
+      "sha256": "3e603171e2f9e1040d6311994a16444f4601b70d37d97f3248d70d539d61f95e"
+    },
+    {
+      "id": 5,
+      "unchanged_from_baseline": true,
+      "offset": 39168,
+      "bytes": 19200,
+      "sha256": "57679f9c8d8bee0b7f5f4aa676fd7dbf2cd22c88f99acf5d226d544caa7c4379"
+    },
+    {
+      "id": 6,
+      "unchanged_from_baseline": true,
+      "offset": 58368,
+      "bytes": 256,
+      "sha256": "694e53e8bfcfca4d927dd5cbbd6b9082acbf7cea62f1514502e3d15b389d3567"
+    },
+    {
+      "id": 7,
+      "unchanged_from_baseline": true,
+      "offset": 58624,
+      "bytes": 19200,
+      "sha256": "3ad74ec0eba66d756216ad650fb2266d6e852d8e8d5020e772bd6b0cbc908e0e"
+    },
+    {
+      "id": 8,
+      "unchanged_from_baseline": true,
+      "offset": 77824,
+      "bytes": 256,
+      "sha256": "8d988345f896e3768674166d7ee0c1b8307a3c59a1f75172712d62ef6afbc30d"
+    },
+    {
+      "id": 9,
+      "unchanged_from_baseline": true,
+      "offset": 78080,
+      "bytes": 19200,
+      "sha256": "beaa3c5470ab1e4b0a4adf93fa4d2f61982724c60b57e1b7b11267bd6c65487f"
+    },
+    {
+      "id": 10,
+      "unchanged_from_baseline": true,
+      "offset": 97280,
+      "bytes": 256,
+      "sha256": "4d80bf6343550c0ac4f165112862e082398e6fb97af5c6f0e09c1d5307b54b1a"
+    },
+    {
+      "id": 11,
+      "unchanged_from_baseline": true,
+      "offset": 97536,
+      "bytes": 19200,
+      "sha256": "72e58a6a6ea6bda152c054e86533fb92f421dd808f8fb9228bbd3fc7eaae878a"
+    },
+    {
+      "id": 12,
+      "unchanged_from_baseline": true,
+      "offset": 116736,
+      "bytes": 256,
+      "sha256": "6b57919db0fbdb9a8c6b374f18348318c3406cdbbed6b5fc6a39f442eeb16d47"
+    },
+    {
+      "id": 13,
+      "unchanged_from_baseline": true,
+      "offset": 116992,
+      "bytes": 19200,
+      "sha256": "f5cd2f1e780de1d0a5521af12210a97046aa0d9c56624e5634b4f06fe4c944b3"
+    },
+    {
+      "id": 14,
+      "unchanged_from_baseline": true,
+      "offset": 136192,
+      "bytes": 256,
+      "sha256": "416645a48b3110c8024efe746e5df2bf99852672a328142610d98acfe5395cd0"
+    },
+    {
+      "id": 15,
+      "unchanged_from_baseline": true,
+      "offset": 136448,
+      "bytes": 19200,
+      "sha256": "c519ca51a9adeb97466e9a3f522889e025cd4e5c4b0dd7694851ddff4a273d25"
+    },
+    {
+      "id": 16,
+      "unchanged_from_baseline": true,
+      "offset": 155648,
+      "bytes": 256,
+      "sha256": "9229e17d7b9e95096c7088de797e846a30b50aa69df4b12f759aa31ae8ada9ea"
+    },
+    {
+      "id": 17,
+      "unchanged_from_baseline": true,
+      "offset": 155904,
+      "bytes": 19200,
+      "sha256": "39a66024c43a9bf63d6f44b1219a3677cc8ca74cf9516ff94dcd140de3afec61"
+    },
+    {
+      "id": 18,
+      "unchanged_from_baseline": true,
+      "offset": 175104,
+      "bytes": 256,
+      "sha256": "3fc20fff79aec4641e75792ad5765c99639d4ed6ad71651429d22aa624d92d88"
+    },
+    {
+      "id": 19,
+      "unchanged_from_baseline": true,
+      "offset": 175360,
+      "bytes": 19200,
+      "sha256": "f4578f523357132f365358e5c27cd67fcb750127a33361bf8f286994e7663542"
+    },
+    {
+      "id": 20,
+      "unchanged_from_baseline": true,
+      "offset": 194560,
+      "bytes": 256,
+      "sha256": "762e152105b5317f866bb44f24c4d214125139b5334913b17bbe00b04f0bd253"
+    },
+    {
+      "id": 21,
+      "unchanged_from_baseline": true,
+      "offset": 194816,
+      "bytes": 19200,
+      "sha256": "1ba1148a78226cb40a3b5300c22ed2651660e07af2d03e551ed811bb588ef374"
+    },
+    {
+      "id": 22,
+      "unchanged_from_baseline": true,
+      "offset": 214016,
+      "bytes": 256,
+      "sha256": "b7e8f0e49e1b7126f202232e30c43f0b4ca8bcddc646dad73af38ed9794b4128"
+    },
+    {
+      "id": 23,
+      "unchanged_from_baseline": true,
+      "offset": 214272,
+      "bytes": 19200,
+      "sha256": "e54ed7f46ea1beda13bf81c94240c49313b750489765fc0f653c1eba2c7a800b"
+    },
+    {
+      "id": 24,
+      "unchanged_from_baseline": true,
+      "offset": 233472,
+      "bytes": 256,
+      "sha256": "f4490260e50c29527340176d85dade61b778e3ee7be56e8ba29c6ea0b9e3f080"
+    },
+    {
+      "id": 25,
+      "unchanged_from_baseline": true,
+      "offset": 233728,
+      "bytes": 19200,
+      "sha256": "58ce46411ddccb456beda101b8612a066b737bdf8a5509300d9b9acbc0882528"
+    },
+    {
+      "id": 26,
+      "unchanged_from_baseline": true,
+      "offset": 252928,
+      "bytes": 256,
+      "sha256": "2025bddadf20aa6b8d1eab9919b5a47cff36ad12d75182a67fd89c0c51e6afcb"
+    },
+    {
+      "id": 27,
+      "unchanged_from_baseline": true,
+      "offset": 253184,
+      "bytes": 19200,
+      "sha256": "33641a6a69b624188127ecce91731018f9f572c0c42a0a99305de3518d2dc5dc"
+    },
+    {
+      "id": 28,
+      "unchanged_from_baseline": true,
+      "offset": 272384,
+      "bytes": 256,
+      "sha256": "cdfe6b0852fca3e6e6f0d75afcf14eb50dc1578ca3b620632f0051573ea1d3ae"
+    },
+    {
+      "id": 29,
+      "unchanged_from_baseline": true,
+      "offset": 272640,
+      "bytes": 19200,
+      "sha256": "933b05b7bc1af8287f1b60f6e65f400d4cf0bd54e1e1c55f3d5f24b39d517d0f"
+    },
+    {
+      "id": 30,
+      "unchanged_from_baseline": true,
+      "offset": 291840,
+      "bytes": 256,
+      "sha256": "0f6796ee1467481ef6aefc017ca32141aab1aebc2a9d55736f5d200572cd11e3"
+    },
+    {
+      "id": 31,
+      "unchanged_from_baseline": true,
+      "offset": 292096,
+      "bytes": 19200,
+      "sha256": "88e147d018b8bc18152b76c7a4b45a7c43cd9e04869e8942213540ac7e982b72"
+    },
+    {
+      "id": 32,
+      "unchanged_from_baseline": true,
+      "offset": 311296,
+      "bytes": 256,
+      "sha256": "b0738a2344c97c73ab13841bbcd3e1655309570365ad269de196f80a17e9df7b"
+    },
+    {
+      "id": 33,
+      "unchanged_from_baseline": true,
+      "offset": 311552,
+      "bytes": 19200,
+      "sha256": "8523614f55642b3bbd6e75fa3d96b1d3628dee5e1c1b43bf5428faee636cd66e"
+    },
+    {
+      "id": 34,
+      "unchanged_from_baseline": true,
+      "offset": 330752,
+      "bytes": 256,
+      "sha256": "acb1fea2cd6b9fecefced5d8c8fbfff1a2a7e53c61c0860fe2b8d661456c6897"
+    },
+    {
+      "id": 35,
+      "unchanged_from_baseline": true,
+      "offset": 331008,
+      "bytes": 19200,
+      "sha256": "78c96ef6d8696b8fb864a3da32a4b613b7c8f8abea67476aef43b0987f362af5"
+    },
+    {
+      "id": 36,
+      "unchanged_from_baseline": true,
+      "offset": 350208,
+      "bytes": 256,
+      "sha256": "4c49959e726d7a1473a8f56bf4ecb09a2cb12ae5a53e8f5a211ce9e776333b52"
+    },
+    {
+      "id": 37,
+      "unchanged_from_baseline": true,
+      "offset": 350464,
+      "bytes": 19200,
+      "sha256": "8ba2a843e11c641fa16f5ffe2590873f71d9c0152e0a61ecc53458f1696f9467"
+    },
+    {
+      "id": 38,
+      "unchanged_from_baseline": true,
+      "offset": 369664,
+      "bytes": 256,
+      "sha256": "12a319e79024db805129e7770db4e05cd6b2b8646b3e2345c492f9b74a599b2d"
+    },
+    {
+      "id": 39,
+      "unchanged_from_baseline": true,
+      "offset": 369920,
+      "bytes": 19200,
+      "sha256": "378406d13195407ee2a97ce4e439ca19a1c7c1d1c880c2f2d7f03ebb2e673c68"
+    },
+    {
+      "id": 40,
+      "unchanged_from_baseline": true,
+      "offset": 389120,
+      "bytes": 256,
+      "sha256": "f824134e0fc26f8f3e6f4a937de1e1401ba1fcfa6e48ddc67ec6648e398db67a"
+    },
+    {
+      "id": 41,
+      "unchanged_from_baseline": true,
+      "offset": 389376,
+      "bytes": 19200,
+      "sha256": "b133242bc733db7f4f94aa5f1175de652c4793e04700cb01f23bd5f384ee1e45"
+    },
+    {
+      "id": 42,
+      "unchanged_from_baseline": true,
+      "offset": 408576,
+      "bytes": 256,
+      "sha256": "cd2bea60d311dcb9248a127b11e103b6b84ec2816d3944d87ec83a59ccdb0b34"
+    },
+    {
+      "id": 43,
+      "unchanged_from_baseline": true,
+      "offset": 408832,
+      "bytes": 19200,
+      "sha256": "27d6ccb447aedd2f577303a9130f0cc96887d31e8c606eb395d0d39d4265cffe"
+    },
+    {
+      "id": 44,
+      "unchanged_from_baseline": true,
+      "offset": 428032,
+      "bytes": 256,
+      "sha256": "12d555c7b9c355ced412f8f31172d4b13357f4971a2e33f7aa7d0a6cc7ced66a"
+    },
+    {
+      "id": 45,
+      "unchanged_from_baseline": true,
+      "offset": 428288,
+      "bytes": 19200,
+      "sha256": "80d21583662a0ce8a8ea5077523240782e33403d4bc7a0a99e3e05a917f32882"
+    },
+    {
+      "id": 46,
+      "unchanged_from_baseline": true,
+      "offset": 447488,
+      "bytes": 256,
+      "sha256": "efcaed20a8287db2b5b712639bc8681816befc7ed37eaf1dc72550dbc17544ac"
+    },
+    {
+      "id": 47,
+      "unchanged_from_baseline": true,
+      "offset": 447744,
+      "bytes": 19200,
+      "sha256": "c0e4b806c8b91df1f6b9a81096b6a20f77e63974d10ab8ae1fc200dbe90550a9"
+    },
+    {
+      "id": 48,
+      "unchanged_from_baseline": true,
+      "offset": 466944,
+      "bytes": 256,
+      "sha256": "3396a77fa4d0c8e3bbac833ef0c19d747631cdae03f70ea1bc4abaabf5472daa"
+    },
+    {
+      "id": 49,
+      "unchanged_from_baseline": true,
+      "offset": 467200,
+      "bytes": 19200,
+      "sha256": "332951e1b39c5befc34ce12eb362b78cb33b4e550f2c476082cd55b2be71f7c5"
+    },
+    {
+      "id": 50,
+      "unchanged_from_baseline": true,
+      "offset": 486400,
+      "bytes": 256,
+      "sha256": "e9ebedc21df0c6dd694d91738c908e129baae9b43b2579960778e448271d1131"
+    },
+    {
+      "id": 51,
+      "unchanged_from_baseline": true,
+      "offset": 486656,
+      "bytes": 19200,
+      "sha256": "915adc37885665f8298c41e3f7ffa120dfb848859cf17ba3d8e4e69237cb5e47"
+    },
+    {
+      "id": 52,
+      "unchanged_from_baseline": true,
+      "offset": 505856,
+      "bytes": 256,
+      "sha256": "295aff2afa9330f5cf2e97dfaaedfa4a2043eec5eb96bd3231d665475a8663fe"
+    },
+    {
+      "id": 53,
+      "unchanged_from_baseline": true,
+      "offset": 506112,
+      "bytes": 19200,
+      "sha256": "e552caf3c2969da1300ea75a4fc116bb04124b086e5847d3e40117cb0f27a4ef"
+    },
+    {
+      "id": 54,
+      "unchanged_from_baseline": true,
+      "offset": 525312,
+      "bytes": 256,
+      "sha256": "1226000ef7b7c2c00e8070fede5f9f30ef05197caa37fed678cdea332757b52b"
+    },
+    {
+      "id": 55,
+      "unchanged_from_baseline": true,
+      "offset": 525568,
+      "bytes": 19200,
+      "sha256": "5d0d369a30211d7ab4567c18dd7a4488b565c4b58f16b12f7d11d4f29765493d"
+    },
+    {
+      "id": 56,
+      "unchanged_from_baseline": true,
+      "offset": 544768,
+      "bytes": 256,
+      "sha256": "5ef97d061b84a9556db40ca27feaa4bfa87c100abfbd3dd6f402da635a9b99ea"
+    },
+    {
+      "id": 57,
+      "unchanged_from_baseline": true,
+      "offset": 545024,
+      "bytes": 19200,
+      "sha256": "1773ef29cbe6c885fd90fbd266848353bcd97bf0f502e2071e28e80e7bd58a4a"
+    },
+    {
+      "id": 58,
+      "unchanged_from_baseline": true,
+      "offset": 564224,
+      "bytes": 256,
+      "sha256": "1ee61ac19a44305a78d03f488535e9dbb84f094bf529567807be53b9e7d7461c"
+    },
+    {
+      "id": 59,
+      "unchanged_from_baseline": true,
+      "offset": 564480,
+      "bytes": 19200,
+      "sha256": "45ca76688a1c5427e453f0f4284a0a5d598931bb11fa2f4a802f44b10be9c73f"
+    },
+    {
+      "id": 60,
+      "unchanged_from_baseline": true,
+      "offset": 583680,
+      "bytes": 256,
+      "sha256": "dc6bfe27dad148c3b38c4f9600ba702a6b948772c3026d13748a7b06163ca487"
+    },
+    {
+      "id": 61,
+      "unchanged_from_baseline": true,
+      "offset": 583936,
+      "bytes": 19200,
+      "sha256": "fd4d9a70376cb4ae51cc8efb52783322611aa222ca2fa19d0e0a86ae4699759a"
+    },
+    {
+      "id": 62,
+      "unchanged_from_baseline": true,
+      "offset": 603136,
+      "bytes": 256,
+      "sha256": "1f91ec9f3eee01cc956128a40c738849eeef0b40828f1787f00d88b20b2e3b01"
+    },
+    {
+      "id": 63,
+      "unchanged_from_baseline": true,
+      "offset": 603392,
+      "bytes": 19200,
+      "sha256": "a6b0b0955a75b41afea03d4503b1b2b8ae4c066c7f6b7c323e716457e7781fd2"
+    },
+    {
+      "id": 64,
+      "unchanged_from_baseline": true,
+      "offset": 622592,
+      "bytes": 26880,
+      "sha256": "1447568c6ae7f9b005118d21edf066d72e2e344cffb633019429ecc017475cfb"
+    },
+    {
+      "id": 65,
+      "unchanged_from_baseline": true,
+      "offset": 649472,
+      "bytes": 26880,
+      "sha256": "f6c158536fbfd0a7cd31f473ba235e81f8c8e527799a2c2ac119dbc4bed5df8c"
+    },
+    {
+      "id": 66,
+      "unchanged_from_baseline": true,
+      "offset": 676352,
+      "bytes": 26880,
+      "sha256": "71da39271ea7a0fb43a771002cd534bc8f7314009c9a7b47a6bfeac92e7e0637"
+    },
+    {
+      "id": 67,
+      "unchanged_from_baseline": true,
+      "offset": 703232,
+      "bytes": 26880,
+      "sha256": "b5e1cdd97a87505cd95b2b3bc31db2600b63f1cabbbe9d4133b2d3207f2b67b3"
+    },
+    {
+      "id": 68,
+      "unchanged_from_baseline": true,
+      "offset": 730112,
+      "bytes": 26880,
+      "sha256": "e208d31f1a5bf8e1c807a2d60c08b840d0216caf4869a87dc9afa0569499574e"
+    },
+    {
+      "id": 69,
+      "unchanged_from_baseline": true,
+      "offset": 756992,
+      "bytes": 26880,
+      "sha256": "7ad43af2a1e9fbd1bde81818994fe283ef015feda6fc3d97b8abf6fe92aedad3"
+    },
+    {
+      "id": 70,
+      "unchanged_from_baseline": true,
+      "offset": 783872,
+      "bytes": 10560,
+      "sha256": "fd9bcc467111d4872349b40af6193ae58cf7a85ba3d9d9c935e027c139cf2bc0"
+    },
+    {
+      "id": 71,
+      "unchanged_from_baseline": true,
+      "offset": 794432,
+      "bytes": 26880,
+      "sha256": "62b48b6be81505a853b13347839e88c52094c7bfc4f270ad009106f55c2bbecc"
+    },
+    {
+      "id": 72,
+      "unchanged_from_baseline": true,
+      "offset": 821312,
+      "bytes": 26880,
+      "sha256": "a500e726784198bb95acd372b37ffc43f4f23936f0ecba06e681c23da3829529"
+    },
+    {
+      "id": 73,
+      "unchanged_from_baseline": true,
+      "offset": 848192,
+      "bytes": 26880,
+      "sha256": "2121793db58ac5cdbbba66f9c6db356f00823b4c49261cfa5cd883d935274965"
+    },
+    {
+      "id": 74,
+      "unchanged_from_baseline": true,
+      "offset": 875072,
+      "bytes": 26880,
+      "sha256": "4719bb6d1e5b3ea7ba456135ae2e6372786d9e426056d89e145c071ffc4c857c"
+    },
+    {
+      "id": 75,
+      "unchanged_from_baseline": true,
+      "offset": 901952,
+      "bytes": 26880,
+      "sha256": "6085a34868bb9b50d411cce1d4e8f88c1ef7ab92661d5930da0fa6a04611c388"
+    },
+    {
+      "id": 76,
+      "unchanged_from_baseline": true,
+      "offset": 928832,
+      "bytes": 26880,
+      "sha256": "64cbdfa45fc4e963e1b0f11395fd858fd9c34a1a83025758cbc546498835b67e"
+    },
+    {
+      "id": 77,
+      "unchanged_from_baseline": true,
+      "offset": 955712,
+      "bytes": 10560,
+      "sha256": "74f48a09df6b5ce5182f79044748f1cf67c52cf7effe4a11c4a485f2bf0484a8"
+    },
+    {
+      "id": 78,
+      "unchanged_from_baseline": true,
+      "offset": 966272,
+      "bytes": 26880,
+      "sha256": "f2eed5f1dd1b86156c871b2f8e0bf7ad14b032f59407ae76a4f1db51d7897c12"
+    },
+    {
+      "id": 79,
+      "unchanged_from_baseline": true,
+      "offset": 993152,
+      "bytes": 26880,
+      "sha256": "f9103273934eb5a031c827106ef4ac9b140cc4f3aa5cfcb1fc406aeb6a48833e"
+    },
+    {
+      "id": 80,
+      "unchanged_from_baseline": true,
+      "offset": 1020032,
+      "bytes": 26880,
+      "sha256": "083e6d28a4b428c3c4888e6a392709b2a6e1a14c9d480b23fa10f5c37303c250"
+    },
+    {
+      "id": 81,
+      "unchanged_from_baseline": true,
+      "offset": 1046912,
+      "bytes": 26880,
+      "sha256": "1ce7cfc75ac9383235611344ad6142dc9e50784e82c9711d5cd98b4b524fd72a"
+    },
+    {
+      "id": 82,
+      "unchanged_from_baseline": true,
+      "offset": 1073792,
+      "bytes": 26880,
+      "sha256": "c51cd5f4e81bef77d04ab5e09fcec40318926bb0835055585d22124c8bba0b19"
+    },
+    {
+      "id": 83,
+      "unchanged_from_baseline": true,
+      "offset": 1100672,
+      "bytes": 26880,
+      "sha256": "76704f45db63bbb9c0a9faccebb5bd041f3d4a7d9a08dde96f8f17f3b8de6dd3"
+    },
+    {
+      "id": 84,
+      "unchanged_from_baseline": true,
+      "offset": 1127552,
+      "bytes": 10560,
+      "sha256": "9ba5c1af3c6306737bfaad1c76278e35bfe248f60bc84102eb5b0b4e358b8464"
+    },
+    {
+      "id": 85,
+      "unchanged_from_baseline": true,
+      "offset": 1138112,
+      "bytes": 26880,
+      "sha256": "0bc9e16bbb562ec3e070bb668bdba4484ed9eb6ec65743f7d4476cc8a0fee123"
+    },
+    {
+      "id": 86,
+      "unchanged_from_baseline": true,
+      "offset": 1164992,
+      "bytes": 26880,
+      "sha256": "a8ef874f00edec5796703966366eb6431c0c16538545d22c182cb635a24be169"
+    },
+    {
+      "id": 87,
+      "unchanged_from_baseline": true,
+      "offset": 1191872,
+      "bytes": 26880,
+      "sha256": "eef964abed9a8e24223a2de5de6c0bc761f7b8a96b04595d40e7cc9348694eaf"
+    },
+    {
+      "id": 88,
+      "unchanged_from_baseline": true,
+      "offset": 1218752,
+      "bytes": 26880,
+      "sha256": "bdeff8ab0c05b06d79f292b2dc7dc066f23903fc2dabe63cd5e71665e6549284"
+    },
+    {
+      "id": 89,
+      "unchanged_from_baseline": true,
+      "offset": 1245632,
+      "bytes": 26880,
+      "sha256": "bc3e738758987e01f67a22411b1080bf20aa5bd3a676019fdff55cb0f0d84f29"
+    },
+    {
+      "id": 90,
+      "unchanged_from_baseline": true,
+      "offset": 1272512,
+      "bytes": 26880,
+      "sha256": "b2a6ef3a242c00e20a8b634abb380d665c83ea6f6458de45e8f7db4bc8082f29"
+    },
+    {
+      "id": 91,
+      "unchanged_from_baseline": true,
+      "offset": 1299392,
+      "bytes": 10560,
+      "sha256": "b0af35553ffe77fb758b91158b1d406333b68b856256a6d91bcfbff1f1e47335"
+    },
+    {
+      "id": 92,
+      "source": "exports/enemies/00_goblin/idle.idx4",
+      "offset": 1309952,
+      "bytes": 3440,
+      "sha256": "9603acb429678bff6c80176f9be755bb15cf82e89ebfb8d1c880a194afe2d3c8"
+    },
+    {
+      "id": 93,
+      "source": "exports/enemies/00_goblin/anticipation.idx4",
+      "offset": 1313392,
+      "bytes": 3440,
+      "sha256": "6fc9a43a325564be48e48353b0bbdbd3723b243647de98fce6c2912a77875bb4"
+    },
+    {
+      "id": 94,
+      "source": "exports/enemies/00_goblin/attack.idx4",
+      "offset": 1316832,
+      "bytes": 3440,
+      "sha256": "aa240f5767a71ecb7e22cb2a4cd1f2ff4adf3c920d3cadb99e2726e2a70cf3e3"
+    },
+    {
+      "id": 95,
+      "source": "exports/enemies/00_goblin/hurt.idx4",
+      "offset": 1320272,
+      "bytes": 3440,
+      "sha256": "65ee91fa9bdb89c03d5d9aba46f58e39064045e3967456f7d0d9fb2639d764eb"
+    },
+    {
+      "id": 96,
+      "source": "exports/enemies/01_lobo/idle.idx4",
+      "offset": 1323712,
+      "bytes": 3440,
+      "sha256": "0c44c093cad6da5254ea2099a8c05a6485455ae77e604bd44eb714a337cbcdb9"
+    },
+    {
+      "id": 97,
+      "source": "exports/enemies/01_lobo/anticipation.idx4",
+      "offset": 1327152,
+      "bytes": 3440,
+      "sha256": "35d029c774df22b5ff64cc05172c1a24d2034b98698c0c4affe779bfee1649d7"
+    },
+    {
+      "id": 98,
+      "source": "exports/enemies/01_lobo/attack.idx4",
+      "offset": 1330592,
+      "bytes": 3440,
+      "sha256": "6f96119370ef944aea01081cdcbd80439eb917174239f09e13bcec6dacd88f3f"
+    },
+    {
+      "id": 99,
+      "source": "exports/enemies/01_lobo/hurt.idx4",
+      "offset": 1334032,
+      "bytes": 3440,
+      "sha256": "3b526b03a4b3833244d07217f3839b1a1532fcafbf7c0feb56ee0f329616beb8"
+    },
+    {
+      "id": 100,
+      "source": "exports/enemies/02_esqueleto/idle.idx4",
+      "offset": 1337472,
+      "bytes": 3440,
+      "sha256": "136a21e15bc7d70cbdffb0fb27a1364d64ec33a88a9848b732f0aae664ffaff0"
+    },
+    {
+      "id": 101,
+      "source": "exports/enemies/02_esqueleto/anticipation.idx4",
+      "offset": 1340912,
+      "bytes": 3440,
+      "sha256": "60722835f6b91b40d1f46a830c3e9f10a39678be72d3b69e334aefe1b691ddec"
+    },
+    {
+      "id": 102,
+      "source": "exports/enemies/02_esqueleto/attack.idx4",
+      "offset": 1344352,
+      "bytes": 3440,
+      "sha256": "0e9dc24bd176d2e326b32e4f6092d1c346f8b9a2c163b649a812fca0e0da9aef"
+    },
+    {
+      "id": 103,
+      "source": "exports/enemies/02_esqueleto/hurt.idx4",
+      "offset": 1347792,
+      "bytes": 3440,
+      "sha256": "b3b6c8f776a00a21d75e48c01e5d8345ecb9d155cae18914d08227ddfa887397"
+    },
+    {
+      "id": 104,
+      "source": "exports/enemies/03_guardiao/idle.idx4",
+      "offset": 1351232,
+      "bytes": 3440,
+      "sha256": "00ae2fe596a1320d9a2f049ca33afd333d780041466771d917220cca564aae10"
+    },
+    {
+      "id": 105,
+      "source": "exports/enemies/03_guardiao/anticipation.idx4",
+      "offset": 1354672,
+      "bytes": 3440,
+      "sha256": "98eec5cd95ee2b1a9a80d980d3fc6c8929569d0e3cfaa85927b5c784a8b30e7d"
+    },
+    {
+      "id": 106,
+      "source": "exports/enemies/03_guardiao/attack.idx4",
+      "offset": 1358112,
+      "bytes": 3440,
+      "sha256": "338a3da3eeb87c7cedb0aa2473dbc6e075188e21236a66a295870b66e5b6a143"
+    },
+    {
+      "id": 107,
+      "source": "exports/enemies/03_guardiao/hurt.idx4",
+      "offset": 1361552,
+      "bytes": 3440,
+      "sha256": "f5df8659a74345fb44e39248918aea582985cf20afc6505deae2e29b91490766"
+    },
+    {
+      "id": 108,
+      "source": "exports/enemies/04_javali/idle.idx4",
+      "offset": 1364992,
+      "bytes": 3440,
+      "sha256": "79ea82600c0807519ffee300b6801bfdc80df0dc9bde703801568e1d0163125a"
+    },
+    {
+      "id": 109,
+      "source": "exports/enemies/04_javali/anticipation.idx4",
+      "offset": 1368432,
+      "bytes": 3440,
+      "sha256": "de61883574fb3bf41f014737220935d7a650417552843fd61e9d1c54f93aa37e"
+    },
+    {
+      "id": 110,
+      "source": "exports/enemies/04_javali/attack.idx4",
+      "offset": 1371872,
+      "bytes": 3440,
+      "sha256": "a83df4757b0302ac128077bed44e0f1da4ca8a1733916ab94380b1de164298ea"
+    },
+    {
+      "id": 111,
+      "source": "exports/enemies/04_javali/hurt.idx4",
+      "offset": 1375312,
+      "bytes": 3440,
+      "sha256": "bf3f9690a10c8e22f2fd2eaed087ca8fed4c515ad5c0a93567f861035f597505"
+    },
+    {
+      "id": 112,
+      "source": "exports/enemies/05_espectro/idle.idx4",
+      "offset": 1378752,
+      "bytes": 3440,
+      "sha256": "c9842711ae6d5e58fa85158d282dcf51f2e22f371aca8310348ad3580706d445"
+    },
+    {
+      "id": 113,
+      "source": "exports/enemies/05_espectro/anticipation.idx4",
+      "offset": 1382192,
+      "bytes": 3440,
+      "sha256": "ae44d694718bed69ab5d68e6a23df6d2a1069ee2ad403436246b2c89a6979ed8"
+    },
+    {
+      "id": 114,
+      "source": "exports/enemies/05_espectro/attack.idx4",
+      "offset": 1385632,
+      "bytes": 3440,
+      "sha256": "30b89541c035c9a730b7877230eaa97602f7ca14d33be75f79bab62ebc57a7a4"
+    },
+    {
+      "id": 115,
+      "source": "exports/enemies/05_espectro/hurt.idx4",
+      "offset": 1389072,
+      "bytes": 3440,
+      "sha256": "8c1e9b9fb4b6a01f82b27a271430f3de9e4c1b9e628b7b8900dda85dc20e3915"
+    },
+    {
+      "id": 116,
+      "source": "exports/enemies/06_saqueador/idle.idx4",
+      "offset": 1392512,
+      "bytes": 3440,
+      "sha256": "aca9a8fe45ae79d27f37b87648ca22d0430182857c034985bcb5b5d58a3ec4ab"
+    },
+    {
+      "id": 117,
+      "source": "exports/enemies/06_saqueador/anticipation.idx4",
+      "offset": 1395952,
+      "bytes": 3440,
+      "sha256": "e9fc23bf126b34d2816700755bb529e8d2f33afad59beb7e5eaa5b34db756b75"
+    },
+    {
+      "id": 118,
+      "source": "exports/enemies/06_saqueador/attack.idx4",
+      "offset": 1399392,
+      "bytes": 3440,
+      "sha256": "d60445d4beeab993bb902fc6c01aaa4f03853a49acc012a4f3d1bd706a6b43a2"
+    },
+    {
+      "id": 119,
+      "source": "exports/enemies/06_saqueador/hurt.idx4",
+      "offset": 1402832,
+      "bytes": 3440,
+      "sha256": "8f33be4686e430f403c24227ffb875651624c5b461f41914e2227268510f8c16"
+    },
+    {
+      "id": 120,
+      "source": "exports/enemies/07_sentinela/idle.idx4",
+      "offset": 1406272,
+      "bytes": 3440,
+      "sha256": "2c919199f2eaec43a19e863dc6ea2ec600c4e5df9b3236f38eb93eae44b40ac7"
+    },
+    {
+      "id": 121,
+      "source": "exports/enemies/07_sentinela/anticipation.idx4",
+      "offset": 1409712,
+      "bytes": 3440,
+      "sha256": "1dab18ba872eaf9815b820e081d618b1479c5ff153e27fbefd4217a1fbc61e12"
+    },
+    {
+      "id": 122,
+      "source": "exports/enemies/07_sentinela/attack.idx4",
+      "offset": 1413152,
+      "bytes": 3440,
+      "sha256": "4b260b3eaf4fc964695e0f60a4c872aaef4db66821a9b4213825f03ed7cb62a9"
+    },
+    {
+      "id": 123,
+      "unchanged_from_baseline": true,
+      "offset": 1416592,
+      "bytes": 9216,
+      "sha256": "4afc653b72eeeba6d1321d1b6102d40361b27777be549c7a9d9e1003c60f44e7"
+    },
+    {
+      "id": 124,
+      "unchanged_from_baseline": true,
+      "offset": 1425808,
+      "bytes": 9216,
+      "sha256": "c532ebb8be94855d5746a626a64e2cd1adda8af4eb88512e7cd102d6f6eecb3d"
+    },
+    {
+      "id": 125,
+      "unchanged_from_baseline": true,
+      "offset": 1435024,
+      "bytes": 9216,
+      "sha256": "d411dafcc3e65925b32edff0d020835a0d54606ebc0d079be3fa377451c49b29"
+    },
+    {
+      "id": 126,
+      "unchanged_from_baseline": true,
+      "offset": 1444240,
+      "bytes": 9216,
+      "sha256": "c36d608c8611835202fe2e92358b0bff516299ded61b47130a1999a46a0d8802"
+    },
+    {
+      "id": 127,
+      "unchanged_from_baseline": true,
+      "offset": 1453456,
+      "bytes": 9216,
+      "sha256": "174afe7a0099085a02896fa82a3195025a9c7405c107758f979ab25105ab56f4"
+    },
+    {
+      "id": 128,
+      "unchanged_from_baseline": true,
+      "offset": 1462672,
+      "bytes": 9216,
+      "sha256": "99dd46fcec8cb90608457d98888db3ea158bc6c1693a36ce0620a470b2937d61"
+    },
+    {
+      "id": 129,
+      "unchanged_from_baseline": true,
+      "offset": 1471888,
+      "bytes": 9216,
+      "sha256": "918370dbc274821cea1a3aecdc6fc8b8883434e2cbeeb44455646dac11d7c27d"
+    },
+    {
+      "id": 130,
+      "unchanged_from_baseline": true,
+      "offset": 1481104,
+      "bytes": 9216,
+      "sha256": "8762bd87894ef15532de545200c18b75e920f9fe638a399835992c28fa81088b"
+    },
+    {
+      "id": 131,
+      "unchanged_from_baseline": true,
+      "offset": 1490320,
+      "bytes": 9216,
+      "sha256": "6875b5f51318debad91166c61c5a6c71b04e82dc509d1c1c4aba61f1fc0afbc8"
+    },
+    {
+      "id": 132,
+      "unchanged_from_baseline": true,
+      "offset": 1499536,
+      "bytes": 9216,
+      "sha256": "e50973cc77044de8e62cca731ccbdd5a1c69a9aef77200fd4a02ffc1422f759f"
+    },
+    {
+      "id": 133,
+      "unchanged_from_baseline": true,
+      "offset": 1508752,
+      "bytes": 9216,
+      "sha256": "2f1e6612f191880fb2a286812e7fa78d78cda7292ed865f4ec6127c1a8ba7f05"
+    },
+    {
+      "id": 134,
+      "unchanged_from_baseline": true,
+      "offset": 1517968,
+      "bytes": 9216,
+      "sha256": "2704573ffe3ca0b1cbb33e7def3f560e862b778bde370461e3927185200d465b"
+    },
+    {
+      "id": 135,
+      "unchanged_from_baseline": true,
+      "offset": 1527184,
+      "bytes": 9216,
+      "sha256": "7d64f3dcef9f48a07eed4f4ec57aa0333b5fd7de9554fd03b5b31288885ccb9d"
+    },
+    {
+      "id": 136,
+      "unchanged_from_baseline": true,
+      "offset": 1536400,
+      "bytes": 9216,
+      "sha256": "3a374311d365c410c046d9d39e96b6b32abbd36fd562ffdbed63623f016cf808"
+    },
+    {
+      "id": 137,
+      "unchanged_from_baseline": true,
+      "offset": 1545616,
+      "bytes": 9216,
+      "sha256": "885f4bc29b748b049c6e74d4284ec67f00cef42274ff5e53de89a456610b74e4"
+    },
+    {
+      "id": 138,
+      "unchanged_from_baseline": true,
+      "offset": 1554832,
+      "bytes": 9216,
+      "sha256": "35e0e665865c16bd025a7f0bab9c260194cf9239ebf1ac509b70f7a968c9d6f4"
+    },
+    {
+      "id": 139,
+      "unchanged_from_baseline": true,
+      "offset": 1564048,
+      "bytes": 9216,
+      "sha256": "2e374495270f2590332c2a51665815e89697d91313e7d8d2d4213d1d24bc9075"
+    },
+    {
+      "id": 140,
+      "unchanged_from_baseline": true,
+      "offset": 1573264,
+      "bytes": 9216,
+      "sha256": "6813b02bb5e0ed46dfd8ca7b60b921f5fdfdf666ed964fed9664e4d700d39187"
+    },
+    {
+      "id": 141,
+      "unchanged_from_baseline": true,
+      "offset": 1582480,
+      "bytes": 9216,
+      "sha256": "746c8fa52a1e35b53caeac9632286a2299e47bddf14c293ecf38418cd7c83558"
+    },
+    {
+      "id": 142,
+      "unchanged_from_baseline": true,
+      "offset": 1591696,
+      "bytes": 9216,
+      "sha256": "6cd7ba566723472e9dbdede0bd33b7d0c057e127bf6de696f47fcac784325101"
+    },
+    {
+      "id": 143,
+      "unchanged_from_baseline": true,
+      "offset": 1600912,
+      "bytes": 9216,
+      "sha256": "636c667b6e217651179e05b4b9f4ea6f933179bfa4626453080829af6f0951d9"
+    },
+    {
+      "id": 144,
+      "unchanged_from_baseline": true,
+      "offset": 1610128,
+      "bytes": 9216,
+      "sha256": "d8618ea32df28c5b50b65d401d33923ee5622565c6a081e935b6d00b76f72a6f"
+    },
+    {
+      "id": 145,
+      "unchanged_from_baseline": true,
+      "offset": 1619344,
+      "bytes": 9216,
+      "sha256": "ce3dcd3e1104dcecd4f64e98a034dd30180f12f7296a8d2fd00e59884dbef7ff"
+    },
+    {
+      "id": 146,
+      "unchanged_from_baseline": true,
+      "offset": 1628560,
+      "bytes": 9216,
+      "sha256": "2c7588ce2a6ef4645431f2adb5d43a4c00e3b35aa5c64875a1d669f702def9ec"
+    },
+    {
+      "id": 147,
+      "unchanged_from_baseline": true,
+      "offset": 1637776,
+      "bytes": 6272,
+      "sha256": "c8cd9f8705ce79eac2b45b6c608af9adb7aadf106b6ffb15ef8a64beb50287f1"
+    },
+    {
+      "id": 148,
+      "unchanged_from_baseline": true,
+      "offset": 1644048,
+      "bytes": 6272,
+      "sha256": "bc0176989efdd9f5b4bee1a9122daf130488cd0e759f46f2a192dab00ced645f"
+    },
+    {
+      "id": 149,
+      "unchanged_from_baseline": true,
+      "offset": 1650320,
+      "bytes": 6272,
+      "sha256": "1cec2cf497ff241857c2926f7d9be2094444a12caf00029a3143248cab6f69d9"
+    },
+    {
+      "id": 150,
+      "unchanged_from_baseline": true,
+      "offset": 1656592,
+      "bytes": 6272,
+      "sha256": "c79f50fc7e64417f6846ea7090f5f79aa472d50da1110f70edb6220b7110c5e6"
+    },
+    {
+      "id": 151,
+      "unchanged_from_baseline": true,
+      "offset": 1662864,
+      "bytes": 6272,
+      "sha256": "d5afdacac5f6e3f2df5b9fe29ff862be19d3f3accd4daba431bfda1dfa6c8850"
+    },
+    {
+      "id": 152,
+      "unchanged_from_baseline": true,
+      "offset": 1669136,
+      "bytes": 6272,
+      "sha256": "32ee76a363b94f61ea69290a0cc4477b228af898421a79b9e4307ac3a3c00c23"
+    },
+    {
+      "id": 153,
+      "unchanged_from_baseline": true,
+      "offset": 1675408,
+      "bytes": 256,
+      "sha256": "48b802caa09d571621e41e763696eaa1ed38b15d973096dd09de0d5df7da4538"
+    },
+    {
+      "id": 154,
+      "unchanged_from_baseline": true,
+      "offset": 1675664,
+      "bytes": 19200,
+      "sha256": "36844c38f7bc17a8ae70216ca1abfa1c540ad2169a91427c6bbf4ba2f0685525"
+    },
+    {
+      "id": 155,
+      "unchanged_from_baseline": true,
+      "offset": 1694864,
+      "bytes": 256,
+      "sha256": "56f668966422b9757a713c6ad82bfaee04f13e57d90301da4b59a3173e15eaee"
+    },
+    {
+      "id": 156,
+      "unchanged_from_baseline": true,
+      "offset": 1695120,
+      "bytes": 19200,
+      "sha256": "ffb3e20ad990c11a1c20868819ecb1e9a22da6c1c27904846932b585cd502a01"
+    },
+    {
+      "id": 157,
+      "unchanged_from_baseline": true,
+      "offset": 1714320,
+      "bytes": 256,
+      "sha256": "a0cb05ca3d2968a8521de6489f41aeb48ecce23dd7f8f141dbefc547baa657ca"
+    },
+    {
+      "id": 158,
+      "unchanged_from_baseline": true,
+      "offset": 1714576,
+      "bytes": 19200,
+      "sha256": "e2ff36fe2054229caecd0103f4782f1be7955569a0b58ea5bd55566a76518dd7"
+    },
+    {
+      "id": 159,
+      "unchanged_from_baseline": true,
+      "offset": 1733776,
+      "bytes": 256,
+      "sha256": "a54bc449289598537fa51321c1a9f5c2f4b4cd11e345f502614bba54b876aec7"
+    },
+    {
+      "id": 160,
+      "unchanged_from_baseline": true,
+      "offset": 1734032,
+      "bytes": 19200,
+      "sha256": "19bfcfdbb38369275c2f037f2e4544f3a3455a72540e79d4f4f83fe1fea52f37"
+    },
+    {
+      "id": 161,
+      "unchanged_from_baseline": true,
+      "offset": 1753232,
+      "bytes": 256,
+      "sha256": "0c11de68b6684836106dfcf924a4941ebb75a09f847223594cbdb91755ef6227"
+    },
+    {
+      "id": 162,
+      "unchanged_from_baseline": true,
+      "offset": 1753488,
+      "bytes": 19200,
+      "sha256": "d356087a827ce8f8679bbfa485ee01ebf6490825d05bc262627c61424135951e"
+    },
+    {
+      "id": 163,
+      "unchanged_from_baseline": true,
+      "offset": 1772688,
+      "bytes": 256,
+      "sha256": "f5d94dc1cac7876ca325453eb8091a1d3adbcf6267804619aee017f60297181b"
+    },
+    {
+      "id": 164,
+      "unchanged_from_baseline": true,
+      "offset": 1772944,
+      "bytes": 19200,
+      "sha256": "4e38f2bb65fe3547c091e9dbf91df94f29dd1e1669b1f3f6e4e123401d7053e9"
+    },
+    {
+      "id": 165,
+      "unchanged_from_baseline": true,
+      "offset": 1792144,
+      "bytes": 256,
+      "sha256": "582e05986696eceb19d3cd4cc55b39302aa7762ed89cfd0164fceacb2e6ebca2"
+    },
+    {
+      "id": 166,
+      "unchanged_from_baseline": true,
+      "offset": 1792400,
+      "bytes": 19200,
+      "sha256": "ab2dd7c987a99f829916b794f8b4783e7728012a3cb60ed14c5f01ce865795e5"
+    },
+    {
+      "id": 167,
+      "unchanged_from_baseline": true,
+      "offset": 1811600,
+      "bytes": 256,
+      "sha256": "4fd96eb93250b4ec00d6f24a250e868d3f3837ce7f1708e286bae7cfde6a24bf"
+    },
+    {
+      "id": 168,
+      "unchanged_from_baseline": true,
+      "offset": 1811856,
+      "bytes": 19200,
+      "sha256": "0dbf78b464fc1edcc31f68277d85d87aafdb844fc047f66e1ae396286fdf57c9"
+    },
+    {
+      "id": 169,
+      "unchanged_from_baseline": true,
+      "offset": 1831056,
+      "bytes": 256,
+      "sha256": "44c720ca1e16ead0b99236bbce68220e3725066ef06871c4b396f11c905024b8"
+    },
+    {
+      "id": 170,
+      "unchanged_from_baseline": true,
+      "offset": 1831312,
+      "bytes": 19200,
+      "sha256": "3d2021995b5a6b07c99ea9e15377150a1644a9cf9b688a33bb0ed10952eb79a2"
+    },
+    {
+      "id": 171,
+      "unchanged_from_baseline": true,
+      "offset": 1850512,
+      "bytes": 256,
+      "sha256": "39879c128434968197df6a64c4acededbbd0d9feaf8a798bba68a6c7725eb9d9"
+    },
+    {
+      "id": 172,
+      "unchanged_from_baseline": true,
+      "offset": 1850768,
+      "bytes": 19200,
+      "sha256": "070715a7bf902eb305746a3d8ddac1e9d22b5e3ac58ebb612a0350e72c027f18"
+    },
+    {
+      "id": 173,
+      "unchanged_from_baseline": true,
+      "offset": 1869968,
+      "bytes": 256,
+      "sha256": "8a5476228a11bf93e0b49ee9653a4a345b1e43e9dee2f20b688712eebb655f03"
+    },
+    {
+      "id": 174,
+      "unchanged_from_baseline": true,
+      "offset": 1870224,
+      "bytes": 19200,
+      "sha256": "5b3581d7791350d7627dd9ee51967ad79ca6d74a39e97b12bb2af6bcaf76fedc"
+    },
+    {
+      "id": 175,
+      "unchanged_from_baseline": true,
+      "offset": 1889424,
+      "bytes": 256,
+      "sha256": "f4490260e50c29527340176d85dade61b778e3ee7be56e8ba29c6ea0b9e3f080"
+    },
+    {
+      "id": 176,
+      "unchanged_from_baseline": true,
+      "offset": 1889680,
+      "bytes": 19200,
+      "sha256": "58ce46411ddccb456beda101b8612a066b737bdf8a5509300d9b9acbc0882528"
+    },
+    {
+      "id": 177,
+      "unchanged_from_baseline": true,
+      "offset": 1908880,
+      "bytes": 256,
+      "sha256": "cd2bea60d311dcb9248a127b11e103b6b84ec2816d3944d87ec83a59ccdb0b34"
+    },
+    {
+      "id": 178,
+      "unchanged_from_baseline": true,
+      "offset": 1909136,
+      "bytes": 19200,
+      "sha256": "27d6ccb447aedd2f577303a9130f0cc96887d31e8c606eb395d0d39d4265cffe"
+    },
+    {
+      "id": 179,
+      "unchanged_from_baseline": true,
+      "offset": 1928336,
+      "bytes": 256,
+      "sha256": "3396a77fa4d0c8e3bbac833ef0c19d747631cdae03f70ea1bc4abaabf5472daa"
+    },
+    {
+      "id": 180,
+      "unchanged_from_baseline": true,
+      "offset": 1928592,
+      "bytes": 19200,
+      "sha256": "332951e1b39c5befc34ce12eb362b78cb33b4e550f2c476082cd55b2be71f7c5"
+    },
+    {
+      "id": 181,
+      "unchanged_from_baseline": true,
+      "offset": 1947792,
+      "bytes": 256,
+      "sha256": "01dc2df66d7d09ed8cf46d7080c116a42107fcf65811d08e9ad8a3e1bbef71e0"
+    },
+    {
+      "id": 182,
+      "unchanged_from_baseline": true,
+      "offset": 1948048,
+      "bytes": 19200,
+      "sha256": "3e01f37dd70a10bb4ce3c9da4f0a082187d34aac83a3d0cdc9d21bb9586e73a2"
+    },
+    {
+      "id": 183,
+      "unchanged_from_baseline": true,
+      "offset": 1967248,
+      "bytes": 256,
+      "sha256": "a7e8340e2fd6728f9abb3b8c6836116e2388bb09dedecd76f2c7a5e8d797911b"
+    },
+    {
+      "id": 184,
+      "unchanged_from_baseline": true,
+      "offset": 1967504,
+      "bytes": 19200,
+      "sha256": "248604bb2db191a7bf228b1f9a1d0c4a9debd9da5c93f49e7923a2d3563c66ed"
+    },
+    {
+      "id": 185,
+      "unchanged_from_baseline": true,
+      "offset": 1986704,
+      "bytes": 256,
+      "sha256": "1b0d3b3d55c56478432ab497f7130ec6416e401ec9aca19e1e6f95e089b1ed3a"
+    },
+    {
+      "id": 186,
+      "unchanged_from_baseline": true,
+      "offset": 1986960,
+      "bytes": 19200,
+      "sha256": "76ede9403e7fc1eabc93adb8b1d2825f626d25a266ae77da8efc49509617ca1c"
+    },
+    {
+      "id": 187,
+      "unchanged_from_baseline": true,
+      "offset": 2006160,
+      "bytes": 256,
+      "sha256": "fd248c50c95976154c6a3ac0c90c57b27eb90306d9936bf00e565d9dfcff41a5"
+    },
+    {
+      "id": 188,
+      "unchanged_from_baseline": true,
+      "offset": 2006416,
+      "bytes": 19200,
+      "sha256": "17fb57280c9d48a893f5c7cbdf4bbf14a194a98c6dbf05678c275d0e7ade3996"
+    },
+    {
+      "id": 189,
+      "unchanged_from_baseline": true,
+      "offset": 2025616,
+      "bytes": 256,
+      "sha256": "d4a3b0164cdccd5de710636a4ad55286fb9de2b49e41070ae7741f3bf1f62f0f"
+    },
+    {
+      "id": 190,
+      "unchanged_from_baseline": true,
+      "offset": 2025872,
+      "bytes": 19200,
+      "sha256": "28aba7c2b7346df70727333d5ad02b429882e8236f525ad5ae3626a9770bfe1a"
+    },
+    {
+      "id": 191,
+      "unchanged_from_baseline": true,
+      "offset": 2045072,
+      "bytes": 256,
+      "sha256": "223b5998a00d5154e5961675afcc06b0fb7fef792aae92109f6bc59a6061343f"
+    },
+    {
+      "id": 192,
+      "unchanged_from_baseline": true,
+      "offset": 2045328,
+      "bytes": 19200,
+      "sha256": "f7b4a7043292e1cfc98f00053c41ef391373ce7878e11968358cbd89e13f462d"
+    },
+    {
+      "id": 193,
+      "unchanged_from_baseline": true,
+      "offset": 2064528,
+      "bytes": 256,
+      "sha256": "dce5cc614bc563618eea7d03fa669fcb25a8b36fae8c398bf40c4e76a95b6e61"
+    },
+    {
+      "id": 194,
+      "unchanged_from_baseline": true,
+      "offset": 2064784,
+      "bytes": 19200,
+      "sha256": "01009d9e663f63764dce5e11c61b553ac84ba0c4829a76da6e9d6d5a011505b6"
+    },
+    {
+      "id": 195,
+      "unchanged_from_baseline": true,
+      "offset": 2083984,
+      "bytes": 256,
+      "sha256": "1f91ec9f3eee01cc956128a40c738849eeef0b40828f1787f00d88b20b2e3b01"
+    },
+    {
+      "id": 196,
+      "unchanged_from_baseline": true,
+      "offset": 2084240,
+      "bytes": 19200,
+      "sha256": "a6b0b0955a75b41afea03d4503b1b2b8ae4c066c7f6b7c323e716457e7781fd2"
+    },
+    {
+      "id": 197,
+      "unchanged_from_baseline": true,
+      "offset": 2103440,
+      "bytes": 256,
+      "sha256": "1226000ef7b7c2c00e8070fede5f9f30ef05197caa37fed678cdea332757b52b"
+    },
+    {
+      "id": 198,
+      "unchanged_from_baseline": true,
+      "offset": 2103696,
+      "bytes": 19200,
+      "sha256": "5d0d369a30211d7ab4567c18dd7a4488b565c4b58f16b12f7d11d4f29765493d"
+    },
+    {
+      "id": 199,
+      "unchanged_from_baseline": true,
+      "offset": 2122896,
+      "bytes": 256,
+      "sha256": "efcaed20a8287db2b5b712639bc8681816befc7ed37eaf1dc72550dbc17544ac"
+    },
+    {
+      "id": 200,
+      "unchanged_from_baseline": true,
+      "offset": 2123152,
+      "bytes": 19200,
+      "sha256": "c0e4b806c8b91df1f6b9a81096b6a20f77e63974d10ab8ae1fc200dbe90550a9"
+    },
+    {
+      "id": 201,
+      "unchanged_from_baseline": true,
+      "offset": 2142352,
+      "bytes": 256,
+      "sha256": "af8214fdf488f5e914241295ce26b0c648bba84972165036bbd564c30487e0b6"
+    },
+    {
+      "id": 202,
+      "unchanged_from_baseline": true,
+      "offset": 2142608,
+      "bytes": 19200,
+      "sha256": "b5684ca8b95ac51c2e5717b65c3fdb460fec7824bd2dc1d9630c5310433a387c"
+    },
+    {
+      "id": 203,
+      "unchanged_from_baseline": true,
+      "offset": 2161808,
+      "bytes": 256,
+      "sha256": "cd2bea60d311dcb9248a127b11e103b6b84ec2816d3944d87ec83a59ccdb0b34"
+    },
+    {
+      "id": 204,
+      "unchanged_from_baseline": true,
+      "offset": 2162064,
+      "bytes": 19200,
+      "sha256": "27d6ccb447aedd2f577303a9130f0cc96887d31e8c606eb395d0d39d4265cffe"
+    },
+    {
+      "id": 205,
+      "unchanged_from_baseline": true,
+      "offset": 2181264,
+      "bytes": 13440,
+      "sha256": "1ae06deffcabce402969e87929ff0fc7b9c570f276453237c27d54b446ba71f2"
+    },
+    {
+      "id": 206,
+      "unchanged_from_baseline": true,
+      "offset": 2194704,
+      "bytes": 13440,
+      "sha256": "521c5dbf45b6a4b66664d65765f6909f29b2d90ab1cd9ade11f4b9ee09024186"
+    },
+    {
+      "id": 207,
+      "unchanged_from_baseline": true,
+      "offset": 2208144,
+      "bytes": 13440,
+      "sha256": "21b1c8e6939bcda7d5275a98a61b9b1aa759a41d3db749e121fbf2d06a0894f5"
+    },
+    {
+      "id": 208,
+      "unchanged_from_baseline": true,
+      "offset": 2221584,
+      "bytes": 13440,
+      "sha256": "73c73d88d3551511c04f1e2c89fffba2734b1952a61dbecf90f37bcd5b8c3793"
+    },
+    {
+      "id": 209,
+      "unchanged_from_baseline": true,
+      "offset": 2235024,
+      "bytes": 13440,
+      "sha256": "ae788d1346ac8a376d2847e321c5b5e0ed47c580223ccd2b90a8711bdf21a2cc"
+    },
+    {
+      "id": 210,
+      "unchanged_from_baseline": true,
+      "offset": 2248464,
+      "bytes": 13440,
+      "sha256": "97f7d7dd0ba2e91df450442a5a595dbabebd3bfb4db3bbc689fdc98939dbc0f8"
+    },
+    {
+      "id": 211,
+      "unchanged_from_baseline": true,
+      "offset": 2261904,
+      "bytes": 5280,
+      "sha256": "5d9cd291ba6877be5ef5512244768565f92efa083735cf8ca7f83dd282b1e3b3"
+    },
+    {
+      "id": 212,
+      "unchanged_from_baseline": true,
+      "offset": 2267184,
+      "bytes": 13440,
+      "sha256": "6425a0f9add1fc85fb0cde84f466572d7f83799f06954db63e75a7933a9a021e"
+    },
+    {
+      "id": 213,
+      "unchanged_from_baseline": true,
+      "offset": 2280624,
+      "bytes": 13440,
+      "sha256": "baef572bf88803a364e268598685e7939eb4398ed5d7499e73ad48522a3ddcb3"
+    },
+    {
+      "id": 214,
+      "unchanged_from_baseline": true,
+      "offset": 2294064,
+      "bytes": 13440,
+      "sha256": "c0d77474e2cf5e6bfac4c0531a8541e1c16ea86d50dc4074f2690bfdba3e8f4d"
+    },
+    {
+      "id": 215,
+      "unchanged_from_baseline": true,
+      "offset": 2307504,
+      "bytes": 13440,
+      "sha256": "69345913292f7f8357003af4f67e027b93c6111b255894026d906680a419582f"
+    },
+    {
+      "id": 216,
+      "unchanged_from_baseline": true,
+      "offset": 2320944,
+      "bytes": 13440,
+      "sha256": "c87e8c3b7035316e0e51d6aaf9f82b2313113a924a481e58592cc108b2552d48"
+    },
+    {
+      "id": 217,
+      "unchanged_from_baseline": true,
+      "offset": 2334384,
+      "bytes": 13440,
+      "sha256": "cf88af85e6617ebeaf017f85ec552e97a203d8f265ef777e797e1c8c5e2c4246"
+    },
+    {
+      "id": 218,
+      "unchanged_from_baseline": true,
+      "offset": 2347824,
+      "bytes": 5280,
+      "sha256": "3f5ab32f4bfc41fdca8c2f6730320481012f0c3c303ee225f46abc00cc1e7d11"
+    },
+    {
+      "id": 219,
+      "unchanged_from_baseline": true,
+      "offset": 2353104,
+      "bytes": 13440,
+      "sha256": "f42319a10d585c542a83fcd76519bda148ac2342217c22da5aaae092774415c1"
+    },
+    {
+      "id": 220,
+      "unchanged_from_baseline": true,
+      "offset": 2366544,
+      "bytes": 13440,
+      "sha256": "bb9778897b716fc6025410f14a76ce3b3eeddadb21933e3e6f0508775a07c2a7"
+    },
+    {
+      "id": 221,
+      "unchanged_from_baseline": true,
+      "offset": 2379984,
+      "bytes": 13440,
+      "sha256": "1c544971ba017932b60d6447a6976eaa8043d6add5827ebb9f751576ea28adc0"
+    },
+    {
+      "id": 222,
+      "unchanged_from_baseline": true,
+      "offset": 2393424,
+      "bytes": 13440,
+      "sha256": "4efbbf30bc2716493abc993deb212e8b94190dbabb63065a328c9c0c331fddd6"
+    },
+    {
+      "id": 223,
+      "unchanged_from_baseline": true,
+      "offset": 2406864,
+      "bytes": 13440,
+      "sha256": "f0d7dc413ebdcfb441c66fc49fcc867635d0ca0fd452e27c2e1f47a43ba6bf12"
+    },
+    {
+      "id": 224,
+      "unchanged_from_baseline": true,
+      "offset": 2420304,
+      "bytes": 13440,
+      "sha256": "234784f1e06baefb17c5c78efcdc0556565f386f0c531992421fe490709dc0d0"
+    },
+    {
+      "id": 225,
+      "unchanged_from_baseline": true,
+      "offset": 2433744,
+      "bytes": 5280,
+      "sha256": "fa78d41831ddac88abe41bc786b9d7829ec0c5af25aed8aecc921ece7f0bf350"
+    },
+    {
+      "id": 226,
+      "unchanged_from_baseline": true,
+      "offset": 2439024,
+      "bytes": 13440,
+      "sha256": "07916a640169f75ccddb47ef5286c9a30af37cbd1e2b78acdd7f4f0dc46f47a9"
+    },
+    {
+      "id": 227,
+      "unchanged_from_baseline": true,
+      "offset": 2452464,
+      "bytes": 13440,
+      "sha256": "0fc6f737aa3e950608e8ca9ba4e2b760f1714e8cb999c217a14b0059b77308b2"
+    },
+    {
+      "id": 228,
+      "unchanged_from_baseline": true,
+      "offset": 2465904,
+      "bytes": 13440,
+      "sha256": "1bc6edc3dadcf8b032c23593ca9dee6b51cee9d8589a9027cfddd698810b0b56"
+    },
+    {
+      "id": 229,
+      "unchanged_from_baseline": true,
+      "offset": 2479344,
+      "bytes": 13440,
+      "sha256": "1fc3d8e973fb970bd1c46cf13a0579c56c29486a8a641b2ea7d8c459feaed4ee"
+    },
+    {
+      "id": 230,
+      "unchanged_from_baseline": true,
+      "offset": 2492784,
+      "bytes": 13440,
+      "sha256": "29d1d41811178a11be95567ab283a1894b63a8cacbad76823527814f86fc667b"
+    },
+    {
+      "id": 231,
+      "unchanged_from_baseline": true,
+      "offset": 2506224,
+      "bytes": 13440,
+      "sha256": "bf1e0569cbadc5e84efc697cc71793584db6123654b8bcc6c6b51d36b9700a72"
+    },
+    {
+      "id": 232,
+      "unchanged_from_baseline": true,
+      "offset": 2519664,
+      "bytes": 5280,
+      "sha256": "9201e2bf4227da47b6b31b06b6a5de4fc6968b3e7ebe46a44bfd0747f107a696"
+    },
+    {
+      "id": 233,
+      "unchanged_from_baseline": true,
+      "offset": 2524944,
+      "bytes": 26880,
+      "sha256": "7b8aa6f79e22e904bcfd0e23808fdb6928e1011f1f49d03e7c0dee96cfb226ac"
+    },
+    {
+      "id": 234,
+      "unchanged_from_baseline": true,
+      "offset": 2551824,
+      "bytes": 13440,
+      "sha256": "b69e83e02fa6630d312f2d226bc2fa804dfce2e9e3c60f97aaa3a927d9324516"
+    },
+    {
+      "id": 235,
+      "unchanged_from_baseline": true,
+      "offset": 2565264,
+      "bytes": 26880,
+      "sha256": "4f47fd6c1385ec5c2aa9754702b00c112bee7e4c47acf8c2487f241333b09b9b"
+    },
+    {
+      "id": 236,
+      "unchanged_from_baseline": true,
+      "offset": 2592144,
+      "bytes": 13440,
+      "sha256": "df6c442cd2add72ad5afd6d0044715f1f06f3711ac9bda61166825d3cff8dba4"
+    },
+    {
+      "id": 237,
+      "unchanged_from_baseline": true,
+      "offset": 2605584,
+      "bytes": 26880,
+      "sha256": "e88a44d40f39e64b5fac240015af865d53c473e42631dc5713bcb3e3aad8aff8"
+    },
+    {
+      "id": 238,
+      "unchanged_from_baseline": true,
+      "offset": 2632464,
+      "bytes": 13440,
+      "sha256": "688b5c37a216358d0fa86f6c8235cf001d084cce17e6b148008a70c0181cd73f"
+    },
+    {
+      "id": 239,
+      "unchanged_from_baseline": true,
+      "offset": 2645904,
+      "bytes": 26880,
+      "sha256": "fe65aaab1f2884ffbf28e16d585c50f95722c880ba5c2ebfa532d3ab73509f1b"
+    },
+    {
+      "id": 240,
+      "unchanged_from_baseline": true,
+      "offset": 2672784,
+      "bytes": 13440,
+      "sha256": "d4b3fac3e74757ebbaec3951d3515bf6a6080a0b4ec8638c3ef9842cbe56d4c2"
+    },
+    {
+      "id": 241,
+      "unchanged_from_baseline": true,
+      "offset": 2686224,
+      "bytes": 26880,
+      "sha256": "3f02ce9bf96f77c776ade2d004a9240f72ad65ced5f0b51b3bf5bba69f631cc0"
+    },
+    {
+      "id": 242,
+      "unchanged_from_baseline": true,
+      "offset": 2713104,
+      "bytes": 13440,
+      "sha256": "917c02ca14d2dd70ca6f3675645cbcb9569b84239ce9620c091ca3eea0971bf7"
+    },
+    {
+      "id": 243,
+      "unchanged_from_baseline": true,
+      "offset": 2726544,
+      "bytes": 26880,
+      "sha256": "7b8aa6f79e22e904bcfd0e23808fdb6928e1011f1f49d03e7c0dee96cfb226ac"
+    },
+    {
+      "id": 244,
+      "unchanged_from_baseline": true,
+      "offset": 2753424,
+      "bytes": 13440,
+      "sha256": "b69e83e02fa6630d312f2d226bc2fa804dfce2e9e3c60f97aaa3a927d9324516"
+    },
+    {
+      "id": 245,
+      "unchanged_from_baseline": true,
+      "offset": 2766864,
+      "bytes": 10560,
+      "sha256": "5efd318417108ba30dd9683a87eecd50d3910c77aeb063cb2047a085a6d70662"
+    },
+    {
+      "id": 246,
+      "unchanged_from_baseline": true,
+      "offset": 2777424,
+      "bytes": 5280,
+      "sha256": "914cdb22628f1e940bb09f596015508593a51d9a34c7f6e0544f1921d44d40a9"
+    },
+    {
+      "id": 247,
+      "unchanged_from_baseline": true,
+      "offset": 2782704,
+      "bytes": 26880,
+      "sha256": "7fdc0bc0012d03494d7713132d52ac2c425ae39886401f846ddf0971918bfd86"
+    },
+    {
+      "id": 248,
+      "unchanged_from_baseline": true,
+      "offset": 2809584,
+      "bytes": 13440,
+      "sha256": "70a89a0deaf304adaca62274e0386cdb49b55c72ea16bd148635dc2e1f0cb72a"
+    },
+    {
+      "id": 249,
+      "unchanged_from_baseline": true,
+      "offset": 2823024,
+      "bytes": 26880,
+      "sha256": "2fe29ddf07ee8ab58a52329383092d5b878098b02c64be3986fa694931f09a06"
+    },
+    {
+      "id": 250,
+      "unchanged_from_baseline": true,
+      "offset": 2849904,
+      "bytes": 13440,
+      "sha256": "361994fba2fca9259dc65d0dcfd5bdc15d761a40a42f028e6032e123872f3015"
+    },
+    {
+      "id": 251,
+      "unchanged_from_baseline": true,
+      "offset": 2863344,
+      "bytes": 26880,
+      "sha256": "6d8cf8af9f9257844d93733804d9d32100aadf6f09a2379fb502928a3a43366a"
+    },
+    {
+      "id": 252,
+      "unchanged_from_baseline": true,
+      "offset": 2890224,
+      "bytes": 13440,
+      "sha256": "33d8434140b6161b3834dda48ade8ea72aefe97e5d39f6ba1d2851a63323483b"
+    },
+    {
+      "id": 253,
+      "unchanged_from_baseline": true,
+      "offset": 2903664,
+      "bytes": 26880,
+      "sha256": "04ef38492ab051fad724f40545ab994b8ad349aeee603942d2a0ff245ecd1f6f"
+    },
+    {
+      "id": 254,
+      "unchanged_from_baseline": true,
+      "offset": 2930544,
+      "bytes": 13440,
+      "sha256": "7461dd78eb481fe637fecd31556cea57ee40ce0ca4e711c5e8fec286bc28d47a"
+    },
+    {
+      "id": 255,
+      "unchanged_from_baseline": true,
+      "offset": 2943984,
+      "bytes": 26880,
+      "sha256": "05791e1674a9afe8d0b3e37dbcd84270dc17f418fe13366e7f0c043ad215793e"
+    },
+    {
+      "id": 256,
+      "unchanged_from_baseline": true,
+      "offset": 2970864,
+      "bytes": 13440,
+      "sha256": "ba44892c8c7147dbb9ab59c638c0dfd0d2adcc0d5fd5b6008b2a268334532115"
+    },
+    {
+      "id": 257,
+      "unchanged_from_baseline": true,
+      "offset": 2984304,
+      "bytes": 26880,
+      "sha256": "7fdc0bc0012d03494d7713132d52ac2c425ae39886401f846ddf0971918bfd86"
+    },
+    {
+      "id": 258,
+      "unchanged_from_baseline": true,
+      "offset": 3011184,
+      "bytes": 13440,
+      "sha256": "70a89a0deaf304adaca62274e0386cdb49b55c72ea16bd148635dc2e1f0cb72a"
+    },
+    {
+      "id": 259,
+      "unchanged_from_baseline": true,
+      "offset": 3024624,
+      "bytes": 10560,
+      "sha256": "d2e2073c105cb0f48fcc8dbde85a4d3cf03cf56046caa769e1b3c23de63645dc"
+    },
+    {
+      "id": 260,
+      "unchanged_from_baseline": true,
+      "offset": 3035184,
+      "bytes": 5280,
+      "sha256": "752ce8c689f301b6ba873c63ffcfb9f387bd427123ca703aa3a00569284c7eda"
+    },
+    {
+      "id": 261,
+      "unchanged_from_baseline": true,
+      "offset": 3040464,
+      "bytes": 26880,
+      "sha256": "7123aefadedca4bed17c50bf8039c06bb85769a76c65ac8ae1300b8a1f54267a"
+    },
+    {
+      "id": 262,
+      "unchanged_from_baseline": true,
+      "offset": 3067344,
+      "bytes": 13440,
+      "sha256": "ce2b1df50b12c1ab91e5e93c93da3b6ef747a290f2336f651b2972522c3d2691"
+    },
+    {
+      "id": 263,
+      "unchanged_from_baseline": true,
+      "offset": 3080784,
+      "bytes": 26880,
+      "sha256": "e22ed7f8e8e9a6469ce0f0f874804b3b8cb5a41cb641d2aa02d85e2f8b4199ee"
+    },
+    {
+      "id": 264,
+      "unchanged_from_baseline": true,
+      "offset": 3107664,
+      "bytes": 13440,
+      "sha256": "671fedce8258612ee9caf4ecaf931a1166a207ac9c718fb485dcc486a9ab1c89"
+    },
+    {
+      "id": 265,
+      "unchanged_from_baseline": true,
+      "offset": 3121104,
+      "bytes": 26880,
+      "sha256": "05f798aab3d3da7f3f8fedec6833377c13357c3c23e83c1ed43e3127c17e4d8e"
+    },
+    {
+      "id": 266,
+      "unchanged_from_baseline": true,
+      "offset": 3147984,
+      "bytes": 13440,
+      "sha256": "bb5c0d334c834bd0a415b632eeab85661d0cf4981169eb84eacb80c8506f12c3"
+    },
+    {
+      "id": 267,
+      "unchanged_from_baseline": true,
+      "offset": 3161424,
+      "bytes": 26880,
+      "sha256": "387fd20e3f0cc547643b821d08706d419ad1300f65ac52d8bd7df716d7ddf337"
+    },
+    {
+      "id": 268,
+      "unchanged_from_baseline": true,
+      "offset": 3188304,
+      "bytes": 13440,
+      "sha256": "d487433127824aae75daccc9d9b8acdcac866ded6fcaa6f610a174b93eb1e761"
+    },
+    {
+      "id": 269,
+      "unchanged_from_baseline": true,
+      "offset": 3201744,
+      "bytes": 26880,
+      "sha256": "540ba79a1e72ee2160c42f82bf3134d19d0cb5a12556e9b1b4a7977eb392523e"
+    },
+    {
+      "id": 270,
+      "unchanged_from_baseline": true,
+      "offset": 3228624,
+      "bytes": 13440,
+      "sha256": "f66f4e1ade455133880970bc13f3a4cbd5a8fde8d7661a8565e7ceca506296f3"
+    },
+    {
+      "id": 271,
+      "unchanged_from_baseline": true,
+      "offset": 3242064,
+      "bytes": 26880,
+      "sha256": "7123aefadedca4bed17c50bf8039c06bb85769a76c65ac8ae1300b8a1f54267a"
+    },
+    {
+      "id": 272,
+      "unchanged_from_baseline": true,
+      "offset": 3268944,
+      "bytes": 13440,
+      "sha256": "ce2b1df50b12c1ab91e5e93c93da3b6ef747a290f2336f651b2972522c3d2691"
+    },
+    {
+      "id": 273,
+      "unchanged_from_baseline": true,
+      "offset": 3282384,
+      "bytes": 10560,
+      "sha256": "00c64ef842eb49227e986394fe25d7f53ea9473fb6cac59c77db38b78eb485e5"
+    },
+    {
+      "id": 274,
+      "unchanged_from_baseline": true,
+      "offset": 3292944,
+      "bytes": 5280,
+      "sha256": "ae7b17cd2f6779033aa2a34b04540d47d0e791b5494437a32b99376623b0625e"
+    },
+    {
+      "id": 275,
+      "unchanged_from_baseline": true,
+      "offset": 3298224,
+      "bytes": 26880,
+      "sha256": "2fb2dca1b245294ee1999f165ab09723c5cff5def3dbac9280030aab2040c745"
+    },
+    {
+      "id": 276,
+      "unchanged_from_baseline": true,
+      "offset": 3325104,
+      "bytes": 13440,
+      "sha256": "cf03cef4bccff08a880e47bc7d3b94f45707406bceef49db632fbf9b13519bf3"
+    },
+    {
+      "id": 277,
+      "unchanged_from_baseline": true,
+      "offset": 3338544,
+      "bytes": 26880,
+      "sha256": "fea54a4cfd3cd6906b11ec12c14968d9631ef8c93bbaa2599e7040c6bf37344f"
+    },
+    {
+      "id": 278,
+      "unchanged_from_baseline": true,
+      "offset": 3365424,
+      "bytes": 13440,
+      "sha256": "3f3fd4563fe8b90309e7f12832e25614595d9d77936da3fc0b4e091ae8dfc33d"
+    },
+    {
+      "id": 279,
+      "unchanged_from_baseline": true,
+      "offset": 3378864,
+      "bytes": 26880,
+      "sha256": "beeb642310625bb6c1a4138e1c5ccdd34176f7a8b5a67712d97ca6893b7cf74c"
+    },
+    {
+      "id": 280,
+      "unchanged_from_baseline": true,
+      "offset": 3405744,
+      "bytes": 13440,
+      "sha256": "567740949c3774ce6c6094847ceb2386a5f698becc10c8d9cd4a502532339a9f"
+    },
+    {
+      "id": 281,
+      "unchanged_from_baseline": true,
+      "offset": 3419184,
+      "bytes": 26880,
+      "sha256": "d7613257924b840fd08095bc608e48a46635fe9897bd67174be62b52f4463411"
+    },
+    {
+      "id": 282,
+      "unchanged_from_baseline": true,
+      "offset": 3446064,
+      "bytes": 13440,
+      "sha256": "e29ac91aa41ff35acf85f6d49fa0db9cc91cd6452a1ff0d79d3a7fa086328dff"
+    },
+    {
+      "id": 283,
+      "unchanged_from_baseline": true,
+      "offset": 3459504,
+      "bytes": 26880,
+      "sha256": "bbc56c9b65b56a99ee4f56558f19e0c928950aed099f2a2d6209e94c6253ebf0"
+    },
+    {
+      "id": 284,
+      "unchanged_from_baseline": true,
+      "offset": 3486384,
+      "bytes": 13440,
+      "sha256": "0c247f76ca46c3052f6ca77208e22e5b401f69b274d2900168b7d9308bb15864"
+    },
+    {
+      "id": 285,
+      "unchanged_from_baseline": true,
+      "offset": 3499824,
+      "bytes": 26880,
+      "sha256": "2fb2dca1b245294ee1999f165ab09723c5cff5def3dbac9280030aab2040c745"
+    },
+    {
+      "id": 286,
+      "unchanged_from_baseline": true,
+      "offset": 3526704,
+      "bytes": 13440,
+      "sha256": "cf03cef4bccff08a880e47bc7d3b94f45707406bceef49db632fbf9b13519bf3"
+    },
+    {
+      "id": 287,
+      "unchanged_from_baseline": true,
+      "offset": 3540144,
+      "bytes": 10560,
+      "sha256": "d80e1dce641038119988afa296751ff67ffdbb9e562d8d43609a410fc802c28e"
+    },
+    {
+      "id": 288,
+      "unchanged_from_baseline": true,
+      "offset": 3550704,
+      "bytes": 5280,
+      "sha256": "9aecfb307faec03863d9ea44a1448c0d1f0049c6d8e1203f21effb0dd1cc8887"
+    },
+    {
+      "id": 289,
+      "unchanged_from_baseline": true,
+      "offset": 3555984,
+      "bytes": 26880,
+      "sha256": "5856d5245420825ed42e7aef0dceab248977f8f625ff8632dfda3faecf5637d4"
+    },
+    {
+      "id": 290,
+      "unchanged_from_baseline": true,
+      "offset": 3582864,
+      "bytes": 13440,
+      "sha256": "12bc7c34ef063983d747107e7cb6aaf166607b10d1097c9f9f41c827c326963a"
+    },
+    {
+      "id": 291,
+      "unchanged_from_baseline": true,
+      "offset": 3596304,
+      "bytes": 26880,
+      "sha256": "08c53b0c9d407a1debaa072c2d7f106464700e523dacd41e88c6c4410d877439"
+    },
+    {
+      "id": 292,
+      "unchanged_from_baseline": true,
+      "offset": 3623184,
+      "bytes": 13440,
+      "sha256": "e6d8b4f9034e9a6722c50a8c00383b30eb5c1bbd755aa451edfec14cabe07665"
+    },
+    {
+      "id": 293,
+      "unchanged_from_baseline": true,
+      "offset": 3636624,
+      "bytes": 26880,
+      "sha256": "bcc604f972aa4d5f7a5349915a9112274487472a20d7056b1ec71d1a6c89625c"
+    },
+    {
+      "id": 294,
+      "unchanged_from_baseline": true,
+      "offset": 3663504,
+      "bytes": 13440,
+      "sha256": "e53d21266a1a08ad26a05fbe676022258e370f6056aae79ab6058803d801f53f"
+    },
+    {
+      "id": 295,
+      "unchanged_from_baseline": true,
+      "offset": 3676944,
+      "bytes": 26880,
+      "sha256": "4416987582c1387410578f3c605c62d15be90d9c024c7b929cc961580452f4a5"
+    },
+    {
+      "id": 296,
+      "unchanged_from_baseline": true,
+      "offset": 3703824,
+      "bytes": 13440,
+      "sha256": "9d5204454d9c73d6f64ed0907f890c376991e1b8538faf228b1fbf627935f0f7"
+    },
+    {
+      "id": 297,
+      "unchanged_from_baseline": true,
+      "offset": 3717264,
+      "bytes": 26880,
+      "sha256": "c4f606abdaaf83ef935ccf4113132d2c1d14f1b0012a5789fcf4d09602d70cb2"
+    },
+    {
+      "id": 298,
+      "unchanged_from_baseline": true,
+      "offset": 3744144,
+      "bytes": 13440,
+      "sha256": "fd5e850f208090d2211200293ee79f54b7af637fa5e0d8c4dfc9718abca567db"
+    },
+    {
+      "id": 299,
+      "unchanged_from_baseline": true,
+      "offset": 3757584,
+      "bytes": 26880,
+      "sha256": "5856d5245420825ed42e7aef0dceab248977f8f625ff8632dfda3faecf5637d4"
+    },
+    {
+      "id": 300,
+      "unchanged_from_baseline": true,
+      "offset": 3784464,
+      "bytes": 13440,
+      "sha256": "12bc7c34ef063983d747107e7cb6aaf166607b10d1097c9f9f41c827c326963a"
+    },
+    {
+      "id": 301,
+      "unchanged_from_baseline": true,
+      "offset": 3797904,
+      "bytes": 10560,
+      "sha256": "4e73bef5fa22ed116ae4de40b793869bb2bf0ddda0a9afc3a277f4409955effc"
+    },
+    {
+      "id": 302,
+      "unchanged_from_baseline": true,
+      "offset": 3808464,
+      "bytes": 5280,
+      "sha256": "84da4aa7faffca306ad1d00e120d98e19e95fdc58978ca0a612c7d2ef66cf95a"
+    },
+    {
+      "id": 303,
+      "unchanged_from_baseline": true,
+      "offset": 3813744,
+      "bytes": 26880,
+      "sha256": "ea63dd1789f51d2746c7704c13087a7c6a3a34260318bc2fbc7b6ac5e8322a8e"
+    },
+    {
+      "id": 304,
+      "unchanged_from_baseline": true,
+      "offset": 3840624,
+      "bytes": 13440,
+      "sha256": "4f286f5be2db0f75c8965490078b2e0a79f86d4a4208915ce1533302628ca04a"
+    },
+    {
+      "id": 305,
+      "unchanged_from_baseline": true,
+      "offset": 3854064,
+      "bytes": 26880,
+      "sha256": "76c9c1a59da66cd4d2a6bb14032ffcc52f903007798971330347b30dcaa9040d"
+    },
+    {
+      "id": 306,
+      "unchanged_from_baseline": true,
+      "offset": 3880944,
+      "bytes": 13440,
+      "sha256": "5d9f38f052908ff2be037934d15f10219f40ff013c776713464d9bcf7d027191"
+    },
+    {
+      "id": 307,
+      "unchanged_from_baseline": true,
+      "offset": 3894384,
+      "bytes": 26880,
+      "sha256": "753b73924697a5898ad7190cd144b6be68e18a20a3d34058d5ed8086f7c45ab1"
+    },
+    {
+      "id": 308,
+      "unchanged_from_baseline": true,
+      "offset": 3921264,
+      "bytes": 13440,
+      "sha256": "71349e76925986d35a89541253a7ae23884b53076c3a7fcbb200cd701fa466de"
+    },
+    {
+      "id": 309,
+      "unchanged_from_baseline": true,
+      "offset": 3934704,
+      "bytes": 26880,
+      "sha256": "95fce7705bc11fba1010392a343b582760e43dd1f295e4685a44744788fdb961"
+    },
+    {
+      "id": 310,
+      "unchanged_from_baseline": true,
+      "offset": 3961584,
+      "bytes": 13440,
+      "sha256": "375d42a5c3031201df4320d52be687d6648599452931fd811121e6e89777cc54"
+    },
+    {
+      "id": 311,
+      "unchanged_from_baseline": true,
+      "offset": 3975024,
+      "bytes": 26880,
+      "sha256": "180d2437af1a6053836d413d43a37e054f2a0daa7221579f8474072cf0797901"
+    },
+    {
+      "id": 312,
+      "unchanged_from_baseline": true,
+      "offset": 4001904,
+      "bytes": 13440,
+      "sha256": "2b0bc89d123ff82968b6747dbd444b07324e65bab77861a85bd95ef28509ab11"
+    },
+    {
+      "id": 313,
+      "unchanged_from_baseline": true,
+      "offset": 4015344,
+      "bytes": 26880,
+      "sha256": "ea63dd1789f51d2746c7704c13087a7c6a3a34260318bc2fbc7b6ac5e8322a8e"
+    },
+    {
+      "id": 314,
+      "unchanged_from_baseline": true,
+      "offset": 4042224,
+      "bytes": 13440,
+      "sha256": "4f286f5be2db0f75c8965490078b2e0a79f86d4a4208915ce1533302628ca04a"
+    },
+    {
+      "id": 315,
+      "unchanged_from_baseline": true,
+      "offset": 4055664,
+      "bytes": 10560,
+      "sha256": "f011b247ec827ae13908cf6969e46484c565cf49bb7c4f5cf8d74329833db0e8"
+    },
+    {
+      "id": 316,
+      "unchanged_from_baseline": true,
+      "offset": 4066224,
+      "bytes": 5280,
+      "sha256": "8dd5199a8caa56c56ad32dc31258b6d562d0c58b49847ad136651223a6db4630"
+    },
+    {
+      "id": 317,
+      "unchanged_from_baseline": true,
+      "offset": 4071504,
+      "bytes": 26880,
+      "sha256": "634c2d902e89ba17d4b5245021cd149ab64399da51833a591748794de24459dc"
+    },
+    {
+      "id": 318,
+      "unchanged_from_baseline": true,
+      "offset": 4098384,
+      "bytes": 13440,
+      "sha256": "01890b26a8528223fdf66821623389f70299e09545cbfb6d86583bd755aebe63"
+    },
+    {
+      "id": 319,
+      "unchanged_from_baseline": true,
+      "offset": 4111824,
+      "bytes": 26880,
+      "sha256": "b4f9736624a723f5a19686214053501ce388141dc388171bd7ef176e4c72c601"
+    },
+    {
+      "id": 320,
+      "unchanged_from_baseline": true,
+      "offset": 4138704,
+      "bytes": 13440,
+      "sha256": "ccbb421bcff1237bed36593df6c50300b46f3287dc4cf9097eda0f979584dc83"
+    },
+    {
+      "id": 321,
+      "unchanged_from_baseline": true,
+      "offset": 4152144,
+      "bytes": 26880,
+      "sha256": "90d9da14666bc99b20356692bc15c4e6d5c97aa670f074f7018ff6bf4b58d2e6"
+    },
+    {
+      "id": 322,
+      "unchanged_from_baseline": true,
+      "offset": 4179024,
+      "bytes": 13440,
+      "sha256": "2634414ecfb9b905b0e79c99fb5ccbc4f40c322b358f2487cece6c0960806ee6"
+    },
+    {
+      "id": 323,
+      "unchanged_from_baseline": true,
+      "offset": 4192464,
+      "bytes": 26880,
+      "sha256": "c3750ec82bf045219372323d4fd0e77edcb6c3f53c5d4708fe04bd110771606b"
+    },
+    {
+      "id": 324,
+      "unchanged_from_baseline": true,
+      "offset": 4219344,
+      "bytes": 13440,
+      "sha256": "4e5818589d0c54f931c4b7843943d9f8601c80a9c7ef8ce7f5cf3c3d86ed209e"
+    },
+    {
+      "id": 325,
+      "unchanged_from_baseline": true,
+      "offset": 4232784,
+      "bytes": 26880,
+      "sha256": "d73c1be68993f25805d6167f22029ea486b75d0322fd4d91afa05a5029495ede"
+    },
+    {
+      "id": 326,
+      "unchanged_from_baseline": true,
+      "offset": 4259664,
+      "bytes": 13440,
+      "sha256": "4ffc9a4737cdf8ab4db8116b06069e78e7652c81e2b4d7df45348d219a7f806a"
+    },
+    {
+      "id": 327,
+      "unchanged_from_baseline": true,
+      "offset": 4273104,
+      "bytes": 26880,
+      "sha256": "634c2d902e89ba17d4b5245021cd149ab64399da51833a591748794de24459dc"
+    },
+    {
+      "id": 328,
+      "unchanged_from_baseline": true,
+      "offset": 4299984,
+      "bytes": 13440,
+      "sha256": "01890b26a8528223fdf66821623389f70299e09545cbfb6d86583bd755aebe63"
+    },
+    {
+      "id": 329,
+      "unchanged_from_baseline": true,
+      "offset": 4313424,
+      "bytes": 10560,
+      "sha256": "d171b52e4ad9be0e2db1374386aa59f79e790fa7f2ed5a0b29eb8ba5017e9560"
+    },
+    {
+      "id": 330,
+      "unchanged_from_baseline": true,
+      "offset": 4323984,
+      "bytes": 5280,
+      "sha256": "1cf9420c7f255763cf8538ecb50da7f6da61d2d8dae12be7b4254ec47a8e3059"
+    },
+    {
+      "id": 331,
+      "unchanged_from_baseline": true,
+      "offset": 4329264,
+      "bytes": 26880,
+      "sha256": "c05ba1676ff43f156b7e69ab437a8ccb6750fafb4587c27e97ff1ee07f40eff3"
+    },
+    {
+      "id": 332,
+      "unchanged_from_baseline": true,
+      "offset": 4356144,
+      "bytes": 13440,
+      "sha256": "1330a2f7ee50087686518255c2d6eb52df6614d6ccecd3bff0ab6fc5037225a2"
+    },
+    {
+      "id": 333,
+      "unchanged_from_baseline": true,
+      "offset": 4369584,
+      "bytes": 26880,
+      "sha256": "0276e0434fb01ed6ceea4a6c5bbe39edf49edb29e5ccf0c907cd13ffe4dba7cc"
+    },
+    {
+      "id": 334,
+      "unchanged_from_baseline": true,
+      "offset": 4396464,
+      "bytes": 13440,
+      "sha256": "d1739b5e89020eec7f284ff69d0efb999d5c88a99393cfd53442255dbfb27ca5"
+    },
+    {
+      "id": 335,
+      "unchanged_from_baseline": true,
+      "offset": 4409904,
+      "bytes": 26880,
+      "sha256": "03fe6d5fc672e181826355747edbec362ca255e88dda0b064b3e272177dad05e"
+    },
+    {
+      "id": 336,
+      "unchanged_from_baseline": true,
+      "offset": 4436784,
+      "bytes": 13440,
+      "sha256": "d549ae4308fdcff8074f139cdc5a24b94df66979aab8b50b5435201a1def523d"
+    },
+    {
+      "id": 337,
+      "unchanged_from_baseline": true,
+      "offset": 4450224,
+      "bytes": 26880,
+      "sha256": "df2f3b819a9e2a3ad0a8cf71b7ec9fa0a5f6efee05adc0f775fb5582ae5bdc67"
+    },
+    {
+      "id": 338,
+      "unchanged_from_baseline": true,
+      "offset": 4477104,
+      "bytes": 13440,
+      "sha256": "023482a66d480d4cf1f8e207ba1a8249b4ba896bbba42856fb5d9797eaf6655e"
+    },
+    {
+      "id": 339,
+      "unchanged_from_baseline": true,
+      "offset": 4490544,
+      "bytes": 26880,
+      "sha256": "edfa3a7cab9136841d55f7646b649e55b85723e16a52c616c1cb5b82522bf1cc"
+    },
+    {
+      "id": 340,
+      "unchanged_from_baseline": true,
+      "offset": 4517424,
+      "bytes": 13440,
+      "sha256": "bb66cce1eb24c063829a66d4edf9461ec22c51db3be357e650600b358fdd7f49"
+    },
+    {
+      "id": 341,
+      "unchanged_from_baseline": true,
+      "offset": 4530864,
+      "bytes": 26880,
+      "sha256": "c05ba1676ff43f156b7e69ab437a8ccb6750fafb4587c27e97ff1ee07f40eff3"
+    },
+    {
+      "id": 342,
+      "unchanged_from_baseline": true,
+      "offset": 4557744,
+      "bytes": 13440,
+      "sha256": "1330a2f7ee50087686518255c2d6eb52df6614d6ccecd3bff0ab6fc5037225a2"
+    },
+    {
+      "id": 343,
+      "unchanged_from_baseline": true,
+      "offset": 4571184,
+      "bytes": 10560,
+      "sha256": "715986d23a954b1bdfe3805b04469cf3b22e5e7a36a47ce4951b635d065a2c82"
+    },
+    {
+      "id": 344,
+      "unchanged_from_baseline": true,
+      "offset": 4581744,
+      "bytes": 5280,
+      "sha256": "c6093e2956a68b8a0584389378c97d3d4543739478ddf51149998f5c96e12e3e"
+    },
+    {
+      "id": 345,
+      "unchanged_from_baseline": true,
+      "offset": 4587024,
+      "bytes": 26880,
+      "sha256": "f9aff88941253686e1634cc9884f43ab883d45ac0a801819f8715e16fbd287d5"
+    },
+    {
+      "id": 346,
+      "unchanged_from_baseline": true,
+      "offset": 4613904,
+      "bytes": 13440,
+      "sha256": "457823ef34a1d456c879540796a93cd8ae15e5bb914fcc10f10026b6cdd05fb9"
+    },
+    {
+      "id": 347,
+      "unchanged_from_baseline": true,
+      "offset": 4627344,
+      "bytes": 26880,
+      "sha256": "b005b2c6f283cd8b1fc31cefbff020f9626036c18ea6e47272e2fd0405682049"
+    },
+    {
+      "id": 348,
+      "unchanged_from_baseline": true,
+      "offset": 4654224,
+      "bytes": 13440,
+      "sha256": "c24075dc2ed8b29b14574c58765150e3810c59dd3caae4439c448976c76e557d"
+    },
+    {
+      "id": 349,
+      "unchanged_from_baseline": true,
+      "offset": 4667664,
+      "bytes": 26880,
+      "sha256": "6812af7fc376b71221cefe827499afbe03ff332e29014974eebd23c63f6cbbab"
+    },
+    {
+      "id": 350,
+      "unchanged_from_baseline": true,
+      "offset": 4694544,
+      "bytes": 13440,
+      "sha256": "1237d9cae497a7bceea5cf5363c38e6acf63b3ef5c91e28739b1805b47b58ec5"
+    },
+    {
+      "id": 351,
+      "unchanged_from_baseline": true,
+      "offset": 4707984,
+      "bytes": 26880,
+      "sha256": "9f48a3d69532454bee797e9d8e6aafa2bada86097dc2f9446dc581f678f669ec"
+    },
+    {
+      "id": 352,
+      "unchanged_from_baseline": true,
+      "offset": 4734864,
+      "bytes": 13440,
+      "sha256": "78ca039ad245b4e47a93d55e15f7b1e126232aefdca1a073b36f85eaa2d951d7"
+    },
+    {
+      "id": 353,
+      "unchanged_from_baseline": true,
+      "offset": 4748304,
+      "bytes": 26880,
+      "sha256": "9458daedf5164cf6a21a9172612e9f0da6819ea2dd7badb64c8cefd09ebf12b8"
+    },
+    {
+      "id": 354,
+      "unchanged_from_baseline": true,
+      "offset": 4775184,
+      "bytes": 13440,
+      "sha256": "921c38741f2981d08f077048d4e9dccb7a326de30a986443ace74a2a2523d890"
+    },
+    {
+      "id": 355,
+      "unchanged_from_baseline": true,
+      "offset": 4788624,
+      "bytes": 26880,
+      "sha256": "f9aff88941253686e1634cc9884f43ab883d45ac0a801819f8715e16fbd287d5"
+    },
+    {
+      "id": 356,
+      "unchanged_from_baseline": true,
+      "offset": 4815504,
+      "bytes": 13440,
+      "sha256": "457823ef34a1d456c879540796a93cd8ae15e5bb914fcc10f10026b6cdd05fb9"
+    },
+    {
+      "id": 357,
+      "unchanged_from_baseline": true,
+      "offset": 4828944,
+      "bytes": 10560,
+      "sha256": "a683de2373b90a3c9db11e7ea723afc532e9a3e46ddcd26026ac522f586a8486"
+    },
+    {
+      "id": 358,
+      "unchanged_from_baseline": true,
+      "offset": 4839504,
+      "bytes": 5280,
+      "sha256": "aeaf58340564837c5e6a8a4bc5b1dfe306fd5d1b8006b392d8c25db767eac519"
+    },
+    {
+      "id": 359,
+      "unchanged_from_baseline": true,
+      "offset": 4844784,
+      "bytes": 26880,
+      "sha256": "8f45728ecb1fccd0f2e9b14ee8deeb64b8fb9650bc584ccb924604e8a5b061bb"
+    },
+    {
+      "id": 360,
+      "unchanged_from_baseline": true,
+      "offset": 4871664,
+      "bytes": 13440,
+      "sha256": "0fc6585fdd3d9b820e99a6739f619e3d9e9e100909da55fcd22344dc70bcb176"
+    },
+    {
+      "id": 361,
+      "unchanged_from_baseline": true,
+      "offset": 4885104,
+      "bytes": 26880,
+      "sha256": "58d759d277aac2bd01bac8dc9d54c2a85755a15faf7b4f787f5772c75bb87a1b"
+    },
+    {
+      "id": 362,
+      "unchanged_from_baseline": true,
+      "offset": 4911984,
+      "bytes": 13440,
+      "sha256": "a04a317360359fd8993d7f88555eb55aa6a8e45c4e36342d7986976233c0cc7c"
+    },
+    {
+      "id": 363,
+      "unchanged_from_baseline": true,
+      "offset": 4925424,
+      "bytes": 26880,
+      "sha256": "9cc2bb66df73801fc7b001ae44d8f5752e947a4b38376470ab5a424ae489ee2d"
+    },
+    {
+      "id": 364,
+      "unchanged_from_baseline": true,
+      "offset": 4952304,
+      "bytes": 13440,
+      "sha256": "1b96a973e3cb1ee378bb7cf0b41b650ac24b323e65d720badd468c5c1bb47a44"
+    },
+    {
+      "id": 365,
+      "unchanged_from_baseline": true,
+      "offset": 4965744,
+      "bytes": 26880,
+      "sha256": "02b36125db7a3b86fcd14dc467d60427d9e8fe6ef99ed569b59fe475388dc827"
+    },
+    {
+      "id": 366,
+      "unchanged_from_baseline": true,
+      "offset": 4992624,
+      "bytes": 13440,
+      "sha256": "b2ced2ddcf825b9de48a3c0fd7bcc2cb6c4b380dc5d21a2bde97be89f11e00b8"
+    },
+    {
+      "id": 367,
+      "unchanged_from_baseline": true,
+      "offset": 5006064,
+      "bytes": 26880,
+      "sha256": "e400b638759bdb7798880d8dd0cc5236bf457662bb30d5d096418cb356e9e893"
+    },
+    {
+      "id": 368,
+      "unchanged_from_baseline": true,
+      "offset": 5032944,
+      "bytes": 13440,
+      "sha256": "218b4cfce663e193eeea86882aeb4d6ea82d632de83e352309ab2d9a5629f35b"
+    },
+    {
+      "id": 369,
+      "unchanged_from_baseline": true,
+      "offset": 5046384,
+      "bytes": 26880,
+      "sha256": "8f45728ecb1fccd0f2e9b14ee8deeb64b8fb9650bc584ccb924604e8a5b061bb"
+    },
+    {
+      "id": 370,
+      "unchanged_from_baseline": true,
+      "offset": 5073264,
+      "bytes": 13440,
+      "sha256": "0fc6585fdd3d9b820e99a6739f619e3d9e9e100909da55fcd22344dc70bcb176"
+    },
+    {
+      "id": 371,
+      "unchanged_from_baseline": true,
+      "offset": 5086704,
+      "bytes": 10560,
+      "sha256": "194e6cd24ea7c75e448b66d020cd235990ef02b0dc20ca8f3f0ba6ba084eaf58"
+    },
+    {
+      "id": 372,
+      "unchanged_from_baseline": true,
+      "offset": 5097264,
+      "bytes": 5280,
+      "sha256": "bd6977e90e3ef0603399cf2bcbf2bf899f275b33020e15ab3fdd5e6f7d2e4c90"
+    },
+    {
+      "id": 373,
+      "unchanged_from_baseline": true,
+      "offset": 5102544,
+      "bytes": 26880,
+      "sha256": "b2e8eabcdf00fceeefeed69efc761f1e380fe3890d32bef63d1da09af9def1bb"
+    },
+    {
+      "id": 374,
+      "unchanged_from_baseline": true,
+      "offset": 5129424,
+      "bytes": 13440,
+      "sha256": "7d399e238760e22d19a315c38d1ceba2994e3e18a04baf03ba727d3296a4b099"
+    },
+    {
+      "id": 375,
+      "unchanged_from_baseline": true,
+      "offset": 5142864,
+      "bytes": 26880,
+      "sha256": "5b0ca8ea5fc264da97dffb8df15499471c295317f05f939754f2949a7ead3f73"
+    },
+    {
+      "id": 376,
+      "unchanged_from_baseline": true,
+      "offset": 5169744,
+      "bytes": 13440,
+      "sha256": "6e3dd5596b3efc076bf11bee2c8ffc62ce7afb7daecac6f7d463efda778393a0"
+    },
+    {
+      "id": 377,
+      "unchanged_from_baseline": true,
+      "offset": 5183184,
+      "bytes": 26880,
+      "sha256": "64a327466f202e4abd37ee5eba479893392968ba0808256b2e0743fb1a0a302b"
+    },
+    {
+      "id": 378,
+      "unchanged_from_baseline": true,
+      "offset": 5210064,
+      "bytes": 13440,
+      "sha256": "00c1c27d3f2dbbfc4a60124e9ddb196a787a91a8d689c06ce893121b84d5719d"
+    },
+    {
+      "id": 379,
+      "unchanged_from_baseline": true,
+      "offset": 5223504,
+      "bytes": 26880,
+      "sha256": "c39283a1fa79df2d4858db831418331b7551e1d673a6f12914aef88c227b3611"
+    },
+    {
+      "id": 380,
+      "unchanged_from_baseline": true,
+      "offset": 5250384,
+      "bytes": 13440,
+      "sha256": "e2b300434fbca8410f22a59eed068ff2d4e674e69da05fdda120f2cce31e14b0"
+    },
+    {
+      "id": 381,
+      "unchanged_from_baseline": true,
+      "offset": 5263824,
+      "bytes": 26880,
+      "sha256": "ebd867cc0d30e38310d031214e6fee9c5039202c1422a1e852d6bd03ec374e38"
+    },
+    {
+      "id": 382,
+      "unchanged_from_baseline": true,
+      "offset": 5290704,
+      "bytes": 13440,
+      "sha256": "ce510dbfd6edf6fc75b98b4ebf548dc119626a3c9c9e108222f7ff0b8ef4983e"
+    },
+    {
+      "id": 383,
+      "unchanged_from_baseline": true,
+      "offset": 5304144,
+      "bytes": 26880,
+      "sha256": "b2e8eabcdf00fceeefeed69efc761f1e380fe3890d32bef63d1da09af9def1bb"
+    },
+    {
+      "id": 384,
+      "unchanged_from_baseline": true,
+      "offset": 5331024,
+      "bytes": 13440,
+      "sha256": "7d399e238760e22d19a315c38d1ceba2994e3e18a04baf03ba727d3296a4b099"
+    },
+    {
+      "id": 385,
+      "unchanged_from_baseline": true,
+      "offset": 5344464,
+      "bytes": 10560,
+      "sha256": "a02599f0072c62e15259403ff53b8877933fba89a7d761464d2ffe1673e73be4"
+    },
+    {
+      "id": 386,
+      "unchanged_from_baseline": true,
+      "offset": 5355024,
+      "bytes": 5280,
+      "sha256": "83951c8a4f23de284c60fa35ac16af95987b2124ceaf3922b302da447d70d011"
+    },
+    {
+      "id": 387,
+      "unchanged_from_baseline": true,
+      "offset": 5360304,
+      "bytes": 26880,
+      "sha256": "fdfe144cd42be7068d513f38c963d1819be15ef8a31273fb76900670509445b3"
+    },
+    {
+      "id": 388,
+      "unchanged_from_baseline": true,
+      "offset": 5387184,
+      "bytes": 13440,
+      "sha256": "eb205c1b744759b184c6deb3286f9890938cf9fd3409b5b8bf1ad5535dcda5d3"
+    },
+    {
+      "id": 389,
+      "unchanged_from_baseline": true,
+      "offset": 5400624,
+      "bytes": 26880,
+      "sha256": "641ddd48821f1943723058bb955d7a53adaeb95b7daf1b408596392923a507dc"
+    },
+    {
+      "id": 390,
+      "unchanged_from_baseline": true,
+      "offset": 5427504,
+      "bytes": 13440,
+      "sha256": "60dfed39b041c3c7b7515db348e4e1163422bb67f0b0d70789cc76b9a1151495"
+    },
+    {
+      "id": 391,
+      "unchanged_from_baseline": true,
+      "offset": 5440944,
+      "bytes": 26880,
+      "sha256": "08b3c04718c192525e958f4ea4a24302547aedb9e9a1011b0400351e68664184"
+    },
+    {
+      "id": 392,
+      "unchanged_from_baseline": true,
+      "offset": 5467824,
+      "bytes": 13440,
+      "sha256": "4f6486a1b99912b4af38be7cbd9bc624f11a022105d99d2f7b1e0d8743685bb2"
+    },
+    {
+      "id": 393,
+      "unchanged_from_baseline": true,
+      "offset": 5481264,
+      "bytes": 26880,
+      "sha256": "63cfddca3c43fb2a212d284686147408b3a5ad7a0fa25623256d25a2a3d519cb"
+    },
+    {
+      "id": 394,
+      "unchanged_from_baseline": true,
+      "offset": 5508144,
+      "bytes": 13440,
+      "sha256": "c19b60875c7734000e728dd22295fd2a18c0d67e115fe61a3e43871861ecfb86"
+    },
+    {
+      "id": 395,
+      "unchanged_from_baseline": true,
+      "offset": 5521584,
+      "bytes": 26880,
+      "sha256": "3b77d579084537019598bf4ec0df1e42ae602e2d3513454002547636ebec19f9"
+    },
+    {
+      "id": 396,
+      "unchanged_from_baseline": true,
+      "offset": 5548464,
+      "bytes": 13440,
+      "sha256": "71f6008891aa7cf80d27ccd4d6eea0a2c9d74e2b865b8ec86e0bc5746eb4928e"
+    },
+    {
+      "id": 397,
+      "unchanged_from_baseline": true,
+      "offset": 5561904,
+      "bytes": 26880,
+      "sha256": "fdfe144cd42be7068d513f38c963d1819be15ef8a31273fb76900670509445b3"
+    },
+    {
+      "id": 398,
+      "unchanged_from_baseline": true,
+      "offset": 5588784,
+      "bytes": 13440,
+      "sha256": "eb205c1b744759b184c6deb3286f9890938cf9fd3409b5b8bf1ad5535dcda5d3"
+    },
+    {
+      "id": 399,
+      "unchanged_from_baseline": true,
+      "offset": 5602224,
+      "bytes": 10560,
+      "sha256": "a3a1b8674145ff44b6b675aa59c4dc0518d9c01ca876a61cdefa5cd2c1e795a3"
+    },
+    {
+      "id": 400,
+      "unchanged_from_baseline": true,
+      "offset": 5612784,
+      "bytes": 5280,
+      "sha256": "38250635bb02c9b5cd18f501b05ba87dfa1ed0fc3eb240977ca34fbba6be0283"
+    },
+    {
+      "id": 401,
+      "source": "exports/enemies/07_sentinela/hurt.idx4",
+      "offset": 5618064,
+      "bytes": 3440,
+      "sha256": "ff30bea04713eac82e7d804bbabc633135797b8ac7a657045f9e8e9cc84ebc87"
+    },
+    {
+      "id": 402,
+      "source": "exports/enemies/08_arconte/idle.idx4",
+      "offset": 5621504,
+      "bytes": 3440,
+      "sha256": "07c5fea5ed9cd7d316bb62e1c6a13036d4588a1df0cd2b7ee81dbf53cd2b03c9"
+    },
+    {
+      "id": 403,
+      "source": "exports/enemies/08_arconte/anticipation.idx4",
+      "offset": 5624944,
+      "bytes": 3440,
+      "sha256": "a84c9d451508e99438f820a8efa54464326fcfe28b6c716f69f64183ce901a2d"
+    },
+    {
+      "id": 404,
+      "source": "exports/enemies/08_arconte/attack.idx4",
+      "offset": 5628384,
+      "bytes": 3440,
+      "sha256": "dabfdc546a83a2e50501983625aa4cf52e05695602069a6dcee74b1578124c6e"
+    },
+    {
+      "id": 405,
+      "source": "exports/enemies/08_arconte/hurt.idx4",
+      "offset": 5631824,
+      "bytes": 3440,
+      "sha256": "65e85c5d2f287648fe8cec423b4434731a2019bed75fdee8857b7a44159b8a0e"
+    },
+    {
+      "id": 406,
+      "source": "exports/enemies/09_vigia_ossudo/idle.idx4",
+      "offset": 5635264,
+      "bytes": 3440,
+      "sha256": "fd00ce57b7ec1cfc84dd70f98efceaa27cb17bc629241a103e1e824ef5f9e56d"
+    },
+    {
+      "id": 407,
+      "source": "exports/enemies/09_vigia_ossudo/anticipation.idx4",
+      "offset": 5638704,
+      "bytes": 3440,
+      "sha256": "6292d564a948601c1b5838e126e4ef52840255ba98f61fe8cf2c04a222e5fe36"
+    },
+    {
+      "id": 408,
+      "source": "exports/enemies/09_vigia_ossudo/attack.idx4",
+      "offset": 5642144,
+      "bytes": 3440,
+      "sha256": "ba965b41473b8f4ad35b2b000b4ed5bdda4e2f8a53653ac15db0f1dd57fb6cb5"
+    },
+    {
+      "id": 409,
+      "source": "exports/enemies/09_vigia_ossudo/hurt.idx4",
+      "offset": 5645584,
+      "bytes": 3440,
+      "sha256": "3c82297d5469204afb54237cd72e94776b8d96cb9a9466a4540816f4d944cd1f"
+    },
+    {
+      "id": 410,
+      "source": "exports/enemies/10_hipogrifo_jovem/idle.idx4",
+      "offset": 5649024,
+      "bytes": 3440,
+      "sha256": "c96022533e5bd4afeff6175f68c83a5674ae635deae176565cb8185e2b85dfce"
+    },
+    {
+      "id": 411,
+      "source": "exports/enemies/10_hipogrifo_jovem/anticipation.idx4",
+      "offset": 5652464,
+      "bytes": 3440,
+      "sha256": "38fbfcaf845664d27fc1850724a8bc7a3c93f1f006f406338676c2756b14e8fa"
+    },
+    {
+      "id": 412,
+      "source": "exports/enemies/10_hipogrifo_jovem/attack.idx4",
+      "offset": 5655904,
+      "bytes": 3440,
+      "sha256": "f611ff1802b4140f7e5d52d2a2a9b13ba867097068f655279ed48b78ad2c899d"
+    },
+    {
+      "id": 413,
+      "source": "exports/enemies/10_hipogrifo_jovem/hurt.idx4",
+      "offset": 5659344,
+      "bytes": 3440,
+      "sha256": "f665389c65f682924a44809cd07a27492ba61157ff32b54f09ae6c527d3fd037"
+    },
+    {
+      "id": 414,
+      "source": "exports/enemies/11_hipogrifo/idle.idx4",
+      "offset": 5662784,
+      "bytes": 3440,
+      "sha256": "5274890cc2148a9f9046c90b6902b481a291cc377bad90e88069620fb67965be"
+    },
+    {
+      "id": 415,
+      "source": "exports/enemies/11_hipogrifo/anticipation.idx4",
+      "offset": 5666224,
+      "bytes": 3440,
+      "sha256": "e58ea9410323e96f6e4008d822f28e951d79c73cddd3c4509fcc502943417d2b"
+    },
+    {
+      "id": 416,
+      "source": "exports/enemies/11_hipogrifo/attack.idx4",
+      "offset": 5669664,
+      "bytes": 3440,
+      "sha256": "6df7a69e990d99aefd1984429c128b946e25429697263ecd0e8833bea259a808"
+    },
+    {
+      "id": 417,
+      "unchanged_from_baseline": true,
+      "offset": 5673104,
+      "bytes": 76800,
+      "sha256": "6e4b76aaf02abe73884adcca6e2a13e0a4cd1a9570149e1bdd6e248fb0cf95a8"
+    },
+    {
+      "id": 418,
+      "unchanged_from_baseline": true,
+      "offset": 5749904,
+      "bytes": 76800,
+      "sha256": "81a99db7b9bd8911b65ccc0a2219973e2db7f85df1b2a9beac01aa3d1b30467f"
+    },
+    {
+      "id": 419,
+      "unchanged_from_baseline": true,
+      "offset": 5826704,
+      "bytes": 76800,
+      "sha256": "fdc149a3169cf88ee992406a28f2f2e4bd4d491487122510d68c86248d9e036e"
+    },
+    {
+      "id": 420,
+      "unchanged_from_baseline": true,
+      "offset": 5903504,
+      "bytes": 76800,
+      "sha256": "16611ad07d137a9c91f926b1e66e14d7e1fe6a1d6b515f8614fbed1712bab195"
+    },
+    {
+      "id": 421,
+      "unchanged_from_baseline": true,
+      "offset": 5980304,
+      "bytes": 76800,
+      "sha256": "77250266b9f8e0509676e5ebdd42b4bcde2e80ca99a6e3de8eec7af4dc4950c1"
+    },
+    {
+      "id": 422,
+      "unchanged_from_baseline": true,
+      "offset": 6057104,
+      "bytes": 76800,
+      "sha256": "912e2bdd9b03893951b4d25f230da7e323571a1c8a8b6b4003919f31a884342c"
+    },
+    {
+      "id": 423,
+      "unchanged_from_baseline": true,
+      "offset": 6133904,
+      "bytes": 76800,
+      "sha256": "31a355e9d38ac86529b57ced517a15747be30f8c357cd1963c200c4c85207999"
+    },
+    {
+      "id": 424,
+      "unchanged_from_baseline": true,
+      "offset": 6210704,
+      "bytes": 76800,
+      "sha256": "58e95e4d9f6c298ada36a0fbcc4524555743cbb2c7072771899564f29348c7aa"
+    },
+    {
+      "id": 425,
+      "unchanged_from_baseline": true,
+      "offset": 6287504,
+      "bytes": 256,
+      "sha256": "d807da80e4e038bb8db1c60f4f18171bb5e37ee1cc98be1fc80128b962b1fd53"
+    },
+    {
+      "id": 426,
+      "unchanged_from_baseline": true,
+      "offset": 6287760,
+      "bytes": 4096,
+      "sha256": "15888aa037a5a167318771f70f31620fd668e0768ab4c90a249ed6f11f8b03b4"
+    },
+    {
+      "id": 427,
+      "unchanged_from_baseline": true,
+      "offset": 6291856,
+      "bytes": 256,
+      "sha256": "5a4e8279967f52507fe9366bc1bfd79cb207891d1ea22d350fa23673eb2f3448"
+    },
+    {
+      "id": 428,
+      "unchanged_from_baseline": true,
+      "offset": 6292112,
+      "bytes": 4096,
+      "sha256": "b3d2eec008a4443698aa37c7592dc452f58d935c8e0c3cfb431288e4fc8a15e1"
+    },
+    {
+      "id": 429,
+      "unchanged_from_baseline": true,
+      "offset": 6296208,
+      "bytes": 256,
+      "sha256": "ac62a3acc0f51f11c63c69c4af3ee11e816455ef7b60faf9751b6699140aa79c"
+    },
+    {
+      "id": 430,
+      "unchanged_from_baseline": true,
+      "offset": 6296464,
+      "bytes": 4096,
+      "sha256": "8711bb3f814f27ec461da56181821b7fd3f3667945130452114b0969d519fde9"
+    },
+    {
+      "id": 431,
+      "unchanged_from_baseline": true,
+      "offset": 6300560,
+      "bytes": 256,
+      "sha256": "9be7ea64868622f3bfde5e33a35a8838599843c92e4a7b487a0caed5f7b27ecb"
+    },
+    {
+      "id": 432,
+      "unchanged_from_baseline": true,
+      "offset": 6300816,
+      "bytes": 4096,
+      "sha256": "54c4a0a2db30cdd088d4f752df16d72cf165605696947a377dd4962e243121a1"
+    },
+    {
+      "id": 433,
+      "unchanged_from_baseline": true,
+      "offset": 6304912,
+      "bytes": 256,
+      "sha256": "ab1165b6cf8a0c1a6ebbb686263d99c8cde80018d779a667125b80aeb239cace"
+    },
+    {
+      "id": 434,
+      "unchanged_from_baseline": true,
+      "offset": 6305168,
+      "bytes": 4096,
+      "sha256": "35c935499f3fa947121034f442da4a63d10a227f106dddbff54f13beae76131f"
+    },
+    {
+      "id": 435,
+      "unchanged_from_baseline": true,
+      "offset": 6309264,
+      "bytes": 256,
+      "sha256": "c6a8390aa2cc5cc311eab9e8c4caff836a1cfc2e440c3823811ede191ebb3bfc"
+    },
+    {
+      "id": 436,
+      "unchanged_from_baseline": true,
+      "offset": 6309520,
+      "bytes": 4096,
+      "sha256": "cf1481a2e90c5941180ace36c504b9a4a647baadd02668213133de70eb3fd983"
+    },
+    {
+      "id": 437,
+      "unchanged_from_baseline": true,
+      "offset": 6313616,
+      "bytes": 256,
+      "sha256": "2e60f9087f6f0f838e7a576d46c330ec616dc26cea95781f49f839032f88e06b"
+    },
+    {
+      "id": 438,
+      "unchanged_from_baseline": true,
+      "offset": 6313872,
+      "bytes": 4096,
+      "sha256": "7f1531027ce7e091bad0ff83c107ba48e0561d609d8124417899371933d52e5f"
+    },
+    {
+      "id": 439,
+      "unchanged_from_baseline": true,
+      "offset": 6317968,
+      "bytes": 256,
+      "sha256": "d95386ddb702b5110794efd2eb33bb22e1e678d2672c612dc1e9501ef9b1c517"
+    },
+    {
+      "id": 440,
+      "unchanged_from_baseline": true,
+      "offset": 6318224,
+      "bytes": 4096,
+      "sha256": "c56a936b06907eb5cc7bada868ebb3ca87a802c8462e71f4ab0706d9aa307c97"
+    },
+    {
+      "id": 441,
+      "unchanged_from_baseline": true,
+      "offset": 6322320,
+      "bytes": 256,
+      "sha256": "c928cae3f846ded57f4b21dcb9f8b8abf2ecd6783110520c1c456acbac241e48"
+    },
+    {
+      "id": 442,
+      "unchanged_from_baseline": true,
+      "offset": 6322576,
+      "bytes": 4096,
+      "sha256": "910d0122d393dbb90087a05a52ded55a701e975f31b9e4cbcee8da6860072b5a"
+    },
+    {
+      "id": 443,
+      "unchanged_from_baseline": true,
+      "offset": 6326672,
+      "bytes": 256,
+      "sha256": "b171837fa291718acd7c94e6d180a2bea0ebddd3176b3bc91248b22140287167"
+    },
+    {
+      "id": 444,
+      "unchanged_from_baseline": true,
+      "offset": 6326928,
+      "bytes": 4096,
+      "sha256": "8210f5c32dd98e02dce2959349b1793c7f156ed2a2ceef7da1030e1e5646a9ee"
+    },
+    {
+      "id": 445,
+      "unchanged_from_baseline": true,
+      "offset": 6331024,
+      "bytes": 256,
+      "sha256": "3ae7bfd935a6e625a498ff49c83a34a97544649d2da4018432f9ee14e5a6f957"
+    },
+    {
+      "id": 446,
+      "unchanged_from_baseline": true,
+      "offset": 6331280,
+      "bytes": 4096,
+      "sha256": "30be0c28d3aa7c99579461d502c74418c685f02b997f83faffd18c2088d0571c"
+    },
+    {
+      "id": 447,
+      "unchanged_from_baseline": true,
+      "offset": 6335376,
+      "bytes": 256,
+      "sha256": "2fa7bf2b7267e36389382ad5f0c65c4687fe1348f841ddaecb3832c9f49dc68d"
+    },
+    {
+      "id": 448,
+      "unchanged_from_baseline": true,
+      "offset": 6335632,
+      "bytes": 4096,
+      "sha256": "5e146c51fbd31e229757d3d2bf41dcdac64ffe8167f3220f327707a1d80930ae"
+    },
+    {
+      "id": 449,
+      "unchanged_from_baseline": true,
+      "offset": 6339728,
+      "bytes": 256,
+      "sha256": "7fbdc46980f96cd7599ede55b97aa6bc6137c310354dbbb1fe1830968bc5705c"
+    },
+    {
+      "id": 450,
+      "unchanged_from_baseline": true,
+      "offset": 6339984,
+      "bytes": 4096,
+      "sha256": "31555225b3c2c1b0dc0b2d53a1dd87b4ddc998fb8ce9fbfebe1c2613fe7d5a49"
+    },
+    {
+      "id": 451,
+      "unchanged_from_baseline": true,
+      "offset": 6344080,
+      "bytes": 256,
+      "sha256": "2738378f36ffcac1ec4c60f49b796a2ca500fd333348235939fb07fdbcc91f4e"
+    },
+    {
+      "id": 452,
+      "unchanged_from_baseline": true,
+      "offset": 6344336,
+      "bytes": 4096,
+      "sha256": "b67c348f53a3673bb5f7adc919d56ca015da601da83c8da69f9363380e428de1"
+    },
+    {
+      "id": 453,
+      "unchanged_from_baseline": true,
+      "offset": 6348432,
+      "bytes": 256,
+      "sha256": "1acebe458232a7e7ca2b94946be4d3421c78c269c014a97a5bc7ce2d0ad48939"
+    },
+    {
+      "id": 454,
+      "unchanged_from_baseline": true,
+      "offset": 6348688,
+      "bytes": 4096,
+      "sha256": "a1b05d983a011b6ea6c1929a4540710daae104a1b21c9479b24567814e78da90"
+    },
+    {
+      "id": 455,
+      "unchanged_from_baseline": true,
+      "offset": 6352784,
+      "bytes": 256,
+      "sha256": "499dd572be3ecbca475a526bad6a6807d808b7511f762851e0210e2dacc8f56e"
+    },
+    {
+      "id": 456,
+      "unchanged_from_baseline": true,
+      "offset": 6353040,
+      "bytes": 4096,
+      "sha256": "d490cc593d99f08d1500e6cc678ee7019023a9e87cadbecf8fca238a4947a74f"
+    },
+    {
+      "id": 457,
+      "unchanged_from_baseline": true,
+      "offset": 6357136,
+      "bytes": 256,
+      "sha256": "c31158a5bf412e0133848ad3f0835e73b2adbbdde9d280516a327134414430d8"
+    },
+    {
+      "id": 458,
+      "unchanged_from_baseline": true,
+      "offset": 6357392,
+      "bytes": 4096,
+      "sha256": "1dfc75584b428367a3279dfd27cf5693d446baaba76ce80490a4cf5fcc23bcff"
+    },
+    {
+      "id": 459,
+      "source": "exports/enemies/11_hipogrifo/hurt.idx4",
+      "offset": 6361488,
+      "bytes": 3440,
+      "sha256": "be5dd4c3d767497468d8d1f98ba571d1c60bb1a302f57062276d8b5bd631ef91"
+    },
+    {
+      "id": 460,
+      "source": "exports/enemies/12_hipogrifo_marcado/idle.idx4",
+      "offset": 6364928,
+      "bytes": 3440,
+      "sha256": "f4f903eb1a71e8992c6f8df3462ba431af689eb34d7d6ec6ffa5fe9f1f12e016"
+    },
+    {
+      "id": 461,
+      "source": "exports/enemies/12_hipogrifo_marcado/anticipation.idx4",
+      "offset": 6368368,
+      "bytes": 3440,
+      "sha256": "6d51584b60ab92eef0cac634791c4a694090d43697a3da0fffb52d01eebc0827"
+    },
+    {
+      "id": 462,
+      "source": "exports/enemies/12_hipogrifo_marcado/attack.idx4",
+      "offset": 6371808,
+      "bytes": 3440,
+      "sha256": "db4f17a116014e3b265413d94688a62e6b7b4515abc780e09f71edafdc117c54"
+    },
+    {
+      "id": 463,
+      "source": "exports/enemies/12_hipogrifo_marcado/hurt.idx4",
+      "offset": 6375248,
+      "bytes": 3440,
+      "sha256": "91243cc3a67bbef8ad67839ff981452dbb73e910bda6aa74e9ea1793285a4d4d"
+    },
+    {
+      "id": 464,
+      "unchanged_from_baseline": true,
+      "offset": 6378688,
+      "bytes": 2048,
+      "sha256": "ee0851a9972c78f2498c01704422422d9bad4e3dcd4aaf2eb142dddc83d35aa0"
+    },
+    {
+      "id": 465,
+      "unchanged_from_baseline": true,
+      "offset": 6380736,
+      "bytes": 2048,
+      "sha256": "e022d0bd6d57b952bfb023c1cf7012f64794a4a7c834819cbbc1d2c0b72d5935"
+    },
+    {
+      "id": 466,
+      "unchanged_from_baseline": true,
+      "offset": 6382784,
+      "bytes": 2048,
+      "sha256": "f133a49d9b3ce3e167fb2aa96fd7826ae14d4a148dfb0aa7afe7cb20de0a1890"
+    },
+    {
+      "id": 467,
+      "unchanged_from_baseline": true,
+      "offset": 6384832,
+      "bytes": 2048,
+      "sha256": "8aea784b6a8243d5e5405d4e54655a9a8a374fc39d63dcc33b5a6f81f96ed96d"
+    },
+    {
+      "id": 468,
+      "unchanged_from_baseline": true,
+      "offset": 6386880,
+      "bytes": 2048,
+      "sha256": "e0fc886508eede1820d6a96a32bb17b8ad6d12ca7e840518134119084d3791a9"
+    },
+    {
+      "id": 469,
+      "unchanged_from_baseline": true,
+      "offset": 6388928,
+      "bytes": 2048,
+      "sha256": "15ad427e4291ed3a61083c11c924ba1eb1fb4dd2c7d81dbf0a187e2db2dce514"
+    },
+    {
+      "id": 470,
+      "unchanged_from_baseline": true,
+      "offset": 6390976,
+      "bytes": 2048,
+      "sha256": "5cdb6367044ebadb431dedd02c77fdc7e3c07c308e7e5bad73788443d551eb80"
+    },
+    {
+      "id": 471,
+      "unchanged_from_baseline": true,
+      "offset": 6393024,
+      "bytes": 2048,
+      "sha256": "7bce27c4230367fc4722bae6480460ca52d925a89b9ce1bdabe2753f2ffde9bf"
+    },
+    {
+      "id": 472,
+      "unchanged_from_baseline": true,
+      "offset": 6395072,
+      "bytes": 2048,
+      "sha256": "8a9a4d3a2d4836bcf71043bc452c8aee895af058c4eca8d80aefea1856dd863b"
+    },
+    {
+      "id": 473,
+      "unchanged_from_baseline": true,
+      "offset": 6397120,
+      "bytes": 2048,
+      "sha256": "923993362dbe2d814b23dda9c891ea21cf4668771c9c59cea7621bbb0c65dce8"
+    },
+    {
+      "id": 474,
+      "unchanged_from_baseline": true,
+      "offset": 6399168,
+      "bytes": 2048,
+      "sha256": "a2bf19916fa4ec5e0583ee465e2fb8c6623c75a8440d0d971c1f8f47dc2db978"
+    },
+    {
+      "id": 475,
+      "unchanged_from_baseline": true,
+      "offset": 6401216,
+      "bytes": 2048,
+      "sha256": "04677932e9baf8642ba9361229b2b404ea9f16a67f0469290200809d0ef7843d"
+    },
+    {
+      "id": 476,
+      "unchanged_from_baseline": true,
+      "offset": 6403264,
+      "bytes": 2048,
+      "sha256": "77fddda45c20729eee199e8b2591a50b7d201980a07bc06f40da953df91cc215"
+    },
+    {
+      "id": 477,
+      "unchanged_from_baseline": true,
+      "offset": 6405312,
+      "bytes": 2048,
+      "sha256": "0a73a9cea099a015fb619dd66fecfd34ab7436012230c85d6d3c6e93d8dc7e3a"
+    },
+    {
+      "id": 478,
+      "unchanged_from_baseline": true,
+      "offset": 6407360,
+      "bytes": 2048,
+      "sha256": "0b41ce6411885b03d1196296033ddd4416151c39b0f996c09afba8af2abaaaf3"
+    },
+    {
+      "id": 479,
+      "unchanged_from_baseline": true,
+      "offset": 6409408,
+      "bytes": 2048,
+      "sha256": "7c14dbda20f9c442682a35d2b82e7066e8cc601af352cf35fc09fbe217a42ce2"
+    },
+    {
+      "id": 480,
+      "source": "exports/enemies/13_hipogrifo_alfa/idle.idx4",
+      "offset": 6411456,
+      "bytes": 3440,
+      "sha256": "159a56b28896b32be1b018b8b894183dba9525767767232c92c4c3717b975416"
+    },
+    {
+      "id": 481,
+      "source": "exports/enemies/13_hipogrifo_alfa/anticipation.idx4",
+      "offset": 6414896,
+      "bytes": 3440,
+      "sha256": "099305b4460697c589b4517168f8342d94b061aafb8f2f7f5fa94aa498f67ee2"
+    },
+    {
+      "id": 482,
+      "source": "exports/enemies/13_hipogrifo_alfa/attack.idx4",
+      "offset": 6418336,
+      "bytes": 3440,
+      "sha256": "74ac0c8f52df2fa5661dc9511bf17282f421500f8957f305e68517da88f12e68"
+    },
+    {
+      "id": 483,
+      "source": "exports/enemies/13_hipogrifo_alfa/hurt.idx4",
+      "offset": 6421776,
+      "bytes": 3440,
+      "sha256": "efbdc74cf992d6fab1d5a20c5274e7f373c06f1306fc9d7e6e62168c369859e6"
+    },
+    {
+      "id": 484,
+      "source": "exports/enemies/14_mimico_do_bosque/idle.idx4",
+      "offset": 6425216,
+      "bytes": 3440,
+      "sha256": "2bcfc831fcce4b259e5f4e94b97f64cd1609e33e458093ec04c4af671f87378d"
+    },
+    {
+      "id": 485,
+      "source": "exports/enemies/14_mimico_do_bosque/anticipation.idx4",
+      "offset": 6428656,
+      "bytes": 3440,
+      "sha256": "6f18962e48831dc8fc8bd198c7c20659f2dd1abef5f88f853ab94a5b481093e2"
+    },
+    {
+      "id": 486,
+      "source": "exports/enemies/14_mimico_do_bosque/attack.idx4",
+      "offset": 6432096,
+      "bytes": 3440,
+      "sha256": "ca85d7989cc3adf2f0d4bf18619ba49128a469d409a68eb19fe78b5353d02e1c"
+    },
+    {
+      "id": 487,
+      "source": "exports/enemies/14_mimico_do_bosque/hurt.idx4",
+      "offset": 6435536,
+      "bytes": 3440,
+      "sha256": "49d1723f1018bb17f8126af7e33049813996741f23eacf59dae46737e02b493a"
+    },
+    {
+      "id": 488,
+      "source": "exports/enemies/15_mimico_das_ruinas/idle.idx4",
+      "offset": 6438976,
+      "bytes": 3440,
+      "sha256": "1108155a22cee07e1658809babe791576ffc57c344c85f0e905829bdc2392451"
+    },
+    {
+      "id": 489,
+      "source": "exports/enemies/15_mimico_das_ruinas/anticipation.idx4",
+      "offset": 6442416,
+      "bytes": 3440,
+      "sha256": "bec9031374772a8397876b9f4b4b75f680921d9df335fce3fe3a3f31a831d336"
+    },
+    {
+      "id": 490,
+      "source": "exports/enemies/15_mimico_das_ruinas/attack.idx4",
+      "offset": 6445856,
+      "bytes": 3440,
+      "sha256": "96fb619cb9773c09e680226064907fba03dd91a2802afcc26766db0c7ac89a71"
+    },
+    {
+      "id": 491,
+      "source": "exports/enemies/15_mimico_das_ruinas/hurt.idx4",
+      "offset": 6449296,
+      "bytes": 3440,
+      "sha256": "85bcda91184d1923e140c9fad538fe75683ac06b87f69e446c7ba510096d1f4f"
+    },
+    {
+      "id": 492,
+      "source": "exports/enemies/16_mimico_do_porto/idle.idx4",
+      "offset": 6452736,
+      "bytes": 3440,
+      "sha256": "3112e1879c218aded4a835a17d96f64051d23852672d3cc78473a73ede679b47"
+    },
+    {
+      "id": 493,
+      "source": "exports/enemies/16_mimico_do_porto/anticipation.idx4",
+      "offset": 6456176,
+      "bytes": 3440,
+      "sha256": "a68bfa0e7a648225f839de22520bad4ed09237105d33d184a91cde1a3b46d20b"
+    },
+    {
+      "id": 494,
+      "source": "exports/enemies/16_mimico_do_porto/attack.idx4",
+      "offset": 6459616,
+      "bytes": 3440,
+      "sha256": "ad5693f1cbee90dbd71e9a5d37fe4cccdb27ec6453539fcb5a4514fdb947ed2c"
+    },
+    {
+      "id": 495,
+      "source": "exports/enemies/16_mimico_do_porto/hurt.idx4",
+      "offset": 6463056,
+      "bytes": 3440,
+      "sha256": "b581dbce7ac810750c49cc87812d7c1d1015e5336553cc1b67d54c2c4f03078a"
+    },
+    {
+      "id": 496,
+      "source": "exports/enemies/17_mimico_do_castelo/idle.idx4",
+      "offset": 6466496,
+      "bytes": 3440,
+      "sha256": "1d9f7b163be9a4b6daa1b79aaa4b6e461756be08f3c171322e92dbd21d9d0ba0"
+    },
+    {
+      "id": 497,
+      "source": "exports/enemies/17_mimico_do_castelo/anticipation.idx4",
+      "offset": 6469936,
+      "bytes": 3440,
+      "sha256": "cc876614b84729a42a947cd7cb703792343db2d8d2a2442976b159cb1422dd4a"
+    },
+    {
+      "id": 498,
+      "source": "exports/enemies/17_mimico_do_castelo/attack.idx4",
+      "offset": 6473376,
+      "bytes": 3440,
+      "sha256": "2c7e075ea513f217e84ad13981f2783333ea2107b6b33c140baf79f7547d4fab"
+    },
+    {
+      "id": 499,
+      "source": "exports/enemies/17_mimico_do_castelo/hurt.idx4",
+      "offset": 6476816,
+      "bytes": 3440,
+      "sha256": "c9f772df3abea813269ef9c8eb973c57b4892f56c3c642d3e0e9cf144fc7b9a3"
+    },
+    {
+      "id": 500,
+      "source": "exports/enemies/18_odran/idle.idx4",
+      "offset": 6480256,
+      "bytes": 3440,
+      "sha256": "1ffe8d481b98120e19978721a124896b3b23814f8ccbcf7dc65b318db1c330f1"
+    },
+    {
+      "id": 501,
+      "source": "exports/enemies/18_odran/anticipation.idx4",
+      "offset": 6483696,
+      "bytes": 3440,
+      "sha256": "631623f68ade2e04b43ef754878297307b38fd335b777dd4f40a4f9550d50c41"
+    },
+    {
+      "id": 502,
+      "source": "exports/enemies/18_odran/attack.idx4",
+      "offset": 6487136,
+      "bytes": 3440,
+      "sha256": "f3cc01615315c572f51db083d27b7b026febf3c24c30cc75f3ae957a1306c580"
+    },
+    {
+      "id": 503,
+      "source": "exports/enemies/18_odran/hurt.idx4",
+      "offset": 6490576,
+      "bytes": 3440,
+      "sha256": "b39d06a9a16ab1fa471f4eb7757c6835a26b5f568407fd73abce9aab3def565b"
+    },
+    {
+      "id": 504,
+      "source": "exports/enemies/19_coracao_do_veu/idle.idx4",
+      "offset": 6494016,
+      "bytes": 3440,
+      "sha256": "c8c29aa42dfed72e59a9745e9e6f131506bd9101aa6fc6aec90a56f44acc1436"
+    },
+    {
+      "id": 505,
+      "source": "exports/enemies/19_coracao_do_veu/anticipation.idx4",
+      "offset": 6497456,
+      "bytes": 3440,
+      "sha256": "3a7726ef76ebc7c78a0b2489297aaa652b5578c64f47efd1b72a93e91842f0c7"
+    },
+    {
+      "id": 506,
+      "source": "exports/enemies/19_coracao_do_veu/attack.idx4",
+      "offset": 6500896,
+      "bytes": 3440,
+      "sha256": "8aa69bdc2f8e4ebd4566ed5c5d3dc53207be4a70a706f1d3ebc85c662285ef7b"
+    },
+    {
+      "id": 507,
+      "source": "exports/enemies/19_coracao_do_veu/hurt.idx4",
+      "offset": 6504336,
+      "bytes": 3440,
+      "sha256": "21b8296219bc064cece79f531348e43bca2819010e9d5cadc77dc9fb7254b41c"
+    },
+    {
+      "id": 508,
+      "source": "exports/enemies/20_sentinela_coral/idle.idx4",
+      "offset": 6507776,
+      "bytes": 3440,
+      "sha256": "6645f619a6c5d64521fa033f3092eb7922883691f64e1f96c628e8c73170f93c"
+    },
+    {
+      "id": 509,
+      "source": "exports/enemies/20_sentinela_coral/anticipation.idx4",
+      "offset": 6511216,
+      "bytes": 3440,
+      "sha256": "7a17cd942b076e38bc9440a469e420a3a11554df2b66c2c32fc9fc279bb0fcfa"
+    },
+    {
+      "id": 510,
+      "source": "exports/enemies/20_sentinela_coral/attack.idx4",
+      "offset": 6514656,
+      "bytes": 3440,
+      "sha256": "fb992bb5d6e29a251683747844d2b3eea59c3c0f805d85f553ea72cdb110be38"
+    },
+    {
+      "id": 511,
+      "source": "exports/enemies/20_sentinela_coral/hurt.idx4",
+      "offset": 6518096,
+      "bytes": 3440,
+      "sha256": "2e3a6c1f3169c7541f196fb687daf0f4df167f3a577db45b891173461cbd8518"
+    },
+    {
+      "id": 512,
+      "source": "exports/enemies/21_arraia_runar/idle.idx4",
+      "offset": 6521536,
+      "bytes": 3440,
+      "sha256": "fe1ff8bc907ca3e4e462877ae78f7da1aebdab062011e00df4eb9814102e3375"
+    },
+    {
+      "id": 513,
+      "source": "exports/enemies/21_arraia_runar/anticipation.idx4",
+      "offset": 6524976,
+      "bytes": 3440,
+      "sha256": "270af4a462f19657d73af61568575769f189fd7c135f36b64dfee8cab8f7c310"
+    },
+    {
+      "id": 514,
+      "source": "exports/enemies/21_arraia_runar/attack.idx4",
+      "offset": 6528416,
+      "bytes": 3440,
+      "sha256": "b9edb3868289e0b2d18a9960351047131b0956ec1181a55e830dcd239c3fcdd2"
+    },
+    {
+      "id": 515,
+      "source": "exports/enemies/21_arraia_runar/hurt.idx4",
+      "offset": 6531856,
+      "bytes": 3440,
+      "sha256": "8d19ebceb4ef46f8f7e460f397bb105828b24e1a5eecda8d4d293edca8832fb1"
+    },
+    {
+      "id": 516,
+      "source": "exports/enemies/22_corsario_afogado/idle.idx4",
+      "offset": 6535296,
+      "bytes": 3440,
+      "sha256": "49aa38539d2b511cb83a8761337a5256b532c086513957943e6773b188bc0acc"
+    },
+    {
+      "id": 517,
+      "source": "exports/enemies/22_corsario_afogado/anticipation.idx4",
+      "offset": 6538736,
+      "bytes": 3440,
+      "sha256": "f803b409c13c1287d3c9e5835a2cf2b46c9462cd1a867d29acc78db398d30d91"
+    },
+    {
+      "id": 518,
+      "source": "exports/enemies/22_corsario_afogado/attack.idx4",
+      "offset": 6542176,
+      "bytes": 3440,
+      "sha256": "a2a97238a0a6cd486da097a87f192caf035a5a7f516f66620f7aed9c0101e520"
+    },
+    {
+      "id": 519,
+      "source": "exports/enemies/22_corsario_afogado/hurt.idx4",
+      "offset": 6545616,
+      "bytes": 3440,
+      "sha256": "44a54fd5dc5c8df525b42ffd81b25d21614d156a2707ed608e518b0650967ff3"
+    },
+    {
+      "id": 520,
+      "source": "exports/enemies/23_oraculo_abissal/idle.idx4",
+      "offset": 6549056,
+      "bytes": 3440,
+      "sha256": "2909438a83214570f0849f2c6d9e3520700574d71ee4de10b258e1bace4f8ea4"
+    },
+    {
+      "id": 521,
+      "source": "exports/enemies/23_oraculo_abissal/anticipation.idx4",
+      "offset": 6552496,
+      "bytes": 3440,
+      "sha256": "3166bc47a830bf65accf746af81fa52e84f7fa7d692ce3a3c6c5289bd792691c"
+    },
+    {
+      "id": 522,
+      "source": "exports/enemies/23_oraculo_abissal/attack.idx4",
+      "offset": 6555936,
+      "bytes": 3440,
+      "sha256": "1607a59b6cb368dc149b5d5c47b42b8e7e9a1376c704a6d389be0ad8ff075b77"
+    },
+    {
+      "id": 523,
+      "source": "exports/enemies/23_oraculo_abissal/hurt.idx4",
+      "offset": 6559376,
+      "bytes": 3440,
+      "sha256": "19fe925d2febe2fb9689de19102dc492ad31a9cb1348ea24f5c6744b71b2f40e"
+    },
+    {
+      "id": 524,
+      "source": "exports/enemies/24_thalvor/idle.idx4",
+      "offset": 6562816,
+      "bytes": 3440,
+      "sha256": "936a83276e00bd263ec7c53280101fe2d8e1bde0b90c952c49092facd233a3b7"
+    },
+    {
+      "id": 525,
+      "source": "exports/enemies/24_thalvor/anticipation.idx4",
+      "offset": 6566256,
+      "bytes": 3440,
+      "sha256": "be67afe0aca7e77c0bd8f1517d578bb2dc279891cd4e8c5e7904aed7a0f0e55c"
+    },
+    {
+      "id": 526,
+      "source": "exports/enemies/24_thalvor/attack.idx4",
+      "offset": 6569696,
+      "bytes": 3440,
+      "sha256": "9432825b8930af751a8dd765d4c6cd55a0174e6d531821483efea7282e1b314c"
+    },
+    {
+      "id": 527,
+      "source": "exports/enemies/24_thalvor/hurt.idx4",
+      "offset": 6573136,
+      "bytes": 3440,
+      "sha256": "5c75b93d96be9dfc1396ea8dd7651f5f735bfb6c596ec5ab2244bbbd612b4bff"
+    },
+    {
+      "id": 528,
+      "source": "exports/enemies/25_caranguejo_ferreo/idle.idx4",
+      "offset": 6576576,
+      "bytes": 3440,
+      "sha256": "d3d8afe663757277fec54b2e96ca6d047e340ff6a83ccd00142da008cd3c02bb"
+    },
+    {
+      "id": 529,
+      "source": "exports/enemies/25_caranguejo_ferreo/anticipation.idx4",
+      "offset": 6580016,
+      "bytes": 3440,
+      "sha256": "eae6c47e8a1a8ec7bd3a5911766e325f8debd46232659afeff43c66e5e1e45f4"
+    },
+    {
+      "id": 530,
+      "source": "exports/enemies/25_caranguejo_ferreo/attack.idx4",
+      "offset": 6583456,
+      "bytes": 3440,
+      "sha256": "bcc9872eafc1bcdcc6e977545bce79088a8a72dd601a6490bf12e3a79217c5ea"
+    },
+    {
+      "id": 531,
+      "source": "exports/enemies/25_caranguejo_ferreo/hurt.idx4",
+      "offset": 6586896,
+      "bytes": 3440,
+      "sha256": "cd9145da2afa6a218eebedbe7c4df691f513f86c5d8fc8b718ccc1cc557d5b70"
+    },
+    {
+      "id": 532,
+      "source": "exports/enemies/26_mao_de_cinza/idle.idx4",
+      "offset": 6590336,
+      "bytes": 3440,
+      "sha256": "d21b060a5833acf14e0b21e9619f31749d3305e49f2787765a54ac6281169189"
+    },
+    {
+      "id": 533,
+      "source": "exports/enemies/26_mao_de_cinza/anticipation.idx4",
+      "offset": 6593776,
+      "bytes": 3440,
+      "sha256": "8b37afc4ff5140a2572ee2eb8a045569938606bf24bdbb100c38179a26604ec9"
+    },
+    {
+      "id": 534,
+      "source": "exports/enemies/26_mao_de_cinza/attack.idx4",
+      "offset": 6597216,
+      "bytes": 3440,
+      "sha256": "4f41997d43d3697adde1cfb14ea810afeee33638038616a39719a275a03b256a"
+    },
+    {
+      "id": 535,
+      "source": "exports/enemies/26_mao_de_cinza/hurt.idx4",
+      "offset": 6600656,
+      "bytes": 3440,
+      "sha256": "4c084084f65105b28d078583f7372929aba376da27a536d6c27a2f8b92b86bf5"
+    },
+    {
+      "id": 536,
+      "source": "exports/enemies/27_automato_dourado/idle.idx4",
+      "offset": 6604096,
+      "bytes": 3440,
+      "sha256": "e69009a2ce092807b72d1d4eddb812761184bf5ccb2da6478dc526f1e55b07c0"
+    },
+    {
+      "id": 537,
+      "source": "exports/enemies/27_automato_dourado/anticipation.idx4",
+      "offset": 6607536,
+      "bytes": 3440,
+      "sha256": "c0963537d178cf61e5c175ec4b5a6c76594d8e5334767f834f8591620c7126ad"
+    },
+    {
+      "id": 538,
+      "source": "exports/enemies/27_automato_dourado/attack.idx4",
+      "offset": 6610976,
+      "bytes": 3440,
+      "sha256": "85cdd72f697e7c937c07bfe52a5a3a5de44277ff6137c4b9fd3e822edc6cf0f3"
+    },
+    {
+      "id": 539,
+      "source": "exports/enemies/27_automato_dourado/hurt.idx4",
+      "offset": 6614416,
+      "bytes": 3440,
+      "sha256": "d6b05921ae833f770e768855353da09f6e9a279855e82be0c13a30f0c8817877"
+    },
+    {
+      "id": 540,
+      "source": "exports/enemies/28_eco_do_veu/idle.idx4",
+      "offset": 6617856,
+      "bytes": 3440,
+      "sha256": "49b31a8257b68b443128ce581a6d1ac8f36f88da82c41c5efa99f0a97e74e259"
+    },
+    {
+      "id": 541,
+      "source": "exports/enemies/28_eco_do_veu/anticipation.idx4",
+      "offset": 6621296,
+      "bytes": 3440,
+      "sha256": "28d92bbe3efd09b10758b5ea49a9f15656731a54038d4b79783018a2c9848944"
+    },
+    {
+      "id": 542,
+      "source": "exports/enemies/28_eco_do_veu/attack.idx4",
+      "offset": 6624736,
+      "bytes": 3440,
+      "sha256": "eeaaae5be10c2d3262a0305448bec465c4c3352d2367961bba21993e16ea4a40"
+    },
+    {
+      "id": 543,
+      "source": "exports/enemies/28_eco_do_veu/hurt.idx4",
+      "offset": 6628176,
+      "bytes": 3440,
+      "sha256": "4f4b67dd2e98356fcf03436d9c40d8d998f73245d0d83f0585dc71abc19e5bc5"
+    },
+    {
+      "id": 544,
+      "source": "exports/effects/slash/00.idx4",
+      "offset": 6631616,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 545,
+      "source": "exports/effects/slash/01.idx4",
+      "offset": 6632128,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 546,
+      "source": "exports/effects/slash/02.idx4",
+      "offset": 6632640,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 547,
+      "source": "exports/effects/slash/03.idx4",
+      "offset": 6633152,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 548,
+      "source": "exports/effects/slash/04.idx4",
+      "offset": 6633664,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 549,
+      "source": "exports/effects/slash/05.idx4",
+      "offset": 6634176,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 550,
+      "source": "exports/effects/slash/06.idx4",
+      "offset": 6634688,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 551,
+      "source": "exports/effects/slash/07.idx4",
+      "offset": 6635200,
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    {
+      "id": 552,
+      "source": "exports/effects/bite/00.idx4",
+      "offset": 6635712,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 553,
+      "source": "exports/effects/bite/01.idx4",
+      "offset": 6636224,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 554,
+      "source": "exports/effects/bite/02.idx4",
+      "offset": 6636736,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 555,
+      "source": "exports/effects/bite/03.idx4",
+      "offset": 6637248,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 556,
+      "source": "exports/effects/bite/04.idx4",
+      "offset": 6637760,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 557,
+      "source": "exports/effects/bite/05.idx4",
+      "offset": 6638272,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 558,
+      "source": "exports/effects/bite/06.idx4",
+      "offset": 6638784,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 559,
+      "source": "exports/effects/bite/07.idx4",
+      "offset": 6639296,
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    {
+      "id": 560,
+      "source": "exports/effects/charge/00.idx4",
+      "offset": 6639808,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 561,
+      "source": "exports/effects/charge/01.idx4",
+      "offset": 6640320,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 562,
+      "source": "exports/effects/charge/02.idx4",
+      "offset": 6640832,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 563,
+      "source": "exports/effects/charge/03.idx4",
+      "offset": 6641344,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 564,
+      "source": "exports/effects/charge/04.idx4",
+      "offset": 6641856,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 565,
+      "source": "exports/effects/charge/05.idx4",
+      "offset": 6642368,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 566,
+      "source": "exports/effects/charge/06.idx4",
+      "offset": 6642880,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 567,
+      "source": "exports/effects/charge/07.idx4",
+      "offset": 6643392,
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    {
+      "id": 568,
+      "source": "exports/effects/claw/00.idx4",
+      "offset": 6643904,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 569,
+      "source": "exports/effects/claw/01.idx4",
+      "offset": 6644416,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 570,
+      "source": "exports/effects/claw/02.idx4",
+      "offset": 6644928,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 571,
+      "source": "exports/effects/claw/03.idx4",
+      "offset": 6645440,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 572,
+      "source": "exports/effects/claw/04.idx4",
+      "offset": 6645952,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 573,
+      "source": "exports/effects/claw/05.idx4",
+      "offset": 6646464,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 574,
+      "source": "exports/effects/claw/06.idx4",
+      "offset": 6646976,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 575,
+      "source": "exports/effects/claw/07.idx4",
+      "offset": 6647488,
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    {
+      "id": 576,
+      "source": "exports/effects/magic/00.idx4",
+      "offset": 6648000,
+      "bytes": 512,
+      "sha256": "b833d7e8af7ada41a9b015c55671304bc45bb4b6381468d1416ef681988fedc0"
+    },
+    {
+      "id": 577,
+      "source": "exports/effects/magic/01.idx4",
+      "offset": 6648512,
+      "bytes": 512,
+      "sha256": "1482d7732a1e15c775839f88a547d1189503abfc2881ce58945c216719c129d6"
+    },
+    {
+      "id": 578,
+      "source": "exports/effects/magic/02.idx4",
+      "offset": 6649024,
+      "bytes": 512,
+      "sha256": "6c4c8a7dfb868a14758d6e5e860fbf698ab7a4244ae198f30af947cbbd897465"
+    },
+    {
+      "id": 579,
+      "source": "exports/effects/magic/03.idx4",
+      "offset": 6649536,
+      "bytes": 512,
+      "sha256": "036c9ddf55b36a34684c9fd10aacc2e9504fae649b8a87a640f227ceb6e70f95"
+    },
+    {
+      "id": 580,
+      "source": "exports/effects/magic/04.idx4",
+      "offset": 6650048,
+      "bytes": 512,
+      "sha256": "0e0244cf2ceeac04e44fbeda8decfe7c080131ce3baa5abf2780349554380304"
+    },
+    {
+      "id": 581,
+      "source": "exports/effects/magic/05.idx4",
+      "offset": 6650560,
+      "bytes": 512,
+      "sha256": "184c4548cda2119fa979537557e36961840ce54921d7520d02c86f2ba03f5c6a"
+    },
+    {
+      "id": 582,
+      "source": "exports/effects/magic/06.idx4",
+      "offset": 6651072,
+      "bytes": 512,
+      "sha256": "5a74e1a73f3d3f308fb319dc18b8bb97bdcb7f4e507a01852d9135a6be4f595b"
+    },
+    {
+      "id": 583,
+      "source": "exports/effects/magic/07.idx4",
+      "offset": 6651584,
+      "bytes": 512,
+      "sha256": "322c7b0b71da30ef1460482f7c2beff053c6810c355bb02d6f578300eed6873a"
+    },
+    {
+      "id": 584,
+      "source": "exports/effects/pulse/00.idx4",
+      "offset": 6652096,
+      "bytes": 512,
+      "sha256": "b833d7e8af7ada41a9b015c55671304bc45bb4b6381468d1416ef681988fedc0"
+    },
+    {
+      "id": 585,
+      "source": "exports/effects/pulse/01.idx4",
+      "offset": 6652608,
+      "bytes": 512,
+      "sha256": "1482d7732a1e15c775839f88a547d1189503abfc2881ce58945c216719c129d6"
+    },
+    {
+      "id": 586,
+      "source": "exports/effects/pulse/02.idx4",
+      "offset": 6653120,
+      "bytes": 512,
+      "sha256": "6c4c8a7dfb868a14758d6e5e860fbf698ab7a4244ae198f30af947cbbd897465"
+    },
+    {
+      "id": 587,
+      "source": "exports/effects/pulse/03.idx4",
+      "offset": 6653632,
+      "bytes": 512,
+      "sha256": "036c9ddf55b36a34684c9fd10aacc2e9504fae649b8a87a640f227ceb6e70f95"
+    },
+    {
+      "id": 588,
+      "source": "exports/effects/pulse/04.idx4",
+      "offset": 6654144,
+      "bytes": 512,
+      "sha256": "0e0244cf2ceeac04e44fbeda8decfe7c080131ce3baa5abf2780349554380304"
+    },
+    {
+      "id": 589,
+      "source": "exports/effects/pulse/05.idx4",
+      "offset": 6654656,
+      "bytes": 512,
+      "sha256": "184c4548cda2119fa979537557e36961840ce54921d7520d02c86f2ba03f5c6a"
+    },
+    {
+      "id": 590,
+      "source": "exports/effects/pulse/06.idx4",
+      "offset": 6655168,
+      "bytes": 512,
+      "sha256": "5a74e1a73f3d3f308fb319dc18b8bb97bdcb7f4e507a01852d9135a6be4f595b"
+    },
+    {
+      "id": 591,
+      "source": "exports/effects/pulse/07.idx4",
+      "offset": 6655680,
+      "bytes": 512,
+      "sha256": "322c7b0b71da30ef1460482f7c2beff053c6810c355bb02d6f578300eed6873a"
+    },
+    {
+      "id": 592,
+      "source": "exports/effects/crush/00.idx4",
+      "offset": 6656192,
+      "bytes": 512,
+      "sha256": "c6537bbad498de5dca306a361441083c6b816204b768e8acf65e778c8a3202af"
+    },
+    {
+      "id": 593,
+      "source": "exports/effects/crush/01.idx4",
+      "offset": 6656704,
+      "bytes": 512,
+      "sha256": "c9f73165f55d3683b3b411c0d79cfbeb03932b8b4156fd6ca5869b481cd69403"
+    },
+    {
+      "id": 594,
+      "source": "exports/effects/crush/02.idx4",
+      "offset": 6657216,
+      "bytes": 512,
+      "sha256": "f93bfce66aba790416fe98b7355cfd461b29c53212a5ef2823ea482a250b6b87"
+    },
+    {
+      "id": 595,
+      "source": "exports/effects/crush/03.idx4",
+      "offset": 6657728,
+      "bytes": 512,
+      "sha256": "719f3164e728d36c77aad3a379f7c0df6bad490bde799cc479856e6462848cee"
+    },
+    {
+      "id": 596,
+      "source": "exports/effects/crush/04.idx4",
+      "offset": 6658240,
+      "bytes": 512,
+      "sha256": "6af15546cf61941851cef3861c17c5ad619f0fb84233f92bcb456f16454b4f47"
+    },
+    {
+      "id": 597,
+      "source": "exports/effects/crush/05.idx4",
+      "offset": 6658752,
+      "bytes": 512,
+      "sha256": "3e314e56db392c1c79c12d34fc35b6d9fca31e0e8f844b4376aa3655a5684cea"
+    },
+    {
+      "id": 598,
+      "source": "exports/effects/crush/06.idx4",
+      "offset": 6659264,
+      "bytes": 512,
+      "sha256": "22084d21fabc64ce42253319e042a8f908f308097dca927a6da40921cb3673f6"
+    },
+    {
+      "id": 599,
+      "source": "exports/effects/crush/07.idx4",
+      "offset": 6659776,
+      "bytes": 512,
+      "sha256": "7ce3be7d68e9f7e8d89a2f0f4489bdfc82fbebb75d33f936eb21b713cc485349"
+    },
+    {
+      "id": 600,
+      "source": "exports/enemies/00_goblin/palette.rgb565le",
+      "offset": 6660288,
+      "bytes": 32,
+      "sha256": "c717537c66b67a323431ecf068d07922bc7c9ee1bc368795b44a050eac078c86"
+    },
+    {
+      "id": 601,
+      "source": "exports/enemies/01_lobo/palette.rgb565le",
+      "offset": 6660320,
+      "bytes": 32,
+      "sha256": "9016ebb8c17ac36e8eab037f2dc593adddd0b6b50f0ce8d33f227e7cef0570ac"
+    },
+    {
+      "id": 602,
+      "source": "exports/enemies/02_esqueleto/palette.rgb565le",
+      "offset": 6660352,
+      "bytes": 32,
+      "sha256": "81710b0d9a642c910983fc9cc516a0e00bd4213a74987f12211ad86d3cbbac8f"
+    },
+    {
+      "id": 603,
+      "source": "exports/enemies/03_guardiao/palette.rgb565le",
+      "offset": 6660384,
+      "bytes": 32,
+      "sha256": "d8cdf37fae45d9fdd8a3984f919a7d34cf257acc2413d0e06bd58b0f13cd31fa"
+    },
+    {
+      "id": 604,
+      "source": "exports/enemies/04_javali/palette.rgb565le",
+      "offset": 6660416,
+      "bytes": 32,
+      "sha256": "095cc41a9a6a1d22e6f624a18eb15dfca537c0a3eead9b28214e635bc3689f5b"
+    },
+    {
+      "id": 605,
+      "source": "exports/enemies/05_espectro/palette.rgb565le",
+      "offset": 6660448,
+      "bytes": 32,
+      "sha256": "98487d107319af69788a26399c1942f3be7ca5409fad1f8f343eecc3d8807d60"
+    },
+    {
+      "id": 606,
+      "source": "exports/enemies/06_saqueador/palette.rgb565le",
+      "offset": 6660480,
+      "bytes": 32,
+      "sha256": "85600402d897ed85db888dd9bfee1a570dcf2363e6af1791fc5f0694e7d89465"
+    },
+    {
+      "id": 607,
+      "source": "exports/enemies/07_sentinela/palette.rgb565le",
+      "offset": 6660512,
+      "bytes": 32,
+      "sha256": "732764578440adb8c5b3c52fde93756ab92bbeac0dc94983117d75ffccd437a2"
+    },
+    {
+      "id": 608,
+      "source": "exports/enemies/08_arconte/palette.rgb565le",
+      "offset": 6660544,
+      "bytes": 32,
+      "sha256": "b139c4b0ee952a0467f47b18348b9980a493a5eba1a3ba429e5536667b6f529c"
+    },
+    {
+      "id": 609,
+      "source": "exports/enemies/09_vigia_ossudo/palette.rgb565le",
+      "offset": 6660576,
+      "bytes": 32,
+      "sha256": "5b3304cf4a9007cc44479b4e0ebc7751b5fb0cf8c01d14a16cfffe4559d9780d"
+    },
+    {
+      "id": 610,
+      "source": "exports/enemies/10_hipogrifo_jovem/palette.rgb565le",
+      "offset": 6660608,
+      "bytes": 32,
+      "sha256": "b21a9246d5b2ffe3bd1df82cacbfa16b3055fb71bb26d2b214370808ea671c01"
+    },
+    {
+      "id": 611,
+      "source": "exports/enemies/11_hipogrifo/palette.rgb565le",
+      "offset": 6660640,
+      "bytes": 32,
+      "sha256": "366ecdfa435dcf61aa42a9db831db552124bfd4b41563418c0645e1ac1bf46a8"
+    },
+    {
+      "id": 612,
+      "source": "exports/enemies/12_hipogrifo_marcado/palette.rgb565le",
+      "offset": 6660672,
+      "bytes": 32,
+      "sha256": "e8c17aa0b8de0ef707b538ccea9ba350d4e995c3ad0907767c087c9650e9f52c"
+    },
+    {
+      "id": 613,
+      "source": "exports/enemies/13_hipogrifo_alfa/palette.rgb565le",
+      "offset": 6660704,
+      "bytes": 32,
+      "sha256": "90fcf5b5a6220fb953e6ab3c8667fa70da43888aadc3d341bda10b8cccf2c259"
+    },
+    {
+      "id": 614,
+      "source": "exports/enemies/14_mimico_do_bosque/palette.rgb565le",
+      "offset": 6660736,
+      "bytes": 32,
+      "sha256": "66149dd71ee347efe6f403f006a90ea453247d09b3c8713d03dfd93132e78444"
+    },
+    {
+      "id": 615,
+      "source": "exports/enemies/15_mimico_das_ruinas/palette.rgb565le",
+      "offset": 6660768,
+      "bytes": 32,
+      "sha256": "cb807f140a83007f143b2e93ef9f3893effe67bc457219844110f42aff01e235"
+    },
+    {
+      "id": 616,
+      "source": "exports/enemies/16_mimico_do_porto/palette.rgb565le",
+      "offset": 6660800,
+      "bytes": 32,
+      "sha256": "de0647cd78a989166ff460d341b92fec76ad054c59a68d51dae2eaef66315ee9"
+    },
+    {
+      "id": 617,
+      "source": "exports/enemies/17_mimico_do_castelo/palette.rgb565le",
+      "offset": 6660832,
+      "bytes": 32,
+      "sha256": "433f6b405361f9072921de08e4f20fa03eb8498ec82cea84ed9962dfb5dc6f9a"
+    },
+    {
+      "id": 618,
+      "source": "exports/enemies/18_odran/palette.rgb565le",
+      "offset": 6660864,
+      "bytes": 32,
+      "sha256": "07e3663264445eb66e6423d23fb8bb9546c35527e823623c86ed5ddc806352d2"
+    },
+    {
+      "id": 619,
+      "source": "exports/enemies/19_coracao_do_veu/palette.rgb565le",
+      "offset": 6660896,
+      "bytes": 32,
+      "sha256": "5a3958d81572e9c2906c5201b1d907dc2d19c128461d6d3555220168828b6df6"
+    },
+    {
+      "id": 620,
+      "source": "exports/enemies/20_sentinela_coral/palette.rgb565le",
+      "offset": 6660928,
+      "bytes": 32,
+      "sha256": "4cb4546795aee79f1a095342ab6dafd1cd23ed5b8852805a6f5a7eb1cf19b8be"
+    },
+    {
+      "id": 621,
+      "source": "exports/enemies/21_arraia_runar/palette.rgb565le",
+      "offset": 6660960,
+      "bytes": 32,
+      "sha256": "2ea98be178f38954489d7a5596773b94b13436d0ef1753fd86f9a4ff2979c0d5"
+    },
+    {
+      "id": 622,
+      "source": "exports/enemies/22_corsario_afogado/palette.rgb565le",
+      "offset": 6660992,
+      "bytes": 32,
+      "sha256": "42ec38753e55fd74026f4e46c724def296689deed9ec8158838d479a6507a8f7"
+    },
+    {
+      "id": 623,
+      "source": "exports/enemies/23_oraculo_abissal/palette.rgb565le",
+      "offset": 6661024,
+      "bytes": 32,
+      "sha256": "df224e438c73fc3217c2cd1433f9093cd01845f5304e402105e1e0ae8f395cbd"
+    },
+    {
+      "id": 624,
+      "source": "exports/enemies/24_thalvor/palette.rgb565le",
+      "offset": 6661056,
+      "bytes": 32,
+      "sha256": "85b29aeacfdf452d6be0a3150748ab17337f60c9e3aa4d832eb737e60134303c"
+    },
+    {
+      "id": 625,
+      "source": "exports/enemies/25_caranguejo_ferreo/palette.rgb565le",
+      "offset": 6661088,
+      "bytes": 32,
+      "sha256": "106d5f1f8fc33ec9bef986f3848d7377994373736c8c15869cec832eae07e145"
+    },
+    {
+      "id": 626,
+      "source": "exports/enemies/26_mao_de_cinza/palette.rgb565le",
+      "offset": 6661120,
+      "bytes": 32,
+      "sha256": "986a0f0c9546aa19c424571a5065d5dca5341fb7054bb5f80c65f7cf4a7fe300"
+    },
+    {
+      "id": 627,
+      "source": "exports/enemies/27_automato_dourado/palette.rgb565le",
+      "offset": 6661152,
+      "bytes": 32,
+      "sha256": "d01d415c25ea07055a921f9fceed268479e95ba184d523f654a4a3589bbdb38c"
+    },
+    {
+      "id": 628,
+      "source": "exports/enemies/28_eco_do_veu/palette.rgb565le",
+      "offset": 6661184,
+      "bytes": 32,
+      "sha256": "dbab55189cfbac481c93351b09c5a659111c27db4a1f3a85042781865248f824"
+    },
+    {
+      "id": 629,
+      "source": "exports/effects/slash/palette.rgb565le",
+      "offset": 6661216,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 630,
+      "source": "exports/effects/bite/palette.rgb565le",
+      "offset": 6661248,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 631,
+      "source": "exports/effects/charge/palette.rgb565le",
+      "offset": 6661280,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 632,
+      "source": "exports/effects/claw/palette.rgb565le",
+      "offset": 6661312,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 633,
+      "source": "exports/effects/magic/palette.rgb565le",
+      "offset": 6661344,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 634,
+      "source": "exports/effects/pulse/palette.rgb565le",
+      "offset": 6661376,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    {
+      "id": 635,
+      "source": "exports/effects/crush/palette.rgb565le",
+      "offset": 6661408,
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    }
+  ]
+}

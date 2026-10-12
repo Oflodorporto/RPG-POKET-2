@@ -1,0 +1,109 @@
+RPG POKET — 7.7 PARCIAL: AÇÕES DO HERÓI E PRIMEIRA PESSOA
+12/10/2026 | candidata isolada; não publicada nem gravada em placa
+
+CONTINUIDADE COMBINADA: PACOTE_7_7_COMBINADO.txt registra a candidata posterior e sua validação; os resultados isolados abaixo são históricos.
+BASE E ESCOPO
+Base: 33c0d5d75d0e96c45f593a5c7bb2e56eb0dc5080, feat/visual77-presentation.
+Branch desta fatia: feat/visual77-hero-actions.
+Identidade reservada: 2026.10.12-hero77-dev, build 2026101206.
+A integração de inimigos autorais vive em outra branch e não faz parte desta fatia.
+Não alterar main, tags, latest, Release, campanha, Rules, Game, Save28, fadiga auxiliar, PvP, RNG, alcance, recompensas, controles ou duração de efeitos.
+
+O QUE FOI IMPLEMENTADO
+CombatResult transporta a Action já normalizada pelo dispatcher, um indicador de autoria do herói e o HP realmente recuperado na defesa do bárbaro. Tudo é transitório: nenhum campo novo em Game, save ou protocolo. O efeito ainda começa depois da resolução e tentativa de salvar. Falha de save impede a apresentação. O resultado não é calculado novamente pelo renderer.
+HeroPresentation.h escolhe a coreografia, quadros existentes e deslocamento local. HeroActionView.h desenha somente efeitos locais, com as artes de magia já residentes. Ambos os renderers recebem a mesma identidade/resultados, conservando composições diferentes. O inimigo não recua nem recebe clarão/número de dano em cura, guarda, benefício, erro, dano zero ou turno impedido.
+O dano é agregado exatamente como nas regras. Os três raios e três mísseis não recebem valores individuais inventados. Uma ação gera um resultado. Ataques múltiplos passivos conservam o total agregado.
+
+INVENTÁRIO COMPLETO DO ENUM ACTION
+18 valores em Rules.h: Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower e DivineSmite.
+Life, Mana e Flee continuam sem CombatFx; criá-lo mudaria o tempo/bloqueio do dispatcher atual. As mensagens e regras existentes continuam iguais.
+Há 12 poderes ativos nomeados: cinco do mago, quatro do cavaleiro, dois do guerreiro e um do bárbaro. Todos têm tratamento de apresentação no combate. Os passivos descritos em PowersView/ClassProgression não são novas ações executáveis. Cura fora de combate via página Poderes mantém o fluxo textual existente, sem cena de batalha nova.
+
+MATRIZ DE COBERTURA DE COREOGRAFIA
+Mago:
+- Attack: cajado prepara, projétil pequeno parte do foco e só explode em dano real. Effect Projectile, 960 ms.
+- Offensive legado: carga azul, trajetória angular e raio localizado. Lightning, 1200 ms. Na progressão nova, o dispatcher normaliza para MagicMissile, como antes.
+- Defensive legado / ShieldSpell: gesto existente de preparação e barreira azul no jogador. Shield, 480 ms. Na progressão nova Defensive vira ShieldSpell.
+- MagicMissile: preserva o piloto 0–180 / 180–540 / 540–660 / 660–900 / 900–1100 ms; três trajetórias azul/branco; contato somente quando o resultado é dano.
+- BurningHands: leque curto de chamas com origem na âncora da palma, visual diferente de raios. FlameVolley, 1100 ms.
+- ScorchingRay: três trilhas estreitas e ligeiramente defasadas, carregadas no foco; um total real de dano ou SEM DANO. FlameVolley, 1100 ms.
+- Fireball: carga, esfera em viagem, explosão localizada se houve dano. FireBurst, 1200 ms.
+Cavaleiro:
+- Attack: preparação e corte curto da espada. Slash, 480 ms; mantém DivineSlash de 1050 ms quando o dispatcher já aplica punição aprimorada.
+- Offensive: avanço/corte mais firme e rastro próprio. Slash, 480 ms, ou DivineSlash de 1050 ms nos mesmos casos preexistentes.
+- Defensive: escudo pequeno próximo ao corpo; não é o efeito de cura. Shield, 480 ms.
+- DivineSmite: corte com contato dourado somente ao acertar. DivineSlash, 1050 ms; o erro conserva o Slash de 480 ms definido pelo dispatcher.
+- LayHands: postura recolhida, cruzes verdes ascendentes e pulso dourado no próprio herói; +HP real. Shield, 480 ms.
+- SacredWeapon: brilho acompanha a posição da lâmina e permanece no jogador. Radiant, 1200 ms; texto ARMA SAGRADA.
+- TurnUndead: gesto e onda dourada do herói até o inimigo; texto EXPULSAR; resultado Buff sem dano/recuo. Radiant, 1200 ms.
+Guerreiro:
+- Attack: recuo curto, estocada e retorno; rastro no eixo. Thrust, 640 ms.
+- Offensive legado/nova técnica: estocada de precisão com segunda linha curta e avanço próprio. Mantém Slash de 480 ms, conforme dispatcher.
+- Defensive: intercepção diagonal próxima ao jogador. Shield, 480 ms.
+- SecondWind: arma abaixada, recolhimento e anel ascendente de recuperação; +HP real no jogador. Shield, 480 ms.
+- ActionSurge: prepara a empunhadura e mostra duas marcas curtas de prontidão; texto SURTO. Shield, 480 ms; não produz ataque nem dano por conta própria.
+Bárbaro:
+- Attack: preparação mais pesada e arco de machado, recuperação mais contida. Slash, 480 ms.
+- Offensive legado/nova técnica: arco do machado com rastro adicional. Rage, 960 ms, mantendo resultado de ataque real.
+- Defensive: cabo firme e efeito localizado; texto DEFESA +N HP somente quando houve recuperação real. Shield, 480 ms.
+- RagePower: postura/empunhadura e pulso âmbar próximo ao jogador, texto FURIA; nenhum golpe no inimigo. Rage, 960 ms.
+
+DANO, CURA E ESTADOS
+A defesa do bárbaro cura e protege, mas Rules não escreve a cura em game.damage. O dispatcher captura HP antes de act; heroCombatResult guarda somente a diferença positiva depois da ação. A barreira continua Guard; amount continua zero, com recoveredHp separado. Isso cobre HP cheio e recuperação limitada por maxhp.
+LayHands e SecondWind usam o amount já resolvido em game.damage. Miss, NoDamage e Skip continuam com texto próprio e sem impacto/recuo de ferimento. Benefícios não herdam dano/crit antigo. O turno inimigo e suas intenções não foram alterados nesta branch.
+Os efeitos do herói não usam clarões de tela inteira nem alternância rápida de cor; não deslocam o HUD. Todo primitive passa por clip da arena (86..191) ou da dungeon (34..171).
+
+IDENTIDADE E LIMITES DA ARTE EXISTENTE
+Combate normal continua em personalSprite/personalPixel/outfitPixel, com os sprites e máscaras originais de quatro raças, quatro classes, oito camisas e oito calças. Não foi aplicado filtro de cor à arma, pele ou transparência.
+Não há novos desenhos de mãos abertas, cura ou defesa: são coreografias com seleção de poses existentes, deslocamento local e efeitos. Não chamar uma pose de ataque reaproveitada de nova ilustração de palma.
+A arte existente do Guerreiro na arena tem espada; em primeira pessoa tem lança. Esta fatia conserva ambas e usa a estocada compatível com elas. Uniformizar esse equipamento requer revisão de arte separada.
+A dungeon usa imagens por classe, sem variantes de raça e sem máscara de manga. Essa limitação anterior continua presente. Não simular elfo/anão/orc por tinta global, nem dizer que primeira pessoa foi personalizada. Para uma etapa posterior: arma comum, mãos por raça e máscara explícita de tecido/pele/couro/material, preservando apenas as cores autorizadas em cada canal. Não houve produção de um conjunto grande ou uso de créditos de geração nesta fatia.
+
+PRIMEIRA PESSOA MAIOR SEM NOVO ATLAS
+A célula original 64×52 era desenhada em (144,120). Agora recorta-se somente o preenchimento transparente e amplia-se aproximadamente 2×, com largura máxima de 88 px, sem suavização. O braço/arma termina no limite inferior y=171, e todos os pixels do primeiro plano ficam em x>=150 e y=34..171.
+As caixas recortadas de cada uma das oito poses são constantes em HeroPresentation.h. O original DungeonArt.h permanece idêntico. Nenhum master de armas em alta resolução estava disponível no checkout ou nos arquivos locais consultados; não se inventou uma reconstrução. O master novo do piloto humano-mago não foi integrado, pois só representa uma identidade e ainda não tem máscaras/conjunto aprovado.
+O corredor central conservador x=76..149 permanece inteiramente livre do primeiro plano. Geometria, texturas, raios, iluminação, billboards e HUD não foram substituídos. A origem das magias passa a acompanhar a âncora do orbe ou palma da pose ampliada.
+O limite de 13,6% do piloto é uma referência de ocupação máxima da visão completa de 240×172, não a promessa de reproduzir a composição de dois braços do piloto. Esta transformação segura amplia as mãos existentes, sem acrescentar uma segunda mão inexistente na imagem.
+
+CUSTOS E COMPATIBILIDADE
+Zero bytes de imagem adicional, zero novo framebuffer, zero heap/leitura SD por quadro. Os efeitos reutilizam campArt e sprites_shield; o pacote permanece com 488 entradas e 6.991.936 bytes de payload.
+SHA-256 de artes.pak: bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8.
+Medição nativa de sizeof: CombatResult 6→10, CombatFx 16→20, ViewState 128→136; Game 156 inalterado. Isso não é medição da ABI ESP32 nem de heap livre. Código e RAM estática finais serão medidos na compilação da candidata combinada; por economia, não haverá build ESP32 isolado desta branch.
+O blitter percorre mais pixels para ampliar o primeiro plano; o leque de fogo também custa mais composição do que o efeito genérico antigo. Não há alegação de FPS, resposta de toque ou memória mínima em placa. Reusar o teto de +64 KiB de código/constantes da primeira fatia e verificar no compilador ESP32 antes de combinar.
+
+VALIDAÇÃO REPRODUZÍVEL
+bash tools/test_native.sh reconstrói o mesmo artes.pak e inclui as novas suítes hero77_controller e hero77_render, além das suítes anteriores e sanitizadores. O workflow tem contents:read, guarda a branch exata feat/visual77-hero-actions e não publica release nem grava hardware. Ele foi preparado, mas não enviado nem disparado; a compilação ESP32 ocorrerá somente depois da combinação revisada com a outra fatia.
+hero77_controller gera build/hero77-coverage.csv com classe/progressão/Action e resultados. Compara dispatcher real com resolução Rules e journal independente: Game, RNG, Save28 e bytes auxiliares de fadiga. Inclui rejeições, aliases, recuperação limitada, dano zero real dos raios, erros/críticos, toques repetidos, limite de duração e wrap uint32_t.
+hero77_render gera build/screens/hero77/render-coverage.csv, quadros e dungeon-occlusion.csv. Verifica estados/Save imutáveis, personalização exata, HUD e controles estáveis, fontes/âncoras do primeiro plano, variantes de magia/benefício e oclusão nas distâncias medidas. Os resultados finais são registrados abaixo.
+
+PENDÊNCIAS REAIS
+Validação física de legibilidade/ritmo, LCD, tempo de quadro, toque concorrente e memória mínima/maior bloco. Integração com a branch dos inimigos exige repetir contato e oclusão usando os novos sprites. Novas silhuetas e máscaras de mãos por raça/classe ainda precisam de desenho/produção aprovados. Cura fora de batalha continua sem animação nova. Main/latest ficam na versão publicada anterior até autorização separada.
+
+RESULTADOS FOCADOS E REVISÃO
+- 32.401 casos no controlador: todos os valores de Action e classes, progressão legada/nova, níveis 1/2/3/5/11/20, sucesso/rejeição, uma resolução real de ScorchingRay sem dano, recuperação limitada, alvo e proteção contra repetição.
+- 36 variantes legais animadas (incluindo aliases/legado), 612 quadros de fases por composição: 1.224 quadros de batalha/dungeon.
+- 6.144 verificações exatas de personalSprite: quatro raças × quatro classes × oito camisas × oito calças × seis quadros.
+- Primeiro plano: máximo de 3.446 pixels opacos, 8,35% da visão completa 240×172 ou 10,40% da faixa de combate 240×138. Não confundir denominadores.
+- Esqueleto original em repouso: maior interseção de 72/5.120 pixels (1,41%) a uma casa, no canto inferior direito x152..160/y155..168; zero a duas casas.
+- Auditoria de 17 silhuetas: quatro famílias originais × três poses, mais os cinco inimigos da ilha (IDs20–24). Máximo de 133/3.536 pixels (3,76%), na borda superior direita da asa/barbatana da Arraia Runar, x150..162/y83..102. Não afirmar silhueta inteira desobstruída.
+- Zero interseção a duas casas e nas regiões centrais definidas do original (x12..35, cabeça y0..17, torso y18..45); essa máscara geométrica não certifica toda anatomia de cada criatura. Inspeção do overlay confirma o corpo central livre.
+- Comparação antes/depois usa mesma classe, seed, mapa, direção e quadro. HUD abaixo de y172 pixel a pixel idêntico. Mãos/luvas realmente crescem, mas antebraços ausentes/cortados na fonte não são reconstruídos.
+- Revisão independente do diff e 24 capturas: nenhum bloqueio encontrado em gameplay, persistência, alvo/HP, limites, temporalidade ou arte preservada. Não substitui teste físico.
+- ASan e UBSan focados aprovados com detect_leaks=0. LeakSanitizer encontra limitação explícita do ambiente ptrace e não foi validado localmente.
+
+EVIDÊNCIAS LOCAIS REPRODUZIDAS
+build/hero77-coverage.csv
+build/screens/hero77/render-coverage.csv
+build/screens/hero77/dungeon-occlusion.csv
+build/screens/hero77/contact-casts.png
+build/screens/hero77/contact-dungeon-before-after.png
+build/screens/hero77-san/dungeon-all-enemies-worst-overlap.ppm
+build/hero77-native.log
+Esses arquivos são saídas de teste/inspeção; não são um pacote de firmware para instalar.
+
+REVISÃO VISUAL DO RESPONSÁVEL
+A comparação antes/depois da transformação segura foi revisada e aprovada para esta fatia delimitada. Não ampliar além do envelope de oclusão validado. A integração de antebraços mais longos, segunda mão e máscaras por raça permanece para uma etapa de arte separada.
+
+AGREGADO FINAL LOCAL
+RPG_DETECT_LEAKS=0 bash tools/test_native.sh concluiu com código 0: 59 suítes nativas e 18 alvos AddressSanitizer + UndefinedBehaviorSanitizer. Implementação final sem mudanças durante a execução; reforços finais das asserções de oclusão também passaram no renderer otimizado isolado e no estágio sanitizado do agregado. git diff --check e comparação dos fontes de regras/save/PvP/arte preservados passaram.
+Não houve push, workflow remoto, compilação ESP32 isolada, publicação, merge em main nem gravação em placa. A compilação e o orçamento finais ficam para a candidata combinada revisada.

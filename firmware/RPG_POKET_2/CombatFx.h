@@ -1,9 +1,13 @@
 #pragma once
 #include <stdint.h>
+#include "Rules.h"
 enum class Effect:uint8_t {None,Slash,Lightning,Shield,Rage,Projectile,Thrust,MagicDarts,FlameVolley,FireBurst,Radiant,DivineSlash};
 enum class CombatFeedback:uint8_t {None,Damage,Miss,NoDamage,Heal,Guard,Buff,Skip};
 struct CombatResult {
   CombatFeedback kind=CombatFeedback::None;uint16_t amount=0;bool critical=false,enemyAction=false;
+  rpg::Intent resolvedEnemyIntent=rpg::Intent::Strike;bool enemyDefeated=false;
+  // Resolved presentation identity only; never part of Game, Save28 or the wire.
+  rpg::Action heroAction=rpg::Action(0);bool hasHeroAction=false;uint16_t recoveredHp=0;
   bool injury()const{return kind==CombatFeedback::Damage&&amount>0;}
   bool noHit()const{return kind==CombatFeedback::Miss||kind==CombatFeedback::NoDamage||kind==CombatFeedback::Skip;}
   bool attack()const{return kind==CombatFeedback::Damage||kind==CombatFeedback::Miss||kind==CombatFeedback::NoDamage;}

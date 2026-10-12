@@ -1,0 +1,30 @@
+{
+  "kind": "bite",
+  "size": [
+    32,
+    32
+  ],
+  "frame_count": 8,
+  "duration_ms": 320,
+  "source": "Original procedural pixel VFX; no imagegen required for existing code-native visual grammar",
+  "transparency": "0xF81F / index0",
+  "note": "Timing scaled to contact interval of the actual action; does not add damage, element or mechanic.",
+  "palette_rgb565": [
+    63519,
+    57077,
+    32312,
+    44428,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ]
+}

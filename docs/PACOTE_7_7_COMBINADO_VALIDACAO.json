@@ -1,0 +1,103 @@
+{
+  "candidate": "2026.10.12-visual77-combined-dev",
+  "coverage": {
+    "enemies": 29,
+    "enemy_poses": 4,
+    "envelopes": 2,
+    "distances": [
+      1,
+      2
+    ],
+    "silhouettes": 464,
+    "hero_foreground_samples": 652,
+    "comparisons": 302528,
+    "real_projector_parity_checks": 30,
+    "legal_hero_presentations": 36,
+    "battle_phases": 612,
+    "dungeon_phases": 612,
+    "exact_personalized_frames": 6144
+  },
+  "measurements": {
+    "worst_near_covered": 97,
+    "worst_near_total": 2592,
+    "worst_near_percent": 3.742283950617284,
+    "worst_far_pixels": 0,
+    "max_head_pixels": 0,
+    "max_torso_pixels": 0,
+    "threshold_violations": 0,
+    "worst": {
+      "enemy_id": 1,
+      "enemy_pose": "Idle",
+      "envelope": "expedition",
+      "hero_class": 0,
+      "hero_action": "Attack",
+      "phase": 491,
+      "recoil": 6
+    }
+  },
+  "thresholds": {
+    "near_max_percent": 4,
+    "far_max_pixels": 0,
+    "head_max_pixels": 0,
+    "torso_max_pixels": 0
+  },
+  "protected_regions": {
+    "head": "Opaque canonical source x[20,60), y[0,24)",
+    "torso": "Opaque canonical source x[20,60), y[24,62)",
+    "qualification": "Central readability regions, not anatomical labels for nonhumanoid creatures."
+  },
+  "scope": "Centered full-opacity silhouettes with no wall clipping. Actual adjacent-target recoil at one tile; no recoil at two tiles. All four poses at both distances are a conservative cross-product. No claim about percentages of partially wall-occluded silhouettes.",
+  "normal": {
+    "result": "PASS",
+    "compile": "g++ -std=c++17 -O2 -UNDEBUG -Wall -Wextra tests/hero77_render.cpp -o build/tests/hero77_render_combined",
+    "run": "build/tests/hero77_render_combined build/screens/hero77",
+    "log": "build/screens/combined77/normal.log"
+  },
+  "sanitized": {
+    "result": "PASS",
+    "compile": "g++ -std=c++17 -O1 -g -UNDEBUG -fsanitize=address,undefined -fno-omit-frame-pointer tests/hero77_render.cpp -o build/tests/hero77_render_combined_san",
+    "run": "ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 build/tests/hero77_render_combined_san build/screens/hero77",
+    "local_setting": "RPG_DETECT_LEAKS=0; no persistent runner default change",
+    "log": "build/screens/combined77/sanitized.log"
+  },
+  "source_sha256": {
+    "tests/hero77_render.cpp": "7cba3b7f8f415e4e3789e7c7c9320d108349649faca3b70776960db0ed13a079",
+    "firmware/RPG_POKET_2/EnemyArt.h": "5c1d35d40f5df9875527c24b1665c3e15e5959224671bebe470389e84eabf68e",
+    "firmware/RPG_POKET_2/EnemyArtCatalog.h": "26474d7dbe01dda58af453555483aefb832241338c2ed319799826a03a5e683c",
+    "firmware/RPG_POKET_2/DungeonView.h": "49f8d6611619a1f48c9a3f4d7f6bd8dbacfe757deb09120378df635909e38542",
+    "firmware/RPG_POKET_2/HeroPresentation.h": "29e44085f15b44170e89dda2872776f69d6e265a69fbfd84bdc4c1264e6dcb8a"
+  },
+  "qa_sha256": {
+    "build/screens/combined77/occlusion-summary.txt": "8fc88f5667e1646b4dfc6d43fecfa03cdcdd5f87d72dca095f782a36940294cd",
+    "build/screens/combined77/enemy-pose-occlusion.csv": "f8be35495151588f34459d5c164e6a16fb84cfbd35f659bedceaa6eec8b2f56e",
+    "build/screens/combined77/hero-foreground.csv": "a3b79aa45c873673c39016b560cba64803ce63b6da62bc0aba999608e71e32d4",
+    "build/screens/combined77/normal.log": "7e2b7b8886ea9efb1078251faa8617f9d69faebcbeee57a47c64e86e7cc72596",
+    "build/screens/combined77/sanitized.log": "7e2b7b8886ea9efb1078251faa8617f9d69faebcbeee57a47c64e86e7cc72596",
+    "build/screens/combined77/final-worst-overlap.png": "50efde189e95df5541513ffc42a3776e6638401c662a598543a693617c9f7192",
+    "build/screens/combined77/final-foreground-max-occupation.png": "124c1180fd145877fa19d6a9524a55939e33be12308392e4337254c6c7ccb6ec",
+    "build/screens/combined77/final-contact-expedition-1tile.png": "31df276e06e65a2117b3b6327791b79afe53e0b8dc0faa8354ef5847dab5fcd5",
+    "build/screens/combined77/final-contact-expedition-2tile.png": "310f7af881bd4caaca7e6d20c0ede0b9e94e34305c2cdd87f5e8a1c0606191d6",
+    "build/screens/combined77/final-contact-normal-1tile.png": "25173025cf231b0101000064dc3f52cf9ba4e18d97571930bf4c8550e227bf0a",
+    "build/screens/combined77/final-contact-normal-2tile.png": "914ee34779f70a87a7aba6fc46c69fea4a06019f10881a116113c2bdcc0eba91"
+  },
+  "build": 2026101207,
+  "isolated_enemy_parent_commit": "f7875b52e26546be6cb0e34cefa7bed07ce1c99e",
+  "combined_aggregate": {
+    "result": "PASS",
+    "native_suites": 63,
+    "asan_ubsan_targets": 22,
+    "python_catalog_cases": 10,
+    "old_new_loader_gates": 58,
+    "loader_modes": [
+      "normal",
+      "ASan/UBSan"
+    ],
+    "command": "RPG_DETECT_LEAKS=0 bash tools/test_native.sh",
+    "exit_code": 0,
+    "log_sha256": "6ce9a48bcf71fd5d6ae79d66e827d3e58130eb1f15d38f135dab0f98aa628b9e"
+  },
+  "independent_resolution_review": "completed_no_source_blocker",
+  "esp32_ci": "not_run",
+  "physical_validation": false,
+  "release_published": false
+}

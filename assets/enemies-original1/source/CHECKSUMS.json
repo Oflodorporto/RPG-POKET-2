@@ -1,0 +1,3056 @@
+{
+  "files": {
+    "CONTRATO_ASSETS.txt": {
+      "bytes": 2853,
+      "sha256": "333c121a59e3d5c36f042aa5ed3a9c5b8b1805da71480beb6962552804436265"
+    },
+    "INVENTARIO_E_MIGRACAO.txt": {
+      "bytes": 5610,
+      "sha256": "d32339a78a9f1023345007b9b6f0b926ef8cb0279d152133f56567ca12995ec4"
+    },
+    "LEIA_PRIMEIRO.txt": {
+      "bytes": 4637,
+      "sha256": "896755aca353056078ac416452bd3f33e298399c8eaa8d51b59d6ef0af108f3b"
+    },
+    "ORCAMENTO_ASSETS.json": {
+      "bytes": 1016,
+      "sha256": "9aea065a6b8502c4abe8ec628050c181071db41a42789980a769c92b85cea08c"
+    },
+    "batch_manifest.json": {
+      "bytes": 39671,
+      "sha256": "9c35e87e0f5abf12b066b00263e2ae90be8638884af9800562117e4cc8b6f29d"
+    },
+    "exports/RPG_POKET_inimigos_autorais.png": {
+      "bytes": 225580,
+      "sha256": "21372aa664a7eae80879449dc7242823c4e25e479f1be041b4830b26b7d3ac53"
+    },
+    "exports/RPG_POKET_previa_inimigos.html": {
+      "bytes": 403459,
+      "sha256": "f19bed032d2d1646bbbafe92bcb5d6bd611b2e1e6c4e433386975517ee46f664"
+    },
+    "exports/determinism_validation.json": {
+      "bytes": 86,
+      "sha256": "0d7e7d12e8e526c4cc1a58a6b8c3a795c607916f7964dc38092ccab38d059896"
+    },
+    "exports/effects/bite/00.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/00.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/01.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/01.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/02.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/02.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/03.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/03.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/04.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/04.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/05.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/05.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/06.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/06.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/07.idx4": {
+      "bytes": 512,
+      "sha256": "f75beee3ef44d5d754ac2779ff81b7f8cc14d4ce776d0127755fd50a0cd5b2e2"
+    },
+    "exports/effects/bite/07.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "375c419c30a7916a4530432208782a535a7c6ddb8b769ac842a4d41e1cf82e27"
+    },
+    "exports/effects/bite/effect_preview.png": {
+      "bytes": 210,
+      "sha256": "6e98c5217439ef8b6cd2ab56e45f297fc2e2202d41e13690df4cc6137e3c6d3d"
+    },
+    "exports/effects/bite/manifest.json": {
+      "bytes": 503,
+      "sha256": "9f0ea71a051d5e99430ddd395931403227cc36bbd44e0ad4b05d10d8bb8fe3bb"
+    },
+    "exports/effects/bite/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/charge/00.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/00.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/01.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/01.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/02.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/02.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/03.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/03.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/04.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/04.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/05.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/05.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/06.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/06.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/07.idx4": {
+      "bytes": 512,
+      "sha256": "7de8c26448f1ba704a1c7ba78679ad891653ddd01c2f98c1f976e29721d5c7a3"
+    },
+    "exports/effects/charge/07.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "0ce63ab369df75b1156821690f022e4e7bca3e9aa90f99f8613f814c8f4812a1"
+    },
+    "exports/effects/charge/effect_preview.png": {
+      "bytes": 129,
+      "sha256": "06a81742f594c179ea85e0aa5d6d70004ac758095880364e6f1d8d0518b013f3"
+    },
+    "exports/effects/charge/manifest.json": {
+      "bytes": 505,
+      "sha256": "4992d3e0f7124bc47e01066eb963c5e0e200cd16f73f1a3c57f70137d7a38496"
+    },
+    "exports/effects/charge/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/claw/00.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/00.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/01.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/01.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/02.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/02.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/03.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/03.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/04.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/04.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/05.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/05.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/06.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/06.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/07.idx4": {
+      "bytes": 512,
+      "sha256": "da30e30bfb890d7409ec7deb22326e77e260d4f47dd26bd36f87549828e8e83b"
+    },
+    "exports/effects/claw/07.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "2866539ce6f3aad69f8bbf75f0f39da8533b235dcfce394e07b6275b71e627c2"
+    },
+    "exports/effects/claw/effect_preview.png": {
+      "bytes": 210,
+      "sha256": "57ca33dcb9c4edf715308a8df902f9bfdacfbdd65fee3c3c18f55509bcbee0fe"
+    },
+    "exports/effects/claw/manifest.json": {
+      "bytes": 503,
+      "sha256": "11e460bb12901950113262fce9df6ae03512b6e794c92ab04d64f4a001307fe4"
+    },
+    "exports/effects/claw/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/crush/00.idx4": {
+      "bytes": 512,
+      "sha256": "c6537bbad498de5dca306a361441083c6b816204b768e8acf65e778c8a3202af"
+    },
+    "exports/effects/crush/00.png": {
+      "bytes": 153,
+      "sha256": "bda52e61b2d7c08b23460d373817b6fbc00ff68dc029eae6e98afaa30637edf4"
+    },
+    "exports/effects/crush/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "d042f8c69ff8ce39a6088e788525108af8ffd25dfd890a934682efe125413df6"
+    },
+    "exports/effects/crush/01.idx4": {
+      "bytes": 512,
+      "sha256": "c9f73165f55d3683b3b411c0d79cfbeb03932b8b4156fd6ca5869b481cd69403"
+    },
+    "exports/effects/crush/01.png": {
+      "bytes": 105,
+      "sha256": "dd2faa84321ace55388fe0c7dfbf4c08614a0df47930b5da38f83c4815f203f5"
+    },
+    "exports/effects/crush/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "39c07619849144571eb21b477d1434f2a1cb3a54ecd2001843899fb6989b4334"
+    },
+    "exports/effects/crush/02.idx4": {
+      "bytes": 512,
+      "sha256": "f93bfce66aba790416fe98b7355cfd461b29c53212a5ef2823ea482a250b6b87"
+    },
+    "exports/effects/crush/02.png": {
+      "bytes": 149,
+      "sha256": "710795b4a6bd4e565fc7e93748a1fad50f6c8d58cd54a4009581bacd1561572f"
+    },
+    "exports/effects/crush/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "388aecd869701e6371a63614aa5caf793671fced9e218d60d305c14847f0a371"
+    },
+    "exports/effects/crush/03.idx4": {
+      "bytes": 512,
+      "sha256": "719f3164e728d36c77aad3a379f7c0df6bad490bde799cc479856e6462848cee"
+    },
+    "exports/effects/crush/03.png": {
+      "bytes": 175,
+      "sha256": "d44ee74f1bc632942252f7910d74033c9efbdba4ad49cb9b95e234bb7ca58f1d"
+    },
+    "exports/effects/crush/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "dce7c0e287d1a1fb2396d83f7c323be2f3c08fc93c6531eaf92751e0397a910e"
+    },
+    "exports/effects/crush/04.idx4": {
+      "bytes": 512,
+      "sha256": "6af15546cf61941851cef3861c17c5ad619f0fb84233f92bcb456f16454b4f47"
+    },
+    "exports/effects/crush/04.png": {
+      "bytes": 183,
+      "sha256": "2d093a193890dc4aa00ea92c756a686359f76be4e0f029e7a2b7facae3a70a02"
+    },
+    "exports/effects/crush/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "59983f7e2c74dd22475b35918290a3f76276720fe9b2fa7f34365c7e7fca8fea"
+    },
+    "exports/effects/crush/05.idx4": {
+      "bytes": 512,
+      "sha256": "3e314e56db392c1c79c12d34fc35b6d9fca31e0e8f844b4376aa3655a5684cea"
+    },
+    "exports/effects/crush/05.png": {
+      "bytes": 196,
+      "sha256": "df6310a6264c2236563d7e9f6e2094c37b9d8302b7da2e4c9432c36f8c9b02da"
+    },
+    "exports/effects/crush/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "55bd9fc75d24c6abc66283a5930c52004de4877319b6e4ff29ad23893003e522"
+    },
+    "exports/effects/crush/06.idx4": {
+      "bytes": 512,
+      "sha256": "22084d21fabc64ce42253319e042a8f908f308097dca927a6da40921cb3673f6"
+    },
+    "exports/effects/crush/06.png": {
+      "bytes": 202,
+      "sha256": "5bbc2735181908d3766dca9df2290ee51b818127b527ed26c585b497eaee299b"
+    },
+    "exports/effects/crush/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "ca11c5a9a423a6d1c0816f234c88415bf61f0fb604d74a0c66b024900e2e94ec"
+    },
+    "exports/effects/crush/07.idx4": {
+      "bytes": 512,
+      "sha256": "7ce3be7d68e9f7e8d89a2f0f4489bdfc82fbebb75d33f936eb21b713cc485349"
+    },
+    "exports/effects/crush/07.png": {
+      "bytes": 218,
+      "sha256": "06fa9aad03d0e8e6cad5b0e756397470554f2a396bea4de8a3fb60503848b5a5"
+    },
+    "exports/effects/crush/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "30035989377f8bdc8b1de7ae33a2b89cc387ee3439c215f37e08b96d67f2db50"
+    },
+    "exports/effects/crush/effect_preview.png": {
+      "bytes": 1327,
+      "sha256": "730c68e77ea59eb98147918dcdf7ae9a46d4a247e6f287f601a6606a008a8645"
+    },
+    "exports/effects/crush/manifest.json": {
+      "bytes": 504,
+      "sha256": "f23fd755cae682963a174b8df525def8abb1f297080e98b16cb2c0f85a38a303"
+    },
+    "exports/effects/crush/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/magic/00.idx4": {
+      "bytes": 512,
+      "sha256": "b833d7e8af7ada41a9b015c55671304bc45bb4b6381468d1416ef681988fedc0"
+    },
+    "exports/effects/magic/00.png": {
+      "bytes": 141,
+      "sha256": "ab8320b829d646031a75c2752640e14cbbb3902537fff1073c534c3fc26e9b26"
+    },
+    "exports/effects/magic/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "a5039ef5db4780af7dea4206d78764bf4923c9864a4b3155d9959531ff148a7b"
+    },
+    "exports/effects/magic/01.idx4": {
+      "bytes": 512,
+      "sha256": "1482d7732a1e15c775839f88a547d1189503abfc2881ce58945c216719c129d6"
+    },
+    "exports/effects/magic/01.png": {
+      "bytes": 159,
+      "sha256": "25b9c5429fe9799e300918761f9154fb7c8b81cf2062eab2f2366f8018e14f77"
+    },
+    "exports/effects/magic/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "e6b22e1eb041307b8f0b250e67901b0e3da2ed0d9d02a194c016b6a2a78181e9"
+    },
+    "exports/effects/magic/02.idx4": {
+      "bytes": 512,
+      "sha256": "6c4c8a7dfb868a14758d6e5e860fbf698ab7a4244ae198f30af947cbbd897465"
+    },
+    "exports/effects/magic/02.png": {
+      "bytes": 163,
+      "sha256": "b5bed3915e2a2cc4311b9abec259d865de3cd4f627488c26f1a0df550cf95eb8"
+    },
+    "exports/effects/magic/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "27542f435689e4d6d2aba06c1152a4ac01c9a19f4b6d5122705c1d290185b1b4"
+    },
+    "exports/effects/magic/03.idx4": {
+      "bytes": 512,
+      "sha256": "036c9ddf55b36a34684c9fd10aacc2e9504fae649b8a87a640f227ceb6e70f95"
+    },
+    "exports/effects/magic/03.png": {
+      "bytes": 182,
+      "sha256": "36dd12a590b69995a146f7b0280d9cfac9867f3075bfc2a917b8f9993d3df919"
+    },
+    "exports/effects/magic/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "8cbd2fc0a6d7a2215e4adafdb3bb8269afb1f125a0a50aba3b1c8d0bccd51a2b"
+    },
+    "exports/effects/magic/04.idx4": {
+      "bytes": 512,
+      "sha256": "0e0244cf2ceeac04e44fbeda8decfe7c080131ce3baa5abf2780349554380304"
+    },
+    "exports/effects/magic/04.png": {
+      "bytes": 170,
+      "sha256": "46b772d725aee62ffc47d9a71a074f7384abc6b9f8d0629b87c7d999777d8d7f"
+    },
+    "exports/effects/magic/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "e3027b5acdc4377badfc6b5a9bd6c1c5e0d20c12fa7d64784829c508deafc508"
+    },
+    "exports/effects/magic/05.idx4": {
+      "bytes": 512,
+      "sha256": "184c4548cda2119fa979537557e36961840ce54921d7520d02c86f2ba03f5c6a"
+    },
+    "exports/effects/magic/05.png": {
+      "bytes": 212,
+      "sha256": "60a70de413549a5d4487e74f5b45fff8790f7223b03f12f2317f2960ea6c965d"
+    },
+    "exports/effects/magic/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "099d8c70ea450b4d8074b8bc653f20c2f408d439459c38c6c98b0055b96b7b62"
+    },
+    "exports/effects/magic/06.idx4": {
+      "bytes": 512,
+      "sha256": "5a74e1a73f3d3f308fb319dc18b8bb97bdcb7f4e507a01852d9135a6be4f595b"
+    },
+    "exports/effects/magic/06.png": {
+      "bytes": 196,
+      "sha256": "f6a1d5d5e56d42e14fef14ec2a55848bf021051027041f21e91eebe45e0509a7"
+    },
+    "exports/effects/magic/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "09e6c2ad92550fccfbb7d363e13d05149c654a483d8de7535700f2161aa36cbc"
+    },
+    "exports/effects/magic/07.idx4": {
+      "bytes": 512,
+      "sha256": "322c7b0b71da30ef1460482f7c2beff053c6810c355bb02d6f578300eed6873a"
+    },
+    "exports/effects/magic/07.png": {
+      "bytes": 218,
+      "sha256": "44cac4f6b35703d4a5d79c21b32d0ebcfde9309fceb86e25efa57b4e9a165c0f"
+    },
+    "exports/effects/magic/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "7f839be65e571867883b80447ac35bc1f9992d867a26ec36118e1cc7a85ed77b"
+    },
+    "exports/effects/magic/effect_preview.png": {
+      "bytes": 1343,
+      "sha256": "26c3cfe32bc41300595ea93260b65224b9c35657aac193ecb9269b4237f173a5"
+    },
+    "exports/effects/magic/manifest.json": {
+      "bytes": 504,
+      "sha256": "d883ddd8eea8bbdfdb1a28e4bbee4245e01fbd7f99d36671fccc361748786630"
+    },
+    "exports/effects/magic/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/manifest.json": {
+      "bytes": 1042,
+      "sha256": "d0e745ea2cb7b0fd00901f2257a1c84cd419c72e587a3cad1754b79896bd887e"
+    },
+    "exports/effects/pulse/00.idx4": {
+      "bytes": 512,
+      "sha256": "b833d7e8af7ada41a9b015c55671304bc45bb4b6381468d1416ef681988fedc0"
+    },
+    "exports/effects/pulse/00.png": {
+      "bytes": 141,
+      "sha256": "ab8320b829d646031a75c2752640e14cbbb3902537fff1073c534c3fc26e9b26"
+    },
+    "exports/effects/pulse/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "a5039ef5db4780af7dea4206d78764bf4923c9864a4b3155d9959531ff148a7b"
+    },
+    "exports/effects/pulse/01.idx4": {
+      "bytes": 512,
+      "sha256": "1482d7732a1e15c775839f88a547d1189503abfc2881ce58945c216719c129d6"
+    },
+    "exports/effects/pulse/01.png": {
+      "bytes": 159,
+      "sha256": "25b9c5429fe9799e300918761f9154fb7c8b81cf2062eab2f2366f8018e14f77"
+    },
+    "exports/effects/pulse/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "e6b22e1eb041307b8f0b250e67901b0e3da2ed0d9d02a194c016b6a2a78181e9"
+    },
+    "exports/effects/pulse/02.idx4": {
+      "bytes": 512,
+      "sha256": "6c4c8a7dfb868a14758d6e5e860fbf698ab7a4244ae198f30af947cbbd897465"
+    },
+    "exports/effects/pulse/02.png": {
+      "bytes": 163,
+      "sha256": "b5bed3915e2a2cc4311b9abec259d865de3cd4f627488c26f1a0df550cf95eb8"
+    },
+    "exports/effects/pulse/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "27542f435689e4d6d2aba06c1152a4ac01c9a19f4b6d5122705c1d290185b1b4"
+    },
+    "exports/effects/pulse/03.idx4": {
+      "bytes": 512,
+      "sha256": "036c9ddf55b36a34684c9fd10aacc2e9504fae649b8a87a640f227ceb6e70f95"
+    },
+    "exports/effects/pulse/03.png": {
+      "bytes": 182,
+      "sha256": "36dd12a590b69995a146f7b0280d9cfac9867f3075bfc2a917b8f9993d3df919"
+    },
+    "exports/effects/pulse/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "8cbd2fc0a6d7a2215e4adafdb3bb8269afb1f125a0a50aba3b1c8d0bccd51a2b"
+    },
+    "exports/effects/pulse/04.idx4": {
+      "bytes": 512,
+      "sha256": "0e0244cf2ceeac04e44fbeda8decfe7c080131ce3baa5abf2780349554380304"
+    },
+    "exports/effects/pulse/04.png": {
+      "bytes": 170,
+      "sha256": "46b772d725aee62ffc47d9a71a074f7384abc6b9f8d0629b87c7d999777d8d7f"
+    },
+    "exports/effects/pulse/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "e3027b5acdc4377badfc6b5a9bd6c1c5e0d20c12fa7d64784829c508deafc508"
+    },
+    "exports/effects/pulse/05.idx4": {
+      "bytes": 512,
+      "sha256": "184c4548cda2119fa979537557e36961840ce54921d7520d02c86f2ba03f5c6a"
+    },
+    "exports/effects/pulse/05.png": {
+      "bytes": 212,
+      "sha256": "60a70de413549a5d4487e74f5b45fff8790f7223b03f12f2317f2960ea6c965d"
+    },
+    "exports/effects/pulse/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "099d8c70ea450b4d8074b8bc653f20c2f408d439459c38c6c98b0055b96b7b62"
+    },
+    "exports/effects/pulse/06.idx4": {
+      "bytes": 512,
+      "sha256": "5a74e1a73f3d3f308fb319dc18b8bb97bdcb7f4e507a01852d9135a6be4f595b"
+    },
+    "exports/effects/pulse/06.png": {
+      "bytes": 196,
+      "sha256": "f6a1d5d5e56d42e14fef14ec2a55848bf021051027041f21e91eebe45e0509a7"
+    },
+    "exports/effects/pulse/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "09e6c2ad92550fccfbb7d363e13d05149c654a483d8de7535700f2161aa36cbc"
+    },
+    "exports/effects/pulse/07.idx4": {
+      "bytes": 512,
+      "sha256": "322c7b0b71da30ef1460482f7c2beff053c6810c355bb02d6f578300eed6873a"
+    },
+    "exports/effects/pulse/07.png": {
+      "bytes": 218,
+      "sha256": "44cac4f6b35703d4a5d79c21b32d0ebcfde9309fceb86e25efa57b4e9a165c0f"
+    },
+    "exports/effects/pulse/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "7f839be65e571867883b80447ac35bc1f9992d867a26ec36118e1cc7a85ed77b"
+    },
+    "exports/effects/pulse/effect_preview.png": {
+      "bytes": 1343,
+      "sha256": "26c3cfe32bc41300595ea93260b65224b9c35657aac193ecb9269b4237f173a5"
+    },
+    "exports/effects/pulse/manifest.json": {
+      "bytes": 504,
+      "sha256": "c91375c8f946749b2b9330658603363b7e7868a632a1918a020fdce35acb6fd6"
+    },
+    "exports/effects/pulse/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/effects/slash/00.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/00.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/00.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/01.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/01.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/01.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/02.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/02.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/02.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/03.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/03.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/03.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/04.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/04.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/04.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/05.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/05.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/05.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/06.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/06.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/06.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/07.idx4": {
+      "bytes": 512,
+      "sha256": "efc23b51619f1d9f9dfd21e1c46c59ad36a166f1d4ea16b8ca51c9834a156896"
+    },
+    "exports/effects/slash/07.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/07.rgb565le": {
+      "bytes": 2048,
+      "sha256": "4a48ccf1d315ec05bbda3f6d1511c90b2b065a5dd7cf604ef1ad1fd491917d65"
+    },
+    "exports/effects/slash/effect_preview.png": {
+      "bytes": 194,
+      "sha256": "9e77490f3cde789718714dd9a9675fb79b86cb7615d62a37c49e7cc871a4dbef"
+    },
+    "exports/effects/slash/manifest.json": {
+      "bytes": 504,
+      "sha256": "5f37ce1a4d461e66a4581b11afb75cd11ed673423e50dd50d97c6cd5736d892f"
+    },
+    "exports/effects/slash/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "0afd7b5022434dae3b68fec8a46a7258fbc3625d34e3558523d093e426500bc2"
+    },
+    "exports/enemies/00_goblin/animacao_preview.gif": {
+      "bytes": 62496,
+      "sha256": "a9df005d877bb8d6f7f324089c0fd0e67bf437e3ca51a400cf9dc4a10a49dbc6"
+    },
+    "exports/enemies/00_goblin/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "6fc9a43a325564be48e48353b0bbdbd3723b243647de98fce6c2912a77875bb4"
+    },
+    "exports/enemies/00_goblin/anticipation.png": {
+      "bytes": 2782,
+      "sha256": "0e97934694bf0a17a7ed01799c28e27fed01ec2e07f6477a902279a6ff0c040e"
+    },
+    "exports/enemies/00_goblin/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "1a64f343b4cb8ed122f1598fb29d77ad4e0a7c63e3a51dad282cc0258b5dfb4a"
+    },
+    "exports/enemies/00_goblin/ataque_preview.png": {
+      "bytes": 8142,
+      "sha256": "66b6c679427a373e3c432a298392d74fcd9315c14835c301e07ce6c056612f39"
+    },
+    "exports/enemies/00_goblin/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "aa240f5767a71ecb7e22cb2a4cd1f2ff4adf3c920d3cadb99e2726e2a70cf3e3"
+    },
+    "exports/enemies/00_goblin/attack.png": {
+      "bytes": 2805,
+      "sha256": "568e87b46085584993c417d6002edad3d6f34492a9991462f85cecc39dcfde42"
+    },
+    "exports/enemies/00_goblin/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "3c94069ccd4c6c2a2f3165bab65ab3d9a1a2971f93ad7fcbf26ca35c40b1c66a"
+    },
+    "exports/enemies/00_goblin/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "65ee91fa9bdb89c03d5d9aba46f58e39064045e3967456f7d0d9fb2639d764eb"
+    },
+    "exports/enemies/00_goblin/hurt.png": {
+      "bytes": 2575,
+      "sha256": "4ed8b7f800f17a25129fbdf1afb3e689ea260088b54cbefcd626f0a346be81c3"
+    },
+    "exports/enemies/00_goblin/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8aa5d93f4a30c7f410fb53ce2679094491a76e3703b77ae8a49f718f0d781546"
+    },
+    "exports/enemies/00_goblin/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "9603acb429678bff6c80176f9be755bb15cf82e89ebfb8d1c880a194afe2d3c8"
+    },
+    "exports/enemies/00_goblin/idle.png": {
+      "bytes": 2674,
+      "sha256": "b6c8c60222b9f38d54187445374f7d5a5d06dfb6e00c8dde62ab5f553ae10112"
+    },
+    "exports/enemies/00_goblin/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "ff4d5d2b184527b4ccc7f65ad753fde4434abd9a8e4f7dcb11a580caf80a17f3"
+    },
+    "exports/enemies/00_goblin/manifest.json": {
+      "bytes": 7014,
+      "sha256": "37dd36f0c384de8b5bf57c92d3f7e1757c02e970ea2eeb8083e58df1879aab63"
+    },
+    "exports/enemies/00_goblin/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "c717537c66b67a323431ecf068d07922bc7c9ee1bc368795b44a050eac078c86"
+    },
+    "exports/enemies/00_goblin/sprites_4_poses.png": {
+      "bytes": 9251,
+      "sha256": "6cc1095f969cce23299e570035665c451e7f619881614907f2971beacd487003"
+    },
+    "exports/enemies/01_lobo/animacao_preview.gif": {
+      "bytes": 59524,
+      "sha256": "03d14d8aae19a9db4409dda4ef37fa9edb6a9a79d6df456f442f8606c2c227ce"
+    },
+    "exports/enemies/01_lobo/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "35d029c774df22b5ff64cc05172c1a24d2034b98698c0c4affe779bfee1649d7"
+    },
+    "exports/enemies/01_lobo/anticipation.png": {
+      "bytes": 2337,
+      "sha256": "1004871c567ee4ba288359849338ec9a4783785fbb3c8c4e5ac61cf59f677d96"
+    },
+    "exports/enemies/01_lobo/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "41cc67b50f717f87143f6d3dc14bdb532daf3cd8f1754e63874566b6245423cd"
+    },
+    "exports/enemies/01_lobo/ataque_preview.png": {
+      "bytes": 6889,
+      "sha256": "be24fe704622542845cdf96ca2bdaf2b6ffd301a9cf654ee552135e1402d7399"
+    },
+    "exports/enemies/01_lobo/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "6f96119370ef944aea01081cdcbd80439eb917174239f09e13bcec6dacd88f3f"
+    },
+    "exports/enemies/01_lobo/attack.png": {
+      "bytes": 2283,
+      "sha256": "bdc71f080faf57ad92e38084816e3a8d41d739d23408df858a6906b1a092f93b"
+    },
+    "exports/enemies/01_lobo/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f4972c5273de54afdd1e861249b365832279060095aad869cf7468290a88aa63"
+    },
+    "exports/enemies/01_lobo/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "3b526b03a4b3833244d07217f3839b1a1532fcafbf7c0feb56ee0f329616beb8"
+    },
+    "exports/enemies/01_lobo/hurt.png": {
+      "bytes": 2166,
+      "sha256": "df68987d41ec3818d55c3c0059c6b812318396423d72cdd7806ceff89ce471c8"
+    },
+    "exports/enemies/01_lobo/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "b303a4a2ecd8fde1b0cd365344b7800788330ebc8861af3ce78fa7f386fa06aa"
+    },
+    "exports/enemies/01_lobo/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "0c44c093cad6da5254ea2099a8c05a6485455ae77e604bd44eb714a337cbcdb9"
+    },
+    "exports/enemies/01_lobo/idle.png": {
+      "bytes": 2410,
+      "sha256": "12c289567809a5e6ca1c05fcf3dfa06c65a2f0e500a90fc862bf22ce67dc0b70"
+    },
+    "exports/enemies/01_lobo/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7cc28132f87f72efe328c38bfad496c7ccf1617aa9b09c355c6ac031a8da65ae"
+    },
+    "exports/enemies/01_lobo/manifest.json": {
+      "bytes": 6990,
+      "sha256": "acf7e44178683d93fb2e49f2c0562d3b93eb3b9240d051e3abf781f13742782f"
+    },
+    "exports/enemies/01_lobo/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "9016ebb8c17ac36e8eab037f2dc593adddd0b6b50f0ce8d33f227e7cef0570ac"
+    },
+    "exports/enemies/01_lobo/sprites_4_poses.png": {
+      "bytes": 7814,
+      "sha256": "1228a5d57816fcb3d7525940d7f0cdfd5ead642634e3fcbe9838b3871022b75b"
+    },
+    "exports/enemies/02_esqueleto/animacao_preview.gif": {
+      "bytes": 61984,
+      "sha256": "73a88e2a76a3db539d8e6cd1b6563511ef1cc1e814c629a8a1ebd75fa9ad1572"
+    },
+    "exports/enemies/02_esqueleto/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "60722835f6b91b40d1f46a830c3e9f10a39678be72d3b69e334aefe1b691ddec"
+    },
+    "exports/enemies/02_esqueleto/anticipation.png": {
+      "bytes": 2611,
+      "sha256": "98fca24339caacb1065600941edde0a2436711f5966ae9409341fd0ab8e67ecc"
+    },
+    "exports/enemies/02_esqueleto/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f553bad5d6f1d08909a85d9706005555c77f36edf1c1f740043dec09d95fd41a"
+    },
+    "exports/enemies/02_esqueleto/ataque_preview.png": {
+      "bytes": 7684,
+      "sha256": "c56157c0bdb1d71b8059ba7531f9a56f74de56502bb0471f8db28fdc3557ffc2"
+    },
+    "exports/enemies/02_esqueleto/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "0e9dc24bd176d2e326b32e4f6092d1c346f8b9a2c163b649a812fca0e0da9aef"
+    },
+    "exports/enemies/02_esqueleto/attack.png": {
+      "bytes": 2521,
+      "sha256": "c74f45a6dd194db4ea3a4d98432c325b8162b3013fcab298a4e41ab1a518fb66"
+    },
+    "exports/enemies/02_esqueleto/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2fd21917b2b3c9b5e2f7a23c87e886e7b5a4743c14cf50c2b5ec60a98e14147f"
+    },
+    "exports/enemies/02_esqueleto/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "b3b6c8f776a00a21d75e48c01e5d8345ecb9d155cae18914d08227ddfa887397"
+    },
+    "exports/enemies/02_esqueleto/hurt.png": {
+      "bytes": 2620,
+      "sha256": "d4b3d07323f1d9918220f1f9c811cddbc66e97840267eea4eb32cc0f78d0049b"
+    },
+    "exports/enemies/02_esqueleto/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "90b5018ee260fbc8cf74bd438585fc5572154b7aa4bd6fbfe05cdaa9b84c1726"
+    },
+    "exports/enemies/02_esqueleto/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "136a21e15bc7d70cbdffb0fb27a1364d64ec33a88a9848b732f0aae664ffaff0"
+    },
+    "exports/enemies/02_esqueleto/idle.png": {
+      "bytes": 2603,
+      "sha256": "99b6a9722ec1912966f6e2a5c639989616bd8311c98a68fc0fa2b7826c2cae07"
+    },
+    "exports/enemies/02_esqueleto/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "0451a75d99738a8807664cb6e7213a6456f5c8cf6095908f36fa5a855a13596d"
+    },
+    "exports/enemies/02_esqueleto/manifest.json": {
+      "bytes": 7004,
+      "sha256": "b59cbfb11637981a59dfc40f333d929f9961b385f23a22612edd5e75b145e5b5"
+    },
+    "exports/enemies/02_esqueleto/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "81710b0d9a642c910983fc9cc516a0e00bd4213a74987f12211ad86d3cbbac8f"
+    },
+    "exports/enemies/02_esqueleto/sprites_4_poses.png": {
+      "bytes": 9182,
+      "sha256": "1140f770914355afb44296f62cf48af5e7fd4b295124fd6e7fe46fc1035f4ae0"
+    },
+    "exports/enemies/03_guardiao/animacao_preview.gif": {
+      "bytes": 73977,
+      "sha256": "00e2bf89df568fca77c6045295e3ce2369efe2f1572e008ba42fe1c2318b4f9a"
+    },
+    "exports/enemies/03_guardiao/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "98eec5cd95ee2b1a9a80d980d3fc6c8929569d0e3cfaa85927b5c784a8b30e7d"
+    },
+    "exports/enemies/03_guardiao/anticipation.png": {
+      "bytes": 2518,
+      "sha256": "414642890479f87a744a0ff6a7593aaa14b09f1c75809d1e737b216939b62655"
+    },
+    "exports/enemies/03_guardiao/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "df548628058160135c2b997222c1712f651b8d0414f7e5992f1a9a20ffbf6a92"
+    },
+    "exports/enemies/03_guardiao/ataque_preview.png": {
+      "bytes": 8010,
+      "sha256": "19662a9bb53a2f476f72f7daf7c8677fb30e3e2b3c0ff1dff9c3717035873fe5"
+    },
+    "exports/enemies/03_guardiao/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "338a3da3eeb87c7cedb0aa2473dbc6e075188e21236a66a295870b66e5b6a143"
+    },
+    "exports/enemies/03_guardiao/attack.png": {
+      "bytes": 2842,
+      "sha256": "92862402c04acb1dca534dae85ca0298b94ca3cf7e9d0210a0ac1bb37174fd20"
+    },
+    "exports/enemies/03_guardiao/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "93c36a3b5dae87ed50ee1f38f40fc53318a707c75350bc456e56e0615ce8fc98"
+    },
+    "exports/enemies/03_guardiao/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "f5df8659a74345fb44e39248918aea582985cf20afc6505deae2e29b91490766"
+    },
+    "exports/enemies/03_guardiao/hurt.png": {
+      "bytes": 2607,
+      "sha256": "b517d21b78feabd9e67dc54e18f5667cccc8ea27c881c2e67024c7580bc8c819"
+    },
+    "exports/enemies/03_guardiao/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "95a8406146be113aae917d39a00f54a0557c1cc001d6dc3e243f71cc3c6b25e3"
+    },
+    "exports/enemies/03_guardiao/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "00ae2fe596a1320d9a2f049ca33afd333d780041466771d917220cca564aae10"
+    },
+    "exports/enemies/03_guardiao/idle.png": {
+      "bytes": 2799,
+      "sha256": "560db9034b4ef81d34b84c0bf006e3f77034a04b840000b265b6e8ebaa8027ec"
+    },
+    "exports/enemies/03_guardiao/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "04251078e999202a3785b5d80ab517f62d776b258e044f8ea09b6a0e685d3f33"
+    },
+    "exports/enemies/03_guardiao/manifest.json": {
+      "bytes": 8187,
+      "sha256": "291668ad074a68e95fefac816512ad8747972a40b3ae332428b7b6c41a028677"
+    },
+    "exports/enemies/03_guardiao/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "d8cdf37fae45d9fdd8a3984f919a7d34cf257acc2413d0e06bd58b0f13cd31fa"
+    },
+    "exports/enemies/03_guardiao/sprites_4_poses.png": {
+      "bytes": 9328,
+      "sha256": "e0ce1898aeb1a4c6fd5518a137f231688e5b6237b33c3abd27779a83b29ff8d6"
+    },
+    "exports/enemies/04_javali/animacao_preview.gif": {
+      "bytes": 67998,
+      "sha256": "7e47e27fbf6aae5dc8dbdd3097fad5b0665f511f9215517eb93637edac2a1825"
+    },
+    "exports/enemies/04_javali/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "de61883574fb3bf41f014737220935d7a650417552843fd61e9d1c54f93aa37e"
+    },
+    "exports/enemies/04_javali/anticipation.png": {
+      "bytes": 2199,
+      "sha256": "faed7068b3c91e7773372a231bf8729f77635a52cfd813dd5714c39d5ceac761"
+    },
+    "exports/enemies/04_javali/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "9abc76531af55e9cd8d447b929d289413c477bd5ca9646a417d7713089161bb8"
+    },
+    "exports/enemies/04_javali/ataque_preview.png": {
+      "bytes": 7106,
+      "sha256": "580bf5f4cb966668ebd4cb86859168bb1b60c53918e87d547a82d18bc4f33df3"
+    },
+    "exports/enemies/04_javali/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "a83df4757b0302ac128077bed44e0f1da4ca8a1733916ab94380b1de164298ea"
+    },
+    "exports/enemies/04_javali/attack.png": {
+      "bytes": 2489,
+      "sha256": "ac10a5d1607fbd0f25fdaf7b1e41c0abb12e7fbdf854a2bd34fe0d38d18d8846"
+    },
+    "exports/enemies/04_javali/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7765d1da89b70984a880c4b48ab4b22a0e47e2f0dd299662b0ebec9b622fe471"
+    },
+    "exports/enemies/04_javali/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "bf3f9690a10c8e22f2fd2eaed087ca8fed4c515ad5c0a93567f861035f597505"
+    },
+    "exports/enemies/04_javali/hurt.png": {
+      "bytes": 2105,
+      "sha256": "b327efbba04e74be0725e41a4a4bc119a396199d39844f5fe58bf1bd8fc687a1"
+    },
+    "exports/enemies/04_javali/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7841859846063173127ff53210a088b9365daad76ddb047983676144105beea3"
+    },
+    "exports/enemies/04_javali/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "79ea82600c0807519ffee300b6801bfdc80df0dc9bde703801568e1d0163125a"
+    },
+    "exports/enemies/04_javali/idle.png": {
+      "bytes": 2552,
+      "sha256": "c6d4b8d865c9e7542a14ada526fab7ddeb43444dc64a860d0ecbdd0e47d4fa3e"
+    },
+    "exports/enemies/04_javali/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d08f39b46de09dc0f306bcfb1e87949df302311ed7d7020e0ad308e8b7e89179"
+    },
+    "exports/enemies/04_javali/manifest.json": {
+      "bytes": 8140,
+      "sha256": "ffccbccfa6ba2f69941728dbec67b0ab2ec980a12b093baf6750bcedbbf6dbe7"
+    },
+    "exports/enemies/04_javali/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "095cc41a9a6a1d22e6f624a18eb15dfca537c0a3eead9b28214e635bc3689f5b"
+    },
+    "exports/enemies/04_javali/sprites_4_poses.png": {
+      "bytes": 7999,
+      "sha256": "34e29f93f646375273cb3c1417d9a037450f8fbb293878b7f075e98e9137d830"
+    },
+    "exports/enemies/05_espectro/animacao_preview.gif": {
+      "bytes": 71851,
+      "sha256": "b1694a5a24ed8e2ffbb871c868a83e7cc543399faafafb656283ca65b3932370"
+    },
+    "exports/enemies/05_espectro/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "ae44d694718bed69ab5d68e6a23df6d2a1069ee2ad403436246b2c89a6979ed8"
+    },
+    "exports/enemies/05_espectro/anticipation.png": {
+      "bytes": 2163,
+      "sha256": "dae0757876a077c01d1824e5971560db0f63a04165f97c58b9b15f96f17d3c78"
+    },
+    "exports/enemies/05_espectro/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f90bf316604d75666788ade3fa8fd986b39cec6e6d82b32d0dd9b0b13563c962"
+    },
+    "exports/enemies/05_espectro/ataque_preview.png": {
+      "bytes": 6720,
+      "sha256": "fd353f4d7b1fd5e7143d91db72072540dd69128a28753f6920cc7e56f9c810fd"
+    },
+    "exports/enemies/05_espectro/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "30b89541c035c9a730b7877230eaa97602f7ca14d33be75f79bab62ebc57a7a4"
+    },
+    "exports/enemies/05_espectro/attack.png": {
+      "bytes": 2585,
+      "sha256": "9aaf1a0229c46af8d024033c40321b2e1f2097e888f94e5308826db5ea3cd55b"
+    },
+    "exports/enemies/05_espectro/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "3ce0d2846f2834c5e2d1b70446b401497fd8d59fadcf6ab5e2f7befea1b27980"
+    },
+    "exports/enemies/05_espectro/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "8c1e9b9fb4b6a01f82b27a271430f3de9e4c1b9e628b7b8900dda85dc20e3915"
+    },
+    "exports/enemies/05_espectro/hurt.png": {
+      "bytes": 1891,
+      "sha256": "534cc24573e2b54ab7c36d3af2bd428a5eb70268bb58622183e4b1f67e090967"
+    },
+    "exports/enemies/05_espectro/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d377f4eefee6a2a657bb62c4cf29be66e9a833367dd568bc5b2ddab7573fb680"
+    },
+    "exports/enemies/05_espectro/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "c9842711ae6d5e58fa85158d282dcf51f2e22f371aca8310348ad3580706d445"
+    },
+    "exports/enemies/05_espectro/idle.png": {
+      "bytes": 2088,
+      "sha256": "1236564f7de9d829fdeb6880b2243b9c7fe49d680de1891655a624c45a6b5b76"
+    },
+    "exports/enemies/05_espectro/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "0980d326c690e2156ac85d7ee4c1c8c4b2f98c42b40ddc1048ea8973a636e06c"
+    },
+    "exports/enemies/05_espectro/manifest.json": {
+      "bytes": 8411,
+      "sha256": "492a9e23d7268f2d8006d18b24a254838e73d3710cdac2164e56b26c372ba029"
+    },
+    "exports/enemies/05_espectro/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "98487d107319af69788a26399c1942f3be7ca5409fad1f8f343eecc3d8807d60"
+    },
+    "exports/enemies/05_espectro/sprites_4_poses.png": {
+      "bytes": 7476,
+      "sha256": "8186c78e629682ad602931ad545a09fcd8adeb79e1f210bcd291949940a45553"
+    },
+    "exports/enemies/06_saqueador/animacao_preview.gif": {
+      "bytes": 61459,
+      "sha256": "f443fdcddb2ab2b14a89377440e1f9e44fce08cb72688df03e7bbb825b6d12c4"
+    },
+    "exports/enemies/06_saqueador/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "e9fc23bf126b34d2816700755bb529e8d2f33afad59beb7e5eaa5b34db756b75"
+    },
+    "exports/enemies/06_saqueador/anticipation.png": {
+      "bytes": 2144,
+      "sha256": "b8433910c84b553b1f8e480344681236242d2f80acefccddb29450cd7a7aff42"
+    },
+    "exports/enemies/06_saqueador/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8bfcabb9948cd04dae3e3db72176260b7e49808eee65ef57295f81d9f0e2d2fc"
+    },
+    "exports/enemies/06_saqueador/ataque_preview.png": {
+      "bytes": 6147,
+      "sha256": "91a10485bb45b0f650e3b10effc9f70ec1aaf92f30ddf678d7a25262a54e64f6"
+    },
+    "exports/enemies/06_saqueador/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "d60445d4beeab993bb902fc6c01aaa4f03853a49acc012a4f3d1bd706a6b43a2"
+    },
+    "exports/enemies/06_saqueador/attack.png": {
+      "bytes": 2044,
+      "sha256": "8481015b0c6d746c242fe069a413368b58e85388940e308f2120b09029f88c56"
+    },
+    "exports/enemies/06_saqueador/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "c6968efafeea132089eabde803817844aa3e117270bf9286d47d4da422252ae7"
+    },
+    "exports/enemies/06_saqueador/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "8f33be4686e430f403c24227ffb875651624c5b461f41914e2227268510f8c16"
+    },
+    "exports/enemies/06_saqueador/hurt.png": {
+      "bytes": 2070,
+      "sha256": "47e8f65a29aa746b0b7af93da3aa9df43af2eca9e8bc23247775432324e59cb6"
+    },
+    "exports/enemies/06_saqueador/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7553d2b42df8a37beceff6a0c7b9c2f3335a694936850d5dc4b0e0287664439d"
+    },
+    "exports/enemies/06_saqueador/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "aca9a8fe45ae79d27f37b87648ca22d0430182857c034985bcb5b5d58a3ec4ab"
+    },
+    "exports/enemies/06_saqueador/idle.png": {
+      "bytes": 2068,
+      "sha256": "2b2eb8589f3f02e71418a8f1af88bf155f51c2579e6d5b2de3d0d6c26e79e000"
+    },
+    "exports/enemies/06_saqueador/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "0b2c85fcea6dfc3678850bca5c449ea3897763d297d36492ed3b95a72ac07f96"
+    },
+    "exports/enemies/06_saqueador/manifest.json": {
+      "bytes": 8231,
+      "sha256": "899114be81fd7cbae2381bdc20a0bcc2c795878f0a91c61673e2b0a1bb853a4b"
+    },
+    "exports/enemies/06_saqueador/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "85600402d897ed85db888dd9bfee1a570dcf2363e6af1791fc5f0694e7d89465"
+    },
+    "exports/enemies/06_saqueador/sprites_4_poses.png": {
+      "bytes": 7080,
+      "sha256": "0da86b17d2264cd046ef058f93efd2e1907a9b6b97c8abc753cb8ad2586ad397"
+    },
+    "exports/enemies/07_sentinela/animacao_preview.gif": {
+      "bytes": 73763,
+      "sha256": "15dc31a3b865be5b5181e12b3d82f3c170212880f2b2f95a843de4f197c84d28"
+    },
+    "exports/enemies/07_sentinela/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "1dab18ba872eaf9815b820e081d618b1479c5ff153e27fbefd4217a1fbc61e12"
+    },
+    "exports/enemies/07_sentinela/anticipation.png": {
+      "bytes": 2968,
+      "sha256": "119c24e103cf06be2d269b2d6c4661bad6dffd9cf43c6ea01af168ca1c4c8e9f"
+    },
+    "exports/enemies/07_sentinela/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a74f431a877d6821eac8527fdf1793ba125428d0187e98ae842b4cb44fb5162f"
+    },
+    "exports/enemies/07_sentinela/ataque_preview.png": {
+      "bytes": 8873,
+      "sha256": "c5037035e87ca844d9778dbe59dff528481480b11e3861933427eb2259ca1ff2"
+    },
+    "exports/enemies/07_sentinela/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "4b260b3eaf4fc964695e0f60a4c872aaef4db66821a9b4213825f03ed7cb62a9"
+    },
+    "exports/enemies/07_sentinela/attack.png": {
+      "bytes": 2981,
+      "sha256": "3c8ae3323a0d0bcd7295d993ef8330bf31fa9d3c5e719d40918c97ffb5347419"
+    },
+    "exports/enemies/07_sentinela/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "655df617a30ee0df056904955089eea25d638200b2c5dc1fde0278efa576e9ff"
+    },
+    "exports/enemies/07_sentinela/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "ff30bea04713eac82e7d804bbabc633135797b8ac7a657045f9e8e9cc84ebc87"
+    },
+    "exports/enemies/07_sentinela/hurt.png": {
+      "bytes": 2898,
+      "sha256": "f3cd1c4a72c6010ed86147c5d2a4e22648318a7ba8950b95e6c3db5edec75bba"
+    },
+    "exports/enemies/07_sentinela/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8e995a4356bdc318dcbdcab11a0f127295388a1a4fc091398db11c13466e26c0"
+    },
+    "exports/enemies/07_sentinela/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "2c919199f2eaec43a19e863dc6ea2ec600c4e5df9b3236f38eb93eae44b40ac7"
+    },
+    "exports/enemies/07_sentinela/idle.png": {
+      "bytes": 3018,
+      "sha256": "3f9ad61cffcf0d7f586265b4dd90e4086eac3ff7223eea0202d654a976811ba8"
+    },
+    "exports/enemies/07_sentinela/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "71ce8c1cd86897448aa729ea1a131a695ac4328fb0c5ed94607c73c437008a3a"
+    },
+    "exports/enemies/07_sentinela/manifest.json": {
+      "bytes": 8272,
+      "sha256": "9b122de30310223f421e81264a837eacb494305478365e9eb42926ce9d571a2f"
+    },
+    "exports/enemies/07_sentinela/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "732764578440adb8c5b3c52fde93756ab92bbeac0dc94983117d75ffccd437a2"
+    },
+    "exports/enemies/07_sentinela/sprites_4_poses.png": {
+      "bytes": 10061,
+      "sha256": "9de0144f565c328dd878b251ac2faaa8ef79099a66562065630020db64517a0b"
+    },
+    "exports/enemies/08_arconte/animacao_preview.gif": {
+      "bytes": 76279,
+      "sha256": "25c6799f50d8a312e0a9877b59568c3df3fb5a86e534822fd168fc8b2e25dee8"
+    },
+    "exports/enemies/08_arconte/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "a84c9d451508e99438f820a8efa54464326fcfe28b6c716f69f64183ce901a2d"
+    },
+    "exports/enemies/08_arconte/anticipation.png": {
+      "bytes": 2750,
+      "sha256": "46f018d879c842827804b01fd0a0b3aebb168bdaa4ff2ccbc4c39e617c4a23bb"
+    },
+    "exports/enemies/08_arconte/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "23fdbe28ed641730aefd0a2c116f2698b3494efce18ec52fcfce64d7b8795c21"
+    },
+    "exports/enemies/08_arconte/ataque_preview.png": {
+      "bytes": 8342,
+      "sha256": "94d7f0cb4155cc33285db2b19467379d5ea6810944f82439dc70de9953808f71"
+    },
+    "exports/enemies/08_arconte/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "dabfdc546a83a2e50501983625aa4cf52e05695602069a6dcee74b1578124c6e"
+    },
+    "exports/enemies/08_arconte/attack.png": {
+      "bytes": 3261,
+      "sha256": "63d6ce223753ff98848fbe298a39025adad1b89d23c886a270d1bba511cbbc15"
+    },
+    "exports/enemies/08_arconte/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "96ee5a9ea637c82ffdf223cf5b757776274b9127b91c021e66278ed8dc44ea39"
+    },
+    "exports/enemies/08_arconte/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "65e85c5d2f287648fe8cec423b4434731a2019bed75fdee8857b7a44159b8a0e"
+    },
+    "exports/enemies/08_arconte/hurt.png": {
+      "bytes": 2966,
+      "sha256": "fd812902170ccaf8f0cbb4d7eb7edcc16ca526d4de1a823a798d3c0d37d33416"
+    },
+    "exports/enemies/08_arconte/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "39a67aef0097e2e5f5a3ea254e454f1e81d1460fdb8e79c3869f014d7717f2c9"
+    },
+    "exports/enemies/08_arconte/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "07c5fea5ed9cd7d316bb62e1c6a13036d4588a1df0cd2b7ee81dbf53cd2b03c9"
+    },
+    "exports/enemies/08_arconte/idle.png": {
+      "bytes": 2435,
+      "sha256": "51f6b5725c68fb995d1914b1b3a475943dc8e8814d0fc98d1029b873c946b00f"
+    },
+    "exports/enemies/08_arconte/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2cd987c7400aa146f5d56bba1b784d6f90ad4d6cba99cb8f7eb4432f072452ee"
+    },
+    "exports/enemies/08_arconte/manifest.json": {
+      "bytes": 8351,
+      "sha256": "248aa7b8287f830942d7a8ddf6892ef71b234d019985b027f8cd13b50634bf84"
+    },
+    "exports/enemies/08_arconte/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "b139c4b0ee952a0467f47b18348b9980a493a5eba1a3ba429e5536667b6f529c"
+    },
+    "exports/enemies/08_arconte/sprites_4_poses.png": {
+      "bytes": 9945,
+      "sha256": "95b3aaa4824ad9664ecb7f5fc55ca168c86e3a06ad4ab09853977f1730dc769f"
+    },
+    "exports/enemies/09_vigia_ossudo/animacao_preview.gif": {
+      "bytes": 66264,
+      "sha256": "a74bb18aafdbe17bc0427f32d651f32137ea4e461168c005cf0cfd0df24f59a9"
+    },
+    "exports/enemies/09_vigia_ossudo/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "6292d564a948601c1b5838e126e4ef52840255ba98f61fe8cf2c04a222e5fe36"
+    },
+    "exports/enemies/09_vigia_ossudo/anticipation.png": {
+      "bytes": 1671,
+      "sha256": "6bb4c603fe6cb10ebcc3603cba11a1b7d3cbe06bc07c3464dfe9156dc19f70df"
+    },
+    "exports/enemies/09_vigia_ossudo/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "e0c07ab3bf3a3bd51578ea8fa38489b168576f0b52c6fabf49d81e4d1eb6fde9"
+    },
+    "exports/enemies/09_vigia_ossudo/ataque_preview.png": {
+      "bytes": 5204,
+      "sha256": "dc9050031fdb182b81797c1eb72b7aa80be007f0d5648cdccbcb32387d0d6371"
+    },
+    "exports/enemies/09_vigia_ossudo/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "ba965b41473b8f4ad35b2b000b4ed5bdda4e2f8a53653ac15db0f1dd57fb6cb5"
+    },
+    "exports/enemies/09_vigia_ossudo/attack.png": {
+      "bytes": 1809,
+      "sha256": "9c3dd2be5704f9502fd0376aa36b82bbdf8326dfdac193062632121329e5a9c5"
+    },
+    "exports/enemies/09_vigia_ossudo/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8cd09802532aabd3e56d6d92be33e0ffd91ee38e8c40d414097f29851f3e11e6"
+    },
+    "exports/enemies/09_vigia_ossudo/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "3c82297d5469204afb54237cd72e94776b8d96cb9a9466a4540816f4d944cd1f"
+    },
+    "exports/enemies/09_vigia_ossudo/hurt.png": {
+      "bytes": 1806,
+      "sha256": "de160eb1e7f8dac40e9ce050ea31e67846ab94d67916dd8d680eb40edecf30f7"
+    },
+    "exports/enemies/09_vigia_ossudo/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "fe18c8590ec755c25b04dc68ccbbb56c2fba0d7d75516cd3dc807353d7a039ee"
+    },
+    "exports/enemies/09_vigia_ossudo/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "fd00ce57b7ec1cfc84dd70f98efceaa27cb17bc629241a103e1e824ef5f9e56d"
+    },
+    "exports/enemies/09_vigia_ossudo/idle.png": {
+      "bytes": 1856,
+      "sha256": "19f72988efb1adaaeaf5bff70ca2cbc9b85156f0c5bd11adbc69b3aa7093bbd7"
+    },
+    "exports/enemies/09_vigia_ossudo/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2310af2518a4f0ecfe91b3a37860cbab047e4c1e714bd4a7b8842eb0621c231b"
+    },
+    "exports/enemies/09_vigia_ossudo/manifest.json": {
+      "bytes": 8265,
+      "sha256": "c95137482bd8d405d67a6351a02424fde9038d939b1ad77da0e7e14afcdb9b49"
+    },
+    "exports/enemies/09_vigia_ossudo/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "5b3304cf4a9007cc44479b4e0ebc7751b5fb0cf8c01d14a16cfffe4559d9780d"
+    },
+    "exports/enemies/09_vigia_ossudo/sprites_4_poses.png": {
+      "bytes": 6075,
+      "sha256": "877e59bc2de7169c8737f96d169679a909d524af6f74ec85d14eae3178fadca2"
+    },
+    "exports/enemies/10_hipogrifo_jovem/animacao_preview.gif": {
+      "bytes": 66643,
+      "sha256": "988eb1fdb7159480f5370f2e0037291865693b7b3fcffc3b906d71dae90fa624"
+    },
+    "exports/enemies/10_hipogrifo_jovem/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "38fbfcaf845664d27fc1850724a8bc7a3c93f1f006f406338676c2756b14e8fa"
+    },
+    "exports/enemies/10_hipogrifo_jovem/anticipation.png": {
+      "bytes": 2724,
+      "sha256": "f919ff82e80ecda3a864effe0e4872c31904e4f68cba2247bdc40a83f0643439"
+    },
+    "exports/enemies/10_hipogrifo_jovem/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "867d4f77bbbc143eb9c08b39ef220b73ccb6b06c915ebcd443356dc2a4dcda2f"
+    },
+    "exports/enemies/10_hipogrifo_jovem/ataque_preview.png": {
+      "bytes": 7750,
+      "sha256": "b093eff9cf91e6ada349902802d272725bd68959876b4e204d7fe161522af3d0"
+    },
+    "exports/enemies/10_hipogrifo_jovem/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "f611ff1802b4140f7e5d52d2a2a9b13ba867097068f655279ed48b78ad2c899d"
+    },
+    "exports/enemies/10_hipogrifo_jovem/attack.png": {
+      "bytes": 2736,
+      "sha256": "8d1a7012eea9b6c5b6734937c078c901f9e9b8820c6e86bfb594094a3cf23b02"
+    },
+    "exports/enemies/10_hipogrifo_jovem/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7f786c8c6eee35148d4b6493fe4cc87db39bd515da1ca6fbaa9aafb805f20eab"
+    },
+    "exports/enemies/10_hipogrifo_jovem/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "f665389c65f682924a44809cd07a27492ba61157ff32b54f09ae6c527d3fd037"
+    },
+    "exports/enemies/10_hipogrifo_jovem/hurt.png": {
+      "bytes": 2056,
+      "sha256": "a314d0c920509a9bd372c5dee8b701712b878443599dd0f6726bc75cd19be95a"
+    },
+    "exports/enemies/10_hipogrifo_jovem/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "9eeeb44cc66b2680bc6650c2c70b957a6fca3673a3052cc032f738f38f9d4eb6"
+    },
+    "exports/enemies/10_hipogrifo_jovem/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "c96022533e5bd4afeff6175f68c83a5674ae635deae176565cb8185e2b85dfce"
+    },
+    "exports/enemies/10_hipogrifo_jovem/idle.png": {
+      "bytes": 2453,
+      "sha256": "6caf524c99ee8f4fa0cad5ddbe3ea608fc9e987fb64cbb67683d6c1b3db8cef7"
+    },
+    "exports/enemies/10_hipogrifo_jovem/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "fc2b7380bc385f761f7eec9902644617a3a528ee5bcebc2a80f8dd0e896fd4ae"
+    },
+    "exports/enemies/10_hipogrifo_jovem/manifest.json": {
+      "bytes": 8338,
+      "sha256": "61e5f7bff329b6bcb6fdb5fa28ccdcc15982d971a54d93c28dc67b3b613afc26"
+    },
+    "exports/enemies/10_hipogrifo_jovem/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "b21a9246d5b2ffe3bd1df82cacbfa16b3055fb71bb26d2b214370808ea671c01"
+    },
+    "exports/enemies/10_hipogrifo_jovem/sprites_4_poses.png": {
+      "bytes": 8391,
+      "sha256": "e114ed70fd2c29c523dce9a17963a68819886474dd3284c73e21b933d97b676c"
+    },
+    "exports/enemies/11_hipogrifo/animacao_preview.gif": {
+      "bytes": 61261,
+      "sha256": "299e8dab22bb78acdfda71c2ef793f7b058b33d50848ffea29eee3ed70c7a5cc"
+    },
+    "exports/enemies/11_hipogrifo/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "e58ea9410323e96f6e4008d822f28e951d79c73cddd3c4509fcc502943417d2b"
+    },
+    "exports/enemies/11_hipogrifo/anticipation.png": {
+      "bytes": 2431,
+      "sha256": "35e025af8bf49004c86b34ee624e79192ae3c53245e6cdcc5e7610bab0626e34"
+    },
+    "exports/enemies/11_hipogrifo/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "206cbf5a6a637f27e1d164740f8799e4170937bb7a9398f8a1ef2186eae3aa4c"
+    },
+    "exports/enemies/11_hipogrifo/ataque_preview.png": {
+      "bytes": 7088,
+      "sha256": "4cf763d04866f2b22ec22adb7e4eeb42395d6de639a613d116f9b0c829cc3d26"
+    },
+    "exports/enemies/11_hipogrifo/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "6df7a69e990d99aefd1984429c128b946e25429697263ecd0e8833bea259a808"
+    },
+    "exports/enemies/11_hipogrifo/attack.png": {
+      "bytes": 2562,
+      "sha256": "ee9ccf2d1eb17c30c1d950969177a63305ba40da20a9b87bc92bc657712f4b12"
+    },
+    "exports/enemies/11_hipogrifo/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "e222295026cc6f3330c89fa3a10b13df54c256c9c86d64a3adde257e75f231a7"
+    },
+    "exports/enemies/11_hipogrifo/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "be5dd4c3d767497468d8d1f98ba571d1c60bb1a302f57062276d8b5bd631ef91"
+    },
+    "exports/enemies/11_hipogrifo/hurt.png": {
+      "bytes": 2414,
+      "sha256": "8729fab1774b5b2973d08dd6d5090692e67f58c3bd8625a9a303a7b84627eed0"
+    },
+    "exports/enemies/11_hipogrifo/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "3379258131bfa606dbc4da0cfd90919e52430ee72aaa0686dcf229c03cf45d9b"
+    },
+    "exports/enemies/11_hipogrifo/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "5274890cc2148a9f9046c90b6902b481a291cc377bad90e88069620fb67965be"
+    },
+    "exports/enemies/11_hipogrifo/idle.png": {
+      "bytes": 2217,
+      "sha256": "9cf175ddf7f47e8b18eea48348fec27da428ffbb23748c6e96f4e08cc4dfaa09"
+    },
+    "exports/enemies/11_hipogrifo/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "ce95cc0939a999a1f7a1d7fa407cfc7d1b9d0c5b1da2872011536cc8b5218d93"
+    },
+    "exports/enemies/11_hipogrifo/manifest.json": {
+      "bytes": 9112,
+      "sha256": "9a92b8e8832efe39fbcb7ac9ad6083b0b49956d6936e65852652110578ee13d0"
+    },
+    "exports/enemies/11_hipogrifo/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "366ecdfa435dcf61aa42a9db831db552124bfd4b41563418c0645e1ac1bf46a8"
+    },
+    "exports/enemies/11_hipogrifo/sprites_4_poses.png": {
+      "bytes": 7916,
+      "sha256": "5a1a77c77688d5c6869db155e9d6b23fdd30fdd8d35d79234f80a52f00607b2d"
+    },
+    "exports/enemies/12_hipogrifo_marcado/animacao_preview.gif": {
+      "bytes": 65949,
+      "sha256": "3324f999ae0a32993214d8c3d83c1d905354145ad18264a86f8698183e7162c8"
+    },
+    "exports/enemies/12_hipogrifo_marcado/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "6d51584b60ab92eef0cac634791c4a694090d43697a3da0fffb52d01eebc0827"
+    },
+    "exports/enemies/12_hipogrifo_marcado/anticipation.png": {
+      "bytes": 2387,
+      "sha256": "5b6af91b63d26b95478254561fbfd85476b942078b897ebc499a242c8de05ea1"
+    },
+    "exports/enemies/12_hipogrifo_marcado/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "06a7ae1cc58069d8b50c69b5c381f4aaa005c0c506b287e5b5bd7e8c1baf5f45"
+    },
+    "exports/enemies/12_hipogrifo_marcado/ataque_preview.png": {
+      "bytes": 6937,
+      "sha256": "35533f4277a840fcdfbf0ed38d8c75997575d51d682c17dc00e6b9a0ea77bc3a"
+    },
+    "exports/enemies/12_hipogrifo_marcado/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "db4f17a116014e3b265413d94688a62e6b7b4515abc780e09f71edafdc117c54"
+    },
+    "exports/enemies/12_hipogrifo_marcado/attack.png": {
+      "bytes": 2637,
+      "sha256": "1a1229aee677de94d2f44dc1409dca014c8f6518a1ce7474ab8abdc2f6a3c36f"
+    },
+    "exports/enemies/12_hipogrifo_marcado/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "ca5984f1e61de035449cc37c01719647b55381d5f06c74f8fde5b5fa2967e6d5"
+    },
+    "exports/enemies/12_hipogrifo_marcado/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "91243cc3a67bbef8ad67839ff981452dbb73e910bda6aa74e9ea1793285a4d4d"
+    },
+    "exports/enemies/12_hipogrifo_marcado/hurt.png": {
+      "bytes": 1981,
+      "sha256": "ce247c2dfca6cb502080e0a5b9024d19aaa3f9c27459b82b4c7cd7f6a34b51c2"
+    },
+    "exports/enemies/12_hipogrifo_marcado/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "4fed4c5bdaf476b5e9f8a4e27d6178d53141b1c00cf2f2bc67b590e7c0de53b4"
+    },
+    "exports/enemies/12_hipogrifo_marcado/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "f4f903eb1a71e8992c6f8df3462ba431af689eb34d7d6ec6ffa5fe9f1f12e016"
+    },
+    "exports/enemies/12_hipogrifo_marcado/idle.png": {
+      "bytes": 2072,
+      "sha256": "b741c9c46b72a7bc81960f9b4a0759da2f0620dca6196cc9e795dee107dfb79d"
+    },
+    "exports/enemies/12_hipogrifo_marcado/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "710debb55897e835cd169ba0c1b3a593dc5556cacab54be25f92d3ff397d6a13"
+    },
+    "exports/enemies/12_hipogrifo_marcado/manifest.json": {
+      "bytes": 8436,
+      "sha256": "88d044a6760a5f94224e0d6dcb2d564c12dc3d0e2f55e9c4f0a1f94b2614a6fb"
+    },
+    "exports/enemies/12_hipogrifo_marcado/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "e8c17aa0b8de0ef707b538ccea9ba350d4e995c3ad0907767c087c9650e9f52c"
+    },
+    "exports/enemies/12_hipogrifo_marcado/sprites_4_poses.png": {
+      "bytes": 7777,
+      "sha256": "24d01125c1d58304b2401424f97e576ba1241aacc15e5e46912ce1d8bea5681d"
+    },
+    "exports/enemies/13_hipogrifo_alfa/animacao_preview.gif": {
+      "bytes": 67078,
+      "sha256": "1acbdbcafa009e45618a120bd2738e7e044c76fdde18850e5449ab5043ecdaf0"
+    },
+    "exports/enemies/13_hipogrifo_alfa/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "099305b4460697c589b4517168f8342d94b061aafb8f2f7f5fa94aa498f67ee2"
+    },
+    "exports/enemies/13_hipogrifo_alfa/anticipation.png": {
+      "bytes": 2807,
+      "sha256": "dd7a8fbe9c89dcbdf45cc111f0bdde96f09d71a81d2a5f86b3283040670ef1c1"
+    },
+    "exports/enemies/13_hipogrifo_alfa/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "220760422bcb940ae37c29f543dc0ba33057eddffed2583e83bbe419664753cc"
+    },
+    "exports/enemies/13_hipogrifo_alfa/ataque_preview.png": {
+      "bytes": 8563,
+      "sha256": "0504a10404949c8557baa350d36ccda6dab4f073264aa54e72a6883f59a1d328"
+    },
+    "exports/enemies/13_hipogrifo_alfa/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "74ac0c8f52df2fa5661dc9511bf17282f421500f8957f305e68517da88f12e68"
+    },
+    "exports/enemies/13_hipogrifo_alfa/attack.png": {
+      "bytes": 3174,
+      "sha256": "b8fceee331d4f22188da863c1df1cc54de065ddf2bdbdfc119a4a86a41070e31"
+    },
+    "exports/enemies/13_hipogrifo_alfa/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "6afc230c6aafd44b89c07f12024290c2da954a11f335ac0b9c6ea871efe363e4"
+    },
+    "exports/enemies/13_hipogrifo_alfa/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "efbdc74cf992d6fab1d5a20c5274e7f373c06f1306fc9d7e6e62168c369859e6"
+    },
+    "exports/enemies/13_hipogrifo_alfa/hurt.png": {
+      "bytes": 2265,
+      "sha256": "6e7dea7c8154064b4e09793a3cdc2f7dbc2c5b28eec9d0d91aad91ab1389e2f4"
+    },
+    "exports/enemies/13_hipogrifo_alfa/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a44ec4fa439300aa035db5cdb614d35142a7dfec28fa9b6e9aab75df5ed23313"
+    },
+    "exports/enemies/13_hipogrifo_alfa/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "159a56b28896b32be1b018b8b894183dba9525767767232c92c4c3717b975416"
+    },
+    "exports/enemies/13_hipogrifo_alfa/idle.png": {
+      "bytes": 2730,
+      "sha256": "dd08993dcb3f2a6e897fe01901cc9bcca6a671d8da27978e440a8132f730fcf7"
+    },
+    "exports/enemies/13_hipogrifo_alfa/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "03a81bfa3598d7e6f043f87530502d496766cbd94316667e7699905d6ce5b63b"
+    },
+    "exports/enemies/13_hipogrifo_alfa/manifest.json": {
+      "bytes": 8540,
+      "sha256": "bb38e92267850e073234551d7dd9266796ee26c2c49b9acfc22ed0162a8b8924"
+    },
+    "exports/enemies/13_hipogrifo_alfa/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "90fcf5b5a6220fb953e6ab3c8667fa70da43888aadc3d341bda10b8cccf2c259"
+    },
+    "exports/enemies/13_hipogrifo_alfa/sprites_4_poses.png": {
+      "bytes": 9359,
+      "sha256": "5fecca59cadbb4a3fd3324edef7aa437b7eebbdfb371f4e74db0f933a2cd4393"
+    },
+    "exports/enemies/14_mimico_do_bosque/animacao_preview.gif": {
+      "bytes": 64382,
+      "sha256": "0e62cbe715c81262bd7407843d64b0827fdd59f5e343a8f747daa0f59d351f7c"
+    },
+    "exports/enemies/14_mimico_do_bosque/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "6f18962e48831dc8fc8bd198c7c20659f2dd1abef5f88f853ab94a5b481093e2"
+    },
+    "exports/enemies/14_mimico_do_bosque/anticipation.png": {
+      "bytes": 2252,
+      "sha256": "e656e14b991e3b52f5593751373e858ba3c3b96dfeaa536922c7492e08f74053"
+    },
+    "exports/enemies/14_mimico_do_bosque/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "db55bb40aa7bf25609d6537657708b8798a8ced13b81cfc5d4b8a672843f1f5c"
+    },
+    "exports/enemies/14_mimico_do_bosque/ataque_preview.png": {
+      "bytes": 6296,
+      "sha256": "0063e52d30bd6b719ccc3feae6c02b2cb40c1348c6c5c0c09136ff827ec895e2"
+    },
+    "exports/enemies/14_mimico_do_bosque/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "ca85d7989cc3adf2f0d4bf18619ba49128a469d409a68eb19fe78b5353d02e1c"
+    },
+    "exports/enemies/14_mimico_do_bosque/attack.png": {
+      "bytes": 2352,
+      "sha256": "ad1ca81b4e34c43ca00123288eb4e62b663901fdbc68e44e4431bc37a3695fef"
+    },
+    "exports/enemies/14_mimico_do_bosque/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "03b3c858a2eaae3b02f020112fc5b41326b333e5d72710f0df0001269c522b8a"
+    },
+    "exports/enemies/14_mimico_do_bosque/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "49d1723f1018bb17f8126af7e33049813996741f23eacf59dae46737e02b493a"
+    },
+    "exports/enemies/14_mimico_do_bosque/hurt.png": {
+      "bytes": 2133,
+      "sha256": "4d2f0904e9628baff10a44859abffcd2e935382fc14c7a859a8146ddf66fe6f9"
+    },
+    "exports/enemies/14_mimico_do_bosque/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "1c6be49872a5e5531a883053a92dee16af331aadd920f9194c47d49bc63727e5"
+    },
+    "exports/enemies/14_mimico_do_bosque/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "2bcfc831fcce4b259e5f4e94b97f64cd1609e33e458093ec04c4af671f87378d"
+    },
+    "exports/enemies/14_mimico_do_bosque/idle.png": {
+      "bytes": 1840,
+      "sha256": "aa83c856ea8180be64d603ff303541101b9b8843e0052523a59475d2e03e12bf"
+    },
+    "exports/enemies/14_mimico_do_bosque/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "cba32a2cbfd7feb76310bf67d5df2ead8a3d7a6a2a8a5366c6a9716695d50739"
+    },
+    "exports/enemies/14_mimico_do_bosque/manifest.json": {
+      "bytes": 8513,
+      "sha256": "029433ffddf13beb69254bbc1200707e10fa67fb7038e46b3dfc8b976c5d7d60"
+    },
+    "exports/enemies/14_mimico_do_bosque/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "66149dd71ee347efe6f403f006a90ea453247d09b3c8713d03dfd93132e78444"
+    },
+    "exports/enemies/14_mimico_do_bosque/sprites_4_poses.png": {
+      "bytes": 7096,
+      "sha256": "3ba1ddd7706a7bcadb53c9ccfb8aa6e44d48ba23593d3e63f698666c88dcae53"
+    },
+    "exports/enemies/15_mimico_das_ruinas/animacao_preview.gif": {
+      "bytes": 70833,
+      "sha256": "79c060e6cc21a94405e6de2cdc3ae029614e5251ee3afc6be38113d7b3e23d2a"
+    },
+    "exports/enemies/15_mimico_das_ruinas/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "bec9031374772a8397876b9f4b4b75f680921d9df335fce3fe3a3f31a831d336"
+    },
+    "exports/enemies/15_mimico_das_ruinas/anticipation.png": {
+      "bytes": 3139,
+      "sha256": "64b01a19c15830b4eaa72c2d55951db1e39ed472a69171c723cc2304f3658fcf"
+    },
+    "exports/enemies/15_mimico_das_ruinas/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "b685a8d2d4e3d2397424aedd178c9fba5633691bdd80c303ee13bdbfc6a19254"
+    },
+    "exports/enemies/15_mimico_das_ruinas/ataque_preview.png": {
+      "bytes": 8604,
+      "sha256": "d0bbb903e8531356207555173937376d208b131c112a560a1d5be52db4df6bba"
+    },
+    "exports/enemies/15_mimico_das_ruinas/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "96fb619cb9773c09e680226064907fba03dd91a2802afcc26766db0c7ac89a71"
+    },
+    "exports/enemies/15_mimico_das_ruinas/attack.png": {
+      "bytes": 2998,
+      "sha256": "f2102e66762baf7992aa6c557a864ab7a4df286540d27da0323677eb56cbb97e"
+    },
+    "exports/enemies/15_mimico_das_ruinas/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "e6aa02849e27a7f35f1b678d584cb882ec193784c3865724af4224c40d8511a3"
+    },
+    "exports/enemies/15_mimico_das_ruinas/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "85bcda91184d1923e140c9fad538fe75683ac06b87f69e446c7ba510096d1f4f"
+    },
+    "exports/enemies/15_mimico_das_ruinas/hurt.png": {
+      "bytes": 2797,
+      "sha256": "b3271a9ed6c2fc057dd68eb60df2eafa6f2bafbcfd7bbd170ca857288f3e43f4"
+    },
+    "exports/enemies/15_mimico_das_ruinas/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "14efb3e5c2a3385264a38ac6f309e0304427b22bf0167214443c74bd5d8b64e4"
+    },
+    "exports/enemies/15_mimico_das_ruinas/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "1108155a22cee07e1658809babe791576ffc57c344c85f0e905829bdc2392451"
+    },
+    "exports/enemies/15_mimico_das_ruinas/idle.png": {
+      "bytes": 2657,
+      "sha256": "9a76100bc53aaf2cc67409e3927009242cb60c2a14fe7d0de5bcf6e2d923ec31"
+    },
+    "exports/enemies/15_mimico_das_ruinas/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8616ba6dd0456d6e3a7eba8cb5ef63f88730331122a6c93f0ff6c2f157c6e15c"
+    },
+    "exports/enemies/15_mimico_das_ruinas/manifest.json": {
+      "bytes": 8681,
+      "sha256": "0aef4c294a5660a5ed04d44d9fa2c55f7510ff776401092079e52d274d0f533e"
+    },
+    "exports/enemies/15_mimico_das_ruinas/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "cb807f140a83007f143b2e93ef9f3893effe67bc457219844110f42aff01e235"
+    },
+    "exports/enemies/15_mimico_das_ruinas/sprites_4_poses.png": {
+      "bytes": 9973,
+      "sha256": "ec3c114de18a591b5533efbe0f4fc19063119721d4ce140ffec0b7038a7912fd"
+    },
+    "exports/enemies/16_mimico_do_porto/animacao_preview.gif": {
+      "bytes": 66941,
+      "sha256": "c76d3be093065086ea270d225759b86053098927b7f4f6b6db9e7a3b7819997f"
+    },
+    "exports/enemies/16_mimico_do_porto/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "a68bfa0e7a648225f839de22520bad4ed09237105d33d184a91cde1a3b46d20b"
+    },
+    "exports/enemies/16_mimico_do_porto/anticipation.png": {
+      "bytes": 2922,
+      "sha256": "d93e2e3917f91acd9c1fc8cd7bd2d4808c56d789be975b587ffe7d75dba404a9"
+    },
+    "exports/enemies/16_mimico_do_porto/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7064820af57b72f1826b929f8a43c4ea37cc8fe88feda0248378bb57f3a28505"
+    },
+    "exports/enemies/16_mimico_do_porto/ataque_preview.png": {
+      "bytes": 8048,
+      "sha256": "5e233ce48028e2c4f45035f25e69cc0127557ecd55961c46c53c3525d910b1d3"
+    },
+    "exports/enemies/16_mimico_do_porto/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "ad5693f1cbee90dbd71e9a5d37fe4cccdb27ec6453539fcb5a4514fdb947ed2c"
+    },
+    "exports/enemies/16_mimico_do_porto/attack.png": {
+      "bytes": 2707,
+      "sha256": "a77408f6749b8d580ee61be6dd7021237aeb82676bb99fae1ccd733fd266c2d6"
+    },
+    "exports/enemies/16_mimico_do_porto/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d6e53fa60abade558a05841d1fe03a4ee5114030df892b51d64d8d6ae6cbfc6c"
+    },
+    "exports/enemies/16_mimico_do_porto/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "b581dbce7ac810750c49cc87812d7c1d1015e5336553cc1b67d54c2c4f03078a"
+    },
+    "exports/enemies/16_mimico_do_porto/hurt.png": {
+      "bytes": 2449,
+      "sha256": "92f7dfa265cda9170f929fb96bbc268b6322d976252dd12042ae6755730a5cb9"
+    },
+    "exports/enemies/16_mimico_do_porto/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "e42dfe4b4fe84295ebde193780d46d5dbac3d81701961bcefbb818b3066424e7"
+    },
+    "exports/enemies/16_mimico_do_porto/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "3112e1879c218aded4a835a17d96f64051d23852672d3cc78473a73ede679b47"
+    },
+    "exports/enemies/16_mimico_do_porto/idle.png": {
+      "bytes": 2579,
+      "sha256": "a833b2a821cbcc63d9978d8b8c599f41b2839904bc6fcc457d7e4c0461a3949f"
+    },
+    "exports/enemies/16_mimico_do_porto/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "16d64f84db484edc0ec0e9989eb83b00719ab2d645328be15245be89416a2ee5"
+    },
+    "exports/enemies/16_mimico_do_porto/manifest.json": {
+      "bytes": 7369,
+      "sha256": "2205aa30a9c5357e3c7aadbb9590d7ede7d76e8c7075ad470752acabd56801db"
+    },
+    "exports/enemies/16_mimico_do_porto/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "de0647cd78a989166ff460d341b92fec76ad054c59a68d51dae2eaef66315ee9"
+    },
+    "exports/enemies/16_mimico_do_porto/sprites_4_poses.png": {
+      "bytes": 8597,
+      "sha256": "d2e72553e2be0bfee57627cf6e4db44c459900c976f3593ea9bfe45516eed377"
+    },
+    "exports/enemies/17_mimico_do_castelo/animacao_preview.gif": {
+      "bytes": 72683,
+      "sha256": "8423c0a8871be54f1d630ef3ae41f2bc33112fd94520172bf511a83e792d16da"
+    },
+    "exports/enemies/17_mimico_do_castelo/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "cc876614b84729a42a947cd7cb703792343db2d8d2a2442976b159cb1422dd4a"
+    },
+    "exports/enemies/17_mimico_do_castelo/anticipation.png": {
+      "bytes": 3378,
+      "sha256": "4b7e599f314dce2e86498143ab30abc9595d9b5161eff01ea697486fb920fda4"
+    },
+    "exports/enemies/17_mimico_do_castelo/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "44f397ed49adab6be071f202e412fa59c491a803dc444eea1dd9512e721b5992"
+    },
+    "exports/enemies/17_mimico_do_castelo/ataque_preview.png": {
+      "bytes": 9483,
+      "sha256": "5c2ae5c053beec4aa22bc0f53aec5bbda8ec8ca2e2d4aa1a0e80d9a057ecfc67"
+    },
+    "exports/enemies/17_mimico_do_castelo/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "2c7e075ea513f217e84ad13981f2783333ea2107b6b33c140baf79f7547d4fab"
+    },
+    "exports/enemies/17_mimico_do_castelo/attack.png": {
+      "bytes": 3059,
+      "sha256": "1990353ac10c14ad452d3bbbf21bf2df7844a7dfc2322c15b033d5c14c7acd96"
+    },
+    "exports/enemies/17_mimico_do_castelo/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "0df19a8af4f65dd675b614a46b0a6892c46258298fd4c4a55b6a8c16f7f42bbd"
+    },
+    "exports/enemies/17_mimico_do_castelo/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "c9f772df3abea813269ef9c8eb973c57b4892f56c3c642d3e0e9cf144fc7b9a3"
+    },
+    "exports/enemies/17_mimico_do_castelo/hurt.png": {
+      "bytes": 2983,
+      "sha256": "55582c51d1dc91f281f117db55cd666bd874631280bb6361e7a054e82ab21467"
+    },
+    "exports/enemies/17_mimico_do_castelo/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "69ee67e899b9ecf49b34f34e4863cd6066057b0e020ecbb29fe0a2c0c87bd039"
+    },
+    "exports/enemies/17_mimico_do_castelo/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "1d9f7b163be9a4b6daa1b79aaa4b6e461756be08f3c171322e92dbd21d9d0ba0"
+    },
+    "exports/enemies/17_mimico_do_castelo/idle.png": {
+      "bytes": 3200,
+      "sha256": "8ad82ededa45ce9157cda8a9f4799ef169cc66fcd375d2cdfb714edff23a0fcf"
+    },
+    "exports/enemies/17_mimico_do_castelo/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "43839e7aad67e7c355406fa06a3f437477958831c6c967cae6156437d52a789a"
+    },
+    "exports/enemies/17_mimico_do_castelo/manifest.json": {
+      "bytes": 7417,
+      "sha256": "7cb47ea20f8505283c742231dc38d31388a5e469d333c7efc6aa8cc393a0c7aa"
+    },
+    "exports/enemies/17_mimico_do_castelo/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "433f6b405361f9072921de08e4f20fa03eb8498ec82cea84ed9962dfb5dc6f9a"
+    },
+    "exports/enemies/17_mimico_do_castelo/sprites_4_poses.png": {
+      "bytes": 10998,
+      "sha256": "77d1d46d4165e8d9a116bcfa7029499331ce125e4f0adf0a3313dae1bf15f719"
+    },
+    "exports/enemies/18_odran/animacao_preview.gif": {
+      "bytes": 61463,
+      "sha256": "aaa55dea47ec13053cd82997b86cfc782b03904227c74b8bfd5344240310e7a3"
+    },
+    "exports/enemies/18_odran/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "631623f68ade2e04b43ef754878297307b38fd335b777dd4f40a4f9550d50c41"
+    },
+    "exports/enemies/18_odran/anticipation.png": {
+      "bytes": 2430,
+      "sha256": "e5ce52004fb6279e5f733c66716a542dd2d73a1a13c4a2fd1a8c8221cd0322ec"
+    },
+    "exports/enemies/18_odran/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "fcd35fcc753d3aeeecca6756d4cd8e739e454dcc6f0070c2ee223eb16831aef2"
+    },
+    "exports/enemies/18_odran/ataque_preview.png": {
+      "bytes": 7558,
+      "sha256": "292fd0a58e0ebceb98b7c20f0012db8408fa9698a00fba692fb709f0f4160736"
+    },
+    "exports/enemies/18_odran/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "f3cc01615315c572f51db083d27b7b026febf3c24c30cc75f3ae957a1306c580"
+    },
+    "exports/enemies/18_odran/attack.png": {
+      "bytes": 2778,
+      "sha256": "12408055c591c4789031024ec830112babf74ce59b3471eb226cfc1e09cc75fb"
+    },
+    "exports/enemies/18_odran/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f2e610b6abff3d630f375c3f6bf384e778f703ba3451068170d2aeb2087ebacc"
+    },
+    "exports/enemies/18_odran/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "b39d06a9a16ab1fa471f4eb7757c6835a26b5f568407fd73abce9aab3def565b"
+    },
+    "exports/enemies/18_odran/hurt.png": {
+      "bytes": 2451,
+      "sha256": "5f4b4e17aeb65894439886f551aabbf286a5e16d9a4b0b3798593a29515d2b45"
+    },
+    "exports/enemies/18_odran/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a94cfb777d55a8c283ea5fe46fcf1a047a81249c7a1f67d631caa73a8a0ec346"
+    },
+    "exports/enemies/18_odran/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "1ffe8d481b98120e19978721a124896b3b23814f8ccbcf7dc65b318db1c330f1"
+    },
+    "exports/enemies/18_odran/idle.png": {
+      "bytes": 2498,
+      "sha256": "b79838846d9b20a47d8586d7597329e769a4eb93b20a058f9a82e2a725e9ae20"
+    },
+    "exports/enemies/18_odran/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "631453de234aa5355a5149b9b033a9b5285aef6860a68105d2318483d649d0ce"
+    },
+    "exports/enemies/18_odran/manifest.json": {
+      "bytes": 7312,
+      "sha256": "8e548df8002e6a469329bbb3e51fe4e79b79722a038d62b67f5b541e23cd287c"
+    },
+    "exports/enemies/18_odran/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "07e3663264445eb66e6423d23fb8bb9546c35527e823623c86ed5ddc806352d2"
+    },
+    "exports/enemies/18_odran/sprites_4_poses.png": {
+      "bytes": 8738,
+      "sha256": "9124072f1b4acffc4cb335d18a8a8086b093cfb9662581fcf481596dee436b87"
+    },
+    "exports/enemies/19_coracao_do_veu/animacao_preview.gif": {
+      "bytes": 75634,
+      "sha256": "680690be4af1571b1b6248e7fd0d610939dd386e05ec973dec0cb0d8af3e7b43"
+    },
+    "exports/enemies/19_coracao_do_veu/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "3a7726ef76ebc7c78a0b2489297aaa652b5578c64f47efd1b72a93e91842f0c7"
+    },
+    "exports/enemies/19_coracao_do_veu/anticipation.png": {
+      "bytes": 1718,
+      "sha256": "5b74b3e25166866d2e00b7e97f3fb15c22db262458226d9944b591afdbd2a84e"
+    },
+    "exports/enemies/19_coracao_do_veu/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d7d8889c13e884c396a5fc700995c9b13c3491ee0b6ff5dcdb0d18cc6a3d4747"
+    },
+    "exports/enemies/19_coracao_do_veu/ataque_preview.png": {
+      "bytes": 5653,
+      "sha256": "0b477568fc48507cce1d7e0d4f5220c791cf5a2cb0bf9130123b84c937b9ad08"
+    },
+    "exports/enemies/19_coracao_do_veu/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "8aa69bdc2f8e4ebd4566ed5c5d3dc53207be4a70a706f1d3ebc85c662285ef7b"
+    },
+    "exports/enemies/19_coracao_do_veu/attack.png": {
+      "bytes": 2294,
+      "sha256": "e64848620f6a29dd75d6ce5965cdf9d970de6702ce0fa7dba647e4e4001a8caa"
+    },
+    "exports/enemies/19_coracao_do_veu/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "57fadee74a0d14f150cb4f769f9548e976467d51a9ffa6b5b28d69324b48be7e"
+    },
+    "exports/enemies/19_coracao_do_veu/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "21b8296219bc064cece79f531348e43bca2819010e9d5cadc77dc9fb7254b41c"
+    },
+    "exports/enemies/19_coracao_do_veu/hurt.png": {
+      "bytes": 2250,
+      "sha256": "cbdbe78a9006129943d91802407136cefeb8934d2a3d5e757328b45802e2e34b"
+    },
+    "exports/enemies/19_coracao_do_veu/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "3f61a24adb6a102c704a9534cead4feed39e3282ac282f6bc768f1dda68f2f89"
+    },
+    "exports/enemies/19_coracao_do_veu/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "c8c29aa42dfed72e59a9745e9e6f131506bd9101aa6fc6aec90a56f44acc1436"
+    },
+    "exports/enemies/19_coracao_do_veu/idle.png": {
+      "bytes": 1842,
+      "sha256": "3cb690da18cb100da7bb672c94cf6fa3a4d20616e5b4b63b9a89133073d42179"
+    },
+    "exports/enemies/19_coracao_do_veu/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "b9b939e2d6ebb7694ed8bb7a25ca14183196788fc462bc714227171e3e5fda5b"
+    },
+    "exports/enemies/19_coracao_do_veu/manifest.json": {
+      "bytes": 7479,
+      "sha256": "b7452baa73e23582a4d06754e8a0dcedafafe3e17d58d925d8a6882e55944cd3"
+    },
+    "exports/enemies/19_coracao_do_veu/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "5a3958d81572e9c2906c5201b1d907dc2d19c128461d6d3555220168828b6df6"
+    },
+    "exports/enemies/19_coracao_do_veu/sprites_4_poses.png": {
+      "bytes": 6968,
+      "sha256": "07fc0ed1574b0b868d97888a94f1f17ab217269e1f9480d83deb039702f8dc06"
+    },
+    "exports/enemies/20_sentinela_coral/animacao_preview.gif": {
+      "bytes": 73888,
+      "sha256": "9389e30c628f20c179c11ac6f6dbc308fe6a0a4221929e1b205e997291647888"
+    },
+    "exports/enemies/20_sentinela_coral/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "7a17cd942b076e38bc9440a469e420a3a11554df2b66c2c32fc9fc279bb0fcfa"
+    },
+    "exports/enemies/20_sentinela_coral/anticipation.png": {
+      "bytes": 2223,
+      "sha256": "513c7d9080d811cfe24ed9110a986ba2ac0c380d40a1adec1865fe68ab92e441"
+    },
+    "exports/enemies/20_sentinela_coral/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f9f4e2d2ef0fd334837d8e363285e90cdae0d9b5fa7473692ffb46fe814955f4"
+    },
+    "exports/enemies/20_sentinela_coral/ataque_preview.png": {
+      "bytes": 6771,
+      "sha256": "4cc91622aec88c8879aba2872bea11ba43572aa7e0dcb484105bf508a0283b71"
+    },
+    "exports/enemies/20_sentinela_coral/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "fb992bb5d6e29a251683747844d2b3eea59c3c0f805d85f553ea72cdb110be38"
+    },
+    "exports/enemies/20_sentinela_coral/attack.png": {
+      "bytes": 2337,
+      "sha256": "8ec1e48348c2c1feef9d74d5d57bd0729f54c4796e24f3801b7796a83a8fb324"
+    },
+    "exports/enemies/20_sentinela_coral/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "39c67c0ada09b7707f9125f0b135c28180f4abdc6f37221cac453e7addb269ce"
+    },
+    "exports/enemies/20_sentinela_coral/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "2e3a6c1f3169c7541f196fb687daf0f4df167f3a577db45b891173461cbd8518"
+    },
+    "exports/enemies/20_sentinela_coral/hurt.png": {
+      "bytes": 1921,
+      "sha256": "674fcb41f10a8bd44cf7823a9f342cc99968eb2c7068bbc79323f3eb1742ae15"
+    },
+    "exports/enemies/20_sentinela_coral/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f24d68b96071ffd6bcedb0d2ef1b2fb107c29de9151d2ee6ee4db88a5150fa6f"
+    },
+    "exports/enemies/20_sentinela_coral/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "6645f619a6c5d64521fa033f3092eb7922883691f64e1f96c628e8c73170f93c"
+    },
+    "exports/enemies/20_sentinela_coral/idle.png": {
+      "bytes": 2401,
+      "sha256": "785d6df0f1b3d514fb3bb6b7a23a0b4954e2c00be49e55480eed3b8ae0a2a4d9"
+    },
+    "exports/enemies/20_sentinela_coral/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "b633a0d9a7bb6e4d65718b4c85806cb588e28d8a31c1adb318064fac54058d3c"
+    },
+    "exports/enemies/20_sentinela_coral/manifest.json": {
+      "bytes": 7328,
+      "sha256": "45ed034fbd5e4425637a0f9a8137aaf197877d50d1c0239f8261e33dd4aa0dd3"
+    },
+    "exports/enemies/20_sentinela_coral/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "4cb4546795aee79f1a095342ab6dafd1cd23ed5b8852805a6f5a7eb1cf19b8be"
+    },
+    "exports/enemies/20_sentinela_coral/sprites_4_poses.png": {
+      "bytes": 7341,
+      "sha256": "1b5f59896717d24c0cb985240ffe1312b540e7c1c70e7204eb3c359d402713f1"
+    },
+    "exports/enemies/21_arraia_runar/animacao_preview.gif": {
+      "bytes": 72059,
+      "sha256": "6f96c8f970fbfaebb15b37c8853e98a4917b503cc0d1c4d4750440e18e09a940"
+    },
+    "exports/enemies/21_arraia_runar/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "270af4a462f19657d73af61568575769f189fd7c135f36b64dfee8cab8f7c310"
+    },
+    "exports/enemies/21_arraia_runar/anticipation.png": {
+      "bytes": 2211,
+      "sha256": "bd07cfdd92e36b8ca4fc052554473bad9f6f5d3a2dcca095fd5ccfbd65d03bc3"
+    },
+    "exports/enemies/21_arraia_runar/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "54ff22778a598c609fc64dc38ec84811e1c02180fab83881a8f6b9703d8b980e"
+    },
+    "exports/enemies/21_arraia_runar/ataque_preview.png": {
+      "bytes": 5881,
+      "sha256": "0aa82fccaa4574cdd25c50e59b5a815766c53852ebc7c83a7d6442ed1de147fb"
+    },
+    "exports/enemies/21_arraia_runar/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "b9edb3868289e0b2d18a9960351047131b0956ec1181a55e830dcd239c3fcdd2"
+    },
+    "exports/enemies/21_arraia_runar/attack.png": {
+      "bytes": 1870,
+      "sha256": "72ff4ee54d98220bc8c6d4902816d855d681e84187064593ede743320c5cea91"
+    },
+    "exports/enemies/21_arraia_runar/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "4f85cbe2aca41023d76119c8ec32154a51d314666f0c7747b9f97689afe82e39"
+    },
+    "exports/enemies/21_arraia_runar/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "8d19ebceb4ef46f8f7e460f397bb105828b24e1a5eecda8d4d293edca8832fb1"
+    },
+    "exports/enemies/21_arraia_runar/hurt.png": {
+      "bytes": 1691,
+      "sha256": "49508e65f5fabe4f40fb025de13697b1eaf30176663534dad002a2c0bd052b62"
+    },
+    "exports/enemies/21_arraia_runar/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "c9d0d8f2c3fb26bda5e2a81ca881a8de5e6e746a0c3e7c019948ff25ecdaaad4"
+    },
+    "exports/enemies/21_arraia_runar/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "fe1ff8bc907ca3e4e462877ae78f7da1aebdab062011e00df4eb9814102e3375"
+    },
+    "exports/enemies/21_arraia_runar/idle.png": {
+      "bytes": 1904,
+      "sha256": "054c18b7a2d61545d84fd7b97511b974ea8910d7aa1089e8d7efe74a08c68b3f"
+    },
+    "exports/enemies/21_arraia_runar/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "eefe1b1a508b6b00c6acdb8429e3eba3e2c9151d2d14780bb7ab2ef712a3d822"
+    },
+    "exports/enemies/21_arraia_runar/manifest.json": {
+      "bytes": 7443,
+      "sha256": "4c6e3f89f1d843e0224dca8969d7b96499a07edc9747d699fef5bdc110fba3cb"
+    },
+    "exports/enemies/21_arraia_runar/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "2ea98be178f38954489d7a5596773b94b13436d0ef1753fd86f9a4ff2979c0d5"
+    },
+    "exports/enemies/21_arraia_runar/sprites_4_poses.png": {
+      "bytes": 6340,
+      "sha256": "ee950a18076b88bbc11bdb88197e26812154d4397b239e4f536d9b5a80162847"
+    },
+    "exports/enemies/22_corsario_afogado/animacao_preview.gif": {
+      "bytes": 71182,
+      "sha256": "200c511c806119d9aae5e719657f927511edb787d81a57e7e49156f96f89c995"
+    },
+    "exports/enemies/22_corsario_afogado/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "f803b409c13c1287d3c9e5835a2cf2b46c9462cd1a867d29acc78db398d30d91"
+    },
+    "exports/enemies/22_corsario_afogado/anticipation.png": {
+      "bytes": 3032,
+      "sha256": "0217727b921e1e457dc884183ef244ac36151e6bd67d6703f20a4c3d155c0ef6"
+    },
+    "exports/enemies/22_corsario_afogado/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2fb7c10ada4e3912de984aa9f57a84c1fd439684ee1e9dbfd4d62eb38a092f35"
+    },
+    "exports/enemies/22_corsario_afogado/ataque_preview.png": {
+      "bytes": 8727,
+      "sha256": "bb3cce9eda9eb869cca1a410f76e5e32259e33971957bde7842a9723c2444902"
+    },
+    "exports/enemies/22_corsario_afogado/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "a2a97238a0a6cd486da097a87f192caf035a5a7f516f66620f7aed9c0101e520"
+    },
+    "exports/enemies/22_corsario_afogado/attack.png": {
+      "bytes": 2924,
+      "sha256": "8b38622734c34a7be7ed07850500773d466677755fbda1a00a95a2cfd777442f"
+    },
+    "exports/enemies/22_corsario_afogado/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "c3b8b3665c728602fc9141a78dd1700a061faf4d7738f90582e5e38ab78c2c5d"
+    },
+    "exports/enemies/22_corsario_afogado/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "44a54fd5dc5c8df525b42ffd81b25d21614d156a2707ed608e518b0650967ff3"
+    },
+    "exports/enemies/22_corsario_afogado/hurt.png": {
+      "bytes": 2765,
+      "sha256": "5982adfc58b68cd09d6ed7dbdb0713a69a7cc895bfa6d1d6bdaff75dc68906c8"
+    },
+    "exports/enemies/22_corsario_afogado/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "ad1c613ca5b3d94131e66210372c0da67b39b93852c7ace68bc647c0e8d51be2"
+    },
+    "exports/enemies/22_corsario_afogado/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "49aa38539d2b511cb83a8761337a5256b532c086513957943e6773b188bc0acc"
+    },
+    "exports/enemies/22_corsario_afogado/idle.png": {
+      "bytes": 2911,
+      "sha256": "bf2505f259e14eb362bba303f2b0178fce64c170a791f2ca2a2f527071d45cfd"
+    },
+    "exports/enemies/22_corsario_afogado/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a49b3da845f1e46cedd5f58406e53175edd89fcbd51289c7fac4160c8636cd41"
+    },
+    "exports/enemies/22_corsario_afogado/manifest.json": {
+      "bytes": 8133,
+      "sha256": "d09cd79a9f471ebe33a7a3d7cd61853e9e3a5dc1caae3668311225e8896fb0d7"
+    },
+    "exports/enemies/22_corsario_afogado/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "42ec38753e55fd74026f4e46c724def296689deed9ec8158838d479a6507a8f7"
+    },
+    "exports/enemies/22_corsario_afogado/sprites_4_poses.png": {
+      "bytes": 9887,
+      "sha256": "cbbbf5db5832b7a24b386531ad15a4beb22d68814d61914f0f3f02d75472cc3e"
+    },
+    "exports/enemies/23_oraculo_abissal/animacao_preview.gif": {
+      "bytes": 83918,
+      "sha256": "0d58827dfb510a5ba6849ee0e2e402d5b9b5beaa296ca6c39e4f046f4ac4b661"
+    },
+    "exports/enemies/23_oraculo_abissal/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "3166bc47a830bf65accf746af81fa52e84f7fa7d692ce3a3c6c5289bd792691c"
+    },
+    "exports/enemies/23_oraculo_abissal/anticipation.png": {
+      "bytes": 3088,
+      "sha256": "e1278d56033df453a1a11df0211828a77633d2bdba92304ddf78ec5c38d869ad"
+    },
+    "exports/enemies/23_oraculo_abissal/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "378c73f7509e92c4158965a275b4508195a6f066f1759131a6362706aa847f03"
+    },
+    "exports/enemies/23_oraculo_abissal/ataque_preview.png": {
+      "bytes": 9405,
+      "sha256": "5bd136af640a77400c71129433996b80c692b7b80d9605e87da75581b94d45db"
+    },
+    "exports/enemies/23_oraculo_abissal/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "1607a59b6cb368dc149b5d5c47b42b8e7e9a1376c704a6d389be0ad8ff075b77"
+    },
+    "exports/enemies/23_oraculo_abissal/attack.png": {
+      "bytes": 3682,
+      "sha256": "8c835936c56247d9d5b1e7dfdf691d42176251f56379c78e966c96c55f106756"
+    },
+    "exports/enemies/23_oraculo_abissal/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "e82aaecac83057a5cd6bcf7b9b60d426936c112d954628651460df53fbcb4d2d"
+    },
+    "exports/enemies/23_oraculo_abissal/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "19fe925d2febe2fb9689de19102dc492ad31a9cb1348ea24f5c6744b71b2f40e"
+    },
+    "exports/enemies/23_oraculo_abissal/hurt.png": {
+      "bytes": 2526,
+      "sha256": "4397c49af76b02f17c6b6c03ff66c6815dde0f9b455606d202a75edd01e4be27"
+    },
+    "exports/enemies/23_oraculo_abissal/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "27a9cea8350c5358ca5947e18c70e80a51b9b00510bd5a4ff4d636724e019cab"
+    },
+    "exports/enemies/23_oraculo_abissal/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "2909438a83214570f0849f2c6d9e3520700574d71ee4de10b258e1bace4f8ea4"
+    },
+    "exports/enemies/23_oraculo_abissal/idle.png": {
+      "bytes": 2829,
+      "sha256": "7452c866ad9a5a305432016f9ac0136e0b10daffaea35d85af7325b78d6529ac"
+    },
+    "exports/enemies/23_oraculo_abissal/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7a1b78db9435d3a189d7b820b93e1cffbf6b57c4222d2c56701d5983a27ac87e"
+    },
+    "exports/enemies/23_oraculo_abissal/manifest.json": {
+      "bytes": 7332,
+      "sha256": "9560b943b9f71605b1683653da59b1a6b3ac3025ea06ee2a183fffb0547ab3c6"
+    },
+    "exports/enemies/23_oraculo_abissal/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "df224e438c73fc3217c2cd1433f9093cd01845f5304e402105e1e0ae8f395cbd"
+    },
+    "exports/enemies/23_oraculo_abissal/sprites_4_poses.png": {
+      "bytes": 10442,
+      "sha256": "be8161f97a19d4c8bc5f6607c5c4d7482cb3b7100e768db0b3847f322cbf78f4"
+    },
+    "exports/enemies/24_thalvor/animacao_preview.gif": {
+      "bytes": 76669,
+      "sha256": "80df4cec19599c483b840f1b93504232d142a553bf0c1b36ad2758f03a759c3c"
+    },
+    "exports/enemies/24_thalvor/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "be67afe0aca7e77c0bd8f1517d578bb2dc279891cd4e8c5e7904aed7a0f0e55c"
+    },
+    "exports/enemies/24_thalvor/anticipation.png": {
+      "bytes": 3049,
+      "sha256": "e1e48343b48c22201ed131af995d744b9d50c3c16b628c8596b3ab05b06e0581"
+    },
+    "exports/enemies/24_thalvor/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "132016361f85774d5574259e1623258dae030bc94a725033fd24ecc92ab4e702"
+    },
+    "exports/enemies/24_thalvor/ataque_preview.png": {
+      "bytes": 9434,
+      "sha256": "c1d968e6715c3cb2078a315034115f3217cdbbb71c7b161e3a3314f1b39d5866"
+    },
+    "exports/enemies/24_thalvor/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "9432825b8930af751a8dd765d4c6cd55a0174e6d531821483efea7282e1b314c"
+    },
+    "exports/enemies/24_thalvor/attack.png": {
+      "bytes": 3211,
+      "sha256": "d17b7dfa1b809cbd977b94edebf9a6cd35f0338de84e7203dea759f4a354cd3d"
+    },
+    "exports/enemies/24_thalvor/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a244246b0f3c1bb01e0b7fe5556fbf1c4b5d08d6bec85e74df85da6ac003603a"
+    },
+    "exports/enemies/24_thalvor/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "5c75b93d96be9dfc1396ea8dd7651f5f735bfb6c596ec5ab2244bbbd612b4bff"
+    },
+    "exports/enemies/24_thalvor/hurt.png": {
+      "bytes": 3176,
+      "sha256": "4406f357f2be2c466c0920f7211533c77b30480d1d044551d4f4577b288d1219"
+    },
+    "exports/enemies/24_thalvor/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "51c033349f881b9de3c879825adf2b70978f6f7d6a039defc115dbcb6393e34f"
+    },
+    "exports/enemies/24_thalvor/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "936a83276e00bd263ec7c53280101fe2d8e1bde0b90c952c49092facd233a3b7"
+    },
+    "exports/enemies/24_thalvor/idle.png": {
+      "bytes": 3313,
+      "sha256": "9403798b454140554a29a5aa792481056c19afd64d2168d51cbe054e6a8a04c7"
+    },
+    "exports/enemies/24_thalvor/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2d843ff649fed5cf25aa43f02f43148c6c0b9601011daf7d6fb0fff6e1499075"
+    },
+    "exports/enemies/24_thalvor/manifest.json": {
+      "bytes": 7436,
+      "sha256": "cd52e8287b03482d5e68dd7cf1dd87c2804cb1730ab39c0467b636507f649dd3"
+    },
+    "exports/enemies/24_thalvor/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "85b29aeacfdf452d6be0a3150748ab17337f60c9e3aa4d832eb737e60134303c"
+    },
+    "exports/enemies/24_thalvor/sprites_4_poses.png": {
+      "bytes": 10786,
+      "sha256": "a0d53539f565239507c2f58fb9b149cd2e905b23bac725f174b51881aa041642"
+    },
+    "exports/enemies/25_caranguejo_ferreo/animacao_preview.gif": {
+      "bytes": 65141,
+      "sha256": "e94386724c9c109c7e880b6185c612eca6b11e8a2b9e77a6b6492b9e7077faaf"
+    },
+    "exports/enemies/25_caranguejo_ferreo/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "eae6c47e8a1a8ec7bd3a5911766e325f8debd46232659afeff43c66e5e1e45f4"
+    },
+    "exports/enemies/25_caranguejo_ferreo/anticipation.png": {
+      "bytes": 2338,
+      "sha256": "92839b488a852299f9d47e195712d17e120637b9c3e2b1824009c71ae0518bbd"
+    },
+    "exports/enemies/25_caranguejo_ferreo/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "bd557da4ecf38d866c20f76c6cc359bccea0a62e45ee9931785975fbcf1e891b"
+    },
+    "exports/enemies/25_caranguejo_ferreo/ataque_preview.png": {
+      "bytes": 6242,
+      "sha256": "4fc300d9a88bddf9054b084c53b338da5e11a5461045b2b1ab21546ebc3d5088"
+    },
+    "exports/enemies/25_caranguejo_ferreo/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "bcc9872eafc1bcdcc6e977545bce79088a8a72dd601a6490bf12e3a79217c5ea"
+    },
+    "exports/enemies/25_caranguejo_ferreo/attack.png": {
+      "bytes": 2044,
+      "sha256": "77cf962c589d01b071e8478c935f4e2a8caf5a7433c6d9d99163221d233d41e9"
+    },
+    "exports/enemies/25_caranguejo_ferreo/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "a2eae4f2f20a9b718cec65909234daf8c9f7e28094d5cf728476fb735f6138ed"
+    },
+    "exports/enemies/25_caranguejo_ferreo/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "cd9145da2afa6a218eebedbe7c4df691f513f86c5d8fc8b718ccc1cc557d5b70"
+    },
+    "exports/enemies/25_caranguejo_ferreo/hurt.png": {
+      "bytes": 1893,
+      "sha256": "9602f585f567f0d4ac48e5eb1de46c7205c35dac3d72c67204d3cd0f83bb56cd"
+    },
+    "exports/enemies/25_caranguejo_ferreo/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "83efed2a37263df45a2252faf6faf50780e200883ce581be2668b52980244aaa"
+    },
+    "exports/enemies/25_caranguejo_ferreo/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "d3d8afe663757277fec54b2e96ca6d047e340ff6a83ccd00142da008cd3c02bb"
+    },
+    "exports/enemies/25_caranguejo_ferreo/idle.png": {
+      "bytes": 1970,
+      "sha256": "08c7b15869946420e6afa95043987e088bf3fe4542c4c69c6b413b4376de6c4b"
+    },
+    "exports/enemies/25_caranguejo_ferreo/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "2c174033d6c206816e0392701b5ea0a9b6e55e4ac6e1d662f3a421631820900a"
+    },
+    "exports/enemies/25_caranguejo_ferreo/manifest.json": {
+      "bytes": 7520,
+      "sha256": "5f17011abb1a7abe78eae47343743b0f65e85ba84f235ee5fafafc2656cf82b7"
+    },
+    "exports/enemies/25_caranguejo_ferreo/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "106d5f1f8fc33ec9bef986f3848d7377994373736c8c15869cec832eae07e145"
+    },
+    "exports/enemies/25_caranguejo_ferreo/sprites_4_poses.png": {
+      "bytes": 6877,
+      "sha256": "2530d4ecc34760b41b7e4053d4243a5ddbf95652ffc0e156d45847b632caa5e8"
+    },
+    "exports/enemies/26_mao_de_cinza/animacao_preview.gif": {
+      "bytes": 81003,
+      "sha256": "829b64da9a73e1ca3683292ededeff707070f99df2885716f03faef2e91e316c"
+    },
+    "exports/enemies/26_mao_de_cinza/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "8b37afc4ff5140a2572ee2eb8a045569938606bf24bdbb100c38179a26604ec9"
+    },
+    "exports/enemies/26_mao_de_cinza/anticipation.png": {
+      "bytes": 2751,
+      "sha256": "0321d59d17ee70747660efc441dd1a6167b5fac56b70e22c03a8ca5c463f738f"
+    },
+    "exports/enemies/26_mao_de_cinza/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "61dde4b352801d9f4c6540a58e1ec1a6dd1bd29fd63ee3c0ad783a0467a4de8b"
+    },
+    "exports/enemies/26_mao_de_cinza/ataque_preview.png": {
+      "bytes": 8290,
+      "sha256": "3a2338e8a2256bc5538b74bab155dd7d57ae982f57debf397fc8990c31997f2c"
+    },
+    "exports/enemies/26_mao_de_cinza/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "4f41997d43d3697adde1cfb14ea810afeee33638038616a39719a275a03b256a"
+    },
+    "exports/enemies/26_mao_de_cinza/attack.png": {
+      "bytes": 2894,
+      "sha256": "d34bd9d3c0374b96a028460e3395e1a321aaec9195b2b77d78bbbc5719777662"
+    },
+    "exports/enemies/26_mao_de_cinza/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7777a40206d3bf38294040a10ca10224a44dfc566d255d610fe34dcfe0030953"
+    },
+    "exports/enemies/26_mao_de_cinza/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "4c084084f65105b28d078583f7372929aba376da27a536d6c27a2f8b92b86bf5"
+    },
+    "exports/enemies/26_mao_de_cinza/hurt.png": {
+      "bytes": 2663,
+      "sha256": "1ff836105e82c12a39daa525fab9abf01bf6c6069ed55592b17a404fe822d0f4"
+    },
+    "exports/enemies/26_mao_de_cinza/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "61844ea9c1d66b985ed2e639a7d104ae882a26bc7d1cfaaad4d5c3ba6fa3e8d8"
+    },
+    "exports/enemies/26_mao_de_cinza/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "d21b060a5833acf14e0b21e9619f31749d3305e49f2787765a54ac6281169189"
+    },
+    "exports/enemies/26_mao_de_cinza/idle.png": {
+      "bytes": 2765,
+      "sha256": "aa81d9c8d5c5d760518c2186055aa14c956dc9e8f29181fba1f290a66d1281e0"
+    },
+    "exports/enemies/26_mao_de_cinza/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "7254516e0d6ec6c526ce6f3f0147e8c8a5bdb23017b7f6eab69683ba45fead75"
+    },
+    "exports/enemies/26_mao_de_cinza/manifest.json": {
+      "bytes": 7353,
+      "sha256": "c39c0672d254b582a0d4df1943bc99775122c910f42e84e04b821d2b33857712"
+    },
+    "exports/enemies/26_mao_de_cinza/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "986a0f0c9546aa19c424571a5065d5dca5341fb7054bb5f80c65f7cf4a7fe300"
+    },
+    "exports/enemies/26_mao_de_cinza/sprites_4_poses.png": {
+      "bytes": 9141,
+      "sha256": "5d0180f446731a5a42878e622954e9f68976730b7f35ae18ea1a1f9dffabb9fa"
+    },
+    "exports/enemies/27_automato_dourado/animacao_preview.gif": {
+      "bytes": 87800,
+      "sha256": "412cf85b7e3c787f64b55a667bf03424ff3ac4256884bccd9eb7439fdc838654"
+    },
+    "exports/enemies/27_automato_dourado/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "c0963537d178cf61e5c175ec4b5a6c76594d8e5334767f834f8591620c7126ad"
+    },
+    "exports/enemies/27_automato_dourado/anticipation.png": {
+      "bytes": 3780,
+      "sha256": "97818a57a73c009c5010a8ced861b572788d46194fd67f57d7592e347353fd08"
+    },
+    "exports/enemies/27_automato_dourado/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "c0759120694ce32d74b20f66e8404ef1f2cdbe58bb5555a08dd20f493e547cd4"
+    },
+    "exports/enemies/27_automato_dourado/ataque_preview.png": {
+      "bytes": 11571,
+      "sha256": "1ca51badb0006df844881fc52ed7fa817587f9752559077382e8dae9ccd5bce4"
+    },
+    "exports/enemies/27_automato_dourado/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "85cdd72f697e7c937c07bfe52a5a3a5de44277ff6137c4b9fd3e822edc6cf0f3"
+    },
+    "exports/enemies/27_automato_dourado/attack.png": {
+      "bytes": 3736,
+      "sha256": "f061ff2121b4e5d9fca34e7812fdf6f05d22d5624d1b1c990e625a5af857be44"
+    },
+    "exports/enemies/27_automato_dourado/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d97b5b23d278b393ff7e1196b852850b0ab07eda4b4c9af2bf8b47d2069a734c"
+    },
+    "exports/enemies/27_automato_dourado/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "d6b05921ae833f770e768855353da09f6e9a279855e82be0c13a30f0c8817877"
+    },
+    "exports/enemies/27_automato_dourado/hurt.png": {
+      "bytes": 2879,
+      "sha256": "f5ffdb31bf46bdc59ddfbaa38df1f05c56f33a38fc703be794c14cd9b12edea6"
+    },
+    "exports/enemies/27_automato_dourado/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "f0eb4a378ab2d5b9d79a66bf23524f766e4d3a62238cfcbf55d3a71b0943c476"
+    },
+    "exports/enemies/27_automato_dourado/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "e69009a2ce092807b72d1d4eddb812761184bf5ccb2da6478dc526f1e55b07c0"
+    },
+    "exports/enemies/27_automato_dourado/idle.png": {
+      "bytes": 4215,
+      "sha256": "e8f26808e2942a0b5fa97f2a43967c1ba97361f1d79164a2c760a923c20ec577"
+    },
+    "exports/enemies/27_automato_dourado/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "8ed9fb8c2831457495f68fe6e901d2b98b04d2e93463c9b2a0628bc362681912"
+    },
+    "exports/enemies/27_automato_dourado/manifest.json": {
+      "bytes": 7338,
+      "sha256": "b6840ecb8c0d82a25362ab30017998d8ebdfac3922d513f4c111eaa3011bd4aa"
+    },
+    "exports/enemies/27_automato_dourado/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "d01d415c25ea07055a921f9fceed268479e95ba184d523f654a4a3589bbdb38c"
+    },
+    "exports/enemies/27_automato_dourado/sprites_4_poses.png": {
+      "bytes": 12724,
+      "sha256": "3cea5687fc4212bed242cd0021a4df29b1e53f0bf15ee048c7f19e13b8b0b490"
+    },
+    "exports/enemies/28_eco_do_veu/animacao_preview.gif": {
+      "bytes": 72496,
+      "sha256": "7c29a7597d7c49f965134dce7a31d13afe7202331846858fb46fb81ca5af373d"
+    },
+    "exports/enemies/28_eco_do_veu/anticipation.idx4": {
+      "bytes": 3440,
+      "sha256": "28d92bbe3efd09b10758b5ea49a9f15656731a54038d4b79783018a2c9848944"
+    },
+    "exports/enemies/28_eco_do_veu/anticipation.png": {
+      "bytes": 2047,
+      "sha256": "9cdb066f23e59a13a64fb7b9a6489c0187bb9003a3705106afb3de3b53e7aab1"
+    },
+    "exports/enemies/28_eco_do_veu/anticipation.rgb565le": {
+      "bytes": 13760,
+      "sha256": "d8b5f26cf012e1c826564c7460e426fca24b4b3ef09e1db0aad2eea3acf59ae9"
+    },
+    "exports/enemies/28_eco_do_veu/ataque_preview.png": {
+      "bytes": 6529,
+      "sha256": "766a9749a68691ab88f50cfd8fca02c016c800527fe6e8b0055596de014b15ac"
+    },
+    "exports/enemies/28_eco_do_veu/attack.idx4": {
+      "bytes": 3440,
+      "sha256": "eeaaae5be10c2d3262a0305448bec465c4c3352d2367961bba21993e16ea4a40"
+    },
+    "exports/enemies/28_eco_do_veu/attack.png": {
+      "bytes": 2341,
+      "sha256": "211813457a286533d1b4daa14e1b6246561e4bd8812b1e984d7d95dc1ffb8e69"
+    },
+    "exports/enemies/28_eco_do_veu/attack.rgb565le": {
+      "bytes": 13760,
+      "sha256": "3f0c65ba5c36f56747178d3090011bd9d31578261288962a2082f0aadd816233"
+    },
+    "exports/enemies/28_eco_do_veu/hurt.idx4": {
+      "bytes": 3440,
+      "sha256": "4f4b67dd2e98356fcf03436d9c40d8d998f73245d0d83f0585dc71abc19e5bc5"
+    },
+    "exports/enemies/28_eco_do_veu/hurt.png": {
+      "bytes": 1843,
+      "sha256": "acab296983a6066ad11ef4164a6950b68f360abe7bd038e8689176b0144cd13c"
+    },
+    "exports/enemies/28_eco_do_veu/hurt.rgb565le": {
+      "bytes": 13760,
+      "sha256": "ab986ffbbda1cbcc2ef4ceee0e83c9334c86ad2d3079302ea7aa4cd13a9fbcec"
+    },
+    "exports/enemies/28_eco_do_veu/idle.idx4": {
+      "bytes": 3440,
+      "sha256": "49b31a8257b68b443128ce581a6d1ac8f36f88da82c41c5efa99f0a97e74e259"
+    },
+    "exports/enemies/28_eco_do_veu/idle.png": {
+      "bytes": 2303,
+      "sha256": "21b412845f522dc35b8f164ebe4f2c84b748cb7e39116afc680e1ce4d5bd14b0"
+    },
+    "exports/enemies/28_eco_do_veu/idle.rgb565le": {
+      "bytes": 13760,
+      "sha256": "18ffe4169b48342af108d47f9054dfea4c5cfb74ffba41f9bb06db6e41951195"
+    },
+    "exports/enemies/28_eco_do_veu/manifest.json": {
+      "bytes": 7467,
+      "sha256": "fda7eea51414943eb925a80b1e7815e031b0c38d7d276843ed01918c523e7034"
+    },
+    "exports/enemies/28_eco_do_veu/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "dbab55189cfbac481c93351b09c5a659111c27db4a1f3a85042781865248f824"
+    },
+    "exports/enemies/28_eco_do_veu/sprites_4_poses.png": {
+      "bytes": 7000,
+      "sha256": "68a8989fa552d1aa099a040eeff69713297f9def573a27e0a57809c090300a16"
+    },
+    "exports/javascript_validation.json": {
+      "bytes": 156,
+      "sha256": "25b2dcfa3b92c120732dd8a05b8c750da8140b45dda52283f239036855ac5748"
+    },
+    "exports/roster_manifest.json": {
+      "bytes": 266222,
+      "sha256": "1c04b5138a379925c7f716232260be0c8147fae471e511f91b6e60045770a6c0"
+    },
+    "exports/validation.json": {
+      "bytes": 9202,
+      "sha256": "86f164d0321f5f59b8ba3cebd8d5ed4d4e5c781ce9c8f7e599bf505e99a81cd1"
+    },
+    "inventario_29_inimigos.json": {
+      "bytes": 80296,
+      "sha256": "b7629ac1b8987e11b0b9555a875a7dbe0c418f06f2b289cb9a2324ff9c685956"
+    },
+    "masters/00_goblin.png": {
+      "bytes": 1034564,
+      "sha256": "08f7e708581af444a46c27df347b0326a81da177d85acfc1f1e11aa38ae3134a"
+    },
+    "masters/01_lobo.png": {
+      "bytes": 1724107,
+      "sha256": "b7f6f36efad4d7f72a4cfdecd1f9d57ecb54820aa2dcfbab4474faf255a9ca20"
+    },
+    "masters/02_esqueleto.png": {
+      "bytes": 1206887,
+      "sha256": "792832ab4c316118e1c7fb09579c2263a9df2ba47b888ed012ce3ca06277ae36"
+    },
+    "masters/03_guardiao.png": {
+      "bytes": 2079129,
+      "sha256": "7497c9735122ed885852567268c9147956f22e5c04c2b4338e8cfd8407380275"
+    },
+    "masters/04_javali.png": {
+      "bytes": 1616524,
+      "sha256": "600c1cc4e91fd0649cfe3ad5316fcccbf8611b83c2a09863f58d8e221cafd763"
+    },
+    "masters/05_espectro.png": {
+      "bytes": 1171196,
+      "sha256": "8d14ae57b860f7c4ea0b8265331706364fc2dfb416d5cfc82d3bfb294740f406"
+    },
+    "masters/06_saqueador.png": {
+      "bytes": 1011677,
+      "sha256": "a8e5ea7ccc9e76d42422f04a835617a804f00b3b54f73e2de66e96559369a588"
+    },
+    "masters/07_sentinela.png": {
+      "bytes": 1087040,
+      "sha256": "2d9d87fa820e3000428d287cb38b159155f16d704fb3b983e2f37f649ac2c710"
+    },
+    "masters/08_arconte.png": {
+      "bytes": 1243231,
+      "sha256": "7cdd1dff702b7e5210600252caba498d2ec3edeb8ba0793af5b2d32edb4094aa"
+    },
+    "masters/09_vigia_ossudo.png": {
+      "bytes": 939667,
+      "sha256": "521dea9565b9d68b405265f036d38a9871c14fbdc4e6bdd4eb537f35304a3e2c"
+    },
+    "masters/10_hipogrifo_jovem.png": {
+      "bytes": 1337662,
+      "sha256": "fd225dec697e0bf012fbe40f5fe9f160f7cf3ca8779a1b4d27c6aec7029a3ac2"
+    },
+    "masters/11_hipogrifo.png": {
+      "bytes": 1449873,
+      "sha256": "0d5e03caa19804cdda04c6e5f6241db9efec228520fb135228397e177532d473"
+    },
+    "masters/12_hipogrifo_marcado.png": {
+      "bytes": 2122814,
+      "sha256": "c385b576b35387f7f4ac2c0e1ffca12bd9b872250e737cd37793105cd4c50d17"
+    },
+    "masters/13_hipogrifo_alfa.png": {
+      "bytes": 1690671,
+      "sha256": "5b49311cd44ceabf4d4a357f07d5764de6e92604b9542b09051a634cc3fe2742"
+    },
+    "masters/14_mimico_do_bosque.png": {
+      "bytes": 1985624,
+      "sha256": "16744052eea4fce21a9f6ea822b406a1392b39de1262c6da6073f15d4c38ade1"
+    },
+    "masters/15_mimico_das_ruinas.png": {
+      "bytes": 1402444,
+      "sha256": "388c7c9792fe3b27a4da255216363b5e0c1464962f1cc5821d6aeb870469f7f2"
+    },
+    "masters/16_mimico_do_porto.png": {
+      "bytes": 1451802,
+      "sha256": "6644e4f600202a9ede3202fcb19c2f5a425c0462858165787248bdf0177b3732"
+    },
+    "masters/17_mimico_do_castelo.png": {
+      "bytes": 1417444,
+      "sha256": "dd758a32ddf36eeeb6a5cf8843bdbb01ca2cc9f27fd731d96ee49d2f1f49df6e"
+    },
+    "masters/18_odran.png": {
+      "bytes": 1179972,
+      "sha256": "2717408d5fe76b2c6b0beaed8d8d04e39b26b3464d2d23dcd3d5930c42c07556"
+    },
+    "masters/19_coracao_do_veu.png": {
+      "bytes": 1048958,
+      "sha256": "16ee51a60badc491f9060147d2572ac0c398035fc87c1def6d682357c7d65633"
+    },
+    "masters/20_sentinela_coral.png": {
+      "bytes": 1394693,
+      "sha256": "2a791250c8773469f5913c5e5c0f6b13a7e07887629fe5834189cde610c69307"
+    },
+    "masters/21_arraia_runar.png": {
+      "bytes": 961282,
+      "sha256": "a8b8b3839d84d2258d53876e24d8261431bc1f4526b5e91cf256700b6a4045d9"
+    },
+    "masters/22_corsario_afogado.png": {
+      "bytes": 1190210,
+      "sha256": "f27b66837f3b853f1a1083b14d2b02cebb7a4adc4893b1ffc648bfb6df6393b1"
+    },
+    "masters/23_oraculo_abissal.png": {
+      "bytes": 1325147,
+      "sha256": "3755347e8f8f3a2f8c1a207b3cb468590d6dcc4bcf43876ca50d86e4ae876b9f"
+    },
+    "masters/24_thalvor.png": {
+      "bytes": 1559259,
+      "sha256": "cdf01ca3842c1d1ac63e76c18cf0ff3c5acc9ada5cac876161390938ebe4dfa6"
+    },
+    "masters/25_caranguejo_ferreo.png": {
+      "bytes": 1166320,
+      "sha256": "bdd69f3ccb4e7ccbb276bcc9fa929f34cadbefba0ed0ccc2449ed293189d577c"
+    },
+    "masters/26_mao_de_cinza.png": {
+      "bytes": 1041189,
+      "sha256": "9b51dba86d4f13db2a43850e567ac70250bada9cdf988d4a1ccfae3353cd1d29"
+    },
+    "masters/27_automato_dourado.png": {
+      "bytes": 1469963,
+      "sha256": "f818f1451b20ca2c66f62b08429485ad359439cf1a0e4bbf00d9fa349ea28e1e"
+    },
+    "masters/28_eco_do_veu.png": {
+      "bytes": 1181395,
+      "sha256": "cc790055f5e73e949268eef4bd0e889e6c3c83f4b5f84080981a4d130115c454"
+    },
+    "prompts/00_goblin.txt": {
+      "bytes": 3044,
+      "sha256": "9d0f575ba3426c8504bdb7e2250d64068d23ed0c6ea90588eadcad57acc085ac"
+    },
+    "prompts/01_lobo.txt": {
+      "bytes": 3153,
+      "sha256": "070d4691617c3f0fad3b3e77fa68720c428a0d929ef9a0eba95fae943f9d118f"
+    },
+    "prompts/02_esqueleto.txt": {
+      "bytes": 3381,
+      "sha256": "aa17fe442f9a04e08bbc4ce70eb29de12f5b4c689c213bcab8f5bfe094e4845c"
+    },
+    "prompts/03_guardiao.txt": {
+      "bytes": 2583,
+      "sha256": "fe7580065361cf6a22ce092336a6f2c139a75353f946295fcedaf26ffde2814a"
+    },
+    "prompts/04_javali.txt": {
+      "bytes": 2506,
+      "sha256": "5bd2401c3c723b9245ba9073dee948865dcd9d5b08196627674952ecc23f848d"
+    },
+    "prompts/05_espectro.txt": {
+      "bytes": 2692,
+      "sha256": "356d28a22418b637891ce3f2f78ab82cbbc1c0bdf0c3a65359c766e009a6e4ab"
+    },
+    "prompts/06_saqueador.txt": {
+      "bytes": 2633,
+      "sha256": "4b209bc090b4c906099c6acc384d8b0e96d9747743217f8c6bf300a3ad9e5cb6"
+    },
+    "prompts/07_sentinela.txt": {
+      "bytes": 2664,
+      "sha256": "9770de09db7ae18fcc59f2b9a36c64f27bccbb99f47e3b4a7c2c4992a6053e4f"
+    },
+    "prompts/08_arconte.txt": {
+      "bytes": 2752,
+      "sha256": "d12f9297dc8f43ccf402e5d521d75fc6b4bf37415876206c9528c69009f862a1"
+    },
+    "prompts/09_vigia_ossudo.txt": {
+      "bytes": 2652,
+      "sha256": "38f6c3e8bcef93968cc8ddb76d832822dd70c799b9d2239bc2df9589322ef574"
+    },
+    "prompts/10_hipogrifo_jovem.txt": {
+      "bytes": 2669,
+      "sha256": "bee845e4ce843b22de51c80cd1b75962b5883370ccf4e5fb93043ff182aa37e5"
+    },
+    "prompts/11_hipogrifo.txt": {
+      "bytes": 2729,
+      "sha256": "2a724884c24ca12fcb93f3ec71abae4bf01504ec752ee40b986f0526b6068f22"
+    },
+    "prompts/11_hipogrifo_correcao.txt": {
+      "bytes": 1047,
+      "sha256": "9392efc693c9a522786b61107bd7f2cb04762e6966d63fadb5a68247555eb1cf"
+    },
+    "prompts/12_hipogrifo_marcado.txt": {
+      "bytes": 3041,
+      "sha256": "19ddfe61f732b0af7ec8a5b5f2e726416dd7d4af175b43266f9b059cf24f8b43"
+    },
+    "prompts/13_hipogrifo_alfa.txt": {
+      "bytes": 3150,
+      "sha256": "3c1c0f3d6da69579221746b6580a209a9bc653fe7cd290586d2fac3f04859e1f"
+    },
+    "prompts/14_mimico_do_bosque.txt": {
+      "bytes": 3116,
+      "sha256": "cd96de3bd72ac8df50905cb7c9bb7e5271b92e027a9bfee163e942c601f13577"
+    },
+    "prompts/15_mimico_das_ruinas.txt": {
+      "bytes": 3148,
+      "sha256": "fb87cbb5ab201e1ea9fe3fb26fd06a362d0107d2346b24c714a17d0e234b4d7a"
+    },
+    "prompts/16_mimico_do_porto.txt": {
+      "bytes": 2864,
+      "sha256": "911ca202002b3a8813b1fe3e5e7f89a7a57b770440aac125f976d4be4671cefa"
+    },
+    "prompts/17_mimico_do_castelo.txt": {
+      "bytes": 2832,
+      "sha256": "325692464699d1a5f34ac5198c1f8bd233fc4db80f0d9f9fa0ab10b5a7bd456f"
+    },
+    "prompts/18_odran.txt": {
+      "bytes": 3003,
+      "sha256": "878428261e75beb47654cac055e571ebe9163db12f4345f76e4c44df1ab04d06"
+    },
+    "prompts/19_coracao_do_veu.txt": {
+      "bytes": 3030,
+      "sha256": "346abf1987c09420af4e42d7b3d9de08b5e027ac5e4d45bdc976410a047f0ab4"
+    },
+    "prompts/20_sentinela_coral.txt": {
+      "bytes": 2776,
+      "sha256": "280060b62b3b38120b07d4864191c074f1fc7913a21d1aa559ffb62109617400"
+    },
+    "prompts/21_arraia_runar.txt": {
+      "bytes": 3020,
+      "sha256": "564243463387ec1e8d82294f3653c685e55c39525b2a375fab0e851f8a68304b"
+    },
+    "prompts/22_corsario_afogado.txt": {
+      "bytes": 2771,
+      "sha256": "1e9849640a484ad82667a0d46c0cf9bf8c673f1dcb4260c3010bc9b646684105"
+    },
+    "prompts/22_corsario_afogado_correcao.txt": {
+      "bytes": 3511,
+      "sha256": "f116af949481e409b71e5a9bb500e4626729fa867befd5819746576c33057ed0"
+    },
+    "prompts/23_oraculo_abissal.txt": {
+      "bytes": 2954,
+      "sha256": "b2acc3738a9ab4cdd3171ffcef92779cc0557fd146d8765ea6fd83e6c06b2e5c"
+    },
+    "prompts/24_thalvor.txt": {
+      "bytes": 3078,
+      "sha256": "938aaa680cf485db84a4907da6a4d08633d5ee932687e75fd090946fd1cd6c6e"
+    },
+    "prompts/25_caranguejo_ferreo.txt": {
+      "bytes": 2903,
+      "sha256": "37deb3fccf7ab79c532ff51c68104a63be83ff5183fa609cfc44bf67f5919ca0"
+    },
+    "prompts/26_mao_de_cinza.txt": {
+      "bytes": 2970,
+      "sha256": "34d363e0402a3e1b2cad3388bfd174710762465c1067c8b3381fab8a16a83501"
+    },
+    "prompts/27_automato_dourado.txt": {
+      "bytes": 2893,
+      "sha256": "339ad65e86219d1b3185ab0c14c5e2e7cbaca36990d0e89e70569a68fcb98753"
+    },
+    "prompts/28_eco_do_veu.txt": {
+      "bytes": 3095,
+      "sha256": "a670ce2691f82cd75fbac2b1fb42b8d276cec811b65c2df000a5f30ce4a64970"
+    },
+    "proveniencia/11_tentativa_antes_correcao.png": {
+      "bytes": 1450824,
+      "sha256": "0d84f1c84489df805c5af1d52ef635fa80ba96f012fabe58409fa0ac4cb7dad4"
+    },
+    "proveniencia/22_tentativa_antes_correcao.png": {
+      "bytes": 1077151,
+      "sha256": "588e0a313d0f4c8d558ce7beb80ad9b4a62dff9db460ae9c18c2c0d45aed77ed"
+    },
+    "requirements.txt": {
+      "bytes": 42,
+      "sha256": "d538ac6c0cbfabc0e95e9f4e026a502d30a60069f2f2026c1e43d5e68b7c8aaf"
+    },
+    "tools/__pycache__/export_enemies.cpython-312.pyc": {
+      "bytes": 36519,
+      "sha256": "f701847432670f4ce5015ce963a04b2a23b6038ecacf24edc74e42b106c535ec"
+    },
+    "tools/export_effects.py": {
+      "bytes": 2090,
+      "sha256": "28bd01def9b378d82afb0313f45880cfa8385b0a11d4953c21857aae705e5a2a"
+    },
+    "tools/export_enemies.py": {
+      "bytes": 17529,
+      "sha256": "da43f3bb4e96ad0e9d6b929f06ac8174395fa9da24aef8a786d18e408940b56f"
+    },
+    "tools/test_preview_js.js": {
+      "bytes": 1424,
+      "sha256": "b08a19a78654bfb4daa896f5810d67f0647a0db1fbf4f5433c60f31c9def013a"
+    },
+    "tools/validate_assets.py": {
+      "bytes": 2861,
+      "sha256": "5c17656eab7b9c843e6f4be09cfd9f5b9c9922a95c613ae43cf451fcdacc494e"
+    }
+  }
+}

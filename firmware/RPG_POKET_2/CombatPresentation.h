@@ -1,16 +1,19 @@
 #pragma once
 #include "CombatFx.h"
 // Capture the already-resolved action. onHero is a target, never proof of injury.
-inline CombatResult heroCombatResult(const rpg::Game& g,rpg::Action a){
- CombatResult r;
+inline CombatResult heroCombatResult(const rpg::Game& g,rpg::Action a,unsigned previousHeroHp=UINT16_MAX){
+ CombatResult r;r.heroAction=a;r.hasHeroAction=true;
+ // Legacy barbarian defense heals without storing that gain in g.damage.
+ if(a==rpg::Action::Defensive&&g.p.cls==3&&previousHeroHp!=UINT16_MAX&&g.p.hp>previousHeroHp)r.recoveredHp=g.p.hp-previousHeroHp;
  if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind){r.kind=CombatFeedback::Heal;r.amount=g.damage;}
  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell)r.kind=CombatFeedback::Guard;
  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge||a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)r.kind=CombatFeedback::Buff;
  else {r.kind=g.dodge?CombatFeedback::Miss:g.damage?CombatFeedback::Damage:CombatFeedback::NoDamage;r.amount=g.dodge?0:g.damage;r.critical=!g.dodge&&g.crit;}
+ r.enemyDefeated=r.injury()&&g.enemyHp==0;
  return r;
 }
 inline CombatResult enemyCombatResult(const rpg::Game& g,rpg::Intent intent,unsigned previousHp,bool skipped=false){
- CombatResult r;r.enemyAction=true;if(skipped){r.kind=CombatFeedback::Skip;return r;}
+ CombatResult r;r.enemyAction=true;r.resolvedEnemyIntent=intent;if(skipped){r.kind=CombatFeedback::Skip;return r;}
  if(intent==rpg::Intent::Mend){r.kind=CombatFeedback::Heal;r.amount=g.enemyHp>previousHp?g.enemyHp-previousHp:0;}
  else if(intent==rpg::Intent::Prepare)r.kind=CombatFeedback::Buff;
  else {r.kind=g.dodge?CombatFeedback::Miss:g.damage?CombatFeedback::Damage:CombatFeedback::NoDamage;r.amount=g.dodge?0:g.damage;r.critical=!g.dodge&&g.crit;}

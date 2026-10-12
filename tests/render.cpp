@@ -7,6 +7,9 @@
 #include <cassert>
 #include <vector>
 #include <cstdlib>
+// One fixed test workspace mirrors the one-time device PSRAM allocation.
+static uint16_t enemyTestWorkspace[enemyArt::WORKSPACE_PIXELS];
+struct BindEnemyWorkspace {BindEnemyWorkspace(){enemyArt::workspace=enemyTestWorkspace;}} bindEnemyWorkspace;
 struct Canvas {
   uint16_t pixels[240*320]{};int tx=0,ty=0,size=1;uint16_t color=UI_WHITE;
   void pixel(int x,int y,uint16_t c){if(x>=0&&x<240&&y>=0&&y<320)pixels[y*240+x]=c;}

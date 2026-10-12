@@ -1,0 +1,50 @@
+RPG POKET — Inventario dos 29 inimigos
+Fonte: Rules.h e caminhos reais de renderizacao, leitura em 12/10/2026.
+Paleta = direcao de producao proposta; nao altera regra ou especie.
+
+00 GOBLIN | humanoide pequeno | Carvalho / Bosque | atual: [80, 86], 8 quadros/estados | novo: 4 poses | paleta: musgo / couro / aco
+01 LOBO | quadrupede | Carvalho / Bosque | atual: [80, 86], 8 quadros/estados | novo: 4 poses | paleta: ardosia / creme / castanho
+02 ESQUELETO | humanoide osseo | Ruinas / Cripta | atual: [80, 86], 7 quadros/estados | novo: 4 poses | paleta: marfim / bronze / verde-azulado
+03 GUARDIAO | corpo rigido pesado | Ruinas / chefe externo | atual: [80, 86], 8 quadros/estados | novo: 4 poses | paleta: pedra / bronze
+04 JAVALI | quadrupede | Carvalho / Bosque e estradas | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: terra / marfim
+05 ESPECTRO | aparicao | Ruinas / Cripta e estradas | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: turquesa / violeta
+06 SAQUEADOR | humanoide armado | Mares / Porto e estradas | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: azul-petroleo / couro
+07 SENTINELA | humanoide armado pesado | Aurora / Castelo e estradas | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: aco / ouro / vermelho
+08 ARCONTE | aparicao chefe | Ruinas / Cripta de Vaelor | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: osso / violeta / metal
+09 VIGIA OSSUDO | humanoide osseo pesado | Ruinas / Cripta | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: osso / aco escuro
+10 HIPOGRIFO JOVEM | quadrupede alado | Carvalho / evento de hipogrifo | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: penas creme / castanho
+11 HIPOGRIFO | quadrupede alado | Ruinas / evento de hipogrifo | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: penas creme / castanho
+12 HIPOGRIFO MARCADO | quadrupede alado | Mares / evento de hipogrifo | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: penas creme / castanho
+13 HIPOGRIFO ALFA | quadrupede alado | Aurora / evento de hipogrifo | atual: [80, 86], 4 quadros/estados | novo: 4 poses | paleta: penas creme / castanho
+14 MIMICO DO BOSQUE | mimico / bau | Carvalho / Bosque | atual: aprox. 66 x 63 dentro do desenho da arena, 4 quadros/estados | novo: 4 poses | paleta: madeira / musgo
+15 MIMICO DAS RUINAS | mimico / bau | Ruinas | atual: aprox. 66 x 63 dentro do desenho da arena, 4 quadros/estados | novo: 4 poses | paleta: pedra / musgo / madeira
+16 MIMICO DO PORTO | mimico / bau | Mares / Porto | atual: aprox. 66 x 63 dentro do desenho da arena, 4 quadros/estados | novo: 4 poses | paleta: madeira salgada / bronze
+17 MIMICO DO CASTELO | mimico / bau | Aurora / Castelo | atual: aprox. 66 x 63 dentro do desenho da arena, 4 quadros/estados | novo: 4 poses | paleta: madeira nobre / ouro
+18 ODRAN | humanoide / regente | Aurora / final da campanha | atual: 64 x 64, 1 quadros/estados | novo: 4 poses | paleta: coroa antiga / carmesim / aco
+19 CORACAO DO VEU | nucleo flutuante | Aurora / final da campanha | atual: 61 x 61 mais fragmentos, 6 quadros/estados | novo: 4 poses | paleta: violeta / brilho frio
+20 SENTINELA CORAL | humanoide marinho pesado | Ilha / masmorra | atual: [48, 64], 1 quadros/estados | novo: 4 poses | paleta: coral / bronze oxidado
+21 ARRAIA RUNAR | animal marinho alado | Ilha / masmorra | atual: [48, 64], 1 quadros/estados | novo: 4 poses | paleta: azul profundo / turquesa
+22 CORSARIO AFOGADO | humanoide afogado | Ilha / masmorra | atual: [48, 64], 1 quadros/estados | novo: 4 poses | paleta: madeira salgada / tecido escuro
+23 ORACULO ABISSAL | conjurador marinho | Ilha / masmorra | atual: [48, 64], 1 quadros/estados | novo: 4 poses | paleta: verde marinho / violeta
+24 THALVOR | chefe marinho pesado | Ilha / chefe final | atual: [48, 64], 1 quadros/estados | novo: 4 poses | paleta: pedra coralina / azul profundo
+25 CARANGUEJO FERREO | artropode blindado | Mares / cisternas e eventos | atual: [64, 80], 2 quadros/estados | novo: 4 poses | paleta: ferro / ferrugem
+26 MAO DE CINZA | humanoide conjurador | Mares / eventos | atual: [64, 80], 2 quadros/estados | novo: 4 poses | paleta: cinza / laranja apagado
+27 AUTOMATO DOURADO | corpo rigido pesado | Aurora / eventos | atual: [64, 80], 2 quadros/estados | novo: 4 poses | paleta: ouro / aco
+28 ECO DO VEU | aparicao | Aurora / eventos | atual: [64, 80], 2 quadros/estados | novo: 4 poses | paleta: violeta / cinza frio
+
+REUTILIZACOES VERIFICADAS
+- Hipogrifos 10–13: a mesma serie de quatro quadros.
+- Mimicos 14–17: mesmo desenho procedural.
+- Arconte e Vigia Ossudo: sprites proprios na dungeon, fallback do Javali em arena/ficha/bestiario.
+- Odran: retrato de NPC em combate.
+- Ilha 20–24: uma imagem por inimigo, sem sequencia corporal propria.
+
+PRIORIDADE DE MIGRACAO
+1. Goblin, Lobo, Esqueleto: provar recorte, leitura, pivô e ataque.
+2. Guardiao, Javali, Espectro, Saqueador, Sentinela, Arconte, Vigia Ossudo: padronizar familias e fechar fallback.
+3. Hipogrifos e Mimicos: distinguir variantes sem trocar IDs ou mecanicas.
+4. Odran/Coracao, conjunto marinho e Mares/Aurora: manter presenca de chefes e identidade regional.
+
+FONTES E LIMITES
+Os primeiros quatro sprites têm origem Google relatada pelo usuario, sem licenca verificada. Alguns conjuntos posteriores têm registros locais de geracao original; isso nao equivale a auditoria juridica. Todos entram no redesenho solicitado.
+As contagens atuais dizem quantos quadros existem, sem garantir que cada quadro represente ataque, dano ou derrota. Não substituir um pelo outro.

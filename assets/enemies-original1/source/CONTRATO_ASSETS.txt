@@ -1,0 +1,37 @@
+RPG POKET — inimigos autorais — contrato de produção v1
+2026-10-12. Material separado do firmware; integração e validação na placa pendentes.
+
+MESTRE POR INIMIGO
+PNG RGBA gerado originalmente para o projeto, uma folha 2 × 2 com quatro desenhos completos:
+0 idle (repouso), 1 anticipation (preparação), 2 attack (ataque), 3 hurt (dano recebido).
+Todos virados à esquerda, mesma escala anatômica, design, equipamento e paleta; luz de cima/esquerda.
+Sem texto, moldura, cenário ou VFX inseparável do corpo. Silhuetas separadas por transparência.
+A geração pode ignorar a grade: o exportador usa componentes alpha, não assume divisão geométrica.
+Alpha >= 128 vira opaco, demais pixels transparentes; halos suaves não são preservados no runtime.
+Manter prompt e mestre sem retoques destrutivos, registrar SHA-256 e ferramenta image_gen.
+
+ARQUIVOS DE ENTRADA DA ASSEMBLAGEM
+Cada lote salva um batch_manifest.json com array enemies. Por entrada:
+id (0–28), name (nome do Rules.h), slug, master (caminho absoluto), prompt (caminho absoluto),
+attack_kind (slash, bite, charge, claw, magic, pulse ou crush), design_notes (breve),
+source_notes (proveniência, sem prometer exclusividade ou liberação jurídica),
+optional anchors: [[x,y],[x,y],[x,y],[x,y]] em coordenadas globais do mestre.
+Optional boxes: quatro caixas [left,top,right,bottom], mesma ordem, se a segmentação falhar.
+Optional target_anchor [x,y], default [48,82]; para corpo largo usar [40,82].
+Optional palette_colors, default 16 incluindo transparência.
+Envie os mestres assim que estiverem prontos; o pipeline/assemblagem central recorta e valida.
+
+EXPORTAÇÃO
+Quatro quadros 80 × 86 RGBA, alpha binário, uma paleta de até 15 cores opacas por inimigo.
+Uma escala uniforme para as quatro poses, sem encolher só o ataque; 2 px de margem mínimo.
+Âncora de chão comum. Para a prévia, o ponto de apoio fica fixo salvo deslocamento intencional.
+Se a âncora automática (banda inferior dos pés) falhar, fixar anchors no manifesto; não corrigir por olho em código duplicado.
+PNGs transparentes por pose + folha 320 × 86 + RGB565LE com chave 0xF81F + índices 4bpp experimentais/paleta.
+A paleta não usa 0xF81F como cor opaca. Integrar índices requer suporte novo; não prometer compatibilidade imediata.
+
+ANIMAÇÃO DE REFERÊNCIA
+GIF e página HTML local executável com quatro poses desenhadas; preparação, ataque e dano não são idle deslocado.
+A animação completa combina poses, deslocamento contido e efeito localizado separado, sem novo poder/regra.
+Esquiva/cura/buff nunca usam hurt. Derrota é fade técnico documentado; não há quinto desenho de derrota.
+Durações são especificação de referência e não substituem relógio/resultados do jogo.
+Não afirmar integrado, animado na placa, patenteado, exclusivo ou juridicamente liberado.

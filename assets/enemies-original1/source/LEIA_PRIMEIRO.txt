@@ -1,0 +1,47 @@
+RPG POKET — 29 inimigos originais e animações de referência
+12 de outubro de 2026
+
+O QUE FOI ENTREGUE
+29 designs novos feitos para este projeto com image_gen, sem traçar os sprites anteriores.
+116 poses desenhadas: repouso, preparação, ataque e recebimento de dano, quatro por inimigo.
+Hipogrifos e mímicos possuem variantes visuais próprias, com os nomes e IDs existentes.
+56 quadros pequenos de efeitos procedurais em sete famílias, separados dos corpos.
+Nenhum atributo, recompensa, dano, poder, classe de morto-vivo, lore ou ID foi alterado.
+
+COMECE AQUI
+exports/RPG_POKET_inimigos_autorais.png — visão geral de repouso e ataque.
+exports/RPG_POKET_previa_inimigos.html — página local autossuficiente; abra em um navegador.
+exports/enemies/ — 29 pastas com PNGs transparentes, folha de poses, GIF, APNG, binários, paleta e manifesto.
+masters/ e prompts/ — fontes originais de alta resolução e os textos usados na geração.
+proveniencia/ — duas tentativas próprias anteriores a correções, preservadas apenas como histórico de geração, sem uso ativo.
+exports/effects/ — efeitos reutilizáveis de corte, mordida, investida, garra, magia, pulso e impacto pesado.
+
+O QUE SIGNIFICA ANIMAÇÃO NESTE PACOTE
+A preparação, o ataque e o dano recebido são desenhos diferentes. O ciclo combina essas poses com deslocamento curto, duração e efeito localizado. Recuperação reutiliza repouso. Derrota é um fade técnico documentado, não uma quinta pose de queda. As sequências são referências executáveis, não animação já instalada no aparelho.
+O GIF demonstra ataque e, em seguida, uma reação separada a dano e o fade de derrota. O APNG de ataque contém somente o corpo e suas poses; os VFX ficam separados para serem presos ao alvo e ao resultado real. Os arquivos não causam dano nem escolhem resultados.
+
+ESCALA E EXPORTAÇÃO
+Quatro quadros 80 × 86 por inimigo, virados à esquerda, alpha binário e uma paleta compartilhada de até 15 cores opacas. A escala é a mesma entre poses de cada criatura; a arma levantada e o ataque não são encolhidos isoladamente. As âncoras mantêm o apoio estável; Espectro, Coração do Véu, Arraia e Eco do Véu usam centro virtual para flutuar. Os mestres continuam disponíveis para ajustes posteriores de proporção.
+RGB565LE reserva 0xF81F para transparência. A exportação 4bpp usa índice 0 transparente, nibble alto primeiro e paleta RGB565LE de 16 entradas. O jogo atual não decodifica automaticamente este novo formato.
+
+MEMÓRIA E INTEGRAÇÃO
+Corpos em RGB565: 1.596.160 bytes. Corpos em 4bpp com paletas: 399.968 bytes.
+Efeitos em 4bpp com paletas: 28.896 bytes. Total indexado: 428.864 bytes (aprox. 418,8 KiB), antes de metadados e buffers.
+Isso cabe aritmeticamente no teto proposto de 512 KiB, mas depende de decoder, orçamento real e teste de PSRAM/tempo. Não é autorização para anexar todo o RGB565, nem garantia de desempenho.
+O firmware, artes.pak, hashes de release, CI, save e regras não foram alterados por este pacote. Integração no renderer, redução própria da dungeon, temporização real e validação no aparelho continuam pendentes.
+
+VALIDAÇÃO FEITA
+Contagem de 29 IDs e 116 poses; transparência; margens; quatro poses únicas por inimigo; variantes sem imagem de repouso idêntica; paleta comum; round-trip exato PNG/RGB565/4bpp; GIFs e APNGs com múltiplos quadros; durações de referência dentro de 480–1.200 ms.
+A lógica JavaScript da prévia foi exercitada para todas as criaturas e modos. A abertura visual em Chromium ficou bloqueada pelo ambiente de execução; o teste de layout em navegador está pendente. Os PNGs e GIFs foram inspecionados diretamente.
+Não houve teste físico, compilação de firmware ou medição de FPS.
+
+RECONSTRUIR AS EXPORTAÇÕES
+Use Python 3 com as versões de requirements.txt. A partir da raiz deste pacote:
+python tools/export_enemies.py batch_manifest.json --out exports
+python tools/export_effects.py exports/effects
+python tools/validate_assets.py exports
+node tools/test_preview_js.js exports/RPG_POKET_previa_inimigos.html
+A reconstrução usa os mestres já incluídos; não exige nova geração de imagens ou serviço pago.
+
+PROVENIÊNCIA
+Cada manifesto registra prompt, hashes, data e ferramenta de geração. Alguns protótipos antigos já tinham registros locais de geração ou desenho procedural; todos foram incluídos no redesenho solicitado. Os protótipos anteriores não foram copiados para este pacote. Estes são designs originais propostos para o projeto, sem garantia de exclusividade de propriedade intelectual ou parecer jurídico.

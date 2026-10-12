@@ -56,6 +56,7 @@ void savedTransition(Page next){
 void action(rpg::Action a){
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Offensive)a=rpg::Action::MagicMissile;
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Defensive)a=rpg::Action::ShieldSpell;
+  const unsigned previousHeroHp=game.p.hp;
   const char* err=rpg::act(game,a);if(err){say(err);return;}
   if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
   else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
@@ -66,7 +67,7 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  const auto resolved=heroCombatResult(game,a);
+  const auto resolved=heroCombatResult(game,a,previousHeroHp);
   if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false,resolved);
   else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false,resolved);
   else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false,resolved);

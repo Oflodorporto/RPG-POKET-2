@@ -1,6 +1,9 @@
 RPG POKET — PACOTE 7.7 / PRIMEIRA FATIA DE APRESENTAÇÃO
 12/10/2026 • Primeira fatia validada por CI • Sem publicação ou gravação na placa
 
+CONTINUIDADE COMBINADA: PACOTE_7_7_COMBINADO.txt registra a candidata posterior e sua validação; os resultados isolados abaixo são históricos.
+CONTINUIDADE: este documento descreve a primeira fatia histórica. A integração posterior dos29 inimigos autorais está em PACOTE_7_7_INIMIGOS_AUTORAIS.txt, branch separada e sem publicação.
+
 BASE E AUTORIZAÇÃO
 - Base de código publicada: 26a43145a8cd7e45e8716b1f1a34b358c41d47f3, tag v2026.10.12-fatigue76. Base documental: c9313a85df86f682cfbcd2094006b9d663c98da7.
 - Após aprovar a direção visual, o proprietário confirmou testes rápidos da 7.6 funcionando e autorizou continuar. Essa confirmação não cobre os ensaios detalhados/prolongados, falhas nem memória real da 7.6, e não valida a 7.7 na placa.

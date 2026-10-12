@@ -1,0 +1,3095 @@
+{
+  "schema": "rpg-poket-enemy-inventory-v1",
+  "date": "2026-10-12",
+  "count": 29,
+  "source_commit": "c9313a85df86f682cfbcd2094006b9d663c98da7",
+  "artes_pak_sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8",
+  "artes_bytes": 6991936,
+  "artes_entries": 488,
+  "notes": [
+    "Pose count of current art is frame availability, not verified action semantics.",
+    "Palettes and body families are production directions, not changes to game classification.",
+    "The user requested replacement of all designs, including locally documented generated/procedural ones.",
+    "Original source arrays remain unchanged."
+  ],
+  "enemies": [
+    {
+      "id": 0,
+      "name": "GOBLIN",
+      "body_family": "humanoide pequeno",
+      "biome": "Carvalho / Bosque",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "musgo / couro / aco",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[92]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "7404f6ecabcf00dfc546ef6c5fed10bb1dc2e50ebc86ce09ab91a54d753b2c69",
+          "visible_bounds": [
+            23,
+            4,
+            75,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x2104",
+            "0x752E"
+          ]
+        },
+        {
+          "source": "AssetCatalog[93]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "7404f6ecabcf00dfc546ef6c5fed10bb1dc2e50ebc86ce09ab91a54d753b2c69",
+          "visible_bounds": [
+            23,
+            4,
+            75,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x2104",
+            "0x752E"
+          ]
+        },
+        {
+          "source": "AssetCatalog[94]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "7404f6ecabcf00dfc546ef6c5fed10bb1dc2e50ebc86ce09ab91a54d753b2c69",
+          "visible_bounds": [
+            23,
+            4,
+            75,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x2104",
+            "0x752E"
+          ]
+        },
+        {
+          "source": "AssetCatalog[95]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "d690f2352d8b0d04090dd20e6ce9b0fb7334aa4f6f22e960706103370cf65246",
+          "visible_bounds": [
+            21,
+            7,
+            72,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x2104",
+            "0x752E",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[96]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "722fee377d6433faa56c782681543f19507cf7a674335607c834afa8e17143dc",
+          "visible_bounds": [
+            26,
+            12,
+            70,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x2104",
+            "0x8BA9"
+          ]
+        },
+        {
+          "source": "AssetCatalog[97]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "fc6f87371dd24bdb586882a7cda01d7a7a3cf69cdfb3ad78a63a643bfda59530",
+          "visible_bounds": [
+            10,
+            7,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 13,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x752E",
+            "0x2104"
+          ]
+        },
+        {
+          "source": "AssetCatalog[98]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "00a68f2e1dc7694052fbafcec8db3ae4d619c72d7b3bab31e82a6098f434be9b",
+          "visible_bounds": [
+            0,
+            7,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 13,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x752E",
+            "0x2104"
+          ]
+        },
+        {
+          "source": "AssetCatalog[99]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "6fdeb5ba25156ea0f47c588c799c919dc53c6061aac879fc462cf923031c846a",
+          "visible_bounds": [
+            8,
+            7,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 12,
+          "top_colors_rgb565": [
+            "0x6287",
+            "0x64AC",
+            "0x0000",
+            "0x752E",
+            "0x2104"
+          ]
+        }
+      ],
+      "current_pose_count": 8,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 6,
+      "provenance_status": "Usuario informa origem no Google; comentario em SpriteArt.h diz fontes originais fornecidas preservadas. Licenca e autor nao verificados."
+    },
+    {
+      "id": 1,
+      "name": "LOBO",
+      "body_family": "quadrupede",
+      "biome": "Carvalho / Bosque",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "ardosia / creme / castanho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[100]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "35781b8776eae2217cd7bbc196be6fd1cf172d672531b4d82685043f902fa0ee",
+          "visible_bounds": [
+            1,
+            52,
+            70,
+            85
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[101]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "6b3c899d743e607c6077789f1f8c8240eb12bc18195bf5d43e3d38255cf62c00",
+          "visible_bounds": [
+            3,
+            56,
+            72,
+            86
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[102]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "cd56a3b59896573072f5654df85d141ec72b64ab971254bd042a06076bcb187c",
+          "visible_bounds": [
+            1,
+            50,
+            71,
+            83
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[103]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a88e8fa199b5fa8ec2d0cebb648bf37014df237833eaf1a3ab2ba5e5f91437d6",
+          "visible_bounds": [
+            3,
+            46,
+            71,
+            83
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[104]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "23d8eacd2ab172e529db2afc1b9361b51324efbfef2ebadbac02be89ad40b3ce",
+          "visible_bounds": [
+            1,
+            47,
+            75,
+            83
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[105]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e4317b14222447f9cfc6df3f4a641d655584ca3461511fabc6f81ffbc2721416",
+          "visible_bounds": [
+            0,
+            50,
+            79,
+            77
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[106]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "edd4ae80a8565cb99dcf7a6d757632cf8e41b14a6bdc6a2aa1c81f8d7e816fb9",
+          "visible_bounds": [
+            4,
+            50,
+            80,
+            83
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        },
+        {
+          "source": "AssetCatalog[107]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "d0315806c7a19bdd8e1e5f877b21497de34c190c24510f518a41e96bccd94824",
+          "visible_bounds": [
+            5,
+            52,
+            79,
+            85
+          ],
+          "opaque_rgb565_colors": 3,
+          "top_colors_rgb565": [
+            "0x39C7",
+            "0x18E4",
+            "0x0000"
+          ]
+        }
+      ],
+      "current_pose_count": 8,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 8,
+      "provenance_status": "Usuario informa origem no Google; comentario em SpriteArt.h diz fontes originais fornecidas preservadas. Licenca e autor nao verificados."
+    },
+    {
+      "id": 2,
+      "name": "ESQUELETO",
+      "body_family": "humanoide osseo",
+      "biome": "Ruinas / Cripta",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": true,
+      "palette_direction_proposed": "marfim / bronze / verde-azulado",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[108]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "9b6ec65d4321170fe6000dee7e657d3ef6e57f27952acdd86fec93bf6006a204",
+          "visible_bounds": [
+            0,
+            21,
+            79,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[109]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a980bb55b49169b5e3fc080dbacf1918e9ac159cd79642e274883e225724727e",
+          "visible_bounds": [
+            0,
+            22,
+            79,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[110]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "873ea29e12a3246a7e0678132d5aab383d63644cb5f6dcb67274524988d6ae12",
+          "visible_bounds": [
+            0,
+            24,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[111]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "164eed931152536bdfda41ae379acbd9cd0db6bce9e96b27dd8dfbcd7d16f1ef",
+          "visible_bounds": [
+            0,
+            24,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[112]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "4ecb2ca8890e3490b9b001c4464cc0e4e70bafcaea48cabc85c13d388ec3a7c2",
+          "visible_bounds": [
+            0,
+            22,
+            80,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[113]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e208c382d71abcc187cf94c067c0d96200ff03fd94b9127c0a187cfe70476ed5",
+          "visible_bounds": [
+            0,
+            21,
+            79,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        },
+        {
+          "source": "AssetCatalog[114]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "32bc7ffbc906c91cc240c3a200bba743279b9df882fc1ea6fa9fd91f2e880403",
+          "visible_bounds": [
+            0,
+            21,
+            79,
+            86
+          ],
+          "opaque_rgb565_colors": 8,
+          "top_colors_rgb565": [
+            "0x28E3",
+            "0x3A07",
+            "0x41C5",
+            "0x41E6",
+            "0xB4F0"
+          ]
+        }
+      ],
+      "current_pose_count": 7,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 7,
+      "dungeon_frames": [
+        {
+          "source": "DungeonArt.h:skeleton_0",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "35ca28f001bc21f00181beb858c4e2637523adee98a6304014a53bd95ecf97f4",
+          "visible_bounds": [
+            5,
+            2,
+            43,
+            62
+          ],
+          "opaque_rgb565_colors": 584,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x1061",
+            "0x2081",
+            "0x1881"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:skeleton_1",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "302d78373c8ce57c5996fc91117364dc6c353acdf7bd27f723346374569b9830",
+          "visible_bounds": [
+            4,
+            2,
+            44,
+            62
+          ],
+          "opaque_rgb565_colors": 518,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x0020",
+            "0x2081",
+            "0x1061"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:skeleton_2",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "a27883d93656f90db9b713ca11cb154914443e9ad10534afae53297e4a9b4f47",
+          "visible_bounds": [
+            2,
+            4,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 617,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x1881",
+            "0x328F",
+            "0x1861"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:skeleton_3",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "5f7007de32c5d96a0d677acba5e8bf634e1dc01debad2b6e62317a3684b67b72",
+          "visible_bounds": [
+            2,
+            22,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 429,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x1040",
+            "0x21AA",
+            "0x1861"
+          ]
+        }
+      ],
+      "provenance_status": "Usuario informa origem no Google; comentario em SpriteArt.h diz fontes originais fornecidas preservadas. Licenca e autor nao verificados."
+    },
+    {
+      "id": 3,
+      "name": "GUARDIAO",
+      "body_family": "corpo rigido pesado",
+      "biome": "Ruinas / chefe externo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "pedra / bronze",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[115]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ebd5e8da162a8b88b580cba7ae144b7ec6533a5fad39381ba6bb56d8f215e4e6",
+          "visible_bounds": [
+            5,
+            2,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[116]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ac87565d3dc5b4e5d3a5dde5f5f4f35c6f3604d425cff4f33ecd899be9a2fef8",
+          "visible_bounds": [
+            5,
+            0,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[117]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a38c97a6d3738cf790c04af5d3213a394baece34011daf02269079477f0270",
+          "visible_bounds": [
+            5,
+            0,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[118]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ebd5e8da162a8b88b580cba7ae144b7ec6533a5fad39381ba6bb56d8f215e4e6",
+          "visible_bounds": [
+            5,
+            2,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[119]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ebd5e8da162a8b88b580cba7ae144b7ec6533a5fad39381ba6bb56d8f215e4e6",
+          "visible_bounds": [
+            5,
+            2,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[120]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ac87565d3dc5b4e5d3a5dde5f5f4f35c6f3604d425cff4f33ecd899be9a2fef8",
+          "visible_bounds": [
+            5,
+            0,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[121]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a38c97a6d3738cf790c04af5d3213a394baece34011daf02269079477f0270",
+          "visible_bounds": [
+            5,
+            0,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        },
+        {
+          "source": "AssetCatalog[122]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ebd5e8da162a8b88b580cba7ae144b7ec6533a5fad39381ba6bb56d8f215e4e6",
+          "visible_bounds": [
+            5,
+            2,
+            74,
+            86
+          ],
+          "opaque_rgb565_colors": 9,
+          "top_colors_rgb565": [
+            "0x2965",
+            "0x6CF7",
+            "0x4AF0",
+            "0x3A4C",
+            "0x6A47"
+          ]
+        }
+      ],
+      "current_pose_count": 8,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 3,
+      "provenance_status": "Usuario informa origem no Google; comentario em SpriteArt.h diz fontes originais fornecidas preservadas. Licenca e autor nao verificados."
+    },
+    {
+      "id": 4,
+      "name": "JAVALI",
+      "body_family": "quadrupede",
+      "biome": "Carvalho / Bosque e estradas",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "terra / marfim",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[401]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "314a8f0bed26d5f4212996deb6d5207c976f62892095c08adac2c429fdddcf7b",
+          "visible_bounds": [
+            8,
+            18,
+            73,
+            65
+          ],
+          "opaque_rgb565_colors": 234,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x61C5",
+            "0x28E3"
+          ]
+        },
+        {
+          "source": "AssetCatalog[402]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "4245434a1f88b35df742df5c1c02714aa9e3f8b984a72339ae7ec2e8f2f3d814",
+          "visible_bounds": [
+            7,
+            16,
+            71,
+            64
+          ],
+          "opaque_rgb565_colors": 221,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x3103",
+            "0x0820"
+          ]
+        },
+        {
+          "source": "AssetCatalog[403]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e0682157d6ffce1c2a9498d47be2bdcd9b150811d406780bab6be169ca1fefe4",
+          "visible_bounds": [
+            8,
+            21,
+            74,
+            64
+          ],
+          "opaque_rgb565_colors": 229,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x69E5",
+            "0x61C5",
+            "0x4123",
+            "0x1882"
+          ]
+        },
+        {
+          "source": "AssetCatalog[404]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a60239bab61f3645b02d351c1d4382c993db72cfa7c0e081a1723b55221abd8a",
+          "visible_bounds": [
+            4,
+            21,
+            74,
+            68
+          ],
+          "opaque_rgb565_colors": 239,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x61C5",
+            "0x1882",
+            "0x20A2",
+            "0x69E5"
+          ]
+        }
+      ],
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "README e LEIA_ASSETS dentro do ZIP de estradas1 registram geracao imagegen em 2026-10-06."
+    },
+    {
+      "id": 5,
+      "name": "ESPECTRO",
+      "body_family": "aparicao",
+      "biome": "Ruinas / Cripta e estradas",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": true,
+      "palette_direction_proposed": "turquesa / violeta",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[405]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "9a4908c7c0768347cf9d25fedd22716b579bfb777a5011e4f12e4e52dbe4b6c6",
+          "visible_bounds": [
+            13,
+            11,
+            71,
+            79
+          ],
+          "opaque_rgb565_colors": 828,
+          "top_colors_rgb565": [
+            "0x0062",
+            "0x0146",
+            "0x00C4",
+            "0x0167",
+            "0x00E5"
+          ]
+        },
+        {
+          "source": "AssetCatalog[406]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "d9dee57900717e5eff99a1f90ed7d6a8fc98e4a7d212c39da5c41e3f973412ab",
+          "visible_bounds": [
+            15,
+            9,
+            69,
+            76
+          ],
+          "opaque_rgb565_colors": 811,
+          "top_colors_rgb565": [
+            "0x00C4",
+            "0x0083",
+            "0x0062",
+            "0x0000",
+            "0x0041"
+          ]
+        },
+        {
+          "source": "AssetCatalog[407]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "951eddd3721b2672c4a5d043e4b2137747d4612afcf12c36af8d1b3d38eb7390",
+          "visible_bounds": [
+            12,
+            7,
+            68,
+            76
+          ],
+          "opaque_rgb565_colors": 902,
+          "top_colors_rgb565": [
+            "0x0167",
+            "0x00C4",
+            "0x0042",
+            "0x0062",
+            "0x00A3"
+          ]
+        },
+        {
+          "source": "AssetCatalog[408]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a283c4d30c9fa9f7069ae249747983777489882ed24169044604d7e4d9ecdb36",
+          "visible_bounds": [
+            4,
+            15,
+            72,
+            76
+          ],
+          "opaque_rgb565_colors": 781,
+          "top_colors_rgb565": [
+            "0x0167",
+            "0x0105",
+            "0x0062",
+            "0x0042",
+            "0x0083"
+          ]
+        }
+      ],
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "dungeon_frames": [
+        {
+          "source": "DungeonArt.h:spectre_0",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "e71d6a14f87f7159230e32cc907d60ab9754056d784b552e8e596c5e4d4c42af",
+          "visible_bounds": [
+            5,
+            2,
+            43,
+            61
+          ],
+          "opaque_rgb565_colors": 527,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x28C6",
+            "0x416B",
+            "0x30E7",
+            "0x20A5"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:spectre_1",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "fdaa89c6b0639fe231b0477f56dcf091e490825834100bbd87914365a5ac8bd9",
+          "visible_bounds": [
+            2,
+            7,
+            46,
+            61
+          ],
+          "opaque_rgb565_colors": 529,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x3909",
+            "0x2084",
+            "0x28A6",
+            "0x30E7"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:spectre_2",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "3a56a3003928c804ef79a6e4f38602051588f42877ab720a46cef8fd8695a9b8",
+          "visible_bounds": [
+            2,
+            2,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 648,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x3108",
+            "0x28E7",
+            "0x3929",
+            "0x30E8"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:spectre_3",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "2f97ef46d8e557dbfdbb63f47e8a9a882345335aef635274a75b2ef2ebdf7297",
+          "visible_bounds": [
+            5,
+            2,
+            42,
+            62
+          ],
+          "opaque_rgb565_colors": 565,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x3909",
+            "0x3949",
+            "0x2085",
+            "0x3108"
+          ]
+        }
+      ],
+      "provenance_status": "README e LEIA_ASSETS dentro do ZIP de estradas1 registram geracao imagegen em 2026-10-06."
+    },
+    {
+      "id": 6,
+      "name": "SAQUEADOR",
+      "body_family": "humanoide armado",
+      "biome": "Mares / Porto e estradas",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "azul-petroleo / couro",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[409]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "da9fabde6d84e7fc7c84ebad3794b9e628b41eef0ac29e362fa0894d3d0f2031",
+          "visible_bounds": [
+            15,
+            20,
+            63,
+            70
+          ],
+          "opaque_rgb565_colors": 328,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x2A0D",
+            "0x29ED",
+            "0x1861",
+            "0x0001"
+          ]
+        },
+        {
+          "source": "AssetCatalog[410]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "87e44e12bdd58652195e1e95004d541cd45bcb546a97ce5e70507d7906096c00",
+          "visible_bounds": [
+            15,
+            20,
+            64,
+            70
+          ],
+          "opaque_rgb565_colors": 326,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x29ED",
+            "0x2A0D",
+            "0x41C7",
+            "0x2081"
+          ]
+        },
+        {
+          "source": "AssetCatalog[411]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "2fc1888ee84ed14743795898c3d4511fe16d6524445b5a688b4c4ad633286ab3",
+          "visible_bounds": [
+            19,
+            12,
+            63,
+            70
+          ],
+          "opaque_rgb565_colors": 342,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x29ED",
+            "0x30E2",
+            "0x2A0D",
+            "0x0800"
+          ]
+        },
+        {
+          "source": "AssetCatalog[412]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "6e0e6a75fa17f0421fc89e754b2659c766a50d526e03e63bc6ef7177cd596368",
+          "visible_bounds": [
+            8,
+            26,
+            73,
+            70
+          ],
+          "opaque_rgb565_colors": 332,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x29ED",
+            "0x29CC",
+            "0x29EC",
+            "0x28C2"
+          ]
+        }
+      ],
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "README e LEIA_ASSETS dentro do ZIP de estradas1 registram geracao imagegen em 2026-10-06."
+    },
+    {
+      "id": 7,
+      "name": "SENTINELA",
+      "body_family": "humanoide armado pesado",
+      "biome": "Aurora / Castelo e estradas",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "aco / ouro / vermelho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[413]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e757e998039490113c7764c5e4c094db74733954b97d50c3920bba147bcab5dc",
+          "visible_bounds": [
+            20,
+            21,
+            59,
+            81
+          ],
+          "opaque_rgb565_colors": 482,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x2820",
+            "0x3041",
+            "0x2020",
+            "0x0800"
+          ]
+        },
+        {
+          "source": "AssetCatalog[414]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ac9f80c8e4ccc4af0fd5d8154b905cd5301b7c3a998f67e5daddba5205027a87",
+          "visible_bounds": [
+            19,
+            24,
+            60,
+            83
+          ],
+          "opaque_rgb565_colors": 491,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x2020",
+            "0x0800",
+            "0x0820",
+            "0x3041"
+          ]
+        },
+        {
+          "source": "AssetCatalog[415]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "4ad750aeaab29636f5659e7cf29df6a1c9064499e3f7049eaaab5a3810472b7e",
+          "visible_bounds": [
+            21,
+            17,
+            62,
+            81
+          ],
+          "opaque_rgb565_colors": 492,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x2820",
+            "0x2020",
+            "0x3041",
+            "0x0800"
+          ]
+        },
+        {
+          "source": "AssetCatalog[416]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "5ec8d1e072e4f39a5556439f80a9c53d5c990b270adc6aaa6bce968bbc27890f",
+          "visible_bounds": [
+            2,
+            40,
+            77,
+            81
+          ],
+          "opaque_rgb565_colors": 484,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x58A2",
+            "0x2820",
+            "0x0800",
+            "0x0820"
+          ]
+        }
+      ],
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "README e LEIA_ASSETS dentro do ZIP de estradas1 registram geracao imagegen em 2026-10-06."
+    },
+    {
+      "id": 8,
+      "name": "ARCONTE",
+      "body_family": "aparicao chefe",
+      "biome": "Ruinas / Cripta de Vaelor",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": true,
+      "palette_direction_proposed": "osso / violeta / metal",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[401]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "314a8f0bed26d5f4212996deb6d5207c976f62892095c08adac2c429fdddcf7b",
+          "visible_bounds": [
+            8,
+            18,
+            73,
+            65
+          ],
+          "opaque_rgb565_colors": 234,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x61C5",
+            "0x28E3"
+          ]
+        },
+        {
+          "source": "AssetCatalog[402]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "4245434a1f88b35df742df5c1c02714aa9e3f8b984a72339ae7ec2e8f2f3d814",
+          "visible_bounds": [
+            7,
+            16,
+            71,
+            64
+          ],
+          "opaque_rgb565_colors": 221,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x3103",
+            "0x0820"
+          ]
+        },
+        {
+          "source": "AssetCatalog[403]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e0682157d6ffce1c2a9498d47be2bdcd9b150811d406780bab6be169ca1fefe4",
+          "visible_bounds": [
+            8,
+            21,
+            74,
+            64
+          ],
+          "opaque_rgb565_colors": 229,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x69E5",
+            "0x61C5",
+            "0x4123",
+            "0x1882"
+          ]
+        },
+        {
+          "source": "AssetCatalog[404]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a60239bab61f3645b02d351c1d4382c993db72cfa7c0e081a1723b55221abd8a",
+          "visible_bounds": [
+            4,
+            21,
+            74,
+            68
+          ],
+          "opaque_rgb565_colors": 239,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x61C5",
+            "0x1882",
+            "0x20A2",
+            "0x69E5"
+          ]
+        }
+      ],
+      "reuse_note": "Arena, ficha e bestiario usam fallback regional do Javali; dungeon tem arte propria.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "dungeon_frames": [
+        {
+          "source": "DungeonArt.h:archon_0",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "afac637de976924a5ef3bbdaf5245763aea6ae18e25df1eb5c0059590cbfa55c",
+          "visible_bounds": [
+            5,
+            3,
+            42,
+            62
+          ],
+          "opaque_rgb565_colors": 641,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0821",
+            "0x18A3",
+            "0x1041",
+            "0x0841"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:archon_1",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "0e3ba38ee5dc170832db44365732cc32b6bf6982d9357813769592b838179d63",
+          "visible_bounds": [
+            5,
+            2,
+            42,
+            62
+          ],
+          "opaque_rgb565_colors": 543,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x1062",
+            "0x1862",
+            "0x2083",
+            "0x0821"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:archon_2",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "5266a684f85ad9837fd65947de3ca631011acdb28fd95db3ed4d381a0ed406cf",
+          "visible_bounds": [
+            5,
+            2,
+            43,
+            62
+          ],
+          "opaque_rgb565_colors": 595,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x1041",
+            "0x0841",
+            "0x2083",
+            "0x1862"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:archon_3",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "5d637d4f77f3df0f342a50c6ca5a2e18988f2c7fe1e2d913c11f2480cef32a77",
+          "visible_bounds": [
+            3,
+            8,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 648,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0821",
+            "0x1062",
+            "0x0841",
+            "0x1883"
+          ]
+        }
+      ],
+      "provenance_status": "Dungeon: prepare_dungeon_art.py registra atlas gerado; arena usa fallback descrito."
+    },
+    {
+      "id": 9,
+      "name": "VIGIA OSSUDO",
+      "body_family": "humanoide osseo pesado",
+      "biome": "Ruinas / Cripta",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": true,
+      "palette_direction_proposed": "osso / aco escuro",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[401]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "314a8f0bed26d5f4212996deb6d5207c976f62892095c08adac2c429fdddcf7b",
+          "visible_bounds": [
+            8,
+            18,
+            73,
+            65
+          ],
+          "opaque_rgb565_colors": 234,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x61C5",
+            "0x28E3"
+          ]
+        },
+        {
+          "source": "AssetCatalog[402]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "4245434a1f88b35df742df5c1c02714aa9e3f8b984a72339ae7ec2e8f2f3d814",
+          "visible_bounds": [
+            7,
+            16,
+            71,
+            64
+          ],
+          "opaque_rgb565_colors": 221,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x20A2",
+            "0x69E5",
+            "0x3103",
+            "0x0820"
+          ]
+        },
+        {
+          "source": "AssetCatalog[403]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "e0682157d6ffce1c2a9498d47be2bdcd9b150811d406780bab6be169ca1fefe4",
+          "visible_bounds": [
+            8,
+            21,
+            74,
+            64
+          ],
+          "opaque_rgb565_colors": 229,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x69E5",
+            "0x61C5",
+            "0x4123",
+            "0x1882"
+          ]
+        },
+        {
+          "source": "AssetCatalog[404]",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "a60239bab61f3645b02d351c1d4382c993db72cfa7c0e081a1723b55221abd8a",
+          "visible_bounds": [
+            4,
+            21,
+            74,
+            68
+          ],
+          "opaque_rgb565_colors": 239,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x61C5",
+            "0x1882",
+            "0x20A2",
+            "0x69E5"
+          ]
+        }
+      ],
+      "reuse_note": "Arena, ficha e bestiario usam fallback regional do Javali; dungeon tem arte propria.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "dungeon_frames": [
+        {
+          "source": "DungeonArt.h:warden_0",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "277ed5586b518fa35e11ccda834a412a2e6b5368efdd3524066da2965b915630",
+          "visible_bounds": [
+            6,
+            2,
+            41,
+            62
+          ],
+          "opaque_rgb565_colors": 627,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x0820",
+            "0x1041",
+            "0x0841"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:warden_1",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "2717e79d15f986b8795e6faf2bfb3bc936550e7bc1d555e19029768cc7ed13f7",
+          "visible_bounds": [
+            6,
+            2,
+            42,
+            62
+          ],
+          "opaque_rgb565_colors": 528,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x28C2",
+            "0x1861",
+            "0x3923"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:warden_2",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "857b559320b9b140a5b7f0c1867c3f3fa429454f711e43c81df8cc592ed788a0",
+          "visible_bounds": [
+            2,
+            4,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 653,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x2081",
+            "0x28C2",
+            "0x1881"
+          ]
+        },
+        {
+          "source": "DungeonArt.h:warden_3",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "1eb53518c8784d5dd2b0c46771c2b8ba146fbe3d1c8b775c62b43a65217c32fe",
+          "visible_bounds": [
+            2,
+            11,
+            46,
+            62
+          ],
+          "opaque_rgb565_colors": 570,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0841",
+            "0x0820",
+            "0x2081",
+            "0x1041"
+          ]
+        }
+      ],
+      "provenance_status": "Dungeon: prepare_dungeon_art.py registra atlas gerado; arena usa fallback descrito."
+    },
+    {
+      "id": 10,
+      "name": "HIPOGRIFO JOVEM",
+      "body_family": "quadrupede alado",
+      "biome": "Carvalho / evento de hipogrifo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "penas creme / castanho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "HippogriffArt.h:frame0",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a4b2ee3949ab77a60ed65789cff284493690cd7f8195a311d3d80d4118d18c",
+          "visible_bounds": [
+            10,
+            30,
+            69,
+            76
+          ],
+          "opaque_rgb565_colors": 501,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0000",
+            "0xFF37"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame1",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "0b5bb0a3c46ae5705a161a3874eac962ca310d328ab33796eb24c79315792275",
+          "visible_bounds": [
+            11,
+            10,
+            68,
+            75
+          ],
+          "opaque_rgb565_colors": 563,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0820",
+            "0x5902"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame2",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ff8bc16e2b7d6e53f3398156a6c79a243a41eb66eb0ea6b31f2824505372faa2",
+          "visible_bounds": [
+            7,
+            5,
+            73,
+            76
+          ],
+          "opaque_rgb565_colors": 626,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x6963"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame3",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "54279215e1699d3667912e906b06a9c0b9e29c41d9f92f2319d7ee2e067e8c26",
+          "visible_bounds": [
+            10,
+            20,
+            70,
+            75
+          ],
+          "opaque_rgb565_colors": 543,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x5902"
+          ]
+        }
+      ],
+      "reuse_note": "Todos os quatro IDs de hipogrifo reutilizam os mesmos quatro quadros.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "assets/cartas1/proveniencia.json registra hipogrifo original gerado."
+    },
+    {
+      "id": 11,
+      "name": "HIPOGRIFO",
+      "body_family": "quadrupede alado",
+      "biome": "Ruinas / evento de hipogrifo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "penas creme / castanho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "HippogriffArt.h:frame0",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a4b2ee3949ab77a60ed65789cff284493690cd7f8195a311d3d80d4118d18c",
+          "visible_bounds": [
+            10,
+            30,
+            69,
+            76
+          ],
+          "opaque_rgb565_colors": 501,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0000",
+            "0xFF37"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame1",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "0b5bb0a3c46ae5705a161a3874eac962ca310d328ab33796eb24c79315792275",
+          "visible_bounds": [
+            11,
+            10,
+            68,
+            75
+          ],
+          "opaque_rgb565_colors": 563,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0820",
+            "0x5902"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame2",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ff8bc16e2b7d6e53f3398156a6c79a243a41eb66eb0ea6b31f2824505372faa2",
+          "visible_bounds": [
+            7,
+            5,
+            73,
+            76
+          ],
+          "opaque_rgb565_colors": 626,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x6963"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame3",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "54279215e1699d3667912e906b06a9c0b9e29c41d9f92f2319d7ee2e067e8c26",
+          "visible_bounds": [
+            10,
+            20,
+            70,
+            75
+          ],
+          "opaque_rgb565_colors": 543,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x5902"
+          ]
+        }
+      ],
+      "reuse_note": "Todos os quatro IDs de hipogrifo reutilizam os mesmos quatro quadros.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "assets/cartas1/proveniencia.json registra hipogrifo original gerado."
+    },
+    {
+      "id": 12,
+      "name": "HIPOGRIFO MARCADO",
+      "body_family": "quadrupede alado",
+      "biome": "Mares / evento de hipogrifo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "penas creme / castanho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "HippogriffArt.h:frame0",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a4b2ee3949ab77a60ed65789cff284493690cd7f8195a311d3d80d4118d18c",
+          "visible_bounds": [
+            10,
+            30,
+            69,
+            76
+          ],
+          "opaque_rgb565_colors": 501,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0000",
+            "0xFF37"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame1",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "0b5bb0a3c46ae5705a161a3874eac962ca310d328ab33796eb24c79315792275",
+          "visible_bounds": [
+            11,
+            10,
+            68,
+            75
+          ],
+          "opaque_rgb565_colors": 563,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0820",
+            "0x5902"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame2",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ff8bc16e2b7d6e53f3398156a6c79a243a41eb66eb0ea6b31f2824505372faa2",
+          "visible_bounds": [
+            7,
+            5,
+            73,
+            76
+          ],
+          "opaque_rgb565_colors": 626,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x6963"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame3",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "54279215e1699d3667912e906b06a9c0b9e29c41d9f92f2319d7ee2e067e8c26",
+          "visible_bounds": [
+            10,
+            20,
+            70,
+            75
+          ],
+          "opaque_rgb565_colors": 543,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x5902"
+          ]
+        }
+      ],
+      "reuse_note": "Todos os quatro IDs de hipogrifo reutilizam os mesmos quatro quadros.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "assets/cartas1/proveniencia.json registra hipogrifo original gerado."
+    },
+    {
+      "id": 13,
+      "name": "HIPOGRIFO ALFA",
+      "body_family": "quadrupede alado",
+      "biome": "Aurora / evento de hipogrifo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "penas creme / castanho",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "HippogriffArt.h:frame0",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "69a4b2ee3949ab77a60ed65789cff284493690cd7f8195a311d3d80d4118d18c",
+          "visible_bounds": [
+            10,
+            30,
+            69,
+            76
+          ],
+          "opaque_rgb565_colors": 501,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0000",
+            "0xFF37"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame1",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "0b5bb0a3c46ae5705a161a3874eac962ca310d328ab33796eb24c79315792275",
+          "visible_bounds": [
+            11,
+            10,
+            68,
+            75
+          ],
+          "opaque_rgb565_colors": 563,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1020",
+            "0x1000",
+            "0x0820",
+            "0x5902"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame2",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "ff8bc16e2b7d6e53f3398156a6c79a243a41eb66eb0ea6b31f2824505372faa2",
+          "visible_bounds": [
+            7,
+            5,
+            73,
+            76
+          ],
+          "opaque_rgb565_colors": 626,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x6963"
+          ]
+        },
+        {
+          "source": "HippogriffArt.h:frame3",
+          "size": [
+            80,
+            86
+          ],
+          "bytes": 13760,
+          "sha256": "54279215e1699d3667912e906b06a9c0b9e29c41d9f92f2319d7ee2e067e8c26",
+          "visible_bounds": [
+            10,
+            20,
+            70,
+            75
+          ],
+          "opaque_rgb565_colors": 543,
+          "top_colors_rgb565": [
+            "0x0800",
+            "0x1000",
+            "0x0000",
+            "0x1020",
+            "0x5902"
+          ]
+        }
+      ],
+      "reuse_note": "Todos os quatro IDs de hipogrifo reutilizam os mesmos quatro quadros.",
+      "current_pose_count": 4,
+      "current_size": [
+        80,
+        86
+      ],
+      "unique_current_images": 4,
+      "provenance_status": "assets/cartas1/proveniencia.json registra hipogrifo original gerado."
+    },
+    {
+      "id": 14,
+      "name": "MIMICO DO BOSQUE",
+      "body_family": "mimico / bau",
+      "biome": "Carvalho / Bosque",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "madeira / musgo",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 4,
+      "current_source": "ExplorationView.h:drawMimic, quatro aberturas de mandibula procedurais",
+      "current_size": "aprox. 66 x 63 dentro do desenho da arena",
+      "reuse_note": "Os quatro IDs usam a mesma funcao, sem variacao por ID.",
+      "provenance_status": "Desenho procedural em codigo, sem arquivo externo associado nesse caminho."
+    },
+    {
+      "id": 15,
+      "name": "MIMICO DAS RUINAS",
+      "body_family": "mimico / bau",
+      "biome": "Ruinas",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "pedra / musgo / madeira",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 4,
+      "current_source": "ExplorationView.h:drawMimic, quatro aberturas de mandibula procedurais",
+      "current_size": "aprox. 66 x 63 dentro do desenho da arena",
+      "reuse_note": "Os quatro IDs usam a mesma funcao, sem variacao por ID.",
+      "provenance_status": "Desenho procedural em codigo, sem arquivo externo associado nesse caminho."
+    },
+    {
+      "id": 16,
+      "name": "MIMICO DO PORTO",
+      "body_family": "mimico / bau",
+      "biome": "Mares / Porto",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "madeira salgada / bronze",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 4,
+      "current_source": "ExplorationView.h:drawMimic, quatro aberturas de mandibula procedurais",
+      "current_size": "aprox. 66 x 63 dentro do desenho da arena",
+      "reuse_note": "Os quatro IDs usam a mesma funcao, sem variacao por ID.",
+      "provenance_status": "Desenho procedural em codigo, sem arquivo externo associado nesse caminho."
+    },
+    {
+      "id": 17,
+      "name": "MIMICO DO CASTELO",
+      "body_family": "mimico / bau",
+      "biome": "Aurora / Castelo",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "madeira nobre / ouro",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 4,
+      "current_source": "ExplorationView.h:drawMimic, quatro aberturas de mandibula procedurais",
+      "current_size": "aprox. 66 x 63 dentro do desenho da arena",
+      "reuse_note": "Os quatro IDs usam a mesma funcao, sem variacao por ID.",
+      "provenance_status": "Desenho procedural em codigo, sem arquivo externo associado nesse caminho."
+    },
+    {
+      "id": 18,
+      "name": "ODRAN",
+      "body_family": "humanoide / regente",
+      "biome": "Aurora / final da campanha",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "coroa antiga / carmesim / aco",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 1,
+      "current_source": "FinaleStory.h:finaleFoe reutiliza NpcArt.h:Odran (palette453/index454), 64x64, com oscilacao y",
+      "current_size": "64 x 64",
+      "reuse_note": "Retrato de NPC usado no combate, sem corpo/ataque proprio.",
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 19,
+      "name": "CORACAO DO VEU",
+      "body_family": "nucleo flutuante",
+      "biome": "Aurora / final da campanha",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": false,
+      "palette_direction_proposed": "violeta / brilho frio",
+      "new_pose_count": 4,
+      "current": [],
+      "current_pose_count": 6,
+      "current_source": "FinaleStory.h:finaleFoe, losango procedural com seis fases de fragmentos",
+      "current_size": "61 x 61 mais fragmentos",
+      "reuse_note": "Pulso procedural; nao ha seis poses corporais desenhadas.",
+      "provenance_status": "Desenho procedural em codigo."
+    },
+    {
+      "id": 20,
+      "name": "SENTINELA CORAL",
+      "body_family": "humanoide marinho pesado",
+      "biome": "Ilha / masmorra",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "coral / bronze oxidado",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[459]",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "ded68e7712a63179bcc8312609ad786878b76d00258658261edc841efaed1858",
+          "visible_bounds": [
+            5,
+            4,
+            44,
+            61
+          ],
+          "opaque_rgb565_colors": 944,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x00E5",
+            "0x0105",
+            "0x0127"
+          ]
+        }
+      ],
+      "current_pose_count": 1,
+      "current_size": [
+        48,
+        64
+      ],
+      "unique_current_images": 1,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 21,
+      "name": "ARRAIA RUNAR",
+      "body_family": "animal marinho alado",
+      "biome": "Ilha / masmorra",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": false,
+      "palette_direction_proposed": "azul profundo / turquesa",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[460]",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "2b2fea7af8e58ce72cea81a32f0767070aaec638fcbc69d437d9ce49e44f3863",
+          "visible_bounds": [
+            3,
+            7,
+            46,
+            59
+          ],
+          "opaque_rgb565_colors": 572,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x18C9",
+            "0x10C9",
+            "0x0001",
+            "0x18C8"
+          ]
+        }
+      ],
+      "current_pose_count": 1,
+      "current_size": [
+        48,
+        64
+      ],
+      "unique_current_images": 1,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 22,
+      "name": "CORSARIO AFOGADO",
+      "body_family": "humanoide afogado",
+      "biome": "Ilha / masmorra",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": true,
+      "palette_direction_proposed": "madeira salgada / tecido escuro",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[461]",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "0e4c60c4de51872adb0ac3752663886113fdf73db47d8d94256cfb9062443a03",
+          "visible_bounds": [
+            3,
+            3,
+            43,
+            60
+          ],
+          "opaque_rgb565_colors": 508,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x08C4",
+            "0x0840",
+            "0x0040"
+          ]
+        }
+      ],
+      "current_pose_count": 1,
+      "current_size": [
+        48,
+        64
+      ],
+      "unique_current_images": 1,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 23,
+      "name": "ORACULO ABISSAL",
+      "body_family": "conjurador marinho",
+      "biome": "Ilha / masmorra",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": false,
+      "palette_direction_proposed": "verde marinho / violeta",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[462]",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "94e065050106d98ef023a3e3c2383b36d51eb9da34b978ce2934217da14772c2",
+          "visible_bounds": [
+            5,
+            4,
+            43,
+            61
+          ],
+          "opaque_rgb565_colors": 745,
+          "top_colors_rgb565": [
+            "0x0044",
+            "0x0065",
+            "0x10C9",
+            "0x0045",
+            "0x0887"
+          ]
+        }
+      ],
+      "current_pose_count": 1,
+      "current_size": [
+        48,
+        64
+      ],
+      "unique_current_images": 1,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 24,
+      "name": "THALVOR",
+      "body_family": "chefe marinho pesado",
+      "biome": "Ilha / chefe final",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "pedra coralina / azul profundo",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[463]",
+          "size": [
+            48,
+            64
+          ],
+          "bytes": 6144,
+          "sha256": "d8831cbbc231632b16975eff7dd756428ab1a651719bf18e0d2821fbaa0bbd1b",
+          "visible_bounds": [
+            2,
+            4,
+            45,
+            61
+          ],
+          "opaque_rgb565_colors": 902,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0042",
+            "0x0021",
+            "0x00A5",
+            "0x00A4"
+          ]
+        }
+      ],
+      "current_pose_count": 1,
+      "current_size": [
+        48,
+        64
+      ],
+      "unique_current_images": 1,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 25,
+      "name": "CARANGUEJO FERREO",
+      "body_family": "artropode blindado",
+      "biome": "Mares / cisternas e eventos",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "ferro / ferrugem",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[480]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "d8292a82bb94c1129f3399bc97e75ff2046aef44040c52d758acfad7b8396d8f",
+          "visible_bounds": [
+            3,
+            38,
+            62,
+            72
+          ],
+          "opaque_rgb565_colors": 696,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x0820",
+            "0x2924",
+            "0x0041"
+          ]
+        },
+        {
+          "source": "AssetCatalog[481]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "417a8bcf140a42bbf6b76a5abfad60067090f0a9f798d1e0e465281c7428cb76",
+          "visible_bounds": [
+            2,
+            38,
+            61,
+            72
+          ],
+          "opaque_rgb565_colors": 707,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x3165",
+            "0x0841",
+            "0x3145"
+          ]
+        }
+      ],
+      "current_pose_count": 2,
+      "current_size": [
+        64,
+        80
+      ],
+      "unique_current_images": 2,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 26,
+      "name": "MAO DE CINZA",
+      "body_family": "humanoide conjurador",
+      "biome": "Mares / eventos",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": false,
+      "palette_direction_proposed": "cinza / laranja apagado",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[482]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "64ac16b8c53c97dc58b1fcabeec7dc66834cc1b67f178b3b8449d7c55a231fe9",
+          "visible_bounds": [
+            7,
+            10,
+            61,
+            70
+          ],
+          "opaque_rgb565_colors": 481,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x1945",
+            "0x2186",
+            "0x1925"
+          ]
+        },
+        {
+          "source": "AssetCatalog[483]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "0995a7e2fb185ff77dd71baeb63fb2dec8b4e576b78767053878aaffe6efa374",
+          "visible_bounds": [
+            3,
+            14,
+            59,
+            70
+          ],
+          "opaque_rgb565_colors": 428,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x18C3",
+            "0x2186",
+            "0x18A3"
+          ]
+        }
+      ],
+      "current_pose_count": 2,
+      "current_size": [
+        64,
+        80
+      ],
+      "unique_current_images": 2,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 27,
+      "name": "AUTOMATO DOURADO",
+      "body_family": "corpo rigido pesado",
+      "biome": "Aurora / eventos",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "physical",
+      "undead": false,
+      "palette_direction_proposed": "ouro / aco",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[484]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "c4d2be912be4ffbeca083d6934c2e1a1abceb23f781e0d664d5704bba4924bfc",
+          "visible_bounds": [
+            6,
+            12,
+            61,
+            69
+          ],
+          "opaque_rgb565_colors": 752,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0020",
+            "0x0820",
+            "0x7223",
+            "0x7A43"
+          ]
+        },
+        {
+          "source": "AssetCatalog[485]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "cf19631c4bbece9adf5d28d26937ed3365eb6958f527b6739633e1e7dba97fb5",
+          "visible_bounds": [
+            3,
+            8,
+            61,
+            69
+          ],
+          "opaque_rgb565_colors": 764,
+          "top_colors_rgb565": [
+            "0x0000",
+            "0x0820",
+            "0x0020",
+            "0x0841",
+            "0x2125"
+          ]
+        }
+      ],
+      "current_pose_count": 2,
+      "current_size": [
+        64,
+        80
+      ],
+      "unique_current_images": 2,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    },
+    {
+      "id": 28,
+      "name": "ECO DO VEU",
+      "body_family": "aparicao",
+      "biome": "Aurora / eventos",
+      "biome_evidence": "Rules.h:regionalEnemy; Dungeon.h:spawns; GuildEvents.h:event tiers; Exploration.h:mimic city; Campaign.h:campaignCity",
+      "mechanical_damage": "magical",
+      "undead": true,
+      "palette_direction_proposed": "violeta / cinza frio",
+      "new_pose_count": 4,
+      "current": [
+        {
+          "source": "AssetCatalog[486]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "66150851a9d96b4537890dc3038104d222fdd8fd9c8abfe71108d620e047beca",
+          "visible_bounds": [
+            6,
+            4,
+            61,
+            76
+          ],
+          "opaque_rgb565_colors": 724,
+          "top_colors_rgb565": [
+            "0x414A",
+            "0x30E8",
+            "0x496B",
+            "0x7211",
+            "0x61CF"
+          ]
+        },
+        {
+          "source": "AssetCatalog[487]",
+          "size": [
+            64,
+            80
+          ],
+          "bytes": 10240,
+          "sha256": "80d4507a35b58c1cf7dde50eb6dfa638e4fd19f3ad519bb729f01c040fba9fe1",
+          "visible_bounds": [
+            3,
+            7,
+            60,
+            74
+          ],
+          "opaque_rgb565_colors": 730,
+          "top_colors_rgb565": [
+            "0x3909",
+            "0x30E8",
+            "0x414A",
+            "0x7211",
+            "0x3908"
+          ]
+        }
+      ],
+      "current_pose_count": 2,
+      "current_size": [
+        64,
+        80
+      ],
+      "unique_current_images": 2,
+      "provenance_status": "Proveniencia individual nao estabelecida por esta auditoria; redesenho solicitado de qualquer forma."
+    }
+  ],
+  "verified_image_reuses": [
+    {
+      "sha256": "7404f6ecabcf00dfc546ef6c5fed10bb1dc2e50ebc86ce09ab91a54d753b2c69",
+      "references": [
+        [
+          0,
+          "AssetCatalog[92]"
+        ],
+        [
+          0,
+          "AssetCatalog[93]"
+        ],
+        [
+          0,
+          "AssetCatalog[94]"
+        ]
+      ]
+    },
+    {
+      "sha256": "ebd5e8da162a8b88b580cba7ae144b7ec6533a5fad39381ba6bb56d8f215e4e6",
+      "references": [
+        [
+          3,
+          "AssetCatalog[115]"
+        ],
+        [
+          3,
+          "AssetCatalog[118]"
+        ],
+        [
+          3,
+          "AssetCatalog[119]"
+        ],
+        [
+          3,
+          "AssetCatalog[122]"
+        ]
+      ]
+    },
+    {
+      "sha256": "ac87565d3dc5b4e5d3a5dde5f5f4f35c6f3604d425cff4f33ecd899be9a2fef8",
+      "references": [
+        [
+          3,
+          "AssetCatalog[116]"
+        ],
+        [
+          3,
+          "AssetCatalog[120]"
+        ]
+      ]
+    },
+    {
+      "sha256": "69a38c97a6d3738cf790c04af5d3213a394baece34011daf02269079477f0270",
+      "references": [
+        [
+          3,
+          "AssetCatalog[117]"
+        ],
+        [
+          3,
+          "AssetCatalog[121]"
+        ]
+      ]
+    },
+    {
+      "sha256": "314a8f0bed26d5f4212996deb6d5207c976f62892095c08adac2c429fdddcf7b",
+      "references": [
+        [
+          4,
+          "AssetCatalog[401]"
+        ],
+        [
+          8,
+          "AssetCatalog[401]"
+        ],
+        [
+          9,
+          "AssetCatalog[401]"
+        ]
+      ]
+    },
+    {
+      "sha256": "4245434a1f88b35df742df5c1c02714aa9e3f8b984a72339ae7ec2e8f2f3d814",
+      "references": [
+        [
+          4,
+          "AssetCatalog[402]"
+        ],
+        [
+          8,
+          "AssetCatalog[402]"
+        ],
+        [
+          9,
+          "AssetCatalog[402]"
+        ]
+      ]
+    },
+    {
+      "sha256": "e0682157d6ffce1c2a9498d47be2bdcd9b150811d406780bab6be169ca1fefe4",
+      "references": [
+        [
+          4,
+          "AssetCatalog[403]"
+        ],
+        [
+          8,
+          "AssetCatalog[403]"
+        ],
+        [
+          9,
+          "AssetCatalog[403]"
+        ]
+      ]
+    },
+    {
+      "sha256": "a60239bab61f3645b02d351c1d4382c993db72cfa7c0e081a1723b55221abd8a",
+      "references": [
+        [
+          4,
+          "AssetCatalog[404]"
+        ],
+        [
+          8,
+          "AssetCatalog[404]"
+        ],
+        [
+          9,
+          "AssetCatalog[404]"
+        ]
+      ]
+    },
+    {
+      "sha256": "69a4b2ee3949ab77a60ed65789cff284493690cd7f8195a311d3d80d4118d18c",
+      "references": [
+        [
+          10,
+          "HippogriffArt.h:frame0"
+        ],
+        [
+          11,
+          "HippogriffArt.h:frame0"
+        ],
+        [
+          12,
+          "HippogriffArt.h:frame0"
+        ],
+        [
+          13,
+          "HippogriffArt.h:frame0"
+        ]
+      ]
+    },
+    {
+      "sha256": "0b5bb0a3c46ae5705a161a3874eac962ca310d328ab33796eb24c79315792275",
+      "references": [
+        [
+          10,
+          "HippogriffArt.h:frame1"
+        ],
+        [
+          11,
+          "HippogriffArt.h:frame1"
+        ],
+        [
+          12,
+          "HippogriffArt.h:frame1"
+        ],
+        [
+          13,
+          "HippogriffArt.h:frame1"
+        ]
+      ]
+    },
+    {
+      "sha256": "ff8bc16e2b7d6e53f3398156a6c79a243a41eb66eb0ea6b31f2824505372faa2",
+      "references": [
+        [
+          10,
+          "HippogriffArt.h:frame2"
+        ],
+        [
+          11,
+          "HippogriffArt.h:frame2"
+        ],
+        [
+          12,
+          "HippogriffArt.h:frame2"
+        ],
+        [
+          13,
+          "HippogriffArt.h:frame2"
+        ]
+      ]
+    },
+    {
+      "sha256": "54279215e1699d3667912e906b06a9c0b9e29c41d9f92f2319d7ee2e067e8c26",
+      "references": [
+        [
+          10,
+          "HippogriffArt.h:frame3"
+        ],
+        [
+          11,
+          "HippogriffArt.h:frame3"
+        ],
+        [
+          12,
+          "HippogriffArt.h:frame3"
+        ],
+        [
+          13,
+          "HippogriffArt.h:frame3"
+        ]
+      ]
+    }
+  ]
+}

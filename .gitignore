@@ -5,3 +5,6 @@ build/
 *.rpg
 secrets.*
 .env*
+
+# Rebuilt deterministically from tracked source archives and compact exports.
+cartao/RPGPOKET/artes.pak

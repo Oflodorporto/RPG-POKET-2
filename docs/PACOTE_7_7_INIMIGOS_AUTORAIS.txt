@@ -1,0 +1,53 @@
+RPG POKET — 7.7 PARCIAL / INIMIGOS AUTORAIS
+12/10/2026 • Candidata isolada • Sem publicação, gravação ou teste na placa
+
+CONTINUIDADE COMBINADA: PACOTE_7_7_COMBINADO.txt registra a candidata posterior e sua validação; os resultados isolados abaixo são históricos.
+BASE E ESCOPO
+- Branch: feat/visual77-original-enemies, base exata 33c0d5d75d0e96c45f593a5c7bb2e56eb0dc5080 da primeira fatia 7.7. O código dessa base foi validado no CI 38298367040; esse CI não é evidência desta nova candidata.
+- Identidade isolada: 2026.10.12-enemy77-dev / build 2026101205. A Release pública continua 7.6, sem mudança de main, tags, latest ou arquivos publicados.
+- Integra os 29 inimigos autorais fornecidos: 116 poses desenhadas (repouso, antecipação, ataque, ferimento), sete famílias de efeitos compartilhados/56 quadros. Recuperação reutiliza repouso. Derrota usa desaparecimento gradual pontilhado, sem quinta pose desenhada.
+- Arena, dungeon, ficha e bestiário usam a identidade original correspondente a cada ID 0–28. Arconte/Vigia não caem em Javali; hipogrifos e mímicos têm corpos distintos; Odran não usa seu retrato de diálogo em combate.
+- Não conclui toda a 7.7: animações específicas dos poderes dos heróis, braços/armas maiores, acampamento completo e substituição de toda arte de dungeon/cidades/biomas são fatias separadas. A integração posterior dos braços maiores exige nova avaliação de sobreposição com estes29 corpos nas quatro poses, a 1–2 casas de distância.
+
+CONTRATO DE ARTE E MEMÓRIA
+- PKA1 e AssetMeta mantidos. Catálogo final: 636 entradas, payload6.661.440 bytes, arquivo6.661.456 bytes, CRC32 0b84d93f.
+- SHA-256 de artes.pak: 5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1.
+- Somente 60 entradas antigas exclusivas de inimigos foram substituídas:92–122,401–416,459–463,480–487. As 428 entradas restantes conservam IDs, pixels/paletas e fallback byte a byte; seus offsets são regenerados juntamente com o firmware.
+- Corpos lógicos 80×86: índices 4bpp em plano armazenado 40×86/elem1,3.440 bytes. Efeitos lógicos 32×32: plano 16×32/elem1,512 bytes. Paletas: 16×1/elem2,32 bytes. Nibble alto primeiro; RGB565 little-endian; índice 0 transparente; chave 0xF81F nunca é cor opaca.
+- EnemyArt impede reinterpretação desses planos como uint16_t de sprites antigos. Validação de dimensão/stride/tamanho/paleta precede a decodificação. A alocação única de 13.760 bytes fica na PSRAM; um corpo é decodificado e desenhado antes do próximo, inclusive nos múltiplos billboards. Efeitos reutilizam a mesma área somente depois dos corpos. Sem alocação ou leitura do SD por quadro.
+- Reserva conhecida : 6.661.440 arte  + 153.600 framebuffer  + 13.760 decodificador  = 6.828.800 bytes; redução 316.736 ante 7.6. São contas estáticas, não medição de heap livre, maior bloco, latência, FPS ou garantia de alocação no aparelho.
+- Ajuste uniforme do quadro canônico nas áreas existentes, sem esticar separadamente largura/altura nem recortar pela borda opaca. A âncora comum de cada pose e a distinção solo/centro virtual orientam os efeitos; não reposicionamos criaturas flutuantes pela última linha opaca. Transparência e espaço interno dos originais são preservados.
+- Arquivos originais anteriores do repositório não foram removidos. assets/enemies-original1 contém exports compactos, referênciasRGB565/PNG, manifests, prompts, hashes, proveniência e metadados do catálogo anterior. Não há geração nova de desenhos ou promessa de exclusividade/registro jurídico.
+
+REGRAS, RESULTADOS E TEMPO
+- Rules.h, Save.h/Save28 de128 bytes, formatos lidos1–28, fadiga auxiliar, PvP, RNG, recompensas, toques e relógios não foram alterados.
+- A intenção já capturada antes de rpg::enemy é guardada em CombatResult.resolvedEnemyIntent. Não se reconstrói o golpe depois do avanço de enemyBeat. enemyDefeated também é transitório e não entra no save.
+- Strike/Heavy/Drain usam as famílias autorais já existentes: slash, bite, charge, claw, magic, pulse, crush. Prepare mantém antecipação e um aviso discreto; Mend mostra cura; expulsão não simula ataque. Não há habilidade nova nem mudança de dano/tipo/morto-vivo.
+- Ataque: antecipação 0–20%, golpe 20–65%, recuperação por repouso 65–100%, usando o tempo existente. Golpes normais continuam480 ms, Espectro960 ms, Prepare480 ms e Mend1.200 ms. As durações das prévias não substituem os relógios do jogo.
+- Ferimento e recuo apenas para dano positivo no alvo real. Esquiva, dano zero, cura, preparação, defesa e turno impedido não geram falso impacto. O efeito de Drain é visual; a regra continua determinando perda de HP/MP e não passa a curar o inimigo.
+- Uma morte já resolvida começa a desaparecer após 65% do efeito. A dungeon ainda conserva o spawn até o toque de resultado chamar dungeonResolve; durante o efeito esse toque está bloqueado. Depois do efeito o alvo derrotado fica visualmente oculto, sem alterar máscara, guardar snapshot de jogo, atrasar recompensa ou ressuscitar o ator.
+
+RECUPERAÇÃO E TRANSIÇÃO DE PACOTES
+- Fallback dos planos 4bpp é inteiramente zero e suas paletas embutidas são válidas. Portanto os inimigos/efeitos ficam transparentes no modo simplificado; não reaparecem inimigos de terceiros. Os demais fallbacks e o aviso/reparo de artes permanecem existentes.
+- Falha somente da pequena área de decodificação omite os desenhos de inimigos com segurança e não bloqueia configurações/atualização. Falha da grande alocação artMemory mantém o comportamento anterior: aviso estático “PSRAM indisponivel / Saves preservados” e parada. Não se promete recuperação navegável nesse caso.
+- Firmware antigo aceita somente seu catálogo/CRC/tamanho/contagem; o novo faz a mesma validação com o par novo. O pacote oposto não é interpretado com offsets errados. Arquivo genérico errado/corrompido é rejeitado; falta SD/arquivo usa fallback. VersãoCRC danificada pode ser recuperada por arquivo genérico válido.
+- O carregador existente, após carregar uma versãoCRC válida, apaga os outros pacotesCRC e o genérico. Um boot antigo pode apagar artes novas já preparadas e exigir outro download. Após boot novo, retorno ao firmware antigo conserva fallback simplificado, não garante todas as artes antigas. Política de retenção/instalador não foi redesenhada.
+- Manifesto externo permanece schema 2, mesma placa/partição e compatibilidade Save28. minimum_psram_bytes inclui agora o decodificador; é informativo e não substitui medição real. Os validadores e a ordem de publicação de artes/verificação/gravação inativa/seleção de boot continuam existentes.
+
+VALIDAÇÃO REPRODUZÍVEL
+- tools/prepare_enemy_art.py valida origem/hashes, gera o catálogo e prova 428 payloads/fallbacks preservados, 172 quadros decodificados pixel a pixel e 116 poses corporais distintas. tests/enemy_asset_catalog.py contém10 casos de catálogo/fallback/reprodução.
+- tests/enemy_codec.cpp: todos 172 quadros contra a referência fornecida, IDs, ordem de nibble/bytes, tamanhos/stride, ajuste uniforme/âncoras, paleta/chave, nulidade, fallback e canários de área de arte/decodificação. O piloto inicial dos IDs 0–2 passou diretamente no formato compacto, sem firmware intermediárioRGB565.
+- tests/enemy_controller.cpp:33.984 despachos reais por 29 IDs/cinco intenções/quatro classes, mais 3.248 casos letais. Estado/RNG/Save28/fadiga idênticos à regra, intenção capturada, relógios existentes, toque/tick repetido, reabertura do save, falha/repetição de gravação, modo legado e wraparound.
+- tests/enemy_render.cpp:4.263 quadros de arena/ficha/bestiário e295 da dungeon;116 desenhos distintos, sem contato em esquiva/zero/expulsão, HUD fixo, identidade de múltiplos billboards, fade letal, workspace nulo com artes válidas e fallback, acesso à tela de reparo. malloc/calloc/realloc/new são bloqueados durante o render para detectar alocação por quadro. Capturas de software em build/screens/enemy77.
+- tools/test_enemy_transition.py compila os carregadores reais AssetStore/DeviceSettings contra catálogos antigo e novo reconstruídos: 58 verificações combinadas. Inclui corrupção/header/CRC, falta SD/arquivo, pacotes opostos, genérico/CRC, recuperação, limpeza existente, Save28 e canários. Falhas de leitura usam amostras representativas de primeiro/meio/último bloco; não são injeções exaustivas em todas as fronteiras.
+- tests/enemy_ota.cpp:11 verificações com os pacotes reais antigo/novo; corrupção de corpo/efeito/paleta, pacote errado, download retomado, falhas de início/gravação/finalização/seleção de boot e reparo só das artes preservam pacote genérico anterior e sentinela de save. São dispositivos simulados, sem flash real.
+- As 61 suítes nativas e 20 alvos ASan/UBSan, mais os casos Python/transições acima, estão conectados a tools/test_native.sh. O agregado final passou localmente: 61 suítes nativas, 20 alvos ASan/UBSan, 10 casos Python e 58 gates de carregamento em execução normal e sanitizada.
+- Revisão independente focada: decoder/fallback/área compartilhada/transições; concluída sem bloqueio de segurança no código. As asserções finais de fade e workspace nulo também foram conferidas; a compilação e a placa mantêm seus próprios gates.
+- LeakSanitizer fica desabilitado localmente sob ptrace; ASan/UBSan continuam ativos. A compilação ESP32 e o CI desta candidata ainda não foram executados. A coordenação prevê uma única compilação/validação após combinar as fatias revisadas; não reutilizar o binário/CI da primeira fatia como aprovação destas artes.
+- .github/workflows/enemy77-check.yml é somente leitura, limitado à branch isolada, sem upload-artifact, publicação, merge ou gravação. Os workflows anteriores permanecem inalterados. Não foi disparado remotamente nesta etapa.
+
+PENDÊNCIAS ANTES DA DISTRIBUIÇÃO
+1. Combinar a fatia dos heróis sem perder semântica de ação/intenção; agregado desta branch revisada concluído.
+2. Reexecutar tudo no código combinado, avaliar braços maiores  × 29 inimigos/quatro poses, conferir binário ESP32 < 3 MiB, margem, RAM estática, manifesto/hashes e contratosOTA.
+3. Testar na placa legibilidade/tamanho, todas as poses/intentos, dungeon carregada, Wi-Fi/atualização, PSRAM livre/maior bloco/FPS/toque. Nenhum desses números físicos foi medido aqui.
+4. Qualquer nova publicação é uma decisão posterior; esta candidata não foi distribuída.

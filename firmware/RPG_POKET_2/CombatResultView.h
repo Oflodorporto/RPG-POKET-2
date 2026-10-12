@@ -12,8 +12,8 @@ template<class C>void combatResultLabel(C& c,const ViewState& v,bool dungeon){
  case CombatFeedback::Miss:snprintf(label,sizeof(label),"ESQUIVA");color=UI_MUTED;break;
  case CombatFeedback::NoDamage:snprintf(label,sizeof(label),"SEM DANO");color=UI_MUTED;break;
  case CombatFeedback::Skip:snprintf(label,sizeof(label),"SEM ACAO");color=UI_MUTED;break;
- case CombatFeedback::Guard:snprintf(label,sizeof(label),"DEFESA");color=UI_BLUE;break;
- case CombatFeedback::Buff:snprintf(label,sizeof(label),v.effect==Effect::Rage?"FURIA":"PREPARO");break;
+ case CombatFeedback::Guard:if(r.recoveredHp)snprintf(label,sizeof(label),"DEFESA +%u HP",r.recoveredHp);else snprintf(label,sizeof(label),"DEFESA");color=UI_BLUE;break;
+ case CombatFeedback::Buff:{const char* name=v.effect==Effect::Rage?"FURIA":"PREPARO";if(r.hasHeroAction){if(r.heroAction==rpg::Action::ActionSurge)name="SURTO";else if(r.heroAction==rpg::Action::SacredWeapon)name="ARMA SAGRADA";else if(r.heroAction==rpg::Action::TurnUndead)name="EXPULSAR";}snprintf(label,sizeof(label),"%s",name);break;}
  default:return;
  }
  int w=int(strlen(label))*6,cx=dungeon?(v.effectOnHero?180:120):v.effectOnHero?55:182;

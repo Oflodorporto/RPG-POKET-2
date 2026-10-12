@@ -6,13 +6,13 @@ template<class Canvas> void magicSprite(Canvas& c,const uint16_t* image,int iw,i
 }
 // Mage pilot reuses existing indexed fireball frames and their blue/white mapping.
 // Exact 180/540/660/900/1100 ms phases; only the local subject moves.
-template<class Canvas>void magicDartsPilot(Canvas& c,const ViewState& v,bool dungeon){
+template<class Canvas>void magicDartsPilot(Canvas& c,const ViewState& v,bool dungeon,int originX=-1,int originY=-1,int contactX=-1,int contactY=-1){
  unsigned t=v.effectElapsedMs==UINT32_MAX?v.effectFrame*1100/8:v.effectElapsedMs;
  auto ring=[&](int cx,int cy,int r,uint16_t color){for(int y=-r;y<=r;++y)for(int x=-r;x<=r;++x){int d=x*x+y*y;if(d<=r*r&&d>=(r-1)*(r-1))c.fillRect(cx+x,cy+y,1,1,color);}};
  auto dart=[&](unsigned frame,int cx,int cy,int size){const auto* image=campArt::fireball[frame%12];for(int y=0;y<size;++y)for(int x=0;x<size;++x){auto color=image[(y*40/size)*40+x*40/size];if(color!=0xf81f)c.fillRect(cx-size/2+x,cy-size/2+y,1,1,(color&0x0400)?UI_WHITE:UI_BLUE);}};
- int targetX=dungeon?120:181,targetY=dungeon?86:100;
- if(t<180){int x=dungeon?174:30,y=dungeon?137:88;ring(x,y,3+t/60,UI_BLUE);c.fillRect(x-1,y-1,2,2,UI_WHITE);}
- else if(t<540){int q=t-180;for(int n=0;n<3;++n){int startX=dungeon?176:103,startY=dungeon?138:110;int x=startX+(targetX-startX)*q/360,y=startY+(targetY-startY)*q/360+(n-1)*(17-q*9/360);
+ int targetX=contactX>=0?contactX:dungeon?120:181,targetY=contactY>=0?contactY:dungeon?86:100;
+ if(t<180){int x=originX>=0?originX:dungeon?174:30,y=originY>=0?originY:dungeon?137:88;ring(x,y,3+t/60,UI_BLUE);c.fillRect(x-1,y-1,2,2,UI_WHITE);}
+ else if(t<540){int q=t-180;for(int n=0;n<3;++n){int startX=originX>=0?originX:dungeon?176:103,startY=originY>=0?originY:dungeon?138:110;int x=startX+(targetX-startX)*q/360,y=startY+(targetY-startY)*q/360+(n-1)*(17-q*9/360);
    for(int k=3;k>0;--k)c.fillRect(x+(dungeon?1:-1)*k*4,y+(n-1)*k,2,1,k==1?UI_BLUE:0x2210);
    dart(t*12/1100+n*3,x,y,9);
   }}

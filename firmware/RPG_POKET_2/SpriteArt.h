@@ -3,49 +3,7 @@
 #include <stdint.h>
 #include "AssetCatalog.h"
 constexpr uint16_t SPRITE_KEY=0xf81f;
-#define sprite_goblin_0 (reinterpret_cast<const uint16_t*>(assetBytes(92)))
-#define sprite_goblin_1 (reinterpret_cast<const uint16_t*>(assetBytes(93)))
-#define sprite_goblin_2 (reinterpret_cast<const uint16_t*>(assetBytes(94)))
-#define sprite_goblin_3 (reinterpret_cast<const uint16_t*>(assetBytes(95)))
-#define sprite_goblin_4 (reinterpret_cast<const uint16_t*>(assetBytes(96)))
-#define sprite_goblin_5 (reinterpret_cast<const uint16_t*>(assetBytes(97)))
-#define sprite_goblin_6 (reinterpret_cast<const uint16_t*>(assetBytes(98)))
-#define sprite_goblin_7 (reinterpret_cast<const uint16_t*>(assetBytes(99)))
-inline const uint16_t* const* sprites_goblin_get(){static const uint16_t* const a[]={sprite_goblin_0,sprite_goblin_1,sprite_goblin_2,sprite_goblin_3,sprite_goblin_4,sprite_goblin_5,sprite_goblin_6,sprite_goblin_7};return a;}
-#define sprites_goblin (sprites_goblin_get())
-constexpr unsigned goblin_frames=8;
-#define sprite_wolf_0 (reinterpret_cast<const uint16_t*>(assetBytes(100)))
-#define sprite_wolf_1 (reinterpret_cast<const uint16_t*>(assetBytes(101)))
-#define sprite_wolf_2 (reinterpret_cast<const uint16_t*>(assetBytes(102)))
-#define sprite_wolf_3 (reinterpret_cast<const uint16_t*>(assetBytes(103)))
-#define sprite_wolf_4 (reinterpret_cast<const uint16_t*>(assetBytes(104)))
-#define sprite_wolf_5 (reinterpret_cast<const uint16_t*>(assetBytes(105)))
-#define sprite_wolf_6 (reinterpret_cast<const uint16_t*>(assetBytes(106)))
-#define sprite_wolf_7 (reinterpret_cast<const uint16_t*>(assetBytes(107)))
-inline const uint16_t* const* sprites_wolf_get(){static const uint16_t* const a[]={sprite_wolf_0,sprite_wolf_1,sprite_wolf_2,sprite_wolf_3,sprite_wolf_4,sprite_wolf_5,sprite_wolf_6,sprite_wolf_7};return a;}
-#define sprites_wolf (sprites_wolf_get())
-constexpr unsigned wolf_frames=8;
-#define sprite_skeleton_0 (reinterpret_cast<const uint16_t*>(assetBytes(108)))
-#define sprite_skeleton_1 (reinterpret_cast<const uint16_t*>(assetBytes(109)))
-#define sprite_skeleton_2 (reinterpret_cast<const uint16_t*>(assetBytes(110)))
-#define sprite_skeleton_3 (reinterpret_cast<const uint16_t*>(assetBytes(111)))
-#define sprite_skeleton_4 (reinterpret_cast<const uint16_t*>(assetBytes(112)))
-#define sprite_skeleton_5 (reinterpret_cast<const uint16_t*>(assetBytes(113)))
-#define sprite_skeleton_6 (reinterpret_cast<const uint16_t*>(assetBytes(114)))
-inline const uint16_t* const* sprites_skeleton_get(){static const uint16_t* const a[]={sprite_skeleton_0,sprite_skeleton_1,sprite_skeleton_2,sprite_skeleton_3,sprite_skeleton_4,sprite_skeleton_5,sprite_skeleton_6};return a;}
-#define sprites_skeleton (sprites_skeleton_get())
-constexpr unsigned skeleton_frames=7;
-#define sprite_guardian_0 (reinterpret_cast<const uint16_t*>(assetBytes(115)))
-#define sprite_guardian_1 (reinterpret_cast<const uint16_t*>(assetBytes(116)))
-#define sprite_guardian_2 (reinterpret_cast<const uint16_t*>(assetBytes(117)))
-#define sprite_guardian_3 (reinterpret_cast<const uint16_t*>(assetBytes(118)))
-#define sprite_guardian_4 (reinterpret_cast<const uint16_t*>(assetBytes(119)))
-#define sprite_guardian_5 (reinterpret_cast<const uint16_t*>(assetBytes(120)))
-#define sprite_guardian_6 (reinterpret_cast<const uint16_t*>(assetBytes(121)))
-#define sprite_guardian_7 (reinterpret_cast<const uint16_t*>(assetBytes(122)))
-inline const uint16_t* const* sprites_guardian_get(){static const uint16_t* const a[]={sprite_guardian_0,sprite_guardian_1,sprite_guardian_2,sprite_guardian_3,sprite_guardian_4,sprite_guardian_5,sprite_guardian_6,sprite_guardian_7};return a;}
-#define sprites_guardian (sprites_guardian_get())
-constexpr unsigned guardian_frames=8;
+// Enemy bodies use typed compact EnemyArt.h access; shared effects remain RGB565.
 #define sprite_slash_0 (reinterpret_cast<const uint16_t*>(assetBytes(123)))
 #define sprite_slash_1 (reinterpret_cast<const uint16_t*>(assetBytes(124)))
 #define sprite_slash_2 (reinterpret_cast<const uint16_t*>(assetBytes(125)))

@@ -1,0 +1,51 @@
+RPG POKET — 7.7 PARCIAL: CANDIDATA COMBINADA
+12/10/2026 | branch separada, sem distribuição ou teste na placa
+
+IDENTIDADE E PROVENIÊNCIA
+- Branch: feat/visual77-combined. Versão: 2026.10.12-visual77-combined-dev; build 2026101207. São 32 caracteres, abaixo do limite de 39 do atualizador e 36 da linha de texto.
+- Base de apresentação revisada: 33c0d5d75d0e96c45f593a5c7bb2e56eb0dc5080.
+- Fatia dos inimigos (commit local): f7875b52e26546be6cb0e34cefa7bed07ce1c99e, 61 suítes nativas/20 sanitizadas aprovadas.
+- Fatia dos heróis (commit local): 5b07bbc4f0cae2c3ed1d22fac193766478fc4897, 59 suítes nativas/18 sanitizadas aprovadas.
+- Esses dois resultados não substituem a validação do código combinado. Os documentos PACOTE_7_7_INIMIGOS_AUTORAIS.txt e PACOTE_7_7_HEROIS_PRIMEIRA_PESSOA.txt registram as entregas isoladas e seus limites.
+
+O QUE A COMBINAÇÃO CONSERVA
+- Identidade transitória da Action normalizada do herói e da Intent inimiga capturada antes de rpg::enemy, ambas transportadas com o resultado depois da resolução existente; nenhum novo campo de Game, Save28, fadiga ou PvP. A defesa do bárbaro mostra apenas o HP realmente recuperado. A derrota usa a condição já resolvida.
+- 29 inimigos originais, quatro poses por inimigo, sete famílias de efeitos/56 quadros. Recuperação reutiliza repouso; derrota usa fade, sem desenhos extras prometidos. Arena, dungeon, ficha e bestiário usam acesso tipado 4 bpp, nunca os leitores RGB565 antigos sobre índices compactos.
+- 23 coreografias do herói usando quadros existentes e efeitos locais; ações Life/Mana/Flee continuam no fluxo sem CombatFx. Tempos, alcance, dano agregado, RNG e bloqueio de entrada existentes preservados.
+- Primeiro plano da dungeon ampliado com recorte e escala dos pixels originais, aproximadamente 1,6–1,7× em repouso nas dimensões opacas da fonte. O fit final é 85% da primeira ampliação, mais 1 pixel à direita; as pontas das armas continuam reconhecíveis e o ponto do cajado fica na tela. Não foram desenhados novos antebraços, segunda mão ou máscaras de manga/raça. As quatro raças/classes, roupas e seus sprites existentes permanecem preservados.
+- Os efeitos inimigos não entram no ramo genérico do herói. Decodificação e desenho de cada billboard são imediatos, antes de reutilizar a única área de 13.760 bytes.
+- 636 entradas de catálogo; todos 428 assets não inimigos preservados byte a byte. PKA1/schema2 e Save28/leitura1..28 mantidos. Payload 6.661.440 bytes, pacote 6.661.456 bytes, CRC32 0b84d93f, SHA256 5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1.
+- PSRAM conhecida por conta estática: 6.828.800 bytes (arte+framebuffer+decoder). Não é medição de memória livre, maior bloco, latência ou FPS.
+
+RESOLUÇÕES EXPLÍCITAS
+- CombatFx: preservados resolvedEnemyIntent/enemyDefeated e heroAction/hasHeroAction/recoveredHp.
+- CombatPresentation/dispatcher: mantidos previousHeroHp, aliases normalizados e atribuição enemyDefeated; o controlador espelhado nas duas suítes continua idêntico ao sketch.
+- View: gesto do herói e corpo tipado do inimigo coexistem; ramo inimigo antes do heroActionEffect.
+- DungeonView: corpos/fade tipados preservados; a raiz horizontal declarada agora coincide com o centro projetado do mundo, o apoio Ground coincide com o chão e Virtual conserva sua altura de flutuação. A arena/ficha/bestiário continuam no ajuste por caixa canônica.
+- O contato dos efeitos do herói usa o pixel opaco realmente amostrado mais próximo da raiz visual do alvo, no mesmo laço do billboard e após o teste de parede. Não há outro decode, alocação ou acesso SD. A oscilação do fade não move o ponto; pose/recuo podem movê-lo. Efeitos genéricos excluem ações inimigas.
+- Runner: conserva as quatro suítes novas dos inimigos e as duas dos heróis, além das 57 anteriores, com 22 alvos ASan/UBSan. Testes de catálogo/canários e 58 transições de carregador antigo/novo também permanecem.
+- Workflows release/fatigue76/visual77 e checker visual77 históricos preservados. combined77-check.yml é leitura apenas, guarda somente feat/visual77-combined, sem uploads de artefatos, publicação ou gravação. Limite de 35 min cobre a validação ampliada; uma única execução remota é prevista após revisão.
+- Versão exclusiva da candidata impede o checker de aceitar o binário da primeira fatia, que usava visual77-dev/build 1204. O checker confronta string compilada, manifesto, catálogo, hash, PSRAM conhecida, limite OTA de 3 MiB e crescimento máximo de 64 KiB ante 7.6.
+
+VALIDAÇÃO COMBINADA
+- Check de snapshots do controlador, testes focados de ambos os controladores e renderer dos inimigos passaram após a resolução.
+- Teste da versão/tela de atualização: limite de buffer e de linha conferidos; não depende de arte SD.
+- 36 contatos reais de MagicDarts passam nos envelopes normal/expedição, corpos baixos/altos/flutuantes e durante derrota/fade. O teste intercepta os pixels de impacto do renderer, preserva estado e bloqueia alocação por quadro.
+- A primeira medição combinada encontrou sobreposição real de 21,29% no caranguejo; corrigir a raiz reduziu o pior caso para 14,08% no lobo. O ajuste final mantém 85% do enquadramento ampliado e desloca apenas 1 pixel à direita; preserva proporção, movimento e pixels-fonte. O diagnóstico final mediu 3,7423% perto, zero longe/núcleo, sem relaxar limites. A execução real final passou, normal e ASan/UBSan: 652 amostras × 464 silhuetas = 302.528 comparações, 30 verificações do projetor real. Cobertura, região protegida, comandos e hashes: PACOTE_7_7_COMBINADO_VALIDACAO.json. Não reaproveitar o resultado dos 17 inimigos antigos como evidência destes desenhos.
+- Revisão independente das resoluções concluída sem bloqueio de código; versão exclusiva, raiz/contato e fit final conferidos. Agregado final aprovado localmente: 63 suítes nativas, 22 alvos ASan/UBSan, 10 testes Python de catálogo e 58 gates de carregadores em modo normal e sanitizado. Comando: RPG_DETECT_LEAKS=0 bash tools/test_native.sh; retorno 0.
+- Compilação ESP32/manifesto/orçamento/CI da candidata combinada: ainda não executados. LeakSanitizer indisponível localmente sob ptrace; ASan/UBSan permanecem ativos e CI habilita leak detection nos 22 alvos principais e no par de carregadores; o canário suplementar do catálogo executa ASan/UBSan com leak detection desabilitada.
+
+LIMITES DE RECUPERAÇÃO E ENTREGA
+- Pacote ausente/errado/corrupto usa fallback simplificado e a UI existente de atualização; os planos compactos de fallback são transparentes com paletas seguras. Não há substitutos de inimigos de terceiros no jogo normal.
+- Falha da área opcional de decodificação permite omitir os inimigos e acessar reparo. Falha da alocação principal artMemory continua interrompendo a inicialização, como antes; não é promessa de reparo desse cenário.
+- Após carregar pacote versionado válido, a limpeza existente remove outros CRCs e o genérico. Boot antigo pode remover arte nova previamente preparada; eventual rollback pode ter apenas arte simplificada. Não prometer retenção integral de arte para downgrade.
+- As falhas de leitura dos testes são amostras representativas de primeiro/meio/último bloco, não todas as fronteiras possíveis. Atualizador e persistência são testados com adaptadores simulados, sem flash real.
+- Permanecem pendentes placa/LCD, legibilidade, PSRAM livre/maior bloco, FPS/toque, sessões prolongadas e falhas físicas. O smoke 7.6 do proprietário não valida 7.7.
+- A direção visual 7.7 inteira não está concluída: acampamento/dungeon integral, novos desenhos de mãos/braços e atualização sem SD continuam fora desta candidata. Main, tag, latest e Release pública permanecem 7.6; distribuição depende de autorização posterior.
+
+PASSOS PARA UMA EVENTUAL RELEASE, SOMENTE APÓS AUTORIZAÇÃO
+1. Escolher identidade pública final inédita, sem -dev, e número de build superior; regenerar binário e manifesto a partir do commit final exato. O CI desta candidata não valida um binário futuro.
+2. Atualizar de forma explícita o verificador estrito de Release: tools/verify_release.py ainda valida somente fatigue76/build 2026101203, 488 entradas, hash antigo e 7.145.536 bytes. A nova versão precisa conferir 636 entradas, payload 6.661.440/arquivo 6.661.456, CRC 0b84d93f, hash 5416f6d5..., Save28/leitura1..28 e 6.828.800 bytes conhecidos. Não reutilizar a aprovação histórica 7.6.
+3. Revisar o workflow publicador e suas notas ainda específicas da 7.6, exigindo tag/versão/source exatos e novos hashes. Main, tags e release workflow não foram alterados nesta etapa; a candidata guarded usa apenas check_combined77_budget.py.
+4. Reexecutar os gates finais no commit da identidade pública e conferir a transição OTA 7.6→nova versão: firmware e pack pareados, cache CRC, interrupção/retomada, pacote errado, reparo só de artes, três saves/fadiga preservados, limitações de limpeza/rollback explícitas. Ensaios simulados não substituem a placa.
+5. Somente depois da autorização de publicação: verificar tag/source, latest, downloads reais, manifesto e hashes do commit aprovado. Distribuição, gravação e validação física não estão autorizadas por esta candidata de CI.

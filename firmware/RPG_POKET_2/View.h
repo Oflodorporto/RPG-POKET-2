@@ -4,14 +4,13 @@
 #include "Trading.h"
 #include "BackgroundArt.h"
 #include "SpriteArt.h"
-#include "RegionalArt.h"
-#include "WorldEnemyArt.h"
 #include "HeroArt.h"
 #include "PersonalArt.h"
 #include "ClubUi.h"
 #include "GearArt.h"
 #include "CombatFx.h"
 #include "CombatPresentation.h"
+#include "EnemyPresentation.h"
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
@@ -47,6 +46,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "HippogriffArt.h"
 #include "CombatResultView.h"
 #include "MagicView.h"
+#include "HeroActionView.h"
 #include "DungeonView.h"
 #include "BagView.h"
 #include "NarrativeView.h"
@@ -361,21 +361,23 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   unsigned progress=combatProgress(v.effectProgress,v.effectFrame);
   unsigned elapsed=v.effectElapsedMs==UINT32_MAX?v.effectFrame*1100/8:v.effectElapsedMs;
   bool pilot=v.effect==Effect::MagicDarts&&!v.combatResult.enemyAction;
-  auto pose=magePose(elapsed);int recoil=combatRecoil(v.combatResult,progress);
-  int heroX=v.effectOnHero?-recoil:pilot?pose.heroX:0;
+  auto pose=magePose(elapsed);auto heroMotion=heroPose(g.p.cls,v.combatResult,progress,elapsed);bool heroAction=v.effect!=Effect::None&&heroChoreography(g.p.cls,v.combatResult)!=HeroChoreography::None;int recoil=combatRecoil(v.combatResult,progress);
+  int heroX=heroAction?heroMotion.x:v.effectOnHero?-recoil:pilot?pose.heroX:0;
   int foeX=!v.effectOnHero?pilot?(v.combatResult.injury()?pose.enemyX:0):recoil:0;
   int foeY=pilot&&v.combatResult.injury()?pose.enemyY:0;
   CombatCanvas<Canvas> arenaCanvas{c,86,192,0,0};
   // Target-only motion leaves the HUD and input geometry completely still.
-  unsigned heroPose=pilot?pose.heroFrame:v.combatResult.enemyAction?0:v.heroFrame%6;
-  personalSprite(arenaCanvas,g,8+heroX,77,heroPose);
-  bool enemyAttacking=v.effect!=Effect::None&&v.combatResult.enemyAction&&v.combatResult.attack();
-  unsigned foePose=enemyAttacking?2+v.effectFrame%2:frame%2;
-  // Goblin frames 4..7 are attacks, never a damage-reaction pose.
-  const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[foePose]:g.enemyId>=4?regionEnemyFrame(g.enemyId,foePose):g.enemyId==0?sprites_goblin[enemyAttacking?4+v.effectFrame%4:pilot||recoil?0:frame%4]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
-  if(g.enemyId>=25)magicSprite(arenaCanvas,worldEnemyFrame(g.enemyId,enemyAttacking?1:0),64,80,145+foeX,99+foeY,75,80);else if(g.enemyId>=20)magicSprite(arenaCanvas,islandArt::enemy(g.enemyId),48,64,145+foeX,99+foeY,75,80);else if(g.enemyId>=18)finaleFoe(arenaCanvas,g.enemyId,145+foeX,99+foeY,frame);else if(g.enemyId>=14)drawMimic(arenaCanvas,145+foeX,99+foeY,frame,true);else magicSprite(arenaCanvas,foeFrame,80,86,145+foeX,99+foeY,75,80);
+  unsigned heroFrame=heroAction?heroMotion.heroFrame:pilot?pose.heroFrame:v.combatResult.enemyAction?0:v.heroFrame%6;
+  personalSprite(arenaCanvas,g,8+heroX,77+(heroAction?heroMotion.y:0),heroFrame);
+  const bool enemyActive=v.effect!=Effect::None;
+  auto foePose=enemyPose(enemyActive,v.combatResult,progress,v.effectOnHero,g.phase==rpg::Phase::Enemy);
+  auto opacity=enemyOpacity(enemyActive,v.combatResult,progress,g.phase==rpg::Phase::Won&&g.enemyHp==0);
+  auto foeArt=enemyArt::body(g.enemyId,foePose);auto foePlacement=enemyArt::fit(foeArt,145+foeX,99+foeY,75,80);
+  enemyArt::draw(arenaCanvas,enemyArt::decode(foeArt),foePlacement,opacity);
   PanelEffectCanvas<Canvas> effectCanvas{c};
-  if(v.combatResult.noHit()){/* No false hit flash or recoil. */}
+  if(v.combatResult.enemyAction){if(enemyActive)drawEnemyAction(arenaCanvas,g.enemyId,v.combatResult,progress,foePlacement.anchorX,enemyArt::actionY(foeArt,foePlacement),52,139);}
+  else if(heroActionEffect(arenaCanvas,g,v,false)){/* Action-specific hero choreography. */}
+  else if(v.combatResult.noHit()){/* No false hit flash or recoil. */}
   else if(v.effect==Effect::Rage&&v.combatResult.kind==CombatFeedback::Buff){magicSprite(effectCanvas,sprites_shield[v.effectFrame%shield_frames],64,72,22,82,64,72);}
   else if(v.effect==Effect::Rage){
     // Furia: broad axe-like sweep, red trails and expanding impact. No new art RAM.

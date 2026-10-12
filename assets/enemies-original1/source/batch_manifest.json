@@ -1,0 +1,965 @@
+{
+  "enemies": [
+    {
+      "id": 0,
+      "name": "GOBLIN",
+      "slug": "goblin",
+      "attack_kind": "slash",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "design_notes": "Orelhas angulares; nariz largo; couro assimétrico; lâmina curta de ponta cortada.",
+      "source_notes": "Design original solicitado para este projeto, gerado por image_gen, sem imagem comercial fornecida como referência.",
+      "anchor_mode": "ground",
+      "master": "masters/00_goblin.png",
+      "prompt": "prompts/00_goblin.txt",
+      "anchors": [
+        [
+          451,
+          573
+        ],
+        [
+          1089,
+          581
+        ],
+        [
+          484,
+          1089
+        ],
+        [
+          1139,
+          1089
+        ]
+      ]
+    },
+    {
+      "id": 1,
+      "name": "LOBO",
+      "slug": "lobo",
+      "attack_kind": "bite",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "design_notes": "Juba de três massas; garganta creme; anca castanha; patas e cauda escuras.",
+      "source_notes": "Design original solicitado para este projeto, gerado por image_gen, sem imagem comercial fornecida como referência.",
+      "anchor_mode": "ground",
+      "master": "masters/01_lobo.png",
+      "prompt": "prompts/01_lobo.txt",
+      "anchors": [
+        [
+          405,
+          471
+        ],
+        [
+          1189,
+          471
+        ],
+        [
+          478,
+          923
+        ],
+        [
+          1210,
+          935
+        ]
+      ]
+    },
+    {
+      "id": 2,
+      "name": "ESQUELETO",
+      "slug": "esqueleto",
+      "attack_kind": "slash",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "design_notes": "Mandíbula quadrada; ombreira trapezoidal oxidada; pano curto verde-azulado.",
+      "source_notes": "Design original solicitado para este projeto, gerado por image_gen, sem imagem comercial fornecida como referência.",
+      "anchor_mode": "ground",
+      "master": "masters/02_esqueleto.png",
+      "prompt": "prompts/02_esqueleto.txt",
+      "anchors": [
+        [
+          434,
+          632
+        ],
+        [
+          991,
+          632
+        ],
+        [
+          502,
+          1212
+        ],
+        [
+          1042,
+          1237
+        ]
+      ]
+    },
+    {
+      "id": 3,
+      "name": "GUARDIAO",
+      "slug": "guardiao",
+      "attack_kind": "crush",
+      "design_notes": "ancient physical guardian of a ruined threshold: compact heavy stone-and-iron humanoid construct, broad beveled violet-gray stone shoulder and torso blocks, narrow inset amber eyes under a squared brow, segmented dark steel joint bands, restrained worn bronze edge fittings, two broad stone feet, no flesh. One short heavy square-headed stone hammer, same right hand throughout. Distinctive squat doorway-shaped chest silhouette. No floating parts, magic beams, wings, runes or writing. Idle planted with hammer low to left. Anticipation bends knees and winds hammer behind upper right shoulder. Attack steps left, hammer driven forward left at chest height, fully visible. Hurt leans back right with shoulders curled and hammer dropping near rear leg; both feet grounded.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/03_guardiao.png",
+      "prompt": "prompts/03_guardiao.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          465.5,
+          484.0
+        ],
+        [
+          1147.5,
+          484.0
+        ],
+        [
+          564.0,
+          950.0
+        ],
+        [
+          1201.0,
+          950.0
+        ]
+      ]
+    },
+    {
+      "id": 4,
+      "name": "JAVALI",
+      "slug": "javali",
+      "attack_kind": "charge",
+      "design_notes": "original stocky forest wild boar, dark chestnut hide, dark charcoal bristle ridge, large wedge-shaped head with short broad snout, two ivory tusks curved outward and upward, tiny amber eye, sturdy cloven hooves, one short curled tail. No armor or accessories. Four legs and one tail in every pose. Idle compact broadside stance head left. Anticipation crouches shoulders low and haunches high preparing a rush, forelegs braced. Attack powerful grounded leftward lunge with head thrust low and tusks forward, forelegs extended, hindlegs visibly pushing. Hurt compresses and recoils to right, head flinches up, ears back, forelegs drawn together; clearly reacting to an incoming hit without blood.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/04_javali.png",
+      "prompt": "prompts/04_javali.txt",
+      "anchors": [
+        [
+          484.0,
+          483.0
+        ],
+        [
+          1208.5,
+          483.0
+        ],
+        [
+          488.0,
+          946.0
+        ],
+        [
+          1291.5,
+          962.0
+        ]
+      ]
+    },
+    {
+      "id": 5,
+      "name": "ESPECTRO",
+      "slug": "espectro",
+      "attack_kind": "magic",
+      "design_notes": "original undead spectre from cool ancient ruins, slender hooded ghost with long charcoal-violet tattered shroud, pale blue-gray angular face mostly in shadow, two cold teal eye slits, two long thin translucent blue-gray hands, ragged lower shroud tapering as a single connected ghost body at consistent hover baseline. No weapon, crown, skeleton duplicate, wings or fire. Subtle teal edge accents intrinsic to spectral cloth; no halo, mist cloud or separate effect. Idle quietly hovers face left, hands near torso. Anticipation bends backward right gathering both hands inward near chest. Attack leans sharply left with one hand fully reaching toward target, other arm trails behind and shroud streams right, readable magical attack contact endpoint with no projectile. Hurt twists and shrinks back right, head retracted and both hands shielding its face; entire hem stays in cell.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "center",
+      "target_anchor": [
+        48,
+        60
+      ],
+      "master": "masters/05_espectro.png",
+      "prompt": "prompts/05_espectro.txt",
+      "anchors": [
+        [
+          410.437368862778,
+          308.48009336970205
+        ],
+        [
+          1089.7896451940874,
+          310.0017032074176
+        ],
+        [
+          462.6029553419548,
+          862.3096823997978
+        ],
+        [
+          1120.8619896200787,
+          870.4223533227912
+        ]
+      ]
+    },
+    {
+      "id": 6,
+      "name": "SAQUEADOR",
+      "slug": "saqueador",
+      "attack_kind": "slash",
+      "design_notes": "original human raider suitable for coastal port encounters: wiry adult with weathered tan skin, short dark brown hair, uneven stubble, muted rust-red sleeveless coat over charcoal shirt, sand-colored sash, dark trousers and worn boots. One compact iron hooked cleaver in right hand, one plain small round dark wooden buckler strapped to left arm. No hat, insignia, skull emblem or costume copied from famous pirates. Idle low aggressive stance, cleaver low left and buckler near chest. Anticipation knees bend and cleaver draws back behind right shoulder, buckler pushed forward. Attack decisive leftward cleaver chop extending weapon hand fully left while buckler tucks near torso; distinct anatomically clear two arms. Hurt torso arches back right with buckler shielding face and weapon drooping low, both boots in cell.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/06_saqueador.png",
+      "prompt": "prompts/06_saqueador.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          450.5,
+          546.0
+        ],
+        [
+          1154.5,
+          546.0
+        ],
+        [
+          558.5,
+          1075.0
+        ],
+        [
+          1148.5,
+          1075.0
+        ]
+      ]
+    },
+    {
+      "id": 7,
+      "name": "SENTINELA",
+      "slug": "sentinela",
+      "attack_kind": "crush",
+      "design_notes": "original imposing fortress sentinel, fully enclosed blue-slate plate armor with blunt flat-topped helmet and narrow dark eye slit, one large asymmetrical shoulder plate, muted ochre waist cloth, heavy boots, no visible face. Restrained antique bronze rivets and corners. One stout steel-headed polehammer with short thick shaft, held with both hands in all poses. No crown, magic, emblem, runes or writing. Idle vertical solid posture, polehammer angled low left. Anticipation crouches deeply with polehammer lifted over right shoulder, whole shaft and head visible. Attack wide planted stance and powerful leftward horizontal swing endpoint with hammer head fully extended left at waist height. Hurt leans back right, elbows curl protectively and polehammer lowers diagonally, helmet tips away from strike. Four poses must visibly redraw body and arms.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/07_sentinela.png",
+      "prompt": "prompts/07_sentinela.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          445.5,
+          600.0
+        ],
+        [
+          966.5,
+          600.0
+        ],
+        [
+          491.0,
+          1133.0
+        ],
+        [
+          1061.0,
+          1133.0
+        ]
+      ]
+    },
+    {
+      "id": 8,
+      "name": "ARCONTE",
+      "slug": "arconte",
+      "attack_kind": "magic",
+      "design_notes": "original undead magical crypt guardian boss: tall gaunt skeletal archon in rigid layered deep-plum ceremonial robes, angular bone face beneath an old faceted bronze brow diadem (not ornate crown), empty eyes with restrained teal glimmer, high trapezoid shoulder collar, tattered ochre inner sash, bony hands. One long dark staff with an open bronze diamond-shaped tip holding a single pale teal stone, same left hand throughout; right hand casts. No writing or rune text. Palette bone, deep plum, tarnished bronze, small teal accents. Idle upright staff near rear side, casting hand low left. Anticipation bends knees/shroud and pulls casting hand to chest, staff angled back right. Attack leans forward left, casting arm fully extended palm left while staff braces behind, no projectile or beam baked in. Hurt recoils to right with casting hand across chest, skull tipped up and staff drooping. Complete staff remains visible in every cell.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/08_arconte.png",
+      "prompt": "prompts/08_arconte.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          480.5,
+          543.0
+        ],
+        [
+          1071.0,
+          543.0
+        ],
+        [
+          534.5,
+          1059.0
+        ],
+        [
+          1168.5,
+          1069.0
+        ]
+      ]
+    },
+    {
+      "id": 9,
+      "name": "VIGIA OSSUDO",
+      "slug": "vigia_ossudo",
+      "attack_kind": "charge",
+      "design_notes": "original skeletal ruin watchman, ivory-yellow bones with cool gray shadows, narrow angular skull and broad empty eye sockets, battered shallow iron helmet with slanted brow, sleeveless faded teal tabard over ribs, leather belt, simple dark shin wraps. One short iron spear with triangular head in right hand, left hand open, no shield, cloak or magic. More upright and equipped silhouette than a basic skeleton. Exactly two arms and two legs, correct bone joints. Idle alert facing left with spear low forward. Anticipation crouches and pulls spear back right, left hand reaches forward to aim. Attack leftward step and full spear thrust, both skeletal arms managing shaft plausibly and weapon head fully visible. Hurt collapses chest inward and recoils right, skull raised, spear falling diagonal low without disassembling or missing limbs.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/09_vigia_ossudo.png",
+      "prompt": "prompts/09_vigia_ossudo.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          466.5,
+          567.0
+        ],
+        [
+          1196.0,
+          567.0
+        ],
+        [
+          591.5,
+          1126.0
+        ],
+        [
+          1109.0,
+          1127.0
+        ]
+      ]
+    },
+    {
+      "id": 10,
+      "name": "HIPOGRIFO JOVEM",
+      "slug": "hipogrifo_jovem",
+      "attack_kind": "claw",
+      "design_notes": "original young hippogriff, eagle head and forequarters, hooked ochre beak, two eagle forelegs with talons, horse hindquarters with exactly two hooved rear legs, two attached feathered wings, one short horse tail. Juvenile proportions: oversized round head, short warm cream neck ruff, compact chestnut body, small rounded brown wings with three broad feather masses, short legs. No tack, armor or magic. Design clearly young, not a scaled-down adult. Side view retains all four legs and two wings anatomically plausible. Idle wings folded facing left. Anticipation lowers chest and bends legs, wings half-raised backward. Attack lunges a short step left, beak forward and one foretalon swipes left, other foreleg and both hindlegs stabilize, wings partly open entirely within frame. Hurt recoils right with head pulled in, wings sag and knees tuck; no blood.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/10_hipogrifo_jovem.png",
+      "prompt": "prompts/10_hipogrifo_jovem.txt",
+      "anchors": [
+        [
+          312.5,
+          581.0
+        ],
+        [
+          971.0,
+          585.0
+        ],
+        [
+          494.5,
+          1135.0
+        ],
+        [
+          1016.5,
+          1130.0
+        ]
+      ]
+    },
+    {
+      "id": 11,
+      "name": "HIPOGRIFO",
+      "slug": "hipogrifo",
+      "attack_kind": "claw",
+      "design_notes": "original adult hippogriff, proud eagle head with hooked dark-gold beak, cream feathered neck and strong ochre chest, two eagle forelegs with talons, chestnut horse hindquarters with exactly two hooved rear legs, two strong brown feathered wings and one long dark horse tail. Mature lean anatomy with long neck, swept nape feather crest and broad angular folded wings, distinct from juvenile. No armor, tack or magic. Exactly four legs plus two attached wings, no lion paws. Idle balanced stately broadside stance facing left wings folded. Anticipation crouches low and raises wings halfway above back, neck coils. Attack leftward grounded lunge with near foretalon stretched fully forward left and beak thrust ahead, other foreleg visible and hind hooves pushing; wings flare back but remain wholly within cell. Hurt rears slightly back right, head pulled away and near wing curls defensively, hindhooves support body.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/11_hipogrifo.png",
+      "prompt": "prompts/11_hipogrifo.txt",
+      "correction_prompt": "prompts/11_hipogrifo_correcao.txt",
+      "correction_notes": "One targeted built-in image_gen edit corrected the bottom-right hurt pose from right-facing to left-facing. Other three keyposes retained. Initial attempt preserved only in provenance, not final assets.",
+      "anchors": [
+        [
+          316.0,
+          555.0
+        ],
+        [
+          963.0,
+          555.0
+        ],
+        [
+          493.0,
+          1083.0
+        ],
+        [
+          1128.5,
+          1072.0
+        ]
+      ]
+    },
+    {
+      "id": 12,
+      "name": "HIPOGRIFO MARCADO",
+      "slug": "hipogrifo_marcado",
+      "attack_kind": "claw",
+      "design_notes": "original scar-marked mature hippogriff, eagle head with hooked slate-ochre beak and a broad pale scar-like feather streak across near brow (healed, no injury), swept dark feather crest, buff neck ruff, strong charcoal-brown chest, two eagle forelegs with talons, slate-brown horse hindquarters with two hooved rear legs, two attached large layered slate wings with asymmetrically notched outer feathers, one long black horse tail. Distinct battle-weathered narrower head and powerful shoulders, no armor, tack or magic. Exactly four legs plus two wings. Idle wary crouched stance facing left wings folded. Anticipation neck coils back right and wings rise halfway, foretalons gather. Attack forceful leftward talon rake with near foreleg reaching long and far foreleg still visible for support, head low left and hindhooves push right; full wings remain in cell. Hurt tilts body back right, head withdrawn and wings fold tight protectively, no blood.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/12_hipogrifo_marcado.png",
+      "prompt": "prompts/12_hipogrifo_marcado.txt",
+      "anchors": [
+        [
+          446.0,
+          476.0
+        ],
+        [
+          1250.0,
+          474.0
+        ],
+        [
+          573.0,
+          962.0
+        ],
+        [
+          1283.0,
+          966.0
+        ]
+      ]
+    },
+    {
+      "id": 13,
+      "name": "HIPOGRIFO ALFA",
+      "slug": "hipogrifo_alfa",
+      "attack_kind": "claw",
+      "design_notes": "original massive alpha hippogriff, regal deep ochre eagle face with hooked charcoal beak, broad ivory double-layer neck ruff and tall backward-swept feather crest, massive warm dark-brown chest, two eagle forelegs ending thick golden talons, muscular black-brown horse hindquarters with two hooved rear legs, two great layered deep brown wings with broad pale cream upper bands, one long black horse tail. Alpha is genuinely different grand silhouette with thick neck and feather mantle, not recolored adult. No crown, armor, tack or magic. Four legs plus two attached wings only. Idle authoritative broadside stance left, wings folded in high angular silhouette. Anticipation drops chest and raises wings into compact arch wholly inside cell, neck tucked. Attack dominant grounded leftward lunge, one great foretalon fully extends toward left, other foreleg braces, beak forward, rear hooves drive; wings flare behind wholly visible. Hurt recoils back right with neck retracting and shoulders contracting, wings lowered defensively, both hindhooves grounded.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/13_hipogrifo_alfa.png",
+      "prompt": "prompts/13_hipogrifo_alfa.txt",
+      "anchors": [
+        [
+          387.0,
+          544.0
+        ],
+        [
+          1044.5,
+          545.0
+        ],
+        [
+          496.5,
+          1091.0
+        ],
+        [
+          1105.5,
+          1088.0
+        ]
+      ]
+    },
+    {
+      "id": 14,
+      "name": "MIMICO DO BOSQUE",
+      "slug": "mimico_do_bosque",
+      "attack_kind": "bite",
+      "design_notes": "original forest treasure-chest mimic, squat weathered warm oak wooden chest body, slightly domed lid edged in dark iron, small restrained patches of moss at back corners. Chest lid is upper jaw with one row of broad ivory triangular teeth, lower chest rim lower jaw; dark burgundy mouth interior, one short broad red tongue. Exactly two short knuckled root-brown forelimbs at front side corners and two small rear clawed feet supporting chest. No eyes, gemstones, vines in background or floating coins. Left-facing chest-mouth opening toward left in a clear side three-quarter battle view; family shape must remain consistent. Idle lid ajar showing a few teeth, limbs planted. Anticipation crouches and pulls chest back right, lid opens high with tongue tucked. Attack entire chest lunges left, lid snaps forward in a huge biting endpoint and near foreclaw reaches left, tongue short inside mouth. Hurt recoils tipped back right, lid partially clenches and forelimbs tuck inward defensively, no removed planks or disassembly.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/14_mimico_do_bosque.png",
+      "prompt": "prompts/14_mimico_do_bosque.txt",
+      "anchors": [
+        [
+          504.0,
+          491.0
+        ],
+        [
+          1276.0,
+          491.0
+        ],
+        [
+          591.0,
+          978.0
+        ],
+        [
+          1388.0,
+          967.0
+        ]
+      ]
+    },
+    {
+      "id": 15,
+      "name": "MIMICO DAS RUINAS",
+      "slug": "mimico_das_ruinas",
+      "attack_kind": "bite",
+      "design_notes": "original ancient ruins treasure-chest mimic, broad rectangular dark violet-gray aged timber chest with a flat heavy stepped lid, thick tarnished bronze corner plates and two broad gray stone reinforcing bands. Distinct higher rectangular armored silhouette compared with forest chest. The chest lid is upper jaw, wide lower chest rim lower jaw, blunt uneven ivory fangs and deep plum mouth, one short muted red tongue. Exactly two thick dark gray clawed forelimbs at front side corners and two short rear clawed feet supporting chest. Tiny moss accent in cracks only, no eyes, runes, words, gems, coins or magic. Left-facing mouth opens left in clear side three-quarter battle view. Idle heavy chest planted lid slightly ajar. Anticipation compresses limbs and tilts chest back right, lid raised steeply. Attack massive grounded bite lunge toward left, jaw reaching left and foreclaws stretched, rear feet pushing; whole lid stays visible. Hurt body tilts back right away from hit, mouth clenches and forelimbs curl inward, not an attack and no disassembly.",
+      "source_notes": "New original generation with built-in image_gen for RPG POKET; text brief grounded in Rules.h enemy roster, damage type and encounter roles. No downloaded prototype image used or traced. AI-generated authorship/provenance does not establish legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/15_mimico_das_ruinas.png",
+      "prompt": "prompts/15_mimico_das_ruinas.txt",
+      "anchors": [
+        [
+          400,
+          569
+        ],
+        [
+          1122.5,
+          573
+        ],
+        [
+          470,
+          1082
+        ],
+        [
+          1100,
+          1057
+        ]
+      ]
+    },
+    {
+      "id": 16,
+      "name": "MIMICO DO PORTO",
+      "slug": "mimico_do_porto",
+      "attack_kind": "bite",
+      "design_notes": "Mímico portuário: madeira azul envelhecida, ferragens escuras, braços de corda e cracas.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/16_mimico_do_porto.png",
+      "prompt": "prompts/16_mimico_do_porto.txt",
+      "anchors": [
+        [
+          279.0,
+          582.0
+        ],
+        [
+          899.0,
+          591.0
+        ],
+        [
+          474.0,
+          1167.0
+        ],
+        [
+          916.0,
+          1166.0
+        ]
+      ]
+    },
+    {
+      "id": 17,
+      "name": "MIMICO DO CASTELO",
+      "slug": "mimico_do_castelo",
+      "attack_kind": "bite",
+      "design_notes": "Mímico de castelo: cofre alto vermelho, ferragens douradas, membros articulados de madeira; desenho próprio da mesma família.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/17_mimico_do_castelo.png",
+      "prompt": "prompts/17_mimico_do_castelo.txt",
+      "anchors": [
+        [
+          316.0,
+          610.0
+        ],
+        [
+          925.5,
+          613.0
+        ],
+        [
+          456.0,
+          1154.0
+        ],
+        [
+          956.5,
+          1160.0
+        ]
+      ]
+    },
+    {
+      "id": 18,
+      "name": "ODRAN",
+      "slug": "odran",
+      "attack_kind": "slash",
+      "design_notes": "Regente humano vivo, maduro, espada e manto bordô. Preserva condição humana e sobrevivência canônica.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/18_odran.png",
+      "prompt": "prompts/18_odran.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          436.0,
+          560.0
+        ],
+        [
+          1123.5,
+          560.0
+        ],
+        [
+          520.5,
+          1080.0
+        ],
+        [
+          1121.5,
+          1080.0
+        ]
+      ]
+    },
+    {
+      "id": 19,
+      "name": "CORACAO DO VEU",
+      "slug": "coracao_do_veu",
+      "attack_kind": "pulse",
+      "design_notes": "Manifestação cristalina violeta da fenda; corpo flutuante facetado e fragmentos, não coração anatômico nem todo o Véu.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "center",
+      "target_anchor": [
+        48,
+        60
+      ],
+      "master": "masters/19_coracao_do_veu.png",
+      "prompt": "prompts/19_coracao_do_veu.txt",
+      "anchors": [
+        [
+          382.05055970149255,
+          264.381631614654
+        ],
+        [
+          1011.0763653399964,
+          284.63169284311977
+        ],
+        [
+          418.94347722692964,
+          853.5331489292464
+        ],
+        [
+          947.4739942745216,
+          857.3484556275425
+        ]
+      ]
+    },
+    {
+      "id": 20,
+      "name": "SENTINELA CORAL",
+      "slug": "sentinela_coral",
+      "attack_kind": "crush",
+      "design_notes": "Sentinela de pedra e coral, punho físico pesado.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/20_sentinela_coral.png",
+      "prompt": "prompts/20_sentinela_coral.txt",
+      "anchors": [
+        [
+          422.0,
+          565.0
+        ],
+        [
+          1070.0,
+          567.0
+        ],
+        [
+          545.5,
+          1102.0
+        ],
+        [
+          1097.5,
+          1109.0
+        ]
+      ]
+    },
+    {
+      "id": 21,
+      "name": "ARRAIA RUNAR",
+      "slug": "arraia_runar",
+      "attack_kind": "magic",
+      "design_notes": "Arraia mágica teal com nadadeiras e marcas geométricas; gesto para golpe/drenagem existentes.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        60
+      ],
+      "anchor_mode": "center",
+      "master": "masters/21_arraia_runar.png",
+      "prompt": "prompts/21_arraia_runar.txt",
+      "anchors": [
+        [
+          375.8484568247207,
+          426.03321750177486
+        ],
+        [
+          965.9454079979772,
+          375.1689041301548
+        ],
+        [
+          381.50506690972367,
+          961.8859095993703
+        ],
+        [
+          1006.3933979370054,
+          957.6476097842142
+        ]
+      ]
+    },
+    {
+      "id": 22,
+      "name": "CORSARIO AFOGADO",
+      "slug": "corsario_afogado",
+      "attack_kind": "slash",
+      "design_notes": "Corsário morto-vivo, ossos e casaco naval, ataque de alfange.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/22_corsario_afogado.png",
+      "prompt": "prompts/22_corsario_afogado.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "correction_prompt": "prompts/22_corsario_afogado_correcao.txt",
+      "correction_notes": "A single built-in image_gen correction used the originally generated first attempt as input: shorter sabre, bent attack elbow, compact stance and enlarged readable torso/head improve runtime visibility at uniform 80×86 scale. Original attempt retained only under provenance.",
+      "anchors": [
+        [
+          424.5,
+          624.0
+        ],
+        [
+          979.0,
+          620.0
+        ],
+        [
+          642.5,
+          1193.0
+        ],
+        [
+          1054.5,
+          1191.0
+        ]
+      ]
+    },
+    {
+      "id": 23,
+      "name": "ORACULO ABISSAL",
+      "slug": "oraculo_abissal",
+      "attack_kind": "magic",
+      "design_notes": "Oráculo vivo encapuzado, foco cristalino e gesto mágico; não classificado morto-vivo.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/23_oraculo_abissal.png",
+      "prompt": "prompts/23_oraculo_abissal.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          333.5,
+          629.0
+        ],
+        [
+          896.0,
+          629.0
+        ],
+        [
+          364.0,
+          1232.0
+        ],
+        [
+          971.0,
+          1247.0
+        ]
+      ]
+    },
+    {
+      "id": 24,
+      "name": "THALVOR",
+      "slug": "thalvor",
+      "attack_kind": "crush",
+      "design_notes": "Interpretação visual autoral do chefe físico da ilha; guardião humanoide em armadura de recife. O código não fixa espécie/aparência, e não foi criada história ou mecânica nova.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/24_thalvor.png",
+      "prompt": "prompts/24_thalvor.txt",
+      "anchors": [
+        [
+          363.5,
+          646.0
+        ],
+        [
+          950.0,
+          646.0
+        ],
+        [
+          425.5,
+          1239.0
+        ],
+        [
+          902.0,
+          1252.0
+        ]
+      ]
+    },
+    {
+      "id": 25,
+      "name": "CARANGUEJO FERREO",
+      "slug": "caranguejo_ferreo",
+      "attack_kind": "claw",
+      "design_notes": "Caranguejo de carapaça férrea, pinça assimétrica; golpe físico e recomposição são regras existentes. Âncora final deslocada para x=55 para reservar espaço ao alcance da pinça e ampliar todas as poses por uma escala uniforme.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        55,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/25_caranguejo_ferreo.png",
+      "prompt": "prompts/25_caranguejo_ferreo.txt",
+      "anchors": [
+        [
+          421.0,
+          579.0
+        ],
+        [
+          1045.0,
+          582.0
+        ],
+        [
+          664.5,
+          1083.0
+        ],
+        [
+          1073.5,
+          1083.0
+        ]
+      ]
+    },
+    {
+      "id": 26,
+      "name": "MAO DE CINZA",
+      "slug": "mao_de_cinza",
+      "attack_kind": "magic",
+      "design_notes": "Contrabandista humano da organização Mão de Cinza; não mão desencarnada. Cristal/gesto para magia e drenagem existentes.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "ground",
+      "master": "masters/26_mao_de_cinza.png",
+      "prompt": "prompts/26_mao_de_cinza.txt",
+      "target_anchor": [
+        48,
+        82
+      ],
+      "anchors": [
+        [
+          441.5,
+          546.0
+        ],
+        [
+          1011.5,
+          546.0
+        ],
+        [
+          479.0,
+          1087.0
+        ],
+        [
+          1058.0,
+          1092.0
+        ]
+      ]
+    },
+    {
+      "id": 27,
+      "name": "AUTOMATO DOURADO",
+      "slug": "automato_dourado",
+      "attack_kind": "crush",
+      "design_notes": "Autômato dourado articulado, punho pesado físico.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "target_anchor": [
+        40,
+        82
+      ],
+      "anchor_mode": "ground",
+      "master": "masters/27_automato_dourado.png",
+      "prompt": "prompts/27_automato_dourado.txt",
+      "anchors": [
+        [
+          341.0,
+          626.0
+        ],
+        [
+          967.0,
+          631.0
+        ],
+        [
+          430.5,
+          1188.0
+        ],
+        [
+          997.5,
+          1191.0
+        ]
+      ]
+    },
+    {
+      "id": 28,
+      "name": "ECO DO VEU",
+      "slug": "eco_do_veu",
+      "attack_kind": "magic",
+      "design_notes": "Eco mágico morto-vivo, vulto flutuante com mãos; pose de antecipação é keypose visual breve, não turno Prepare adicional.",
+      "source_notes": "Generated originally for RPG POKET using built-in image_gen on 2026-10-12. No existing Google/prototype image used as input or traced. Role/mechanics checked in Rules.h, EnemyInfo.h, canonical lore and island campaign docs. Style follows approved original goblin prompt. Visual interpretations are not claims of legal exclusivity.",
+      "anchor_mode": "center",
+      "target_anchor": [
+        48,
+        60
+      ],
+      "master": "masters/28_eco_do_veu.png",
+      "prompt": "prompts/28_eco_do_veu.txt",
+      "anchors": [
+        [
+          338.5102671654763,
+          351.891894343045
+        ],
+        [
+          952.4026685874406,
+          349.71445763024514
+        ],
+        [
+          404.3403040554092,
+          958.9039497787107
+        ],
+        [
+          964.8536081136203,
+          967.5778729558349
+        ]
+      ]
+    }
+  ]
+}

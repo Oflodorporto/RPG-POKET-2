@@ -117,6 +117,7 @@ void savedTransition(Page next){
 void action(rpg::Action a){
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Offensive)a=rpg::Action::MagicMissile;
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Defensive)a=rpg::Action::ShieldSpell;
+  const unsigned previousHeroHp=game.p.hp;
   const char* err=rpg::act(game,a);if(err){say(err);return;}
   if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
   else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
@@ -127,7 +128,7 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  const auto resolved=heroCombatResult(game,a);
+  const auto resolved=heroCombatResult(game,a,previousHeroHp);
   if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false,resolved);
   else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false,resolved);
   else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false,resolved);
@@ -652,6 +653,8 @@ void setup(){
   artMemory=static_cast<uint8_t*>(heap_caps_malloc(ART_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
   if(!artMemory){Serial.println("Memoria de artes indisponivel; nenhum save alterado");if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_WHITE);lcd.setTextSize(1);lcd.setCursor(12,130);lcd.print("PSRAM indisponivel");lcd.setCursor(12,156);lcd.print("Confira OPI PSRAM no IDE");lcd.setCursor(12,182);lcd.print("Saves preservados");}while(true)delay(1000);}
   if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_GOLD);lcd.setTextSize(2);lcd.setCursor(12,130);lcd.print("Carregando artes...");lcd.setTextSize(1);lcd.setCursor(69,177);lcd.print("Saves protegidos");}
+  enemyArt::workspace=static_cast<uint16_t*>(heap_caps_malloc(enemyArt::WORKSPACE_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
+  // Missing decode workspace skips enemy images; settings/update remain available.
   menu.art=loadSdArt();menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
   bootTitle();
   lastActivity=millis();enemyAt=millis()+1200;

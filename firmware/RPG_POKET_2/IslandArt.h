@@ -1,12 +1,7 @@
 #pragma once
 #include "AssetCatalog.h"
 namespace islandArt {
-inline const uint16_t* sentinela_coral(){return reinterpret_cast<const uint16_t*>(assetBytes(459));}
-inline const uint16_t* arraia_runar(){return reinterpret_cast<const uint16_t*>(assetBytes(460));}
-inline const uint16_t* corsario_afogado(){return reinterpret_cast<const uint16_t*>(assetBytes(461));}
-inline const uint16_t* oraculo_abisso(){return reinterpret_cast<const uint16_t*>(assetBytes(462));}
-inline const uint16_t* thalvor(){return reinterpret_cast<const uint16_t*>(assetBytes(463));}
-inline const uint16_t* enemy(unsigned id){const uint16_t* a[]={sentinela_coral(),arraia_runar(),corsario_afogado(),oraculo_abisso(),thalvor()};return a[id>=20&&id<=24?id-20:0];}
+// Island enemies use EnemyArt.h; textures and props keep their stable IDs.
 inline const uint16_t* f0_wall(){return reinterpret_cast<const uint16_t*>(assetBytes(464));}
 inline const uint16_t* f0_floor(){return reinterpret_cast<const uint16_t*>(assetBytes(465));}
 inline const uint16_t* f0_ceiling(){return reinterpret_cast<const uint16_t*>(assetBytes(466));}
