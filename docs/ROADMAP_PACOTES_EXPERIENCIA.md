@@ -178,7 +178,7 @@ Cinco próximos passos de continuidade:
 2. 7.5 física aprovada; 7.6 publicado após CI final 38291561694 e publicador 38292646904, ambos aprovados. Smoke físico 7.6 confirmado pelo usuário; ensaios detalhados/prolongados e memória em execução pendentes.
 3. Persistência auxiliar 7.6/Save28, manifesto e hashes validados; acompanhar eventual teste físico sem operações destrutivas.
 4. Se houver regressão na versão atual, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
-5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar 7.7/pets/coop por consequência de preparar7.6.
+5. Primeira fatia 7.7 autorizada após o smoke físico 7.6: legibilidade viagem/OTA e piloto de combate com artes existentes, em branch separado e sem publicação. Escopo e pendências em [PACOTE_7_7_APRESENTACAO.txt](PACOTE_7_7_APRESENTACAO.txt). Acampamento completo, artes de cidades/biomas, pets/coop e port web continuam separados.
 
 Resumo histórico dos marcos7.1–7.5 (o estado atual acima prevalece):
 

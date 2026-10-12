@@ -67,9 +67,6 @@ template<class C>void panelCampBackdrop(C& c,const rpg::Game& g,const ViewState&
  panelLabel(c,82,64,76,placeName(g.city),UI_GOLD);
 }
 
-template<class C>struct PanelEffectCanvas {
- C& c;void fillRect(int x,int y,int w,int h,uint16_t color){if(y+34>=192)return;c.fillRect(x,y+34,w,std::min(h,192-y-34),color);}
- void drawRect(int x,int y,int w,int h,uint16_t color){c.drawRect(x,y+34,w,h,color);}
- void draw16bitRGBBitmap(int x,int y,uint16_t* pixels,int w,int h){c.draw16bitRGBBitmap(x,y+34,pixels,w,h);}
+template<class C>struct PanelEffectCanvas : CombatCanvas<C> {
+ explicit PanelEffectCanvas(C& c):CombatCanvas<C>{c,86,192,0,34}{}
 };
-

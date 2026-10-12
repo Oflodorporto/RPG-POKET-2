@@ -40,9 +40,9 @@ bool offerFirstHint(){
  int topic=firstExperience::topic(view.page,game);if(topic<0||!firstHints.pending(topic))return false;
  view.hintReturn=view.page;view.hintIndex=topic;view.hintError=false;view.page=Page::FirstTip;pendingTouch=false;gate=TouchGate{};dirty=true;return true;
 }
-void beginEffect(Effect effect,bool onHero){
+void beginEffect(Effect effect,bool onHero,CombatResult result){
   if(view.page==Page::SaveError)return;
-  combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
+  combatFx.start(effect,onHero,millis(),result);view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
 Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2){if(rpg::eventReady(game))return Page::EventResult;if(rpg::eventExpedition(game)&&rpg::inDungeon(game))return game.phase==rpg::Phase::Lost||game.phase==rpg::Phase::Fled?Page::EventResult:Page::Dungeon;if(game.eventKind&&game.phase==rpg::Phase::Home){if(game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return rpg::eventReady(game)?Page::EventResult:Page::EventMission;}return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;}if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
@@ -66,15 +66,16 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false);
-  else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false);
-  else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
-  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true);
-  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true);
-  else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false);
-  else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false);
-  else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
-  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
+  const auto resolved=heroCombatResult(game,a);
+  if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false,resolved);
+  else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false,resolved);
+  else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false,resolved);
+  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true,resolved);
+  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true,resolved);
+  else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false,resolved);
+  else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false,resolved);
+  else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false,resolved);
+  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon,resolved);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::FatigueJournal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
 void openCamp(){if(game.eventStage==2){say("Termine a missao da carta");return;}menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
@@ -570,6 +571,14 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[1].contains(x,y)){view.page=Page::Skills;say("");}
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
+}
+// Isolated dispatcher preserves the loop order and can be checked by native fixtures.
+void tickEnemyTurn(uint32_t now){
+  if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
+    auto intent=rpg::enemyIntent(game);bool skipped=game.turnedTurns!=0;unsigned previousEnemyHp=game.enemyHp;rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
+    if(skipped)snprintf(message,sizeof(message),"Inimigo expulso: sem acao");else if(intent==rpg::Intent::Prepare)snprintf(message,sizeof(message),"Inimigo prepara um golpe forte");else if(intent==rpg::Intent::Mend)snprintf(message,sizeof(message),"Inimigo recomposto: %u HP",game.enemyHp);else if(intent==rpg::Intent::Drain&&!game.dodge)snprintf(message,sizeof(message),"Drenagem: -%u HP; confira MP",game.damage);
+    view.message=message;savedTransition(currentPage());beginEffect(intent==rpg::Intent::Mend?Effect::Radiant:intent==rpg::Intent::Prepare?Effect::Shield:game.enemyId==5?Effect::Projectile:Effect::Slash,!skipped&&intent!=rpg::Intent::Mend&&intent!=rpg::Intent::Prepare,enemyCombatResult(game,intent,previousEnemyHp,skipped));
+  }
 }
 int main(){
  auto loaded=journal.load(game);assert(loaded==rpg::Load::Empty);view.page=Page::Race;tapped(170,280);

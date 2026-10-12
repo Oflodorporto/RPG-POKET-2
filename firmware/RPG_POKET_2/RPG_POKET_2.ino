@@ -62,7 +62,7 @@ void paint(uint32_t now){
   static Page paperLastPage=Page::Choose;if(view.page!=paperLastPage){paperLastPage=view.page;view.paperStartFrame=now/120;view.paperAnimate=storyPaperPage(view.page);}
   view.campProgress=game.campStage==3?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/4500):0;
   uint32_t started=millis();
-  view.effect=combatFx.kind;view.effectFrame=combatFx.frame(now);view.effectOnHero=combatFx.onHero;view.heroFrame=combatFx.active()&&!combatFx.onHero?1+std::min(4u,combatFx.frame(now)*5/8):0;
+  view.effect=combatFx.kind;view.effectFrame=combatFx.frame(now);view.effectOnHero=combatFx.onHero;view.combatResult=combatFx.result;view.effectProgress=combatFx.progress(now);view.effectElapsedMs=uint32_t(now-combatFx.started);view.heroFrame=combatFx.active()&&!combatFx.onHero?1+std::min(4u,combatFx.frame(now)*5/8):0;
   menu.renderNow=now;
   if(buffered){render(frameBuffer,game,view,now/120);
     // Short SPI stripes let the touch reader run during each full-screen transfer.
@@ -101,9 +101,9 @@ bool offerFirstHint(){
  int topic=firstExperience::topic(view.page,game);if(topic<0||!firstHints.pending(topic))return false;
  view.hintReturn=view.page;view.hintIndex=topic;view.hintError=false;view.page=Page::FirstTip;pendingTouch=false;gate=TouchGate{};dirty=true;return true;
 }
-void beginEffect(Effect effect,bool onHero){
+void beginEffect(Effect effect,bool onHero,CombatResult result){
   if(view.page==Page::SaveError)return;
-  combatFx.start(effect,onHero,millis());view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
+  combatFx.start(effect,onHero,millis(),result);view.page=rpg::inDungeon(game)?Page::Dungeon:Page::Battle;dirty=true;
 }
 void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=message;dirty=true;}
 Page currentPage(){if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2){if(rpg::eventReady(game))return Page::EventResult;if(rpg::eventExpedition(game)&&rpg::inDungeon(game))return game.phase==rpg::Phase::Lost||game.phase==rpg::Phase::Fled?Page::EventResult:Page::Dungeon;if(game.eventKind&&game.phase==rpg::Phase::Home){if(game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return rpg::eventReady(game)?Page::EventResult:Page::EventMission;}return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;}if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
@@ -127,15 +127,16 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Flee)snprintf(message,sizeof(message),"%s",game.phase==rpg::Phase::Fled?"Fuga bem-sucedida":"Fuga falhou!");
   else snprintf(message,sizeof(message),game.dodge?"Inimigo esquivou!":game.crit?"Critico! -%u HP":"Voce causou %u de dano",game.damage);
   view.message=message;savedTransition(currentPage());
-  if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false);
-  else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false);
-  else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false);
-  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true);
-  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true);
-  else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false);
-  else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false);
-  else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
-  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
+  const auto resolved=heroCombatResult(game,a);
+  if(!game.dodge&&(a==rpg::Action::DivineSmite||(game.dndProgression&&game.p.cls==1&&game.p.level>=11&&(a==rpg::Action::Attack||a==rpg::Action::Offensive))))beginEffect(Effect::DivineSlash,false,resolved);
+  else if(a==rpg::Action::DivineSmite)beginEffect(Effect::Slash,false,resolved);
+  else if(a==rpg::Action::Attack||a==rpg::Action::Offensive)beginEffect(a==rpg::Action::Offensive?(game.p.cls==0?Effect::Lightning:game.p.cls==3?Effect::Rage:Effect::Slash):game.p.cls==0?Effect::Projectile:game.p.cls==2?Effect::Thrust:Effect::Slash,false,resolved);
+  else if(a==rpg::Action::Defensive||a==rpg::Action::ShieldSpell||a==rpg::Action::LayHands||a==rpg::Action::SecondWind)beginEffect(Effect::Shield,true,resolved);
+  else if(a==rpg::Action::RagePower||a==rpg::Action::ActionSurge)beginEffect(a==rpg::Action::RagePower?Effect::Rage:Effect::Shield,true,resolved);
+  else if(a==rpg::Action::MagicMissile)beginEffect(Effect::MagicDarts,false,resolved);
+  else if(a==rpg::Action::BurningHands||a==rpg::Action::ScorchingRay)beginEffect(Effect::FlameVolley,false,resolved);
+  else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false,resolved);
+  else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon,resolved);
 }
 void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::FatigueJournal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
 void openCamp(){if(game.eventStage==2){say("Termine a missao da carta");return;}menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
@@ -632,6 +633,14 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
+// Isolated dispatcher preserves the loop order and can be checked by native fixtures.
+void tickEnemyTurn(uint32_t now){
+  if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
+    auto intent=rpg::enemyIntent(game);bool skipped=game.turnedTurns!=0;unsigned previousEnemyHp=game.enemyHp;rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
+    if(skipped)snprintf(message,sizeof(message),"Inimigo expulso: sem acao");else if(intent==rpg::Intent::Prepare)snprintf(message,sizeof(message),"Inimigo prepara um golpe forte");else if(intent==rpg::Intent::Mend)snprintf(message,sizeof(message),"Inimigo recomposto: %u HP",game.enemyHp);else if(intent==rpg::Intent::Drain&&!game.dodge)snprintf(message,sizeof(message),"Drenagem: -%u HP; confira MP",game.damage);
+    view.message=message;savedTransition(currentPage());beginEffect(intent==rpg::Intent::Mend?Effect::Radiant:intent==rpg::Intent::Prepare?Effect::Shield:game.enemyId==5?Effect::Projectile:Effect::Slash,!skipped&&intent!=rpg::Intent::Mend&&intent!=rpg::Intent::Prepare,enemyCombatResult(game,intent,previousEnemyHp,skipped));
+  }
+}
 #include "ClubRadio.h"
 void setup(){
   Serial.begin(115200);Serial.setTxTimeoutMs(0);pinMode(41,OUTPUT);digitalWrite(41,HIGH);pinMode(1,OUTPUT);digitalWrite(1,LOW);
@@ -672,11 +681,7 @@ void loop(){
   if(uint32_t(now-clockPollAt)>=1000){clockPollAt=now;auto before=menu.worldPeriod;bool wasValid=menu.clockValid;
     bool safe=game.phase==rpg::Phase::Home&&!game.tripStage&&!game.campStage&&!combatFx.active()&&!arena.opened;
     bool changed=tickClock(safe);if((changed&&(view.page==Page::Clock||view.page==Page::TimeSettings))||before!=menu.worldPeriod||wasValid!=menu.clockValid)dirty=true;}
-  if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
-    auto intent=rpg::enemyIntent(game);rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
-    if(intent==rpg::Intent::Prepare)snprintf(message,sizeof(message),"Inimigo prepara um golpe forte");else if(intent==rpg::Intent::Mend)snprintf(message,sizeof(message),"Inimigo recomposto: %u HP",game.enemyHp);else if(intent==rpg::Intent::Drain&&!game.dodge)snprintf(message,sizeof(message),"Drenagem: -%u HP; confira MP",game.damage);
-    view.message=message;savedTransition(currentPage());beginEffect(intent==rpg::Intent::Mend?Effect::Radiant:intent==rpg::Intent::Prepare?Effect::Shield:game.enemyId==5?Effect::Projectile:Effect::Slash,intent!=rpg::Intent::Mend&&intent!=rpg::Intent::Prepare);
-  }
+  tickEnemyTurn(now);
   if(lcdReady&&(dirty||(((storyPaperPage(view.page)&&view.paperAnimate&&unsigned(now/120-view.paperStartFrame)<7)||(view.page==Page::Dialogue&&view.dialogueAnimate&&unsigned(now/120-view.dialogueStartFrame)<7)||view.page==Page::Title||view.page==Page::Home||view.page==Page::Menu||view.page==Page::Ruins||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
   if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}
 

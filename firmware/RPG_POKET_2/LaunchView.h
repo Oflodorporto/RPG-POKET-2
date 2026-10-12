@@ -18,16 +18,18 @@ template<class C>void drawLaunch(C& c,const rpg::Game& g,const ViewState& v){
  auto button=[&](scenicUi::Rect r,const char* title){scenicPanel(c,r.x,r.y,r.w,r.h);panelLabel(c,r.x+4,r.y+15,r.w-8,title,UI_GOLD);};
  if(v.page==Page::Guide){const auto& topic=launchUi::guides[v.guideIndex%launchUi::guideCount];scenicHeading(c,"GUIA DO AVENTUREIRO");panelLabel(c,8,52,224,topic.title,UI_GOLD);for(unsigned i=0;i<7;++i)panelLabel(c,8,77+i*19,224,topic.lines[i]);snprintf(b,sizeof(b),"Pagina %u / %u",v.guideIndex+1,launchUi::guideCount);panelLabel(c,10,210,220,b,UI_BLUE);button(launchUi::previous,"< Anterior");button(launchUi::next,"Proxima >");button(launchUi::back,"Voltar");return;}
  if(v.page==Page::Recovery){scenicHeading(c,"RECUPERAR FORCAS");snprintf(b,sizeof(b),"%s / HP %u/%u / MP %u/%u",placeName(g.city),g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);panelLabel(c,8,53,224,b);panelLabel(c,8,76,224,"Prepare-se antes de tentar de novo.",UI_GOLD);button({14,98,212,40},"Bolsa / pocoes");button({14,148,212,40},"Acampar e recuperar");button({14,198,212,40},"Mapa / escolher caminho");panelLabel(c,10,249,220,"Nenhuma recuperacao automatica.",UI_MUTED);button(launchUi::back,"Voltar ao local");return;}
- unsigned dest=v.tripDestination;scenicHeading(c,"PREPARAR VIAGEM");snprintf(b,sizeof(b),"%s -> %s",placeName(g.city),placeName(dest));panelLabel(c,8,56,224,b,UI_GOLD);
- snprintf(b,sizeof(b),"Seu Nv %u / destino Nv %u+",g.p.level,rpg::cityLevel(dest));panelLabel(c,8,79,224,b,g.p.level<rpg::cityLevel(dest)?UI_RED:UI_GREEN);
- snprintf(b,sizeof(b),"Chance segura: %u%% / CD %u",rpg::tripSafety(g,dest),rpg::routeDifficulty(g.city,dest));panelLabel(c,8,99,224,b,UI_BLUE);
- scenicPanel(c,10,111,220,rpg::fatigueTravelPenalty(g)?34:20);
+ unsigned dest=v.tripDestination;scenicHeading(c,"PREPARAR VIAGEM");
+ // One opaque reading surface: no route, risk or decision text over the map.
+ scenicPanel(c,10,50,220,214);snprintf(b,sizeof(b),"%s -> %s",placeName(g.city),placeName(dest));panelLabel(c,12,56,216,b,UI_GOLD);
+ snprintf(b,sizeof(b),"Seu Nv %u / destino Nv %u+",g.p.level,rpg::cityLevel(dest));panelLabel(c,12,79,216,b,g.p.level<rpg::cityLevel(dest)?UI_RED:UI_GREEN);
+ snprintf(b,sizeof(b),"Chance segura: %u%% / CD %u",rpg::tripSafety(g,dest),rpg::routeDifficulty(g.city,dest));panelLabel(c,12,99,216,b,UI_BLUE);
+ c.fillRect(18,110,204,1,0x8bcb);
  snprintf(b,sizeof(b),"Fadiga %u/100 / %s",g.fatigue,rpg::fatigueName(g));
- panelLabel(c,8,115,224,b,scenicFatigueColor(g));
- if(rpg::fatigueTravelPenalty(g))panelLabel(c,8,129,224,"90+: -1 Sobrevivencia ja na chance",UI_GOLD);
- panelLabel(c,8,151,224,"Ao confirmar, usa da sua bolsa:",UI_GOLD);
- snprintf(b,sizeof(b),"Racao %u / Mapa %u / Sorte %u",g.rations?1:0,g.charts?1:0,g.charms?1:0);panelLabel(c,8,167,224,b);
- panelLabel(c,8,189,224,g.p.level<rpg::cityLevel(dest)?"Encontros podem ser muito perigosos.":"Prepare HP, mana e equipamento.",UI_GOLD);
- panelLabel(c,8,211,224,"Falha no D20: inimigo na estrada.");panelLabel(c,8,239,224,*v.message?v.message:"Cancelar nao gasta nem rola dados.",*v.message?UI_RED:UI_MUTED);
+ panelLabel(c,12,115,216,b,scenicFatigueColor(g));
+ if(rpg::fatigueTravelPenalty(g))panelLabel(c,12,129,216,"90+: -1 Sobrevivencia ja na chance",UI_GOLD);
+ panelLabel(c,12,151,216,"Ao confirmar, usa da sua bolsa:",UI_GOLD);
+ snprintf(b,sizeof(b),"Racao %u / Mapa %u / Sorte %u",g.rations?1:0,g.charts?1:0,g.charms?1:0);panelLabel(c,12,167,216,b);
+ panelLabel(c,12,189,216,g.p.level<rpg::cityLevel(dest)?"Encontros podem ser muito perigosos.":"Prepare HP, mana e equipamento.",UI_GOLD);
+ panelLabel(c,12,211,216,"Falha no D20: inimigo na estrada.");panelLabel(c,12,239,216,*v.message?v.message:"Cancelar nao gasta nem rola dados.",*v.message?UI_RED:UI_MUTED);
  button(launchUi::cancel,"Cancelar");button(launchUi::confirm,"Viajar");
 }

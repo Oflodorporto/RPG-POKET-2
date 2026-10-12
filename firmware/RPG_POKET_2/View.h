@@ -11,6 +11,7 @@
 #include "ClubUi.h"
 #include "GearArt.h"
 #include "CombatFx.h"
+#include "CombatPresentation.h"
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
@@ -37,13 +38,14 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "StoryPaper.h"
 #include "MenuView.h"
 #include "NpcArt.h"
 #include "EventView.h"
 #include "HippogriffArt.h"
+#include "CombatResultView.h"
 #include "MagicView.h"
 #include "DungeonView.h"
 #include "BagView.h"
@@ -58,6 +60,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "EnemyInfoView.h"
 #include "BestiaryView.h"
 #include "LaunchView.h"
+#include "UpdateView.h"
 #include "ExplorationView.h"
 #include "TradingView.h"
 #include "LocksView.h"
@@ -70,6 +73,7 @@ template<class Canvas> struct WifiOverlay {
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
   WifiOverlay<Canvas> wifiOverlay{c,menu.connected&&v.page!=Page::Clock,menu.signalBars};
+  if(v.page==Page::Updates){drawUpdate(c);return;}
   if(v.page==Page::ChestLock||v.page==Page::Lockpicks){drawLocks(c,g,v);return;}
   if(v.page==Page::Discovery||v.page==Page::Scrap){drawDiscovery(c,g,v,frame);return;}
   if(v.page==Page::TravelConfirm||v.page==Page::Recovery||v.page==Page::Guide){drawLaunch(c,g,v);return;}
@@ -354,11 +358,26 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   // A single framed panel replaces the concept's baked-in enemy name/level.
   scenicPanel(c,42,24,156,62);
   panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,78,90,"Ficha >",UI_GOLD);
-  personalSprite(c,g,8,77,v.heroFrame%6);
-  const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2]:g.enemyId>=4?regionEnemyFrame(g.enemyId,(v.effectOnHero&&v.effect==Effect::Slash)?2+v.effectFrame%2:frame%2):g.enemyId==0?sprites_goblin[frame%goblin_frames]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
-  if(g.enemyId>=25)magicSprite(c,worldEnemyFrame(g.enemyId,v.effectOnHero&&v.effect!=Effect::None?1:0),64,80,145,99,75,80);else if(g.enemyId>=20)magicSprite(c,islandArt::enemy(g.enemyId),48,64,145,99,75,80);else if(g.enemyId>=18)finaleFoe(c,g.enemyId,145,99,frame);else if(g.enemyId>=14)drawMimic(c,145,99,frame,true);else magicSprite(c,foeFrame,80,86,145,99,75,80);
+  unsigned progress=combatProgress(v.effectProgress,v.effectFrame);
+  unsigned elapsed=v.effectElapsedMs==UINT32_MAX?v.effectFrame*1100/8:v.effectElapsedMs;
+  bool pilot=v.effect==Effect::MagicDarts&&!v.combatResult.enemyAction;
+  auto pose=magePose(elapsed);int recoil=combatRecoil(v.combatResult,progress);
+  int heroX=v.effectOnHero?-recoil:pilot?pose.heroX:0;
+  int foeX=!v.effectOnHero?pilot?(v.combatResult.injury()?pose.enemyX:0):recoil:0;
+  int foeY=pilot&&v.combatResult.injury()?pose.enemyY:0;
+  CombatCanvas<Canvas> arenaCanvas{c,86,192,0,0};
+  // Target-only motion leaves the HUD and input geometry completely still.
+  unsigned heroPose=pilot?pose.heroFrame:v.combatResult.enemyAction?0:v.heroFrame%6;
+  personalSprite(arenaCanvas,g,8+heroX,77,heroPose);
+  bool enemyAttacking=v.effect!=Effect::None&&v.combatResult.enemyAction&&v.combatResult.attack();
+  unsigned foePose=enemyAttacking?2+v.effectFrame%2:frame%2;
+  // Goblin frames 4..7 are attacks, never a damage-reaction pose.
+  const uint16_t* foeFrame=g.enemyId>=10?hippogriffArt::frames[foePose]:g.enemyId>=4?regionEnemyFrame(g.enemyId,foePose):g.enemyId==0?sprites_goblin[enemyAttacking?4+v.effectFrame%4:pilot||recoil?0:frame%4]:g.enemyId==1?sprites_wolf[frame%wolf_frames]:g.enemyId==2?sprites_skeleton[frame%skeleton_frames]:sprites_guardian[frame%guardian_frames];
+  if(g.enemyId>=25)magicSprite(arenaCanvas,worldEnemyFrame(g.enemyId,enemyAttacking?1:0),64,80,145+foeX,99+foeY,75,80);else if(g.enemyId>=20)magicSprite(arenaCanvas,islandArt::enemy(g.enemyId),48,64,145+foeX,99+foeY,75,80);else if(g.enemyId>=18)finaleFoe(arenaCanvas,g.enemyId,145+foeX,99+foeY,frame);else if(g.enemyId>=14)drawMimic(arenaCanvas,145+foeX,99+foeY,frame,true);else magicSprite(arenaCanvas,foeFrame,80,86,145+foeX,99+foeY,75,80);
   PanelEffectCanvas<Canvas> effectCanvas{c};
-  if(v.effect==Effect::Rage){
+  if(v.combatResult.noHit()){/* No false hit flash or recoil. */}
+  else if(v.effect==Effect::Rage&&v.combatResult.kind==CombatFeedback::Buff){magicSprite(effectCanvas,sprites_shield[v.effectFrame%shield_frames],64,72,22,82,64,72);}
+  else if(v.effect==Effect::Rage){
     // Furia: broad axe-like sweep, red trails and expanding impact. No new art RAM.
     unsigned f=std::min(7u,v.effectFrame);int reach=90+int(f)*17;
     for(int trail=0;trail<3;++trail)for(int k=0;k<55;++k){int x=reach-k,y=52+k+trail*9;if(x>=45&&x<232)effectCanvas.fillRect(x,y,7,5,trail==0?0xffe0:trail==1?0xfd20:0xf800);}
@@ -367,6 +386,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   else if(v.effect==Effect::Projectile||v.effect==Effect::Lightning||v.effect==Effect::MagicDarts||v.effect==Effect::FlameVolley||v.effect==Effect::FireBurst||v.effect==Effect::Radiant||v.effect==Effect::DivineSlash){magicEffect(effectCanvas,v,false);}
   else if(v.effect==Effect::Thrust){unsigned t=std::min(7u,v.effectFrame);int x=v.effectOnHero?184-int(t)*20:52+int(t)*20;for(int k=0;k<6;++k)effectCanvas.fillRect(x-k*3,105-k,5,10,v.effect==Effect::Projectile?UI_BLUE:UI_GOLD);if(t>=5){effectCanvas.drawRect(v.effectOnHero?18:162,80,50,50,UI_WHITE);}}
   else if(v.effect!=Effect::None){const uint16_t* fx=v.effect==Effect::Lightning?sprites_lightning[v.effectFrame%lightning_frames]:v.effect==Effect::Shield?sprites_shield[v.effectFrame%shield_frames]:sprites_slash[v.effectFrame%slash_frames];if(v.effect==Effect::Lightning){for(int y=0;y<72;++y)for(int x=0;x<64;++x){uint16_t color=fx[y*64+x];if(color!=SPRITE_KEY)effectCanvas.fillRect(104+x*2,18+y*2,2,2,color);}}else magicSprite(effectCanvas,fx,64,72,v.effectOnHero?22:156,82,64,72);}
+  combatResultLabel(c,v,false);
   panelLabel(c,4,181,232,rpg::intentName(g),UI_GOLD);
   // Panels and buttons retain the concept; all combat data remains live.
   c.fillRect(65,193,170,44,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,68,200,65,b);panelBar(c,70,210,62,g.p.hp,g.p.maxhp,UI_GREEN);
