@@ -3,6 +3,8 @@ RPG POKET — 7.7 PARCIAL: CANDIDATA COMBINADA
 
 IDENTIDADE E PROVENIÊNCIA
 - Branch: feat/visual77-combined. Versão: 2026.10.12-visual77-combined-dev; build 2026101207. São 32 caracteres, abaixo do limite de 39 do atualizador e 36 da linha de texto.
+- Fonte combinada validada no GitHub: ad677def6a6a514ce9700c45cae4392c4b2d3327; árvore b94e5279dcb95b2f66761e22e2bf8de6d7cfc288. O commit posterior de resultado altera apenas documentação, sem trocar esta fonte de firmware.
+- CI final não publicador: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38310626603, aprovado em 12/10/2026.
 - Base de apresentação revisada: 33c0d5d75d0e96c45f593a5c7bb2e56eb0dc5080.
 - Fatia dos inimigos (commit local): f7875b52e26546be6cb0e34cefa7bed07ce1c99e, 61 suítes nativas/20 sanitizadas aprovadas.
 - Fatia dos heróis (commit local): 5b07bbc4f0cae2c3ed1d22fac193766478fc4897, 59 suítes nativas/18 sanitizadas aprovadas.
@@ -24,7 +26,7 @@ RESOLUÇÕES EXPLÍCITAS
 - DungeonView: corpos/fade tipados preservados; a raiz horizontal declarada agora coincide com o centro projetado do mundo, o apoio Ground coincide com o chão e Virtual conserva sua altura de flutuação. A arena/ficha/bestiário continuam no ajuste por caixa canônica.
 - O contato dos efeitos do herói usa o pixel opaco realmente amostrado mais próximo da raiz visual do alvo, no mesmo laço do billboard e após o teste de parede. Não há outro decode, alocação ou acesso SD. A oscilação do fade não move o ponto; pose/recuo podem movê-lo. Efeitos genéricos excluem ações inimigas.
 - Runner: conserva as quatro suítes novas dos inimigos e as duas dos heróis, além das 57 anteriores, com 22 alvos ASan/UBSan. Testes de catálogo/canários e 58 transições de carregador antigo/novo também permanecem.
-- Workflows release/fatigue76/visual77 e checker visual77 históricos preservados. combined77-check.yml é leitura apenas, guarda somente feat/visual77-combined, sem uploads de artefatos, publicação ou gravação. Limite de 35 min cobre a validação ampliada; uma única execução remota é prevista após revisão.
+- Workflows release/fatigue76/visual77 e checker visual77 históricos preservados. combined77-check.yml é leitura apenas, guarda somente feat/visual77-combined, sem uploads de artefatos, publicação ou gravação. Limite de 35 min cobre a validação ampliada; uma única execução remota foi aprovada depois da revisão.
 - Versão exclusiva da candidata impede o checker de aceitar o binário da primeira fatia, que usava visual77-dev/build 1204. O checker confronta string compilada, manifesto, catálogo, hash, PSRAM conhecida, limite OTA de 3 MiB e crescimento máximo de 64 KiB ante 7.6.
 
 VALIDAÇÃO COMBINADA
@@ -33,7 +35,8 @@ VALIDAÇÃO COMBINADA
 - 36 contatos reais de MagicDarts passam nos envelopes normal/expedição, corpos baixos/altos/flutuantes e durante derrota/fade. O teste intercepta os pixels de impacto do renderer, preserva estado e bloqueia alocação por quadro.
 - A primeira medição combinada encontrou sobreposição real de 21,29% no caranguejo; corrigir a raiz reduziu o pior caso para 14,08% no lobo. O ajuste final mantém 85% do enquadramento ampliado e desloca apenas 1 pixel à direita; preserva proporção, movimento e pixels-fonte. O diagnóstico final mediu 3,7423% perto, zero longe/núcleo, sem relaxar limites. A execução real final passou, normal e ASan/UBSan: 652 amostras × 464 silhuetas = 302.528 comparações, 30 verificações do projetor real. Cobertura, região protegida, comandos e hashes: PACOTE_7_7_COMBINADO_VALIDACAO.json. Não reaproveitar o resultado dos 17 inimigos antigos como evidência destes desenhos.
 - Revisão independente das resoluções concluída sem bloqueio de código; versão exclusiva, raiz/contato e fit final conferidos. Agregado final aprovado localmente: 63 suítes nativas, 22 alvos ASan/UBSan, 10 testes Python de catálogo e 58 gates de carregadores em modo normal e sanitizado. Comando: RPG_DETECT_LEAKS=0 bash tools/test_native.sh; retorno 0.
-- Compilação ESP32/manifesto/orçamento/CI da candidata combinada: ainda não executados. LeakSanitizer indisponível localmente sob ptrace; ASan/UBSan permanecem ativos e CI habilita leak detection nos 22 alvos principais e no par de carregadores; o canário suplementar do catálogo executa ASan/UBSan com leak detection desabilitada.
+- CI exato 38310626603 aprovado na fonte ad677def6a6a514ce9700c45cae4392c4b2d3327: 63 suítes nativas, 22 alvos ASan/UBSan, 10 testes Python, 58 gates de carregadores em cada modo, compilação ESP32/core 3.3.12, manifesto aceito pelo parser OTA real e orçamento/hash pareados. LeakSanitizer permanece indisponível localmente sob ptrace; no CI, leak detection foi habilitada e passou nos 22 alvos principais e no par de carregadores. O canário suplementar do catálogo executa ASan/UBSan com leak detection desabilitada.
+- Firmware.bin medido no CI: 2.677.280/3.145.728 bytes; margem OTA 468.448 bytes, redução de 103.184 ante 7.6. O tamanho de sketch informado pelo linker é 2.677.130 bytes, distinto do arquivo de firmware. RAM estática: 54.052/327.680 bytes, restante linker 273.628. Esses valores não medem heap/PSRAM livre durante o jogo. O pacote de arte, CRC/hash e PSRAM conhecida de 6.828.800 bytes passaram no checker. Nenhum artefato de CI foi enviado ou publicado.
 
 LIMITES DE RECUPERAÇÃO E ENTREGA
 - Pacote ausente/errado/corrupto usa fallback simplificado e a UI existente de atualização; os planos compactos de fallback são transparentes com paletas seguras. Não há substitutos de inimigos de terceiros no jogo normal.
