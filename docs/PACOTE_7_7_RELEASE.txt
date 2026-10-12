@@ -7,8 +7,20 @@ O proprietário autorizou validar a identidade final, integrar main e publicar p
 QUALIFICAÇÃO LOCAL DA IDENTIDADE FINAL
 15 testes focados do verificador passaram com fixture sintética ESP32 explicitamente identificada. Parser/instalador7.6 e final passaram normal e ASan/UBSan: sete casos de instalação antiga e dois de reparo final, com pack636 real e firmware sintético. LeakSanitizer local bloqueado por ptrace; CI mantém detecção ativa. Snapshots de controlador e preservação de código/arte confirmados; revisão independente de identidade/verificador/publicador concluída sem bloqueios. Esses resultados não substituem a compilação e os arquivos finais reais.
 
-RELEASE EM QUALIFICAÇÃO, AINDA NÃO PUBLICADA
-Fonte final, CI final/publicador, tamanho/hash final e downloads serão registrados após os respectivos resultados. O CI da candidata não é aprovação do binário final.
+PUBLICAÇÃO E DOWNLOADS CONFERIDOS
+- Release final e latest: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-visual77, ID 411049851, publicada em 12/10/2026; não draft/prerelease.
+- Fonte final e tag v2026.10.12-visual77: 7d946aca5058cb85251235a81babdd0514cd2ab7; árvore 9c77041e634a917b60da2c1fbac81535bec07a33. Main integrada à mesma fonte; este registro posterior altera somente documentação.
+- Qualificação final aprovada: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38313621773
+- Publicador aprovado no mesmo SHA: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38316390948
+- Ambos passaram 63 suítes nativas, 22 alvos ASan/UBSan com leak detection, catálogo/carregadores, compilação ESP32, 15 probes do verificador final e parser/instalação simulada 7.6→7.7 em modo normal e sanitizado. Após publicar, o workflow baixou firmware.bin, artes.pak e manifest.json dos URLs públicos, comparou cada byte com os arquivos daquele build, reexecutou verificador/SHA-256 e os dois adaptadores reais no conteúdo baixado. Manifesto latest também foi baixado e comparado byte a byte.
+- Firmware.bin publicado: 2.677.248/3.145.728 bytes; margem OTA 468.480; redução de 103.216 bytes ante 7.6. Sketch/linker: 2.677.098 bytes. RAM estática: 54.052/327.680 bytes; restante linker 273.628. Não são medições de memória livre em execução.
+- SHA256 firmware.bin: 31dba0562744cb2be397d01dae1cf2abf6a77f9c60c9c34649a0bd304c78d3d9
+- SHA256 artes.pak: 5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1
+- SHA256 manifest.json (1.077 bytes): 17590d961f753bd8ff6319015be293dbe5eb3651eda8a6b3d84cd7ff1abaf67b
+- Os hashes acima pertencem ao build publicador, cuja cópia baixada foi conferida. A compilação de qualificação tem seu próprio manifesto; não se reutiliza o hash do binário -dev ou de outra compilação.
+
+ATUALIZAÇÃO PELO PROPRIETÁRIO
+Com microSD presente e alimentação estável, usar Configurações > Atualização > Verificar versão e confirmar Instalar. A versão esperada é 2026.10.12-visual77. Não remover cartão/alimentação durante a instalação. O agente não gravou a placa nem apagou NVS/SD. O teste físico 7.7 permanece pendente até o retorno do proprietário.
 
 ENTREGA PRESERVADA
 29 inimigos originais, quatro poses cada (116); sete famílias/56 efeitos. Recuperação usa repouso, derrota fade. Coreografias por ação/poder do herói, primeiro plano com mãos/armas existentes ampliadas, raiz e contato dos efeitos ligados ao corpo renderizado. Quatro raças/classes e 428 artes não inimigas preservadas. Save28/leitura1..28, regras, RNG, tempos, PvP e fadiga permanecem iguais à candidata revisada.

@@ -2,13 +2,15 @@
 
 ## Estado atual — 12/10/2026
 
+Vigente: [Pacote 7.7 — Heróis e inimigos autorais](PACOTE_7_7_RELEASE.txt), 2026.10.12-visual77/build2026101208, fonte/tag `7d946aca`. [Qualificação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38313621773) e [publicação/downloads](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38316390948) aprovadas no mesmo SHA. 29 inimigos originais, 116 poses/56 efeitos, 636 assets e coreografias dos heróis; 63 suítes/22 sanitizadores. Firmware2.677.248 bytes/margem OTA468.480. Save28/regras e 428 artes não inimigas preservados. Teste físico7.7 pendente; direção visual ampla ainda parcial.
+
 Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; os testes físicos de 7.5 foram aprovados pelo usuário em 12/10/2026. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
 
 Publicado: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), 2026.10.12-fatigue76/build 2026101203. 55 suítes/14 sanitizadores, compilação ESP32, manifesto e downloads aprovados no [CI final](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694) e [publicação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904), fonte `26a4314`. Save28 e 488 artes preservados; sem punição offline/alteração de XP. Publicação autorizada sem teste prévio; após publicar, o usuário confirmou testes físicos rápidos funcionando. Cenários não detalhados; ensaios prolongados, de falha e memória em execução pendentes.
 
 ## Fila de trabalho futura, sem promessa de implementação
 
-- 7.7: artes e atualização em segundo plano, textos renderizados pelo firmware e recuperação utilizável sem SD. A OTA atual ainda precisa do cartão; esse requisito futuro não está entregue. Medir memória, SPI, rede e recuperação antes de ampliar assets.
+- Continuação visual após 7.7: cidades/acampamento/dungeons, novos antebraços/mãos e atualização em segundo plano, textos renderizados pelo firmware e recuperação utilizável sem SD. A OTA atual ainda precisa do cartão; esse requisito futuro não está entregue. Medir memória, SPI, rede e recuperação antes de ampliar assets.
 - Pets: coleção permanente por espécie com um ativo. Definir catálogo, regras e experiência primeiro; persistência/migração exigem aprovação específica. Não ocupar campos existentes silenciosamente.
 - Coop: ESP-NOW para dois jogadores primeiro, depois três; preservar PvP. Protocolos, reconexão, autoridade das recompensas e persistência precisam de desenho/teste próprios.
 - Navegador: trabalho já iniciado separadamente. Acompanhar o que existe e sua compatibilidade; não criar outro port concorrente.
@@ -26,7 +28,7 @@ Estado09/10: Pacote4.6 — Bestiário publicado em2026.10.09-bestiario1. É a ú
 
 Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes das quatro classes e bestiário entregues nos4.1–4.6; ajustes econômicos continuam conforme sessões reais. Naquele registro inicial, os pacotes5–8 ainda estavam planejados; o quadro atual acima prevalece. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
-Fatia seguinte7.7 em branch separada: [29 inimigos autorais](PACOTE_7_7_INIMIGOS_AUTORAIS.txt),116 poses e56 quadros de efeitos no catálogo636. Fatias isoladas validadas e [combinadas com os heróis](PACOTE_7_7_COMBINADO.txt); sem nova publicação ou alteração deSave28/regras. 63 suítes nativas/22 ASan/UBSan e medição dos braços maiores × novos inimigos aprovadas; [CI ESP32/manifesto/orçamento aprovado](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38310626603) na fonte `ad677de`. Firmware 2.677.280 bytes/margem OTA 468.448; placa ainda pendente.
+Registro histórico da candidata anterior à Release 7.7: [29 inimigos autorais](PACOTE_7_7_INIMIGOS_AUTORAIS.txt),116 poses e56 quadros de efeitos no catálogo636. Fatias isoladas validadas e [combinadas com os heróis](PACOTE_7_7_COMBINADO.txt); sem nova publicação ou alteração deSave28/regras. 63 suítes nativas/22 ASan/UBSan e medição dos braços maiores × novos inimigos aprovadas; [CI ESP32/manifesto/orçamento aprovado](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38310626603) na fonte `ad677de`. Firmware 2.677.280 bytes/margem OTA 468.448; placa ainda pendente.
 
 ## O que permanece da revisão anterior
 
@@ -177,10 +179,10 @@ Cada pacote precisa ter comportamento revisável, testes de persistência, prév
 Cinco próximos passos de continuidade:
 
 1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
-2. 7.5 física aprovada; 7.6 publicado após CI final 38291561694 e publicador 38292646904, ambos aprovados. Smoke físico 7.6 confirmado pelo usuário; ensaios detalhados/prolongados e memória em execução pendentes.
-3. Persistência auxiliar 7.6/Save28, manifesto e hashes validados; acompanhar eventual teste físico sem operações destrutivas.
+2. 7.7 publicada com qualificação e downloads aprovados; aguardar retorno físico do proprietário. 7.5 aprovada fisicamente e smoke7.6 confirmado não substituem o teste7.7.
+3. Save28, pack636 e manifesto pareados validados; acompanhar teste físico sem operações destrutivas. Heap/PSRAM livre, maior bloco e FPS ainda não medidos.
 4. Se houver regressão na versão atual, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
-5. Primeira fatia 7.7 autorizada após o smoke físico 7.6: legibilidade viagem/OTA e piloto de combate com artes existentes, em branch separado e sem publicação. Escopo e pendências em [PACOTE_7_7_APRESENTACAO.txt](PACOTE_7_7_APRESENTACAO.txt). Acampamento completo, artes de cidades/biomas, pets/coop e port web continuam separados.
+5. A Release7.7 entrega inimigos originais/coreografias/primeiro plano ampliado. Cidades/acampamento, redesenho completo de antebraços, pets/coop e port web permanecem separados; não iniciar novas frentes automaticamente.
 
 Resumo histórico dos marcos7.1–7.5 (o estado atual acima prevalece):
 

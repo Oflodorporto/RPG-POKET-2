@@ -1,30 +1,26 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 12/10/2026. Pacote 7.6 publicado; teste físico rápido confirmado pelo usuário. Ensaios detalhados e memória em execução pendentes. 7.5 aprovado na placa pelo usuário.
+Atualização: 12/10/2026. Pacote 7.7 publicado e downloads conferidos; teste físico 7.7 pendente. O proprietário confirmou teste físico 7.5 e smoke rápido 7.6, sem validar automaticamente esta versão.
 
 ESTADO CONFERIDO
-- Release vigente: 2026.10.12-fatigue76/build 2026101203, fonte 26a43145a8cd7e45e8716b1f1a34b358c41d47f3. Main integrada à mesma fonte; atualização posterior apenas documental pode avançar HEAD sem mudar firmware/tag.
-- CI final não publicador 38291561694 e publicador 38292646904 aprovados no mesmo commit: 55 suítes/14 sanitizadores, compilação ESP32, manifesto, tamanho e hashes. Tag/latest/downloads reais conferidos.
-- O usuário autorizou finalização/main/Release se passar, mesmo sem poder testar a placa agora. Após a publicação, em 12/10/2026, relatou testes rápidos funcionando na placa. Isso confirma apenas smoke test do proprietário, sem lista de cenários; não confirma ensaios detalhados, prolongados, cortes/falhas nem memória em execução. 7.5 físico confirmado em 12/10/2026.
-- Save28/128 bytes/leitura 1..28 e 488 artes preservados. Fadiga auxiliar pareada com snapshot exato; incerta reinicia em zero com aviso, sem bloquear nem sobrescrever o herói. Downgrade/exclusão/recriação idêntica permanece não garantido.
-- Firmware.bin 2780464/3.145.728 bytes; margem 365264; RAM estática 54.164/327.680 bytes, restante linker 273.516. PSRAM fixa 7.145.536 bytes. Não há medição de heap/FPS/toque em execução.
-- O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago. LeakSanitizer indisponível localmente sob ptrace; habilitado e aprovado no CI. Quota de CI não exposta.
+- Release vigente: 2026.10.12-visual77/build 2026101208. Fonte/tag: 7d946aca5058cb85251235a81babdd0514cd2ab7. Main integrada; atualização posterior de documentação pode avançar HEAD sem alterar firmware/tag.
+- Qualificação final 38313621773 e publicador 38316390948 aprovados no mesmo SHA: 63 suítes nativas, 22 alvos ASan/UBSan com leak detection, catálogo/canários, carregadores antigo/novo, ESP32, manifesto, verificador estrito e transição simulada 7.6→7.7. Tag/latest conferidos. Após publicar, os três downloads foram comparados byte a byte ao build, SHA-256 e adaptadores reais antigo/novo revalidados; manifesto latest idêntico.
+- 29 inimigos originais/116 poses/56 efeitos, 636 entradas; 428 artes não inimigas preservadas. Coreografias por ação e primeiro plano ampliado com pixels existentes. Save28/128 bytes/leitura 1..28, regras, RNG, tempos, fadiga e PvP preservados.
+- Firmware.bin 2.677.248/3.145.728 bytes; margem OTA 468.480. RAM estática 54.052/327.680; restante linker 273.628. PSRAM conhecida por conta estática 6.828.800, incluindo decoder13.760. Não há medição de heap/maior bloco/FPS/toque em execução.
+- Artes: 6.661.456 bytes, payload6.661.440, CRC0b84d93f. Hashes completos, fonte e evidências em PACOTE_7_7_RELEASE.txt.
+- Publicação autorizada explicitamente pelo proprietário após qualificação, mesmo com teste físico 7.7 pendente. O agente não gravou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago. LeakSanitizer bloqueado localmente por ptrace; habilitado e aprovado no CI. Quota não exposta.
+- Recuperação mantém seus limites: pacote inválido permite arte simplificada/reparo; decoder opcional ausente omite inimigos; alocação principal artMemory falha ainda interrompe boot. Limpeza remove outros CRCs após arte válida; boot antigo pode apagar arte nova preparada. Sem retenção integral de arte para downgrade. Fadiga auxiliar incerta zera só a fadiga; downgrade com exclusão/recriação idêntica não garantido.
 
 FONTES CANÔNICAS
-Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-fatigue76
-CI final sem publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694
-CI publicador: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904
-Implementação/testes/hashes/limites 7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
-Retorno físico e regras 7.5: docs/PACOTE_7_5_COMERCIO.txt
-Evidências históricas 7.5: docs/PACOTE_7_5_VALIDACAO.json
-Economia preservada: docs/PACOTE_7_5_ECONOMIA.csv
-Primeira fatia 7.7 em branch separado: docs/PACOTE_7_7_APRESENTACAO.txt
-Fatia de 29 inimigos autorais: docs/PACOTE_7_7_INIMIGOS_AUTORAIS.txt
-Candidata combinada 7.7: docs/PACOTE_7_7_COMBINADO.txt
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-visual77
+Qualificação final: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38313621773
+Publicação/downloads: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38316390948
+Fonte, hashes, memória e limites: docs/PACOTE_7_7_RELEASE.txt
+Escopo/desenhos/oclusão da candidata: docs/PACOTE_7_7_COMBINADO.txt e docs/PACOTE_7_7_COMBINADO_VALIDACAO.json
+Histórico 7.6/fadiga/smoke físico: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
+Histórico 7.5/comércio/físico: docs/PACOTE_7_5_COMERCIO.txt
 Roadmap: docs/ROADMAP_PACOTES_EXPERIENCIA.md
-Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
 
 PRÓXIMAS AÇÕES
-1. Conferir HEAD/tag/latest antes de qualquer novo trabalho. Não reutilizar CI de outro código nem repetir a auditoria completa sem motivo.
-2. Smoke físico 7.6 confirmado pelo usuário; detalhamento e ensaios prolongados permanecem para quando puder. Não presumir que testou todos os slots, descanso, reinício, viagem ou interface. Medições reais de memória/latência continuam pendentes. Não apagar personagens nem provocar cortes na placa.
-3. Se houver regressão, reproduzir de modo focado e distinguir software, CI e placa. Preservar limitações explícitas de downgrade e recuperação auxiliar.
-4. Após o retorno físico rápido, o usuário autorizou continuar a direção visual aprovada. A primeira fatia 7.7 está isolada em feat/visual77-presentation: ler docs/PACOTE_7_7_APRESENTACAO.txt para escopo e validação. Sem nova publicação/main; artes novas e acampamento completo não entram nesta fatia. A fatia seguinte integra29 inimigos/116 poses/56 efeitos em feat/visual77-original-enemies, candidata enemy77-dev/build2026101205,636 assets. As fatias isoladas passaram e foram combinadas em feat/visual77-combined, visual77-combined-dev/build2026101207. Ler PACOTE_7_7_COMBINADO.txt: 63 suítes nativas/22 ASan/UBSan, oclusão e revisão independente aprovadas; CI ESP32/manifesto/orçamento 38310626603 aprovado na fonte ad677def6a6a514ce9700c45cae4392c4b2d3327. Firmware 2.677.280 bytes/margem OTA 468.448; RAM estática 54.052 bytes; PSRAM conhecida por conta 6.828.800. Placa/heap/FPS/OTA física pendentes. Pets/coop, port web e DLC continuam separados.
+1. Aguardar retorno do proprietário na 7.7: atualização normal por Wi-Fi com SD/alimentação estável, três personagens e legibilidade de combate/dungeon. Não propor cortes, formatar cartão ou apagar saves. Não inferir cenários que ele não descreveu.
+2. Se surgir regressão, reproduzir focadamente no source/tag atual antes de alterar; distinguir software, CI e placa. Reusar os testes/evidências que não mudaram; evitar auditorias ou builds redundantes.
+3. Novas artes completas de antebraços/mãos, cidades, acampamento e dungeons, atualização sem SD e medições de memória continuam futuras; não abrir novas frentes sem pedido. Pets/coop, port web e DLC continuam separados.
