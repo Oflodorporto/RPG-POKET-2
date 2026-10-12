@@ -2,6 +2,10 @@
 #include "render.cpp"
 #undef main
 
+template<size_t N>static void fixtureText(char (&target)[N],const char* text){
+ const size_t size=strlen(text);assert(size<N);memcpy(target,text,size+1);
+}
+
 struct VisualCanvas : Canvas {
  struct Label {int x,y;std::string text;};
  std::vector<std::string> labels;std::vector<Label> positions;
@@ -20,8 +24,8 @@ int main(int argc,char** argv){
  assert(!artMemory);menu=MenuState{};unsigned frames=0;
  for(unsigned state=0;state<=unsigned(updater::State::Testing);++state)for(bool busy:{false,true})for(bool connected:{false,true})for(bool resume:{false,true})for(bool artOnly:{false,true})for(unsigned percent:{0u,50u,100u,101u}){
   updateInfo=updater::Info{};updateInfo.state=updater::State(state);updateInfo.busy=busy;updateInfo.canResume=resume;updateInfo.artOnly=artOnly;updateInfo.progress=percent;
-  const char* version="2026.10.12-abcdefghijklmnopqrstuvwxyz12";assert(strlen(version)==39);strcpy(updateInfo.version,version);
-  strcpy(updateInfo.message,"12345678901234567890123456789012345678");
+  const char* version="2026.10.12-abcdefghijklmnopqrstuvwxyz12";assert(strlen(version)==39);fixtureText(updateInfo.version,version);
+  fixtureText(updateInfo.message,"12345678901234567890123456789012345678");
   menu.connected=connected;immutableRender(c,g,v);++frames;
   assert(c.has("ATUALIZACAO"));assert(c.has("123456789012345678901234567890123456"));assert(c.has("78"));
   if(!busy){assert(c.has("2026.10.12-abcdefghijklmnopqrstuvwxy"));assert(c.has("z12"));}
@@ -31,9 +35,9 @@ int main(int argc,char** argv){
  }
  // A short first word must not strand a 37-character token beyond the last row.
  {const char* edge="a abcdefghijklmnopqrstuvwxyz12345678901";assert(strlen(edge)==39);c.clear();updateLines(c,119,edge);assert(c.has(std::string(edge,36).c_str()));assert(c.has(edge+36));}
- menu.connected=false;updateInfo=updater::Info{};updateInfo.state=updater::State::Downloading;updateInfo.busy=true;updateInfo.progress=54;strcpy(updateInfo.message,"Baixando arquivo 2/2");immutableRender(c,g,v);c.save(root+"/update-download.ppm");
- updateInfo.busy=false;updateInfo.state=updater::State::Error;strcpy(updateInfo.message,"Cartao SD indisponivel; tente novamente");immutableRender(c,g,v);c.save(root+"/update-error-no-art.ppm");
- updateInfo.state=updater::State::Available;updateInfo.artOnly=true;strcpy(updateInfo.version,"2026.10.12-fatigue76");strcpy(updateInfo.message,"Artes precisam de reparo");immutableRender(c,g,v);c.save(root+"/update-art-repair.ppm");
+ menu.connected=false;updateInfo=updater::Info{};updateInfo.state=updater::State::Downloading;updateInfo.busy=true;updateInfo.progress=54;fixtureText(updateInfo.message,"Baixando arquivo 2/2");immutableRender(c,g,v);c.save(root+"/update-download.ppm");
+ updateInfo.busy=false;updateInfo.state=updater::State::Error;fixtureText(updateInfo.message,"SD indisponivel; tente novamente");immutableRender(c,g,v);c.save(root+"/update-error-no-art.ppm");
+ updateInfo.state=updater::State::Available;updateInfo.artOnly=true;fixtureText(updateInfo.version,"2026.10.12-fatigue76");fixtureText(updateInfo.message,"Artes precisam de reparo");immutableRender(c,g,v);c.save(root+"/update-art-repair.ppm");
  artMemory=static_cast<uint8_t*>(malloc(ART_BYTES));assert(artMemory);std::ifstream pack("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
  updateInfo=updater::Info{};
  for(unsigned city=0;city<4;++city)for(unsigned destination=0;destination<4;++destination)for(unsigned fatigue:{0u,89u,90u,100u})for(bool supplies:{false,true}){
