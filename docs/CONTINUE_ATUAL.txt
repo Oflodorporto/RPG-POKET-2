@@ -1,17 +1,32 @@
-RPG POKET2 — PACOTE7.5 / CONTINUIDADE
-Publicada2026.10.12-commerce75/build2026101201. CI38268197216 e38270406291 aprovados;50suítes/9sanitizadores/compilação/download.
-Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
-Basebalance74 aprovada nos seis testes físicos pelo usuário. O agente não gravou nem testou a placa.
-Save28/128bytes/lê1..28;três slots,488artes,XP74,poderes,missões,Cartas8,PvP eOTA intactos.
-RAIZ:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare
-SKETCH:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/firmware/RPG_POKET_2/RPG_POKET_2.ino
-RELATÓRIO:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_5_COMERCIO.txt
-ECONOMIA:C:/Users/Rodolfo/Documents/Codex/2026-09-29/vamos-iniciar-o-rpg-poket-2-2/outputs/RPG_POKET_2_0_Waveshare/PACOTE_7_5_ECONOMIA.csv
-NOVOS TESTES:tests/commerce75.cpp e commerce75_render.cpp
+RPG POKET 2.0 — CONTINUIDADE ATUAL
+Revisão documental: 12/10/2026, 17:02 UTC. Nenhuma mudança de firmware, save ou Release.
 
-CINCO PRIMEIROS COMANDOS
-1.Ler relatório e validação;conferir Release/main atuais antes de prosseguir. Não repetir implementações antigas.
-2.Confirmar versão publicada,hashes e arte488; atualizar pela placa somente após Release validada.
-3.Usuário:conferir os três slots,ouro,itens/equipados eXP; testar venda1/múltipla/Cancelar/itensprotegidos.
-4.Reiniciar só após salvar e conferir saldo/estoque; testar lojas já acessíveis e posse de equipamentos antigos. Não criar dados fictícios na placa ou excluir slots.
-5.Registrar feedback físico; se houver regressão,reproduzir com50suítes/9sanitizadores/FQBN real. Não iniciar7.6sem pedido. Sem auto-flash,.rpg,Heltec,NVSapagada,SDformatado.
+ESTADO CONFERIDO NO GITHUB
+- Release vigente: 2026.10.12-commerce75 / build 2026101201.
+- Tag: v2026.10.12-commerce75, commit 553f2ea523628472c5fd717c6187c9a6a49314fb.
+- main auditada: d63f8441f941b816eb362ef6dc622cd61acdf8b8; apenas documentação depois da fonte publicada.
+- CI de publicação 38270406291: aprovado; 50 suítes, nove alvos ASan/UBSan, compilação ESP32 e preparação/publicação dos três arquivos. Evidências e limites no relatório 7.5.
+- Save28 de 128 bytes, leitura validada de formatos 1..28; três slots. 488 artes. Nenhuma migração nesta etapa.
+- Testes físicos 7.4 aprovados pelo usuário. Teste físico 7.5 pendente. O agente não gravou nem testou a placa.
+
+FONTES CANÔNICAS, SEM DUPLICAR RELATÓRIOS
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
+CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291
+Auditoria, checklist físico e formulário de retorno: docs/PACOTE_7_5_COMERCIO.txt
+Evidências estruturadas: docs/PACOTE_7_5_VALIDACAO.json
+Economia: docs/PACOTE_7_5_ECONOMIA.csv
+Plano técnico 7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
+Roadmap geral: docs/ROADMAP_PACOTES_EXPERIENCIA.md
+Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
+docs/CONTINUE_PACOTE_7_5.txt conserva o registro histórico da publicação; este arquivo é o ponto de retomada atual.
+
+PRÓXIMAS AÇÕES
+1. Antes de trabalhar, verificar main, tag e CI atuais. Reutilizar evidências válidas do commit exato; não reconstruir nem reimplementar entregas sem necessidade.
+2. O usuário executa o checklist seguro 7.5 com os personagens existentes. Não apagar/resetar slots, NVS ou SD e não provocar corte durante gravação/OTA.
+3. Registrar o retorno no formulário do relatório 7.5. Seu irmão poderá testar a própria placa depois; nenhum envio ou distribuição é realizado por esta documentação.
+4. Manter 7.6 somente como plano até aprovação física de 7.5. Não reutilizar bytes do Save28 para fadiga nem iniciar migração silenciosa. Qualquer nova persistência depende da decisão explícita descrita no plano.
+5. Se houver regressão concreta, reproduzir em teste focado, proteger saves e confirmar a correção antes de ampliar o escopo. Mudanças em main, Release ou save dependem de aprovação do usuário.
+
+PRESERVAR
+PvP, três slots, quatro raças, quatro classes, cores personalizadas, XP/progressão, poderes, missões, campanha, oito Cartas, equipamentos e todas as artes. Sem auto-flash, arquivos .rpg, mudança em Heltec ou acesso ao computador do usuário nesta auditoria.
+7.7, pets e coop permanecem planejamento futuro. A versão de navegador já começou em trabalho separado: acompanhar, sem duplicar implementação.

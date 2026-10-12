@@ -1,0 +1,83 @@
+RPG POKET 2.0 — PACOTE 7.6 / FADIGA, ALIMENTAÇÃO E DESCANSO
+PLANO TÉCNICO SOMENTE — 12/10/2026
+
+RESUMO
+- Objetivo: cansaço moderado por exploração, rações úteis e descanso, preservando HP/MP, XP e PvP existentes.
+- Bloqueio atual: implementação aguarda aprovação física da versão 7.5 pelo usuário.
+- Decisão aberta: fadiga em RAM reinicia ao desligar; persistência auxiliar exige aprovação e projeto de recuperação.
+- Entrega desta etapa: documentação e critérios de aceite. Nenhum código, save ou Release alterado.
+
+ESTADO E LIMITES
+Base publicada: 2026.10.12-commerce75, fonte 553f2ea523628472c5fd717c6187c9a6a49314fb; main auditada d63f8441f941b816eb362ef6dc622cd61acdf8b8.
+Este arquivo não entrega uma funcionalidade nova. Não houve implementação, mudança de versão, migração, publicação de Release ou gravação na placa. Implementar 7.6 somente depois da aprovação física de 7.5 pelo usuário. Main, Release e mudanças de persistência requerem aprovação própria.
+Direção pedida: cansaço moderado pela exploração, efeitos graduais, uso útil de rações e acampamento para recuperar HP/MP. Não punitivo, sem fome letal, sem castigo por ficar ausente e sem usar fadiga para esconder problemas de XP/economia. Valores abaixo são hipóteses para revisão criativa e simulação, não decisões já aprovadas.
+
+1. O QUE JÁ EXISTE — REUTILIZAR
+1.1 Rules.h, Game: contém HP/MP, rações, viagens e acampamento. Não contém fome/fadiga. windSpent, rageSpent, laySpent etc. representam usos de poderes; não servem como contador de cansaço.
+1.2 Rações: estoque 0..9, personagem novo começa com 1; compra 6g em Carvalho e 12g em Ruínas. Mares vende mapa e Aurora talismã como produto regional. Rações também podem vir de descobertas e podem ser vendidas na 7.5. Não existe ainda uma ação independente de comer ração para reduzir fadiga.
+1.3 prepareTrip consome automaticamente uma ração, um mapa e um talismã quando disponíveis, ao confirmar a viagem e antes de apresentar o dado. A ração dá +2 sobrevivência. D20, bônus, total e destino são salvos; a retomada não sorteia de novo. Evitar consumo duplo se alimentação virar uma opção separada.
+1.4 Camp.h: ração e kit são escolhas no acampamento. Kit custa 80g, é reutilizável e dá +2 no teste. Teste D20 + sobrevivência + sorte, dificuldade 11/13/15/17 por cidade; 1 natural embosca e 20 natural é seguro.
+1.5 startCamp debita a ração uma vez. Estágios persistidos: 1 dado, 2 emboscada, 3 descanso. Vitória permite descansar; derrota/fuga interrompem sem cura do acampamento e sem devolver a ração. finishCamp, uma vez, completa HP/MP com ração ou soma metade dos máximos sem ração, limitado aos máximos; renova poderes. Animação atual 4,5s.
+1.6 Descanso do abrigo é gratuito e restaura HP/MP/poderes. Poções continuam separadas: 30% HP ou 50% MP, mínimo 1 e limitado ao déficit; em combate gastam ação. Subir de nível não é uma cura completa automática.
+1.7 SaveVersion.h/Save.h: grava Save28 / 128 bytes; lê 1..28 com tamanho, CRC e estado válidos. HP/maxHP nos offsets 18/20; MP/maxMP 22/24; rações 84; acampamento 90/91. Byte 90 usa estágio e flags de comida/kit; decode rejeita valores >31. Não há offset de fadiga e bits aparentemente livres não são autorização para alterar o contrato.
+
+2. EXPERIÊNCIA PROPOSTA PARA REVISÃO
+2.1 Acumular somente por ações aceitas/concluídas de exploração. Nunca por relógio real, menus, leitura da história, espera, ausência, quadros renderizados ou toque rejeitado. Evitar acumular simultaneamente por exploração, encontro e seus turnos.
+2.2 Hipótese inicial para simular: escala 0..100, +4 por exploração aceita e +1 por deslocamento efetivo em dungeon. Mostrar estado descansado/leve/cansado/muito cansado; não bloquear continuar explorando. Limitar tudo a intervalos explícitos, sem overflow e sem custo por voltar/abrir interface.
+2.3 Efeito candidato, a decidir: primeira faixa só informa; depois, no máximo -1 e -2 no bônus de sobrevivência da próxima viagem. A diferença seria de até 5/10 pontos percentuais no D20, nunca penalidade global de atributos, XP, HP/MP máximos ou combate/PvP. Se o teste mostrar aumento excessivo de emboscadas, reduzir/remover esse efeito; não chamar 10 pontos percentuais de impacto já comprovado como leve.
+2.4 Alternativa de menor impacto: aviso gradual e incentivo a descansar, sem penalidade de viagem na primeira avaliação. Escolher com o usuário qual comportamento melhora a experiência antes de implementá-lo. Não criar redução de recompensas ou bloqueio por cansaço.
+2.5 Manter a recuperação HP/MP existente. Hipótese: descanso sem ração reduz 50 de fadiga; com ração ou no abrigo zera. Uma ação opcional de comer poderia reduzir 25 sem nova cura HP/MP, fora de combate e com confirmação de custo. Esses números e a ação Comer precisam de aprovação criativa; não obrigar consumo de alimento nem mudar silenciosamente a viagem atual.
+2.6 Para impedir travamento por recursos: o abrigo gratuito permanece uma saída; acampamento sem ração continua possível e recupera HP/MP. Descanso deve poder ser escolhido quando só há cansaço, mesmo com HP/MP/poderes completos. Não obrigar jogador a gastar ouro para remover uma condição introduzida pela atualização.
+
+3. PERSISTÊNCIA: DECISÃO ABERTA, SEM ALTERAR O SAVE AGORA
+Requisito a confirmar: a fadiga precisa sobreviver a desligar/reiniciar? Não existe implementação que adicione um estado persistente novo sem ampliar algum contrato de persistência. Manter 128 bytes não significa manter o esquema se o significado dos bits mudar.
+
+Opção A — Estado apenas em RAM, separado de Game, isolado por três slots.
+- Não altera Save28, NVS ou leitor. Mantém o cansaço ao trocar slots na mesma sessão e limpa apenas no reinício/criação correspondente.
+- Limite importante: desligar zera o cansaço. Se houver penalidades ou rações gastas para removê-lo, isso incentiva reiniciar e pode desperdiçar recursos. Não recomendar lançamento de fadiga mecânica volátil sem aceite explícito desse comportamento. Serve para protótipo em testes ou indicador informativo.
+
+Opção B — Registro NVS auxiliar versionado, por slot, mantendo o blob Save28 intacto.
+- Pode conservar cansaço após reinício, mas muda a estrutura persistente e o processo de gravação/recuperação. Requer aprovação explícita; não é uma forma de contornar a proibição de mudar saves.
+- Antes de adotar: projetar vínculo a identidade/slot/sequência/CRC do save principal, gravação e confirmação pareadas, dados órfãos, retry, falha em cada fronteira, recuperação da cópia anterior, criação/substituição de slot e firmware anterior que desconhece o registro.
+- Não basta escrever dois arquivos/chaves em sequência e chamar isso de atômico. O projeto deve provar que não haverá ouro/ração novo com fadiga antiga, nem troca entre heróis. Falha do complemento nunca pode apagar ou impedir recuperação de um personagem íntegro. O comportamento de recuperação deve ser documentado, inclusive quando perder só fadiga for a única saída segura.
+
+Opção C — Novo formato de save/migração.
+- Fora do escopo atual. Não reaproveitar bits, mudar SaveVersion, alterar layout ou persistir fadiga em XP/RNG/usos de poderes/flags narrativas. Só reabrir com aprovação específica de migração e matriz de compatibilidade.
+
+Recomendação de sequência: decidir primeiro o comportamento criativo e o requisito de reinício. Se fadiga persistente for desejada, revisar um desenho da Opção B antes de autorizar qualquer implementação; ela não está aprovada nem fechada por este plano. Se nenhuma mudança persistente for autorizada, manter 7.6 como protótipo informativo de teste ou pedir aceite da limitação RAM; não publicar penalidade que desaparece silenciosamente no reboot.
+
+4. MAPA DE ALTERAÇÕES FUTURAS, SUJEITO À APROVAÇÃO
+Rules.h: funções puras de cálculo/limites e integração de prepareTrip/tripSafety se a penalidade for escolhida. Não alterar survival() globalmente, pois afeta viagem e acampamento. Calcular diferenças em tipo assinado, limitar a 0..13 e manter tripTotal=tripRoll+tripSurvival+tripLuck. Bônus final da viagem já possui campo persistido; a fadiga continua precisando de decisão própria. Prévia e resultado devem concordar.
+Exploration.h/startDiscovery: contar a exploração uma vez após sucesso. Seu ramo de combate já chama explore(); instrumentar ambos duplicaria custo. Encontro de chefe direto exige análise separada. Não tratar abrir/reabrir o mesmo achado como exploração nova.
+Dungeon.h/dungeonMove: retorno verdadeiro também pode indicar giro ou início de combate sem deslocamento. Contar só mudança efetiva de XY, não parede/giro/toque repetido; preservar expedições e dungeon comum.
+Camp.h/startCamp/finishCamp: incluir cansaço na elegibilidade sem contornar demais bloqueios; capturar campRation antes de finishCamp, que limpa a flag. Consumir/recuperar uma única vez. Não mudar campSafe/lockSuccess com dado volátil que possa reinterpretar um resultado já salvo após reinício.
+RPG_POKET_2.ino: pontos reais de confirmação, seleção de slot, entrada/saída de ação e conclusão de descanso. Executar a mutação uma vez; savedTransition e o botão de retry devem apenas persistir o estado já alterado, sem somar fadiga, gastar ração ou curar novamente. Atualizar também o bloqueio de descanso na tela Home.
+CampView.h/BagView.h/ScenicView.h/MenuView.h/View.h: mostrar estado/custo/recuperação e saída clara em 240×320, reutilizando fundos/ícones. Confirmar o ponto final no renderizador antes de mudar vários arquivos. Texto desenhado pelo firmware; sem arte nova, buffer por quadro ou leitura SD contínua.
+Save.h/SaveVersion.h/Slots.h/NvsRecord.h: referência de invariantes nesta etapa; zero alteração. SeOpção B for aprovada, seu novo adaptador e interação com Journal terão revisão própria, sem prometer que Save28 intacto dispensa prova de segurança.
+Trading.h/TradingView.h: preservar compra/venda/quantidade/teto; ração vendida não reduz fadiga. ClubProtocol/ClubDuel/ClubRadio: nenhuma mudança de protocolo PvP ou aplicação de fadiga ao duelo.
+tests/camp_loot.cpp, travel_economy.cpp, exploration_save.cpp, dungeon_controller.cpp, title_controller.cpp, long_session.cpp, commerce75.cpp, render.cpp e render_session.cpp: ampliar casos pertinentes em vez de criar simulação paralela que não passa pelo controlador real. tools/check_controller_snapshot.py deve continuar conferindo as fixtures.
+
+5. CRITÉRIOS DE ACEITE ANTES DE QUALQUER RELEASE 7.6
+1. Aprovação física 7.5 registrada e comportamento 7.6/persistência escolhidos explicitamente. Nenhuma suposição de que aprovar a placa aprova migração ou publicação automática.
+2. Limites 0/100 e todas as transições cobertos. Menus, tempo ocioso, ausência, ação rejeitada, giro/parede e toque repetido não aumentam cansaço. Exploração que vira combate não soma duas vezes.
+3. Prévia e dado de viagem consistentes, 1/20 naturais preservados, bônus sem underflow, resultado salvo não muda ao reiniciar. Sem ajuste de XP, prêmios, níveis, combate, poderes ou PvP para compensar fadiga.
+4. Ração e descanso aplicam efeitos uma vez; Cancelar não altera nada; falha de save/retry/retomada não duplica custo/cura. Descanso apenas por cansaço funciona. Emboscada, vitória, fuga e derrota mantêm regras claras; nenhuma ração extra é consumida pela combinação comer/viagem/acampamento.
+5. Três slots isolados, quatro raças/quatro classes/cores e personagens antigos preservados. Para Game equivalente, encode Save28 continua byte a byte igual; tamanho/versão/leitura legada/CRC/proteção contra versão futura e fallback intactos.
+6. SeOpção B autorizada, testes de falha em todas as fronteiras de escrita, órfãos, ambos os pares, reboot e firmware anterior. Verificar que o comportamento de reset não vira atalho invisível e que complemento corrompido nunca elimina save válido. Essa prova é bloqueadora, não tarefa para depois da publicação.
+7. Sessões simuladas com e sem fadiga nos níveis 1/5/10/18/20, quatro classes/regiões: explorações até cada faixa, rações, frequência de descanso/emboscada, custo e acesso à saída gratuita. Comparar antes/depois com o mesmo cenário; tempo virtual não deve ser apresentado como ritmo medido de jogador.
+8. Texto/toque em 240×320, legibilidade e custo explícito, sem cobrir botões; arte 488 e offsets preservados. Render não modifica Game/saves e não aloca/lê SD por quadro.
+9. Rodar testes focados durante implementação; antes da entrega, agregado completo vigente, sanitizadores pertinentes, compilação do commit final no FQBN real e conferência de firmware/partição/manifesto. Reusar CI válido; não executar builds iguais sem motivo.
+10. Medir na placa, quando autorizado: heap livre/mínimo/maior bloco, PSRAM, latência de quadro/toque e sessão prolongada. Orçamento estático 7.5 não é medição real. Teste físico e autorização de Release seguem etapas próprias.
+
+6. CONTINUIDADE E FORA DO ESCOPO
+Atualizar este plano no mesmo arquivo quando houver decisões. Registrar achados/checklist 7.5 em PACOTE_7_5_COMERCIO.txt e fatos de CI em PACOTE_7_5_VALIDACAO.json; usar CONTINUE_ATUAL.txt como índice. Evitar novo relatório duplicando o estado.
+7.7: arte/OTA em segundo plano, textos pelo firmware e recuperação sem SD permanecem futuros. Pets: coleção permanente por espécie e um ativo, com migração somente aprovada. Coop ESP-NOW: dois jogadores antes de três, sem regressão PvP. Port web já iniciado em trabalho separado; não duplicar.
+
+REFERÊNCIAS DE CÓDIGO AUDITADAS
+Rules.h: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/Rules.h
+Camp.h: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/Camp.h
+Save.h: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/Save.h
+Exploração: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/Exploration.h
+Dungeon: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/Dungeon.h
+Controlador: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/firmware/RPG_POKET_2/RPG_POKET_2.ino
+Teste de acampamento existente: https://github.com/Oflodorporto/RPG-POKET-2/blob/d63f8441f941b816eb362ef6dc622cd61acdf8b8/tests/camp_loot.cpp

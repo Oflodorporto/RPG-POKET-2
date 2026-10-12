@@ -97,5 +97,66 @@
         "sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8"
       }
     }
+  },
+  "continuity_revalidation": {
+    "checked_at_utc": "2026-10-12T17:02:00Z",
+    "inspected_main": "d63f8441f941b816eb362ef6dc622cd61acdf8b8",
+    "tag_commit": "553f2ea523628472c5fd717c6187c9a6a49314fb",
+    "source_to_main": "documentation-only, seven paths",
+    "latest_tag": "v2026.10.12-commerce75",
+    "release_asset_sizes_and_api_digests": "match prior recorded validation",
+    "fresh_asset_download_or_local_rehash": false,
+    "asset_content_limit": "Direct manifest content unavailable: connector404 and web cache miss; do not equate API digest comparison with local byte hashing.",
+    "workflow_log_read": true,
+    "new_build_or_test_run": false,
+    "save_reader_verified_in_code": {
+      "formats": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "size_ranges": {
+        "1..6": 64,
+        "7..10": 96,
+        "11..28": 128
+      },
+      "requires_valid_crc_and_state": true
+    },
+    "static_budget": {
+      "ota_binary_margin_bytes": 368064,
+      "art_payload_bytes": 6991936,
+      "framebuffer_bytes": 153600,
+      "fixed_psram_bytes": 7145536,
+      "theoretical_psram_remainder_before_other_uses": 1243072
+    },
+    "hardware_runtime_memory_measured": false,
+    "physical_board_test_7_4": "approved-by-user-before-7.5",
+    "physical_board_test_7_5": "pending-user",
+    "next_7_6": "technical plan only; implementation gated on user physical approval of7.5; no save changes"
   }
 }

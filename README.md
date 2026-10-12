@@ -22,13 +22,15 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Estado atual
 
-**Firmware atual: Pacote 7.5 — Comércio regional, 2026.10.12-commerce75.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75) · [Regras e validação](docs/PACOTE_7_5_COMERCIO.txt) · [Economia](docs/PACOTE_7_5_ECONOMIA.csv) · [CI](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291). Venda com quantidade e confirmação, proteção de itens, preços sem lucro artificial e lojas por região. 50 suítes, nove alvos com sanitizadores, compilação e arquivos publicados verificados. Save28/488artes intactos. Teste físico7.5 pendente.
+**Firmware atual: Pacote 7.5 — Comércio regional, 2026.10.12-commerce75.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75) · [Regras e validação](docs/PACOTE_7_5_COMERCIO.txt) · [Economia](docs/PACOTE_7_5_ECONOMIA.csv) · [CI](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291). Venda com quantidade e confirmação, proteção de itens, preços sem lucro artificial e lojas por região. 50 suítes, nove alvos com sanitizadores, compilação e arquivos publicados verificados. Save28 e 488 artes intactos. Teste físico 7.5 pendente. [Continuidade atual](docs/CONTINUE_ATUAL.txt) · [Plano técnico 7.6, sem implementação](docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt). A implementação de 7.6 aguarda aprovação física de 7.5 pelo usuário.
 
-**Entrega anterior: Pacote 7.4 — Progressão regional, 2026.10.11-balance74.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-balance74) · [Regras e validação](docs/PACOTE_7_4_PROGRESSAO.txt) · [Medições antes/depois](docs/PACOTE_7_4_MEDICOES.json) · [CI](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38114649102). 48 suítes, sete alvos com sanitizadores, compilação real e downloads verificados. Save28, curva D&D, slots, OTA e 488 artes preservados. Teste físico pendente.
+**Entrega anterior: Pacote 7.4 — Progressão regional, 2026.10.11-balance74.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-balance74) · [Regras e validação](docs/PACOTE_7_4_PROGRESSAO.txt) · [Medições antes/depois](docs/PACOTE_7_4_MEDICOES.json) · [CI](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38114649102). 48 suítes, sete alvos com sanitizadores, compilação real e downloads verificados. Save28, curva D&D, slots, OTA e 488 artes preservados. Os seis testes físicos de 7.4 foram aprovados pelo usuário antes de 7.5.
 
 **Entrega anterior: Pacote 7.2 — Primeira experiência, 2026.10.11-experience72.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72) · [Relatório 7.2](docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt). Os seis testes físicos desta versão foram aprovados pelo usuário. Save28 e 488 artes preservados.
 
-**Pacote 7.3 — Auditoria de sessões prolongadas concluída em software.** [Relatório](docs/PACOTE_7_3_ESTABILIDADE.txt) · [Evidências](docs/PACOTE_7_3_EVIDENCIAS.json) · [Validação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38111881866). 47 suítes, seis alvos com sanitizadores e compilação Waveshare aprovados. Nenhuma falha nova de firmware comprovada; acrescentados testes e corrigida documentação. Nenhuma Release exclusiva da7.3; a entrega atual é balance74. Testes prolongados físicos e medição de memória/latência na placa ainda pendentes. Pacote7.4 concluído conforme pedido;7.5/8 não iniciados.
+**Pacote 7.3 — Auditoria de sessões prolongadas concluída em software.** [Relatório](docs/PACOTE_7_3_ESTABILIDADE.txt) · [Evidências](docs/PACOTE_7_3_EVIDENCIAS.json) · [Validação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38111881866). 47 suítes, seis alvos com sanitizadores e compilação Waveshare aprovados. Nenhuma falha nova de firmware comprovada; acrescentados testes e corrigida documentação. Nenhuma Release exclusiva de 7.3. Testes prolongados físicos e medição de memória/latência na placa ainda pendentes. As entregas posteriores 7.4 e 7.5 estão descritas acima.
+
+Os registros anteriores abaixo descrevem cada entrega no momento em que foi feita; pendências históricas não substituem o estado atual acima.
 
 **Entrega anterior: Pacote 7.1 — Auditoria de Confiabilidade, 2026.10.10-audit71.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.10-audit71) · [Relatório](docs/PACOTE_7_1_AUDITORIA.txt). Recuperação NVS, compatibilidade OTA e artes de reserva; aprovado na placa pelo usuário.
 
@@ -122,8 +124,9 @@ Abrigo, menu, mapa de Aeldra e Ruinas de Vespera usam as artes fornecidas, com b
 
 2026.10.08-origens1: origem por classe, chegada a Carvalho, rostos dos NPCs e primeiro objetivo concreto. [Conteúdo, compatibilidade e testes na placa](docs/PACOTE_1_ORIGEM_E_ROSTOS.md). [Próximos pacotes](docs/ROADMAP_PACOTES_EXPERIENCIA.md).
 
-## Versão atual — Pacote 7.2: Primeira Experiência
+## Histórico — Pacote 7.2: Primeira Experiência
 
 [2026.10.11-experience72](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.11-experience72): novos personagens chegam diretamente a Carvalho; história pode ser pulada, dicas contextuais são opcionais e o Guia continua disponível. Personagens existentes não são obrigados a repetir as orientações. Dez contextos reutilizam retrato, pergaminhos e cenários existentes. Save28 e as488artes preservados.
 
-45suítes, verificações de memória e compilaçãoWaveshare aprovadas. audit71 foi aprovada na placa pelo usuário; validação física de7.2 ainda pendente. [Relatório e testes físicos](docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt). Não iniciarPacote7.3 automaticamente.
+45 suítes, verificações de memória e compilação Waveshare aprovadas na entrega de 7.2. Os seis testes físicos de 7.2 foram aprovados pelo usuário. [Relatório histórico](docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt). Para a versão vigente e próximos passos, consultar o Estado atual e a continuidade acima.
+

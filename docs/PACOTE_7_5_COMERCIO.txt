@@ -37,13 +37,31 @@ CarvalhoNv1:conjunto90g, caça33g, aprox.3contratos. RuínasNv5:conjunto450g, ca
 Receita de excedentes na planilha é um teste de bolsa máxima com todos equipamentos guardados, não uma média observada. Poções/rações de recuperação são incluídas nos preços, mas nenhum tempo de jogador é alegado como medido. Não há fome, fadiga ou imposto novo.
 As50 suítes e9 alvos de sanitizadores passaram no CI. Compilação real e arquivos publicados verificados.
 
-VALIDAÇÃO FÍSICA / USUÁRIO
-1.Atualizar porConfigurações>Atualização; conferirnível, XP, ouro, itens e equipamentos dos três slots existentes.
-2.Na loja, Vender:poção1unidade, raçãoem quantidade, Cancelar; conferir preços/totais antes e saldo/estoque depois.
-3.Tentar vender item equipado; retirar manualmente e vender se realmente desejado. Confirmar que cristais, cargas eprogresso não aparecem à venda.
-4.Vender sucata pelo atalho da bolsa; conferir a confirmação. Tocar de novo no botão após venda e reiniciar após salvar:sem ouro/estoque duplicado.
-5.Visitar lojas já acessíveis e conferir graus por região; equipamento antigo de grau3 continua na bolsa mesmo se não vendido mais na loja local. Avaliar legibilidade e conforto dos controles reais.
-O agente executa testes no computador; teste físico7.5 pendente. Não apaga personagem, NVS ouSD, não grava placa automaticamente, não gera.rpg, não modificaHeltec, não inicia7.6.
+VALIDAÇÃO FÍSICA / USUÁRIO — CHECKLIST SEGURO 7.5
+Registrar cada item como PASSOU, FALHOU ou NÃO TESTADO. Fazer apenas com recursos/personagens que já existem; se não houver item, saldo ou região acessível, marcar NÃO TESTADO. Não criar personagem fictício, apagar/resetar slots, apagar NVS, formatar SD nem voltar a firmware antigo para forçar um caso.
+1. Antes da atualização, anotar em cada slot ocupado: classe/raça/cores, nível/XP, ouro, HP/MP, poções, rações, equipamentos guardados/equipados e missão. Slot vazio deve continuar vazio. Fotos são opcionais.
+2. Em alimentação estável e com o cartão habitual, atualizar por Configurações > Atualizar/Atualização. Não retirar energia/cartão durante instalação ou gravação. Se já estiver em commerce75, não reinstalar só para repetir o teste. Conferir 2026.10.12-commerce75 na tela de atualização; a mensagem Serial de inicialização contém um texto antigo e não deve identificar a versão.
+3. Abrir cada slot existente e comparar com as anotações. Conferir cores, classe/raça, equipamentos antigos e progresso. Ao detectar perda/divergência, parar e registrar, sem excluir/recriar personagem.
+4. Na loja, abrir Vender. Conferir estoque, preço unitário, quantidade e total. Aumentar/diminuir quantidade e usar Todos, se houver estoque; escolher Cancelar e verificar que ouro/itens continuam iguais.
+5. Se desejar realizar a venda, usar um excedente sem importância: primeiro uma unidade e depois mais de uma, se disponível. Anotar saldo/estoque antes e depois; o ganho deve ser preço unitário × quantidade. Não é necessário vender um equipamento querido para testar.
+6. Conferir que item equipado não pode ser vendido, e que cristais, cargas de contrato e progresso de missão não aparecem como mercadoria. Não desequipar/vender itens importantes apenas para cobrir o caso. No atalho de sucata da bolsa, conferir a confirmação e cancelar, ou vender só se desejado.
+7. Após uma venda concluída, tocar novamente no controle visível e conferir que o recibo não repete o pagamento. Aguardar a conclusão normal da gravação; reiniciar normalmente e conferir o mesmo ouro/estoque, XP/progresso e os outros slots. Nunca interromper gravação para simular falha; se aparecer erro de save, registrar e seguir a opção de tentar novamente, sem reaplicar a venda.
+8. Nas lojas já acessíveis, verificar ofertas: Carvalho grau1; Ruínas graus1/2; Mares armas até3 e demais até2; Aurora catálogo completo. Requisitos de nível continuam valendo. Um equipamento antigo que saiu da oferta local deve continuar na posse e funcionando. Não viajar a região perigosa/desbloquear conteúdo só para este teste.
+9. Jogar um trecho normal alternando loja/bolsa/menu, exploração/combate e descanso, conforme recursos disponíveis. Avaliar texto, toque, repetição indevida e ritmo econômico. Se puder, anotar tempo aproximado de sessão e o que incomodou. Medição prolongada de heap/latência e PvP físico continuam separadas quando não exercitadas.
+
+RETORNO DO JOGADOR
+Versão mostrada na tela:
+Placa/modelo (sem número de série):
+Slot (1/2/3) e região; classe/nível quando relevante:
+Item do checklist: PASSOU / FALHOU / NÃO TESTADO:
+Passos para reproduzir (1, 2, 3):
+Resultado esperado / resultado observado:
+Frequência (uma vez, sempre, X de Y):
+Gravidade (crítica: perda de save/progresso; alta: bloqueia jogar/atualizar; média: ação incorreta com saída segura; baixa: texto/visual):
+Foto ou vídeo opcional; ocultar notificações/dados pessoais. Não enviar senha, credencial Wi-Fi ou dados pessoais desnecessários.
+Anotar também o que passou. Teste em outra placa, inclusive do irmão do usuário, é validação separada; esta etapa não envia firmware nem convida/distribui o jogo a terceiros.
+
+O teste físico 7.5 continua pendente até o retorno do usuário. Esta revisão usa código, CI e metadados da Release; não executou upload nem testes na placa. 7.6 permanece somente plano até a aprovação física de 7.5.
 
 PUBLICAÇÃO CONFIRMADA
 Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
@@ -53,6 +71,24 @@ CI publicação:https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/3827040
 Sketch:2777522bytes de3145728. RAM estática:54132bytes de327680. Binário publicado:2777664bytes.
 CoreEspressif3.3.12, ESP32S3 Dev Module, CPU240MHz, QIO/flash16MiB, OPI PSRAM, USB CDC, partição app3M_fat9M_16MB, EraseFlash=none. Somente compilação, nunca upload físico.
 SHA256firmware:e5a4c84dafb558a6bb1008f815f600d84234883454d4a902f9075738cb3783a4
-Firmware, artes e manifesto baixados; tamanhos/SHA256 conferidos; cabeçalho/CRC dasartes e igualdade com pacote anterior confirmados.
+Registro da publicação anterior: firmware, artes e manifesto foram baixados; tamanhos/SHA256, cabeçalho/CRC das artes e igualdade com o pacote anterior foram registrados como conferidos. A revalidação abaixo distingue o que foi verificado novamente nesta passagem.
 Alterações:Rules.h(estoque regional), Camp.h(revenda segura), Trading.h(cotação/quantidade/confirmar), TradingView.h(telas), View.h/StoryPaper.h(integração e atalhos), RPG_POKET_2.ino(controles/recibo), ReleaseVersion.h. Testes novoscommerce75/commerce75_render; expectativas de sucata/estoque/snapshots atualizadas. Runner/workflow e documentação. Lista completa emPACOTE_7_5_ALTERADOS.json.
 Sem regressão conhecida nos testes automatizados. Pendentes:controles físicos, taxas de acumulação reais e avaliação do ritmo econômico. O1 com sanitizadores pode seguir trajetórias aleatórias distintas deO2, como já registrado na7.3; todas as invariantes de integridade/pagamento único/isolamento passaram.
+
+
+
+REVALIDAÇÃO DE CONTINUIDADE — 12/10/2026, 17:02 UTC
+1. Publicação e fonte: a API do GitHub confirma commerce75 como latest, não draft e não prerelease, publicada às 15:35:11 UTC. A tag aponta para 553f2ea523628472c5fd717c6187c9a6a49314fb, a mesma fonte do run 38270406291. main d63f8441f941b816eb362ef6dc622cd61acdf8b8 acrescenta apenas sete arquivos de documentação; nenhum firmware posterior escondido nessa diferença.
+2. Testes/compilação: lidos o workflow, runner e log do job 114882968057. O runner contém exatamente 50 suítes e nove alvos com AddressSanitizer/UndefinedBehaviorSanitizer. Log aprovado confirma 2.912 transações, 288 ciclos de revenda com perda e 1.248 telas de comércio, além das regressões existentes. Compilação real usa o FQBN/partição acima. Não foi iniciada nova compilação nem acionado serviço pago nesta revisão.
+3. Arquivos publicados: a API informa exatamente firmware.bin 2.777.664 bytes/SHA256 e5a4c84dafb558a6bb1008f815f600d84234883454d4a902f9075738cb3783a4; artes.pak 6.991.952 bytes/SHA256 bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8; manifest.json 1.081 bytes/SHA256 0c68e556515bab2b659ae3266ee346e38b600f70dd5cd9600109892343cb0579. São metadados atuais, coerentes com PACOTE_7_5_VALIDACAO.json. O acesso direto ao conteúdo do manifesto falhou nesta passagem (conector404; leitura web sem cache); não se afirma novo download ou recálculo local dos hashes. A validação de conteúdo anterior permanece identificada como registro histórico.
+4. Manifesto/OTA: tools/release_manifest.py valida tamanho do binário <=3.145.728, versão igual a ReleaseVersion.h, cabeçalho/CRC/contagem das artes e gera hashes. Publica schema2, board Waveshare-29667, partição app3M_fat9M_16MB, writes_save_format28 e reads_save_formats1..28. save_format7 é o marcador legado exigido pelo protocolo OTA atual, não a versão gravada pelo jogo. UpdateDevice.h/UpdateModel.h exigem cobertura de todos os formatos até CURRENT_SAVE_FORMAT e recusam manifesto incompatível. Sem inspeção nova dos bytes do asset, a forma gerada é evidência de código/CI, não alegação de releitura direta do manifesto publicado.
+5. Save confirmado em código: SaveVersion.h=28; Save.h grava128bytes e só aceita versões1..28 com tamanho correspondente (64bytes1..6,96bytes7..10,128bytes11..28), CRC válido, migrações e invariantes válidas. Não significa que um arquivo corrompido de qualquer dessas versões seja aceito. Slots.h mantém os três pares alternados. Comparação balance74..commerce75 não altera Save.h/SaveVersion.h/Slots.h, Gear.h, ClubProtocol/ClubDuel, AssetCatalog ou cartao. Testes de migração, erro/retry e isolamento passaram no CI. Nenhuma autorização de downgrade/edição de saves decorre disso.
+6. Memória: sketch2.777.522/3.145.728 bytes; binário2.777.664 deixa368.064bytes na partição de aplicação (aprox.11,7%). RAM estática54.132bytes e273.548bytes restantes no resumo do linker não equivalem a heap livre em execução. Artes6.991.936bytes + framebuffer153.600bytes =7.145.536bytes fixos de PSRAM; em8MiB sobram teoricamente1.243.072 antes de pilhas, TLS, alocador e demais usos. Não há medição real nesta passagem de heap livre/mínimo, maior bloco, fragmentação, FPS, toque, bateria ou estabilidade prolongada. Manter esse limite para7.6/7.7; não adicionar imagens/buffers grandes por hipótese.
+7. Limites: CI aprovado não é teste físico. A simulação usa I/O/rede/tempo substitutos; não cobre comportamento elétrico, FAT32 sob corte nem rollback de firmware que não inicialize. Logs têm avisos do compilador (indentação, switch, tipos e fixtures) e de ações Node; não foram convertidos em falhas comprovadas nem corrigidos fora do escopo. Trajetórias O1/O2 distintas continuam observação técnica já documentada na7.3, com invariantes aprovadas.
+8. Pendências reais: retorno físico7.5; percepção do ritmo de ouro/consumíveis; medições prolongadas na placa; revisão futura dos avisos se houver caso concreto. Foi corrigida apenas a documentação de continuidade que ainda chamava7.2 de atual ou7.4 de não validada. Plano7.6 em PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt, sem implementação.
+
+FONTES DA REVALIDAÇÃO
+Tag: https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.12-commerce75
+CI/job: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291/job/114882968057
+Diferença fonte..main auditada: https://github.com/Oflodorporto/RPG-POKET-2/compare/553f2ea523628472c5fd717c6187c9a6a49314fb...d63f8441f941b816eb362ef6dc622cd61acdf8b8
+Diferença7.4..7.5: https://github.com/Oflodorporto/RPG-POKET-2/compare/v2026.10.11-balance74...v2026.10.12-commerce75

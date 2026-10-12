@@ -1,18 +1,35 @@
 # Próximos pacotes — experiência, exploração e lançamento
 
-Estado atual: Pacote7.3 auditado em software, sem nova Release por ausência de falha de firmware comprovada. Firmware2026.10.11-experience72, aprovado pelo usuário nos seis testes físicos7.2. Relatório PACOTE_7_3_ESTABILIDADE.txt;47suítes/seis sanitizadores/compilação aprovados. Sessões prolongadas físicas7.3 pendentes.
+## Estado atual — 12/10/2026
 
-Estado atual09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
+Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; o teste físico de 7.5 está pendente. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
 
-Estado atual09/10: primeira entrega do Pacote5 publicada em2026.10.09-aurora1, missão Arquivos da Coroa com Liora/Nv18/Sentinela e seis cenas. GuiaPACOTE_5_AURORA_ARQUIVOS_DA_COROA.md, save21 e34suítes. Continuam pendentes as quatro contribuições, confrontos finais e epílogos; próximo trabalho dentro do Pacote5.
+Próxima etapa: [plano técnico 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt). Planejamento/documentação somente até aprovação física de 7.5. Não usar fadiga como substituto de balanceamento de XP, não criar punição por ausência e não alterar o esquema de save sem aprovação. Main, Release e migração continuam dependendo de aprovação do usuário.
+
+## Fila de trabalho futura, sem promessa de implementação
+
+- 7.6: ciclo de exploração, efeitos graduais leves, rações e acampamento com HP/MP; reaproveitar sistemas reais e esclarecer persistência antes de codificar.
+- 7.7: artes e atualização em segundo plano, textos renderizados pelo firmware e recuperação utilizável sem SD. A OTA atual ainda precisa do cartão; esse requisito futuro não está entregue. Medir memória, SPI, rede e recuperação antes de ampliar assets.
+- Pets: coleção permanente por espécie com um ativo. Definir catálogo, regras e experiência primeiro; persistência/migração exigem aprovação específica. Não ocupar campos existentes silenciosamente.
+- Coop: ESP-NOW para dois jogadores primeiro, depois três; preservar PvP. Protocolos, reconexão, autoridade das recompensas e persistência precisam de desenho/teste próprios.
+- Navegador: trabalho já iniciado separadamente. Acompanhar o que existe e sua compatibilidade; não criar outro port concorrente.
+- Preparação de lançamento/Pacote8: escopo continua no roadmap; créditos, licenças, manual e validação não são considerados concluídos.
+
+## Histórico das propostas e entregas
+
+As seções históricas abaixo registram intenções e estados no momento de cada entrega. Elas não substituem o quadro atual nem autorizam repetir implementações já presentes. Campanha/finais, quatro classes e oito Cartas têm regressões existentes; não devem ser reconstruídos a partir de uma proposta antiga.
+
+Registro histórico de 09/10: Vozes de Aeldra publicada em2026.10.09-vozes1.12 NPCs com falas contínuas, retratos e pergaminho animado regional;35suítes, save21/artes mantidos. Próximo: concluir Pacote5; variedade de inimigos/contratos é abertura explícita do Pacote6.
+
+Registro histórico de 09/10: primeira entrega do Pacote5 publicada em2026.10.09-aurora1, missão Arquivos da Coroa com Liora/Nv18/Sentinela e seis cenas. GuiaPACOTE_5_AURORA_ARQUIVOS_DA_COROA.md, save21 e34suítes. Continuam pendentes as quatro contribuições, confrontos finais e epílogos; próximo trabalho dentro do Pacote5.
 
 Estado09/10: Pacote4.6 — Bestiário publicado em2026.10.09-bestiario1. É a última entrega planejada do Pacote4; aguardamos validação física. A próxima etapa é Pacote5 — Aurora e fechamento da campanha. Poderes restantes do SRD e ajustes econômicos são trabalho futuro/contínuo, não novos subpacotes obrigatórios para iniciar5.
 
-Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes das quatro classes e bestiário entregues nos4.1–4.6; ajustes econômicos continuam conforme sessões reais. Os pacotes5–8 continuam planejados. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
+Pedido de 08/10/2026. Base inicial: `2026.10.08-mares1`. Pacote 1 — Origem e rostos implementado em `2026.10.08-origens1`; integração de retratos, origens por classe e chegada revisada. Pacote2 — Exploração variada implementado/publicado em2026.10.08-exploracao1. Pacote3 — Trancas e gazuas implementado/publicado em2026.10.08-trancas1. Pacote4 — núcleo de progressão/preview/confirmação publicado em2026.10.08-progressao1; poderes das quatro classes e bestiário entregues nos4.1–4.6; ajustes econômicos continuam conforme sessões reais. Naquele registro inicial, os pacotes5–8 ainda estavam planejados; o quadro atual acima prevalece. Consulte PACOTE_1_ORIGEM_E_ROSTOS.md, PACOTE_2_EXPLORACAO_VARIADA.md, PACOTE_3_TRANCAS_E_GAZUAS.md e CONTINUE_ATUAL.txt para verificação da publicação e testes físicos.
 
 ## O que permanece da revisão anterior
 
-As cinco melhorias de combate/viagem/compra/recuperação/guia foram entregues. Dos outros cinco pontos, fechar a campanha avançou com o ato de Mares, mas faltam Aurora, Odran, o Coração do Véu e os finais. Continuam pendentes: balanceamento1–20/economia; escolhas avançadas de classes; estabilidade física e testes com novos jogadores; créditos/licenças/manual/apresentação de lançamento.
+As cinco melhorias de combate/viagem/compra/recuperação/guia foram entregues. A campanha chegou a Aurora, às contribuições de Anwen, Odran, Coração do Véu e finais, com suítes específicas existentes; o antigo plano abaixo fica como histórico. Balanceamento/economia seguem avaliação contínua depois de7.4/7.5. Permanecem relevantes estabilidade física, testes com novos jogadores e créditos/licenças/manual/apresentação de lançamento. Não considerar todas as ideias futuras de poderes como recursos já implementados.
 
 O problema da abertura é prioritário: nomes sem rostos e frases vagas fazem o jogador decorar termos sem entender quem ele é, o que aconteceu ou o que precisa fazer. A expansão da exploração deve criar decisões e histórias curtas, não apenas prolongar sessões com mais rolagens.
 
@@ -156,20 +173,23 @@ Prioridade: pacote1, depois2 e3, enquanto se mede o balanceamento4; concluir5 an
 
 Cada pacote precisa ter comportamento revisável, testes de persistência, prévia na resolução da placa, compilação ESP32 e teste físico do usuário. Publicar uma versão de cada vez. Preservar Heltec e slots; não gravar placa automaticamente, formatar cartão, apagar NVS ou gerar `.rpg`. Não confundir este plano e imagens fonte com mudanças já disponíveis por OTA.
 
-Cinco próximos comandos de continuidade:
+Cinco próximos passos de continuidade:
 
-1. Ler este plano, o cânone e CONTINUE_ATUAL.txt; verificar os retratos individuais e o estado da versão publicada.
-2. Integrar pacote1: origens por classe, retratos, páginas legíveis, retorno/releitura e objetivo claro; medir memória antes de externalizar textos.
-3. Testar pacote1 com novos jogadores, saves antigos e SD ausente; publicar após testes/ESP32/inspeção de telas, sem upload automático.
-4. Implementar pacote2 com descoberta e loot persistidos; medir as probabilidades e retomadas antes de acrescentar trancas/mímicos mais complexos.
-5. Entregar pacote3 e avançar balanceamento4/Aurora5, mantendo esta lista atualizada com estados reais e validação física.
+1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
+2. Aguardar e registrar o checklist físico7.5; não repetir os seis testes7.4 já aprovados.
+3. Revisar o plano7.6 e decidir sua persistência; manter apenas documentação até aprovação física7.5.
+4. Se houver regressão7.5, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
+5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar7.7/pets/coop por consequência de preparar7.6.
+
+Resumo histórico dos marcos7.1–7.5 (o estado atual acima prevalece):
 
 Pacote7.1 concluído em software e publicado: recuperação NVS, compatibilidade OTA e reserva de artes. Consulte PACOTE_7_1_AUDITORIA.txt. O usuário confirmou preservação do personagem após o Pacote6; não repetir sem falha concreta. audit71 aprovada na placa pelo usuário; etapa7.2 solicitada e concluída.
 
 Pacote7.2 publicado:chegadaCarvalho,dicascontextuaisopcionais10contextos,Save28/artes488preservados,45suítes/compilação aprovadas. ConsultePACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt. Os seis testes físicos7.2 foram aprovados pelo usuário. Etapa7.3 solicitada e auditada; sem mudança de firmware ou novaRelease.
 
-Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suítes/seis sanitizadores e compilação aprovados. Sem defeito novo de firmware comprovado. Testes/documentação ampliados,experience72 permanece vigente. Validação física prolongada pendente; parar em7.3,sem iniciar7.4/8.
+Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suítes/seis sanitizadores e compilação aprovados. Sem defeito novo de firmware comprovado. Testes/documentação ampliados,experience72 permanece vigente. Validação física prolongada pendente; entregas7.4/7.5 posteriores estão registradas abaixo.
 
-Pacote7.4 concluído:2026.10.11-balance74,48suítes/sete sanitizadores/compilação/download aprovados. Recompensas futuras por dificuldade,Save28 e488artes preservados; relatório PACOTE_7_4_PROGRESSAO.txt. Teste físico pendente. Parar em7.4,sem iniciar7.5/8.
+Pacote7.4 concluído:2026.10.11-balance74,48suítes/sete sanitizadores/compilação/download aprovados. Recompensas futuras por dificuldade,Save28 e488artes preservados; relatório PACOTE_7_4_PROGRESSAO.txt. Os seis testes físicos7.4 foram aprovados pelo usuário antes de7.5.
 
-Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5física pendente. Parar em7.5,sem iniciar7.6.
+Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5física pendente. 7.6 autorizado somente como planejamento/documentação até aprovação física7.5; ver o plano técnico vinculado acima.
+
