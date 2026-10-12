@@ -1,30 +1,27 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 12/10/2026. Pacote 7.5 aprovado na placa pelo usuário; 7.6 em validação final com publicação autorizada.
+Atualização: 12/10/2026. Pacote 7.6 publicado; teste físico 7.6 pendente. 7.5 aprovado na placa pelo usuário.
 
 ESTADO CONFERIDO
-- Release vigente: 2026.10.12-commerce75 / build 2026101201, fonte 553f2ea523628472c5fd717c6187c9a6a49314fb.
-- Main conferida: d63f8441f941b816eb362ef6dc622cd61acdf8b8. Não foi alterada por este desenvolvimento.
-- CI publicado 38270406291 valida somente 7.5: 50 suítes/nove sanitizadores/compilação ESP32 e arquivos. Não usar esse resultado para declarar 7.6 compilado.
-- O usuário confirmou em 12/10/2026 que os testes físicos7.5 passaram e autorizou persistência auxiliar de fadiga, mantendo Save28 intacto.
-- Branch de preparação: feat/fatigue76; código de desenvolvimento e7b011b848a35f54d4d283c995938f64daf7a459. Identificação final2026.10.12-fatigue76/build2026101203. O usuário autorizou validar, integrar main e publicar se passar; não pode testar a placa agora. Ainda é necessário verificar o CI final e publicação.
-- Save28/128 bytes/leitura1..28 e 488 artes preservados. Fadiga usa registro separado pareado com o snapshot exato. Limitação de downgrade/recriação idêntica descrita no documento7.6.
-- O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago.
+- Release vigente: 2026.10.12-fatigue76/build 2026101203, fonte 26a43145a8cd7e45e8716b1f1a34b358c41d47f3. Main integrada à mesma fonte; atualização posterior apenas documental pode avançar HEAD sem mudar firmware/tag.
+- CI final não publicador 38291561694 e publicador 38292646904 aprovados no mesmo commit: 55 suítes/14 sanitizadores, compilação ESP32, manifesto, tamanho e hashes. Tag/latest/downloads reais conferidos.
+- O usuário autorizou finalização/main/Release se passar, mesmo sem poder testar a placa agora. Não declarar teste físico 7.6 aprovado. 7.5 físico confirmado em 12/10/2026.
+- Save28/128 bytes/leitura 1..28 e 488 artes preservados. Fadiga auxiliar pareada com snapshot exato; incerta reinicia em zero com aviso, sem bloquear nem sobrescrever o herói. Downgrade/exclusão/recriação idêntica permanece não garantido.
+- Firmware.bin 2780464/3.145.728 bytes; margem 365264; RAM estática 54.164/327.680 bytes, restante linker 273.516. PSRAM fixa 7.145.536 bytes. Não há medição de heap/FPS/toque em execução.
+- O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago. LeakSanitizer indisponível localmente sob ptrace; habilitado e aprovado no CI. Quota de CI não exposta.
 
 FONTES CANÔNICAS
-Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
-CI7.5: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291
-CI7.6 de desenvolvimento: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38288575276 (55 suítes/14 sanitizadores/ESP32 aprovados; fonte e7b011b)
-Regras e retorno físico7.5: docs/PACOTE_7_5_COMERCIO.txt
-Evidências7.5: docs/PACOTE_7_5_VALIDACAO.json
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-fatigue76
+CI final sem publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694
+CI publicador: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904
+Implementação/testes/hashes/limites 7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
+Retorno físico e regras 7.5: docs/PACOTE_7_5_COMERCIO.txt
+Evidências históricas 7.5: docs/PACOTE_7_5_VALIDACAO.json
 Economia preservada: docs/PACOTE_7_5_ECONOMIA.csv
-Implementação, testes e limites7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
 Roadmap: docs/ROADMAP_PACOTES_EXPERIENCIA.md
 Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
-Registro histórico da publicação7.5: docs/CONTINUE_PACOTE_7_5.txt
 
 PRÓXIMAS AÇÕES
-1. Ler o documento7.6 e verificar HEAD/diff atuais. Não repetir auditoria/compilações sem motivo ou reutilizar CI de outro commit.
-2. Agregado local e CI final aprovados:55 suítes/14 alvos ASan/UBSan. LeakSanitizer indisponível localmente sob ptrace, mas habilitado e aprovado no CI. Revisão estática concluída; somente branch separado foi enviado.
-3. Binário de desenvolvimento2.780.480/3.145.728bytes, margem365.248; RAM estática54.164bytes. CI do commit exato e7b011b aprovado. Quota remanescente de CI não exposta; nenhum plano pago ativado. Atualização final de documentação não exige repetir esse build.
-4. Main+Release autorizados condicionalmente à validação final. Identidade sem -dev, build2026101203: conferir novo CI/compilação/manifesto/hashes antes de integrar; pipeline existente publica e exige verificação posterior de tag/commit/latest/downloads. Teste físico7.6 permanece pendente. Não apagar personagens ou provocar cortes na placa para imitar testes sintéticos.
-5. Preservar PvP, três slots, raças/classes/cores, XP/poderes, comércio/contratos, campanha/Cartas, dungeons e artes. 7.7, pets e coop permanecem futuros. Port web segue separado; DLC de novos mapas/histórias é intenção futura.
+1. Conferir HEAD/tag/latest antes de qualquer novo trabalho. Não reutilizar CI de outro código nem repetir a auditoria completa sem motivo.
+2. Teste físico 7.6 permanece para quando o usuário puder, sem apagar personagens nem provocar cortes. Validar slots, fadiga, descanso, reinício, viagem e interface em uso normal. Medições reais de memória/latência continuam pendentes.
+3. Se houver regressão, reproduzir de modo focado e distinguir software, CI e placa. Preservar limitações explícitas de downgrade e recuperação auxiliar.
+4. Manter docs neste conjunto canônico; não iniciar 7.7/pets/coop como consequência da publicação. Planejamento e port web são separados. DLC de mapas/histórias continua intenção futura.
