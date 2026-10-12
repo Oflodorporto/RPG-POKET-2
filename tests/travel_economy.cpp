@@ -11,7 +11,7 @@ int main(){
   auto old=g.p.gold;assert(!buyGood(g)&&g.p.gold==old-goodPrice(city));assert(goodCount(g,localGood(city))==1);roundtrip(g);
   old=g.p.gold;assert(!buyPotion(g,true)&&g.p.gold==old-potionPrice(g,true));roundtrip(g);
  }
- auto g=testHero(0,1);g.p.gold=10000;assert(gearBuyError(g,3));g.city=2;assert(!cityStock(g,3));g.city=3;assert(cityStock(g,3));
+ auto g=testHero(0,1);g.p.gold=10000;assert(gearBuyError(g,3));g.city=2;assert(cityStock(g,3)&&!cityStock(g,15));g.city=3;assert(cityStock(g,3));
  bool safe=false,failed=false,one=false,twenty=false;
  for(unsigned cls=0;cls<4;++cls)for(unsigned city=0;city<4;++city)for(unsigned dest=0;dest<4;++dest)for(unsigned seed=1;seed<100;++seed){if(city==dest)continue;g=testHero(cls,seed);g.city=city;g.rations=g.charts=g.charms=1;assert(!prepareTrip(g,dest));assert(!g.rations&&!g.charts&&!g.charms);assert(g.tripSurvival==survival(g)+3&&g.tripLuck==luck(g)+3);roundtrip(g);
   auto result=g.tripRoll;auto randomState=g.randomState;assert(prepareTrip(g,dest)&&g.tripRoll==result&&g.randomState==randomState);bool pass=tripSafe(g);safe|=pass;failed|=!pass;one|=result==1;twenty|=result==20;if(result==1)assert(!pass);if(result==20)assert(pass);

@@ -26,8 +26,8 @@ inline bool finishCamp(Game& g){if(g.campStage!=3||g.phase!=Phase::Home)return f
   g.p.hp=g.campRation?g.p.maxhp:std::min<uint32_t>(g.p.maxhp,uint32_t(g.p.hp)+std::max(1,g.p.maxhp/2));
   g.p.mp=g.campRation?g.p.maxmp:std::min<uint32_t>(g.p.maxmp,uint32_t(g.p.mp)+std::max(1,g.p.maxmp/2));refreshPowers(g);clearCamp(g);return true;
 }
-inline unsigned sellPrice(const Game& g,uint8_t id){return cityGearPrice(g,id)/2;}
-inline const char* sellGear(Game& g,uint8_t id){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags)return "Venda na cidade";
+inline unsigned sellPrice(const Game& g,uint8_t id){if(!gearId(id))return 0;unsigned cheapest=65535;for(unsigned city=0;city<4;++city){auto local=g;local.city=city;cheapest=std::min(cheapest,unsigned(cityGearPrice(local,id)));}return std::min(unsigned(cityGearPrice(g,id))/2,cheapest-1);}
+inline const char* sellGear(Game& g,uint8_t id){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2)return "Venda na cidade";
   if(!gearOwns(g.owned,id))return "Item nao esta na bolsa";if(g.equipped[gearSlot(id)]==id)return "Retire o item antes de vender";
   auto value=sellPrice(g,id);if(g.p.gold>999999u-value)return "Limite de ouro";g.p.gold+=value;g.owned&=~(1u<<(id-1));return nullptr;
 }

@@ -1,0 +1,46 @@
+RPG POKET 2.0 — PACOTE 7.5 / COMÉRCIO REGIONAL
+Versão candidata:2026.10.12-commerce75,build2026101201. Base:2026.10.11-balance74.
+O usuário aprovou os seis testes físicos7.4. O agente não testou a placa nem gravou firmware nela.
+
+FUNCIONALIDADES
+Loja > Vender abre uma lista de itens existentes na bolsa. Selecionar abre a confirmação com nome,estoque,quantidade,preço unitário e total. Botões grandes -1,+1,Todos,Cancelar,Confirmar. Venda bem-sucedida abre um recibo; toques repetidos não reaplicam a mesma transação. A venda de sucata pelo atalho da bolsa agora também exige confirmação. Equipamentos continuam com confirmação própria ou pela lista geral.
+Os valores de estoque e preço são conferidos novamente no momento de confirmar. Quantidade zero,quantidade acima do estoque,cotação alterada e estouro do limite999999ouro são recusados sem mudar a bolsa. Cancelar não salva nem altera o personagem.
+
+O QUE PODE SER VENDIDO
+Poções de HP/MP;rações;mapas do viajante;talismãs da sorte;sucata(botinhas velhas/roupas rasgadas já agrupadas no inventário);gazuas;kit de dormir;os18equipamentos comuns do catálogo, inclusive de outra classe.
+Cada equipamento e kit tem quantidade máxima1,como já ocorria. Poções:99;rações/mapas/talismãs/sucata/gazuas:9. Nenhum catálogo/inventário novo foi criado; só existe uma cotação temporária da tela.
+Não negociáveis:cristais de dungeon,progresso/objetos de missão,cargas de contratos,registros da campanha e cartas. Esses dados nem entram na lista. O Livro das Vigilias e descobertas narrativas são flags de progresso, não equipamentos vendáveis. Armas comuns premiadas com os mesmosIDs do catálogo continuam comuns; vendê-las não apaga a descoberta narrativa.
+Itens equipados são recusados. Retire-os pelo sistema de equipamentos antes de vender. Não há desequipamento automático nem alteração oculta deHP/MP/forja. Ações de comércio são bloqueadas durante combate,viagem,acampamento,dungeon,descoberta,missão ativa de campanha/Carta ouduelo reservado/ativo. Um contrato comum em andamento não impede administrar itens comuns; sua carga é protegida.
+
+PREÇOS DE REVENDA / OURO
+Preço inicial=floor(preço local de compra/2). Teto antiarbitragem=menor preço de compra de todas as cidades-1. O menor dos dois é usado. Assim,comprar em uma região e vender em outra nunca aumenta o ouro,nem se repete o ciclo. Sucata continua2ouro/unidade;não há compra de sucata. Kit:80compra/40venda.
+Valores unitários de venda,na ordemCarvalho/Ruínas/Mares/Aurora:
+HP:5/8/6/7;MP:6/10/5/8;ração:3/5/3/3;mapa:6/6/6/6;talisma:12/12/12/12;gazua:2/3/3/3;sucata:2em todas;kit:40em todas.
+Rações emRuínas e gazuas emAurora recebem teto para impedir lucro artificial com os preços baixos deCarvalho. Mercadores aceitam esses excedentes mesmo quando o item não é a especialidade local de compra.
+Equipamentos usam os preços regionais já existentes:Carvalho100%;Ruínasacessórios75%/outros150%;Maresarmas85%/outros115%;Auroraarmaduras90%/outros140%. Revenda é metade,truncada e limitada pelo teto. Preço base30/120/270por grau1/2/3. Não houve reajuste dos consumíveis iniciais,comidas,cristais ou custo da Guilda.
+
+DISTRIBUIÇÃO REGIONAL
+Carvalho:grau1 de armas apropriadas à classe,armadura e acessório. RequisitoNv1.
+Ruínas:graus1e2 em todas as categorias. Grau2 requerNv4;região recomendadaNv5. Amuleto de grau3 foi retirado da oferta precoce,mas quem já o possui continua podendo usá-lo.
+Mares:armasgraus1..3;armaduras/acessóriosgraus1..2. Grau3 requerNv8;região recomendadaNv10.
+Aurora:catálogo completo,incluindo grau3 de armadura/acessório. Região recomendadaNv18;forja e preço especializado de armaduras preservados. Não foram criados novos equipamentos nem aumentados poderes/níveis exigidos. Gear.h e posse antiga intactos.
+
+PERSISTÊNCIA E SEGURANÇA
+Save28,128bytes,leituras1..28 e três slots preservados. Sem migração. Ouro e estoque alterados juntos no blob de save existente,comCRC e cópia alternada. Falha de escrita pausa a tela;repetir tenta salvar a mesma alteração já feita,sem reaplicar venda. Após reinício fica o estado íntegro anterior ou o novo,conforme a escrita efetivamente confirmada;nenhum estado mistura ouro novo com estoque antigo. Reiniciar durante seleção cancela a cotação temporária,sem débito.
+A cotação encerra antes do recibo;trocar personagem/voltar ao título a invalida. Não se promete persistência do recibo visual;os itens/ouro persistem. Não desligar a placa durante gravação/OTA.
+Artes488 intactas,SHA256bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8. Fundos,pergaminho,ícones existentes e desenhos da bolsa reaproveitados;sem novas leiturasSD por quadro oualocações permanentes de artes. OTA,tutorial,XP74,progressão,poderes,campanha,oitoCartas ePvP preservados.
+
+TESTES E ECONOMIA
+Novos testes:commerce75.cpp ecommerce75_render.cpp. 2912transações=7níveis×4classes×4cidades×26tipos negociáveis;quantidades1..estoque,estoque inválido,caps,itens protegidos,equipados,cancelamento,cotação alterada,toques reais do controlador simulado,falha/retry/reinício,três slots. 288combinações de compra/revenda entre cidades,sempre com perda de ouro. Render:1248telas,4classes/4cidades/26itens,números máximos,texto dentro240×320 e saves imutáveis.
+Simulações nos níveis1,5,8,12,15,18,20 registradas emPACOTE_7_5_ECONOMIA.csv. O conjunto de equipamentos inclui o melhor grau que o nível e a loja permitem,para arma/armadura/acessório. Missões para comprá-lo usam apenas o ouro de uma caça local e seus alvos obrigatórios;achados,combates extras,Cartas e venda de excedentes não são contados,portanto é uma estimativa conservadora. Taxa de entrada100g da Guilda deve ser paga separadamente.
+CarvalhoNv1:conjunto90g,caça33g,aprox.3contratos. RuínasNv5:conjunto450g,caça48g,aprox.10;os espectros e achados extras podem reduzir isso. MaresNv12:conjunto506g,caça124g,aprox.5. AuroraNv18:conjunto999g,caça207g,aprox.5. Estar na cidade não remove os requisitos do contrato;linhas sem contrato local desbloqueado são marcadas comoindisponíveis,não como zero contratos gratuitos.
+Receita de excedentes na planilha é um teste de bolsa máxima com todos equipamentos guardados,não uma média observada. Poções/rações de recuperação são incluídas nos preços,mas nenhum tempo de jogador é alegado como medido. Não há fome,fadiga ou imposto novo.
+As50suítes e9alvos de sanitizadores serão validados no CI com compilação real antes da publicação.
+
+VALIDAÇÃO FÍSICA / USUÁRIO
+1.Atualizar porConfigurações>Atualização;conferirnível,XP,ouro,itens e equipamentos dos três slots existentes.
+2.Na loja,Vender:poção1unidade,raçãoem quantidade,Cancelar;conferir preços/totais antes e saldo/estoque depois.
+3.Tentar vender item equipado;retirar manualmente e vender se realmente desejado. Confirmar que cristais,cargas eprogresso não aparecem à venda.
+4.Vender sucata pelo atalho da bolsa;conferir a confirmação. Tocar de novo no botão após venda e reiniciar após salvar:sem ouro/estoque duplicado.
+5.Visitar lojas já acessíveis e conferir graus por região; equipamento antigo de grau3 continua na bolsa mesmo se não vendido mais na loja local. Avaliar legibilidade e conforto dos controles reais.
+O agente executa testes no computador;teste físico7.5 pendente. Não apaga personagem,NVS ouSD,não grava placa automaticamente,não gera.rpg,não modificaHeltec,não inicia7.6.

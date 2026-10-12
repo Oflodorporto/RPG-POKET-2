@@ -55,7 +55,7 @@ inline const char* abilityName(unsigned i){const char* n[]={"Forca","Destreza","
 inline uint8_t cityLevel(uint8_t c){static const uint8_t n[]={3,5,10,18};return n[c<4?c:0];}
 inline const char* citySpecialty(uint8_t c){static const char* n[]={"Bosque / suprimentos baratos","Ruinas / reliquias raras","Porto / armas importadas","Castelo / armaduras superiores"};return n[c<4?c:0];}
 inline uint16_t priced(uint16_t base,unsigned percent){return (uint32_t(base)*percent+99)/100;}
-inline bool cityStock(const Game& g,uint8_t id){if(!gearId(id))return false;unsigned t=gearTier(id),slot=gearSlot(id);return g.city==0?t==1:g.city==1?(slot==2||t==1):g.city==2?(t<=2):true;}
+inline bool cityStock(const Game& g,uint8_t id){if(!gearId(id))return false;unsigned t=gearTier(id),slot=gearSlot(id);return g.city==0?t==1:g.city==1?t<=2:g.city==2?(slot==0||t<=2):true;}
 inline uint8_t cityGearCount(const Game& g){uint8_t n=0;for(unsigned i=0;i<9;++i)if(cityStock(g,gearOffer(g.p.cls,i)))++n;return n;}
 inline uint8_t cityGearOffer(const Game& g,unsigned index){for(unsigned i=0;i<9;++i){uint8_t id=gearOffer(g.p.cls,i);if(cityStock(g,id)&&!index--)return id;}return 0;}
 inline uint16_t cityGearPrice(const Game& g,uint8_t id){unsigned slot=gearSlot(id);unsigned pct=g.city==0?100:g.city==1?(slot==2?75:150):g.city==2?(slot==0?85:115):(slot==1?90:140);return priced(gearPrice(id),pct);}

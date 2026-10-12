@@ -1,6 +1,7 @@
 #pragma once
 #include "Rules.h"
 #include "Camp.h"
+#include "Trading.h"
 #include "BackgroundArt.h"
 #include "SpriteArt.h"
 #include "RegionalArt.h"
@@ -13,7 +14,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::IslandEntry:return bg_explore1;
@@ -27,7 +28,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Tavern:return bg_tavern;case Page::Contract:return bg_contract;case Page::QuestConfirm:return bg_questconfirm;
   case Page::Choose:return bg_choose;case Page::Help:return bg_guide;case Page::Home:return bg_camp;
   case Page::Village:return g.city==2?bg_port:g.city==3?bg_castle:bg_village;case Page::Map:return bg_world;case Page::Character:return bg_character;
-  case Page::Market:return bg_market;case Page::Inventory:return bg_inventory;case Page::Shop:return bg_shop;
+  case Page::TradeList:case Page::TradeConfirm:case Page::TradeReceipt:case Page::Market:return bg_market;case Page::Inventory:return bg_inventory;case Page::Shop:return bg_shop;
   case Page::Buy:return bg_buy;case Page::GearShop:return bg_gearshop;case Page::GearBag:return bg_gearbag;
   case Page::GearBuy:return bg_gearbuy;case Page::GearEquip:return bg_gearequip;case Page::Forge:return bg_forge;
   case Page::Upgrade:return bg_upgrade;case Page::Skills:return bg_skills;case Page::Bag:return bg_bag;
@@ -36,7 +37,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "StoryPaper.h"
 #include "MenuView.h"
@@ -58,6 +59,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "BestiaryView.h"
 #include "LaunchView.h"
 #include "ExplorationView.h"
+#include "TradingView.h"
 #include "LocksView.h"
 #include "FirstExperience.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
@@ -80,6 +82,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
+  if(v.page==Page::TradeList||v.page==Page::TradeConfirm||v.page==Page::TradeReceipt){drawTrading(c,g,v,frame);return;}
   if(v.page==Page::FirstTip){drawFirstExperience(c,g,v,frame);return;}
   if(v.page==Page::Title){drawTitle(c,frame);return;}
   if(v.page==Page::Menu){drawScenicMenu(c,g,v,frame);return;}
@@ -107,7 +110,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
     center(16,selling?"VENDER EQUIPAMENTO":"KIT DE ACAMPAMENTO",2,UI_GOLD);
-    if(selling){box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);center(207,"O item sera retirado da bolsa.");}
+    if(selling){center(130,"Quantidade: 1");box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);center(207,"O item sera retirado da bolsa.");}
     else {magicSprite(c,campArt::kit,48,48,84,55,72,72);center(146,"Preco: 80 ouro",2,UI_GOLD);center(180,"Reutilizavel / +2 no teste");center(204,"Saco de dormir ao lado do heroi.");}
     center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
   }
@@ -245,7 +248,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Market||v.page==Page::Inventory){
     bool shop=v.page==Page::Market;center(12,shop?"LOJA DA CIDADE":"SUA BOLSA",2,UI_GOLD);
     portrait(g.p.cls,80,shop?38:48);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(shop?114:136,b,1,UI_GOLD);
-    if(shop){button(14,138,212,"Pocoes");button(14,182,212,"Equipamentos");button(14,226,102,"Forja");button(124,226,102,"Viagem");button(14,270,212,"Voltar");}
+    if(shop){button(14,138,212,"Pocoes");button(14,182,212,"Equipamentos");button(14,226,102,"Forja");button(124,226,102,"Viagem");button(14,270,102,"Vender");button(124,270,102,"Voltar");}
     else{snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));center(155,b);snprintf(b,sizeof(b),"Racoes %u / Mapas %u / Sorte %u",g.rations,g.charts,g.charms);center(169,b,1,UI_MUTED);
       button(14,180,212,"Abrir bolsa");button(14,226,212,"Equipamentos");button(14,272,102,"Menu");button(124,272,102,"Voltar");}return;
   }

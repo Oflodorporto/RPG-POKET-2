@@ -49,6 +49,8 @@ jobs:
             build/screens/locks-*.ppm
             build/screens/progression-*.ppm
             build/screens/attribute-*.ppm
+            build/commerce75-economy.csv
+            build/screens/commerce75-*.ppm
             build/progressao.csv
             build/balance74-rewards.csv
             build/screens/campaign-*.ppm
