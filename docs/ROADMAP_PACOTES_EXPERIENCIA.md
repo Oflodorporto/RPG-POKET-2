@@ -176,7 +176,7 @@ Cada pacote precisa ter comportamento revisável, testes de persistência, prév
 Cinco próximos passos de continuidade:
 
 1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
-2. 7.5 física aprovada pelo usuário em 12/10/2026; concluir revisão e validação do desenvolvimento7.6 separado.
+2. 7.5 física aprovada pelo usuário em 12/10/2026; 7.6 desenvolvido em branch separado, com55 suítes/14 sanitizadores/compilação aprovados no CI38288575276; publicação e placa7.6 pendentes.
 3. Validar a persistência auxiliar7.6 autorizada, mantendo Save28 intacto; conferir CI exato antes de propor publicação.
 4. Se houver regressão7.5, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
 5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar7.7/pets/coop por consequência de preparar7.6.
