@@ -1,10 +1,10 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 12/10/2026. Pacote 7.6 publicado; teste físico 7.6 pendente. 7.5 aprovado na placa pelo usuário.
+Atualização: 12/10/2026. Pacote 7.6 publicado; teste físico rápido confirmado pelo usuário. Ensaios detalhados e memória em execução pendentes. 7.5 aprovado na placa pelo usuário.
 
 ESTADO CONFERIDO
 - Release vigente: 2026.10.12-fatigue76/build 2026101203, fonte 26a43145a8cd7e45e8716b1f1a34b358c41d47f3. Main integrada à mesma fonte; atualização posterior apenas documental pode avançar HEAD sem mudar firmware/tag.
 - CI final não publicador 38291561694 e publicador 38292646904 aprovados no mesmo commit: 55 suítes/14 sanitizadores, compilação ESP32, manifesto, tamanho e hashes. Tag/latest/downloads reais conferidos.
-- O usuário autorizou finalização/main/Release se passar, mesmo sem poder testar a placa agora. Não declarar teste físico 7.6 aprovado. 7.5 físico confirmado em 12/10/2026.
+- O usuário autorizou finalização/main/Release se passar, mesmo sem poder testar a placa agora. Após a publicação, em 12/10/2026, relatou testes rápidos funcionando na placa. Isso confirma apenas smoke test do proprietário, sem lista de cenários; não confirma ensaios detalhados, prolongados, cortes/falhas nem memória em execução. 7.5 físico confirmado em 12/10/2026.
 - Save28/128 bytes/leitura 1..28 e 488 artes preservados. Fadiga auxiliar pareada com snapshot exato; incerta reinicia em zero com aviso, sem bloquear nem sobrescrever o herói. Downgrade/exclusão/recriação idêntica permanece não garantido.
 - Firmware.bin 2780464/3.145.728 bytes; margem 365264; RAM estática 54.164/327.680 bytes, restante linker 273.516. PSRAM fixa 7.145.536 bytes. Não há medição de heap/FPS/toque em execução.
 - O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago. LeakSanitizer indisponível localmente sob ptrace; habilitado e aprovado no CI. Quota de CI não exposta.
@@ -22,6 +22,6 @@ Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
 
 PRÓXIMAS AÇÕES
 1. Conferir HEAD/tag/latest antes de qualquer novo trabalho. Não reutilizar CI de outro código nem repetir a auditoria completa sem motivo.
-2. Teste físico 7.6 permanece para quando o usuário puder, sem apagar personagens nem provocar cortes. Validar slots, fadiga, descanso, reinício, viagem e interface em uso normal. Medições reais de memória/latência continuam pendentes.
+2. Smoke físico 7.6 confirmado pelo usuário; detalhamento e ensaios prolongados permanecem para quando puder. Não presumir que testou todos os slots, descanso, reinício, viagem ou interface. Medições reais de memória/latência continuam pendentes. Não apagar personagens nem provocar cortes na placa.
 3. Se houver regressão, reproduzir de modo focado e distinguir software, CI e placa. Preservar limitações explícitas de downgrade e recuperação auxiliar.
 4. Manter docs neste conjunto canônico; não iniciar 7.7/pets/coop como consequência da publicação. Planejamento e port web são separados. DLC de mapas/histórias continua intenção futura.

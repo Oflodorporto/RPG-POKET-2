@@ -4,7 +4,7 @@
 
 Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; os testes físicos de 7.5 foram aprovados pelo usuário em 12/10/2026. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
 
-Publicado: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), 2026.10.12-fatigue76/build 2026101203. 55 suítes/14 sanitizadores, compilação ESP32, manifesto e downloads aprovados no [CI final](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694) e [publicação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904), fonte `26a4314`. Save28 e 488 artes preservados; sem punição offline/alteração de XP. Publicação autorizada pelo usuário sem teste físico 7.6 disponível agora; placa/memória em execução pendentes.
+Publicado: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), 2026.10.12-fatigue76/build 2026101203. 55 suítes/14 sanitizadores, compilação ESP32, manifesto e downloads aprovados no [CI final](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694) e [publicação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904), fonte `26a4314`. Save28 e 488 artes preservados; sem punição offline/alteração de XP. Publicação autorizada sem teste prévio; após publicar, o usuário confirmou testes físicos rápidos funcionando. Cenários não detalhados; ensaios prolongados, de falha e memória em execução pendentes.
 
 ## Fila de trabalho futura, sem promessa de implementação
 
@@ -175,7 +175,7 @@ Cada pacote precisa ter comportamento revisável, testes de persistência, prév
 Cinco próximos passos de continuidade:
 
 1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
-2. 7.5 física aprovada; 7.6 publicado após CI final 38291561694 e publicador 38292646904, ambos aprovados. Teste físico 7.6 pendente.
+2. 7.5 física aprovada; 7.6 publicado após CI final 38291561694 e publicador 38292646904, ambos aprovados. Smoke físico 7.6 confirmado pelo usuário; ensaios detalhados/prolongados e memória em execução pendentes.
 3. Persistência auxiliar 7.6/Save28, manifesto e hashes validados; acompanhar eventual teste físico sem operações destrutivas.
 4. Se houver regressão na versão atual, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
 5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar 7.7/pets/coop por consequência de preparar7.6.

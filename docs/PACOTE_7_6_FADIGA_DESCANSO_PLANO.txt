@@ -1,10 +1,10 @@
 RPG POKET 2.0 — PACOTE 7.6 / FADIGA, ALIMENTAÇÃO E DESCANSO
-IMPLEMENTAÇÃO PUBLICADA; TESTE FÍSICO PENDENTE — 12/10/2026
+IMPLEMENTAÇÃO PUBLICADA; SMOKE FÍSICO CONFIRMADO PELO USUÁRIO — 12/10/2026
 
 ESTADO E AUTORIZAÇÃO
 - O usuário confirmou em 12/10/2026 que os testes físicos de 7.5 passaram e autorizou implementar um registro separado de fadiga por personagem, mantendo Save28 intacto.
 - Desenvolvimento isolado em feat/fatigue76, a partir de docs/porto-continuity-commerce75 e437dde54df26f211c2b54ccd35f5a5ad4d62386. Base histórica: main d63f8441f941b816eb362ef6dc622cd61acdf8b8.
-- Publicação autorizada pelo usuário em 12/10/2026, condicionada à validação final, mesmo sem teste físico disponível agora. Identificação final: 2026.10.12-fatigue76 / build 2026101203. O número é superior ao build de desenvolvimento 2026101202, evitando igualdade de build com versão diferente. Teste físico 7.6 permanece pendente.
+- Publicação autorizada pelo usuário em 12/10/2026, condicionada à validação final, mesmo sem teste físico disponível agora. Identificação final: 2026.10.12-fatigue76 / build 2026101203. O número é superior ao build de desenvolvimento 2026101202, evitando igualdade de build com versão diferente. O teste físico estava pendente na autorização; após publicar, o usuário confirmou testes rápidos funcionando. Isso não equivale a ensaio físico detalhado.
 - Release vigente: 2026.10.12-fatigue76 / build 2026101203, fonte 26a43145a8cd7e45e8716b1f1a34b358c41d47f3. Tag e latest conferidos após publicação. A 7.5 anterior permanece disponível; seu CI não é usado para validar7.6.
 - O agente não gravou firmware, apagou dados ou executou testes físicos na placa. Nenhum serviço pago, recarga ou compra foi ativado. A quota remanescente de CI não está disponível nas ferramentas usadas.
 
@@ -72,6 +72,7 @@ Novos testes: tests/fatigue76.cpp, fatigue76_persistence.cpp, fatigue76_controll
 - Compilação da versão de desenvolvimento: Espressif 3.3.12, ESP32S3 Dev Module, CPU 240 MHz, QIO/flash 16 MiB, OPI PSRAM, USB CDC, partição app3M_fat9M_16MB e EraseFlash=none, iguais à 7.5. Sketch 2.780.334bytes; binário 2.780.480/3.145.728bytes; margem 365.248bytes. Aumento do binário: 2.816 bytes sobre commerce75. RAM estática 54.164/327.680bytes (+32); o resumo do linker deixa 273.516bytes, o que não mede heap livre em execução. Artes+framebuffer seguem 7.145.536bytes fixos de PSRAM; heap, pilhas, TLS, fragmentação, FPS e toque ainda dependem da placa. O workflow não reteve nem publicou binário/manifesto de instalação.
 
 8. PUBLICAÇÃO CONCLUÍDA E VERIFICAÇÃO FINAL
+- Retorno após publicação, 12/10/2026: o proprietário confirmou testes rápidos na placa e relatou funcionamento. Cenários não foram detalhados. Registrar como smoke test físico do usuário, sem atribuir ao agente nem declarar testes prolongados, de falha ou memória em execução. As notas da Release descrevem o estado no momento da publicação; este retorno posterior atualiza a continuidade.
 - O usuário autorizou preparar a versão final, repetir a validação, integrar à main e publicar se passar, mesmo sem poder testar a placa agora. A versão final usa build 2026101203, maior que desenvolvimento 2026101202 e commerce75/build 2026101201.
 - Fonte final: 26a43145a8cd7e45e8716b1f1a34b358c41d47f3. CI não publicador aprovado: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38291561694. Main avançou para esse mesmo commit, sem conflito. Pipeline publicador aprovado: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38292646904. Ambos executaram 55 suítes/14 alvos ASan/UBSan com LeakSanitizer padrão, compilação ESP32 e gates finais; nenhuma mudança de gameplay ocorreu entre eles.
 - Manifesto gerado e aceito pelo parser/checkUpdate real; versão/build, board Waveshare-29667, partição, chip ESP32-S3/9, tamanho OTA, leitores 1..28, URLs e SHA-256 conferidos. O parser original da 7.5 também aceitou o manifesto baixado como atualização de firmware. Na 7.6, a mesma versão fica Atual e admite reparar artes ausentes. Esses testes usam I/O simulado, sem instalação física.
@@ -82,7 +83,7 @@ Novos testes: tests/fatigue76.cpp, fatigue76_persistence.cpp, fatigue76_controll
 - Atualização posterior dos quatro documentos canônicos é apenas documental, sem nova compilação desnecessária. O agente não gravou a placa, apagou NVS/SD, distribuiu mensagens a terceiros ou ativou serviço pago. Quota remanescente de CI não exposta pelas ferramentas.
 
 9. PENDÊNCIAS E CONTINUIDADE
-1. Teste físico 7.6 ainda pendente. Quando o usuário puder, conferir personagens existentes/slots, aumento de fadiga por ações aceitas, descanso gratuito/ração sem duplicação, retorno após reinício e legibilidade. Não forçar grind até 90 nem provocar cortes/apagar slots para reproduzir testes sintéticos.
+1. Smoke físico 7.6 confirmado pelo usuário; ensaios detalhados e prolongados ainda pendentes. Sem lista de cenários, não se presume cobertura de personagens/slots, fadiga, descanso/ração, reinício, viagem ou legibilidade. Essas verificações ficam para quando o usuário puder. Não forçar grind até 90 nem provocar cortes/apagar slots para reproduzir testes sintéticos.
 2. Não confundir CI com validação elétrica, estabilidade prolongada, memória disponível em execução ou atualização Wi-Fi física. Manter alimentação/cartão durante uma instalação real, conforme orientação existente.
 3. Ausência/erro/divergência do auxiliar preserva progresso Save28 e zera somente fadiga com aviso. Downgrade com exclusão/recriação idêntica e falha composta continuam limitados conforme seções 4/5; publicação não remove esses limites.
 4. 7.7, pets, coop e port web não foram implementados nesta entrega. Novos mapas/histórias por DLC são direção futura, sem promessa de compatibilidade.
