@@ -2,7 +2,7 @@
 #include "TestHero.h"
 
 #include "../firmware/RPG_POKET_2/View.h"
-#include "../firmware/RPG_POKET_2/Slots.h"
+#include "../firmware/RPG_POKET_2/FatigueJournal.h"
 #include "../firmware/RPG_POKET_2/TouchGate.h"
 #include <cassert>
 #include <map>
@@ -13,15 +13,17 @@ struct Store {bool ready=true;bool fail=false;std::map<std::string,std::vector<u
  bool deleted(unsigned s){return tomb[s];}bool mark(unsigned s,bool b){if(fail)return false;tomb[s]=b;return true;}
  bool erase(const char* k){if(fail)return false;blobs.erase(k);return true;}
  rpg::Read read(const char* k,uint8_t* b){auto it=blobs.find(k);if(it==blobs.end())return rpg::Read::Missing;memcpy(b,it->second.data(),rpg::SAVE_SIZE);return rpg::Read::Ok;}
+ rpg::Read readFatigue(const char* k,uint8_t* b){auto it=blobs.find(k);if(it==blobs.end())return rpg::Read::Missing;if(it->second.size()!=rpg::FATIGUE_RECORD_SIZE)return rpg::Read::Corrupt;memcpy(b,it->second.data(),rpg::FATIGUE_RECORD_SIZE);return rpg::Read::Ok;}
+ bool writeFatigue(const char* k,const uint8_t* b){if(fail)return false;blobs[k]=std::vector<uint8_t>(b,b+rpg::FATIGUE_RECORD_SIZE);return true;}
  bool write(const char* k,const uint8_t* b){if(fail)return false;blobs[k]=std::vector<uint8_t>(b,b+rpg::SAVE_SIZE);return true;}} nvs;
-using NvsBackend=SlotBackend<Store>;NvsBackend backend(nvs);
+using NvsBackend=FatigueSlotBackend<Store>;NvsBackend backend(nvs);
 struct SerialMock {void println(const char*){}template<class... T>void printf(const char*,T...){}} Serial;
 uint32_t now=0;uint32_t millis(){return now;}uint32_t esp_random(){return 13;}
 bool startNetworkTest(){updateInfo.busy=menu.connected;return menu.connected;}void resetUpdateScreen(){updateInfo=updater::Info{};}bool startUpdate(bool install){if(!menu.connected)return false;updateInfo.busy=true;updateInfo.state=install?updater::State::Downloading:updater::State::Checking;return true;}void paint(uint32_t){}bool openClub(){return true;}void closeClub(){}void clubTap(int,int){}void recoverClubReservation(){}ArtStatus loadSdArt(){return ArtStatus::Ready;}
 bool rememberSlot(uint8_t slot){menu.activeSlot=slot;return true;}bool saveBrightness(uint8_t n){menu.brightness=n;return true;}
 bool tickClock(bool=true){return false;}void prepareClockEdit(){}void adjustClockDraft(int){}bool applyClockDraft(){return true;}bool saveClockConfig(bool a,int o,bool d){menu.clockAutomatic=a;menu.utcOffset=o;menu.dayCycle=d;return true;}void applyBrightness(){}void showSavedNetworks(){menu.savedNetworks=true;}void connectSavedNetwork(){menu.connecting=true;}bool deleteSavedNetwork(){--menu.savedCount;return true;}void testMemory(){menu.memoryTest=1;}void searchNetworks(){menu.scanning=true;}void networkChoice(){}void connectNetwork(){menu.connecting=true;}void forgetConnection(){menu.connected=false;menu.connecting=false;}
 struct SdFake {} sdReader;CardInfo checkCard(SdFake&){CardInfo c;c.status=CardStatus::Verified;return c;}
-rpg::Journal<NvsBackend> journal(backend);
+rpg::FatigueJournal<NvsBackend> journal(backend);
 rpg::Game game;ViewState view;Page afterSave=Page::Home,helpReturn=Page::Home;TouchGate gate;
 bool lcdReady=false,touchReady=false,dirty=true;
 bool buffered=false;
@@ -74,14 +76,14 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
 }
-void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
+void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::FatigueJournal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
 void openCamp(){if(game.eventStage==2){say("Termine a missao da carta");return;}menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
 void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
   view.sale.open=false;backend.slot=slot;firstHints.load(slot);menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
-  view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
+  view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered){bool fatigueReset=journal.fatigueReset;recoverClubReservation();if(fatigueReset)say("Fadiga reiniciada; heroi preservado");}
 }
 void openTitle(){
   view.sale.open=false;menu.sessionStarted=false;menu.creationFromTitle=false;menu.newGameSlots=false;menu.notice="";
@@ -101,7 +103,7 @@ void newTitle(){
 }
 bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
-bool tickIdleClock(uint32_t now,bool blocked){if(blocked){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
+bool tickIdleClock(uint32_t now,bool blocked){if(blocked||view.page==Page::SaveError){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 void tapped(int x,int y){
   lastActivity=millis();if(view.page==Page::Clock){if(menu.sessionStarted&&game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt){
@@ -405,7 +407,7 @@ void tapped(int x,int y){
   }return;}
   if(view.page==Page::Home){int choice=scenicUi::homeChoice(x,y);
     if(choice==0){showMap();}
-    else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)){rpg::rest(game);say("HP, MP e poderes recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
+    else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)||game.fatigue){rpg::rest(game);say("HP, MP, poderes e fadiga recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
     else if(choice==2){view.page=Page::Menu;say("");}return;
   }
   if(view.page==Page::Ruins){int choice=scenicUi::ruinsChoice(x,y);
@@ -569,7 +571,6 @@ void tapped(int x,int y){
   else if(panelUi::battleButtons[2].contains(x,y)){view.choice=0;view.page=Page::Bag;say("");}
   else if(panelUi::battleButtons[3].contains(x,y))action(rpg::Action::Flee);
 }
-
 int main(){
  auto pristine=nvs.blobs;bootTitle();assert(view.page==Page::Title&&!menu.hasContinue&&!canOfferEvents()&&nvs.blobs==pristine);
  tapped(160,190);assert(view.page==Page::Title&&journal.active<0&&nvs.blobs==pristine);

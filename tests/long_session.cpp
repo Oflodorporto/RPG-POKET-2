@@ -8,14 +8,14 @@ static unsigned checkpoints=0, failures=0, battles=0, rounds=0;
 static unsigned letters=0, eventMask=0;
 static void bytes(const rpg::Game& g,uint8_t* b){if(!rpg::valid(g))fprintf(stderr,"INVALID phase=%u cls=%u level=%u city=%u event=%u/%u progress=%u trip=%u dungeon=%u enemy=%u camp=%u valid:event=%d dungeon=%d camp=%d discovery=%d beat=%u hp=%u enemyHP=%u\n",unsigned(g.phase),g.p.cls,g.p.level,g.city,g.eventKind,g.eventStage,g.eventProgress,g.tripStage,g.dungeonFlags,g.enemyId,g.campStage,rpg::eventValid(g),rpg::dungeonValid(g),rpg::campValid(g),rpg::discoveryValid(g),g.enemyBeat,g.p.hp,g.enemyHp);assert(rpg::valid(g));rpg::encode(g,1,b);}
 static void commitAndRestart(){
- uint8_t expected[rpg::SAVE_SIZE],actual[rpg::SAVE_SIZE];bytes(game,expected);
+ uint8_t expected[rpg::SAVE_SIZE],actual[rpg::SAVE_SIZE];bytes(game,expected);auto expectedFatigue=game.fatigue;
  auto protectedBlobs=nvs.blobs;
  bool fail=(checkpoints%17)==0;nvs.fail=fail;
  savedTransition(currentPage());
  if(fail){assert(view.page==Page::SaveError&&nvs.blobs==protectedBlobs);nvs.fail=false;tapped(120,269);++failures;}
  if(view.page==Page::SaveError)fprintf(stderr,"SAVEERR checkpoint=%u fail=%d blocked=%d active=%d phase=%u event=%u/%u progress=%u trip=%u fx=%u\n",checkpoints,fail,journal.blocked,journal.active,unsigned(game.phase),game.eventKind,game.eventStage,game.eventProgress,game.tripStage,unsigned(combatFx.kind));assert(view.page!=Page::SaveError);bytes(game,actual);assert(!memcmp(expected,actual,sizeof(expected)));
  auto committed=nvs.blobs;combatFx.kind=Effect::None;bootTitle();assert(view.page==Page::Title&&nvs.blobs==committed);
- continueTitle();bytes(game,actual);assert(!memcmp(expected,actual,sizeof(expected))&&nvs.blobs==committed);++checkpoints;
+ continueTitle();bytes(game,actual);assert(!memcmp(expected,actual,sizeof(expected))&&game.fatigue==expectedFatigue&&nvs.blobs==committed);++checkpoints;
  now+=913; // Deliberately crosses uint32 millis rollover in the same session.
 }
 static void battle(){
@@ -55,7 +55,7 @@ int main(){
   for(unsigned s=0;s<3;++s){backend.slot=s;rpg::Game empty;journal.load(empty);game=rpg::create(cls,71+s);game.p.xp=rpg::dndXp[(s==0?1:s==1?10:20)-1];rpg::levelUp(game);rpg::rest(game);game.tutorial=true;game.originStory=true;game.originPage=8;game.guildMember=true;assert(journal.save(game));slots[s]=game;}
   for(unsigned cycle=0;cycle<120;++cycle){
    unsigned s=cycle%3;menu.activeSlot=s;backend.slot=s;selectSlot(s);
-   uint8_t old[rpg::SAVE_SIZE],loaded[rpg::SAVE_SIZE];bytes(slots[s],old);bytes(game,loaded);assert(!memcmp(old,loaded,sizeof(old)));
+   uint8_t old[rpg::SAVE_SIZE],loaded[rpg::SAVE_SIZE];bytes(slots[s],old);bytes(game,loaded);assert(!memcmp(old,loaded,sizeof(old))&&game.fatigue==slots[s].fatigue);
    // Actual menu/guide navigation is read-only, and returns to the same menu.
    combatFx.kind=Effect::None;view.page=Page::Menu;auto before=nvs.blobs;
    tapped(65,290);assert(view.page==Page::Guide);tapped(175,240);tapped(120,290);assert(view.page==Page::Menu&&nvs.blobs==before);
@@ -71,7 +71,7 @@ int main(){
    if(cycle%5==0)dailyLetter(21000+cycle);
    slots[s]=game;
    // Loading all other slots cannot overwrite the active or any committed hero.
-   auto allBlobs=nvs.blobs;for(unsigned i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> probe(backend);rpg::Game h;assert(probe.load(h)==rpg::Load::Ok);bytes(h,loaded);bytes(slots[i],old);assert(!memcmp(old,loaded,sizeof(old)));}backend.slot=s;assert(nvs.blobs==allBlobs);
+   auto allBlobs=nvs.blobs;for(unsigned i=0;i<3;++i){backend.slot=i;rpg::FatigueJournal<NvsBackend> probe(backend);rpg::Game h;assert(probe.load(h)==rpg::Load::Ok);bytes(h,loaded);bytes(slots[i],old);assert(!memcmp(old,loaded,sizeof(old))&&h.fatigue==slots[i].fatigue);}backend.slot=s;assert(nvs.blobs==allBlobs);
   }
  }
  // Timer rollover uses the real journey state machine.

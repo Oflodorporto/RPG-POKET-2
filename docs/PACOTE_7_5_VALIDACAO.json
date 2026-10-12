@@ -18,7 +18,7 @@
     "2026-10-12T15:16:30.4364540Z Global variables use 54132 bytes (16%) of dynamic memory, leaving 273548 bytes for local variables. Maximum is 327680 bytes.",
     "2026-10-12T15:16:30.6237789Z PASS: firmware fits OTA; art header, size and CRC checked; release hashes generated"
   ],
-  "physical_board_test": "pending-user",
+  "physical_board_test": "passed-user-confirmation",
   "save_format": 28,
   "assets": 488,
   "art_sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8",
@@ -47,7 +47,7 @@
   "release": "https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75",
   "release_assets_verified": {
     "version": "2026.10.12-commerce75",
-    "physical_board_test": "pending-user",
+    "physical_board_test": "passed-user-confirmation",
     "native_suites": 50,
     "sanitizer_targets": 9,
     "writes_save_format": 28,
@@ -158,5 +158,7 @@
     "physical_board_test_7_4": "approved-by-user-before-7.5",
     "physical_board_test_7_5": "pending-user",
     "next_7_6": "technical plan only; implementation gated on user physical approval of7.5; no save changes"
-  }
+  },
+  "physical_board_test_confirmed_on": "2026-10-12",
+  "physical_board_test_source": "O proprietário confirmou que os testes físicos de 7.5 passaram. Não é medição independente do agente."
 }

@@ -10,7 +10,7 @@ inline StaticQueue_t clubQueueState;inline uint8_t clubQueueBytes[8*sizeof(ClubI
 inline void clubReceive(const esp_now_recv_info_t* info,const uint8_t* data,int len){if(!clubQueue||len!=sizeof(club::Packet))return;ClubInbox entry;memcpy(entry.mac,info->src_addr,6);memcpy(&entry.packet,data,len);xQueueSend(clubQueue,&entry,0);}
 inline void clubSend(void*,const uint8_t* mac,const club::Packet& p){if(!arena.opened)return;if(!esp_now_is_peer_exist(mac)){esp_now_peer_info_t peer{};memcpy(peer.peer_addr,mac,6);peer.channel=6;peer.ifidx=WIFI_IF_STA;esp_now_add_peer(&peer);}esp_now_send(mac,reinterpret_cast<const uint8_t*>(&p),sizeof(p));}
 inline bool clubPersist(){if(journal.save(game))return true;afterSave=view.page;view.page=Page::SaveError;arena.notice="Falha ao salvar; duelo pausado";dirty=true;return false;}
-inline bool clubAdmission(void*,uint32_t id,const club::Peer&){if(arena.begun)return false;auto before=game;const char* err=rpg::reserveFight(game,id);if(err){arena.notice=err;return false;}if(!clubPersist()){game=before;return false;}return true;}
+inline bool clubAdmission(void*,uint32_t id,const club::Peer&){if(arena.begun||view.page==Page::SaveError)return false;auto before=game;const char* err=rpg::reserveFight(game,id);if(err){arena.notice=err;return false;}if(!clubPersist()){game=before;return false;}return true;}
 inline void clubMoveSend(void*,uint16_t seq,uint8_t action,bool ack){arena.session.sendMove(seq,action,ack);}
 inline bool clubBeginMoney(){if(game.clubStage==2)return true;if(!rpg::startFight(game,arena.session.sessionId()))return false;return clubPersist();}
 inline void clubMoveReceive(void*,uint16_t seq,uint8_t action,bool ack,uint32_t now){if(!arena.begun||view.page==Page::SaveError)return;if(!ack&&seq>0&&seq==arena.duel.revision+1&&arena.duel.ready&&!arena.duel.finished&&arena.duel.turn!=arena.duel.local&&action<=3&&arena.duel.fighters[arena.duel.turn].mp>= (action==0||action==3?0:action==2?(arena.duel.fighters[arena.duel.turn].classId==2?3:4):(arena.duel.fighters[arena.duel.turn].classId==1||arena.duel.fighters[arena.duel.turn].classId==3?4:3))&&!clubBeginMoney())return;arena.duel.receive(seq,action,ack,now);dirty=true;}
@@ -29,8 +29,12 @@ inline void finishClub(int result){
 }
 inline void tickClub(uint32_t now){
  if(!arena.opened||view.page==Page::SaveError)return;
- ClubInbox entry;for(unsigned i=0;i<8&&xQueueReceive(clubQueue,&entry,0)==pdTRUE;++i)arena.session.receive(entry.mac,entry.packet,now);
+ ClubInbox entry;for(unsigned i=0;i<8&&xQueueReceive(clubQueue,&entry,0)==pdTRUE;++i){
+  arena.session.receive(entry.mac,entry.packet,now);
+  if(view.page==Page::SaveError)return;
+ }
  arena.session.setAvailable(game.clubStage==1||game.clubStage==2||game.p.gold>=25);arena.session.tick(now);
+ if(view.page==Page::SaveError)return;
  if(arena.session.state==club::State::Linked&&!arena.begun){arena.begun=true;auto& peer=arena.session.opponent;arena.duel.begin(arena.session.sessionId(),arena.session.isInitiator(),game.p.cls,game.p.level,peer.classId,peer.level,clubMoveSend,nullptr,now);view.page=Page::ClubBattle;dirty=true;}
  if(arena.begun&&view.page!=Page::ClubResult){if(arena.session.state!=club::State::Linked){finishClub(-1);return;}arena.duel.tick(now);if(arena.duel.failed)finishClub(-1);else if(arena.duel.finished&&!arena.duel.waiting)finishClub(arena.duel.winner<0?0:arena.duel.winner==arena.duel.local?1:-1);}
  if(arena.session.state==club::State::Notice&&!arena.begun){if(game.clubStage==1){rpg::refundFight(game);if(!clubPersist())return;}arena.notice="Convite encerrado; valor devolvido";}

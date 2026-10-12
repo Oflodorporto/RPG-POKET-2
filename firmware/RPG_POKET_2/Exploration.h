@@ -59,7 +59,7 @@ inline bool startDiscovery(Game& g,bool night=false){
  // Mimic outcome is fixed at discovery, concealed behind its warning.
  if(g.discovery==2&&random(g)%100<5)g.discoverLoot=7;
  if(g.discovery==2&&g.discoverLoot!=7&&random(g)%100<40){g.chestLock=1;g.chestTrap=random(g)%100<25;if(g.discoverLoot==0)g.discoverAmount+=8+g.city*4;}
- return true;
+ addFatigue(g,4);return true;
 }
 inline const char* discoveryName(const Game& g){return g.discovery>=6?"CARGA RECUPERADA":g.discovery==2?"BAU ESQUECIDO":g.discovery==3?"ENCONTRO LOCAL":g.discovery==5?"ACHADO RECOLHIDO":"ALGO PELO CAMINHO";}
 inline const char* lootName(unsigned id){const char* n[]={"Moedas de ouro","Pocao de vida","Pocao de mana","Racao de viagem","Bota velha","Roupa rasgada","Equipamento","Bau inquieto"};return n[id<8?id:0];}

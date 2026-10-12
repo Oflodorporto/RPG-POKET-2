@@ -27,13 +27,17 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
     button(14,272,212,menu.rollReady?(rpg::campSafe(g)?"Descansar":"Enfrentar"):"Aguarde");return;
   }
   snprintf(b,sizeof(b),"D20 + atributos / alvo %u",rpg::campDifficulty(g));center(82,b);
-  magicSprite(c,campArt::heroes[g.p.cls][menu.campRation?1:0][frame%2],56,64,38,99,66,75);
-  magicSprite(c,campArt::fires[frame%4],48,48,121,133,49,49);
-  if(menu.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,157,47,33);
+  c.fillRect(14,93,212,12,0x0843);
+  snprintf(b,sizeof(b),"Fadiga %u/100 / %s",g.fatigue,rpg::fatigueName(g));
+  center(95,b,1,scenicFatigueColor(g));
+  magicSprite(c,campArt::heroes[g.p.cls][menu.campRation?1:0][frame%2],56,64,38,108,58,66);
+  magicSprite(c,campArt::fires[frame%4],48,48,121,136,42,42);
+  if(menu.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,149,43,29);
   c.fillRect(18,180,205,87,0x0843);
   center(183,menu.campRation?"Recupera 100% de HP e MP":"Recupera ate 50% de HP e MP");
+  center(194,menu.campRation?"Fadiga: 0 apos descansar":"Fadiga: -50 apos descansar",1,UI_GREEN);
   box(14,207,212,33);snprintf(b,sizeof(b),"Racao: %s / tem %u",menu.campRation?"SIM":"NAO",g.rations);center(218,b,1,UI_GOLD);
   box(14,244,212,26);center(253,g.sleepKit?(menu.campKit?"Kit: SIM / +2 no teste":"Kit: NAO / dormir no chao"):"Kit: comprar por 80 ouro",1,UI_GOLD);
-  if(*v.message)center(194,v.message,1,UI_RED);
+  if(*v.message){c.fillRect(3,169,234,12,UI_INK);center(171,v.message,1,UI_RED);}
   button(14,272,102,"Voltar");button(124,272,102,"Acampar");
 }

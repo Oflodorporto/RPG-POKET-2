@@ -15,6 +15,10 @@ inline int ruinsChoice(int x,int y){for(int i=0;i<7;++i)if(ruinsButtons[i].conta
 inline bool atlasChoice(int x,int y){return x>=30&&x<75&&y>=65&&y<95;}
 }
 template<class C>void scenicText(C& c,int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextWrap(false);c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);}
+inline uint16_t scenicFatigueColor(const rpg::Game& g) {
+ const uint16_t colors[]={UI_GREEN,UI_BLUE,UI_GOLD,UI_RED};
+ return colors[rpg::fatigueBand(g)];
+}
 template<class C>void scenicPanel(C& c,int x,int y,int w,int h){
  c.fillRect(x,y,w,h,0x0843);c.fillRect(x+3,y+3,w-6,h-6,0x10c6);
  c.drawRect(x,y,w,h,UI_GOLD);c.drawRect(x+2,y+2,w-4,h-4,0x8bcb);c.fillRect(x+4,y+4,w-8,1,0x52ac);
@@ -64,6 +68,10 @@ template<class C>void drawScenicHome(C& c,const rpg::Game& g,const ViewState& v,
  snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g));scenicText(c,17,119,b,1,UI_MUTED);
  if(*v.message){scenicPanel(c,10,251,220,17);scenicText(c,(240-int(strlen(v.message))*6)/2,255,v.message,1,UI_GREEN);}
  scenicPanel(c,10,140,220,30);auto goal=story::objective(g);scenicText(c,17,146,goal.title,1,UI_GOLD);scenicText(c,17,158,"Toque: proximo objetivo");
+ scenicPanel(c,10,180,220,30);
+ snprintf(b,sizeof(b),"Fadiga %u/100 / %s",g.fatigue,rpg::fatigueName(g));
+ scenicText(c,(240-int(strlen(b))*6)/2,186,b,1,scenicFatigueColor(g));
+ scenicText(c,21,198,"Descanso gratis: fadiga volta a 0",1,UI_WHITE);
  const char* names[]={"Mapa","Descanso","Menu"};for(int i=0;i<3;++i){int x=6+i*78;scenicPanel(c,x,274,72,40);scenicText(c,x+(72-int(strlen(names[i]))*6)/2,290,names[i]);}
 }
 template<class C>void scenicWorld(C& c,bool ruins,worldClock::Period period){

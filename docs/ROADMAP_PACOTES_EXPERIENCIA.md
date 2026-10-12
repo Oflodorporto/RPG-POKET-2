@@ -2,9 +2,9 @@
 
 ## Estado atual — 12/10/2026
 
-Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; o teste físico de 7.5 está pendente. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
+Pacote 7.5 publicado: 2026.10.12-commerce75, Save28, 488 artes, 50 suítes e nove alvos com sanitizadores aprovados no CI do commit publicado. Os seis testes físicos de 7.4 foram aprovados pelo usuário; os testes físicos de 7.5 foram aprovados pelo usuário em 12/10/2026. [Continuidade](CONTINUE_ATUAL.txt) · [Auditoria/checklist/retorno](PACOTE_7_5_COMERCIO.txt).
 
-Próxima etapa: [plano técnico 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt). Planejamento/documentação somente até aprovação física de 7.5. Não usar fadiga como substituto de balanceamento de XP, não criar punição por ausência e não alterar o esquema de save sem aprovação. Main, Release e migração continuam dependendo de aprovação do usuário.
+Em desenvolvimento: [Pacote 7.6 — fadiga moderada, alimentação e descanso](PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt), autorizado em branch separado com registro auxiliar por personagem. Save28 permanece intacto; sem punição por ausência ou alteração de XP. Main, Release e eventual migração continuam dependendo de aprovação própria.
 
 ## Fila de trabalho futura, sem promessa de implementação
 
@@ -176,8 +176,8 @@ Cada pacote precisa ter comportamento revisável, testes de persistência, prév
 Cinco próximos passos de continuidade:
 
 1. Ler CONTINUE_ATUAL.txt, conferir a tag/Release/main e usar o CI do commit exato.
-2. Aguardar e registrar o checklist físico7.5; não repetir os seis testes7.4 já aprovados.
-3. Revisar o plano7.6 e decidir sua persistência; manter apenas documentação até aprovação física7.5.
+2. 7.5 física aprovada pelo usuário em 12/10/2026; concluir revisão e validação do desenvolvimento7.6 separado.
+3. Validar a persistência auxiliar7.6 autorizada, mantendo Save28 intacto; conferir CI exato antes de propor publicação.
 4. Se houver regressão7.5, reproduzir de modo focado e separar falha de software, CI e placa antes de corrigir.
 5. Preservar o roadmap futuro e acompanhar o port web separado; não iniciar7.7/pets/coop por consequência de preparar7.6.
 
@@ -191,5 +191,5 @@ Pacote7.3: sessões mistas/retomadas/slots/renderização longa auditados;47suí
 
 Pacote7.4 concluído:2026.10.11-balance74,48suítes/sete sanitizadores/compilação/download aprovados. Recompensas futuras por dificuldade,Save28 e488artes preservados; relatório PACOTE_7_4_PROGRESSAO.txt. Os seis testes físicos7.4 foram aprovados pelo usuário antes de7.5.
 
-Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5física pendente. 7.6 autorizado somente como planejamento/documentação até aprovação física7.5; ver o plano técnico vinculado acima.
+Pacote7.5 concluído:2026.10.12-commerce75. Comércio comquantidade/confirmar,preços sem arbitragem e equipamento por região.50suítes/9sanitizadores/compilação/download aprovados;Save28 e488artes preservados.7.4aprovada fisicamente pelo usuário;7.5 física aprovada pelo usuário em12/10/2026. 7.6 autorizado para implementação em branch separado com persistência auxiliar, sem alterar Save28; publicação depende de aprovação. Ver documento técnico vinculado acima.
 

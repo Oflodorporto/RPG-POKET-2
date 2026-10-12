@@ -1,32 +1,29 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Revisão documental: 12/10/2026, 17:02 UTC. Nenhuma mudança de firmware, save ou Release.
+Atualização: 12/10/2026. Pacote 7.5 aprovado na placa pelo usuário; 7.6 em desenvolvimento separado.
 
-ESTADO CONFERIDO NO GITHUB
-- Release vigente: 2026.10.12-commerce75 / build 2026101201.
-- Tag: v2026.10.12-commerce75, commit 553f2ea523628472c5fd717c6187c9a6a49314fb.
-- main auditada: d63f8441f941b816eb362ef6dc622cd61acdf8b8; apenas documentação depois da fonte publicada.
-- CI de publicação 38270406291: aprovado; 50 suítes, nove alvos ASan/UBSan, compilação ESP32 e preparação/publicação dos três arquivos. Evidências e limites no relatório 7.5.
-- Save28 de 128 bytes, leitura validada de formatos 1..28; três slots. 488 artes. Nenhuma migração nesta etapa.
-- Testes físicos 7.4 aprovados pelo usuário. Teste físico 7.5 pendente. O agente não gravou nem testou a placa.
+ESTADO CONFERIDO
+- Release vigente: 2026.10.12-commerce75 / build 2026101201, fonte 553f2ea523628472c5fd717c6187c9a6a49314fb.
+- Main conferida: d63f8441f941b816eb362ef6dc622cd61acdf8b8. Não foi alterada por este desenvolvimento.
+- CI publicado 38270406291 valida somente 7.5: 50 suítes/nove sanitizadores/compilação ESP32 e arquivos. Não usar esse resultado para declarar 7.6 compilado.
+- O usuário confirmou em 12/10/2026 que os testes físicos7.5 passaram e autorizou persistência auxiliar de fadiga, mantendo Save28 intacto.
+- Branch local de desenvolvimento: feat/fatigue76, baseado na revisão documental e437dde54df26f211c2b54ccd35f5a5ad4d62386. Identificação 2026.10.12-fatigue76-dev / build 2026101202; nenhuma Release nova.
+- Save28/128 bytes/leitura1..28 e 488 artes preservados. Fadiga usa registro separado pareado com o snapshot exato. Limitação de downgrade/recriação idêntica descrita no documento7.6.
+- O agente não gravou/testou a placa, acessou o computador do usuário, apagou NVS/SD ou ativou serviço pago.
 
-FONTES CANÔNICAS, SEM DUPLICAR RELATÓRIOS
+FONTES CANÔNICAS
 Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
-CI: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291
-Auditoria, checklist físico e formulário de retorno: docs/PACOTE_7_5_COMERCIO.txt
-Evidências estruturadas: docs/PACOTE_7_5_VALIDACAO.json
-Economia: docs/PACOTE_7_5_ECONOMIA.csv
-Plano técnico 7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
-Roadmap geral: docs/ROADMAP_PACOTES_EXPERIENCIA.md
+CI7.5: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38270406291
+Regras e retorno físico7.5: docs/PACOTE_7_5_COMERCIO.txt
+Evidências7.5: docs/PACOTE_7_5_VALIDACAO.json
+Economia preservada: docs/PACOTE_7_5_ECONOMIA.csv
+Implementação, testes e limites7.6: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
+Roadmap: docs/ROADMAP_PACOTES_EXPERIENCIA.md
 Sketch: firmware/RPG_POKET_2/RPG_POKET_2.ino
-docs/CONTINUE_PACOTE_7_5.txt conserva o registro histórico da publicação; este arquivo é o ponto de retomada atual.
+Registro histórico da publicação7.5: docs/CONTINUE_PACOTE_7_5.txt
 
 PRÓXIMAS AÇÕES
-1. Antes de trabalhar, verificar main, tag e CI atuais. Reutilizar evidências válidas do commit exato; não reconstruir nem reimplementar entregas sem necessidade.
-2. O usuário executa o checklist seguro 7.5 com os personagens existentes. Não apagar/resetar slots, NVS ou SD e não provocar corte durante gravação/OTA.
-3. Registrar o retorno no formulário do relatório 7.5. Seu irmão poderá testar a própria placa depois; nenhum envio ou distribuição é realizado por esta documentação.
-4. Manter 7.6 somente como plano até aprovação física de 7.5. Não reutilizar bytes do Save28 para fadiga nem iniciar migração silenciosa. Qualquer nova persistência depende da decisão explícita descrita no plano.
-5. Se houver regressão concreta, reproduzir em teste focado, proteger saves e confirmar a correção antes de ampliar o escopo. Mudanças em main, Release ou save dependem de aprovação do usuário.
-
-PRESERVAR
-PvP, três slots, quatro raças, quatro classes, cores personalizadas, XP/progressão, poderes, missões, campanha, oito Cartas, equipamentos e todas as artes. Sem auto-flash, arquivos .rpg, mudança em Heltec ou acesso ao computador do usuário nesta auditoria.
-7.7, pets e coop permanecem planejamento futuro. A versão de navegador já começou em trabalho separado: acompanhar, sem duplicar implementação.
+1. Ler o documento7.6 e verificar HEAD/diff atuais. Não repetir auditoria/compilações sem motivo ou reutilizar CI de outro commit.
+2. Agregado local final aprovado: 55 suítes e 14 alvos ASan/UBSan, com LeakSanitizer indisponível neste executor. Revisão estática e autorização de envio somente ao branch separado concluídas; usar o workflow de validação sem publicação.
+3. Verificar a compilação ESP32, tamanho OTA e CI do commit exato. A quota de CI não está exposta nas ferramentas disponíveis; nenhum plano pago foi ativado.
+4. Teste físico7.6 e Release dependem de etapas/aprovação próprias. Não apagar personagens ou provocar corte em gravação/OTA na placa para imitar testes sintéticos.
+5. Preservar PvP, três slots, raças/classes/cores, XP/poderes, comércio/contratos, campanha/Cartas, dungeons e artes. 7.7, pets e coop permanecem futuros. Port web segue separado; DLC de novos mapas/histórias é intenção futura.

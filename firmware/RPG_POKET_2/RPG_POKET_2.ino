@@ -18,7 +18,7 @@
 #include "View.h"
 #include "FrameBuffer.h"
 #include "SdReader.h"
-#include "Slots.h"
+#include "FatigueJournal.h"
 #include "DeviceSettings.h"
 #include "UpdateDevice.h"
 Arduino_HWSPI bus(42,45,39,38,40);
@@ -31,15 +31,22 @@ struct NvsStore {
     return readNvsRecord(prefs,ready,key,b);
   }
   bool write(const char* key,const uint8_t* b){return ready&&prefs.putBytes(key,b,rpg::SAVE_SIZE)==rpg::SAVE_SIZE;}
+  rpg::Read readFatigue(const char* key,uint8_t* out){
+    if(!ready)return rpg::Read::Error;
+    if(!prefs.isKey(key))return rpg::Read::Missing;
+    if(prefs.getBytesLength(key)!=rpg::FATIGUE_RECORD_SIZE)return rpg::Read::Corrupt;
+    return prefs.getBytes(key,out,rpg::FATIGUE_RECORD_SIZE)==rpg::FATIGUE_RECORD_SIZE?rpg::Read::Ok:rpg::Read::Error;
+  }
+  bool writeFatigue(const char* key,const uint8_t* b){return ready&&prefs.putBytes(key,b,rpg::FATIGUE_RECORD_SIZE)==rpg::FATIGUE_RECORD_SIZE;}
   uint32_t readGuide(unsigned slot){char k[4];snprintf(k,sizeof(k),"h%u",slot);return ready?prefs.getUInt(k,0):0;}
   bool writeGuide(unsigned slot,uint32_t value){char k[4];snprintf(k,sizeof(k),"h%u",slot);return ready&&slot<3&&prefs.putUInt(k,value)==4;}
   bool deleted(uint8_t slot){char k[4];snprintf(k,sizeof(k),"t%u",slot);return prefs.getBool(k,false);}
   bool mark(uint8_t slot,bool value){char k[4];snprintf(k,sizeof(k),"t%u",slot);return ready&&prefs.putBool(k,value)==1;}
   bool erase(const char* key){return ready&&(!prefs.isKey(key)||prefs.remove(key));}
 } nvs;
-using NvsBackend=SlotBackend<NvsStore>;
+using NvsBackend=FatigueSlotBackend<NvsStore>;
 NvsBackend backend(nvs);
-rpg::Journal<NvsBackend> journal(backend);
+rpg::FatigueJournal<NvsBackend> journal(backend);
 rpg::Game game;ViewState view;Page afterSave=Page::Home,helpReturn=Page::Home;TouchGate gate;
 bool lcdReady=false,touchReady=false,dirty=true;
 bool buffered=false;
@@ -130,14 +137,14 @@ void action(rpg::Action a){
   else if(a==rpg::Action::Fireball)beginEffect(Effect::FireBurst,false);
   else if(a==rpg::Action::SacredWeapon||a==rpg::Action::TurnUndead)beginEffect(Effect::Radiant,a==rpg::Action::SacredWeapon);
 }
-void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::Journal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
+void refreshSlots(){uint8_t old=backend.slot;for(uint8_t i=0;i<3;++i){backend.slot=i;rpg::FatigueJournal<NvsBackend> preview(backend);menu.slots[i]=preview.load(menu.previews[i]);}backend.slot=old;menu.hasContinue=false;for(auto status:menu.slots)if(status==rpg::Load::Ok||status==rpg::Load::Recovered)menu.hasContinue=true;}
 void openCamp(){if(game.eventStage==2){say("Termine a missao da carta");return;}menu.campRation=menu.campKit=false;view.page=Page::CampSetup;say("");}
 void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
   view.sale.open=false;backend.slot=slot;firstHints.load(slot);menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.choice=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
-  view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered)recoverClubReservation();
+  view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered){bool fatigueReset=journal.fatigueReset;recoverClubReservation();if(fatigueReset)say("Fadiga reiniciada; heroi preservado");}
 }
 void openTitle(){
   view.sale.open=false;menu.sessionStarted=false;menu.creationFromTitle=false;menu.newGameSlots=false;menu.notice="";
@@ -157,7 +164,7 @@ void newTitle(){
 }
 bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
-bool tickIdleClock(uint32_t now,bool blocked){if(blocked){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
+bool tickIdleClock(uint32_t now,bool blocked){if(blocked||view.page==Page::SaveError){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 void tapped(int x,int y){
   lastActivity=millis();if(view.page==Page::Clock){if(menu.sessionStarted&&game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt){
@@ -461,7 +468,7 @@ void tapped(int x,int y){
   }return;}
   if(view.page==Page::Home){int choice=scenicUi::homeChoice(x,y);
     if(choice==0){showMap();}
-    else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)){rpg::rest(game);say("HP, MP e poderes recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
+    else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)||game.fatigue){rpg::rest(game);say("HP, MP, poderes e fadiga recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
     else if(choice==2){view.page=Page::Menu;say("");}return;
   }
   if(view.page==Page::Ruins){int choice=scenicUi::ruinsChoice(x,y);

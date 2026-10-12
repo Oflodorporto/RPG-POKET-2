@@ -1,6 +1,6 @@
 RPG POKET 2.0 — PACOTE 7.5 / COMÉRCIO REGIONAL
 Versão publicada:2026.10.12-commerce75, build2026101201. Base:2026.10.11-balance74.
-O usuário aprovou os seis testes físicos7.4. O agente não testou a placa nem gravou firmware nela.
+O usuário aprovou os seis testes físicos7.4 e confirmou em 12/10/2026 que os testes físicos7.5 passaram. O agente não testou a placa nem gravou firmware nela.
 
 FUNCIONALIDADES
 Loja > Vender abre uma lista de itens existentes na bolsa. Selecionar abre a confirmação com nome, estoque, quantidade, preço unitário e total. Botões grandes -1, +1, Todos, Cancelar, Confirmar. Venda bem-sucedida abre um recibo; toques repetidos não reaplicam a mesma transação. A venda de sucata pelo atalho da bolsa agora também exige confirmação. Equipamentos continuam com confirmação própria ou pela lista geral.
@@ -61,7 +61,7 @@ Gravidade (crítica: perda de save/progresso; alta: bloqueia jogar/atualizar; m�
 Foto ou vídeo opcional; ocultar notificações/dados pessoais. Não enviar senha, credencial Wi-Fi ou dados pessoais desnecessários.
 Anotar também o que passou. Teste em outra placa, inclusive do irmão do usuário, é validação separada; esta etapa não envia firmware nem convida/distribui o jogo a terceiros.
 
-O teste físico 7.5 continua pendente até o retorno do usuário. Esta revisão usa código, CI e metadados da Release; não executou upload nem testes na placa. 7.6 permanece somente plano até a aprovação física de 7.5.
+Retorno recebido em 12/10/2026: o usuário confirmou que os testes físicos de 7.5 passaram. Não foi fornecido um resultado separado para cada linha do formulário, nem uma medição de heap/latência. O agente não executou upload ou testes na placa. O usuário autorizou 7.6 em branch separado e a persistência auxiliar de fadiga, mantendo Save28 intacto; publicação não foi autorizada.
 
 PUBLICAÇÃO CONFIRMADA
 Release:https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-commerce75
@@ -85,7 +85,7 @@ REVALIDAÇÃO DE CONTINUIDADE — 12/10/2026, 17:02 UTC
 5. Save confirmado em código: SaveVersion.h=28; Save.h grava128bytes e só aceita versões1..28 com tamanho correspondente (64bytes1..6,96bytes7..10,128bytes11..28), CRC válido, migrações e invariantes válidas. Não significa que um arquivo corrompido de qualquer dessas versões seja aceito. Slots.h mantém os três pares alternados. Comparação balance74..commerce75 não altera Save.h/SaveVersion.h/Slots.h, Gear.h, ClubProtocol/ClubDuel, AssetCatalog ou cartao. Testes de migração, erro/retry e isolamento passaram no CI. Nenhuma autorização de downgrade/edição de saves decorre disso.
 6. Memória: sketch2.777.522/3.145.728 bytes; binário2.777.664 deixa368.064bytes na partição de aplicação (aprox.11,7%). RAM estática54.132bytes e273.548bytes restantes no resumo do linker não equivalem a heap livre em execução. Artes6.991.936bytes + framebuffer153.600bytes =7.145.536bytes fixos de PSRAM; em8MiB sobram teoricamente1.243.072 antes de pilhas, TLS, alocador e demais usos. Não há medição real nesta passagem de heap livre/mínimo, maior bloco, fragmentação, FPS, toque, bateria ou estabilidade prolongada. Manter esse limite para7.6/7.7; não adicionar imagens/buffers grandes por hipótese.
 7. Limites: CI aprovado não é teste físico. A simulação usa I/O/rede/tempo substitutos; não cobre comportamento elétrico, FAT32 sob corte nem rollback de firmware que não inicialize. Logs têm avisos do compilador (indentação, switch, tipos e fixtures) e de ações Node; não foram convertidos em falhas comprovadas nem corrigidos fora do escopo. Trajetórias O1/O2 distintas continuam observação técnica já documentada na7.3, com invariantes aprovadas.
-8. Pendências reais: retorno físico7.5; percepção do ritmo de ouro/consumíveis; medições prolongadas na placa; revisão futura dos avisos se houver caso concreto. Foi corrigida apenas a documentação de continuidade que ainda chamava7.2 de atual ou7.4 de não validada. Plano7.6 em PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt, sem implementação.
+8. Pendências reais: percepção do ritmo de ouro/consumíveis; medições prolongadas na placa; revisão futura dos avisos se houver caso concreto. Foi corrigida apenas a documentação de continuidade que ainda chamava7.2 de atual ou7.4 de não validada. 7.6 em desenvolvimento autorizado, em branch separado; implementação e limites em PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt.
 
 FONTES DA REVALIDAÇÃO
 Tag: https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.12-commerce75

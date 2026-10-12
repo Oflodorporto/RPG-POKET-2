@@ -1,0 +1,44 @@
+name: Validar 7.6 sem publicar
+on:
+  push:
+    branches: [feat/fatigue76]
+    paths: ["firmware/**", "tests/**", "tools/**", ".github/workflows/fatigue76-check.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: fatigue76-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/fatigue76'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testar regras, controlador, persistencia e telas
+        # Existing runner deterministically reconstructs artes.pak from tracked compressed assets.
+        run: bash tools/test_native.sh
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar o mesmo core ESP32 da versao 7.5
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar para validacao, sem gravar nem publicar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Conferir limite OTA e artes preservadas
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          firmware = Path('build/RPG_POKET_2.ino.bin').read_bytes()
+          assert 0 < len(firmware) <= 3145728, 'Firmware excede particao OTA'
+          art = Path('cartao/RPGPOKET/artes.pak').read_bytes()
+          assert hashlib.sha256(art).hexdigest() == 'bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8'
+          print(f'PASS: firmware {len(firmware)} / 3145728 bytes; artes 488 intactas')
+          PY
