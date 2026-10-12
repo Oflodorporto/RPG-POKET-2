@@ -110,7 +110,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
   if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
     center(16,selling?"VENDER EQUIPAMENTO":"KIT DE ACAMPAMENTO",2,UI_GOLD);
-    if(selling){center(130,"Quantidade: 1");box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);center(207,"O item sera retirado da bolsa.");}
+    if(selling){center(130,"Quantidade: 1");box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);snprintf(b,sizeof(b),"Unidade: %u ouro",rpg::sellPrice(g,v.itemId));center(193,b);center(207,"O item sera retirado da bolsa.");}
     else {magicSprite(c,campArt::kit,48,48,84,55,72,72);center(146,"Preco: 80 ouro",2,UI_GOLD);center(180,"Reutilizavel / +2 no teste");center(204,"Saco de dormir ao lado do heroi.");}
     center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
   }
