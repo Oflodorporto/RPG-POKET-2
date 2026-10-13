@@ -1,5 +1,6 @@
 #pragma once
 #include "EnemyArt.h"
+#include "EnemyScale.h"
 #include "CombatPresentation.h"
 // These phases resample existing effect clocks. They never delay resolution, save or input.
 inline enemyArt::Pose enemyPose(bool active,const CombatResult& r,unsigned progress,bool targetHero,bool waiting=false){

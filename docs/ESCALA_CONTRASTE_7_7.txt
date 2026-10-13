@@ -1,0 +1,76 @@
+RPG POKET — PACOTE 4: ESCALA E CONTRASTE DE INIMIGOS E CHEFES
+Preparação scale77, baseada no código publicado scenes77 dd626414.
+
+Objetivo
+Corrigir adversários que pareciam pequenos demais junto ao herói e que se
+confundiam com os corredores. As artes originais dos 29 inimigos permanecem.
+
+Mudanças
+- Enquadramento fixo por espécie, calculado sobre a união das quatro poses
+  originais. O desenho não é esticado nem recortado dinamicamente por pose.
+- Goblin, quadrúpedes, criaturas baixas, espectros e chefes mantêm silhuetas
+  diferentes. A escala da mesma espécie não depende mais do antigo envelope
+  estreito usado em algumas dungeons.
+- Perspectiva continua diminuindo com a distância. Algumas silhuetas largas
+  recebem até oito pixels de deslocamento lateral a uma casa, quatro a duas;
+  isso preserva a leitura das mãos e não muda células, alcance ou alvos.
+- Contorno discreto de um pixel no combate externo e uma amostra de dois
+  pixels na dungeon, respeitando paredes, faixa de cena e desaparecimento.
+  As cores internas da arte RGB565 continuam idênticas às originais.
+- Os impactos externos passam a mirar um pixel real do adversário, incluindo
+  Mísseis Mágicos, criaturas baixas, alvos flutuantes e desaparecimento.
+- O enquadramento externo reserva a união inteira das quatro poses e sete
+  pixels de recuo. Textos, botões, indicadores e mãos mantêm seus lugares.
+
+Escopo preservado
+231 arquivos protegidos de firmware/arte são comparados byte a byte com a
+base publicada. Estatísticas, recompensas, RNG, controles, Save29, época 1 do
+reset, três slots, viagem diária, relógio e regras de progressão não mudam.
+O pacote artes.pak continua com 666 entradas, 7.470.912 bytes de conteúdo e
+SHA-256 14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56.
+
+Verificações focadas aprovadas
+- 1.276 verificações novas de pose, enquadramento, recuo, estado e HUD;
+  58 impactos externos reais e desaparecimentos; 29 uniões de poses exatas.
+- 4.263 frames semânticos de inimigos, 295 frames de dungeon e 36 contatos
+  projetados, incluindo reutilização sequencial do decodificador e fallback.
+- 652 amostras de mãos contra 464 silhuetas: maior sobreposição próxima de
+  corpo + contorno de 3,9252%; zero sobreposição distante e zero no núcleo
+  protegido. Os limites antigos de 4%/0%/0% foram mantidos.
+- Auditoria independente de 29 espécies × quatro poses em distâncias de
+  1, 2, 3, 4 e 6 casas, com 50 máscaras reais de mãos e recuo de 0 a 6.
+- 6.144 sprites personalizados externos preservados pixel a pixel. As mãos
+  da dungeon continuam com a arte original, sem novos recolorimentos.
+- 135 capturas nativas 240×320 antes/depois: 29 espécies de dia e à noite,
+  quatro classes, exemplos reportados e dungeons reais próximas/distantes.
+  A comparação exige os mesmos pixels de HUD fora da faixa de combate.
+  Guardião não tem spawn real de dungeon; sua comparação é externa.
+
+Memória e custo
+Nenhum novo quadro de imagem, buffer, leitura por frame ou alocação dinâmica.
+A tabela de enquadramento ocupa 232 bytes constantes. O decodificador mantém
+13.760 bytes; framebuffer mantém 153.600. PSRAM conhecida estimada permanece
+7.638.272 bytes. Isso não é uma medição de heap livre na placa.
+
+Inimigos maiores exigem mais amostras de desenho. O percurso externo usa a
+união fixa das poses para evitar varrer toda a transparência: limite geométrico
+conservador de 104×95 amostras por adversário. A faixa de dungeon limita o
+percurso a 120×69 amostras antes do corte por paredes. O contorno pode consultar
+até quatro vizinhos transparentes; a decodificação continua em 6.880 pixels.
+Esses são limites de trabalho do render, não uma medição de FPS ou latência.
+
+Gates finais
+A regressão completa tem 91 suítes normais e 50 com ASan/UBSan, além dos
+verificadores de assets/transições. O resultado final deve ser confirmado no
+log e no CI do mesmo commit. LeakSanitizer não funciona sob o ptrace deste
+executor local; o CI mantém detecção de vazamentos habilitada. A compilação
+ESP32 real, tamanho do binário, manifesto e transições OTA são gates do CI.
+Nenhum número do firmware anterior deve ser tratado como tamanho do candidato.
+
+Publicação e teste físico
+Esta preparação não publica main, tag ou Release, nem atualiza a placa.
+A publicação depende da liberação após o teste físico de scenes77 pelo dono
+e da qualificação técnica do commit final. Depois da instalação de scale77,
+ainda é necessário conferir na placa: leitura de Espectro/Vigia/chefes perto
+e longe, ataques e desaparecimento, mãos, retorno aos controles, corredor
+claro/escuro e fluidez. Não se declara FPS, heap livre ou aprovação física.

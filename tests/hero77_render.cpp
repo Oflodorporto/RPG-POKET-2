@@ -41,21 +41,27 @@ void writeMask(std::ofstream& out,const RasterMask& mask){
  std::array<uint8_t,(240*172)/8> packed{};for(unsigned i=0;i<mask.size();++i)if(mask[i])packed[i/8]|=uint8_t(1u<<(i%8));out.write(reinterpret_cast<const char*>(packed.data()),packed.size());
 }
 void writeNumber(std::ofstream& out,unsigned value){for(unsigned i=0;i<4;++i)out.put(char(value>>(i*8)));}
-struct EnemyRaster {RasterMask body,head,torso;};
+struct EnemyRaster {RasterMask body,head,torso,rim;};
 EnemyRaster enemyRaster(unsigned id,unsigned pose,unsigned distance,bool expedition,int recoil=0){
  const auto frame=enemyArt::body(id,enemyArt::Pose(pose));const auto image=enemyArt::decode(frame);
  assert(image.pixels&&image.w==80&&image.h==86);
- const int envelopeW=expedition?(id>=25?64:80):48,envelopeH=expedition?(id>=25?80:86):64;
- // Same centered, full-opacity projection/fit/sampling as DungeonView's billboard.
- // Walls are deliberately absent; this measures centered full silhouettes,
- // not the percentage of a smaller silhouette partially hidden by a wall.
- const int height=std::min(250,int(172*.8f/distance)),width=height*envelopeW/envelopeH;
- const int base=int(86+86.f/distance);const auto fit=enemyArt::fitWorld(frame,120+recoil,base,width,height);
- assert(fit.anchorX==120+recoil);if(frame.anchor==enemyArt::Anchor::Ground)assert(fit.anchorY==base);else assert(fit.y==base-fit.h);
+ (void)expedition;
+ // Independently reproduce the documented species profile sizing. No legacy
+ // region envelope is allowed to make the same species smaller in one dungeon.
+ const auto& profile=enemyScale::profile(id);
+ const int canonical=profile.worldHeight;
+ const int height=std::min(350,int(float(canonical)/distance)),width=height*80/86;
+ const int base=int(86+86.f/distance);const auto fit=enemyArt::fitWorld(frame,120+recoil+int(profile.worldOffset/float(distance)),base,width,height);
+ assert(fit.anchorX==120+recoil+int(profile.worldOffset/float(distance)));if(frame.anchor==enemyArt::Anchor::Ground)assert(fit.anchorY==base);else assert(fit.y==base-fit.h);
  EnemyRaster result;
- for(int x=std::max(0,fit.x);x<std::min(240,fit.x+fit.w);x+=2)for(int y=std::max(0,fit.y);y<std::min(172,fit.y+fit.h);y+=2){
+ for(int x=std::max(0,fit.x);x<std::min(240,fit.x+fit.w);x+=2)for(int y=std::max(34,fit.y);y<std::min(172,fit.y+fit.h);y+=2){
   const unsigned ix=(x-fit.x)*image.w/fit.w,iy=(y-fit.y)*image.h/fit.h;
-  if(image.pixels[iy*image.w+ix]==enemyArt::TRANSPARENT)continue;
+  if(image.pixels[iy*image.w+ix]==enemyArt::TRANSPARENT){
+   const auto opaque=[&](int px,int py){return px>=0&&py>=0&&px<80&&py<86&&image.pixels[py*80+px]!=enemyArt::TRANSPARENT;};
+   if(opaque((x-2-fit.x)*80/fit.w,iy)||opaque((x+2-fit.x)*80/fit.w,iy)||opaque(ix,(y-2-fit.y)*86/fit.h)||opaque(ix,(y+2-fit.y)*86/fit.h))
+    for(int dx=0;dx<2&&x+dx<240;++dx)for(int dy=0;dy<2&&y+dy<172;++dy)result.rim.set((y+dy)*240+x+dx);
+   continue;
+  }
   // Explicit canonical, opaque-only core: central half x20..59, upper y0..23
   // (head) and middle y24..61 (torso). These are screen-readability regions,
   // not anatomical claims for nonhumanoid creatures, wings or extended weapons.
@@ -123,13 +129,13 @@ struct Silhouette {
 };
 Canvas overlapCanvas(const Silhouette& shape,const OverlapCase& sample){
  Canvas out;out.fillScreen(0x18e3);const auto& raster=shape.raster[sample.recoil];
- for(unsigned i=0;i<240*172;++i){if(raster.body[i])out.pixels[i]=raster.head[i]?0xffe0:raster.torso[i]?0x07ff:UI_GREEN;if(sample.foreground[i])out.pixels[i]=raster.body[i]?0xf81f:UI_WHITE;}
+ for(unsigned i=0;i<240*172;++i){if(raster.rim[i])out.pixels[i]=0x8c30;if(raster.body[i])out.pixels[i]=raster.head[i]?0xffe0:raster.torso[i]?0x07ff:UI_GREEN;if(sample.foreground[i])out.pixels[i]=raster.body[i]?0xf81f:UI_WHITE;}
  return out;
 }
 void contactSheet(const std::string& path,const std::vector<Silhouette>& shapes,bool expedition,unsigned distance){
  constexpr unsigned width=120*4,tileHeight=108,height=tileHeight*29;std::vector<uint16_t> pixels(width*height,0x18e3);
  for(const auto& shape:shapes)if(shape.expedition==expedition&&shape.distance==distance){auto tile=overlapCanvas(shape,shape.worst);
-  char label[24];snprintf(label,sizeof(label),"ID%02u P%u %5.2f%%",shape.id,shape.pose,shape.maxCovered*100.0/shape.raster[shape.worst.recoil].body.count());
+  char label[24];snprintf(label,sizeof(label),"ID%02u P%u %5.2f%%",shape.id,shape.pose,shape.maxCovered*100.0/(shape.raster[shape.worst.recoil].body|shape.raster[shape.worst.recoil].rim).count());
   tile.setTextSize(1);tile.setTextColor(UI_WHITE);tile.setCursor(0,176);tile.print(label);
   snprintf(label,sizeof(label),"H%u T%u C%u A%u",shape.maxHead,shape.maxTorso,shape.worst.cls,shape.worst.action);tile.setCursor(0,194);tile.print(label);
   for(unsigned y=0;y<86;++y)for(unsigned x=0;x<120;++x)pixels[(shape.id*tileHeight+y)*width+shape.pose*120+x]=tile.pixels[(y*2)*240+x*2];
@@ -215,14 +221,15 @@ int main(int argc,char** argv){
   if(maskDump.is_open()){for(unsigned n:{unsigned(g.p.cls),action,p,unsigned(modern),unsigned(recoil)})writeNumber(maskDump,n);writeMask(maskDump,foreground);}
   OverlapCase sample{g.p.cls,action,p,modern,recoil,foreground};double nearPct=0,farPct=0;unsigned sampleHead=0,sampleTorso=0;
   for(size_t index=0;index<silhouettes.size();++index){auto& shape=silhouettes[index];const int shapeRecoil=shape.distance==1?recoil:0;const auto& raster=shape.raster[shapeRecoil];
-   const unsigned covered=(raster.body&foreground).count(),head=(raster.head&foreground).count(),torso=(raster.torso&foreground).count();const double pct=covered*100.0/raster.body.count();
+   const auto silhouette=raster.body|raster.rim;
+   const unsigned covered=(silhouette&foreground).count(),head=(raster.head&foreground).count(),torso=(raster.torso&foreground).count();const double pct=covered*100.0/silhouette.count();
    if(!shape.comparisons||covered>shape.maxCovered){shape.maxCovered=covered;shape.worst=sample;shape.worst.recoil=shapeRecoil;}
    ++shape.comparisons;shape.maxHead=std::max(shape.maxHead,head);shape.maxTorso=std::max(shape.maxTorso,torso);sampleHead=std::max(sampleHead,head);sampleTorso=std::max(sampleTorso,torso);
    if(shape.distance==1){nearPct=std::max(nearPct,pct);if(pct>maxNearPct){maxNearPct=pct;worstShape=index;}}
    else {farPct=std::max(farPct,pct);maxFarPct=std::max(maxFarPct,pct);}
    // Keep the approved readability limits; record all failures before asserting
    // so a genuine asset/layout conflict has an actionable report and fixture.
-   if((shape.distance==1&&covered*100>raster.body.count()*4)||(shape.distance==2&&covered)||head||torso)++thresholdViolations;
+   if((shape.distance==1&&covered*100>silhouette.count()*4)||(shape.distance==2&&covered)||head||torso)++thresholdViolations;
   }
   maxHead=std::max(maxHead,sampleHead);maxTorso=std::max(maxTorso,sampleTorso);
   if(pixels>maxPixels){maxPixels=pixels;c.save(combined+"/foreground-max-occupation.ppm");}
@@ -236,7 +243,7 @@ int main(int argc,char** argv){
  }
  for(unsigned cls=0;cls<4;++cls){auto g=hero(cls);ViewState v;v.effect=Effect::None;v.effectProgress=0;auditForeground(g,v,UINT16_MAX,true);}
  std::ofstream familyReport(combined+"/enemy-pose-occlusion.csv");assert(familyReport);familyReport<<"enemy_id,pose,envelope,distance,opaque_pixels,max_covered,max_pct,max_head_pixels,max_torso_pixels,comparisons,worst_class,worst_progression,worst_action,worst_phase,worst_recoil\n";
- for(const auto& shape:silhouettes){const unsigned total=shape.raster[shape.worst.recoil].body.count();familyReport<<shape.id<<','<<shape.pose<<','<<(shape.expedition?"expedition":"normal")<<','<<shape.distance<<','<<total<<','<<shape.maxCovered<<','<<shape.maxCovered*100.0/total<<','<<shape.maxHead<<','<<shape.maxTorso<<','<<shape.comparisons<<','<<shape.worst.cls<<','<<(shape.worst.modern?"new":"legacy")<<','<<shape.worst.action<<','<<shape.worst.phase<<','<<shape.worst.recoil<<'\n';assert(shape.comparisons==foregroundSamples);}
+ for(const auto& shape:silhouettes){const unsigned total=(shape.raster[shape.worst.recoil].body|shape.raster[shape.worst.recoil].rim).count();familyReport<<shape.id<<','<<shape.pose<<','<<(shape.expedition?"expedition":"normal")<<','<<shape.distance<<','<<total<<','<<shape.maxCovered<<','<<shape.maxCovered*100.0/total<<','<<shape.maxHead<<','<<shape.maxTorso<<','<<shape.comparisons<<','<<shape.worst.cls<<','<<(shape.worst.modern?"new":"legacy")<<','<<shape.worst.action<<','<<shape.worst.phase<<','<<shape.worst.recoil<<'\n';assert(shape.comparisons==foregroundSamples);}
  const auto& worst=silhouettes[worstShape];overlapCanvas(worst,worst.worst).save(combined+"/worst-overlap.ppm");
  for(bool expedition:{false,true})for(unsigned distance:{1u,2u})contactSheet(combined+"/contact-"+(expedition?"expedition":"normal")+"-"+std::to_string(distance)+"tile.ppm",silhouettes,expedition,distance);
  std::ofstream summary(combined+"/occlusion-summary.txt");assert(summary);summary<<std::fixed<<std::setprecision(4)
@@ -247,9 +254,9 @@ int main(int argc,char** argv){
   <<"Centered full-opacity, wall-unclipped masks with actual phase recoil only at 1 tile (dungeonEnemyAhead); projected logical 80x86 through the production world-root fit and 2x2 billboard sampling.\n"
   <<realProjectionChecks<<" independent real drawDungeon tagged-palette projection checks, all 3 envelope branches and Ground/Virtual anchors (all 4 poses at 1 tile, idle at 2).\n"
   <<"Protected opaque canonical regions: head x[20,60) y[0,24), torso x[20,60) y[24,62). Nonhumanoid readability cores, not anatomical labels.\n"
-  <<"Limits: <=4% opaque overlap at 1 tile; 0 pixels at 2 tiles; 0 protected head/torso pixels.\n"
+  <<"Limits: <=4% body + rim overlap at 1 tile; 0 pixels at 2 tiles; 0 protected head/torso pixels.\n"
   <<"Worst 1 tile: "<<maxNearPct<<"%; worst 2 tiles: "<<maxFarPct<<"%; maximum head "<<maxHead<<" pixels, torso "<<maxTorso<<" pixels; failing comparisons "<<thresholdViolations<<".\n"
-  <<"Worst ID "<<worst.id<<", pose "<<worst.pose<<", "<<(worst.expedition?"expedition":"normal")<<", class "<<worst.worst.cls<<", action "<<worst.worst.action<<", phase "<<worst.worst.phase<<", recoil "<<worst.worst.recoil<<"; "<<worst.maxCovered<<'/'<<worst.raster[worst.worst.recoil].body.count()<<" opaque pixels.\n"
+  <<"Worst ID "<<worst.id<<", pose "<<worst.pose<<", "<<(worst.expedition?"expedition":"normal")<<", class "<<worst.worst.cls<<", action "<<worst.worst.action<<", phase "<<worst.worst.phase<<", recoil "<<worst.worst.recoil<<"; "<<worst.maxCovered<<'/'<<(worst.raster[worst.worst.recoil].body|worst.raster[worst.worst.recoil].rim).count()<<" body + rim pixels.\n"
   <<"QA colors: green enemy, yellow protected head, cyan protected torso, white foreground, magenta overlap.\n";
  summary.close();familyReport.close();occlusion.close();if(maskDump.is_open())maskDump.close();
  printf("Combined 29-original-enemy audit: %u foregrounds x %zu silhouettes, %u projection checks; near %.4f%%, far %.4f%%; protected head %u/torso %u pixels; %u failing comparisons.\n",foregroundSamples,silhouettes.size(),realProjectionChecks,maxNearPct,maxFarPct,maxHead,maxTorso,thresholdViolations);fflush(stdout);

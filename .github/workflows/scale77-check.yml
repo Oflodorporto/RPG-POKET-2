@@ -1,0 +1,93 @@
+name: Qualificar escala e contraste 7.7 sem publicar
+on:
+  push:
+    branches: [feat/scale77-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_SCALE_7_7_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/scale77-check.yml", ".github/workflows/release.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: scale77-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/scale77-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Testar regressao completa, escala, contraste, Save29, reset e cenas
+        run: bash tools/test_scale77.sh
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar sem gravar nem publicar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Conferir identidade, OTA scenes77, Save29 sem novo reset e manifesto
+        run: |
+          python3 tools/release_manifest.py
+          python3 tools/verify_scale77_release.py
+          python3 tests/scale77_release_verifier.py
+          python3 tools/test_scale77_release.py release
+          python3 tools/test_scale77_release.py release --sanitizers
+      - name: Instalar biblioteca e fonte das capturas
+        run: |
+          python3 -m pip install 'Pillow==11.3.0'
+          if ! fc-match DejaVuSans --format '%{file}' | grep -q 'DejaVuSans'; then
+            sudo apt-get update
+            sudo apt-get install --yes fonts-dejavu-core
+          fi
+      - name: Capturar antes e depois com fonte scenes77 inalterada
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/scale77-baseline" dd626414b62bf6f88638ffe5d542196230c51061
+          python3 tools/capture_scale77.py --source "$RUNNER_TEMP/scale77-baseline" --art cartao/RPGPOKET/artes.pak --output build/scale77/before --label Antes
+          python3 tools/capture_scale77.py --source . --art cartao/RPGPOKET/artes.pak --output build/scale77/after --label Depois --compare build/scale77/before --compare-label Antes
+      - name: Exigir capturas das cenas e comparacoes de escala/contraste
+        run: |
+          for pattern in 'mares-*' 'aurora-*' 'travel*' 'daily-*' 'defeat-*' 'level-*' 'clock-*'; do
+            compgen -G "build/screens/$pattern.ppm" > /dev/null || { echo "Faltam capturas: $pattern"; exit 1; }
+          done
+          for pattern in 'reported-vigia-hp35-*' 'reported-espectro-hp42-*' 'reported-guardiao-*' 'outdoor-day-*' 'outdoor-night-*' 'dungeon-1tile-*' 'dungeon-2tile-*' 'dungeon-chefes-*'; do
+            compgen -G "build/scale77/after/comparisons/$pattern.png" > /dev/null || { echo "Faltam comparacoes: $pattern"; exit 1; }
+          done
+          test -s build/scale77/after/comparisons/revisao-inimigos-mobile.png
+      - name: Guardar arquivos qualificados e capturas para revisao
+        uses: actions/upload-artifact@v4
+        with:
+          name: scale77-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            build/scale77-scope-budget.json
+            build/screens/mares-*.ppm
+            build/screens/aurora-*.ppm
+            build/screens/travel*.ppm
+            build/screens/daily-*.ppm
+            build/screens/defeat-*.ppm
+            build/screens/level-*.ppm
+            build/screens/clock-*.ppm
+            build/scale77/before/capture-report.json
+            build/scale77/before/captures.tsv
+            build/scale77/before/skipped.tsv
+            build/scale77/before/png/*.png
+            build/scale77/before/sheets/*.png
+            build/scale77/after/capture-report.json
+            build/scale77/after/captures.tsv
+            build/scale77/after/skipped.tsv
+            build/scale77/after/png/*.png
+            build/scale77/after/sheets/*.png
+            build/scale77/after/comparisons/*.png
+          if-no-files-found: error
+          retention-days: 14

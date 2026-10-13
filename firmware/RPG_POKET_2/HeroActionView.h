@@ -26,7 +26,7 @@ template<class Canvas>bool heroActionEffect(Canvas& c,const rpg::Game& g,const V
  auto heal=[&](bool breath){if(p<200||p>=850)return;int rise=int(p-200)*24/650;if(breath){heroFxRing(c,hx,hy-rise/2,9+rise/3,UI_GREEN);for(int i=0;i<3;++i)heroFxLine(c,hx-13+i*11,hy+9-rise,hx-10+i*11,hy+3-rise,UI_WHITE);}else{for(int i=-1;i<=1;++i){int x=hx+i*14,y=hy+5-rise+abs(i)*4;c.fillRect(x-1,y-4,3,9,UI_GREEN);c.fillRect(x-4,y-1,9,3,UI_GREEN);}heroFxRing(c,hx,hy-7,14+rise/5,UI_GOLD);}};
  if(h==H::MagicDarts){
   if(dungeon)magicDartsPilot(c,v,true,hands.originX,hands.originY,tx,ty);
-  else {CombatCanvas<Canvas> pilot{c,0,320,0,34};magicDartsPilot(pilot,v,false);}
+  else {CombatCanvas<Canvas> pilot{c,0,320,0,34};magicDartsPilot(pilot,v,false,-1,-1,targetX,targetY>=0?targetY-34:-1);}
   return true;
  }
  if(h==H::LayHands||h==H::SecondWind){heal(h==H::SecondWind);return true;}

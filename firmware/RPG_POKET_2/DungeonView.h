@@ -32,15 +32,17 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
     for(int y=std::max(0,top);y<std::min(height,bottom);y+=2){int ty=std::min(31,(y-top)*32/std::max(1,wallHeight));c.fillRect(ray*2,y,2,std::min(2,height-y),shade(rpg::dungeonLeverVisible(g,mx,my)&&tx>=8&&tx<24&&ty>=8&&ty<24&&((rpg::eventExpedition(g)?g.eventProgress:bool(g.dungeonLoot&(64u<<floor)))?islandArt::lever_on():islandArt::lever_off())[(ty-8)*2*32+(tx-8)*2]!=0xf81f?((rpg::eventExpedition(g)?g.eventProgress:bool(g.dungeonLoot&(64u<<floor)))?islandArt::lever_on():islandArt::lever_off())[(ty-8)*2*32+(tx-8)*2]:texture[ty*32+tx],side));}
   }
   int enemyActionX=120,enemyActionY=82,enemyContactX=120,enemyContactY=82;
-  auto billboard=[&](const uint16_t* img,int iw,int ih,float wx,float wy,float scale,int recoil=0,const enemyArt::Frame* frame=nullptr,unsigned opacity=1000,bool actionAnchor=false){float vx=wx-px,vy=wy-py,depth=vx*dx+vy*dy;if(depth<.1f)return;float lateral=(-dy*vx+dx*vy)/.66f;int center=int(120*(1+lateral/depth))+recoil,h=std::min(250,int(height*scale/depth)),w=h*iw/ih,base=int(horizon+86/depth),left=center-w/2,top=base-h;if(w<1||h<1||!img||!opacity)return;
-    if(frame){auto fit=enemyArt::fitWorld(*frame,center,base,w,h);if(actionAnchor){enemyActionX=fit.anchorX;enemyActionY=enemyArt::actionY(*frame,fit);}left=fit.x;top=fit.y;w=fit.w;h=fit.h;iw=frame->w;ih=frame->h;base=top+h;if(w<1||h<1)return;}
+  auto billboard=[&](const uint16_t* img,int iw,int ih,float wx,float wy,float scale,int recoil=0,const enemyArt::Frame* frame=nullptr,unsigned opacity=1000,bool actionAnchor=false,unsigned enemyId=0){float vx=wx-px,vy=wy-py,depth=vx*dx+vy*dy;if(depth<.1f)return;float lateral=(-dy*vx+dx*vy)/.66f;int center=int(120*(1+lateral/depth))+recoil,h=std::min(250,int(height*scale/depth)),w=h*iw/ih,base=int(horizon+86/depth),left=center-w/2,top=base-h;if(w<1||h<1||!img||!opacity)return;
+    if(frame){auto fit=enemyScale::world(enemyId,*frame,center,base,depth);if(actionAnchor){enemyActionX=fit.anchorX;enemyActionY=enemyArt::actionY(*frame,fit);}left=fit.x;top=fit.y;w=fit.w;h=fit.h;iw=frame->w;ih=frame->h;base=top+h;if(w<1||h<1)return;}
     int contactDistance=INT_MAX;
-    for(int x=std::max(0,left);x<std::min(240,left+w);x+=2){if(depth>depths[x/2]+.05f)continue;int ix=(x-left)*iw/w;for(int y=std::max(0,top);y<std::min(height,base);y+=2){int iy=(y-top)*ih/h;uint16_t color=img[iy*iw+ix];
+    for(int x=std::max(0,left);x<std::min(240,left+w);x+=2){if(depth>depths[x/2]+.05f)continue;int ix=(x-left)*iw/w;for(int y=std::max(frame?34:0,top);y<std::min(height,base);y+=2){int iy=(y-top)*ih/h;uint16_t color=img[iy*iw+ix];
       if(color!=0xf81f){
         // Aim at an actual sampled body pixel nearest the declared visual root.
         // Keep this point stable during opacity fade; never inspect another decode.
         if(actionAnchor){int ax=x-enemyActionX,ay=y-enemyActionY,d=ax*ax+ay*ay;if(d<contactDistance){contactDistance=d;enemyContactX=x;enemyContactY=y;}}
         if(enemyArt::visible(ix,iy,opacity))c.fillRect(x,y,std::min(2,240-x),std::min(2,height-y),color);
+      }else if(frame&&(enemyScale::opaque({img,unsigned(iw),unsigned(ih)},(x-2-left)*iw/w,iy)||enemyScale::opaque({img,unsigned(iw),unsigned(ih)},(x+2-left)*iw/w,iy)||enemyScale::opaque({img,unsigned(iw),unsigned(ih)},ix,(y-2-top)*ih/h)||enemyScale::opaque({img,unsigned(iw),unsigned(ih)},ix,(y+2-top)*ih/h))){
+        if(enemyArt::visible(ix,iy,opacity))c.fillRect(x,y,std::min(2,240-x),std::min(2,height-y),enemyScale::edgeColor(*frame));
       }}}
   };
   // Far-to-near billboards, with wall depth clipping; all art stays in flash/PSRAM.
@@ -61,9 +63,7 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
     auto frame=enemyArt::body(spawn.id,pose);
     auto image=enemyArt::decode(frame);
     // Decode and consume immediately: the next billboard reuses this same workspace.
-    bool expedition=rpg::eventExpedition(g);
-    int envelopeW=expedition?(spawn.id>=25?64:80):48,envelopeH=expedition?(spawn.id>=25?80:86):64;
-    billboard(image.pixels,envelopeW,envelopeH,o.x+.5f,o.y+.5f,.8f,recoil,&frame,opacity,target);
+    billboard(image.pixels,frame.w,frame.h,o.x+.5f,o.y+.5f,.8f,recoil,&frame,opacity,target,spawn.id);
   }
     else {unsigned prop=o.kind>=2?o.id:rpg::dungeonPickup(g,o.id).id;billboard(o.kind==3?islandArt::trap():dungeonArt::props[prop],32,32,o.x+.5f,o.y+.5f,.32f);if(o.distance<.1f){const auto* image=o.kind==3?islandArt::trap():dungeonArt::props[prop];for(int y=0;y<32;++y)for(int x=0;x<32;++x)if(image[y*32+x]!=0xf81f)c.fillRect(104+x,130+y,1,1,image[y*32+x]);}}
   }

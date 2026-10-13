@@ -386,11 +386,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   const bool enemyActive=v.effect!=Effect::None;
   auto foePose=enemyPose(enemyActive,v.combatResult,progress,v.effectOnHero,g.phase==rpg::Phase::Enemy);
   auto opacity=enemyOpacity(enemyActive,v.combatResult,progress,g.phase==rpg::Phase::Won&&g.enemyHp==0);
-  auto foeArt=enemyArt::body(g.enemyId,foePose);auto foePlacement=enemyArt::fit(foeArt,145+foeX,99+foeY,75,80);
-  enemyArt::draw(arenaCanvas,enemyArt::decode(foeArt),foePlacement,opacity);
+  auto foeArt=enemyArt::body(g.enemyId,foePose);auto foePlacement=enemyScale::arena(g.enemyId,foeArt,foeX,foeY);
+  const auto foeContact=enemyScale::drawArena(arenaCanvas,g.enemyId,foeArt,enemyArt::decode(foeArt),foePlacement,opacity);
   PanelEffectCanvas<Canvas> effectCanvas{c};
   if(v.combatResult.enemyAction){if(enemyActive)drawEnemyAction(arenaCanvas,g.enemyId,v.combatResult,progress,foePlacement.anchorX,enemyArt::actionY(foeArt,foePlacement),52,139);}
-  else if(heroActionEffect(arenaCanvas,g,v,false)){/* Action-specific hero choreography. */}
+  else if(heroActionEffect(arenaCanvas,g,v,false,foeContact.x,foeContact.y)){/* Action-specific hero choreography. */}
   else if(v.combatResult.noHit()){/* No false hit flash or recoil. */}
   else if(v.effect==Effect::Rage&&v.combatResult.kind==CombatFeedback::Buff){magicSprite(effectCanvas,sprites_shield[v.effectFrame%shield_frames],64,72,22,82,64,72);}
   else if(v.effect==Effect::Rage){

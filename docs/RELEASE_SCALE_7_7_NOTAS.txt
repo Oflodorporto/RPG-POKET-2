@@ -1,0 +1,61 @@
+7.7 - Escala e contraste dos inimigos
+Versao 2026.10.13-scale77 / build 2026101307
+
+CONTINUACAO VISUAL DA 7.7
+
+Este pacote ajusta a apresentacao dos inimigos em combate e dungeon, com escala
+por tamanho da criatura e contraste para leitura no fundo. Reutiliza as mesmas
+666 artes aprovadas em scenes77. Nao altera regras, progressao ou formato de save.
+As capturas de qualificacao comparam os mesmos encontros, artes e resolucao
+nativa 240x320 antes e depois, incluindo os casos relatados de Vigia Ossudo,
+Espectro e Guardiao, dia/noite e chefes perto/longe na dungeon.
+
+PARA QUEM JA INSTALOU SCENES77 / SAVE29
+
+A atualizacao pode ser feita em Configuracoes > Atualizacao, por Wi-Fi, depois
+que esta Release estiver publicada. Save29 continua sendo lido e gravado.
+A epoca de reset continua sendo 1: o marcador Done da instalacao scenes77 e
+mantido, sem repetir o reset dos tres slots. Nao ha novo reset por versao,
+compilacao ou reinicializacao. Wi-Fi e arquivos de arte continuam preservados.
+O pacote de artes e identico ao de scenes77; uma copia valida ja instalada pode
+ser reutilizada. O instalador valida os arquivos antes de selecionar o novo boot.
+
+PARA QUEM AINDA ESTA EM TOUCH77 OU ANTERIOR
+
+O limite de instalacao da geracao Save29 continua igual. O cliente touch77
+recusa corretamente reads_save_formats=[29] e writes_save_format=29.
+A primeira passagem de touch77 ou anterior para Save29 exige USB uma vez,
+com EraseFlash=none / Erase All Flash: Disabled. Essa primeira passagem usa o
+reset unico aprovado da epoca 1 para os tres slots antigos; nao importa Save1..28.
+Nunca use apagar toda a flash nem anuncie compatibilidade com saves antigos.
+
+Para USB, use o Source code desta tag v2026.10.13-scale77 e mantenha todos os
+arquivos do sketch juntos. Abra firmware/RPG_POKET_2/RPG_POKET_2.ino.
+Placa ESP32-S3 / Waveshare-29667, core ESP32 3.3.12, Flash 16MB/QIO, PSRAM OPI,
+CDC habilitado, CPU 240MHz, particao app3M_fat9M_16MB e EraseFlash=none.
+Nao sobrescreva NVS e nao habilite erase total como tentativa de recuperacao.
+
+ARTES INALTERADAS
+
+artes.pak tem 666 entradas e 7.470.928 bytes incluindo o cabecalho PKA1.
+Conteudo: 7.470.912 bytes; CRC32: 9b4bcfc0.
+SHA256: 14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56
+Nao ha novas artes nem necessidade de trocar uma copia scenes77 valida.
+Se houver arte ausente/corrompida, o atualizador pode reparar o mesmo pacote.
+PSRAM conhecida: 7.638.272 bytes (payload+framebuffer+workspace inimigo), uma
+estimativa estatica, nao medicao de memoria livre real.
+
+VALIDACAO E LIMITES
+
+A publicacao exige regressao completa normal e ASan/UBSan, testes de escala e
+contraste, capturas revisadas e compilacao ESP32-S3. O verificador confere o par
+exato firmware/artes e o manifesto. Os testes usam os fontes publicados de
+touch77 e scenes77 sem modificar seus cabecalhos: recusam o upgrade antigo,
+exercitam a instalacao scenes77 -> scale77 com SHA256 real, preservam saves
+Save29 e o marcador da epoca 1, e cobrem falhas simuladas de firmware/artes/OTA.
+A Release exige o mesmo commit previamente qualificado e verifica os tres
+downloads publicos e o manifesto latest depois da publicacao.
+
+Testes de host nao demonstram flash fisica, TLS na placa, corte real de energia,
+conforto do toque ou memoria livre real. A aprovacao fisica de scenes77 e a
+revisao tecnica/visual desta continuacao sao pre-requisitos da publicacao.

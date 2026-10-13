@@ -32,7 +32,7 @@ static unsigned verifyProjectedHeroContact(){
  unsigned checks=0;bool shortBody=false,tallBody=false,floating=false;
  for(unsigned mode=0;mode<6;++mode)for(bool lethal:{false,true})for(unsigned progress:{600u,650u,700u}){
   auto g=rpg::create(0,42);g.dungeonFlags=1;g.phase=lethal?rpg::Phase::Won:rpg::Phase::Hero;g.enemyHp=lethal?0:100;g.dungeonLoot=255;
-  const bool expedition=mode!=0&&mode!=3;const unsigned spawnIndex=mode>=3?2:0;
+  const unsigned spawnIndex=mode>=3?2:0;
   if(mode==0){g.city=1;g.dungeonXY=0x72;rpg::dungeonFace(g,1);}
   else if(mode==3){g.city=1;g.dungeonXY=0x47;rpg::dungeonFace(g,0);}
   else {g.eventStage=2;g.eventKind=3;g.eventTier=mode==1?0:mode==2?2:mode==4?1:3;g.city=g.eventTier;g.eventLevel=mode==1?2:10;g.dungeonXY=(mode>=4?3:1)|(2<<4);rpg::dungeonFace(g,0);if(mode>=4)rpg::dungeonSetFloor(g,1);}
@@ -41,10 +41,9 @@ static unsigned verifyProjectedHeroContact(){
   v.combatResult={CombatFeedback::Damage,4,false,false};v.combatResult.heroAction=rpg::Action::MagicMissile;v.combatResult.hasHeroAction=true;v.combatResult.enemyDefeated=lethal;
   const auto frame=enemyArt::body(spawn.id,enemyPose(true,v.combatResult,progress,false));const auto image=enemyArt::decode(frame);
   shortBody|=spawn.id==25;tallBody|=spawn.id==2;floating|=frame.anchor==enemyArt::Anchor::Virtual;
-  const int h=int(172*.8f),w=h*(expedition?(spawn.id>=25?64:80):48)/(expedition?(spawn.id>=25?80:86):64);
-  const auto fit=enemyArt::fitWorld(frame,120+combatRecoil(v.combatResult,progress),172,w,h);
+  const auto fit=enemyScale::world(spawn.id,frame,120+combatRecoil(v.combatResult,progress),172,1.f);
   const int rootX=fit.anchorX,rootY=enemyArt::actionY(frame,fit);int targetX=120,targetY=82,best=INT_MAX;
-  for(int x=std::max(0,fit.x);x<std::min(240,fit.x+fit.w);x+=2)for(int y=std::max(0,fit.y);y<std::min(172,fit.y+fit.h);y+=2){
+  for(int x=std::max(0,fit.x);x<std::min(240,fit.x+fit.w);x+=2)for(int y=std::max(34,fit.y);y<std::min(172,fit.y+fit.h);y+=2){
    const unsigned ix=(x-fit.x)*80/fit.w,iy=(y-fit.y)*86/fit.h;if(image.pixels[iy*80+ix]==0xf81f)continue;
    int dx=x-rootX,dy=y-rootY,d=dx*dx+dy*dy;if(d<best){best=d;targetX=x;targetY=y;}
   }
