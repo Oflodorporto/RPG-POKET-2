@@ -1,0 +1,42 @@
+7.7 — Recuperação limitada de leitura SD e instalação
+
+Esta atualização mantém as artes e o jogo. Melhora o caminho de recuperação:
+- Uma única tentativa adicional de leitura após erro de I/O: fecha arquivos,
+  remonta a 1 MHz e reinicia a validação do byte zero. Não continua um hash parcial.
+- Downloads completos com falha de leitura permanecem no cartão com sua identidade.
+  Continuar tenta validá-los antes de baixar novamente. Erro ao ler a identidade
+  não é tratado como permissão para apagar o arquivo.
+- Conteúdo que falha na integridade não é instalado. SHA-256 integral e PKA1/CRC
+  continuam obrigatórios na OTA; boot confere integralmente PKA1 e CRC.
+- A cópia para a partição OTA também confere SHA antes de permitir a ativação.
+- Pacote final anterior é preservado em backup quando precisa ser substituído;
+  backup existente nunca é sobrescrito. Boot pode usar o backup do mesmo catálogo.
+  Pacotes antigos deixam de ser apagados automaticamente; ocupam espaço adicional.
+- A tela mantém detalhes e a primeira falha da recuperação em RAM até desligar.
+  Falhas persistentes orientam usar outro cartão. Não há formatação automática.
+
+Os 636 assets, 6.661.456 bytes e SHA256
+5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1
+são idênticos aos do 7.7 anterior. Save28, três slots, partições, regras e desenhos
+não mudam. Não inclui as correções seguintes de dungeon/bolsa/interface.
+
+EVIDÊNCIA E LIMITES
+O firmware anterior ota77 reparou as artes e funcionou com SanDisk64GB na placa
+do proprietário. No cartão novo4GB, falhas de leitura também ocorreram sem Wi-Fi
+e sem LCD. Isso aponta para cartão/interação, sem estabelecer defeito físico.
+Reduzir frequência ajudou em algumas leituras, mas não resolveu todas. Esta nova
+recuperação não foi testada fisicamente e não promete tornar um cartão instável
+confiável. Um erro permanente encerra a tentativa, sem ativar dados não validados.
+Testes em computador e compilação não substituem teste da placa ou de queda real
+na alimentação. FAT/SD não oferece garantia de transação atômica sob falha física.
+
+COMO USAR
+Preferir o SanDisk que passou. Atualizar pelo Wi-Fi normalmente. Se a leitura
+falhar, registrar o detalhe antes de desligar; Continuar reutiliza os dados
+compatíveis preservados. Sem melhora, não repetir downloads indefinidamente:
+usar cartão confiável e guardar o que falhou para análise. Não formatar nem apagar
+flash/NVS para tentar resolver.
+Para USB, usar o código-fonte inteiro desta tag e as opções já confirmadas:
+Espressif3.3.12, ESP32S3 Dev Module, Flash16MB/QIO, PSRAM OPI, CDC habilitado,
+16M Flash (3MB APP/9.9MB FATFS), Erase All Flash Disabled. Fazer backup antes se
+houver dados importantes; opções corretas não são garantia absoluta de preservação.

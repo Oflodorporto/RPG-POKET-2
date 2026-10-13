@@ -18,5 +18,17 @@ int main(){
  packBytes=original;badRead=-1;cardAvailable=fileExists=true;char named[48];updater::artPath(named,sizeof(named),ART_CRC);extraFiles[named]=original;extraFiles[named][0]^=1;auto before=extraFiles;
  assert(loadSdArt()==ArtStatus::Ready&&!storageDiag::bootArtFailure.valid()&&extraFiles==before&&fileExists);++count;
  fileExists=false;assert(loadSdArt()==ArtStatus::Invalid&&storageDiag::bootArtFailure.file==storageDiag::File::VersionedArt&&storageDiag::bootArtFailure.issue==Issue::Magic);++count;
+ // A complete retry starts at byte zero at1MHz, retaining the original error.
+ extraFiles.clear();packBytes=original;fileExists=true;badRead=2;recoverBootOnSlow=true;unsigned ends=cardEnds;
+ assert(loadSdArt()==ArtStatus::Ready&&storageDiag::bootRecovery.attempts==1&&storageDiag::bootRecovery.first.offset==4112&&storageDiag::bootRecovery.recovered&&cardEnds==ends+2&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);++count;
+ recoverBootOnSlow=false;badRead=-1;fileExists=false;char backup[48];updater::artBackupPath(backup,sizeof(backup),ART_CRC);extraFiles[backup]=original;
+ // Power loss after old final is renamed: backup is selected only by current CRC.
+ assert(loadSdArt()==ArtStatus::Ready&&rpg::crc(artMemory,ART_BYTES)==ART_CRC&&extraFiles.count(backup));++count;
+ extraFiles[backup][12]^=1;assert(loadSdArt()!=ArtStatus::Ready&&storageDiag::bootArtFailure.issue==Issue::Catalog);++count;
+ extraFiles.clear();extraFiles[named]=original;bootLookupFault=named;ends=cardEnds;
+ assert(loadSdArt()!=ArtStatus::Ready&&storageDiag::bootArtFailure.issue==Issue::Open&&storageDiag::bootArtFailure.code==EIO&&cardEnds==ends+2);++count;
+ recoverBootOnSlow=true;assert(loadSdArt()==ArtStatus::Ready&&storageDiag::bootRecovery.attempts==1&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);++count;
+ bootLookupFault.clear();recoverBootOnSlow=false;extraFiles.clear();fileExists=true;bootMetaFault="/RPGPOKET/artes.pak";
+ assert(loadSdArt()!=ArtStatus::Ready&&storageDiag::bootArtFailure.issue==Issue::Open&&storageDiag::bootArtFailure.code==EIO&&!currentFiles);bootMetaFault.clear();++count;
  free(artMemory);artMemory=nullptr;printf("PASS: %u actual boot-art loader cases; generic/versioned fallback, mount/open/size/header/catalog/read/CRC diagnostics, correct offsets, no premature cleanup or extra descriptors.\n",count);
 }

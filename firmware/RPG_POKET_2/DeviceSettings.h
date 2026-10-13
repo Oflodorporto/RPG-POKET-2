@@ -5,6 +5,7 @@
 #include <time.h>
 #include "MenuView.h"
 #include "UpdateModel.h"
+#include "ArtPromotion.h"
 inline worldClock::Clock localClock;
 inline Preferences settings;inline bool settingsReady=false,pwmReady=false;
 inline uint32_t wifiAt=0,signalAt=0;inline bool resumeWifi=false;
@@ -16,25 +17,57 @@ inline void initSettings(){settingsReady=settings.begin("pkt2_ui",false);menu.ac
   pwmReady=ledcAttach(1,5000,8);applyBrightness();resumeWifi=settingsReady&&settings.getBool("wifi",false);
 }
 inline bool rememberSlot(uint8_t slot){if(slot>2||!settingsReady||settings.putUChar("slot",slot)!=1)return false;menu.activeSlot=slot;return true;}
+// Boot is synchronous, before Wi-Fi/worker rendering starts. Every failed reader
+// is closed before remount. No SPI.end and no cleanup of prior art packages.
 inline ArtStatus loadSdArt(){
-  storageDiag::bootArtFailure={};if(!artMemory)return ArtStatus::Memory;makeFallback();pinMode(41,OUTPUT);digitalWrite(41,HIGH);digitalWrite(45,HIGH);
-  errno=0;if(!SD.begin(41,SPI,4000000,"/sd",1,false)){int code=errno;storageDiag::set(&storageDiag::bootArtFailure,storageDiag::Issue::Mount,0,0,0,code);SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
-  char named[48];updater::artPath(named,sizeof(named),ART_CRC);bool versioned=SD.exists(named);errno=0;File f=SD.open(versioned?named:"/RPGPOKET/artes.pak",FILE_READ);int openError=errno;ArtStatus status=ArtStatus::Missing;
-  storageDiag::Failure detail;detail.file=versioned?storageDiag::File::VersionedArt:storageDiag::File::GenericArt;
-  if(f){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{f};status=readArt(reader,&detail);f.close();}else storageDiag::set(&detail,storageDiag::Issue::Open,0,0,0,openError);
-  // A damaged versioned candidate must not hide a valid original installation pack.
-  bool namedReady=versioned&&status==ArtStatus::Ready;
-  if(versioned&&!namedReady){File legacy=SD.open("/RPGPOKET/artes.pak",FILE_READ);if(legacy){struct Reader{File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{legacy};storageDiag::Failure fallbackDetail;ArtStatus fallback=readArt(reader,&fallbackDetail);legacy.close();if(fallback==ArtStatus::Ready)status=fallback;detail=fallbackDetail;}}
-  if(namedReady){
-    // Incomplete downloads may belong to a newer release: preserve them for resume.
-    // FAT has no journal: close each file before deleting it; never format or touch saves.
-    File dir=SD.open("/RPGPOKET");if(dir){File entry=dir.openNextFile();while(entry){char candidate[48];snprintf(candidate,sizeof(candidate),"/RPGPOKET/%s",entry.name());bool regular=!entry.isDirectory();entry.close();const char* name=strrchr(candidate,'/');name=name?name+1:candidate;
-      bool ours=regular&&strlen(name)==18&&!strncmp(name,"artes_",6)&&!strcmp(name+14,".pak");for(unsigned i=6;ours&&i<14;++i)ours=(name[i]>='0'&&name[i]<='9')||(name[i]>='a'&&name[i]<='f');
-      if(ours&&strcmp(candidate,named))SD.remove(candidate);entry=dir.openNextFile();}dir.close();}
-    // The original installation pack is obsolete only after the versioned pack is valid.
-    if(SD.exists("/RPGPOKET/artes.pak"))SD.remove("/RPGPOKET/artes.pak");
+  using namespace storageDiag;bootArtFailure={};bootRecovery={};
+  if(!artMemory)return ArtStatus::Memory;makeFallback();pinMode(41,OUTPUT);digitalWrite(41,HIGH);digitalWrite(45,HIGH);
+  auto mount=[](unsigned hz,Failure& f){errno=0;bool ok=SD.begin(41,SPI,hz,"/sd",1,false);int e=errno;if(!ok)set(&f,Issue::Mount,0,0,0,e);return ok;};
+  auto recover=[&](Failure& f){
+    if(bootRecovery.attempts||!ioFailure(f))return false;
+    bootRecovery.note(f);bootRecovery.attempts=1;
+#ifdef ARDUINO
+    Serial.printf("[SD boot recovery] issue=%u file=%u offset=%lu requested=%lu got=%lu errno=%d\n",unsigned(f.issue),unsigned(f.file),(unsigned long)f.offset,(unsigned long)f.expected,(unsigned long)f.actual,f.code);
+#endif
+    SD.end();digitalWrite(41,HIGH);digitalWrite(45,HIGH);delay(150);
+    if(!mount(1000000,f)){bootRecovery.note(f);return false;}return true;
+  };
+  Failure detail;bool mounted=mount(4000000,detail);if(!mounted)mounted=recover(detail);
+  if(!mounted){bootArtFailure=detail;SD.end();digitalWrite(41,HIGH);return ArtStatus::Missing;}
+  char named[48],backup[48];updater::artPath(named,sizeof(named),ART_CRC);updater::artBackupPath(backup,sizeof(backup),ART_CRC);
+  ArtStatus status=ArtStatus::Missing;
+  auto read=[&](const char* path,storageDiag::File which){
+    detail={};detail.file=which;errno=0;::File f=SD.open(path,FILE_READ);int e=errno;
+    if(!f||e){if(f)f.close();set(&detail,Issue::Open,0,0,0,e);return ArtStatus::Missing;}
+    struct Reader{::File& f;unsigned size(){return f.size();}int read(uint8_t* b,unsigned n){return f.read(b,n);}} reader{f};
+    auto result=readArt(reader,&detail);f.close();return result;
+  };
+  // A retained backup also covers power loss after old-final -> backup rename.
+  const char* paths[]={named,"/RPGPOKET/artes.pak",backup};
+  const storageDiag::File kinds[]={storageDiag::File::VersionedArt,storageDiag::File::GenericArt,storageDiag::File::BackupArt};
+  bool attempted=false;
+  for(unsigned i=0;i<3;++i){
+    // Generic is attempted even when absent, preserving an actionable open result.
+    if(i!=1){
+      auto presence=artPresence(SD,paths[i]);
+      if(presence==ArtPresence::Uncertain){detail={};detail.file=kinds[i];set(&detail,Issue::Open,0,0,0,errno);
+        if(recover(detail))presence=artPresence(SD,paths[i]);
+        if(presence==ArtPresence::Uncertain){bootRecovery.note(detail);status=ArtStatus::Invalid;break;}}
+      if(presence==ArtPresence::Absent)continue;
+    }
+    Failure previous=detail;ArtStatus prior=status;bool had=attempted;attempted=true;
+    status=read(paths[i],kinds[i]);
+    if(status!=ArtStatus::Ready&&ioFailure(detail)){
+      if(recover(detail))status=read(paths[i],kinds[i]);
+      if(status!=ArtStatus::Ready)bootRecovery.note(detail);
+    }
+    if(detail.issue==Issue::Mount)break;
+    if(status==ArtStatus::Ready){bootRecovery.recovered=bootRecovery.attempts!=0;break;}
+    // Missing fallback must not hide the actual failure of an existing candidate.
+    if(had&&detail.issue==Issue::Open&&(!detail.code||detail.code==ENOENT)){detail=previous;status=prior;}
   }
-  if(status!=ArtStatus::Ready)storageDiag::bootArtFailure=detail;SD.end();digitalWrite(41,HIGH);digitalWrite(45,HIGH);return status;
+  if(status!=ArtStatus::Ready)bootArtFailure=detail;
+  SD.end();digitalWrite(41,HIGH);digitalWrite(45,HIGH);return status;
 }
 // Each profile is one atomic NVS string: decimal SSID length + SSID + password.
 // Credentials stay on the device and never enter logs or public source packages.

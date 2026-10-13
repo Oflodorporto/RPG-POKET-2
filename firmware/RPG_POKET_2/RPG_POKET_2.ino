@@ -657,7 +657,7 @@ void setup(){
   if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_GOLD);lcd.setTextSize(2);lcd.setCursor(12,130);lcd.print("Carregando artes...");lcd.setTextSize(1);lcd.setCursor(69,177);lcd.print("Saves protegidos");}
   enemyArt::workspace=static_cast<uint16_t*>(heap_caps_malloc(enemyArt::WORKSPACE_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
   // Missing decode workspace skips enemy images; settings/update remain available.
-  menu.art=loadSdArt();if(storageDiag::bootArtFailure.valid())recordVerifyFailure(storageDiag::bootArtFailure);menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
+  menu.art=loadSdArt();updateRecovery=storageDiag::bootRecovery;recordRecovery();if(storageDiag::bootArtFailure.valid())recordVerifyFailure(storageDiag::bootArtFailure);menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
   bootTitle();
   lastActivity=millis();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}

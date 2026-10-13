@@ -17,7 +17,7 @@
 constexpr int OUTPUT=1,HIGH=1,MALLOC_CAP_SPIRAM=1,MALLOC_CAP_8BIT=2;
 constexpr uint16_t UI_INK=0x1083,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,
   UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
-uint32_t millis(){return 0;}
+uint32_t millis(){return 0;}void delay(unsigned){}
 void pinMode(int pin,int mode){assert(pin==41&&mode==OUTPUT);}
 void digitalWrite(int pin,int value){assert((pin==41||pin==45)&&value==HIGH);}
 bool ledcAttach(int pin,int hz,int bits){assert(pin==1&&hz==5000&&bits==8);return true;}
@@ -93,7 +93,7 @@ int main(int argc,char** argv){
     memset(artMemory,0x77,ART_BYTES); // Every boot must initialize safe fallback.
   };
   auto boot=[&](ArtStatus expected){
-    unsigned ends=cardEnds;assert(loadSdArt()==expected);assert(cardEnds==ends+1);
+    unsigned ends=cardEnds;assert(loadSdArt()==expected);assert(cardEnds==ends+unsigned(!cardAvailable||badRead>=0?2:1));
     assert(!currentFiles&&!currentDirs);assert(extraFiles.at("/RPGPOKET/slot1_a.rpg")==saveFile);
     assert(extraFiles.at("/RPGPOKET/artes.part")==std::vector<uint8_t>{0x39});
     assert(extraFiles.at("/RPGPOKET/artes_11111111.part")==std::vector<uint8_t>{0x41});
@@ -106,7 +106,7 @@ int main(int argc,char** argv){
   reset();fileExists=true;packBytes=other;boot(ArtStatus::Invalid);
   reset();extraFiles[otherPath]=other;boot(ArtStatus::Missing);assert(extraFiles.count(otherPath));
   reset();extraFiles[ownPath]=own;extraFiles[otherPath]=other;boot(ArtStatus::Ready);
-  assert(extraFiles.count(ownPath)&&!extraFiles.count(otherPath)&&!fileExists);
+  assert(extraFiles.count(ownPath)&&extraFiles.count(otherPath)&&!fileExists);
   reset();fileExists=true;packBytes=own;extraFiles[ownPath]=own;extraFiles[ownPath][16+ART_BYTES/2]^=1;extraFiles[otherPath]=other;
   auto filesBefore=extraFiles;boot(ArtStatus::Ready);assert(extraFiles==filesBefore&&fileExists); // Generic recovery must not clean up.
   reset();fileExists=true;packBytes=other;extraFiles[ownPath]=own;extraFiles[ownPath][0]^=1;boot(ArtStatus::Invalid);
@@ -114,7 +114,7 @@ int main(int argc,char** argv){
   reset();extraFiles[ownPath]=other;boot(ArtStatus::Invalid);
   for(unsigned call:{1u,1u+chunks/2,chunks}){reset();extraFiles[ownPath]=own;badRead=int(call);boot(ArtStatus::Invalid);}
   reset();fileExists=true;packBytes=own;extraFiles[ownPath]=own;extraFiles[otherPath]=other;extraFiles["/RPGPOKET/artes_00000001.pak"]={1};
-  boot(ArtStatus::Ready);assert(!fileExists&&!extraFiles.count(otherPath)&&!extraFiles.count("/RPGPOKET/artes_00000001.pak")&&extraFiles.count(ownPath));
+  boot(ArtStatus::Ready);assert(fileExists&&extraFiles.count(otherPath)&&extraFiles.count("/RPGPOKET/artes_00000001.pak")&&extraFiles.count(ownPath));
   assert(peakFiles==1);
   // Null art allocation has the existing distinct Memory result, with no SD activity.
   unsigned ends=cardEnds;artMemory=nullptr;assert(loadSdArt()==ArtStatus::Memory&&cardEnds==ends);

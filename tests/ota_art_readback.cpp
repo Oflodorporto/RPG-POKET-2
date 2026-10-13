@@ -47,7 +47,7 @@ int main(int argc,char** argv){
   if(!fault){assert(ESP.restarted&&updateWorker.state==updater::State::Restarting&&disk.at(named)==art&&hash(disk.at(named))==updatePlan.art.sha);}
   else {assert(!ESP.restarted&&updateWorker.state==updater::State::Error);
 #ifdef RPG_TEST_VERIFY_DETAIL
-   assert(!strcmp(updateWorker.message,"Falha conferir SD / veja detalhe"));
+   assert(!strncmp(updateWorker.message,"Falha conferir SD",17));
    const auto f=updateWorker.lastVerify;using storageDiag::Issue;const Issue expected[]={Issue::None,Issue::Open,Issue::Size,Issue::Read,Issue::Crc,Issue::Size,Issue::Magic,Issue::Crc,Issue::Length,Issue::HeaderCrc,Issue::Catalog,Issue::Sha,Issue::Read};
    assert(f.valid()&&f.issue==expected[fault]&&f.stage==(fault==12?storageDiag::Stage::Installed:storageDiag::Stage::Downloaded)&&f.file==(fault==12?storageDiag::File::VersionedArt:storageDiag::File::ArtPart));
    if(fault==3||fault==12)assert(f.offset==4096&&f.expected==4096&&f.actual==2048);
@@ -57,7 +57,7 @@ int main(int argc,char** argv){
 #else
    assert(!strcmp(updateWorker.message,fault==12?"Instalacao falhou / jogo preservado":"Download incompleto / tente de novo"));
 #endif
-   assert((fault==12?disk.at(named)==art:!disk.count(named))&&!disk.count("/RPGPOKET/artes.part"));}
+   assert(!disk.count(named));assert(bool(disk.count("/RPGPOKET/artes.part"))==(fault==1||fault==3||fault==12));}
   ++cases;
  }
  for(unsigned mode=0;mode<3;++mode){

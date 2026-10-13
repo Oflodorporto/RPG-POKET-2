@@ -7,11 +7,11 @@ python3 tools/unpack_art.py
 python3 tools/unpack_art.py --baseline-only --output build/enemy_transition/old.pak
 mkdir -p build/tests build/screens/ota77
 for pass in normal sanitizer; do
- if [[ "$pass" == normal ]]; then names='ota_art_readback boot_art_diagnostics shared_spi_startup ota_verify_render update_adapter enemy_ota ota_sd_diagnostics ota_sd_diagnostics_render settings_adapter sd_adapter'; flags=(-O2); else names='ota_art_readback boot_art_diagnostics shared_spi_startup ota_verify_render'; flags=(-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie); fi
+ if [[ "$pass" == normal ]]; then names='ota_recovery ota_art_readback boot_art_diagnostics shared_spi_startup ota_verify_render update_adapter enemy_ota ota_sd_diagnostics ota_sd_diagnostics_render settings_adapter sd_adapter'; flags=(-O2); else names='ota_recovery ota_art_readback boot_art_diagnostics shared_spi_startup ota_verify_render'; flags=(-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer -no-pie); fi
  for name in $names; do
   extras=(); args=()
   case "$name" in
-   ota_art_readback) extras+=(tests/update_fake/cJSON.c -Itests/update_fake -Ifirmware/RPG_POKET_2 -DRPG_TEST_VERIFY_DETAIL -Wno-deprecated-declarations -lcrypto);;
+   ota_recovery|ota_art_readback) extras+=(tests/update_fake/cJSON.c -Itests/update_fake -Ifirmware/RPG_POKET_2 -DRPG_TEST_VERIFY_DETAIL -Wno-deprecated-declarations -lcrypto);;
    update_adapter|enemy_ota|ota_sd_diagnostics) extras+=(tests/update_fake/cJSON.c -Itests/update_fake);;
    settings_adapter|boot_art_diagnostics) extras+=(-Itests/settings_fake);;
    sd_adapter) extras+=(-Itests/sd_fake);;
@@ -23,3 +23,7 @@ for pass in normal sanitizer; do
   ASAN_OPTIONS=detect_leaks=${RPG_DETECT_LEAKS:-1} UBSAN_OPTIONS=halt_on_error=1 "build/tests/$name" "${args[@]}"
  done
 done
+
+# Loader policy changed: retain old files, still reject mismatched catalogs.
+python3 tools/test_enemy_transition.py
+python3 tools/test_enemy_transition.py --sanitizers

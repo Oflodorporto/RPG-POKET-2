@@ -1,0 +1,49 @@
+Pacote 1: recuperação SD/OTA. Candidato 2026.10.13-recovery77/build2026101303.
+Somente branch feat/ota77-recovery até qualificação/revisão verdes.
+
+CONTRATO DE RECUPERAÇÃO
+Cada boot/load e cada instalação tem um único orçamento de remontagem a1MHz.
+O caminho normal permanece4MHz; nenhuma preferência de frequência é persistida.
+Não se usa SPI.end. OTA fecha os leitores antes de remontar sob updateSpi,
+mesmo mutex da tela, CS41/45 altos e pausa150ms. Nenhum hash/crc parcial é reutilizado.
+O leitor rejeita também retorno completo acompanhado de errno e open truthy com
+errno (o core pode ter fstat falho e size em cache). Lookup ausente e erro de lookup
+são distintos. EIO não autoriza apagar staging ou pacote final.
+
+Downloads .part têm tag SHA64 exata e tamanho limitado pelo manifesto. Tag ilegível
+preserva o par. Tag completa incompatível não é retomada. Pacote completo dispensa
+novo HTTP, mas nunca dispensa SHA integral, tamanho, cabeçalho/catálogo/CRC.
+Em mismatch confirmado, apenas o staging afetado é invalidado; o outro permanece.
+Espaço é calculado pelos bytes ainda necessários, com reserva1MiB. Espaço desconhecido
+não é tratado como espaço confirmado. OTA abortada/ativação falha conserva staging.
+A cópia para flash reinicia SHA sobre os bytes efetivamente enviados a esp_ota_write;
+sem SHA correto e esp_ota_end bem-sucedido não se escolhe o novo boot.
+
+PROMOÇÃO E INTERRUPÇÃO
+1. .part verificado; final antigo permanece. Se final e .bak já existem, parar.
+2. Renomear final -> .bak sem substituir backup. Queda aqui: backup continua legível
+   pelo novo boot, staging continua disponível; nenhum arquivo é apagado.
+3. Renomear .part -> final. Queda aqui: boot valida final inteiro e pode tentar backup.
+4. Revalidar final. Falha: tentar final -> .part, depois .bak -> final quando este
+   backup foi criado pela tentativa. Rollback que falha não apaga os nomes restantes.
+5. Só selecionar boot após arte e firmware validados. Limpar temporários depois.
+Backup e outros pacotes não são apagados no boot. O boot seleciona somente o nome
+do CRC compilado, artes.pak ou backup desse CRC; não escolhe outro catálogo antigo.
+Interrupções simuladas não provam atomicidade FAT nem imunidade a falha elétrica.
+
+EVIDÊNCIA LOCAL / FINAL
+Testes focados cobrem SHA real do pacote636, erros físicos de leitura, falha de tag,
+open com errno/cache size, lookup, recuperação única, falha permanente, metadata,
+promoção/rollback, interrupção, espaço, Save28 e detalhes legíveis.
+Validação local: 11 suites normais e 5 ASan/UBSan, com saída 0; 27 cenários de
+recuperação, 19 de boot, 1.611 frames e 58 gates de catálogo por modo. Verificador
+final: 15 probes; transição sintética com headers publicados de 7.6 e ota77,
+SHA real e três sentinelas Save28. LeakSanitizer fica para a CI.
+Revisão independente concluída sem bloqueadores; compilação ESP32 e aceitação
+dos artefatos reais ainda são gates obrigatórios antes da publicação.
+O workflow final exige branch exata e é read-only. O publicador requer CI verde do
+MESMO SHA, main, tag inédita e verifica downloads públicos/manifesto latest depois.
+As artes e fontes do catálogo permanecem byte-idênticas. PSRAM conhecida permanece
+6.828.800 bytes (payload+framebuffer+decode, estimativa estática; não heap medido).
+A evidência física favorável refere-se ao ota77 anterior com SanDisk64GB. Esta
+nova versão ainda requer confirmação na placa. Não atribuímos cura ao cartão4GB.

@@ -19,7 +19,7 @@ template<class C>void updateWriteDetail(C& c,int y,const updater::WriteFailure& 
  if(f.freeKnown)snprintf(line,sizeof(line),"Livre antes: %llu KiB",(unsigned long long)(f.initialFree/1024));else snprintf(line,sizeof(line),"Livre antes: nao medido");updateLines(c,y+33,line,UI_MUTED);
 }
 template<class C>void updateVerifyDetail(C& c,int y,const storageDiag::Failure& f){
- char line[64];snprintf(line,sizeof(line),"%s: %s",f.stage==storageDiag::Stage::Boot?"Ao iniciar":"Conferencia",storageDiag::fileName(f.file));updateLines(c,y,line,UI_RED);
+ char line[64];snprintf(line,sizeof(line),"%s: %s",f.stage==storageDiag::Stage::Boot?"Ao iniciar":f.stage==storageDiag::Stage::Identity?"Controle":f.stage==storageDiag::Stage::Installing?"Instalacao":f.stage==storageDiag::Stage::Promotion?"Troca segura":f.stage==storageDiag::Stage::Preparing?"Preparacao":"Conferencia",storageDiag::fileName(f.file));updateLines(c,y,line,UI_RED);
  snprintf(line,sizeof(line),"%s / cod %d",storageDiag::reason(f.issue),f.code);updateLines(c,y+11,line,UI_GOLD);
  if(storageDiag::hexValues(f.issue)){snprintf(line,sizeof(line),"Esperado: %08lx",(unsigned long)f.expected);updateLines(c,y+22,line);snprintf(line,sizeof(line),"Obtido: %08lx",(unsigned long)f.actual);}
  else {snprintf(line,sizeof(line),"Pos %lu / esperado %lu",(unsigned long)f.offset,(unsigned long)f.expected);updateLines(c,y+22,line);snprintf(line,sizeof(line),"Obtido: %lu",(unsigned long)f.actual);}
@@ -44,7 +44,7 @@ template<class C>void drawUpdate(C& c){
   return;
  }
  bool install=updateInfo.state==updater::State::Available||updateInfo.canResume;
- const bool showVerify=updateInfo.lastVerify.valid()&&(updateInfo.state==updater::State::Idle||!strncmp(updateInfo.message,"Falha conferir SD",sizeof("Falha conferir SD")-1));
+ const bool showVerify=updateInfo.lastVerify.valid()&&(updateInfo.state==updater::State::Idle||(!strncmp(updateInfo.message,"Falha conferir SD",sizeof("Falha conferir SD")-1)||!strncmp(updateInfo.message,"SD: controle",12)||!strncmp(updateInfo.message,"Instalacao falhou",16)));
  const bool showWrite=updateInfo.lastWrite.valid&&(updateInfo.state==updater::State::Idle||!strncmp(updateInfo.message,"SD: gravacao falhou",sizeof("SD: gravacao falhou")-1));
  scenicPanel(c,10,113,220,install?96:53);
  if(showVerify){
@@ -58,7 +58,11 @@ template<class C>void drawUpdate(C& c){
   updateLines(c,142,updateInfo.message,updateInfo.state==updater::State::Error?UI_RED:UI_WHITE);
  }
  if(install){
-  if(showVerify){panelLabel(c,12,179,216,"Cod 0: API sem detalhe extra",UI_MUTED);panelLabel(c,12,197,216,"RAM ate desligar; causa em analise",UI_GOLD);}
+  if(showVerify){
+   if(updateInfo.recovery.attempts){char first[48];snprintf(first,sizeof(first),"1a E%d P%lu; 1MHz",updateInfo.recovery.first.code,(unsigned long)updateInfo.recovery.first.offset);panelLabel(c,12,179,216,first,UI_MUTED);}
+   else panelLabel(c,12,179,216,"Cod 0: API sem detalhe extra",UI_MUTED);
+   panelLabel(c,12,197,216,updateInfo.stagingRetained?"Continuar: validar dados salvos":"Falha persiste? Use outro cartao",UI_GOLD);
+  }
   else if(showWrite){panelLabel(c,12,179,216,updateInfo.lastWrite.append?"Modo append; reinicio solicitado":"Modo novo; reinicio solicitado",UI_MUTED);panelLabel(c,12,197,216,"RAM ate desligar; E0=sem detalhe",UI_GOLD);}
   else {panelLabel(c,12,171,216,updateInfo.artOnly?"Baixar e reparar as artes?":"Instalar a nova versao e artes?");panelLabel(c,12,190,216,"Instalacao exige cartao SD.",UI_GOLD);}
   button(14,218,212,"Testar conexao");button(14,272,102,"Cancelar");button(124,272,102,updateInfo.canResume?"Continuar":"Instalar");
