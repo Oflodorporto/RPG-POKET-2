@@ -2,7 +2,8 @@ CANDIDATO LOCAL: leitura de artes e instalacao OTA 7.7
 
 Escopo: branch fix/ota-art-reliability, sobre ad56d5a (diagnostico de escrita).
 Nao publicado. Identidade exclusiva 2026.10.13-ota77-dev/build2026101301.
-Build ESP32 e teste na placa pendentes; revisao independente sem bloqueios. Save28, tres slots, regras, artes, clocks e validacao preservados.
+Build ESP32 e gates focados aprovados no SHA abaixo; teste na placa pendente.
+Revisao independente sem bloqueios. Save28, tres slots, regras, artes, clocks e validacao preservados.
 
 EVIDENCIA E LIMITE DA CONCLUSAO
 Fotos da placa nova mostram 80%, "Conferindo SHA-256 e artes", depois
@@ -86,13 +87,28 @@ VALIDACAO LOCAL
 - Revisao independente de producao/telas encerrada sem bloqueios.
 Screenshots de diagnostico gerados sao SIMULACOES, nao medidas da placa.
 
+RESULTADO CI — 13/10/2026 UTC
+Fonte exata: 84bfc692d39316dedb0f0fd69a44dfe0bec2f7b8
+Tree: dd679167b8a7e4708b19c18715ca1df8e4da7cd0
+https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38336156246
+Conclusao success: 10 suites focadas, 4 ASan/UBSan/LeakSanitizer, compilacao
+ESP32-S3/core3.3.12 e manifesto aceito pelo parser/checkUpdate real.
+Firmware .bin: 2.681.856 bytes; +4.608 frente ao 7.7; margem OTA 463.872 bytes.
+O numero do linker (sketch 2.681.706) nao e o tamanho do arquivo final acima.
+Globais: 54.212 bytes; PSRAM conhecida: 6.828.800 e estimativa, nao medida fisica.
+Pacote de artes exatamente inalterado, SHA registrado acima. Nao foi repetido o
+agregado completo de gameplay; os gates focados cobrem o escopo desta mudanca.
+O primeiro CI 38335629248 passou os mesmos testes e detectou uma incompatibilidade
+de tipo no rotulo de percentual: uint32_t e unsigned long no Xtensa. O segundo
+SHA corrige somente clamp/argumento printf; tela de 128 frames e revisao aprovaram.
+Workflow somente leitura, branch exata, sem upload de binarios nem Release.
+
 PROXIMO GATE
-Compilacao ESP32 3.3.12 e repeticao dos gates focados no SHA exato em branch
-separada, sem Release. Workflow ota77-check com permissao somente leitura,
-guarda de branch exata e sem upload/publicacao; limites +64KiB e particao3MiB. O build dev maior rejeita corretamente o manifesto latest antigo; nao serve
+O build dev maior rejeita corretamente o manifesto latest antigo; nao serve
 para testar reparo artOnly ao vivo contra a Release atual. Nao se altera endpoint
-nem se afrouxa a guarda de downgrade. Apos CI verde, propor ao usuario uma
-versao final com manifesto correspondente para aprovacao antes de distribuir.
+nem se afrouxa a guarda de downgrade. Propor ao usuario uma versao final com
+manifesto correspondente para aprovacao antes de distribuir ou integrar main.
 Somente depois, teste fisico aprovado com energia fria, cartao valido/manual e
-reparo pelo Wi-Fi, registrando a tela precisa se falhar.
+reparo pelo Wi-Fi, registrando a tela precisa se falhar. Um reset sem desligar
+nao equivale a uma partida fria do SD. A causa fisica ainda nao esta confirmada.
 Nao apagar saves, formatar SD ou reinstalar particoes para diagnosticar isso.
