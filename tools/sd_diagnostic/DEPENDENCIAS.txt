@@ -1,0 +1,10 @@
+Core: esp32 by Espressif Systems 3.3.12, official Arduino Boards Manager.
+Sketch libraries: SPI, SD, WiFi, NetworkClientSecure, HTTPClient and mbedTLS
+provided by that core. No extra third-party library installation.
+LCD: repository's existing vendored src/GFX (Arduino_HWSPI/Arduino_ST7789),
+copied byte-for-byte into the ZIP, original license/comments retained.
+Board: Waveshare ESP32-S3-Touch-LCD-2 SKU29667, same production pin mapping.
+Synthetic fixture generator: tools/sd_diagnostic/generate_fixture.py.
+Size6661456; SHA256 a59c72f71490c5d10a68e5e48c49821712916c9eef671bf7f6bb907b5e7638f0.
+Exact immutable download URL is in SD_Diagnostico/Fixture.h.
+Private credentials are never part of this package.

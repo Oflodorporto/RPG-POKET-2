@@ -1,0 +1,44 @@
+name: Compilar diagnostico SD separado sem publicar firmware
+on:
+  push:
+    branches: [test/sd-diagnostic]
+    paths: ["tools/sd_diagnostic/**", "tests/sd_diagnostic*", "tools/test_sd_diagnostic.sh", ".github/workflows/sd-diagnostic-check.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: sd-diagnostic-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/test/sd-diagnostic'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tools/test_sd_diagnostic.sh
+      - name: Verificar fixture publico exato
+        run: |
+          python3 - <<'PY'
+          import re,hashlib,urllib.request,pathlib
+          h=pathlib.Path('tools/sd_diagnostic/SD_Diagnostico/Fixture.h').read_text()
+          url=re.search(r'URL="([^"]+)"',h)[1]
+          assert re.fullmatch(r'https://raw.githubusercontent.com/Oflodorporto/RPG-POKET-2/[0-9a-f]{40}/tools/sd_diagnostic/fixtures/transfer_fixture.bin',url)
+          with urllib.request.urlopen(url,timeout=60) as f: data=f.read(6661457)
+          assert len(data)==6661456
+          assert hashlib.sha256(data).hexdigest()=='a59c72f71490c5d10a68e5e48c49821712916c9eef671bf7f6bb907b5e7638f0'
+          print('Public fixture full SHA verified')
+          PY
+      - uses: arduino/setup-arduino-cli@v2
+      - run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar apenas o INO diagnostico
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none,DebugLevel=warn'
+          --output-dir build/sd_diagnostic/compiled build/sd_diagnostic/RPG_POKET_Diagnostico_SD/SD_Diagnostico
