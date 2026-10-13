@@ -1,13 +1,54 @@
-FINALIZACAO AUTORIZADA — 13/10/2026
-Candidato final 2026.10.13-ota77/build2026101302, ainda sem publicacao.
-Somente identidade/gates/notas mudam sobre o candidato dev qualificado abaixo.
-A branch final exige CI do mesmo SHA antes do fast-forward main; publisher
-repete os gates focados, cria tag no SHA exato e compara os tres downloads mais
-latest. Novo verificador estrito preserva o historico dos verificadores antigos.
-Inclui parser7.6/final e instalador publicado7.7 com SHA real, reuso das mesmas
-artes, transferencia integral e falhas sem selecionar boot. Localmente, os gates
-novos passaram com firmware SINTETICO; o CI final exigira o binario compilado.
-Nenhuma outra branch de gameplay ou arte foi incorporada.
+PUBLICADO E VERIFICADO — 13/10/2026, 02:43 UTC
+Versao 2026.10.13-ota77 / build 2026101302.
+https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-ota77
+Fonte e tag: 93b1b4ed75beb96bdf5ebad0642d39a2048a4326
+Tree: 29f34d992151208855fbc92b406ec34b85b7a4cf
+Qualificacao: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38337495925
+Publisher: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38337851422
+Ambos concluidos com sucesso no mesmo SHA. Main recebeu fast-forward autorizado.
+
+ARQUIVOS PUBLICADOS
+firmware.bin: 2.681.856 bytes; SHA-256
+317e56b6e37953b9648cf4fb86704d4d6d4f4012ed7fb5647d15ab355ce51f16
+artes.pak: 6.661.456 bytes; SHA-256
+5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1
+manifest.json: 1.064 bytes; SHA-256
+4a3790151a91d56f904fa80fbbfb8e4fe45e50c8b581169df03e2b93b8ef4a61
+Release ID 411199509. Catalogo 636, CRC 0b84d93f; artes exatamente inalteradas.
+Margem OTA 463.872 bytes; +4.608 frente ao firmware 7.7 publicado anteriormente.
+
+O publisher recompila o mesmo fonte. Seu SHA do firmware difere do binario da
+qualificacao (76948a8be66df101d0ece9ba9ffd81a13cba45a7ac9e3d4510a2225ecfc2adc9).
+Nao se afirma reproducibilidade bit a bit nem identidade entre esses binarios.
+O binario efetivamente publicado passou novamente pelo verificador estrito,
+15 sondas negativas e testes de transicao normais/sanitizados antes do upload.
+Depois, o publisher baixou os tres arquivos publicos, comparou byte a byte com
+seus outputs testados, verificou hashes/identidade e repetiu os parsers e os
+testes de instalacao 7.6/final e 7.7->correcao sobre esses downloads. O manifesto
+latest tambem foi baixado e comparado byte a byte. Metadados da API confirmaram
+os tamanhos/hashes acima, latest e tag no SHA exato. A conferencia foi executada
+no runner GitHub. Uma segunda transferencia independente dos tres arquivos e
+latest para o workspace tambem passou pelo verificador estrito e comparacao
+do manifesto byte a byte. Nenhuma dessas verificacoes implica teste na placa.
+
+Os gates focados sao 10 suites e 4 alvos ASan/UBSan/LeakSanitizer, com core 3.3.12.
+O agregado de gameplay/artes anterior foi preservado, nao repetido sem necessidade.
+Nenhuma branch de Continuar na dungeon ou de melhorias visuais foi incorporada.
+A causa fisica continua nao confirmada; nenhuma placa foi gravada pelo assistente.
+
+TESTE AGORA
+Usar o Source code(zip) desta tag inteira, nao a copia antiga. Seguir as
+configuracoes ja confirmadas em docs/RELEASE_OTA_7_7_NOTAS.txt, manter backup
+privado da flash/NVS e Erase All Flash desabilitado. Instalar pelo cabo primeiro.
+Confirmar a nova versao; depois desligar completamente e ligar com o cartao.
+Se as artes aparecerem, nao precisa baixa-las de novo. Se faltarem, usar
+Configuracoes > Atualizacao > Verificar versao e confirmar reparo da mesma versao.
+Fotografar o detalhe de falha antes de desligar; o registro e somente RAM.
+Nao formatar SD, apagar personagens ou mudar particoes para este teste.
+
+REGISTRO HISTORICO DO CANDIDATO DEV E DA INVESTIGACAO
+As referencias a pendencias/manifesto antigo abaixo descrevem a fase anterior;
+a publicacao acima e o estado atual. O teste fisico permanece pendente.
 
 CANDIDATO LOCAL: leitura de artes e instalacao OTA 7.7
 
@@ -103,7 +144,7 @@ Fonte exata: 84bfc692d39316dedb0f0fd69a44dfe0bec2f7b8
 Tree: dd679167b8a7e4708b19c18715ca1df8e4da7cd0
 https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38336156246
 Conclusao success: 10 suites focadas, 4 ASan/UBSan/LeakSanitizer, compilacao
-ESP32-S3/core3.3.12 e manifesto aceito pelo parser/checkUpdate real.
+ESP32-S3/core 3.3.12 e manifesto aceito pelo parser/checkUpdate real.
 Firmware .bin: 2.681.856 bytes; +4.608 frente ao 7.7; margem OTA 463.872 bytes.
 O numero do linker (sketch 2.681.706) nao e o tamanho do arquivo final acima.
 Globais: 54.212 bytes; PSRAM conhecida: 6.828.800 e estimativa, nao medida fisica.
