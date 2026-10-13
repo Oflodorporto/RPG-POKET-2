@@ -1,0 +1,39 @@
+name: Validar reparo SD e OTA 7.7 sem publicar
+on:
+  push:
+    branches: [fix/ota-art-reliability]
+    paths: ["firmware/**", "tests/**", "tools/**", ".github/workflows/ota77-check.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ota77-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/fix/ota-art-reliability'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Testar leitura completa, SHA real, falhas e diagnosticos
+        run: bash tools/test_ota_reliability.sh
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar sem gravar nem publicar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Conferir identidade dev e manifesto sem publicar
+        run: |
+          python3 tools/release_manifest.py
+          build/tests/update_adapter release/manifest.json
+          python3 tools/check_ota77_budget.py

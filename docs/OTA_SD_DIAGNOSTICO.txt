@@ -1,0 +1,29 @@
+RPG POKET — DIAGNÓSTICO LIMITADO DE ESCRITA SD NA OTA
+12/10/2026 | branch local feat/ota-sd-diagnostics | sem publicação ou gravação
+
+Registro historico do commit ad56d5a. A continuacao atual esta em
+docs/OTA_ARTES_CONFIABILIDADE.txt, com identidade dev exclusiva e gates proprios.
+
+EVIDÊNCIA E LIMITE
+Fotos do proprietário mostram commerce75 instalada, visual77 oferecida, progresso perto de 25% e “SD: gravacao falhou”, com RSSI anexado. A causa física ainda é desconhecida. As fotos não contêm arquivo, offset, bytes escritos ou código do sistema; 25% sugere a transição para artes, mas não prova em qual arquivo ocorreu a falha da tentativa fotografada.
+A mensagem tem um único caminho em UpdateDevice.h: o bloco já foi recebido da rede e out.write(buffer,n) retornou menos de n. Falta de espaço detectada na preparação, falha de abrir/criar arquivo e erro de rede têm outras mensagens. O dBm é anexado genericamente, inclusive a erros de SD; não prova causa Wi-Fi.
+O core Espressif 3.3.12 implementa File.write por fwrite; o número retornado não certifica gravação durável. Bufferização, sistema de arquivos/espaço, comunicação SD/SPI e alimentação continuam hipóteses. SD e LCD já usam UpdateSpiLock e transações SPI; não há prova de contenção nem de cartão defeituoso. Não formatar ou trocar hardware com base apenas nessa mensagem.
+Referência: https://raw.githubusercontent.com/espressif/arduino-esp32/3.3.12/libraries/FS/src/vfs_api.cpp
+
+ALTERAÇÃO PROPOSTA
+- Tela ocupada distingue “Baixando firmware” de “Baixando artes”. O rótulo é limpo antes de nova preparação.
+- Ao write retornar curto, guarda em RAM: arquivo, offset anterior ao bloco/total, solicitado/retornado, percentual, modo novo/append, errno capturado imediatamente e espaço livre da preparação existente. “Livre antes” não é espaço atual nem medição da causa. E0 significa que o sistema não forneceu código.
+- O último registro reaparece ao sair/reabrir Atualização e sobrevive ao Testar conexão durante a mesma sessão. Some ao reiniciar/desligar. Uma falha diferente ou uma nova oferta não fica escondida pelo registro antigo.
+- Nenhum log é gravado no SD que falhou nem em NVS. Sem mudança de Save28, partições, firmware/arte publicados ou regras. Nenhuma nova leitura de SD para registrar a falha; nenhuma atualização extra por bloco bem-sucedido que force redesenhos.
+- Preserva o comportamento existente: escrita curta tenta remover somente o parcial/tag, fecha recursos, não seleciona boot e mantém arte ativa/saves. A interface diz “reinicio solicitado”, sem afirmar que SD.remove teve sucesso. O outro arquivo completo pode continuar válido; “Continuar” não promete preservar o parcial que falhou.
+
+VALIDAÇÃO FOCADA
+48 casos de escrita curta: firmware/artes, arquivo novo/append, retornos 0/1/2048/4095, errno 0/ENOSPC/EIO. Conferem offset/tamanho/bytes/percentual/livre inicial, preservação, nenhuma seleção de boot, nova tentativa limpa, ausência de falso registro em falha HTTP, limpeza de rótulo e retenção pelo teste de rede real/reset da tela.
+128 quadros da tela com valores extremos, controles existentes e limites 240×320; registro lembrado sem arte SD, Save28 imutável e erro posterior/oferta ainda visíveis. Regressões existentes update_adapter, enemy_ota e visual77_render também executadas; snapshots de controlador conferidos. Cinco suítes focadas normais e quatro alvos ASan/UBSan passaram, retorno0; nenhuma falha de sanitizador. Revisão independente final concluída sem bloqueios, incluindo as duas prévias 240×320. Log focado SHA256: dd9bc246049a5c568ebeda9023a55693a094f366d598f915da408bfc558e4edb.
+Runner inclui as duas suítes novas (65 nativas/24 sanitizadas no agregado futuro), mas não se afirma execução de outro agregado completo. Sem compilação ESP32 nem teste físico desta alteração. LeakSanitizer local é limitado por ptrace; ASan/UBSan usam detect_leaks=0.
+
+RECUPERAÇÃO DISPONÍVEL, SEM DEPENDER DESTA BRANCH
+A Release oficial continua 2026.10.12-visual77/build2026101208, fonte7d946aca. Usar o ZIP-fonte da tag inteira, não o sketch antigo do PC; abrir firmware/RPG_POKET_2/RPG_POKET_2.ino. Confirmar Espressif3.3.12/ESP32S3 Dev Module, flash16MB QIO, OPI PSRAM, partição app3M_fat9M_16MB, USB CDC e Erase All Flash desabilitado. Nenhuma gravação é executada por este diagnóstico.
+Remover SD apenas com placa desligada, instalar/confirmar firmware correto antes de recolocar artes novas. Boot antigo com pacote versionado antigo válido pode limpar o pacote novo. Depois, desligar e copiar o artes.pak publicado (6.661.456 bytes) para /RPGPOKET/artes.pak, sem formatar. Não usar os arquivos-fonte compactados do ZIP como pacote final. Personagens ficam na NVS; copiar o SD não faz backup deles.
+https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.12-visual77
+Antes de distribuir um binário desta branch diagnóstica, atribuir identidade dev exclusiva, compilar ESP32 e obter autorização de teste. ReleaseVersion.h ainda identifica a base oficial; esta branch não é um binário oficial nem foi enviada à placa.

@@ -4,9 +4,14 @@
 #include <string.h>
 #include "ReleaseVersion.h"
 #include "SaveVersion.h"
+#include "StorageDiagnostics.h"
 namespace updater {
 enum class State:uint8_t {Idle,Checking,Current,Available,Downloading,Verifying,Installing,Cleaning,Restarting,Error,Testing};
-struct Info {State state=State::Idle;unsigned progress=0;bool busy=false,artOnly=false,canResume=false,tested=false;uint8_t netTrials=0,netSuccess=0,netDrop=0;int minDbm=-100,maxDbm=-100;uint32_t avgMs=0;char version[40]="",message[39]="";};
+enum class DownloadFile:uint8_t {None,Firmware,Art};
+// Last short-write evidence is RAM-only. It never contains URLs, credentials or saves.
+struct WriteFailure {bool valid=false,freeKnown=false,append=false;DownloadFile file=DownloadFile::None;uint32_t offset=0,total=0,requested=0,written=0,progress=0;uint64_t initialFree=0;int error=0;};
+inline const char* fileLabel(DownloadFile file){return file==DownloadFile::Firmware?"firmware":file==DownloadFile::Art?"artes":"arquivo";}
+struct Info {State state=State::Idle;unsigned progress=0;bool busy=false,artOnly=false,canResume=false,tested=false;uint8_t netTrials=0,netSuccess=0,netDrop=0;int minDbm=-100,maxDbm=-100;uint32_t avgMs=0;char version[40]="",message[39]="";DownloadFile file=DownloadFile::None;WriteFailure lastWrite;storageDiag::Failure lastVerify;};
 struct Package {char url[240]="",sha[65]="";uint32_t bytes=0;};
 struct Plan {char version[40]="";uint32_t build=0,artCrc=0,assets=0,saveFormat=0,writesSaveFormat=0;bool readsCurrentSaves=false;Package firmware,art;};
 inline bool hashValid(const char* s){if(strlen(s)!=64)return false;for(unsigned i=0;i<64;++i)if(!((s[i]>='0'&&s[i]<='9')||(s[i]>='a'&&s[i]<='f')))return false;return true;}

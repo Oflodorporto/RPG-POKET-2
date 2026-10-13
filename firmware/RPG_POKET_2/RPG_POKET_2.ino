@@ -18,6 +18,7 @@
 #include "View.h"
 #include "FrameBuffer.h"
 #include "SdReader.h"
+#include "SharedStorage.h"
 #include "FatigueJournal.h"
 #include "DeviceSettings.h"
 #include "UpdateDevice.h"
@@ -647,6 +648,7 @@ void setup(){
   Serial.begin(115200);Serial.setTxTimeoutMs(0);pinMode(41,OUTPUT);digitalWrite(41,HIGH);pinMode(1,OUTPUT);digitalWrite(1,LOW);
   Wire.begin(48,47);Wire.setClock(400000);Wire.setTimeOut(20);
   uint8_t id=0;touchReady=readRegs(0xa7,&id,1)&&id==0xb6;
+  primeSharedSd(); // SD enters SPI mode before the first LCD transaction.
   lcdReady=lcd.begin(40000000);
   buffered=frameBuffer.begin();frameBuffer.onChunk=sampleTouch;
   initUpdater();initSettings();nvs.ready=nvs.prefs.begin("pkt2_slice",false);backend.slot=menu.activeSlot;
@@ -655,7 +657,7 @@ void setup(){
   if(lcdReady){lcd.fillScreen(UI_INK);lcd.setTextColor(UI_GOLD);lcd.setTextSize(2);lcd.setCursor(12,130);lcd.print("Carregando artes...");lcd.setTextSize(1);lcd.setCursor(69,177);lcd.print("Saves protegidos");}
   enemyArt::workspace=static_cast<uint16_t*>(heap_caps_malloc(enemyArt::WORKSPACE_BYTES,MALLOC_CAP_SPIRAM|MALLOC_CAP_8BIT));
   // Missing decode workspace skips enemy images; settings/update remain available.
-  menu.art=loadSdArt();menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
+  menu.art=loadSdArt();if(storageDiag::bootArtFailure.valid())recordVerifyFailure(storageDiag::bootArtFailure);menu.flashMiB=ESP.getFlashChipSize()/1048576;menu.ramMiB=ESP.getPsramSize()/1048576;resumeConnection();
   bootTitle();
   lastActivity=millis();enemyAt=millis()+1200;
   if(lcdReady){paint(millis());applyBrightness();dirty=false;}

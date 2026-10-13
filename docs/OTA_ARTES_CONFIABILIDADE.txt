@@ -1,0 +1,98 @@
+CANDIDATO LOCAL: leitura de artes e instalacao OTA 7.7
+
+Escopo: branch fix/ota-art-reliability, sobre ad56d5a (diagnostico de escrita).
+Nao publicado. Identidade exclusiva 2026.10.13-ota77-dev/build2026101301.
+Build ESP32 e teste na placa pendentes; revisao independente sem bloqueios. Save28, tres slots, regras, artes, clocks e validacao preservados.
+
+EVIDENCIA E LIMITE DA CONCLUSAO
+Fotos da placa nova mostram 80%, "Conferindo SHA-256 e artes", depois
+"Download incompleto / tente de novo". Essa mensagem pertence a releitura e
+validacao do arquivo no SD. O contador anterior soma bytes aceitos por write;
+nao comprova gravacao duravel. O motivo exato na placa ainda e desconhecido.
+Nao ha evidencia suficiente para condenar o cartao ou afirmar que o Wi-Fi caiu.
+O relato anterior de "SD: gravacao falhou" pertence a outro ponto do fluxo.
+
+Reparo artOnly depende de build == FW_BUILD, nao do hash do binario compilado.
+Uma compilacao local do ZIP com a mesma identidade tambem usa esse caminho.
+O manifesto ainda precisa combinar versao, tamanho, CRC e catalogo compilados.
+O pacote oficial continua PKA1, 636 entradas, 6.661.456 bytes completos,
+CRC payload 0b84d93f e SHA-256
+5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1.
+
+ALTERACAO LIMITADA
+LCD e SD compartilham SPI no SKU29667 (MOSI38, SCLK39, MISO40; CS41/45).
+A base inicializava/desenhava no LCD antes de colocar o SD em modo SPI.
+A recomendacao oficial exige inicializar o SD primeiro, mantendo os outros CS
+altos. Agora primeSharedSd tenta um mount sem formatacao, fecha-o, e so depois
+inicia o LCD. Sem cartao ou com mount falho a tela continua inicializando; a
+leitura normal tenta novamente e registra o erro. O cartao permanece em modo
+SPI apos unmount ate perder alimentacao. Nenhum clock foi alterado.
+Isso corrige uma divergencia verificavel de inicializacao; a relacao causal com
+as duas placas so pode ser confirmada fisicamente, inclusive apos partida fria.
+Fonte: https://docs.espressif.com/projects/esp-idf/en/v5.0.2/esp32s3/api-reference/peripherals/sdspi_share.html
+
+Os acessos OTA ao SD e as transferencias do LCD ja usam a mesma trava SPI.
+Nao se encontrou transferencia LCD assincrona solta nem evidencia de defeito
+especifico no core 3.3.12 confirmado pelo usuario. Nao se alterou retomada HTTP,
+206/Content-Range, reinicio 200, timeout, tamanho exigido ou politica de limpeza.
+
+DIAGNOSTICO RAM
+A tela Atualizacao mostra o ultimo problema de boot das artes ou de conferencia
+OTA: fase, arquivo, motivo, offset, esperado/obtido e codigo da API quando existe.
+Distingue abrir, tamanho, leitura curta, assinatura PKA1, comprimento, CRC do
+cabecalho, catalogo, CRC dos dados, SHA e erro da API SHA. O SHA exibido e somente
+um prefixo de 32 bits para diagnostico; a aceitacao compara todos os 256 bits.
+Codigo zero significa que a API nao forneceu detalhe, nao que a midia esta boa.
+Ao iniciar, o boot usa tamanho/cabecalho/CRC como antes; o OTA exige tambem SHA.
+Retornar e testar a conexao preservam o registro. Desligar perde o registro.
+Nao ha log escrito no cartao que falhou, credenciais, bytes de saves ou novo NVS.
+As APIs flush/close do core nao retornam confirmacao duravel; o candidato nao
+atribui uma falha especificamente a flush, a FAT ou ao hardware sem evidencia.
+
+SEGURANCA
+Falha de validacao continua impedindo ativacao/reinicio de sucesso. Partes seguem
+a mesma tentativa de remocao; uma falha de SD pode impedir a propria remocao.
+A instalacao de artes continua usando nome CRC, sem sobrescrever o arquivo
+generico ativo. O boot so limpa outros pacotes/generico depois de validar um
+arquivo com nome CRC. Isso nao oferece retencao completa para rollback antigo.
+Nenhuma formatacao, gravacao de firmware em artOnly, mudanca de particao, Save28
+ou reset de slots foi adicionada. Falta de PSRAM continua seguindo o tratamento
+existente, nao foi convertida em reparo automatico.
+
+LACUNA DE TESTE FECHADA
+Os 11 testes anteriores cobriam artOnly com cache pronto e hash de teste nao
+criptografico. Nao eram evidencia de download integral + flush/close + releitura
+criptografica dentro do adaptador. O novo teste usa respostas HTTP simuladas,
+o leitor/instalador de producao e OpenSSL SHA-256 real com vetor conhecido abc.
+O pacote completo publicado passa sem corrupcao; injecoes controladas reproduzem
+o erro antigo de 80% contra os headers publicados inalterados e identificam os
+motivos no candidato. Nao e teste de radio Wi-Fi, FAT real, eletricidade ou placa.
+
+VALIDACAO LOCAL
+- 16 caminhos do pacote completo: transferencia limpa, open/stat/leitura curta,
+  corrupcao durante releitura, truncamento simulado no flush, quatro campos do
+  cabecalho, CRC/SHA, falha apos rename, retomada 206, reinicio 200 e reuso valido.
+  Nenhum esp_ota_begin/set_boot; tres sentinelas Save28 e generico preservados.
+- 13 casos do loader real de boot: ausente/mount/open/tamanho/cabecalho/CRC/read,
+  fallback generico valido e invalidado; offsets e descritores fechados.
+- Helper real SD-first: CS altos, pinos/4MHz/sem formatar, dois resultados de
+  mount, ordem antes da primeira operacao LCD. Fakes nao modelam o barramento.
+- 1.584 frames da tela: quatro linhas sem sobreposicao, extremos numericos,
+  menu/botoes e erros posteriores visiveis, sem dependencia das artes.
+- Seis regressoes focadas anteriores: update_adapter, enemy_ota,
+  ota_sd_diagnostics, ota_sd_diagnostics_render, settings_adapter, sd_adapter.
+- Snapshots de controlador identicos. Quatro suites ASan/UBSan passaram (exit 0),
+  leak detection local desativada pela limitacao ptrace conhecida; CI a exige.
+- Revisao independente de producao/telas encerrada sem bloqueios.
+Screenshots de diagnostico gerados sao SIMULACOES, nao medidas da placa.
+
+PROXIMO GATE
+Compilacao ESP32 3.3.12 e repeticao dos gates focados no SHA exato em branch
+separada, sem Release. Workflow ota77-check com permissao somente leitura,
+guarda de branch exata e sem upload/publicacao; limites +64KiB e particao3MiB. O build dev maior rejeita corretamente o manifesto latest antigo; nao serve
+para testar reparo artOnly ao vivo contra a Release atual. Nao se altera endpoint
+nem se afrouxa a guarda de downgrade. Apos CI verde, propor ao usuario uma
+versao final com manifesto correspondente para aprovacao antes de distribuir.
+Somente depois, teste fisico aprovado com energia fria, cartao valido/manual e
+reparo pelo Wi-Fi, registrando a tela precisa se falhar.
+Nao apagar saves, formatar SD ou reinstalar particoes para diagnosticar isso.
