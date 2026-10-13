@@ -1,4 +1,4 @@
-RPG POKET • Diagnóstico separado de SD e Wi-Fi • SD-DIAG-2026.10.13-1
+RPG POKET • Diagnóstico separado de SD e Wi-Fi • SD-DIAG-2026.10.13-2
 Somente Waveshare ESP32-S3-Touch-LCD-2 (SKU29667).
 
 ANTES DE GRAVAR
@@ -22,6 +22,33 @@ Confirme a porta da placa. Não use uma configuração antiga de outra placa.
 Abra SD_Diagnostico/SD_Diagnostico.ino. A biblioteca de tela já está incluída;
 não instale outras bibliotecas. Grave somente após conferir estas opções.
 
+NOVO TESTE P: PARCIAL EXISTENTE, SEM DOWNLOAD NEM ESCRITA
+Use esta versão2 para a pergunta atual. O arquivo que já está no cartão é:
+/RPGDIAG_18cb11d2f9db67a9/download.pak, 1048576 bytes;
+SHA256: 7cdb705f9a9be23511a919cde2e8455f8abde9c8f9abed1de218ad54f8e4a554.
+Não precisa copiar, renomear, apagar ou baixar nada.
+1. Após gravar a versão2, desligue o USB por completo e ligue com o cartão.
+2. Monitor Serial115200, “Nova linha”: envie P antes de qualquer outro teste.
+3. A tela permanecerá APAGADA durante todo P. Isso é esperado para manter LCD
+   fora da comparação. SPI usa1MHz. A primeira leitura ocorre com Wi-Fi desligado.
+4. Quando solicitado, informe SSID e senha somente no Monitor local, nunca no chat.
+5. Ele lê conectado, desliga Wi-Fi e lê novamente, na MESMA montagem do cartão.
+   Não acessa GitHub/NTP nessa sequência nem cria arquivo. Uma última releitura
+   ocorre após desmontar/remontar; ela aparece claramente como cycle2.
+6. Aguarde P END, envie R e guarde o relatório. Depois de P, só R/H são aceitos;
+   não é possível disparar D/S por engano. Antes de repetir P: novo cold boot.
+O primeiro erro é preservado. prior_errors informa que um erro anterior pode
+influenciar as fases seguintes. Desconexões de Wi-Fi durante a leitura aparecem
+nos estados antes/depois; passagem de uma fase não prova a causa elétrica.
+Fases sem o estado de rádio exigido ficam SKIPPED. Uma queda durante a faseON
+invalida essa comparação, mesmo que o SHA passe. Confira valid/invalid_radio_phases.
+As até quatro leituras são do mesmo1MiB. Cada leitura tem o limite de180s já existente;
+montagem/conexão têm seus próprios tempos. Não aguarde novas imagens na tela.
+Se a pasta tiver outro nome, somente PATH em ReadbackTarget.h é editável localmente;
+o programa aceita apenas /RPGDIAG_<16 caracteres hex minúsculos>/download.pak.
+Tamanho/hash continuam fixos para este parcial. Não coloque credenciais no header.
+
+TESTES ANTERIORES PRESERVADOS (NÃO NECESSÁRIOS PARA P)
 PRIMEIRO TESTE, SEM INTERNET
 1. Placa desligada, cartão com RPGPOKET/artes.pak encaixado. Ligue pelo USB.
 2. Abra Monitor Serial, 115200, final de linha “Nova linha”. A tela inicialmente

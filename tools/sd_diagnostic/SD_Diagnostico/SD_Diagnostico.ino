@@ -22,7 +22,8 @@
 #include "src/GFX/display/Arduino_ST7789.h"
 #include "DiagnosticCore.h"
 #include "Fixture.h"
-constexpr const char* VERSION="SD-DIAG-2026.10.13-1";
+#include "ReadbackTarget.h"
+constexpr const char* VERSION="SD-DIAG-2026.10.13-2";
 constexpr const char* ART="/RPGPOKET/artes.pak";
 constexpr const char* URL=fixture::URL;
 Arduino_HWSPI bus(42,45,39,38,40);Arduino_ST7789 lcd(&bus,-1,0,true,240,320);
@@ -55,17 +56,60 @@ void storageRun(){logLine("STORAGE BEGIN hz=%lu one_mount_across_phases=1",(unsi
  checkPins("after-reads");unmountCard();logLine("REMOUNT separate_cycle=1 prior_failures=%u",phaseFailures);bool again=mountCard("after-read-remount");if(again){if(!tailProbe("remounted"))++phaseFailures;}else ++phaseFailures;unmountCard();screen("Leituras concluidas");logLine("STORAGE END failures=%u; compare1MHz only after power-off/new boot",phaseFailures);
 }
 bool readPrivateLine(char* out,size_t cap){diag::PrivateInput input{out,cap};uint32_t start=millis();while(uint32_t(millis()-start)<90000){if(Serial.available()){auto r=input.feed(Serial.read());if(r==diag::InputResult::Done)return true;if(r==diag::InputResult::Invalid){privateInputFailed=true;return false;}}delay(5);}memset(out,0,cap);privateInputFailed=true;return false;}
-bool connectPrivate(){char ssid[33]={},pass[65]={};Serial.println("SSID local (nao entra no relatorio), terminar com Nova linha:");if(!readPrivateLine(ssid,sizeof(ssid))||!ssid[0]){privateInputFailed=true;memset(ssid,0,sizeof(ssid));return false;}Serial.println("Senha local (nao repetida nem salva), terminar com Nova linha; vazia para rede aberta:");if(!readPrivateLine(pass,sizeof(pass))){memset(ssid,0,sizeof(ssid));return false;}
- WiFi.persistent(false);WiFi.setAutoReconnect(false);WiFi.mode(WIFI_STA);esp_err_t e=esp_wifi_set_storage(WIFI_STORAGE_RAM);if(e!=ESP_OK){memset(ssid,0,sizeof(ssid));memset(pass,0,sizeof(pass));logLine("WIFI storage-RAM failure=%d",int(e));return false;}WiFi.begin(ssid,pass);memset(ssid,0,sizeof(ssid));memset(pass,0,sizeof(pass));uint32_t t=millis();while(WiFi.status()!=WL_CONNECTED&&uint32_t(millis()-t)<30000)delay(50);if(WiFi.status()!=WL_CONNECTED){logLine("WIFI connect failed status=%u",unsigned(WiFi.status()));return false;}logLine("WIFI connected RSSI=%ld",long(WiFi.RSSI()));configTime(0,0,"pool.ntp.org","time.google.com");t=millis();while(time(nullptr)<1767225600&&uint32_t(millis()-t)<20000)delay(50);if(time(nullptr)<1767225600){logLine("WIFI secure time unavailable");return false;}return true;
+bool connectPrivate(bool secureTime){char ssid[33]={},pass[65]={};Serial.println("SSID local (nao entra no relatorio), terminar com Nova linha:");if(!readPrivateLine(ssid,sizeof(ssid))||!ssid[0]){privateInputFailed=true;memset(ssid,0,sizeof(ssid));return false;}Serial.println("Senha local (nao repetida nem salva), terminar com Nova linha; vazia para rede aberta:");if(!readPrivateLine(pass,sizeof(pass))){memset(ssid,0,sizeof(ssid));return false;}
+ WiFi.persistent(false);WiFi.setAutoReconnect(false);WiFi.mode(WIFI_STA);esp_err_t e=esp_wifi_set_storage(WIFI_STORAGE_RAM);if(e!=ESP_OK){memset(ssid,0,sizeof(ssid));memset(pass,0,sizeof(pass));logLine("WIFI storage-RAM failure=%d",int(e));return false;}WiFi.begin(ssid,pass);memset(ssid,0,sizeof(ssid));memset(pass,0,sizeof(pass));uint32_t t=millis();while(WiFi.status()!=WL_CONNECTED&&uint32_t(millis()-t)<30000)delay(50);if(WiFi.status()!=WL_CONNECTED){logLine("WIFI connect failed status=%u",unsigned(WiFi.status()));return false;}logLine("WIFI connected RSSI=%ld",long(WiFi.RSSI()));if(!secureTime)return true;configTime(0,0,"pool.ntp.org","time.google.com");t=millis();while(time(nullptr)<1767225600&&uint32_t(millis()-t)<20000)delay(50);if(time(nullptr)<1767225600){logLine("WIFI secure time unavailable");return false;}return true;
 }
 void wifiOff(){WiFi.disconnect(false,false);WiFi.mode(WIFI_OFF);}
+// P is isolated: no LCD initialization, HTTP, write, report-file or NVS calls.
+bool radioState(const char* stage,unsigned errors,unsigned cycle,bool on) {
+  bool connected=WiFi.status()==WL_CONNECTED;
+  unsigned mode=unsigned(WiFi.getMode());
+  bool valid=diag::radioMatches(on,mode,connected);
+  logLine("P CONDITIONS stage=%s prior_errors=%u cycle=%u hz=%lu LCD=%u expected=%s mode=%u connected=%u valid=%u RSSI=%ld",stage,errors,cycle,(unsigned long)hz,lcdReady,on?"ON":"OFF",mode,connected,valid,connected?long(WiFi.RSSI()):0L);
+  return valid;
+}
+void existingReadbackRun() {
+  if(!diag::diagnosticTarget(readbackTarget::PATH)){logLine("P rejected: target path outside fixed diagnostic shape");return;}
+  hz=1000000;
+  wifiOff();
+  delay(250);
+  logLine("P BEGIN existing=%s bytes=%lu no_download=1 no_write=1",readbackTarget::PATH,(unsigned long)readbackTarget::BYTES);
+  logLine("P fixed LCD-off; one mount for OFF/ON/OFF. Prior I/O errors may affect following phases.");
+  if(!radioState("off-before-mount",0,1,false)){logLine("P END radio_OFF_not_confirmed=1; all reads SKIPPED");return;}
+  if(!checkPins("P-before-mount")||!mountCard("P-cycle1")){unmountCard();logLine("P END initial_mount_failed=1; radio comparison not performed");return;}
+  unsigned errors=0,invalidRadio=0;
+  bool attemptedOn=false;
+  if(radioState("off-before",errors,1,false)){
+    if(!verifyPath(readbackTarget::PATH,"P-off-before",false,readbackTarget::BYTES,readbackTarget::SHA,false))++errors;
+  }else {++invalidRadio;logLine("P-off-before SKIPPED radio condition absent");}
+  bool connected=connectPrivate(false); // No NTP or HTTP needed for a local read.
+  bool on=radioState("on-before",errors,1,true);
+  if(connected&&on){
+    attemptedOn=true;
+    if(!verifyPath(readbackTarget::PATH,"P-connected",false,readbackTarget::BYTES,readbackTarget::SHA,false))++errors;
+    if(!radioState("on-after",errors,1,true)){++invalidRadio;logLine("P-connected radio condition changed; invalidate ON/OFF comparison even if SHA passed");}
+  }else {++invalidRadio;logLine("P-connected SKIPPED (WiFi/input failed or radio condition absent)");}
+  wifiOff();
+  delay(250);
+  if(radioState("off-after",errors,1,false)){
+    if(!verifyPath(readbackTarget::PATH,"P-off-after",false,readbackTarget::BYTES,readbackTarget::SHA,false))++errors;
+  }else {++invalidRadio;logLine("P-off-after SKIPPED radio condition absent");}
+  unmountCard();
+  logLine("P REMOUNT cycle2 separate_control=1 prior_errors=%u",errors);
+  if(!radioState("off-remount",errors,2,false)){++invalidRadio;logLine("P-remount SKIPPED radio condition absent");}
+  else if(mountCard("P-cycle2")){
+    if(!verifyPath(readbackTarget::PATH,"P-off-remount",false,readbackTarget::BYTES,readbackTarget::SHA,false))++errors;
+  }else ++errors;
+  unmountCard();
+  logLine("P END read_or_mount_errors=%u invalid_radio_phases=%u connected_phase_attempted=%u; sequence alone does not prove physical cause",errors,invalidRadio,attemptedOn);
+}
 bool uniqueDirectory(){if(directory[0])return true;for(unsigned i=0;i<4;++i){char p[64];snprintf(p,sizeof(p),"/RPGDIAG_%08lx%08lx",(unsigned long)esp_random(),(unsigned long)esp_random());if(SD.exists(p))continue;if(SD.mkdir(p)){strcpy(directory,p);logLine("NEW_DIRECTORY %s",directory);return true;}logLine("DIRECTORY create failed errno=%d",errno);return false;}return false;}
 int exclusiveFile(const char* name,char* cardPath,size_t cap){if(!uniqueDirectory())return -1;snprintf(cardPath,cap,"%s/%s",directory,name);char full[112];snprintf(full,sizeof(full),"/sd%s",cardPath);errno=0;int fd=::open(full,O_WRONLY|O_CREAT|O_EXCL,0600);logLine("NEW_FILE name=%s fd_ok=%u errno=%d (exclusive, no overwrite)",name,fd>=0,errno);return fd;}
 bool closeWritten(int& fd,const char* phase){errno=0;int synced=::fsync(fd);int se=errno;errno=0;int closed=::close(fd);int ce=errno;fd=-1;logLine("SYNC_CLOSE stage=%s sync=%d errno=%d close=%d errno=%d",phase,synced,se,closed,ce);return synced==0&&closed==0;}
 int openHttp(HTTPClient& http,NetworkClientSecure& tls){String url(URL);tls.useBuiltinCACertBundle();tls.setHandshakeTimeout(20);for(unsigned i=0;i<6;++i){if(!diag::safeHttps(url.c_str()))return -100;if(!http.begin(tls,url))return -101;http.setConnectTimeout(15000);http.setTimeout(20000);http.setFollowRedirects(HTTPC_DISABLE_FOLLOW_REDIRECTS);const char* keys[]={"Location"};http.collectHeaders(keys,1);int code=http.GET();if(code==301||code==302||code==303||code==307||code==308){String next=http.header("Location");http.end();url=next;continue;}return code;}return -102;}
 void networkRun(bool disk){bool mounted=false;int fd=-1;char path[96]={};bool ok=false;
  if(disk){mounted=mountCard("download");if(!mounted){unmountCard();return;}uint64_t total=SD.totalBytes(),used=SD.usedBytes();if(total<used||total-used<diag::FILE_BYTES+65536){logLine("SPACE insufficient or unknown");unmountCard();return;}}
- if(!connectPrivate()){wifiOff();if(mounted)unmountCard();return;}
+ if(!connectPrivate(true)){wifiOff();if(mounted)unmountCard();return;}
  NetworkClientSecure tls;HTTPClient http;int code=openHttp(http,tls);logLine("HTTP code=%d length=%d (URL and headers intentionally omitted)",code,http.getSize());
  if(code==200&&http.getSize()==int(diag::FILE_BYTES)){
   if(disk)fd=exclusiveFile("download.pak",path,sizeof(path));
@@ -87,9 +131,9 @@ void networkRun(bool disk){bool mounted=false;int fd=-1;char path[96]={};bool ok
  if(fd>=0)closeWritten(fd,"error-close");http.end();wifiOff();if(mounted)unmountCard();logLine("NETWORK END disk=%u ok=%u; diagnostic file retained even on failure",disk,ok);screen("Teste WiFi concluido");
 }
 void saveReport(){if(!mountCard("save-report")){unmountCard();return;}char p[96];int fd=exclusiveFile("report.txt",p,sizeof(p));if(fd>=0){size_t bytes=report.used;errno=0;ssize_t n=::write(fd,report.data,bytes);int e=errno;bool good=n>=0&&diag::exactWrite(bytes,size_t(n),e);bool closeOk=closeWritten(fd,"report");logLine("REPORT_FILE requested=%lu written=%ld errno=%d closed=%u ok=%u",(unsigned long)bytes,(long)n,e,closeOk,good&&closeOk);}unmountCard();}
-void setup(){Serial.begin(115200);Serial.setTxTimeoutMs(100);pinMode(1,OUTPUT);digitalWrite(1,LOW);pinMode(41,OUTPUT);pinMode(45,OUTPUT);deselect();SPI.begin(39,40,38);WiFi.persistent(false);logLine("%s flash=%lu PSRAM=%lu",VERSION,(unsigned long)ESP.getFlashChipSize(),(unsigned long)ESP.getPsramSize());logLine("PINS MOSI38 SCLK39 MISO40 SDCS41 LCDCS45 DC42 BL1; no reset GPIO (-1). Software checks are not electrical continuity tests.");logLine("Sketch has no direct save/NVS/OTA calls. Standard core startup can affect NVS. Use new board. No automatic tests.");logLine("4: storage4MHz | 1: storage1MHz (choose ONE per cold boot)");logLine("N: WiFi without SD | D: WiFi new SD file (after4/1)");logLine("R: RAM report | S: save new report file | H: commands");}
-void command(char c){if(!diag::commandAllowed(privateInputFailed,c)){Serial.println("Entrada privada cancelada. Reinicie para novos testes; R recupera relatorio.");return;}if(c=='R'){Serial.println("--- RAM REPORT ---");Serial.print(report.data);Serial.printf("--- END truncated=%u ---\n",report.truncated);return;}if(c=='H'){Serial.println("4/1 once per cold boot; N network; D new SD download; R report; S new report file");return;}
- if(c=='D'&&!session.storage){Serial.println("Primeiro execute 4 ou 1.");return;}if(!session.take(c)){Serial.println("Comando invalido ou ja executado. Sem repeticao automatica.");return;}if(c=='4'||c=='1'){hz=c=='4'?4000000:1000000;storageRun();}else if(c=='N'||c=='D')networkRun(c=='D');else if(c=='S')saveReport();}
+void setup(){Serial.begin(115200);Serial.setTxTimeoutMs(100);pinMode(1,OUTPUT);digitalWrite(1,LOW);pinMode(41,OUTPUT);pinMode(45,OUTPUT);deselect();SPI.begin(39,40,38);WiFi.persistent(false);logLine("%s flash=%lu PSRAM=%lu",VERSION,(unsigned long)ESP.getFlashChipSize(),(unsigned long)ESP.getPsramSize());logLine("PINS MOSI38 SCLK39 MISO40 SDCS41 LCDCS45 DC42 BL1; no reset GPIO (-1). Software checks are not electrical continuity tests.");logLine("Sketch has no direct save/NVS/OTA calls. Standard core startup can affect NVS. Use new board. No automatic tests.");logLine("P: existing 1MiB read OFF/ON/OFF, LCD off (fresh boot only)");logLine("4: storage4MHz | 1: storage1MHz (choose ONE per cold boot)");logLine("N: WiFi without SD | D: WiFi new SD file (after4/1)");logLine("R: RAM report | S: save new report file | H: commands");}
+void command(char c){if(!diag::commandAllowed(privateInputFailed,c)){Serial.println("Entrada privada cancelada. Reinicie para novos testes; R recupera relatorio.");return;}if(c=='R'){Serial.println("--- RAM REPORT ---");Serial.print(report.data);Serial.printf("--- END truncated=%u ---\n",report.truncated);return;}if(c=='H'){Serial.println("P existing-file comparison (fresh boot); 4/1 storage; N network; D new SD download; R report; S new report file");return;}
+ if(c=='D'&&!session.storage){Serial.println("Primeiro execute 4 ou 1.");return;}if(!session.take(c)){Serial.println("Comando invalido ou ja executado. Sem repeticao automatica.");return;}if(c=='P'){existingReadbackRun();}else if(c=='4'||c=='1'){hz=c=='4'?4000000:1000000;storageRun();}else if(c=='N'||c=='D')networkRun(c=='D');else if(c=='S')saveReport();}
 void loop() {
   static char c = 0;
   static bool bad = false;

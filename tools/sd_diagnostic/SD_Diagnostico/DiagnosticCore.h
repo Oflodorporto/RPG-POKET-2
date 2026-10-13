@@ -12,9 +12,11 @@ constexpr size_t LOG_CAP=24576;
 struct Report {char data[LOG_CAP]={};size_t used=0;bool truncated=false;
  void append(const char* s){size_t n=strlen(s);if(n>LOG_CAP-1-used){n=LOG_CAP-1-used;truncated=true;}memcpy(data+used,s,n);used+=n;data[used]=0;}
 };
-struct Session {bool storage=false,network=false,download=false,report=false;
- bool take(char c){bool* p=c=='4'||c=='1'?&storage:c=='N'?&network:c=='D'?&download:c=='S'?&report:nullptr;if(!p||*p)return false;*p=true;return true;}
+struct Session {bool storage=false,network=false,download=false,report=false,probe=false;
+ bool take(char c){if(c=='P'){if(storage||network||download||report||probe)return false;probe=true;return true;}if(probe)return false;bool* p=c=='4'||c=='1'?&storage:c=='N'?&network:c=='D'?&download:c=='S'?&report:nullptr;if(!p||*p)return false;*p=true;return true;}
 };
+inline bool diagnosticTarget(const char* p){constexpr const char* prefix="/RPGDIAG_";constexpr const char* suffix="/download.pak";constexpr size_t start=9,hex=16; if(!p||strlen(p)!=start+hex+strlen(suffix)||strncmp(p,prefix,start)||strcmp(p+start+hex,suffix))return false;for(size_t i=start;i<start+hex;++i)if(!((p[i]>='0'&&p[i]<='9')||(p[i]>='a'&&p[i]<='f')))return false;return true;}
+inline bool radioMatches(bool on,unsigned mode,bool connected){return on?(mode==1&&connected):(mode==0&&!connected);}
 inline bool commandAllowed(bool privateFailure,char c){return !privateFailure||c=='R'||c=='H';}
 enum class InputResult {Pending,Done,Invalid};
 struct PrivateInput {char* out;size_t cap,used=0;bool invalid=false;

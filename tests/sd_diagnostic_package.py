@@ -17,11 +17,16 @@ with tempfile.TemporaryDirectory() as d:
  except FileExistsError: pass
  else: os.close(fd);raise AssertionError('exclusive open overwrote file')
  assert p.read_bytes()==b'old'
+probe=s.split('void existingReadbackRun() {',1)[1].split('bool uniqueDirectory()',1)[0]
+for forbidden in ['http.','exclusiveFile(','::write','SD.mkdir','screen(','lcd.begin','configTime(','networkRun(']:assert forbidden not in probe,forbidden
+assert probe.count('verifyPath(')==4 and 'connectPrivate(false)' in probe
+assert 'prior_errors=' in probe and 'P REMOUNT cycle2' in probe
+assert 'if(!secureTime)return true;configTime' in s
 fixture=ROOT/'tools/sd_diagnostic/fixtures/transfer_fixture.bin'
 assert fixture.stat().st_size==6661456
 assert hashlib.sha256(fixture.read_bytes()).hexdigest()=='a59c72f71490c5d10a68e5e48c49821712916c9eef671bf7f6bb907b5e7638f0'
 subprocess.run(['python3','tools/sd_diagnostic/package.py'],cwd=ROOT,check=True)
-with zipfile.ZipFile(ROOT/'build/sd_diagnostic/RPG_POKET_Diagnostico_SD.zip') as z:
+with zipfile.ZipFile(ROOT/'build/sd_diagnostic/RPG_POKET_Diagnostico_SD_v2.zip') as z:
  prefix='RPG_POKET_Diagnostico_SD/'
  for p,h in json.loads(z.read(prefix+'SHA256SUMS.json')).items():assert hashlib.sha256(z.read(prefix+p)).hexdigest()==h
  for p in (ROOT/'firmware/RPG_POKET_2/src/GFX').rglob('*'):
