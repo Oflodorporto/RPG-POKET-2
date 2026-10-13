@@ -1,5 +1,36 @@
+PUBLICADO E VERIFICADO — 13/10/2026, 08:02 UTC
+Versão 2026.10.13-recovery77 / build2026101303. Release ID411431970.
+https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-recovery77
+Fonte/tag: cf0639ebf7e1dc729a026d09a8ef27f1e7dbc9ae
+Árvore: 98a735c86ca856b6250f32675b6d4b0753b9b9b3
+Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38365055106
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38365745447
+Ambas aprovadas no mesmo SHA; main recebeu fast-forward com verificação de ancestral.
+
+firmware.bin: 2.686.416 bytes, SHA256
+11e56b59a63ab07f5f9a6bc7c42341349055abf494c2a0e9bf1867a91b0ee184
+artes.pak: 6.661.456 bytes, SHA256
+5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1
+manifest.json/latest: 1.084 bytes, SHA256
+c988818316b64066ae20ecbef80ffacfdbed8959047cbee30cc90baf87b391c6
+Margem OTA459.312 bytes; +4.560 frente ao ota77 anterior. Globais54.404 bytes;
+restante linker273.276. PSRAM conhecida6.828.800, conta estática, não heap medido.
+
+O publicador recompilou a mesma fonte. Seu firmware difere em hash do produzido
+na qualificação (fcf690cfc66fe8074d5f4e63007e703ddcfbfa48f355956e602f3be3d6f73c5a).
+Não se afirma reprodutibilidade binária. O binário publicado passou pelo verificador,
+15 probes negativos e transições normais/sanitizadas antes do upload. O runner
+baixou os três assets públicos, comparou bytes com seus outputs, repetiu validação
+estrita e adaptadores reais e conferiu latest. Uma segunda transferência independente
+baixou novamente os três arquivos e latest, conferiu hashes/tamanhos/identidade e
+executou transições 7.6/final e ota77 publicado com SHA real; saída0. Tag e latest
+foram conferidos pela API. ASan/UBSan/LeakSanitizer aprovados na CI.
+A nova recuperação ainda não foi testada fisicamente. Nenhuma placa foi gravada
+pelo agente. Não inclui dungeon/bolsa, não modifica Save28 nem o conteúdo das artes.
+
+REGISTRO DA PREPARAÇÃO E CONTRATOS
 Pacote 1: recuperação SD/OTA. Candidato 2026.10.13-recovery77/build2026101303.
-Somente branch feat/ota77-recovery até qualificação/revisão verdes.
+Preparada em feat/ota77-recovery e integrada/publicada após os gates acima.
 
 CONTRATO DE RECUPERAÇÃO
 Cada boot/load e cada instalação tem um único orçamento de remontagem a1MHz.
@@ -39,8 +70,8 @@ Validação local: 11 suites normais e 5 ASan/UBSan, com saída 0; 27 cenários 
 recuperação, 19 de boot, 1.611 frames e 58 gates de catálogo por modo. Verificador
 final: 15 probes; transição sintética com headers publicados de 7.6 e ota77,
 SHA real e três sentinelas Save28. LeakSanitizer fica para a CI.
-Revisão independente concluída sem bloqueadores; compilação ESP32 e aceitação
-dos artefatos reais ainda são gates obrigatórios antes da publicação.
+Revisão independente sem bloqueadores. Compilação ESP32 e aceitação dos artefatos
+reais concluídas com sucesso, conforme registro de publicação acima.
 O workflow final exige branch exata e é read-only. O publicador requer CI verde do
 MESMO SHA, main, tag inédita e verifica downloads públicos/manifesto latest depois.
 As artes e fontes do catálogo permanecem byte-idênticas. PSRAM conhecida permanece
