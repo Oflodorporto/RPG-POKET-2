@@ -1,0 +1,32 @@
+7.7 — Correcao focada em microSD, download e leitura das artes
+
+Esta versao inicializa o microSD antes do LCD no barramento SPI compartilhado,
+seguindo a orientacao da Espressif. Acrescenta diagnosticos especificos para
+falhas de escrita, abertura, tamanho, leitura, cabecalho, CRC e SHA-256.
+O ultimo detalhe fica na tela Atualizacao durante a sessao, sem escrever logs
+no SD que falhou. Desligar perde esse registro.
+
+O pacote de artes e exatamente o mesmo da versao 7.7: 636 entradas, 6.661.456
+bytes, SHA-256 5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1.
+Nao altera personagens, Save28, os tres slots, regras, recompensas ou desenhos.
+Nao inclui as outras propostas visuais nem a branch de Continuar na dungeon.
+
+LIMITES
+A inicializacao anterior divergia da recomendacao oficial; essa divergencia foi
+corrigida. A causa fisica das falhas relatadas ainda nao foi confirmada nas placas.
+Testes simulados e compilacao nao substituem o teste de partida fria e do cartao.
+CRC e SHA continuam obrigatorios. Nao formate SD nem apague a flash para testar.
+
+TESTE SEGURO APOS A PUBLICACAO
+Como a OTA atual falha, usar primeiro o ZIP-fonte desta tag inteira pelo cabo,
+com as configuracoes ja confirmadas e sem apagar a flash. Nao usar a copia antiga.
+Espressif 3.3.12, ESP32S3 Dev Module, flash 16 MB QIO, OPI PSRAM, USB CDC ativado,
+particao 16M Flash (3MB APP/9.9MB FATFS), Erase All Flash desabilitado.
+Preservar o backup privado de flash/NVS; copiar o SD nao salva os personagens.
+Depois desligar completamente e ligar novamente, mantendo o cartao no lugar.
+Se as artes aparecerem, nao precisa baixa-las novamente. Se faltarem, abrir
+Configuracoes > Atualizacao > Verificar versao e confirmar o reparo das artes.
+Se falhar, fotografar o detalhe ANTES de desligar: arquivo, motivo, posicao,
+esperado/obtido e codigo. Codigo 0 significa que a API nao forneceu detalhe.
+O mesmo build pode reparar apenas artes; nao depende de o binario local Arduino
+ter o mesmo SHA do binario publicado.

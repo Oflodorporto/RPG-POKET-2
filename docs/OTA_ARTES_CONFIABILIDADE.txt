@@ -1,3 +1,14 @@
+FINALIZACAO AUTORIZADA — 13/10/2026
+Candidato final 2026.10.13-ota77/build2026101302, ainda sem publicacao.
+Somente identidade/gates/notas mudam sobre o candidato dev qualificado abaixo.
+A branch final exige CI do mesmo SHA antes do fast-forward main; publisher
+repete os gates focados, cria tag no SHA exato e compara os tres downloads mais
+latest. Novo verificador estrito preserva o historico dos verificadores antigos.
+Inclui parser7.6/final e instalador publicado7.7 com SHA real, reuso das mesmas
+artes, transferencia integral e falhas sem selecionar boot. Localmente, os gates
+novos passaram com firmware SINTETICO; o CI final exigira o binario compilado.
+Nenhuma outra branch de gameplay ou arte foi incorporada.
+
 CANDIDATO LOCAL: leitura de artes e instalacao OTA 7.7
 
 Escopo: branch fix/ota-art-reliability, sobre ad56d5a (diagnostico de escrita).
