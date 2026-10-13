@@ -1,4 +1,5 @@
 #pragma once
+#include "TentMarker.h"
 // Day-by-day travel presentation uses saved facts and the same personalized hero.
 // No draws modify Game or read the SD. Small props are native pixel sprites.
 namespace dailyUi {
@@ -20,7 +21,6 @@ template<class C>void merchant(C& c,int x,int y,unsigned frame){
  // at the opposite side always uses their own race/class/clothing sprite.
  magicSprite(c,campArt::heroes[2][1][frame%2],56,64,x,y,56,64);
 }
-template<class C>void tent(C& c,int x,int y){for(int row=0;row<14;++row)c.fillRect(x+14-row,y+row,row*2+1,1,0xddaa);for(int row=0;row<10;++row)c.fillRect(x+14-row/2,y+4+row,row+1,1,UI_INK);c.fillRect(x,y+14,29,2,UI_GOLD);}
 template<class C>void road(C& c,Point p,Point q){int dx=abs(q.x-p.x),sx=p.x<q.x?1:-1,dy=-abs(q.y-p.y),sy=p.y<q.y?1:-1,err=dx+dy;for(;;){c.fillRect(p.x-1,p.y-1,3,3,UI_GOLD);if(p.x==q.x&&p.y==q.y)break;int e=2*err;if(e>=dy){err+=dy;p.x+=sx;}if(e<=dx){err+=dx;p.y+=sy;}}}
 }
 template<class C>void drawDailyTravel(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
@@ -39,14 +39,25 @@ template<class C>void drawDailyTravel(C& c,const rpg::Game& g,const ViewState& v
  snprintf(b,sizeof(b),"Dia %u de %u / %s",g.daily.day,g.daily.totalDays,placeName(g.daily.region));label(37,b);
  if(v.page==Page::TravelRoll||night){
   unsigned roll=night?g.daily.roll:g.tripRoll,total=night?g.daily.total:g.tripTotal,difficulty=night?g.daily.difficulty:g.tripDifficulty;
-  bool safe=night?rpg::dailyNightSafe(g):rpg::tripSafe(g);carvalhoUi::frame(c,{80,100,80,80});snprintf(b,sizeof(b),"%u",menu.rollReady?roll:1+(frame*7)%20);touchLabel(c,84,125,72,b,UI_GOLD,3);
+  bool safe=night?rpg::dailyNightSafe(g):rpg::tripSafe(g);
+  d20Ui::draw(c,120,139,46,roll,menu.rollReady,uint32_t(menu.renderNow-menu.rollStarted));
+  label(198,"D20",UI_GOLD);
   carvalhoUi::frame(c,{12,218,216,45});snprintf(b,sizeof(b),"D20 %u / total %u / CD %u",roll,total,difficulty);label(226,menu.rollReady?b:"Rolando o dado...");label(244,menu.rollReady?(safe?"LOCAL SEGURO":"PERIGO NA ESTRADA"):"Aguarde o resultado",safe?UI_GREEN:UI_GOLD);
   carvalhoUi::frame(c,{14,272,212,40});label(288,!menu.rollReady?"Aguarde":safe?(night?"Descansar":"Iniciar dia 1"):"Enfrentar perigo",UI_GOLD);return;
  }
  Journey path=dailyUi::routePosition(g,menu.journey.progress);Point p=path.position();if(escort){Point q=path.wagonPosition();dailyUi::wagon(c,std::max(0,std::min(214,q.x-12)),q.y-19);}
  if(menu.art==ArtStatus::Ready)for(unsigned y=0;y<24;++y)for(unsigned x=0;x<22;++x){unsigned pose=g.daily.phase==rpg::DailyPhase::Leg?frame%6:0;auto color=personalPixel(g,pose,(y*5)*112+x*5);if(color!=SPRITE_KEY)c.fillRect(p.x-11+x,p.y-27+y,1,1,color);}
  else c.fillRect(p.x-3,p.y-8,6,8,UI_GREEN);
- if(g.daily.phase==rpg::DailyPhase::Tent)dailyUi::tent(c,std::max(0,std::min(210,p.x-14)),p.y+3);
+ if(g.daily.phase==rpg::DailyPhase::Tent){
+  // Road camps stay centred below the exact stop. At a city, move just the
+  // tent beside the hero so its fabric/shadow cannot cover the baked-in name.
+  int tentX=p.x-tentMarker::Width/2,tentY=p.y+18-tentMarker::Height;
+  for(const auto& city:places)if(p.x==city.x&&p.y==city.y){
+   tentX=p.x+18; if(tentX+tentMarker::Width>240)tentX=p.x-17-tentMarker::Width;
+   tentY=p.y+4-tentMarker::Height;break;
+  }
+  tentMarker::draw(c,std::max(0,std::min(240-tentMarker::Width,tentX)),tentY);
+ }
  c.fillRect(0,218,240,102,UI_INK);carvalhoUi::frame(c,{12,220,216,44});snprintf(b,sizeof(b),"%s -> %s",placeName(g.daily.origin),placeName(g.tripTo));label(229,b,UI_GOLD);
  snprintf(b,sizeof(b),"Racoes pagas: %u / bolsa: %u",g.daily.rationsPaid,g.rations);label(248,b);
  if(g.daily.phase==rpg::DailyPhase::Tent){carvalhoUi::frame(c,{14,272,212,40});label(288,"Continuar",UI_GOLD);}

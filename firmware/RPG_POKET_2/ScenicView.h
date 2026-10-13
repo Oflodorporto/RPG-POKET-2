@@ -8,10 +8,12 @@ constexpr int homeTop=274,homeHeight=40,homeWidth=72;
 inline int menuChoice(int x,int y){if(x<menuX-3||x>=menuX+menuWidth+3)return -1;for(int n=0;n<7;++n)if(y>=menuYs[n]-1&&y<menuYs[n]+menuHeight+2)return n;return -1;}
 inline int homeChoice(int x,int y){if(y<homeTop||y>=homeTop+homeHeight)return -1;for(int n=0;n<3;++n)if(x>=6+n*78&&x<6+n*78+homeWidth)return n;return -1;}
 struct Rect {int x,y,w,h;bool contains(int px,int py)const{return px>=x&&px<x+w&&py>=y&&py<y+h;}};
-// Conversation, crystal entrance, guardian, explore, camp, map, market.
-constexpr Rect ruinsButtons[]={{69,57,110,16},{108,143,128,63},{105,210,130,30},{52,246,86,29},{144,246,90,29},{52,278,86,30},{144,278,90,30}};
+// Conversation, crystal entrance, guardian, explore, camp, map, market, bag.
+// Bolsa uses the free area above the fire without shrinking existing controls.
+constexpr Rect ruinsButtons[]={{69,57,110,16},{108,143,128,63},{105,210,130,30},{52,246,86,29},{144,246,90,29},{52,278,86,30},{144,278,90,30},{10,148,88,44}};
+constexpr int ruinsBag=7,ruinsButtonCount=sizeof(ruinsButtons)/sizeof(ruinsButtons[0]);
 constexpr Rect mapButtons[]={{23,278,96,30},{122,278,97,30}};
-inline int ruinsChoice(int x,int y){for(int i=0;i<7;++i)if(ruinsButtons[i].contains(x,y))return i;return -1;}
+inline int ruinsChoice(int x,int y){for(int i=0;i<ruinsButtonCount;++i)if(ruinsButtons[i].contains(x,y))return i;return -1;}
 inline bool atlasChoice(int x,int y){return x>=30&&x<75&&y>=65&&y<95;}
 }
 template<class C>void scenicText(C& c,int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextWrap(false);c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);}
@@ -92,8 +94,19 @@ template<class C>void drawScenicMap(C& c,const rpg::Game& g,const ViewState& v,u
  if(*v.message){c.fillRect(2,229,236,12,UI_INK);scenicText(c,(240-int(strlen(v.message))*6)/2,232,v.message,1,UI_RED);}
  (void)frame;
 }
+template<class C>void scenicRuinsBag(C& c){
+ const auto& r=scenicUi::ruinsButtons[scenicUi::ruinsBag];
+ auto pixel=[](int x,int y){return scenicArt::ruinsPalette[scenicArt::ruinsPixels[y*240+x]];};
+ // Nine-slice the existing rounded gold/blue Explorar frame, excluding its
+ // baked icon/text. Reuse the illustrated pouch from Loja, entirely in flash.
+ uint16_t row[88];for(int y=0;y<r.h;++y){int sy=y<5?246+y:y>=r.h-5?275-(r.h-y):251+(y-5)*19/(r.h-10);
+  for(int x=0;x<r.w;++x){int sx=x<5?52+x:x>=r.w-5?138-(r.w-x):57+(x-5)*76/(r.w-10);row[x]=pixel(x>=5&&x<r.w-5&&y>=5&&y<r.h-5?130:sx,sy);}c.draw16bitRGBBitmap(r.x,r.y+y,row,r.w,1);}
+ for(int y=0;y<24;++y){for(int x=0;x<26;++x)row[x]=pixel(148+x,282+y*22/24);c.draw16bitRGBBitmap(r.x+8,r.y+10+y,row,26,1);}
+ scenicText(c,r.x+43,r.y+18,"Bolsa",1,UI_WHITE);scenicText(c,r.x+44,r.y+18,"Bolsa",1,UI_WHITE);
+}
 template<class C>void drawScenicRuins(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
  auto period=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;scenicWorld(c,true,period);
+ scenicRuinsBag(c);
  scenicPanel(c,10,94,220,30);auto goal=story::objective(g);scenicText(c,17,100,goal.title,1,UI_GOLD);scenicText(c,17,112,"Toque: proximo objetivo");
  // Never display the sample 3/3 or "vencido" from the concept as real progress.
  c.fillRect(160,178,73,24,0x0843);char b[64];snprintf(b,sizeof(b),"Vitorias %u/3",g.ruinsWins);scenicText(c,160,180,b,1,UI_GOLD);

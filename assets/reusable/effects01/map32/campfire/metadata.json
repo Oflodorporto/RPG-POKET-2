@@ -1,0 +1,171 @@
+{
+  "id": "campfire_map32",
+  "base_effect": "campfire",
+  "native_size": [
+    32,
+    32
+  ],
+  "frame_count": 8,
+  "atlas": "map32/campfire/atlas.png",
+  "atlas_size": [
+    256,
+    32
+  ],
+  "anchor_px": [
+    16,
+    26
+  ],
+  "duration_ms": 960,
+  "loop": true,
+  "playback": "loop",
+  "alpha": "straight RGBA; 17-step coverage alpha; zero RGB where alpha=0",
+  "sampling": "nearest",
+  "frames": [
+    {
+      "index": 0,
+      "file": "map32/campfire/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        6,
+        26,
+        28
+      ],
+      "sha256": "adcef3e1f6e036117c27af4ea07e7d2bf076aa586f11c4345c98d309aa5c958f"
+    },
+    {
+      "index": 1,
+      "file": "map32/campfire/01.png",
+      "rect": {
+        "x": 32,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        4,
+        26,
+        28
+      ],
+      "sha256": "95d4788a3146e86c9d5f4d2458d87516591cedceb6592ed773af36241fe1b697"
+    },
+    {
+      "index": 2,
+      "file": "map32/campfire/02.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        5,
+        26,
+        28
+      ],
+      "sha256": "58c5a04045e34b1e6175cbc771d7fd2593ae18e70366751baac1fdefac96204a"
+    },
+    {
+      "index": 3,
+      "file": "map32/campfire/03.png",
+      "rect": {
+        "x": 96,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        4,
+        26,
+        28
+      ],
+      "sha256": "915ab25fdaf0f089931f14127d4f09d0f647d509bf2a3cf63bc29ded1e15d890"
+    },
+    {
+      "index": 4,
+      "file": "map32/campfire/04.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        6,
+        26,
+        28
+      ],
+      "sha256": "d4b44c20a89f61f112b779bfa3978feb657f89b659a32ea3ef0ccc145810963b"
+    },
+    {
+      "index": 5,
+      "file": "map32/campfire/05.png",
+      "rect": {
+        "x": 160,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        4,
+        26,
+        28
+      ],
+      "sha256": "86c9b3307b8d04b4a2bfec6a4378e2b558934a9e10623cf4319599f08f16c39a"
+    },
+    {
+      "index": 6,
+      "file": "map32/campfire/06.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        6,
+        26,
+        28
+      ],
+      "sha256": "9036530d2577cf41757fb2de43418a542dedc8376b3020cf7b84601841180800"
+    },
+    {
+      "index": 7,
+      "file": "map32/campfire/07.png",
+      "rect": {
+        "x": 224,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        8,
+        4,
+        26,
+        28
+      ],
+      "sha256": "478684984a436b3813694c462caf3f2ff0e301f2a34615cb84fbffa46b577d76"
+    }
+  ],
+  "status": "future-use asset, not integrated",
+  "map_guidance": "Reserve an unobstructed 32x32 box. Keep at least 6 px from label, route or city-marker bounds. Suppress the effect if no safe placement exists; do not move map labels."
+}

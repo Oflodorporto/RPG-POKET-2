@@ -1,21 +1,22 @@
 name: Publicar versão
-# Main must only advance after scenes77 physical feedback and release-owner technical/visual approval.
+# Main must only advance after package5 qualification and release-owner technical/visual approval.
+# Physical touch/heap/FPS status must remain explicit; this workflow is not authorization to publish.
 # Qualification branches never publish; exact SHA is still required below.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_SCALE_7_7_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE5_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
     inputs:
       version:
-        description: Versão inédita (ex. 2026.10.13-scale77)
+        description: Versão inédita (ex. 2026.10.13-camp77)
         required: true
         type: string
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: scale77-main
+  group: package5-main
   cancel-in-progress: false
 jobs:
   release:
@@ -39,7 +40,7 @@ jobs:
           version=re.search(r'FW_VERSION="([^"]+)"',Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()).group(1)
           requested=os.environ.get("REQUESTED_VERSION")
           assert not requested or requested==version, "Versao diferente do firmware"
-          assert version == "2026.10.13-scale77", "Somente escala e contraste 7.7 qualificados"
+          assert version == "2026.10.13-camp77", "Somente D20, acampamento e bolsa 7.7 qualificados"
           print("RELEASE_VERSION="+version)
           header=Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()
           package=re.search(r'FW_PACKAGE="([^"]+)"',header)
@@ -49,15 +50,17 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/scale77-check.yml/runs?branch=feat%2Fscale77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package5-check.yml/runs?branch=feat%2Fpackage5-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
           python3 - <<'PY'
           import json,os
           runs=json.load(open(os.environ['RUNNER_TEMP']+'/qualification.json'))['workflow_runs']
-          assert any(r['head_sha']==os.environ['GITHUB_SHA'] and r['head_branch']=='feat/scale77-release' and r['path']=='.github/workflows/scale77-check.yml' and r['conclusion']=='success' for r in runs), 'Fonte sem qualificacao exata'
+          assert any(r['head_sha']==os.environ['GITHUB_SHA'] and r['head_branch']=='feat/package5-release' and r['path']=='.github/workflows/package5-check.yml' and r['conclusion']=='success' for r in runs), 'Fonte sem qualificacao exata'
           PY
           test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')" = 0
-      - name: Testar regressao completa, escala, contraste, Save29, reset e cenas
-        run: bash tools/test_scale77.sh
+      - name: Instalar dependencia deterministica das artes
+        run: python3 -m pip install 'Pillow==11.3.0'
+      - name: Testar regressao completa, D20, acampamento, bolsa, Save29 e reset
+        run: bash tools/test_package5.sh
       - name: Instalar ESP32
         run: |
           arduino-cli config init
@@ -72,10 +75,10 @@ jobs:
       - name: Preparar arquivos e manifesto
         run: |
           python3 tools/release_manifest.py
-          python3 tools/verify_scale77_release.py
-          python3 tests/scale77_release_verifier.py
-          python3 tools/test_scale77_release.py release
-          python3 tools/test_scale77_release.py release --sanitizers
+          python3 tools/verify_package5_release.py
+          python3 tests/package5_release_verifier.py
+          python3 tools/test_package5_release.py release
+          python3 tools/test_package5_release.py release --sanitizers
       - name: Publicar Release
         if: github.ref == 'refs/heads/main'
         env:
@@ -84,7 +87,7 @@ jobs:
           # Refuse to reuse an existing tag; pin new tags to this tested source commit.
           existing=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')
           test "$existing" = 0
-          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes-file docs/RELEASE_SCALE_7_7_NOTAS.txt --latest
+          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes-file docs/RELEASE_PACKAGE5_NOTAS.txt --latest
       - name: Conferir downloads publicados e manifesto latest
         run: |
           mkdir -p build/published77
@@ -92,12 +95,12 @@ jobs:
             curl --fail --location --retry 5 --retry-all-errors --output "build/published77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v$RELEASE_VERSION/$name"
             cmp "release/$name" "build/published77/$name"
           done
-          python3 tools/verify_scale77_release.py build/published77
-          python3 tools/test_scale77_release.py build/published77
+          python3 tools/verify_package5_release.py build/published77
+          python3 tools/test_package5_release.py build/published77
           matched=0
           for attempt in $(seq 1 12); do
             if curl --fail --location --retry 2 --output build/published77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published77/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1
-          echo "PASS: three public downloads byte-identical to tested outputs; SHA256, old touch77 rejection, published scenes77 upgrade, Save29 preservation/no repeated reset host adapters and latest manifest verified"
+          echo "PASS: three public downloads byte-identical to tested outputs; SHA256, old touch77 rejection, published scenes77/scale77 upgrades, Save29 preservation/no repeated reset host adapters and latest manifest verified"

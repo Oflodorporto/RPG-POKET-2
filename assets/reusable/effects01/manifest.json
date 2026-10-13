@@ -1,0 +1,1426 @@
+{
+  "title": "RPG POKET — Efeitos 01",
+  "version": "1.0.0",
+  "date": "2026-10-13",
+  "effect_count": 8,
+  "total_frame_count": 64,
+  "native_canvas": [
+    64,
+    64
+  ],
+  "target_screen": [
+    240,
+    320
+  ],
+  "source": "Original deterministic procedural pixel geometry. No downloaded artwork. No imagegen output.",
+  "integration": "Asset-only pack. No firmware, mechanic, damage, balance or release changes.",
+  "master_atlas": {
+    "file": "atlases/all_effects_512x512.png",
+    "size": [
+      512,
+      512
+    ],
+    "row_order": [
+      "campfire",
+      "slash",
+      "healing",
+      "fire_burst",
+      "frost",
+      "lightning",
+      "arcane",
+      "guard"
+    ],
+    "frame_rect": "x=frame_index*64, y=effect_row*64, width=64, height=64"
+  },
+  "effects": [
+    {
+      "id": "campfire",
+      "name_pt": "FOGUEIRA",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/campfire.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        52
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.8125
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 960,
+      "loop": true,
+      "playback": "loop",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/campfire/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            12,
+            54,
+            57
+          ],
+          "sha256": "a0048e914906ba616b6197bc68f1481eed9171ccbfd9cc033bae028217ca6ee5"
+        },
+        {
+          "index": 1,
+          "file": "frames/campfire/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            8,
+            54,
+            57
+          ],
+          "sha256": "90f8fd83f0acac84f73636bdac2be18c54ae7f9984a7f3363d0263923e7e4fd6"
+        },
+        {
+          "index": 2,
+          "file": "frames/campfire/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            11,
+            54,
+            57
+          ],
+          "sha256": "b628ddeac78ca063cb3b5d0d91a58c4d6ebf2383f87a6a010d7c8c646a42615c"
+        },
+        {
+          "index": 3,
+          "file": "frames/campfire/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            9,
+            54,
+            57
+          ],
+          "sha256": "9c085424827b5ce2e4fafe15dc4d63dc569dbe3e7e8cbe5113b8bd1d0856e51f"
+        },
+        {
+          "index": 4,
+          "file": "frames/campfire/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            12,
+            54,
+            57
+          ],
+          "sha256": "9eccd8047f8bb30ee8441da7cf943ef6aa532aed8725cda0886acce42f0c7998"
+        },
+        {
+          "index": 5,
+          "file": "frames/campfire/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            9,
+            54,
+            57
+          ],
+          "sha256": "297bff7c35fa55b766f7b88d96ed176ac55f723ac5a32552eb65403bffa5ea83"
+        },
+        {
+          "index": 6,
+          "file": "frames/campfire/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            12,
+            54,
+            57
+          ],
+          "sha256": "ce904f10195fd2b4d5f52e2dd5229c1cf67d131624190baa28b6a496196ee404"
+        },
+        {
+          "index": 7,
+          "file": "frames/campfire/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            11,
+            9,
+            54,
+            57
+          ],
+          "sha256": "6e9dfeb87d92b103025b7fad0eaf5bc4fba5e95ecb4b1d660ddbdb8965f357ea"
+        }
+      ],
+      "intended_use": "Chamas e brasas em loop, com lenha fixa. Recurso visual de acampamento.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "slash",
+      "name_pt": "CORTE / IMPACTO",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/slash.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 820,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/slash/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 80,
+          "alpha_bbox": [
+            7,
+            10,
+            56,
+            53
+          ],
+          "sha256": "aba7d2665ecec410dbecd671110c1d4aa0569f1daa38e1b9ecec5e6fd4d39a96"
+        },
+        {
+          "index": 1,
+          "file": "frames/slash/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 80,
+          "alpha_bbox": [
+            8,
+            10,
+            56,
+            53
+          ],
+          "sha256": "c82a58647e994415aec7a0748e30fefcbae2b93005ffa72837e0a4514a779383"
+        },
+        {
+          "index": 2,
+          "file": "frames/slash/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 90,
+          "alpha_bbox": [
+            9,
+            10,
+            56,
+            53
+          ],
+          "sha256": "09171918444f426048cbb1bb0c5ce6d017927afd4a32811cb97bff7fb52e140a"
+        },
+        {
+          "index": 3,
+          "file": "frames/slash/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            9,
+            10,
+            56,
+            53
+          ],
+          "sha256": "aacf0f5e833688ae79a5fd2e10195c74f42f2fa814547e923806392176627562"
+        },
+        {
+          "index": 4,
+          "file": "frames/slash/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            9,
+            10,
+            56,
+            53
+          ],
+          "sha256": "e319c70d2dd11392d496787402f783c74f19464778ace9c95951caffdb2fbd13"
+        },
+        {
+          "index": 5,
+          "file": "frames/slash/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            9,
+            10,
+            56,
+            53
+          ],
+          "sha256": "a834810be485115cf3faecb4abd96d1fcf279c63b08268e8818248380440fab2"
+        },
+        {
+          "index": 6,
+          "file": "frames/slash/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            9,
+            10,
+            58,
+            53
+          ],
+          "sha256": "1f90b47bda4b3bb07ed084fd37ad3ebf1ca1b6d2d0c4f959689a3f8ccb8994c1"
+        },
+        {
+          "index": 7,
+          "file": "frames/slash/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 130,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Arco de corte e faiscas de contato. Uso visual em ataques fisicos.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "healing",
+      "name_pt": "CURA",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/healing.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 880,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/healing/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "1a9f5d140fe163607b93e557f1fbaba0755d803f3fb46ff3707967ab050c05da"
+        },
+        {
+          "index": 1,
+          "file": "frames/healing/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "52a93a7d39c28206e6825dfca6790f9e8bdfd01f44eb391edbcaf518170fc58c"
+        },
+        {
+          "index": 2,
+          "file": "frames/healing/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "94ea797fa5e376a4d9827d72427eb8fcec7f7bc25204b220b912f400251cec93"
+        },
+        {
+          "index": 3,
+          "file": "frames/healing/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "bb0688bd8460c72675b08e69ec99f22ce5e92abf4b60b77d310fdba690b03744"
+        },
+        {
+          "index": 4,
+          "file": "frames/healing/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "695c9c4973063ac73c04294261d209b007e68fd01fd3de94294394a41a7425d5"
+        },
+        {
+          "index": 5,
+          "file": "frames/healing/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            10,
+            57,
+            59
+          ],
+          "sha256": "c79969f285229e14a08606104dd67f0cce62a03b19fd712086378d798016534e"
+        },
+        {
+          "index": 6,
+          "file": "frames/healing/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            8,
+            9,
+            57,
+            59
+          ],
+          "sha256": "b97372aa880f1bc9c4b9e08e17bcd7d6f6d6d1c573dd6d69e20c869d394c537e"
+        },
+        {
+          "index": 7,
+          "file": "frames/healing/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Pulso verde de recuperacao. Referencias: Impor as maos, Segundo folego e Vigor.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "fire_burst",
+      "name_pt": "EXPLOSAO DE FOGO",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/fire_burst.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 820,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/fire_burst/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 80,
+          "alpha_bbox": [
+            21,
+            22,
+            44,
+            45
+          ],
+          "sha256": "93969a84b2474b8c0a143d794ed820546c1fc76b821f277ed346b7118c6f4e17"
+        },
+        {
+          "index": 1,
+          "file": "frames/fire_burst/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 80,
+          "alpha_bbox": [
+            16,
+            17,
+            49,
+            50
+          ],
+          "sha256": "4abb018a65ee4870cd0ee4074cf57f46be1a42dabbc19e1215e96d32b2a17aeb"
+        },
+        {
+          "index": 2,
+          "file": "frames/fire_burst/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 90,
+          "alpha_bbox": [
+            9,
+            10,
+            56,
+            57
+          ],
+          "sha256": "91840ef28e87bfb176293313beb32f074bcd5d09b671749ccefdc9424e6c0d60"
+        },
+        {
+          "index": 3,
+          "file": "frames/fire_burst/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            5,
+            6,
+            60,
+            61
+          ],
+          "sha256": "a3242679c606d6f9500b8fe663cdf723ccd4b94253891ec9e8313e645d7b4e0f"
+        },
+        {
+          "index": 4,
+          "file": "frames/fire_burst/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            4,
+            5,
+            61,
+            62
+          ],
+          "sha256": "7d413761f26c2c99c9d9a883e97c9643b21184441dde1526d18b2e3c522a5988"
+        },
+        {
+          "index": 5,
+          "file": "frames/fire_burst/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            4,
+            5,
+            61,
+            62
+          ],
+          "sha256": "32739c06c512c6b15bbce389bd1a686d8f4eeafc4a03217bad960695fe257d9a"
+        },
+        {
+          "index": 6,
+          "file": "frames/fire_burst/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            4,
+            5,
+            61,
+            62
+          ],
+          "sha256": "02411ec3b818a7a4ad532c6fd33d70897746adff945b3c2a56acf1e41e7accfc"
+        },
+        {
+          "index": 7,
+          "file": "frames/fire_burst/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 140,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Explosao compacta. Referencias: Maos flamejantes, Raios abrasadores e Bola de fogo.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "frost",
+      "name_pt": "GELO",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/frost.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 800,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/frost/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            19,
+            58,
+            60
+          ],
+          "sha256": "174e260ebdfc94389d96da7c05d6eaa64fd38d101a183577df146362cd6c0c15"
+        },
+        {
+          "index": 1,
+          "file": "frames/frost/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            19,
+            58,
+            60
+          ],
+          "sha256": "a31dc08f601d74e214bb142d726f1b1cda198728ad3ec33162c11a17e73b0c3a"
+        },
+        {
+          "index": 2,
+          "file": "frames/frost/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            18,
+            58,
+            60
+          ],
+          "sha256": "f59fdf86eb5fcc58c023a14ba5934c8560c6625928ab7d7414301da148552d46"
+        },
+        {
+          "index": 3,
+          "file": "frames/frost/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            8,
+            58,
+            60
+          ],
+          "sha256": "d5f57a80ee4b4c3fa118e6104ec02353be629d371c57dab34dcaf7911e4f7dc8"
+        },
+        {
+          "index": 4,
+          "file": "frames/frost/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            8,
+            58,
+            60
+          ],
+          "sha256": "c984e89034e72ce32fdc2baebe50337261d7ea36ba5e1b85d99a28bd9defcbc2"
+        },
+        {
+          "index": 5,
+          "file": "frames/frost/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            8,
+            58,
+            60
+          ],
+          "sha256": "61317dfd1b1917e70d497926b5f456487e38ad32bec7d936f1ce8f25f33c95fb"
+        },
+        {
+          "index": 6,
+          "file": "frames/frost/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            7,
+            8,
+            59,
+            60
+          ],
+          "sha256": "cd3fce79cdd190458f3db6d59962df0005bf16a1400f43d53e02158f1bf492b9"
+        },
+        {
+          "index": 7,
+          "file": "frames/frost/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Cristais e particulas frias. Reserva visual futura; nao define magia ou mecanica atual.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "lightning",
+      "name_pt": "RAIO",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/lightning.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        52
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.8125
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 900,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/lightning/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 90,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            56
+          ],
+          "sha256": "98703fadf39fe97ccdb26ea3c9a3fe259da133989263207ded70f11efa76322a"
+        },
+        {
+          "index": 1,
+          "file": "frames/lightning/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 90,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            56
+          ],
+          "sha256": "8a29b9e0c4a633a27ffd9a487b32c790eb46f7cd6c4977cff64770063b0e495a"
+        },
+        {
+          "index": 2,
+          "file": "frames/lightning/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            57
+          ],
+          "sha256": "66874f1a73478fb15e6751ad5348141418d70a5271a8b1ceedafa8e6b3323d29"
+        },
+        {
+          "index": 3,
+          "file": "frames/lightning/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            57
+          ],
+          "sha256": "fcb050f5d22fc6a5e6cccd2830a716a1afa200f2fe21f1712da5e5363483e135"
+        },
+        {
+          "index": 4,
+          "file": "frames/lightning/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            57
+          ],
+          "sha256": "0cb0383edca3c72f100f9e19fb1f89611273704fd8e40a404a537c4f6c933667"
+        },
+        {
+          "index": 5,
+          "file": "frames/lightning/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            58
+          ],
+          "sha256": "2f4d34c2b6c42cce3920834cc3bf9ec63e24d63506f2fb4be78bf8aab6613baf"
+        },
+        {
+          "index": 6,
+          "file": "frames/lightning/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 130,
+          "alpha_bbox": [
+            10,
+            6,
+            55,
+            59
+          ],
+          "sha256": "ce2da7c27d08c3179fc67cab81d87705af5ee1f095e2c89972422a8be9ccadcf"
+        },
+        {
+          "index": 7,
+          "file": "frames/lightning/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 150,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Descarga ramificada, sem estroboscopio. Referencia visual: Raio e arte de raio existente.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "arcane",
+      "name_pt": "ENERGIA ARCANA",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/arcane.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 800,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/arcane/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "2c92cd7bd952e92282ae0eb2caee33dcbdf488462bd6d93027b065b590d83156"
+        },
+        {
+          "index": 1,
+          "file": "frames/arcane/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "2d9a7f9cdf26410eb921a19b2276b41ad64994c577c77a54927255487f63e8e3"
+        },
+        {
+          "index": 2,
+          "file": "frames/arcane/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "3798a53ca6c5a13357d04f05453211d21c4f18458ed87c48c345895f15b8fb5b"
+        },
+        {
+          "index": 3,
+          "file": "frames/arcane/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "bc8bd6500b5df2859accd09d47201a452ed88ff4a1839de5b499ae339a4b5425"
+        },
+        {
+          "index": 4,
+          "file": "frames/arcane/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "c9b49412ad6793568a03efe285fd0d24d093d7b862555b47ecc48f8fcbd8e20a"
+        },
+        {
+          "index": 5,
+          "file": "frames/arcane/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "4ae8c60db9545ff33b08fccd269df5390a0d2b3242d25a5ba24244c260e45d3d"
+        },
+        {
+          "index": 6,
+          "file": "frames/arcane/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "3d4f39e52ade96f8c906877ab8f83af8dc6931a0922293b254a28165637541f0"
+        },
+        {
+          "index": 7,
+          "file": "frames/arcane/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 100,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Nucleo e arcos violetas. Referencia visual: Misseis magicos; sem trajetoria ou dano embutidos.",
+      "runtime_integrated": false
+    },
+    {
+      "id": "guard",
+      "name_pt": "ESCUDO / GUARDA",
+      "native_size": [
+        64,
+        64
+      ],
+      "frame_count": 8,
+      "atlas": "atlases/guard.png",
+      "atlas_size": [
+        512,
+        64
+      ],
+      "layout": "row-major, left-to-right",
+      "anchor_px": [
+        32,
+        32
+      ],
+      "anchor_normalized": [
+        0.5,
+        0.5
+      ],
+      "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+      "duration_ms": 880,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+      "sampling": "nearest",
+      "blend": "source-over",
+      "frames": [
+        {
+          "index": 0,
+          "file": "frames/guard/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "1766b8b0a944936887e5f03c54515321a38958258aea06f462514104e2e5d78b"
+        },
+        {
+          "index": 1,
+          "file": "frames/guard/01.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "08855e9405c267ffc60636870066cd463d652e19634f95e7c72eea95d5fb9daa"
+        },
+        {
+          "index": 2,
+          "file": "frames/guard/02.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "8d9b9d7ddacd758b2c8b6c3df7ac8b19bcea76f8cc922a088d41f55e6ce92a40"
+        },
+        {
+          "index": 3,
+          "file": "frames/guard/03.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "de9ea23c98820cbf5b9092e3ec5badd319160e476478dec4fbd15b53565ed580"
+        },
+        {
+          "index": 4,
+          "file": "frames/guard/04.png",
+          "rect": {
+            "x": 256,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "2804b815028b3223607d26ff322c2959a2da31cc5e5ba9ad040fddc63a186113"
+        },
+        {
+          "index": 5,
+          "file": "frames/guard/05.png",
+          "rect": {
+            "x": 320,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "350a7a4d3ec3ec95c1b49b0ed89a7e07a57362eb97212fcab90a54388b5a403c"
+        },
+        {
+          "index": 6,
+          "file": "frames/guard/06.png",
+          "rect": {
+            "x": 384,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            6,
+            59,
+            59
+          ],
+          "sha256": "70dd920e7ab411675fe00a695557bcca1bcd96f215046a4d268e4ab8bc83fe56"
+        },
+        {
+          "index": 7,
+          "file": "frames/guard/07.png",
+          "rect": {
+            "x": 448,
+            "y": 0,
+            "w": 64,
+            "h": 64
+          },
+          "duration_ms": 110,
+          "alpha_bbox": null,
+          "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+        }
+      ],
+      "intended_use": "Contorno de escudo e pulso turquesa/dourado. Referencias: Escudo arcano, Barreira, Escudo e Aparar.",
+      "runtime_integrated": false
+    }
+  ]
+}

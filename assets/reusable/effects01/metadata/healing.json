@@ -1,0 +1,173 @@
+{
+  "id": "healing",
+  "name_pt": "CURA",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/healing.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 880,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/healing/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "1a9f5d140fe163607b93e557f1fbaba0755d803f3fb46ff3707967ab050c05da"
+    },
+    {
+      "index": 1,
+      "file": "frames/healing/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "52a93a7d39c28206e6825dfca6790f9e8bdfd01f44eb391edbcaf518170fc58c"
+    },
+    {
+      "index": 2,
+      "file": "frames/healing/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "94ea797fa5e376a4d9827d72427eb8fcec7f7bc25204b220b912f400251cec93"
+    },
+    {
+      "index": 3,
+      "file": "frames/healing/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "bb0688bd8460c72675b08e69ec99f22ce5e92abf4b60b77d310fdba690b03744"
+    },
+    {
+      "index": 4,
+      "file": "frames/healing/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "695c9c4973063ac73c04294261d209b007e68fd01fd3de94294394a41a7425d5"
+    },
+    {
+      "index": 5,
+      "file": "frames/healing/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        10,
+        57,
+        59
+      ],
+      "sha256": "c79969f285229e14a08606104dd67f0cce62a03b19fd712086378d798016534e"
+    },
+    {
+      "index": 6,
+      "file": "frames/healing/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        8,
+        9,
+        57,
+        59
+      ],
+      "sha256": "b97372aa880f1bc9c4b9e08e17bcd7d6f6d6d1c573dd6d69e20c869d394c537e"
+    },
+    {
+      "index": 7,
+      "file": "frames/healing/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Pulso verde de recuperacao. Referencias: Impor as maos, Segundo folego e Vigor.",
+  "runtime_integrated": false
+}

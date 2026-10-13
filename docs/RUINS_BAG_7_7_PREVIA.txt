@@ -1,0 +1,32 @@
+PACOTE 5 — BOLSA NO HUB DAS RUINAS (candidata local, nao publicada)
+
+Escopo: acrescenta Bolsa 88x44 em (10,148), acima da fogueira. As sete
+acoes existentes conservam suas coordenadas. Desenho e hitbox usam a mesma
+geometria; texto Bolsa legivel em negrito, borda dourada/azul e icone de
+bolsa reutilizados dos botoes ilustrados, sem novas artes. Abre TownBag com escolha 0 e retorno
+Ruins. Pocoes, outros itens e equipamentos conservam as regras existentes.
+
+Resultado de combate pendente continua bloqueando pocao; agora orienta
+"Volte e toque em Continuar". Turno inimigo: "Aguarde o turno do inimigo".
+Nao altera cura (30% HP / 50% MP), turnos, RNG, dificuldade, Save29, epoca1,
+slots, identidade de release ou artes.pak. Nenhuma mudanca em D20/tenda,
+equipamentos/effects reutilizaveis da candidata congelada.
+
+Validacao reproduzivel local:
+RPG_DETECT_LEAKS=0 bash tools/test_ruins_bag77.sh
+O guard combinado usa build/d20-camp77/CANDIDATE5_HANDOFF.json e scope.json
+como entradas imutaveis. tools/check_d20_camp77_scope.py fica intacto como
+qualificacao historica da candidata D20 isolada; seu pressuposto de controlador
+inalterado ja nao se aplica ao pacote combinado.
+
+Cobertura nova: geometria disjunta em 76.800 pixels; tres slots Save29 e quatro
+classes; limites do botao; abrir/voltar/abrir; selecionar e usar pocoes;
+itens e equipamentos; salvar, falhar e repetir sem duplicar efeito; protecao
+dos outros slots; toque mantido; bloqueios de animacao e resultados pendentes.
+Render: 512 frames (quatro periodos do dia, quatro classes, 0..3 vitorias,
+quatro frames, ready/fallback), sem mutacao de Game. Capturas 240x320 e 3x.
+
+Limites: LeakSanitizer depende de CI fora de ptrace. Qualificacao completa
+do pacote combinado, compilacao ESP32, identidade final/exato SHA e testes
+fisicos de toque/heap/FPS ainda devem ocorrer antes de publicar. Nao ha
+commit, push, tag ou release nesta entrega local.

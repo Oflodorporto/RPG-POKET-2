@@ -1,0 +1,173 @@
+{
+  "id": "fire_burst",
+  "name_pt": "EXPLOSAO DE FOGO",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/fire_burst.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 820,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/fire_burst/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 80,
+      "alpha_bbox": [
+        21,
+        22,
+        44,
+        45
+      ],
+      "sha256": "93969a84b2474b8c0a143d794ed820546c1fc76b821f277ed346b7118c6f4e17"
+    },
+    {
+      "index": 1,
+      "file": "frames/fire_burst/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 80,
+      "alpha_bbox": [
+        16,
+        17,
+        49,
+        50
+      ],
+      "sha256": "4abb018a65ee4870cd0ee4074cf57f46be1a42dabbc19e1215e96d32b2a17aeb"
+    },
+    {
+      "index": 2,
+      "file": "frames/fire_burst/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 90,
+      "alpha_bbox": [
+        9,
+        10,
+        56,
+        57
+      ],
+      "sha256": "91840ef28e87bfb176293313beb32f074bcd5d09b671749ccefdc9424e6c0d60"
+    },
+    {
+      "index": 3,
+      "file": "frames/fire_burst/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        5,
+        6,
+        60,
+        61
+      ],
+      "sha256": "a3242679c606d6f9500b8fe663cdf723ccd4b94253891ec9e8313e645d7b4e0f"
+    },
+    {
+      "index": 4,
+      "file": "frames/fire_burst/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        4,
+        5,
+        61,
+        62
+      ],
+      "sha256": "7d413761f26c2c99c9d9a883e97c9643b21184441dde1526d18b2e3c522a5988"
+    },
+    {
+      "index": 5,
+      "file": "frames/fire_burst/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        4,
+        5,
+        61,
+        62
+      ],
+      "sha256": "32739c06c512c6b15bbce389bd1a686d8f4eeafc4a03217bad960695fe257d9a"
+    },
+    {
+      "index": 6,
+      "file": "frames/fire_burst/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        4,
+        5,
+        61,
+        62
+      ],
+      "sha256": "02411ec3b818a7a4ad532c6fd33d70897746adff945b3c2a56acf1e41e7accfc"
+    },
+    {
+      "index": 7,
+      "file": "frames/fire_burst/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 140,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Explosao compacta. Referencias: Maos flamejantes, Raios abrasadores e Bola de fogo.",
+  "runtime_integrated": false
+}

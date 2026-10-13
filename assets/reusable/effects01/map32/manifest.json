@@ -1,0 +1,511 @@
+{
+  "title": "RPG POKET — variantes de mapa 32x32",
+  "variant_count": 3,
+  "frame_count": 24,
+  "target": "future travel map use, no runtime change",
+  "effects": [
+    {
+      "id": "campfire_map32",
+      "base_effect": "campfire",
+      "native_size": [
+        32,
+        32
+      ],
+      "frame_count": 8,
+      "atlas": "map32/campfire/atlas.png",
+      "atlas_size": [
+        256,
+        32
+      ],
+      "anchor_px": [
+        16,
+        26
+      ],
+      "duration_ms": 960,
+      "loop": true,
+      "playback": "loop",
+      "alpha": "straight RGBA; 17-step coverage alpha; zero RGB where alpha=0",
+      "sampling": "nearest",
+      "frames": [
+        {
+          "index": 0,
+          "file": "map32/campfire/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            6,
+            26,
+            28
+          ],
+          "sha256": "adcef3e1f6e036117c27af4ea07e7d2bf076aa586f11c4345c98d309aa5c958f"
+        },
+        {
+          "index": 1,
+          "file": "map32/campfire/01.png",
+          "rect": {
+            "x": 32,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            4,
+            26,
+            28
+          ],
+          "sha256": "95d4788a3146e86c9d5f4d2458d87516591cedceb6592ed773af36241fe1b697"
+        },
+        {
+          "index": 2,
+          "file": "map32/campfire/02.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            5,
+            26,
+            28
+          ],
+          "sha256": "58c5a04045e34b1e6175cbc771d7fd2593ae18e70366751baac1fdefac96204a"
+        },
+        {
+          "index": 3,
+          "file": "map32/campfire/03.png",
+          "rect": {
+            "x": 96,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            4,
+            26,
+            28
+          ],
+          "sha256": "915ab25fdaf0f089931f14127d4f09d0f647d509bf2a3cf63bc29ded1e15d890"
+        },
+        {
+          "index": 4,
+          "file": "map32/campfire/04.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            6,
+            26,
+            28
+          ],
+          "sha256": "d4b44c20a89f61f112b779bfa3978feb657f89b659a32ea3ef0ccc145810963b"
+        },
+        {
+          "index": 5,
+          "file": "map32/campfire/05.png",
+          "rect": {
+            "x": 160,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            4,
+            26,
+            28
+          ],
+          "sha256": "86c9b3307b8d04b4a2bfec6a4378e2b558934a9e10623cf4319599f08f16c39a"
+        },
+        {
+          "index": 6,
+          "file": "map32/campfire/06.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            6,
+            26,
+            28
+          ],
+          "sha256": "9036530d2577cf41757fb2de43418a542dedc8376b3020cf7b84601841180800"
+        },
+        {
+          "index": 7,
+          "file": "map32/campfire/07.png",
+          "rect": {
+            "x": 224,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 120,
+          "alpha_bbox": [
+            8,
+            4,
+            26,
+            28
+          ],
+          "sha256": "478684984a436b3813694c462caf3f2ff0e301f2a34615cb84fbffa46b577d76"
+        }
+      ],
+      "status": "future-use asset, not integrated",
+      "map_guidance": "Reserve an unobstructed 32x32 box. Keep at least 6 px from label, route or city-marker bounds. Suppress the effect if no safe placement exists; do not move map labels."
+    },
+    {
+      "id": "healing_map32",
+      "base_effect": "healing",
+      "native_size": [
+        32,
+        32
+      ],
+      "frame_count": 8,
+      "atlas": "map32/healing/atlas.png",
+      "atlas_size": [
+        256,
+        32
+      ],
+      "anchor_px": [
+        16,
+        16
+      ],
+      "duration_ms": 880,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA; 17-step coverage alpha; zero RGB where alpha=0",
+      "sampling": "nearest",
+      "frames": [
+        {
+          "index": 0,
+          "file": "map32/healing/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            9,
+            9,
+            24,
+            25
+          ],
+          "sha256": "7d430a6bc285578b3272bd4cb9d6b186c0c95cc83c5be53fa2a892ac8e2460b7"
+        },
+        {
+          "index": 1,
+          "file": "map32/healing/01.png",
+          "rect": {
+            "x": 32,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            7,
+            7,
+            25,
+            25
+          ],
+          "sha256": "4945dbcd5a1ca566947da0f7665f5b579efeaad79134980b0d577ee5ba095827"
+        },
+        {
+          "index": 2,
+          "file": "map32/healing/02.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            6,
+            5,
+            26,
+            27
+          ],
+          "sha256": "ec50641cd58252932f24cb3f7ec270c796e0ac11a3ec42cbbb784a1266cbf9e5"
+        },
+        {
+          "index": 3,
+          "file": "map32/healing/03.png",
+          "rect": {
+            "x": 96,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            4,
+            5,
+            28,
+            29
+          ],
+          "sha256": "d1c8efd8983537a976efe7a298446bf2cae47664a6cea5ff06c5440202e6e411"
+        },
+        {
+          "index": 4,
+          "file": "map32/healing/04.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            4,
+            5,
+            28,
+            29
+          ],
+          "sha256": "f8457024e356b41f840aad506c5e9a2e2e69bfbd2f71d73faf861702906d14f1"
+        },
+        {
+          "index": 5,
+          "file": "map32/healing/05.png",
+          "rect": {
+            "x": 160,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            5,
+            6,
+            27,
+            26
+          ],
+          "sha256": "17f9557dc21774d42d0bb114dfb6be253ed28637563f54796cdbb0dc8f0d2ae6"
+        },
+        {
+          "index": 6,
+          "file": "map32/healing/06.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": [
+            4,
+            4,
+            28,
+            26
+          ],
+          "sha256": "2aa3f9501117b24da741db07a0ae65866f257efbdab9b3af55229201063a1c0d"
+        },
+        {
+          "index": 7,
+          "file": "map32/healing/07.png",
+          "rect": {
+            "x": 224,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 110,
+          "alpha_bbox": null,
+          "sha256": "b0775cba09eadf2fde241b35daa28cdcd03af6d23e99e0decd32b42f13f6d220"
+        }
+      ],
+      "status": "future-use asset, not integrated",
+      "map_guidance": "Reserve an unobstructed 32x32 box. Keep at least 6 px from label, route or city-marker bounds. Suppress the effect if no safe placement exists; do not move map labels."
+    },
+    {
+      "id": "arcane_map32",
+      "base_effect": "arcane",
+      "native_size": [
+        32,
+        32
+      ],
+      "frame_count": 8,
+      "atlas": "map32/arcane/atlas.png",
+      "atlas_size": [
+        256,
+        32
+      ],
+      "anchor_px": [
+        16,
+        16
+      ],
+      "duration_ms": 800,
+      "loop": false,
+      "playback": "one-shot",
+      "alpha": "straight RGBA; 17-step coverage alpha; zero RGB where alpha=0",
+      "sampling": "nearest",
+      "frames": [
+        {
+          "index": 0,
+          "file": "map32/arcane/00.png",
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            9,
+            8,
+            23,
+            24
+          ],
+          "sha256": "550e279028b714513267dabbc53d8b793824c86be91a8cfecc07c0a30e6b9978"
+        },
+        {
+          "index": 1,
+          "file": "map32/arcane/01.png",
+          "rect": {
+            "x": 32,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            8,
+            7,
+            23,
+            25
+          ],
+          "sha256": "a9a795d5c622aa9c55df79281c539ff80f86b02bdaa60c7388b03d1e7929e280"
+        },
+        {
+          "index": 2,
+          "file": "map32/arcane/02.png",
+          "rect": {
+            "x": 64,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            6,
+            6,
+            27,
+            27
+          ],
+          "sha256": "47e00d5ea424f35ae8ec7ad04735d960562dca33c8a9f7dc3ad869e2131d88d2"
+        },
+        {
+          "index": 3,
+          "file": "map32/arcane/03.png",
+          "rect": {
+            "x": 96,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            3,
+            3,
+            29,
+            29
+          ],
+          "sha256": "b88373e44f764bc28aa6f612f2a69acb30d10cba63376fe24ebc85207d9704ee"
+        },
+        {
+          "index": 4,
+          "file": "map32/arcane/04.png",
+          "rect": {
+            "x": 128,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            3,
+            3,
+            29,
+            29
+          ],
+          "sha256": "f47a0927027e6ae737657b0097efe7390389b9ef61eb097b340306b8df423449"
+        },
+        {
+          "index": 5,
+          "file": "map32/arcane/05.png",
+          "rect": {
+            "x": 160,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            4,
+            4,
+            28,
+            29
+          ],
+          "sha256": "c2a961cfa5b8677489e8764001eaea399d4af9b38adaa891d7c27081224ed3b8"
+        },
+        {
+          "index": 6,
+          "file": "map32/arcane/06.png",
+          "rect": {
+            "x": 192,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": [
+            4,
+            3,
+            28,
+            29
+          ],
+          "sha256": "4033b61aab68ea6035167d5c4ab89a663bef51ff34f7b435b2ecb6a5f5bb2301"
+        },
+        {
+          "index": 7,
+          "file": "map32/arcane/07.png",
+          "rect": {
+            "x": 224,
+            "y": 0,
+            "w": 32,
+            "h": 32
+          },
+          "duration_ms": 100,
+          "alpha_bbox": null,
+          "sha256": "b0775cba09eadf2fde241b35daa28cdcd03af6d23e99e0decd32b42f13f6d220"
+        }
+      ],
+      "status": "future-use asset, not integrated",
+      "map_guidance": "Reserve an unobstructed 32x32 box. Keep at least 6 px from label, route or city-marker bounds. Suppress the effect if no safe placement exists; do not move map labels."
+    }
+  ]
+}

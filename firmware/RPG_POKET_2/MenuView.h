@@ -3,6 +3,7 @@
 #include "WorldClock.h"
 #include "AssetStore.h"
 #include "UpdateModel.h"
+#include "D20View.h"
 struct MenuState {
   bool hasContinue=false,sessionStarted=false,creationFromTitle=false,newGameSlots=false;int slotsReturn=27;
   uint32_t renderNow=0,letterStarted=0,eventCheckAt=0,eventDay=0;uint8_t eventHour=0;int eventReturn=27;
@@ -73,13 +74,9 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
     for(unsigned i=0;i<9;++i)line(roadPoints[i],roadPoints[i+1],UI_GOLD);
     for(unsigned i=0;i<4;++i){const auto& p=places[i];c.drawRect(p.x-8,p.y-8,17,17,i==g.city?UI_GREEN:i==menu.destination?UI_GOLD:UI_BLUE);}
     if(roll){
-      // Dice box overlays the lower-right map, with a tumbling D20 outline.
-      box(150,126,80,91);unsigned die=menu.rollReady?g.tripRoll:1+(frame*7)%20;int bounce=menu.rollReady?0:int(frame%3)*3;
-      int cx=190+(menu.rollReady?0:(int(frame%3)-1)*4),cy=163-bounce;
-      auto edge=[&](int a,int b,int d,int e){line({a,b},{d,e},UI_GOLD);};
-      edge(cx,cy-26,cx+24,cy-12);edge(cx+24,cy-12,cx+23,cy+16);edge(cx+23,cy+16,cx,cy+27);edge(cx,cy+27,cx-24,cy+14);edge(cx-24,cy+14,cx-23,cy-12);edge(cx-23,cy-12,cx,cy-26);
-      edge(cx-23,cy-12,cx+24,cy-12);edge(cx-23,cy-12,cx,cy+27);edge(cx+24,cy-12,cx,cy+27);
-      snprintf(b,sizeof(b),"%u",die);text(cx-int(strlen(b))*6,cy-7,b,2,UI_WHITE);text(158,201,menu.rollReady?(rpg::tripSafe(g)?"SEGURO":"ENCONTRO"):"ROLANDO",1,menu.rollReady&&rpg::tripSafe(g)?UI_GREEN:UI_GOLD);
+      // Same real twenty-facet mesh as daily travel and ordinary camp.
+      box(150,126,80,91);d20Ui::draw(c,190,160,31,g.tripRoll,menu.rollReady,uint32_t(menu.renderNow-menu.rollStarted));
+      text(158,201,menu.rollReady?(rpg::tripSafe(g)?"SEGURO":"ENCONTRO"):"ROLANDO",1,menu.rollReady&&rpg::tripSafe(g)?UI_GREEN:UI_GOLD);
       snprintf(b,sizeof(b),"D20 + Sobrev %u + Sorte %u",g.tripSurvival,g.tripLuck);center(231,b);
       if(menu.rollReady){snprintf(b,sizeof(b),"%u + %u + %u = %u / CD %u",g.tripRoll,g.tripSurvival,g.tripLuck,g.tripTotal,g.tripDifficulty);center(250,b,1,UI_GOLD);button(14,272,212,rpg::tripSafe(g)?"Continuar viagem":"Enfrentar inimigo");}
       else center(281,"Rolando o dado...",1,UI_GOLD);

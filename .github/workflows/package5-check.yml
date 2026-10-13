@@ -1,0 +1,99 @@
+name: Qualificar D20, acampamento e bolsa 7.7 sem publicar
+on:
+  push:
+    branches: [feat/package5-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE5_NOTAS.txt", "docs/PACKAGE5_RELEASE_QUALIFICATION.md", "tests/**", "tools/**", ".github/workflows/package5-check.yml", ".github/workflows/release.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: package5-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/package5-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Instalar dependencia deterministica das artes e capturas
+        run: python3 -m pip install 'Pillow==11.3.0'
+      - name: Testar regressao completa e cinco suites D20, acampamento e bolsa
+        run: |
+          mkdir -p build
+          bash tools/test_package5.sh 2>&1 | tee build/package5-tests.log
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar sem gravar nem publicar
+        run: |
+          arduino-cli compile --jobs 4 \
+            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+            --output-dir build firmware/RPG_POKET_2 2>&1 | tee build/package5-esp32-build.log
+      - name: Conferir identidade, OTA scenes77 e scale77, Save29 e epoca inalterados
+        run: |
+          python3 tools/release_manifest.py
+          python3 tools/verify_package5_release.py
+          python3 tests/package5_release_verifier.py
+          python3 tools/test_package5_release.py release
+          python3 tools/test_package5_release.py release --sanitizers
+      - name: Capturar D20 real, tenda, acampamento e Ruinas
+        run: |
+          python3 tools/capture_d20_camp77.py
+          python3 tools/capture_camp_identity77.py
+          python3 tools/capture_ruins_bag77.py
+          test -s build/d20-camp77/previews/d20-rolling.gif
+          test -s build/d20-camp77/previews/d20-all-faces.png
+          test -s build/screens/camp-identity77/camp-identity-contact.png
+          test -s build/screens/camp-identity77/camp-identity-fallback-contact.png
+          for period in dawn day dusk night; do test -s "build/ruins-bag77/ruins-bag-$period.png"; done
+      - name: Registrar hashes, identidade exata e orcamento compilado
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os,subprocess
+          git=lambda *args:subprocess.check_output(['git',*args],text=True).strip()
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          expected_generated={'release/firmware.bin','release/artes.pak','release/manifest.json','release/SHA256SUMS'}
+          status=git('status','--porcelain','--untracked-files=all')
+          assert all(line.startswith('?? ') and line[3:] in expected_generated for line in status.splitlines()), 'Tracked/unexpected source changed during qualification: '+status
+          names=['firmware.bin','artes.pak','manifest.json']
+          files={n:dict(bytes=(Path('release')/n).stat().st_size,sha256=hashlib.sha256((Path('release')/n).read_bytes()).hexdigest()) for n in names}
+          report=dict(source_commit=git('rev-parse','HEAD'),source_tree=git('rev-parse','HEAD^{tree}'),branch=os.environ['GITHUB_REF'],artifacts=files,esp32_core='3.3.12',leak_detection=True,physical_validation=False,published=False)
+          Path('build/package5-source-identity.json').write_text(json.dumps(report,indent=2)+'\n')
+          Path('release/SHA256SUMS').write_text(''.join(f"{files[n]['sha256']}  {n}\n" for n in names))
+          p=Path('build/package5-scope-budget.json');budget=json.loads(p.read_text());budget.update(candidate_firmware_bytes=files['firmware.bin']['bytes'],candidate_ota_margin_bytes=0x300000-files['firmware.bin']['bytes'],target_compile_verified=True);p.write_text(json.dumps(budget,indent=2)+'\n')
+          PY
+      - name: Guardar arquivos qualificados, hashes e capturas para revisao
+        uses: actions/upload-artifact@v4
+        with:
+          name: package5-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/package5-scope-budget.json
+            build/package5-source-identity.json
+            build/package5-tests.log
+            build/package5-esp32-build.log
+            build/d20-camp77/previews/*.png
+            build/d20-camp77/previews/*.gif
+            build/d20-camp77/previews/capture-report.json
+            build/screens/camp-identity77/*.png
+            build/screens/camp-identity77/preview-manifest.json
+            build/ruins-bag77/ruins-bag-*.png
+            build/ruins-bag77/ruins-bag-*.ppm
+          if-no-files-found: error
+          retention-days: 14

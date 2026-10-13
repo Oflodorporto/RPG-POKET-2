@@ -1,0 +1,173 @@
+{
+  "id": "guard",
+  "name_pt": "ESCUDO / GUARDA",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/guard.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 880,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/guard/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "1766b8b0a944936887e5f03c54515321a38958258aea06f462514104e2e5d78b"
+    },
+    {
+      "index": 1,
+      "file": "frames/guard/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "08855e9405c267ffc60636870066cd463d652e19634f95e7c72eea95d5fb9daa"
+    },
+    {
+      "index": 2,
+      "file": "frames/guard/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "8d9b9d7ddacd758b2c8b6c3df7ac8b19bcea76f8cc922a088d41f55e6ce92a40"
+    },
+    {
+      "index": 3,
+      "file": "frames/guard/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "de9ea23c98820cbf5b9092e3ec5badd319160e476478dec4fbd15b53565ed580"
+    },
+    {
+      "index": 4,
+      "file": "frames/guard/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "2804b815028b3223607d26ff322c2959a2da31cc5e5ba9ad040fddc63a186113"
+    },
+    {
+      "index": 5,
+      "file": "frames/guard/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "350a7a4d3ec3ec95c1b49b0ed89a7e07a57362eb97212fcab90a54388b5a403c"
+    },
+    {
+      "index": 6,
+      "file": "frames/guard/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "70dd920e7ab411675fe00a695557bcca1bcd96f215046a4d268e4ab8bc83fe56"
+    },
+    {
+      "index": 7,
+      "file": "frames/guard/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Contorno de escudo e pulso turquesa/dourado. Referencias: Escudo arcano, Barreira, Escudo e Aparar.",
+  "runtime_integrated": false
+}

@@ -1,0 +1,51 @@
+D20 e tenda no mapa — candidata visual, sem publicação
+
+Base: scale77 ad8acd8, mantendo integralmente a escala/contraste dos inimigos.
+A identidade de Release permanece a da base; não é uma nova versão lançada.
+
+Mudanças
+• Um único D20 para partida diária, pernoite, acampamento comum e viagem antiga.
+• Icosaedro regular real: 12 vértices, 30 arestas, 20 triângulos; faces únicas
+  de 1 a 20, com lados opostos somando 21. Numerais pertencem à própria face
+  e giram/encurtam com ela. O resultado já sorteado fica na face frontal.
+• Malha azul-marinho com iluminação por faceta, arestas douradas e sombra.
+• Rolagem usa os mesmos 1.800 ms existentes, sem alterar gate/toque, RNG,
+  cobrança, regras, saves, campos salvos ou época de reset. Não há novo sorteio.
+• Tenda autoral de 27×20 pixels com entrada aberta, lona frontal/lateral, cume,
+  cordas, estacas e sombra. Em cidades, a tenda fica ao lado para não cobrir
+  nomes/ícones; o herói continua no ponto exato. Nas estradas, fica abaixo dele.
+• Acampamento comum passa a usar o herói personalizado de verdade, incluindo
+  raça, classe, camisa e calça. Reutiliza a pose calma existente, sem promessa
+  de pose sentada/comendo. Demais cenas, fogueira e kit são preservados.
+• Legenda de descanso limpa em faixa mínima para não sobrepor texto da arte.
+• Biblioteca Efeitos01 guardada em assets/reusable/effects01, sem carregar
+  seus 88 quadros no firmware. Fontes/atlases/metadados, sem GIF/ZIP de prévia.
+• Biblioteca Equipamentos01 compacta com 24 peças, 48 ícones, oito props e
+  oito variantes de mapa. Somente a tenda27×20 foi ativada neste candidato.
+
+Recursos e limites
+• D20 procedural e tenda em sprite constante de 1.080 bytes: sem recurso
+  novo no artes.pak, sem buffer
+  adicional de PSRAM, heap de desenho ou leitura de cartão por quadro.
+• Malha pronta em tabela de int8, rotações inteiras, 12 vértices/20 faces fixos;
+  não há trigonometria nem loop dependente de dados não limitado no aparelho.
+• Limite herdado das artes simplificadas: o paladino humano não tem máscara
+  de calça, e o guerreiro humano não tem máscara de camisa. O pacote de arte
+  completo exibe ambos os canais nas 16 combinações de raça/classe.
+• Desenho host e invariantes de estado não comprovam FPS, heap livre ou
+  legibilidade física na placa. Compilação ESP32 e qualificação de uma nova
+  identidade/commit ainda devem ser realizadas antes de qualquer Release.
+
+Verificações reproduzíveis
+  python3 tools/prepare_d20_mesh.py --check
+  python3 tools/prepare_tent_marker.py --check
+  python3 tools/check_d20_camp77_scope.py
+  bash tools/test_d20_camp77.sh
+  bash tools/test_d20_camp77.sh --full  # somente após congelamento final
+  python3 tools/capture_d20_camp77.py --output build/d20-camp77/previews
+
+O host local sob ptrace pode impedir LeakSanitizer. Somente neste caso local,
+RPG_DETECT_LEAKS=0 desliga LSan mantendo ASan/UBSan. CI deve manter LSan ligado.
+Não executar verificadores/publicador histórico scale77 para esta candidata:
+seu limite de escopo é intencionalmente mais restrito. Nova qualificação e
+permissão explícita de publicação são necessárias.

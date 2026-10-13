@@ -14,13 +14,17 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Publicar uma versão
 
-Escala/contraste exigem qualificação bem-sucedida do mesmo SHA em `feat/scale77-release`, identidade final exata e tag inédita; usam `verify_scale77_release.py` e `test_scale77_release.py`, mantendo os verificadores históricos. Confira o [contrato de qualificação](docs/SCALE77_RELEASE_QUALIFICATION.md). Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
+O candidato Pacote 5 exige qualificação bem-sucedida do mesmo SHA em `feat/package5-release`, identidade final exata e tag inédita; usa `verify_package5_release.py` e `test_package5_release.py`, mantendo os verificadores históricos. Confira o [contrato de qualificação](docs/PACKAGE5_RELEASE_QUALIFICATION.md). Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
 
 1. Atualize `ReleaseVersion.h`: versão e número crescente `FW_BUILD`.
 2. Atualize fontes e pacote `cartao/RPGPOKET/artes.pak`, conservando os identificadores em `AssetCatalog.h`.
 3. Faça os testes e envie ao repositório.
 4. Em **Actions → Publicar versão → Run workflow**, informe a mesma versão de `FW_VERSION`.
 5. O envio a `main` de alterações cobertas pelos filtros do workflow também inicia a publicação automaticamente; alterações apenas neste README não iniciam compilação/publicação. O workflow compila, verifica os tamanhos e publica `firmware.bin`, `artes.pak` e `manifest.json` em uma Release. A placa consulta a última Release publicada.
+
+## Candidato em qualificação
+
+Pacote 5: D20 de vinte faces, acampamento comum com o personagem personalizado, marcador de tenda e botão Bolsa nas Ruínas. Identidade `2026.10.13-camp77`, build `2026101308`, geração 7.7. As bibliotecas reutilizáveis de equipamentos e efeitos são fontes de arte; o pacote instalado permanece artes666. Save29 e época1 permanecem iguais, sem novo reset. A qualificação exige regressão completa, cinco novas suítes, ASan/UBSan/LeakSanitizer, compilação ESP32 do SHA exato e transições OTA de scenes77 e scale77 com os três slots preservados. Este estado descreve os gates exigidos, não confirma que já passaram. Não publicado; teste físico pendente. [Escopo e limites](docs/PACKAGE5_RELEASE_QUALIFICATION.md).
 
 ## Estado atual
 

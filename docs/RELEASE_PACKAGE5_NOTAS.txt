@@ -1,0 +1,20 @@
+RPG POKET 7.7 - D20, acampamento e bolsa
+Identidade: 2026.10.13-camp77 / build 2026101308
+
+Conteúdo do Pacote 5
+- D20 geométrico com vinte faces numeradas, rolagem visível e resultado assentado.
+- Acampamento comum mostra raça, classe e cores do personagem.
+- Tenda proporcional no mapa da viagem diária.
+- Botão Bolsa no hub das Ruínas; uso dos itens e retorno preservam as regras existentes.
+- Fontes reutilizáveis de equipamentos e efeitos no repositório, sem aumentar artes.pak.
+
+Atualização
+Em scenes77 ou scale77 já instalados com Save29, usar Configurações > Atualização > Verificar versão > Instalar, em Wi-Fi2,4GHz. Save29, os três slots e a mesma época1 são preservados; não há novo reset nem migração. O firmware continua geração7.7. Artes666 permanecem idênticas.
+
+De touch77 ou anterior, a primeira instalação Save29 exige cabo USB com EraseFlash=none. Os saves1..28 não são importados e os três slots são reiniciados uma única vez pela época1. Wi-Fi e artes são preservados. Não apague a flash inteira. Não retirar cartão ou alimentação durante instalação.
+
+Qualificação
+Os gates exigem fonte exata, regressão completa, cinco novas suítes, ASan/UBSan/LeakSanitizer, compilação ESP32 e transições OTA scenes77/scale77 com os três saves e marcador da época1 byte idênticos. Consulte PACKAGE5_RELEASE_QUALIFICATION.md para escopo e evidências. Estas notas descrevem o candidato; publicação depende de aprovação e verificação dos artefatos reais.
+
+Limites
+Toque, heap livre, FPS e estabilidade físicos na placa precisam de medição. CI e capturas de host não substituem esse teste. O registro detalhado das rolagens de combate e a geração procedural de dungeon pertencem ao Pacote6 e não fazem parte desta entrega.

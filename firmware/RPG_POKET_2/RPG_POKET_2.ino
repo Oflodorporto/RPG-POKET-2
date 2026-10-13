@@ -313,7 +313,7 @@ void tapped(int x,int y){
     if(view.choice>=2){if(view.choice==6&&game.phase==rpg::Phase::Home&&!rpg::inDungeon(game)){openCamp();return;}say(view.choice==2?"Cristal: entrada nas Ruinas":"Racao e kit: use ao acampar");return;}
     bool mana=view.choice==1;
     if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
-    if(game.phase!=rpg::Phase::Home){say("Termine o turno primeiro");return;}
+    if(game.phase!=rpg::Phase::Home){say(dungeonUi::pendingResult(game)?"Volte e toque em Continuar":"Aguarde o turno do inimigo");return;}
     auto& amount=mana?game.p.mana:game.p.life;auto& value=mana?game.p.mp:game.p.hp;unsigned heal=rpg::recovery(value,mana?game.p.maxmp:game.p.maxhp,mana);
     if(!amount||!heal){say(!amount?"Sem pocoes":"Ja esta cheio");return;}--amount;value+=heal;say("Pocao usada");savedTransition(view.page);return;
   }
@@ -488,6 +488,7 @@ void tapped(int x,int y){
     else if(choice==2){view.page=Page::Menu;say("");}return;
   }
   if(view.page==Page::Ruins){int choice=scenicUi::ruinsChoice(x,y);
+    if(choice==scenicUi::ruinsBag){view.bagReturn=Page::Ruins;view.choice=0;view.page=Page::TownBag;say("");return;}
     if(choice==0){menu.storyReturn=int(Page::Ruins);view.page=Page::People;say("");return;}
     if(choice==1){view.page=Page::DungeonEntry;say("");return;}
     if(choice==5){showMap();return;}if(choice==6){view.page=Page::Market;say("");return;}

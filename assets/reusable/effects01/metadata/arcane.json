@@ -1,0 +1,173 @@
+{
+  "id": "arcane",
+  "name_pt": "ENERGIA ARCANA",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/arcane.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 800,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/arcane/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "2c92cd7bd952e92282ae0eb2caee33dcbdf488462bd6d93027b065b590d83156"
+    },
+    {
+      "index": 1,
+      "file": "frames/arcane/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "2d9a7f9cdf26410eb921a19b2276b41ad64994c577c77a54927255487f63e8e3"
+    },
+    {
+      "index": 2,
+      "file": "frames/arcane/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "3798a53ca6c5a13357d04f05453211d21c4f18458ed87c48c345895f15b8fb5b"
+    },
+    {
+      "index": 3,
+      "file": "frames/arcane/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "bc8bd6500b5df2859accd09d47201a452ed88ff4a1839de5b499ae339a4b5425"
+    },
+    {
+      "index": 4,
+      "file": "frames/arcane/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "c9b49412ad6793568a03efe285fd0d24d093d7b862555b47ecc48f8fcbd8e20a"
+    },
+    {
+      "index": 5,
+      "file": "frames/arcane/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "4ae8c60db9545ff33b08fccd269df5390a0d2b3242d25a5ba24244c260e45d3d"
+    },
+    {
+      "index": 6,
+      "file": "frames/arcane/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        6,
+        6,
+        59,
+        59
+      ],
+      "sha256": "3d4f39e52ade96f8c906877ab8f83af8dc6931a0922293b254a28165637541f0"
+    },
+    {
+      "index": 7,
+      "file": "frames/arcane/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Nucleo e arcos violetas. Referencia visual: Misseis magicos; sem trajetoria ou dano embutidos.",
+  "runtime_integrated": false
+}

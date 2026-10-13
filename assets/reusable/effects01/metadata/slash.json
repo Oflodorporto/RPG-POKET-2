@@ -1,0 +1,173 @@
+{
+  "id": "slash",
+  "name_pt": "CORTE / IMPACTO",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/slash.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 820,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/slash/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 80,
+      "alpha_bbox": [
+        7,
+        10,
+        56,
+        53
+      ],
+      "sha256": "aba7d2665ecec410dbecd671110c1d4aa0569f1daa38e1b9ecec5e6fd4d39a96"
+    },
+    {
+      "index": 1,
+      "file": "frames/slash/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 80,
+      "alpha_bbox": [
+        8,
+        10,
+        56,
+        53
+      ],
+      "sha256": "c82a58647e994415aec7a0748e30fefcbae2b93005ffa72837e0a4514a779383"
+    },
+    {
+      "index": 2,
+      "file": "frames/slash/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 90,
+      "alpha_bbox": [
+        9,
+        10,
+        56,
+        53
+      ],
+      "sha256": "09171918444f426048cbb1bb0c5ce6d017927afd4a32811cb97bff7fb52e140a"
+    },
+    {
+      "index": 3,
+      "file": "frames/slash/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        9,
+        10,
+        56,
+        53
+      ],
+      "sha256": "aacf0f5e833688ae79a5fd2e10195c74f42f2fa814547e923806392176627562"
+    },
+    {
+      "index": 4,
+      "file": "frames/slash/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        9,
+        10,
+        56,
+        53
+      ],
+      "sha256": "e319c70d2dd11392d496787402f783c74f19464778ace9c95951caffdb2fbd13"
+    },
+    {
+      "index": 5,
+      "file": "frames/slash/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        9,
+        10,
+        56,
+        53
+      ],
+      "sha256": "a834810be485115cf3faecb4abd96d1fcf279c63b08268e8818248380440fab2"
+    },
+    {
+      "index": 6,
+      "file": "frames/slash/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        9,
+        10,
+        58,
+        53
+      ],
+      "sha256": "1f90b47bda4b3bb07ed084fd37ad3ebf1ca1b6d2d0c4f959689a3f8ccb8994c1"
+    },
+    {
+      "index": 7,
+      "file": "frames/slash/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 130,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Arco de corte e faiscas de contato. Uso visual em ataques fisicos.",
+  "runtime_integrated": false
+}

@@ -1,0 +1,173 @@
+{
+  "id": "lightning",
+  "name_pt": "RAIO",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/lightning.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    52
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.8125
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 900,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/lightning/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 90,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        56
+      ],
+      "sha256": "98703fadf39fe97ccdb26ea3c9a3fe259da133989263207ded70f11efa76322a"
+    },
+    {
+      "index": 1,
+      "file": "frames/lightning/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 90,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        56
+      ],
+      "sha256": "8a29b9e0c4a633a27ffd9a487b32c790eb46f7cd6c4977cff64770063b0e495a"
+    },
+    {
+      "index": 2,
+      "file": "frames/lightning/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        57
+      ],
+      "sha256": "66874f1a73478fb15e6751ad5348141418d70a5271a8b1ceedafa8e6b3323d29"
+    },
+    {
+      "index": 3,
+      "file": "frames/lightning/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        57
+      ],
+      "sha256": "fcb050f5d22fc6a5e6cccd2830a716a1afa200f2fe21f1712da5e5363483e135"
+    },
+    {
+      "index": 4,
+      "file": "frames/lightning/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 110,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        57
+      ],
+      "sha256": "0cb0383edca3c72f100f9e19fb1f89611273704fd8e40a404a537c4f6c933667"
+    },
+    {
+      "index": 5,
+      "file": "frames/lightning/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        58
+      ],
+      "sha256": "2f4d34c2b6c42cce3920834cc3bf9ec63e24d63506f2fb4be78bf8aab6613baf"
+    },
+    {
+      "index": 6,
+      "file": "frames/lightning/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 130,
+      "alpha_bbox": [
+        10,
+        6,
+        55,
+        59
+      ],
+      "sha256": "ce2da7c27d08c3179fc67cab81d87705af5ee1f095e2c89972422a8be9ccadcf"
+    },
+    {
+      "index": 7,
+      "file": "frames/lightning/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 150,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Descarga ramificada, sem estroboscopio. Referencia visual: Raio e arte de raio existente.",
+  "runtime_integrated": false
+}

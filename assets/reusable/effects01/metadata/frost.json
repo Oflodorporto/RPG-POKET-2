@@ -1,0 +1,173 @@
+{
+  "id": "frost",
+  "name_pt": "GELO",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/frost.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    32
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.5
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 800,
+  "loop": false,
+  "playback": "one-shot",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/frost/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        19,
+        58,
+        60
+      ],
+      "sha256": "174e260ebdfc94389d96da7c05d6eaa64fd38d101a183577df146362cd6c0c15"
+    },
+    {
+      "index": 1,
+      "file": "frames/frost/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        19,
+        58,
+        60
+      ],
+      "sha256": "a31dc08f601d74e214bb142d726f1b1cda198728ad3ec33162c11a17e73b0c3a"
+    },
+    {
+      "index": 2,
+      "file": "frames/frost/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        18,
+        58,
+        60
+      ],
+      "sha256": "f59fdf86eb5fcc58c023a14ba5934c8560c6625928ab7d7414301da148552d46"
+    },
+    {
+      "index": 3,
+      "file": "frames/frost/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        8,
+        58,
+        60
+      ],
+      "sha256": "d5f57a80ee4b4c3fa118e6104ec02353be629d371c57dab34dcaf7911e4f7dc8"
+    },
+    {
+      "index": 4,
+      "file": "frames/frost/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        8,
+        58,
+        60
+      ],
+      "sha256": "c984e89034e72ce32fdc2baebe50337261d7ea36ba5e1b85d99a28bd9defcbc2"
+    },
+    {
+      "index": 5,
+      "file": "frames/frost/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        8,
+        58,
+        60
+      ],
+      "sha256": "61317dfd1b1917e70d497926b5f456487e38ad32bec7d936f1ce8f25f33c95fb"
+    },
+    {
+      "index": 6,
+      "file": "frames/frost/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": [
+        7,
+        8,
+        59,
+        60
+      ],
+      "sha256": "cd3fce79cdd190458f3db6d59962df0005bf16a1400f43d53e02158f1bf492b9"
+    },
+    {
+      "index": 7,
+      "file": "frames/frost/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 100,
+      "alpha_bbox": null,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0"
+    }
+  ],
+  "intended_use": "Cristais e particulas frias. Reserva visual futura; nao define magia ou mecanica atual.",
+  "runtime_integrated": false
+}

@@ -1,0 +1,1024 @@
+{
+  "name": "RPG POKET — Equipamentos e Acampamento",
+  "version": "1.0.0",
+  "asset_count": 24,
+  "native_screen": [
+    240,
+    320
+  ],
+  "format": "PNG RGBA 8-bit, straight alpha",
+  "alpha_values": [
+    0,
+    255
+  ],
+  "inventory_sizes": [
+    32,
+    48
+  ],
+  "assets": [
+    {
+      "id": "tent_canvas",
+      "label": "Barraca de lona",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/tent_canvas.png",
+      "exports": {
+        "32": {
+          "file": "png32/tent_canvas.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            6,
+            30,
+            26
+          ],
+          "sha256": "4cce41bd02d19748eeef271e3d0fafe941530152bec8ccf3c6cb56d1121b71e2"
+        },
+        "48": {
+          "file": "png48/tent_canvas.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            8,
+            46,
+            39
+          ],
+          "sha256": "a8fc02ff3b3a082d0c038b22379e58a0120f5b52d041a51b519e4dd0de77977e"
+        }
+      }
+    },
+    {
+      "id": "bedroll",
+      "label": "Kit de dormir (enrolado)",
+      "mapping": "sleepKit",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/bedroll.png",
+      "exports": {
+        "32": {
+          "file": "png32/bedroll.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            5,
+            30,
+            26
+          ],
+          "sha256": "fbb4b084634ef260be7e494cf8e076b782fece1f141016d1353309233d219abf"
+        },
+        "48": {
+          "file": "png48/bedroll.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            7,
+            46,
+            40
+          ],
+          "sha256": "1ccd2b97736f00ac23f1b6cf2375ce6b74ea70d02f05d150c68b584466201d2b"
+        }
+      }
+    },
+    {
+      "id": "sleeping_bag",
+      "label": "Saco de dormir",
+      "mapping": "sleepKit",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/sleeping_bag.png",
+      "exports": {
+        "32": {
+          "file": "png32/sleeping_bag.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            4,
+            2,
+            28,
+            30
+          ],
+          "sha256": "2dc35de2c437cb57c7a1eb7ab7709f258268d97ee3554516230c3c8305f99b68"
+        },
+        "48": {
+          "file": "png48/sleeping_bag.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            5,
+            2,
+            43,
+            46
+          ],
+          "sha256": "d05f3af6ffc576208b73655e3d48206f39bf2827fbd67873ed7c7c0d793ed370"
+        }
+      }
+    },
+    {
+      "id": "backpack",
+      "label": "Mochila",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/backpack.png",
+      "exports": {
+        "32": {
+          "file": "png32/backpack.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            3,
+            2,
+            28,
+            30
+          ],
+          "sha256": "1cc34c202d54e14037507d865873a59fba1c5a94ec5c62197d1f0a27296dae69"
+        },
+        "48": {
+          "file": "png48/backpack.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            4,
+            2,
+            43,
+            46
+          ],
+          "sha256": "75a8df1fcc9a172a87032e1eadf9d3005fa0ce98f0b2dfde01da64cc2666eee2"
+        }
+      }
+    },
+    {
+      "id": "rope",
+      "label": "Corda",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/rope.png",
+      "exports": {
+        "32": {
+          "file": "png32/rope.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            2,
+            30,
+            30
+          ],
+          "sha256": "17783c7d23e092928a93320d6af49a5c798e9249522245e3497c685b08e1de4a"
+        },
+        "48": {
+          "file": "png48/rope.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            2,
+            46,
+            45
+          ],
+          "sha256": "0cb31eb54809c9dc5b48c811d370adc54de325e45110fa6ef3c8eae891c41925"
+        }
+      }
+    },
+    {
+      "id": "lantern",
+      "label": "Lanterna",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/lantern.png",
+      "exports": {
+        "32": {
+          "file": "png32/lantern.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            9,
+            2,
+            22,
+            30
+          ],
+          "sha256": "9ec2c1114a3f508a5b9f4ed7782729b3662bf7fbab5197ea04daca77a1751176"
+        },
+        "48": {
+          "file": "png48/lantern.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            13,
+            2,
+            34,
+            46
+          ],
+          "sha256": "202e05e580142542d1acead5a23374e267e237e5b62507230bfe07d9db8f4b27"
+        }
+      }
+    },
+    {
+      "id": "torch",
+      "label": "Tocha",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/torch.png",
+      "exports": {
+        "32": {
+          "file": "png32/torch.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            9,
+            4,
+            22,
+            30
+          ],
+          "sha256": "9487588977558dc54d1e07f44b74708bae1eace6f0b07c71522202777c2ee078"
+        },
+        "48": {
+          "file": "png48/torch.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            14,
+            3,
+            34,
+            46
+          ],
+          "sha256": "68fed5b4e0a337936b288072def3a80051703371d5b0c9636d388e0b267835fe"
+        }
+      }
+    },
+    {
+      "id": "cooking_pot",
+      "label": "Panela",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/cooking_pot.png",
+      "exports": {
+        "32": {
+          "file": "png32/cooking_pot.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            5,
+            2,
+            27,
+            30
+          ],
+          "sha256": "b5dfe05586851f75cbd7afa13bf87f8572b9cd29efc37f4896e608ece19b8211"
+        },
+        "48": {
+          "file": "png48/cooking_pot.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            6,
+            2,
+            41,
+            46
+          ],
+          "sha256": "a35385f24adda01434f9ebf877eca7a355e4d0af3918ddd00919e5a6eac2c053"
+        }
+      }
+    },
+    {
+      "id": "cooking_tripod",
+      "label": "Tripé de cozinha",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/cooking_tripod.png",
+      "exports": {
+        "32": {
+          "file": "png32/cooking_tripod.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            6,
+            2,
+            26,
+            30
+          ],
+          "sha256": "ef0d8e1df6639d1cf227431966ed44572f371828aa4202900d1e42dd08a5dc54"
+        },
+        "48": {
+          "file": "png48/cooking_tripod.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            8,
+            2,
+            40,
+            46
+          ],
+          "sha256": "172f8a64194bfeb939c30ede4251c6d16e781970bbe088e29c6748c8bdbe50bf"
+        }
+      }
+    },
+    {
+      "id": "firewood",
+      "label": "Lenha",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/firewood.png",
+      "exports": {
+        "32": {
+          "file": "png32/firewood.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            5,
+            30,
+            27
+          ],
+          "sha256": "10e79dee562fb953b9bd216980659b54531d1bcd945303e1b89a1eb53bffd72d"
+        },
+        "48": {
+          "file": "png48/firewood.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            6,
+            46,
+            41
+          ],
+          "sha256": "5d1ea52846c9b80a3f6a95485f64f52905b7eb50632471788b5c3ec4d5f22fc5"
+        }
+      }
+    },
+    {
+      "id": "ration_bundle",
+      "label": "Ração de viagem",
+      "mapping": "rations",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/ration_bundle.png",
+      "exports": {
+        "32": {
+          "file": "png32/ration_bundle.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            2,
+            30,
+            30
+          ],
+          "sha256": "31086efc7ac10c85e2a1d826495a364b1f4d1cdc6bebb340dd829b8afbbd2caf"
+        },
+        "48": {
+          "file": "png48/ration_bundle.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            2,
+            46,
+            45
+          ],
+          "sha256": "e2c67056ff573639aa51bb5e60046e541ff0e8f5bc5db9ae12d177afaa3e6063"
+        }
+      }
+    },
+    {
+      "id": "waterskin",
+      "label": "Odre",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/waterskin.png",
+      "exports": {
+        "32": {
+          "file": "png32/waterskin.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            5,
+            2,
+            27,
+            30
+          ],
+          "sha256": "0f4bf5daa556d99510085eb0b721b345b2ef6766a3f388dfae1eb6ddbf1d1804"
+        },
+        "48": {
+          "file": "png48/waterskin.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            6,
+            2,
+            41,
+            46
+          ],
+          "sha256": "15c562a7e6573cfcec3cd79b162c67fdf9dd03216a92c21c84850e21549c2ad9"
+        }
+      }
+    },
+    {
+      "id": "map",
+      "label": "Mapa",
+      "mapping": "charts",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/map.png",
+      "exports": {
+        "32": {
+          "file": "png32/map.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            3,
+            30,
+            28
+          ],
+          "sha256": "bcf81904c58ddf2a9506554339316e3ad32a5513f694a94bb67d5fed6e595ba5"
+        },
+        "48": {
+          "file": "png48/map.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            4,
+            46,
+            44
+          ],
+          "sha256": "2e5a3af27c1d57074206896bcec07e3ee5e7e8055dc813780c3fd3f704458e5e"
+        }
+      }
+    },
+    {
+      "id": "compass",
+      "label": "Bússola",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/compass.png",
+      "exports": {
+        "32": {
+          "file": "png32/compass.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            5,
+            2,
+            26,
+            30
+          ],
+          "sha256": "2a532ec3a74a7e1c41ec39d61ea44a915c8f4acf6b69725e0d214944c16356ae"
+        },
+        "48": {
+          "file": "png48/compass.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            7,
+            2,
+            40,
+            46
+          ],
+          "sha256": "0b7c5ae64c9ee4a66d07183ebb946bf97e7ab55a9c63f184aad27780442ecb89"
+        }
+      }
+    },
+    {
+      "id": "metal_scrap",
+      "label": "Sucata",
+      "mapping": "scrap",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/metal_scrap.png",
+      "exports": {
+        "32": {
+          "file": "png32/metal_scrap.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            2,
+            30,
+            29
+          ],
+          "sha256": "949e489289c982a659dab90406cddd06713a26fcaaad3fa40597cf07cb08472c"
+        },
+        "48": {
+          "file": "png48/metal_scrap.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            2,
+            46,
+            45
+          ],
+          "sha256": "f929c955a93efaf14b3499ae16e3ea805df70fe0292c0288fc3d79c5823945cc"
+        }
+      }
+    },
+    {
+      "id": "bandage_kit",
+      "label": "Kit de bandagens",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/bandage_kit.png",
+      "exports": {
+        "32": {
+          "file": "png32/bandage_kit.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            2,
+            30,
+            30
+          ],
+          "sha256": "7fde1e135dcc2422f1474d0dd642fb21213bb12adaf56a9b3f056b673e922f97"
+        },
+        "48": {
+          "file": "png48/bandage_kit.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            2,
+            45,
+            46
+          ],
+          "sha256": "496c4dd96bb03d9ad20342917ff5da56ffb9f68e191e13248b878ee9fa9bd0ee"
+        }
+      }
+    },
+    {
+      "id": "repair_kit",
+      "label": "Kit de reparos",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/repair_kit.png",
+      "exports": {
+        "32": {
+          "file": "png32/repair_kit.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            2,
+            4,
+            30,
+            28
+          ],
+          "sha256": "4ef40ccacee32c88b2d255efd7f58c68c3d9a68bffa8f8885da0cc2b7f708cb4"
+        },
+        "48": {
+          "file": "png48/repair_kit.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            2,
+            5,
+            46,
+            43
+          ],
+          "sha256": "7bf965a252a91439f10607fee300b34e2b8228b5afb3133ea7358bd8c1abe5a4"
+        }
+      }
+    },
+    {
+      "id": "oak_staff",
+      "label": "Cajado de carvalho",
+      "mapping": "gear:1",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/oak_staff.png",
+      "exports": {
+        "32": {
+          "file": "png32/oak_staff.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            6,
+            2,
+            25,
+            30
+          ],
+          "sha256": "c6b7cc00b4af353f138096ea675e49c03ce5e02e7838f1f649e7493ece9f0467"
+        },
+        "48": {
+          "file": "png48/oak_staff.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            9,
+            2,
+            39,
+            46
+          ],
+          "sha256": "20a77ef26a5995b33b15965f112871f3b024dca63e8a9303a269b40334b81659"
+        }
+      }
+    },
+    {
+      "id": "iron_sword",
+      "label": "Espada de ferro",
+      "mapping": "gear:4",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/iron_sword.png",
+      "exports": {
+        "32": {
+          "file": "png32/iron_sword.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            6,
+            2,
+            26,
+            30
+          ],
+          "sha256": "7bad3f7872681a371f4c51523eca1d45d1c754e4c57126226d4d4faba23c1d0e"
+        },
+        "48": {
+          "file": "png48/iron_sword.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            8,
+            2,
+            39,
+            46
+          ],
+          "sha256": "15653102bc1164db38270d67f8a2bda7c64ca31d3c6ea3ed75401eda9d98e675"
+        }
+      }
+    },
+    {
+      "id": "iron_spear",
+      "label": "Lança de ferro",
+      "mapping": "gear:7",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/iron_spear.png",
+      "exports": {
+        "32": {
+          "file": "png32/iron_spear.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            6,
+            2,
+            26,
+            30
+          ],
+          "sha256": "47f106d7b9204dfb04addbff648796bc9e6372ff0c4848c31ecc10af8cc99707"
+        },
+        "48": {
+          "file": "png48/iron_spear.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            8,
+            2,
+            40,
+            46
+          ],
+          "sha256": "afeb1da5945e0c04524d8842dcc0f4db9b8c51dc60a46612dc0db4c85ee12e34"
+        }
+      }
+    },
+    {
+      "id": "iron_axe",
+      "label": "Machado de ferro",
+      "mapping": "gear:10",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/iron_axe.png",
+      "exports": {
+        "32": {
+          "file": "png32/iron_axe.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            4,
+            2,
+            27,
+            30
+          ],
+          "sha256": "f5b49065f7bf5fb0604655bc1a65f8556b4865bc55e8ea2069ee54521f61abc7"
+        },
+        "48": {
+          "file": "png48/iron_axe.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            6,
+            2,
+            42,
+            46
+          ],
+          "sha256": "a1b667a0c827fc9130019fa8e48f7bb7e87ee4bc67dce4d59b599283e40d3ae4"
+        }
+      }
+    },
+    {
+      "id": "leather_armor",
+      "label": "Colete de couro",
+      "mapping": "gear:13",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/leather_armor.png",
+      "exports": {
+        "32": {
+          "file": "png32/leather_armor.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            5,
+            2,
+            26,
+            30
+          ],
+          "sha256": "5c415dcb67de98c04f4a2c5c1680eda56215b6ebf8a8459b83894384df969770"
+        },
+        "48": {
+          "file": "png48/leather_armor.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            7,
+            2,
+            40,
+            46
+          ],
+          "sha256": "247dbd9a64c2e7dee4b8c6fa942eb822ae632d5442cd59f81dcbec7c5e31515e"
+        }
+      }
+    },
+    {
+      "id": "simple_amulet",
+      "label": "Amuleto simples",
+      "mapping": "gear:16",
+      "gameplay_status": "existing_catalog_visual_variant",
+      "source": "sources/simple_amulet.png",
+      "exports": {
+        "32": {
+          "file": "png32/simple_amulet.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            6,
+            2,
+            26,
+            30
+          ],
+          "sha256": "528c01ca2cab662703af68a15c577049c367be3c2e95c97a985f1858747d75f3"
+        },
+        "48": {
+          "file": "png48/simple_amulet.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            8,
+            2,
+            39,
+            46
+          ],
+          "sha256": "0ba6c0f14405468e394a86579c028af569dd38f6aa054da8647472085525e5ee"
+        }
+      }
+    },
+    {
+      "id": "wooden_shield",
+      "label": "Escudo",
+      "mapping": "future",
+      "gameplay_status": "future_art_only_no_mechanics",
+      "source": "sources/wooden_shield.png",
+      "exports": {
+        "32": {
+          "file": "png32/wooden_shield.png",
+          "width": 32,
+          "height": 32,
+          "visible_bounds": [
+            4,
+            2,
+            27,
+            30
+          ],
+          "sha256": "2e49c524f5e95a6175c50cddff134eabecb21e8784c654eca0271de9dc20c832"
+        },
+        "48": {
+          "file": "png48/wooden_shield.png",
+          "width": 48,
+          "height": 48,
+          "visible_bounds": [
+            6,
+            2,
+            42,
+            46
+          ],
+          "sha256": "596812fe6bbcde934d28a5997dd80f8247aa893a6fadc14ebc2661beed8a794c"
+        }
+      }
+    }
+  ],
+  "scene_props": [
+    {
+      "id": "tent_canvas",
+      "file": "props/tent_canvas.png",
+      "width": 96,
+      "height": 80,
+      "anchor": [
+        48,
+        77
+      ],
+      "visible_bounds": [
+        3,
+        14,
+        93,
+        77
+      ]
+    },
+    {
+      "id": "sleeping_bag",
+      "file": "props/sleeping_bag.png",
+      "width": 72,
+      "height": 64,
+      "anchor": [
+        36,
+        61
+      ],
+      "visible_bounds": [
+        11,
+        3,
+        61,
+        61
+      ]
+    },
+    {
+      "id": "bedroll",
+      "file": "props/bedroll.png",
+      "width": 56,
+      "height": 48,
+      "anchor": [
+        28,
+        45
+      ],
+      "visible_bounds": [
+        3,
+        7,
+        53,
+        45
+      ]
+    },
+    {
+      "id": "backpack",
+      "file": "props/backpack.png",
+      "width": 56,
+      "height": 64,
+      "anchor": [
+        28,
+        61
+      ],
+      "visible_bounds": [
+        3,
+        5,
+        53,
+        61
+      ]
+    },
+    {
+      "id": "lantern",
+      "file": "props/lantern.png",
+      "width": 40,
+      "height": 64,
+      "anchor": [
+        20,
+        61
+      ],
+      "visible_bounds": [
+        6,
+        3,
+        34,
+        61
+      ]
+    },
+    {
+      "id": "cooking_pot",
+      "file": "props/cooking_pot.png",
+      "width": 48,
+      "height": 56,
+      "anchor": [
+        24,
+        53
+      ],
+      "visible_bounds": [
+        4,
+        3,
+        43,
+        53
+      ]
+    },
+    {
+      "id": "cooking_tripod",
+      "file": "props/cooking_tripod.png",
+      "width": 64,
+      "height": 88,
+      "anchor": [
+        32,
+        85
+      ],
+      "visible_bounds": [
+        3,
+        5,
+        61,
+        85
+      ]
+    },
+    {
+      "id": "firewood",
+      "file": "props/firewood.png",
+      "width": 56,
+      "height": 40,
+      "anchor": [
+        28,
+        37
+      ],
+      "visible_bounds": [
+        6,
+        3,
+        49,
+        37
+      ]
+    }
+  ],
+  "map_markers": [
+    {
+      "id": "tent_canvas",
+      "file": "map/tent_canvas_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    },
+    {
+      "id": "tent_canvas",
+      "file": "map/tent_canvas_23x16.png",
+      "width": 23,
+      "height": 16,
+      "anchor": [
+        11,
+        15
+      ]
+    },
+    {
+      "id": "tent_canvas",
+      "file": "map/tent_canvas_27x20.png",
+      "width": 27,
+      "height": 20,
+      "anchor": [
+        13,
+        19
+      ]
+    },
+    {
+      "id": "bedroll",
+      "file": "map/bedroll_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    },
+    {
+      "id": "backpack",
+      "file": "map/backpack_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    },
+    {
+      "id": "lantern",
+      "file": "map/lantern_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    },
+    {
+      "id": "cooking_tripod",
+      "file": "map/cooking_tripod_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    },
+    {
+      "id": "firewood",
+      "file": "map/firewood_24x24.png",
+      "width": 24,
+      "height": 24,
+      "anchor": [
+        12,
+        23
+      ]
+    }
+  ]
+}

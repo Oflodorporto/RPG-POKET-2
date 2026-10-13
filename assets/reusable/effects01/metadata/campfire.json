@@ -1,0 +1,178 @@
+{
+  "id": "campfire",
+  "name_pt": "FOGUEIRA",
+  "native_size": [
+    64,
+    64
+  ],
+  "frame_count": 8,
+  "atlas": "atlases/campfire.png",
+  "atlas_size": [
+    512,
+    64
+  ],
+  "layout": "row-major, left-to-right",
+  "anchor_px": [
+    32,
+    52
+  ],
+  "anchor_normalized": [
+    0.5,
+    0.8125
+  ],
+  "anchor_convention": "pixel offset from top-left; draw top-left = world anchor minus anchor_px",
+  "duration_ms": 960,
+  "loop": true,
+  "playback": "loop",
+  "alpha": "straight RGBA, unpremultiplied; RGB zero where A=0",
+  "sampling": "nearest",
+  "blend": "source-over",
+  "frames": [
+    {
+      "index": 0,
+      "file": "frames/campfire/00.png",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        12,
+        54,
+        57
+      ],
+      "sha256": "a0048e914906ba616b6197bc68f1481eed9171ccbfd9cc033bae028217ca6ee5"
+    },
+    {
+      "index": 1,
+      "file": "frames/campfire/01.png",
+      "rect": {
+        "x": 64,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        8,
+        54,
+        57
+      ],
+      "sha256": "90f8fd83f0acac84f73636bdac2be18c54ae7f9984a7f3363d0263923e7e4fd6"
+    },
+    {
+      "index": 2,
+      "file": "frames/campfire/02.png",
+      "rect": {
+        "x": 128,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        11,
+        54,
+        57
+      ],
+      "sha256": "b628ddeac78ca063cb3b5d0d91a58c4d6ebf2383f87a6a010d7c8c646a42615c"
+    },
+    {
+      "index": 3,
+      "file": "frames/campfire/03.png",
+      "rect": {
+        "x": 192,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        9,
+        54,
+        57
+      ],
+      "sha256": "9c085424827b5ce2e4fafe15dc4d63dc569dbe3e7e8cbe5113b8bd1d0856e51f"
+    },
+    {
+      "index": 4,
+      "file": "frames/campfire/04.png",
+      "rect": {
+        "x": 256,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        12,
+        54,
+        57
+      ],
+      "sha256": "9eccd8047f8bb30ee8441da7cf943ef6aa532aed8725cda0886acce42f0c7998"
+    },
+    {
+      "index": 5,
+      "file": "frames/campfire/05.png",
+      "rect": {
+        "x": 320,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        9,
+        54,
+        57
+      ],
+      "sha256": "297bff7c35fa55b766f7b88d96ed176ac55f723ac5a32552eb65403bffa5ea83"
+    },
+    {
+      "index": 6,
+      "file": "frames/campfire/06.png",
+      "rect": {
+        "x": 384,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        12,
+        54,
+        57
+      ],
+      "sha256": "ce904f10195fd2b4d5f52e2dd5229c1cf67d131624190baa28b6a496196ee404"
+    },
+    {
+      "index": 7,
+      "file": "frames/campfire/07.png",
+      "rect": {
+        "x": 448,
+        "y": 0,
+        "w": 64,
+        "h": 64
+      },
+      "duration_ms": 120,
+      "alpha_bbox": [
+        11,
+        9,
+        54,
+        57
+      ],
+      "sha256": "6e9dfeb87d92b103025b7fad0eaf5bc4fba5e95ecb4b1d660ddbdb8965f357ea"
+    }
+  ],
+  "intended_use": "Chamas e brasas em loop, com lenha fixa. Recurso visual de acampamento.",
+  "runtime_integrated": false
+}
