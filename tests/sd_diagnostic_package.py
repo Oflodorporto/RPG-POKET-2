@@ -22,11 +22,20 @@ for forbidden in ['http.','exclusiveFile(','::write','SD.mkdir','screen(','lcd.b
 assert probe.count('verifyPath(')==4 and 'connectPrivate(false)' in probe
 assert 'prior_errors=' in probe and 'P REMOUNT cycle2' in probe
 assert 'if(!secureTime)return true;configTime' in s
+w=s.split('struct WriteComparison {',1)[1].split('void networkRun(bool disk)',1)[0]
+for forbidden in ['screen(', 'lcd.begin', 'FILE_READ', 'O_APPEND', 'readbackTarget::PATH', 'ART,', 'SD.mkdir']:
+ assert forbidden not in w,forbidden
+assert w.count('exclusiveFile(')==2 and 'w_local.pak' in w and 'w_http.pak' in w
+assert 'diag::CHECKPOINT-received' in w and 'received<diag::CHECKPOINT' in w
+assert 'diag::writeComparison(probe)' in w and 'diag::writePrefix(writer,buffer,progress)' in w
+assert 'tls.stop();httpEnded=true;' in w
+assert 'prior_errors=' in w and 'prior_invalid=' in w and 'SKIPPED condition absent' in w
+assert 'first=%s' in w and 'ms=%lu' in w
 fixture=ROOT/'tools/sd_diagnostic/fixtures/transfer_fixture.bin'
 assert fixture.stat().st_size==6661456
 assert hashlib.sha256(fixture.read_bytes()).hexdigest()=='a59c72f71490c5d10a68e5e48c49821712916c9eef671bf7f6bb907b5e7638f0'
 subprocess.run(['python3','tools/sd_diagnostic/package.py'],cwd=ROOT,check=True)
-with zipfile.ZipFile(ROOT/'build/sd_diagnostic/RPG_POKET_Diagnostico_SD_v2.zip') as z:
+with zipfile.ZipFile(ROOT/'build/sd_diagnostic/RPG_POKET_Diagnostico_SD_v3.zip') as z:
  prefix='RPG_POKET_Diagnostico_SD/'
  for p,h in json.loads(z.read(prefix+'SHA256SUMS.json')).items():assert hashlib.sha256(z.read(prefix+p)).hexdigest()==h
  for p in (ROOT/'firmware/RPG_POKET_2/src/GFX').rglob('*'):

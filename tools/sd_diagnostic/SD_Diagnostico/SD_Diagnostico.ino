@@ -23,7 +23,8 @@
 #include "DiagnosticCore.h"
 #include "Fixture.h"
 #include "ReadbackTarget.h"
-constexpr const char* VERSION="SD-DIAG-2026.10.13-2";
+#include "WriteProbe.h"
+constexpr const char* VERSION="SD-DIAG-2026.10.13-3";
 constexpr const char* ART="/RPGPOKET/artes.pak";
 constexpr const char* URL=fixture::URL;
 Arduino_HWSPI bus(42,45,39,38,40);Arduino_ST7789 lcd(&bus,-1,0,true,240,320);
@@ -107,6 +108,86 @@ bool uniqueDirectory(){if(directory[0])return true;for(unsigned i=0;i<4;++i){cha
 int exclusiveFile(const char* name,char* cardPath,size_t cap){if(!uniqueDirectory())return -1;snprintf(cardPath,cap,"%s/%s",directory,name);char full[112];snprintf(full,sizeof(full),"/sd%s",cardPath);errno=0;int fd=::open(full,O_WRONLY|O_CREAT|O_EXCL,0600);logLine("NEW_FILE name=%s fd_ok=%u errno=%d (exclusive, no overwrite)",name,fd>=0,errno);return fd;}
 bool closeWritten(int& fd,const char* phase){errno=0;int synced=::fsync(fd);int se=errno;errno=0;int closed=::close(fd);int ce=errno;fd=-1;logLine("SYNC_CLOSE stage=%s sync=%d errno=%d close=%d errno=%d",phase,synced,se,closed,ce);return synced==0&&closed==0;}
 int openHttp(HTTPClient& http,NetworkClientSecure& tls){String url(URL);tls.useBuiltinCACertBundle();tls.setHandshakeTimeout(20);for(unsigned i=0;i<6;++i){if(!diag::safeHttps(url.c_str()))return -100;if(!http.begin(tls,url))return -101;http.setConnectTimeout(15000);http.setTimeout(20000);http.setFollowRedirects(HTTPC_DISABLE_FOLLOW_REDIRECTS);const char* keys[]={"Location"};http.collectHeaders(keys,1);int code=http.GET();if(code==301||code==302||code==303||code==307||code==308){String next=http.header("Location");http.end();url=next;continue;}return code;}return -102;}
+// W owns at most two new files. Existing game/diagnostic files are never opened.
+struct WriteComparison {
+ NetworkClientSecure tls;HTTPClient http;char localPath[96]={},httpPath[96]={};
+ unsigned errors=0,invalid=0;const char* first="none";bool httpEnded=false;
+ void fail(const char* stage,bool condition=false){if(!strcmp(first,"none"))first=stage;if(condition)++invalid;else ++errors;logLine("W FAILURE stage=%s first=%s errors=%u invalid=%u",stage,first,errors,invalid);}
+ bool state(const char* stage,bool on,int socket=-1){
+  bool connected=WiFi.status()==WL_CONNECTED;unsigned mode=unsigned(WiFi.getMode());
+  bool open=http.connected(),stream=tls.connected();int queued=tls.available();
+  bool valid=diag::radioMatches(on,mode,connected)&&!lcdReady&&hz==1000000;
+  if(socket>=0)valid=valid&&(socket?(open&&stream):(!open&&!stream));
+  logLine("W CONDITIONS stage=%s prior_errors=%u prior_invalid=%u cycle=1 hz=%lu LCD=%u expectedRadio=%s mode=%u connected=%u RSSI=%ld",stage,errors,invalid,(unsigned long)hz,lcdReady,on?"ON":"OFF",mode,connected,connected?long(WiFi.RSSI()):0L);
+  logLine("W SOCKET stage=%s expected=%d http=%u stream=%u queued=%d valid=%u",stage,socket,open,stream,queued,valid);
+  if(!valid)fail(stage,true);return valid;
+ }
+ bool local(){
+  if(!state("A-before",false))return false;
+  int fd=exclusiveFile("w_local.pak",localPath,sizeof(localPath));if(fd<0){fail("A-open");return false;}
+  struct Writer {int fd;diag::Write write(const uint8_t* p,size_t n){errno=0;ssize_t got=::write(fd,p,n);int e=errno;return {int32_t(got),e};}} writer{fd};
+  uint32_t started=millis();auto progress=[&](uint32_t){yield();return uint32_t(millis()-started)<180000;};
+  auto r=diag::writePrefix(writer,buffer,progress);
+  logLine("W LOCAL_WRITE ok=%u cause=%s pos=%lu wanted=%lu got=%ld errno=%d ms=%lu",r.ok,r.cause,(unsigned long)r.offset,(unsigned long)r.requested,long(r.written),r.error,(unsigned long)(millis()-started));
+  if(!r.ok)fail("A-write");bool closed=closeWritten(fd,"W-A");if(!closed)fail("A-close");
+  if(!r.ok||!closed)return false;
+  if(!state("A-read-before",false))return false;
+  bool read=verifyPath(localPath,"W-A-local",false,diag::CHECKPOINT,diag::PREFIX_SHA,false);
+  if(!read)fail("A-read");bool valid=state("A-read-after",false);return read&&valid;
+ }
+ bool receive(){
+  if(!connectPrivate(true)){fail("B-connect");return false;}
+  if(!state("B-before-HTTP",true))return false;
+  int code=openHttp(http,tls);logLine("W HTTP code=%d length=%d prefix_limit=%lu",code,http.getSize(),(unsigned long)diag::CHECKPOINT);
+  if(code!=200||http.getSize()!=int(diag::FILE_BYTES)){fail("B-HTTP");return false;}
+  if(!state("B-before-write",true,1))return false;
+  int fd=exclusiveFile("w_http.pak",httpPath,sizeof(httpPath));if(fd<0){fail("B-open");return false;}
+  Hash hash;bool good=hash.begin();uint32_t received=0,started=millis(),last=started;
+  if(!good)fail("B-hash-start");auto stream=http.getStreamPtr();
+  while(good&&received<diag::CHECKPOINT){
+   if(uint32_t(millis()-started)>240000||uint32_t(millis()-last)>20000){fail("B-time-limit");good=false;break;}
+   int available=stream->available();if(available<=0){if(!http.connected()){fail("B-disconnected");good=false;break;}delay(5);continue;}
+   size_t n=std::min<size_t>(sizeof(buffer),std::min<uint32_t>(uint32_t(available),diag::CHECKPOINT-received));
+   int got=stream->read(buffer,n);if(got<=0||size_t(got)>n){logLine("W HTTP_READ pos=%lu wanted=%u got=%d",(unsigned long)received,unsigned(n),got);fail("B-stream-read");good=false;break;}last=millis();
+   if(!hash.update(buffer,got)){fail("B-hash-update");good=false;break;}
+   errno=0;ssize_t written=::write(fd,buffer,got);int e=errno;
+   if(written<0||!diag::exactWrite(got,size_t(written),e)){logLine("W WRITE pos=%lu wanted=%d got=%ld errno=%d",(unsigned long)received,got,long(written),e);fail("B-write");good=false;break;}
+   received+=got;yield();
+  }
+  char sha[65]={};if(good){good=hash.finish(sha);if(!good)fail("B-hash-finish");}
+  if(good&&strcmp(sha,diag::PREFIX_SHA)){good=false;fail("B-prefix-SHA");}
+  logLine("W TRANSFER bytes=%lu expected=%lu sha_ok=%u ms=%lu",(unsigned long)received,(unsigned long)diag::CHECKPOINT,good,(unsigned long)(millis()-started));if(sha[0])logLine("W PREFIX_SHA %s",sha);
+  bool closed=closeWritten(fd,"W-B");if(!closed)fail("B-close");
+  return good&&closed&&received==diag::CHECKPOINT;
+ }
+ void readStage(const char* before,const char* stage,const char* after,bool on,int socket){
+  if(!state(before,on,socket)){logLine("W READ stage=%s SKIPPED condition absent",stage);return;}
+  if(!verifyPath(httpPath,stage,false,diag::CHECKPOINT,diag::PREFIX_SHA,false))fail(stage);
+  if(!state(after,on,socket))logLine("W READ stage=%s condition changed; comparison invalid even if SHA passed",stage);
+ }
+ void readOpen(){readStage("B-open-before","W-B-socket-open","B-open-after",true,1);}
+ void closeHttp(){http.end();tls.stop();httpEnded=true;logLine("W TRANSITION HTTP closed; prior_errors=%u prior_invalid=%u; later phases may be affected",errors,invalid);}
+ void readClosed(){readStage("B-closed-before","W-B-socket-closed","B-closed-after",true,0);}
+ void radioOff(){wifiOff();delay(250);logLine("W TRANSITION radio OFF requested; prior_errors=%u prior_invalid=%u",errors,invalid);}
+ void readOff(){readStage("B-off-before","W-B-radio-off","B-off-after",false,0);}
+ void cleanup(){if(!httpEnded)closeHttp();wifiOff();}
+};
+void writeReadbackRun() {
+ hz=1000000;uint32_t started=millis();WriteComparison probe;
+ logLine("W BEGIN LCD-off hz=1000000 one_mount=1 max_new_files=2 each_bytes=%lu",(unsigned long)diag::CHECKPOINT);
+ logLine("W A local write/read OFF. B HTTP prefix write/read socket-open -> closed/ON -> OFF. No automatic repeat.");
+ logLine("W open socket means API state, not continuous traffic. TCP may prefetch beyond 1MiB. Errors can affect later phases; files occupy different clusters.");
+ wifiOff();delay(250);
+ if(!probe.state("before-mount",false)){probe.cleanup();logLine("W END stopped=initial-condition errors=%u invalid=%u first=%s",probe.errors,probe.invalid,probe.first);return;}
+ if(!checkPins("W-before-mount")||!mountCard("W-cycle1")){probe.fail("mount");probe.cleanup();unmountCard();logLine("W END stopped=mount errors=%u invalid=%u first=%s",probe.errors,probe.invalid,probe.first);return;}
+ uint64_t total=SD.totalBytes(),used=SD.usedBytes();
+ bool completed=false;
+ if(total<used||total-used<2ULL*diag::CHECKPOINT+65536)probe.fail("space-unknown-or-insufficient");
+ else completed=diag::writeComparison(probe);
+ probe.cleanup();unmountCard();
+ logLine("W END matrix_completed=%u errors=%u invalid=%u first=%s ms=%lu; files retained; R for report",completed,probe.errors,probe.invalid,probe.first,(unsigned long)(millis()-started));
+}
+
 void networkRun(bool disk){bool mounted=false;int fd=-1;char path[96]={};bool ok=false;
  if(disk){mounted=mountCard("download");if(!mounted){unmountCard();return;}uint64_t total=SD.totalBytes(),used=SD.usedBytes();if(total<used||total-used<diag::FILE_BYTES+65536){logLine("SPACE insufficient or unknown");unmountCard();return;}}
  if(!connectPrivate(true)){wifiOff();if(mounted)unmountCard();return;}
@@ -131,9 +212,9 @@ void networkRun(bool disk){bool mounted=false;int fd=-1;char path[96]={};bool ok
  if(fd>=0)closeWritten(fd,"error-close");http.end();wifiOff();if(mounted)unmountCard();logLine("NETWORK END disk=%u ok=%u; diagnostic file retained even on failure",disk,ok);screen("Teste WiFi concluido");
 }
 void saveReport(){if(!mountCard("save-report")){unmountCard();return;}char p[96];int fd=exclusiveFile("report.txt",p,sizeof(p));if(fd>=0){size_t bytes=report.used;errno=0;ssize_t n=::write(fd,report.data,bytes);int e=errno;bool good=n>=0&&diag::exactWrite(bytes,size_t(n),e);bool closeOk=closeWritten(fd,"report");logLine("REPORT_FILE requested=%lu written=%ld errno=%d closed=%u ok=%u",(unsigned long)bytes,(long)n,e,closeOk,good&&closeOk);}unmountCard();}
-void setup(){Serial.begin(115200);Serial.setTxTimeoutMs(100);pinMode(1,OUTPUT);digitalWrite(1,LOW);pinMode(41,OUTPUT);pinMode(45,OUTPUT);deselect();SPI.begin(39,40,38);WiFi.persistent(false);logLine("%s flash=%lu PSRAM=%lu",VERSION,(unsigned long)ESP.getFlashChipSize(),(unsigned long)ESP.getPsramSize());logLine("PINS MOSI38 SCLK39 MISO40 SDCS41 LCDCS45 DC42 BL1; no reset GPIO (-1). Software checks are not electrical continuity tests.");logLine("Sketch has no direct save/NVS/OTA calls. Standard core startup can affect NVS. Use new board. No automatic tests.");logLine("P: existing 1MiB read OFF/ON/OFF, LCD off (fresh boot only)");logLine("4: storage4MHz | 1: storage1MHz (choose ONE per cold boot)");logLine("N: WiFi without SD | D: WiFi new SD file (after4/1)");logLine("R: RAM report | S: save new report file | H: commands");}
-void command(char c){if(!diag::commandAllowed(privateInputFailed,c)){Serial.println("Entrada privada cancelada. Reinicie para novos testes; R recupera relatorio.");return;}if(c=='R'){Serial.println("--- RAM REPORT ---");Serial.print(report.data);Serial.printf("--- END truncated=%u ---\n",report.truncated);return;}if(c=='H'){Serial.println("P existing-file comparison (fresh boot); 4/1 storage; N network; D new SD download; R report; S new report file");return;}
- if(c=='D'&&!session.storage){Serial.println("Primeiro execute 4 ou 1.");return;}if(!session.take(c)){Serial.println("Comando invalido ou ja executado. Sem repeticao automatica.");return;}if(c=='P'){existingReadbackRun();}else if(c=='4'||c=='1'){hz=c=='4'?4000000:1000000;storageRun();}else if(c=='N'||c=='D')networkRun(c=='D');else if(c=='S')saveReport();}
+void setup(){Serial.begin(115200);Serial.setTxTimeoutMs(100);pinMode(1,OUTPUT);digitalWrite(1,LOW);pinMode(41,OUTPUT);pinMode(45,OUTPUT);deselect();SPI.begin(39,40,38);WiFi.persistent(false);logLine("%s flash=%lu PSRAM=%lu",VERSION,(unsigned long)ESP.getFlashChipSize(),(unsigned long)ESP.getPsramSize());logLine("PINS MOSI38 SCLK39 MISO40 SDCS41 LCDCS45 DC42 BL1; no reset GPIO (-1). Software checks are not electrical continuity tests.");logLine("Sketch has no direct save/NVS/OTA calls. Standard core startup can affect NVS. Use new board. No automatic tests.");logLine("W: local/HTTP new 1MiB files, LCD off (fresh boot only)");logLine("P: existing 1MiB read OFF/ON/OFF, LCD off (fresh boot only)");logLine("4: storage4MHz | 1: storage1MHz (choose ONE per cold boot)");logLine("N: WiFi without SD | D: WiFi new SD file (after4/1)");logLine("R: RAM report | S: save new report file | H: commands");}
+void command(char c){if(!diag::commandAllowed(privateInputFailed,c)){Serial.println("Entrada privada cancelada. Reinicie para novos testes; R recupera relatorio.");return;}if(c=='R'){Serial.println("--- RAM REPORT ---");Serial.print(report.data);Serial.printf("--- END truncated=%u ---\n",report.truncated);return;}if(c=='H'){Serial.println("W write/read matrix (fresh boot); P existing-file comparison (fresh boot); 4/1 storage; N network; D new SD download; R report; S new report file");return;}
+ if(c=='D'&&!session.storage){Serial.println("Primeiro execute 4 ou 1.");return;}if(!session.take(c)){Serial.println("Comando invalido ou ja executado. Sem repeticao automatica.");return;}if(c=='W'){writeReadbackRun();}else if(c=='P'){existingReadbackRun();}else if(c=='4'||c=='1'){hz=c=='4'?4000000:1000000;storageRun();}else if(c=='N'||c=='D')networkRun(c=='D');else if(c=='S')saveReport();}
 void loop() {
   static char c = 0;
   static bool bad = false;

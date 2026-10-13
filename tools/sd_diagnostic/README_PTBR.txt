@@ -1,4 +1,4 @@
-RPG POKET • Diagnóstico separado de SD e Wi-Fi • SD-DIAG-2026.10.13-2
+RPG POKET • Diagnóstico separado de SD e Wi-Fi • SD-DIAG-2026.10.13-3
 Somente Waveshare ESP32-S3-Touch-LCD-2 (SKU29667).
 
 ANTES DE GRAVAR
@@ -22,8 +22,44 @@ Confirme a porta da placa. Não use uma configuração antiga de outra placa.
 Abra SD_Diagnostico/SD_Diagnostico.ino. A biblioteca de tela já está incluída;
 não instale outras bibliotecas. Grave somente após conferir estas opções.
 
-NOVO TESTE P: PARCIAL EXISTENTE, SEM DOWNLOAD NEM ESCRITA
-Use esta versão2 para a pergunta atual. O arquivo que já está no cartão é:
+TESTE ATUAL W: ESCRITA LOCAL VERSUS DOWNLOAD, MESMA MONTAGEM
+1. Grave a versão3 com as opções acima. Desligue o USB e ligue com o cartão.
+2. Monitor Serial115200, “Nova linha”: envie W antes de qualquer outro teste.
+   Não envie 1/P/D antes. W configura1MHz e mantém a tela APAGADA de propósito.
+3. A cria w_local.pak em pasta diagnóstica nova: gera1MiB do padrão sintético,
+   grava, fsync/close e relê com SHA completo, Wi-Fi desligado. Qualquer falha
+   de escrita, fechamento, leitura ou condição encerra o teste antes de B.
+4. Se A passar, informe SSID/senha só no Monitor local quando solicitado.
+   B conecta com credenciais em RAM, confirma horário para HTTPS e recebe apenas
+   o primeiro1MiB do fixture público para w_http.pak, outro arquivo exclusivo.
+   O prefixo recebido também precisa passar pelo SHA esperado antes das leituras.
+5. O escritor é fechado. B relê primeiro com o socket HTTP ainda aberto, depois
+   fecha HTTP e relê com Wi-Fi associado, finalmente desliga Wi-Fi e relê.
+   O cartão permanece na MESMA montagem durante A/B; não há remontagem oculta.
+6. Aguarde W END; envie R e salve/envie o texto completo até END truncated=0.
+   Não execute mais testes automaticamente. Depois de W só R/H são aceitos;
+   qualquer repetição exige novo boot, mas aguarde a análise deste resultado.
+
+W cria no máximo dois arquivos de1048576 bytes e não altera os antigos.
+Não formata, não apaga, não renomeia artes ou saves. Os dois novos arquivos são
+mantidos mesmo se incompletos; seus caminhos aparecem em NEW_DIRECTORY/NEW_FILE.
+A primeira falha fica em first; prior_errors/prior_invalid indicam possível
+influência sobre fases posteriores. Estados ausentes fazem a leitura SKIPPED;
+uma mudança durante a leitura invalida a comparação mesmo que o SHA passe.
+O limite é1MiB consumido pela aplicação na única transferência de B; o servidor
+oferece6,7MB e buffers TCP podem receber bytes adicionais antes do fechamento.
+Socket aberto indica o estado observado pela API, não tráfego contínuo garantido.
+Não se lê com o escritor aberto, nem se acessam SD/LCD concorrentemente.
+Os arquivos A/B ocupam posições diferentes no cartão; uma sequência isolada não
+prova causa elétrica nem elimina falhas intermitentes. Se tudo passar, isso
+não valida o instalador completo. O resultado será analisado antes de outro passo.
+Cada leitura e a escrita local têm limite cooperativo180s; transferência240s,
+inatividade20s, além dos limites de conexão/entrada. Chamadas do driver SD podem
+levar tempo próprio. Não há um prazo rígido para todas as fases. Normalmente
+cada leitura de1MiB leva poucos segundos, como observado em P; aguarde W END.
+
+TESTE P PRESERVADO: PARCIAL EXISTENTE, SEM DOWNLOAD NEM ESCRITA
+P não é necessário para W; as instruções abaixo preservam o teste anterior. O arquivo que já está no cartão é:
 /RPGDIAG_18cb11d2f9db67a9/download.pak, 1048576 bytes;
 SHA256: 7cdb705f9a9be23511a919cde2e8455f8abde9c8f9abed1de218ad54f8e4a554.
 Não precisa copiar, renomear, apagar ou baixar nada.
