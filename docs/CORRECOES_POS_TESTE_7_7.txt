@@ -1,5 +1,36 @@
+PUBLICADO E VERIFICADO — 13/10/2026, 08:32 UTC
+Versão2026.10.13-dungeon77/build2026101304. Release ID411454746.
+https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-dungeon77
+Fonte/tag59258cec67458e2d05d4db6a6c7f7656eee1959c
+Árvore04be469dbdc77082381f78a17488f8e92b2217a7
+Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38368462066
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38369185601
+Ambas verdes no mesmo SHA. Oito suites/três ASan/UBSan/LeakSanitizer,
+1.440 continuidades,136 toques,560 frames e15 probes do verificador final.
+ESP32core3.3.12; transições7.6/final e recovery77→dungeon77 aprovadas com os
+artefatos reais antes de publicar. Recovery77 e artes permanecem byte-idênticos.
+
+firmware.bin2.687.040 bytes; SHA256
+57f78c85ca83d2b69baa4f33f74f53d36fe951d77589127d33e2e076ca8b6fa5
+artes.pak6.661.456 bytes; SHA256
+5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1
+manifest.json/latest1.084 bytes; SHA256
+1a3b041d2edd14d7cdeabd1a4efa2bc1047754c8f0296b71e62edc607b125a24
+MargemOTA458.688 bytes; +624 bytes frente ao recovery77. Globais54.404;
+restante linker273.276. PSRAM conhecida6.828.800 é conta estática, não heap medido.
+O binário da qualificação tem SHA47f1d0fbf428436755e52e1c3fffd297f9894c28fdd2fbe560d41cf54b4158e6;
+o publicador recompila a mesma fonte. Não se afirma reprodutibilidade binária.
+O binário efetivamente publicado passou novamente em todos os gates. Três downloads
+públicos foram comparados byte a byte aos outputs no runner; hashes, adaptadores e
+latest foram revalidados. Uma transferência adicional baixou os três assets e seus
+hashes/tamanhos foram reconferidos independentemente. A repetição local de latest
+e adaptadores não concluiu após interrupção da sessão; não se afirma execução
+duplicada completa. Tag/latest foram conferidos pela API e pelo runner.
+Teste físico desta interface continua pendente. Não houve flash de placa pelo agente.
+
+HISTÓRICO, REPRODUÇÃO E CONTRATOS
 RPG POKET — CORREÇÃO LIMITADA APÓS TESTE FÍSICO DO 7.7
-13/10/2026 | pacote2 final2026.10.13-dungeon77/build2026101304 em qualificação
+13/10/2026 | pacote2 final2026.10.13-dungeon77/build2026101304 publicado após qualificação
 Base publicada: recovery77, cf0639ebf7e1dc729a026d09a8ef27f1e7dbc9ae; docs47bb0af.
 A reprodução física original abaixo foi feita no visual77, fonte7d946aca.
 
@@ -20,7 +51,7 @@ ALTERAÇÃO DO CANDIDATO
 VALIDAÇÃO
 Novos testes: 1.440 continuações de ataques letais reais em quatro classes/duas progressões, por cena/botão/menu, com/sem recarga e falha de salvamento; igualdade de Save28, RNG, fadiga e recompensas; animação bloqueia toques; ilha/expedição, derrota/fuga, interrupção antes de salvar e movimento retomado. 72 quadros 240x320 verificam rótulos, hitbox compartilhada, todos os pixels dos glifos do estado e imutabilidade do jogo.
 Regressões existentes: dungeon_controller, title_controller, dungeon_save, event_expedition e island_save passaram. Os snapshots dos controladores continuam idênticos ao trecho de produção.
-O candidato inicial teve sete suites/dois sanitizadores verdes e revisão sem bloqueadores, sem ESP32/placa. Na reaplicação sobre recovery77, o runner preserva todas as suites de ambos os lados. A validação focada final passou: oito suites/três alvos ASan/UBSan, saída0, acrescida de 136 navegações Guia/Ficha e 560 frames com quatro classes, heróis antigos/novos, todos os 29 nomes/HP reais e HP65535. Não se refaz agregado de gameplay inalterado. Gates finais de CI/ESP32, par636 e transição recovery77→dungeon77 precisam concluir antes de publicar. Revisão independente final encerrada sem bloqueadores. Não há teste físico desta alteração.
+O candidato inicial teve sete suites/dois sanitizadores verdes e revisão sem bloqueadores, sem ESP32/placa. Na reaplicação sobre recovery77, o runner preserva todas as suites de ambos os lados. A validação focada final passou: oito suites/três alvos ASan/UBSan, saída0, acrescida de 136 navegações Guia/Ficha e 560 frames com quatro classes, heróis antigos/novos, todos os 29 nomes/HP reais e HP65535. Não se refaz agregado de gameplay inalterado. Gates finais de CI/ESP32, par636 e transição recovery77→dungeon77 concluíram com sucesso, conforme registro acima. Revisão independente final encerrada sem bloqueadores. Não há teste físico desta alteração.
 
 OUTRAS OBSERVAÇÕES FÍSICAS, FORA DESTA CORREÇÃO
 Ficha junto à borda do quadro de HP e mensagem de Habilidades sobre Guia foram corrigidos neste pacote.

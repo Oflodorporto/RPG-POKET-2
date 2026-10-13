@@ -1,27 +1,28 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 13/10/2026, 08:02 UTC. Pacote1 SD/download publicado e verificado.
+Atualização: 13/10/2026, 08:32 UTC. Pacotes1 SD/download e2 dungeon/interface publicados e verificados.
 
 ESTADO CONFERIDO
-- Release vigente2026.10.13-recovery77/build2026101303. Fonte/tag cf0639ebf7e1dc729a026d09a8ef27f1e7dbc9ae; árvore98a735c86ca856b6250f32675b6d4b0753b9b9b3. Main integrada. Docs posteriores podem avançar HEAD sem mudar tag/binário.
-- Qualificação38365055106 e publicador38365745447 verdes no mesmo SHA. 11 suites focadas/5 alvos ASan/UBSan/LeakSanitizer, 27 cenários de recuperação, 19 de boot, 1.611 frames e 58 gates de catálogo por modo. ESP32core3.3.12, par636 e transições simuladas7.6/ota77/final aprovados. Downloads públicos/latest conferidos no runner e independentemente.
-- Firmware2.686.416/3.145.728 bytes; margem459.312. Globais54.404; restante linker273.276. PSRAM conhecida6.828.800 (conta estática; sem medição de heap/FPS/toque).
+- Release vigente2026.10.13-dungeon77/build2026101304. Fonte/tag59258cec67458e2d05d4db6a6c7f7656eee1959c; árvore04be469dbdc77082381f78a17488f8e92b2217a7. Main integrada, docs posteriores não mudam tag/binário.
+- Qualificação38368462066/publicação38369185601 verdes:8 suites/3 alvos ASan/UBSan/LeakSanitizer,1.440 continuações/136toques/560frames/15probes. ESP32core3.3.12, par636 e transições7.6/recovery77/final. Downloads/latest conferidos no runner; hashes dos três assets reconferidos independentemente.
+- Firmware2.687.040/3.145.728 bytes; margem458.688. Globais54.404/restante linker273.276. PSRAM conhecida6.828.800 estática, sem medição de heap/FPS/toque.
+- Continue explícito e retorno após reload; resultado não se confirma durante animação, recompensa não é concedida novamente. Status acima das setas, HP/Ficha separados, Guia deslocado com hitbox correspondente. Teste físico pendente; o proprietário havia confirmado somente o contorno antigo de tocar na cena.
 - Recuperação única4MHz→1MHz, hash reiniciado, staging/tag incertos preservados, backup sem sobrescrita e SHA da cópia OTA. Boot exige PKA1/CRC do catálogo compilado; instalação exige SHA integral. Nenhum arquivo incerto é ativado. Pacotes antigos deixam de ser apagados no boot; usam mais espaço. FAT não garante atomicidade elétrica.
-- Artes inalteradas636/6.661.456 bytes/CRC0b84d93f. Save28/128 bytes/leitura1..28, três slots, regras, RNG, fadiga e PvP inalterados. Nenhuma nova arte ou mudança dungeon/bolsa incluída.
+- Artes inalteradas636/6.661.456 bytes/CRC0b84d93f. Save28/128 bytes/leitura1..28, três slots, regras, RNG, fadiga e PvP inalterados. Nenhuma nova arte ou mudança de bolsa incluída; dungeon/interface limitada conforme acima.
 - Teste físico desta recuperação pendente. O proprietário confirmou reparo completo/jogo no ota77 anterior com SanDisk64GB. Cartão novo4GB apresentou EIO também no diagnóstico offline/LCDoff e na conferência da OTA; causa física não estabelecida. Preferir cartão funcional, sem formatar nem insistir em downloads repetidos. Não prometer cura pelo clock reduzido.
 - artMemory insuficiente ainda interrompe boot. Pacote inválido permite arte simplificada/reparo; decoder opcional ausente omite inimigos. Downgrade com firmware antigo pode executar sua política histórica de limpeza. Nenhum novo desenho de partição ou save.
 
 FONTES CANÔNICAS
-Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-recovery77
-Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38365055106
-Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38365745447
-Hashes, contratos e limites: docs/OTA_RECUPERACAO_7_7.txt
-Uso/USB: docs/RELEASE_RECOVERY_7_7_NOTAS.txt
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-dungeon77
+Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38368462066
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38369185601
+Hashes/contratos pacote2: docs/CORRECOES_POS_TESTE_7_7.txt
+Recuperação preservada/pacote1: docs/OTA_RECUPERACAO_7_7.txt
+Uso/USB: docs/RELEASE_DUNGEON_7_7_NOTAS.txt
 Anterior SD-first: docs/OTA_ARTES_CONFIABILIDADE.txt
 Arte/gameplay7.7: docs/PACOTE_7_7_RELEASE.txt
 Histórico7.6/fadiga: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
 Histórico7.5/comércio: docs/PACOTE_7_5_COMERCIO.txt
 
 PRÓXIMAS AÇÕES AUTORIZADAS
-1. Pacote2: dungeon pós-vitória e sobreposições. Preparar, revisar/testar/compilar e publicar sequencialmente, após pacote1 verificado. Não inferir teste físico intermediário.
-2. Pacote3: bolsa/toque/textos Carvalho, com os mesmos gates e publicação posterior ao pacote2.
-3. Item4 (escala/contraste) e demais frentes aguardam nova autorização. Reusar evidências inalteradas; sem ampliar para artes, saves, regras ou atualização sem SD.
+1. Pacote3: bolsa/toque/textos Carvalho. Preparar, revisar/testar/compilar e publicar após pacote2 verificado. Não inferir teste físico intermediário.
+2. Item4 (escala/contraste) e demais frentes aguardam nova autorização. Reusar evidências inalteradas; sem ampliar para artes, saves, regras ou atualização sem SD.
