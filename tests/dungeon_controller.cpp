@@ -106,6 +106,13 @@ void newTitle(){
 bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
 bool tickIdleClock(uint32_t now,bool blocked){if(blocked||view.page==Page::SaveError){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
+// A persisted result is acknowledged explicitly; never resolve it during drawing
+// or animation, and retain the existing save-failure/retry and expedition paths.
+void acknowledgeDungeonResult(){
+  if(!dungeonUi::pendingResult(game))return;
+  if(rpg::eventExpedition(game)){if(rpg::resumeEventBattle(game)){say("Os ecos se aquietam");savedTransition(currentPage());}else {view.page=Page::EventResult;dirty=true;}return;}
+  bool lost=game.phase==rpg::Phase::Lost;rpg::dungeonResolve(game);say("");savedTransition(lost?Page::Recovery:rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);
+}
 void tapped(int x,int y){
   lastActivity=millis();if(view.page==Page::Clock){if(menu.sessionStarted&&game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt){
@@ -248,18 +255,20 @@ void tapped(int x,int y){
   if(view.page==Page::DungeonMenu){
     if(game.phase==rpg::Phase::Hero&&hit(x,y,14,0,212,32)){view.enemyReturn=Page::DungeonMenu;view.page=Page::EnemyInfo;say("");return;}
     if(hit(x,y,14,278,212)){view.page=Page::Dungeon;say("");return;}
+    if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(dungeonUi::pendingResult(game)){if(hit(x,y,14,86,212))acknowledgeDungeonResult();return;}
     if(hit(x,y,14,230,212)){if(game.phase==rpg::Phase::Home){view.page=Page::DungeonExit;say("");}else say("Termine o combate primeiro");return;}
     if(game.dndProgression&&hit(x,y,14,40,212,34)){view.powersReturn=Page::DungeonMenu;view.powerIndex=0;view.page=Page::Powers;say("");return;}
-    if(hit(x,y,14,134,212)){view.choice=0;view.page=Page::Bag;say("");return;}
     int a=hit(x,y,14,86,102)?1:hit(x,y,124,86,102)?2:hit(x,y,14,182,212)?5:-1;
     if(a<0)return;if(game.phase==rpg::Phase::Hero)action(rpg::Action(a));else say("Use durante o combate");return;}
   if(view.page==Page::Dungeon){
     if(game.phase==rpg::Phase::Enemy)return;
     if(hit(x,y,160,280,76,38)){view.page=Page::DungeonMenu;say("");return;}
     if(hit(x,y,4,280,152,38)){view.choice=0;view.page=Page::Bag;say("");return;}
+    if(dungeonUi::pendingResult(game)&&dungeonUi::continueHit(x,y)){acknowledgeDungeonResult();return;}
     if(y<172){
       if(game.phase==rpg::Phase::Hero){action(rpg::Action::Attack);return;}
-      if(game.phase!=rpg::Phase::Home){if(rpg::eventExpedition(game)){if(rpg::resumeEventBattle(game)){say("Os ecos se aquietam");savedTransition(currentPage());}else {view.page=Page::EventResult;dirty=true;}return;}bool lost=game.phase==rpg::Phase::Lost;rpg::dungeonResolve(game);say("");savedTransition(lost?Page::Recovery:rpg::inDungeon(game)?Page::Dungeon:Page::Ruins);return;}
+      if(dungeonUi::pendingResult(game)){acknowledgeDungeonResult();return;}
       if(rpg::dungeonCell(game,rpg::dungeonX(game),rpg::dungeonY(game))=='E'){view.page=Page::DungeonExit;say("");return;}
       int enemy=rpg::dungeonEnemyAhead(game);if(enemy>=0){rpg::begin(game,rpg::dungeonSpawn(game,enemy).id);say("Seu turno");savedTransition(Page::Dungeon);return;}
       if(rpg::dungeonUseLever(game)){say(rpg::eventExpedition(game)?"O sino deixou de tocar":"Um estrondo ecoa ao longe");savedTransition(currentPage());return;}
@@ -285,7 +294,7 @@ void tapped(int x,int y){
     if(launchUi::back.contains(x,y)){view.page=view.guideReturn;say("");}
     else if(launchUi::previous.contains(x,y)||launchUi::next.contains(x,y)){view.guideIndex=(view.guideIndex+(x<120?launchUi::guideCount-1:1))%launchUi::guideCount;say("");}return;
   }
-  if((view.page==Page::Menu&&hit(x,y,14,281,102,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&hit(x,y,14,143,48,29))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
+  if((view.page==Page::Menu&&hit(x,y,14,281,102,28))||(view.page==Page::Settings&&hit(x,y,124,278,102))||(view.page==Page::Help&&hit(x,y,14,233,212,27))||(view.page==Page::Skills&&panelUi::skillsGuide.contains(x,y))){view.guideReturn=view.page;view.guideIndex=view.page==Page::Skills?1:0;view.page=Page::Guide;say("");return;}
   if(view.page==Page::Bestiary){if(hit(x,y,14,278,212)){view.page=Page::Menu;say("");}else if(hit(x,y,14,114,102,28)||hit(x,y,124,114,102,28)){view.bestiaryIndex=rpg::bestiaryStep(game,view.bestiaryIndex,x<120?-1:1);say("");}return;}
   if(view.page==Page::Menu&&hit(x,y,124,281,102,28)){if(journal.blocked||journal.active<0){say("Escolha ou crie um personagem");return;}view.bestiaryIndex=rpg::bestiaryFirst(game);view.page=Page::Bestiary;say("");return;}
   if(view.page==Page::Menu){int choice=scenicUi::menuChoice(x,y);

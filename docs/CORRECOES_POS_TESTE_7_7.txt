@@ -1,0 +1,28 @@
+RPG POKET — CORREÇÃO LIMITADA APÓS TESTE FÍSICO DO 7.7
+13/10/2026 | pacote2 final2026.10.13-dungeon77/build2026101304 em qualificação
+Base publicada: recovery77, cf0639ebf7e1dc729a026d09a8ef27f1e7dbc9ae; docs47bb0af.
+A reprodução física original abaixo foi feita no visual77, fonte7d946aca.
+
+P1: CONFIRMAÇÃO DE VITÓRIA POUCO DESCOBRÍVEL
+O proprietário relatou que, após derrotar o primeiro inimigo da cripta, as setas paravam enquanto Bolsa/Menu continuavam disponíveis. Fotografias posteriores mostraram as mensagens “Use durante o combate” ao tocar Técnica e “Termine o combate primeiro” ao tentar sair. Não se presume que todas as fotos sejam do mesmo encontro: as primeiras incluem batalha normal, Habilidades e exploração; outra mostra Espectro em combate no andar 2.
+O controlador publicado mantém Phase::Won até a confirmação do resultado. As setas exigem Home, mas Bolsa/Menu aceitam Won. A confirmação existia somente ao tocar na cena superior. Save28 persiste Won, portanto reiniciar recupera o mesmo resultado pendente. O texto que orientava tocar na cena era parcialmente coberto pelas setas.
+Reprodução anterior à alteração: 120 ataques letais reais, quatro classes, personagens antigos/novos; seis setas inertes após a animação, Bolsa/Menu acessíveis, ambas as mensagens fotografadas e Won preservado ao carregar. Um toque na cena confirma, marca o inimigo derrotado e libera o movimento sem conceder XP/ouro novamente. O proprietário confirmou fisicamente que esse procedimento funcionou.
+Contorno para a versão publicada: no Menu da Cripta, Voltar; aguardar a animação e tocar uma vez na cena superior; depois usar as setas. Não apagar personagem, formatar cartão ou sair forçadamente.
+
+ALTERAÇÃO DO CANDIDATO
+- Resultados pendentes (vitória/derrota/fuga) mostram Continuar no lugar das setas. Durante a animação, a indicação é Aguarde; o bloqueio de entrada existente permanece.
+- O Menu da Cripta também apresenta Continuar, Bolsa e Voltar enquanto há resultado pendente, sem técnicas/saída contraditórias.
+- Continuar usa a mesma confirmação, resolução e salvamento que o toque na cena já utilizava. O toque antigo continua compatível. Não há resolução automática, movimento implícito, nova recompensa ou saída automática.
+- As três linhas de estado ficam integralmente acima dos controles, sem o corte da mensagem verde.
+- Ficha, HP e barra do inimigo ocupam linhas separadas dentro do painel. O Guia de Habilidades fica ao lado do retrato, fora da linha da mensagem; render e toque usam o mesmo retângulo.
+- Mapas, RNG, regras, recompensas, tempo das animações, Save28, fadiga, artes, partições e instalador não foram alterados. A recuperação SD publicada em recovery77 permanece byte-idêntica.
+
+VALIDAÇÃO
+Novos testes: 1.440 continuações de ataques letais reais em quatro classes/duas progressões, por cena/botão/menu, com/sem recarga e falha de salvamento; igualdade de Save28, RNG, fadiga e recompensas; animação bloqueia toques; ilha/expedição, derrota/fuga, interrupção antes de salvar e movimento retomado. 72 quadros 240x320 verificam rótulos, hitbox compartilhada, todos os pixels dos glifos do estado e imutabilidade do jogo.
+Regressões existentes: dungeon_controller, title_controller, dungeon_save, event_expedition e island_save passaram. Os snapshots dos controladores continuam idênticos ao trecho de produção.
+O candidato inicial teve sete suites/dois sanitizadores verdes e revisão sem bloqueadores, sem ESP32/placa. Na reaplicação sobre recovery77, o runner preserva todas as suites de ambos os lados. A validação focada final passou: oito suites/três alvos ASan/UBSan, saída0, acrescida de 136 navegações Guia/Ficha e 560 frames com quatro classes, heróis antigos/novos, todos os 29 nomes/HP reais e HP65535. Não se refaz agregado de gameplay inalterado. Gates finais de CI/ESP32, par636 e transição recovery77→dungeon77 precisam concluir antes de publicar. Revisão independente final encerrada sem bloqueadores. Não há teste físico desta alteração.
+
+OUTRAS OBSERVAÇÕES FÍSICAS, FORA DESTA CORREÇÃO
+Ficha junto à borda do quadro de HP e mensagem de Habilidades sobre Guia foram corrigidos neste pacote.
+Guardião pequeno e pouco destacado na batalha normal e Espectro pequeno/azulado contra parede azul na dungeon continuam fora do escopo. Escala/contraste exigem revisão visual separada, considerando área realmente opaca, proporção da espécie, distância e contraste. Nenhuma ampliação global nem redesenho de arte foi aplicado aqui.
+Selo: comparação direta com a tag 7.5 confirma mapas/pickups idênticos. O selo da cripta comum permanece no primeiro andar, x=3,y=1, índice3/bit8; a porta bloqueada está no segundo, x=7,y=4. Não existe geração aleatória dessa posição. Coletar requer tocar na cena sobre a célula e muda SELO para SIM. Sair e reentrar reinicia a dungeon. Isso não determina a posição atual do jogador.

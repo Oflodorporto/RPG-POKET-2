@@ -1,0 +1,25 @@
+7.7 — Dungeon e interface de combate
+
+Após vitória, derrota ou fuga, Continuar aparece na dungeon e no menu. Durante a
+animação, aparece Aguarde e os toques continuam bloqueados. O toque antigo na cena
+também funciona. Retomar um save com resultado pendente mostra a mesma confirmação;
+não há recompensa duplicada, saída automática ou mudança nas regras de combate.
+
+A mensagem verde fica acima das setas. Ficha, HP e barra do inimigo ficam dentro
+do quadro em linhas distintas. O Guia de Habilidades sai de trás da mensagem e
+fica ao lado do retrato, com a área de toque ajustada.
+
+A recuperação SD do pacote anterior permanece integralmente preservada. Artes636,
+Save28, três slots, mapas, RNG, fadiga, recompensas, poderes e tempo das animações
+não mudam. Não inclui bolsa/Carvalho (próximo pacote), escala/contraste dos inimigos
+ou novos desenhos. Não altera o tamanho das criaturas.
+
+Validação automatizada não substitui teste físico. O proprietário confirmou apenas
+o contorno antigo de tocar na cena; esta interface corrigida ainda será testada na
+placa. Preferir o cartão SanDisk que já passou no reparo completo anterior. Não
+formatar, apagar saves ou repetir downloads em cartão com EIO persistente.
+
+Atualizar em Configurações → Atualização → Verificar versão. Pelo cabo, usar o
+fonte inteiro desta tag, core3.3.12, Flash16MB/QIO, PSRAM OPI, CDC habilitado,
+partição16M Flash (3MB APP/9.9MB FATFS), Erase All Flash Disabled. Fazer backup
+quando houver dados importantes; não se garante preservação absoluta pela IDE/core.

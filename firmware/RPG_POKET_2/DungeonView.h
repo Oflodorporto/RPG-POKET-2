@@ -4,6 +4,11 @@
 #include "IslandArt.h"
 #include <math.h>
 #include <limits.h>
+namespace dungeonUi {
+constexpr int continueX=4,continueY=212,continueW=232,continueH=44;
+inline bool pendingResult(const rpg::Game& g){return g.phase==rpg::Phase::Won||g.phase==rpg::Phase::Lost||g.phase==rpg::Phase::Fled;}
+inline bool continueHit(int x,int y){return x>=continueX&&x<continueX+continueW&&y>=continueY&&y<continueY+continueH;}
+}
 // Enlargement uses existing authored pixels; race/sleeve masks are not present here.
 template<class Canvas>void drawDungeonHero(Canvas& c,const rpg::Game& g,const ViewState& v){
  unsigned p=combatProgress(v.effectProgress,v.effectFrame),ms=v.effectElapsedMs==UINT32_MAX?v.effectFrame*1100/8:v.effectElapsedMs;
@@ -79,10 +84,15 @@ template<class Canvas> void drawDungeon(Canvas& c,const rpg::Game& g,const ViewS
   if(enemyActive&&v.combatResult.enemyAction)drawEnemyAction(effectCanvas,g.enemyId,v.combatResult,progress,enemyActionX,enemyActionY,176,140);
   combatResultLabel(c,v,true);
   c.fillRect(0,172,240,148,UI_INK);auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x,y);c.print(s);};char b[48];
-  snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);text(4,176,b);static const char* directions[]={"N","L","S","O"};snprintf(b,sizeof(b),"ANDAR %u / %s / SELO %s",floor+1,directions[heading],g.dungeonLoot&8?"SIM":"NAO");if(rpg::islandDungeon(g))snprintf(b,sizeof(b),"GALERIA %u / %s",floor+1,directions[heading]);if(rpg::eventExpedition(g)){unsigned remaining=rpg::dungeonSpawnCount(g);for(unsigned i=0;i<rpg::dungeonSpawnCount(g);++i)remaining-=bool(g.dungeonEnemies&(1u<<i));snprintf(b,sizeof(b),"EXPEDICAO %u / ECOS %u / %s",floor+1,remaining,directions[heading]);}text(4,186,b,UI_GOLD);
-  char rewards[48];snprintf(rewards,sizeof(rewards),"+%u XP +%u ouro / toque na cena",g.gainXp,g.gainGold);const char* status=g.phase==rpg::Phase::Won?rewards:g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,196,shortText,UI_GREEN);
-  auto button=[&](int x,int y,int w,int h,const char* label){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);if(h>30&&y<280){int cx=x+w/2,cy=y+12;bool up=!strcmp(label,"Avancar"),down=!strcmp(label,"Recuar"),left=strchr(label,'<');if(up||down){c.fillRect(cx-2,cy-4,4,16,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx-k,cy+(up?-7+k:10-k),2*k+1,1,UI_GOLD);}else{c.fillRect(cx-10,cy-2,21,4,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx+(left?-12+k:12-k),cy-k,1,2*k+1,UI_GOLD);}text(x+(w-int(strlen(label))*6)/2,y+26,label);}else {c.setTextSize(2);c.setTextColor(UI_WHITE);c.setCursor(x+(w-int(strlen(label))*12)/2,y+(h-16)/2);c.print(label);}};
+  snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);text(4,174,b);static const char* directions[]={"N","L","S","O"};snprintf(b,sizeof(b),"ANDAR %u / %s / SELO %s",floor+1,directions[heading],g.dungeonLoot&8?"SIM":"NAO");if(rpg::islandDungeon(g))snprintf(b,sizeof(b),"GALERIA %u / %s",floor+1,directions[heading]);if(rpg::eventExpedition(g)){unsigned remaining=rpg::dungeonSpawnCount(g);for(unsigned i=0;i<rpg::dungeonSpawnCount(g);++i)remaining-=bool(g.dungeonEnemies&(1u<<i));snprintf(b,sizeof(b),"EXPEDICAO %u / ECOS %u / %s",floor+1,remaining,directions[heading]);}text(4,183,b,UI_GOLD);
+  char rewards[48];snprintf(rewards,sizeof(rewards),"Vitoria! +%u XP +%u ouro",g.gainXp,g.gainGold);const char* status=g.phase==rpg::Phase::Won?rewards:g.phase==rpg::Phase::Lost?"Derrota! Retorne as Ruinas":g.phase==rpg::Phase::Fled?"Recuou do inimigo":v.message;char shortText[39];snprintf(shortText,sizeof(shortText),"%.38s",status);text(4,192,shortText,UI_GREEN);
+  auto button=[&](int x,int y,int w,int h,const char* label,bool movement=false){c.fillRect(x,y,w,h,UI_PANEL);c.drawRect(x,y,w,h,UI_GOLD);if(movement){int cx=x+w/2,cy=y+12;bool up=!strcmp(label,"Avancar"),down=!strcmp(label,"Recuar"),left=strchr(label,'<');if(up||down){c.fillRect(cx-2,cy-4,4,16,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx-k,cy+(up?-7+k:10-k),2*k+1,1,UI_GOLD);}else{c.fillRect(cx-10,cy-2,21,4,UI_GOLD);for(int k=0;k<8;++k)c.fillRect(cx+(left?-12+k:12-k),cy-k,1,2*k+1,UI_GOLD);}text(x+(w-int(strlen(label))*6)/2,y+26,label);}else {c.setTextSize(2);c.setTextColor(UI_WHITE);c.setCursor(x+(w-int(strlen(label))*12)/2,y+(h-16)/2);c.print(label);}};
   if(g.phase==rpg::Phase::Hero||g.phase==rpg::Phase::Enemy){snprintf(b,sizeof(b),"%s / HP %u",rpg::enemySpec(g.enemyId).name,g.enemyHp);c.fillRect(4,4,232,30,UI_INK);text(8,7,b,UI_GOLD);text(8,21,rpg::intentName(g),UI_GOLD);}
-  button(4,202,74,35,"Girar <");button(82,202,74,35,"Avancar");button(160,202,76,35,"Girar >");button(4,241,74,35,"Lado <");button(82,241,74,35,"Recuar");button(160,241,76,35,"Lado >");
+  if(dungeonUi::pendingResult(g)){
+    button(dungeonUi::continueX,dungeonUi::continueY,dungeonUi::continueW,dungeonUi::continueH,v.effect==Effect::None?"Continuar":"Aguarde...");
+    text(21,264,"Confirme o resultado para seguir");
+  }else {
+    button(4,202,74,35,"Girar <",true);button(82,202,74,35,"Avancar",true);button(160,202,76,35,"Girar >",true);button(4,241,74,35,"Lado <",true);button(82,241,74,35,"Recuar",true);button(160,241,76,35,"Lado >",true);
+  }
   button(4,280,152,38,"Bolsa");button(160,280,76,38,"Menu");
 }

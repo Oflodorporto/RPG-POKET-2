@@ -152,6 +152,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(206,exit?"": "Toque na cena: interagir / atacar");center(237,v.message,1,UI_RED);
     button(14,272,102,"Voltar");button(124,272,102,buy?"Comprar":exit?"Sair":"Entrar");return;
   }
+  if(v.page==Page::DungeonMenu&&dungeonUi::pendingResult(g)){
+    center(14,g.phase==rpg::Phase::Won?"VITORIA!":"COMBATE ENCERRADO",2,UI_GOLD);
+    center(48,"Confirme o resultado para seguir");
+    button(14,86,212,"Continuar");button(14,134,212,"Bolsa");button(14,278,212,"Voltar");return;
+  }
   if(v.page==Page::DungeonMenu){center(14,g.phase==rpg::Phase::Hero?"FICHA DO INIMIGO >":"MENU DA CRIPTA",2,UI_GOLD);snprintf(b,sizeof(b),"Vida: %u / Mana: %u",g.p.life,g.p.mana);center(46,b);center(64,v.message,1,UI_RED);if(g.dndProgression){box(14,40,212,34);center(52,"Poderes de classe >",1,UI_GOLD);}
     button(14,86,102,"Tecnica");button(124,86,102,"Defesa");button(14,134,212,"Bolsa");button(14,182,212,"Fugir do inimigo");button(14,230,212,"Sair da dungeon");button(14,278,212,"Voltar");return;}
   if(v.page==Page::SaveError||v.page==Page::Blocked){
@@ -357,7 +362,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   const auto& foe=rpg::enemySpec(g.enemyId);
   // A single framed panel replaces the concept's baked-in enemy name/level.
   scenicPanel(c,42,24,156,62);
-  panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,78,66,85,health);panelBar(c,56,59,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,78,90,"Ficha >",UI_GOLD);
+  panelLabel(c,50,34,140,foe.name,UI_GOLD,2);char health[48];snprintf(health,sizeof(health),"HP %u/%u",g.enemyHp,rpg::encounterHp(g,g.enemyId));panelLabel(c,56,62,128,health);panelBar(c,56,55,128,g.enemyHp,rpg::encounterHp(g,g.enemyId),UI_RED);panelLabel(c,75,74,90,"Ficha >",UI_GOLD);
   unsigned progress=combatProgress(v.effectProgress,v.effectFrame);
   unsigned elapsed=v.effectElapsedMs==UINT32_MAX?v.effectFrame*1100/8:v.effectElapsedMs;
   bool pilot=v.effect==Effect::MagicDarts&&!v.combatResult.enemyAction;
