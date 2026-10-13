@@ -1,31 +1,28 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 13/10/2026. Pacotes1 SD/download e2 dungeon/interface publicados e verificados.
-Pacote3 em qualificação: feat/touch77-release, versão2026.10.13-touch77/build1305.
-Bolsa/Equipamentos/Carvalho, textura flash compacta; artes externas e correções1/2 preservadas.
-Detalhes: docs/BOLSA_TOQUE_7_7.txt. Ainda sem publicação ou teste físico deste candidato.
+Atualização:13/10/2026. Pacotes1,2 e3 publicados e verificados, nesta ordem.
 
 ESTADO CONFERIDO
-- Release vigente2026.10.13-dungeon77/build2026101304. Fonte/tag59258cec67458e2d05d4db6a6c7f7656eee1959c; árvore04be469dbdc77082381f78a17488f8e92b2217a7. Main integrada, docs posteriores não mudam tag/binário.
-- Qualificação38368462066/publicação38369185601 verdes:8 suites/3 alvos ASan/UBSan/LeakSanitizer,1.440 continuações/136toques/560frames/15probes. ESP32core3.3.12, par636 e transições7.6/recovery77/final. Downloads/latest conferidos no runner; hashes dos três assets reconferidos independentemente.
-- Firmware2.687.040/3.145.728 bytes; margem458.688. Globais54.404/restante linker273.276. PSRAM conhecida6.828.800 estática, sem medição de heap/FPS/toque.
-- Continue explícito e retorno após reload; resultado não se confirma durante animação, recompensa não é concedida novamente. Status acima das setas, HP/Ficha separados, Guia deslocado com hitbox correspondente. Teste físico pendente; o proprietário havia confirmado somente o contorno antigo de tocar na cena.
-- Recuperação única4MHz→1MHz, hash reiniciado, staging/tag incertos preservados, backup sem sobrescrita e SHA da cópia OTA. Boot exige PKA1/CRC do catálogo compilado; instalação exige SHA integral. Nenhum arquivo incerto é ativado. Pacotes antigos deixam de ser apagados no boot; usam mais espaço. FAT não garante atomicidade elétrica.
-- Artes inalteradas636/6.661.456 bytes/CRC0b84d93f. Save28/128 bytes/leitura1..28, três slots, regras, RNG, fadiga e PvP inalterados. Nenhuma nova arte ou mudança de bolsa incluída; dungeon/interface limitada conforme acima.
-- Teste físico desta recuperação pendente. O proprietário confirmou reparo completo/jogo no ota77 anterior com SanDisk64GB. Cartão novo4GB apresentou EIO também no diagnóstico offline/LCDoff e na conferência da OTA; causa física não estabelecida. Preferir cartão funcional, sem formatar nem insistir em downloads repetidos. Não prometer cura pelo clock reduzido.
-- artMemory insuficiente ainda interrompe boot. Pacote inválido permite arte simplificada/reparo; decoder opcional ausente omite inimigos. Downgrade com firmware antigo pode executar sua política histórica de limpeza. Nenhum novo desenho de partição ou save.
+- Release vigente2026.10.13-touch77/build2026101305. Fonte/tag91c64a364a7c1c697b9cd91b7e72027fa03f2dee; árvore1099a6cb0713f22ed805a8ca28f3978f77734727. Main integrada; documentação posterior não muda a tag/binário.
+- Qualificação38374882773/publicação38375799485 verdes.11 suites/5 alvos ASan/UBSan/LeakSanitizer,9.234 casos de toque/2.112 frames novos,1.440 continuações/136 toques/560 frames do pacote2,15 probes. Core3.3.12, par636 e transições reais7.6/dungeon77/final; três downloads/latest conferidos no runner. API reconfirmou tag/source e digests. A conferência local adicional do latest foi cancelada/não concluída.
+- Firmware2.728.432/3.145.728 bytes; margem417.296. Globais54.404/restante linker273.276. PSRAM conhecida6.828.800 estática, sem medição de heap/FPS/toque. Compilações de qualificação/publicador têm hashes diferentes; ambos passaram seus gates completos.
+- Bolsa de couro com9 células52×52, Equipamentos216×40, ações108×44; seleção não consome item/turno. Todos18 equipamentos/3 páginas e regras de poções preservados. Carvalho com8 botões112×40, Menu228×40 e textos separados/mais grossos. Outras cidades não mudam. Textura4bpp na flash38.432 bytes, linha480bytes na pilha, sem heap/PSRAM novo.
+- Pacote2 integral: Continue explícito Won/Lost/Fled e após reload; animação ainda bloqueia toques. Nenhuma recompensa repetida. Status acima das setas, HP/Ficha separados, Guia fora da mensagem com hitbox correto.
+- Pacote1 integral: recuperação única4MHz→1MHz, hash reiniciado, staging/tag incertos preservados, backup sem sobrescrita e SHA da cópia OTA. Boot exige PKA1/CRC do catálogo; instalação exige SHA integral. Nenhum arquivo incerto é ativado. Pacotes anteriores/backup ocupam espaço adicional. FAT não garante atomicidade elétrica.
+- Artes externas636/6.661.456 bytes/CRC0b84d93f/SHA5416f6d5...dd43f1 inalteradas. Save28/128 bytes/leitura1..28, três slots, regras, RNG, fadiga e PvP inalterados.
+- Teste físico dos3 pacotes novos pendente. O proprietário confirmou reparo completo/jogo no ota77 anterior com SanDisk64GB. Cartão novo4GB apresentou EIO também offline/LCDoff; causa física não estabelecida. Preferir cartão funcional, sem formatar nem insistir em downloads repetidos. Não prometer cura pelo clock reduzido.
+- artMemory insuficiente ainda interrompe boot. Pacote inválido permite arte simplificada/reparo; decoder opcional ausente omite inimigos. Downgrade antigo pode executar a política histórica de limpeza. Nenhuma mudança de partição/save.
 
 FONTES CANÔNICAS
-Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-dungeon77
-Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38368462066
-Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38369185601
-Hashes/contratos pacote2: docs/CORRECOES_POS_TESTE_7_7.txt
-Recuperação preservada/pacote1: docs/OTA_RECUPERACAO_7_7.txt
-Uso/USB: docs/RELEASE_DUNGEON_7_7_NOTAS.txt
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-touch77
+Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38374882773
+Publicação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38375799485
+Pacote3/hashes/proveniência: docs/BOLSA_TOQUE_7_7.txt
+Uso: docs/RELEASE_TOUCH_7_7_NOTAS.txt
+Pacote2: docs/CORRECOES_POS_TESTE_7_7.txt
+Pacote1: docs/OTA_RECUPERACAO_7_7.txt
 Anterior SD-first: docs/OTA_ARTES_CONFIABILIDADE.txt
 Arte/gameplay7.7: docs/PACOTE_7_7_RELEASE.txt
-Histórico7.6/fadiga: docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt
-Histórico7.5/comércio: docs/PACOTE_7_5_COMERCIO.txt
 
-PRÓXIMAS AÇÕES AUTORIZADAS
-1. Pacote3: bolsa/toque/textos Carvalho. Preparar, revisar/testar/compilar e publicar após pacote2 verificado. Não inferir teste físico intermediário.
-2. Item4 (escala/contraste) e demais frentes aguardam nova autorização. Reusar evidências inalteradas; sem ampliar para artes, saves, regras ou atualização sem SD.
+PRÓXIMAS AÇÕES
+Aguardar teste físico do proprietário no cartão funcional. Item4(escala/contraste)
+e demais frentes precisam de nova autorização; não iniciar nem publicar agora.

@@ -1,5 +1,5 @@
 PACOTE 3 — BOLSA, EQUIPAMENTOS E CARVALHO
-Candidato final: 2026.10.13-touch77 / build 2026101305
+Publicado e verificado: 2026.10.13-touch77 / build 2026101305
 Base publicada: dungeon77, fonte59258cec, documentação45cd2234.
 
 ESCOPO
@@ -51,8 +51,9 @@ Resultado local:11 suites normais/5 alvos ASan+UBSan,9.234 casos novos de toque,
 verificador e transições sintéticas normal/SAN passaram. LeakSanitizer fica para CI
 (local detect_leaks=0). Logs preservam os ajustes de dois fixtures antigos, sem
 falha de produção: coordenada anterior do cristal e retorno Menu em Page::Blocked.
-Conferência visual aprovada; revisão de fonte sem bloqueador. Compilação ESP32 e
-publicação ainda pendentes, sem declaração de disponibilidade deste candidato.
+Conferência visual aprovada; revisão independente encerrada sem bloqueadores.
+A CI confirmou11 suites/5 alvos ASan+UBSan+LeakSanitizer e compilou core3.3.12.
+Os parsers reais7.6/dungeon77/final aceitaram os artefatos compilados e publicados.
 
 PUBLICAÇÃO E LIMITES
 A qualificação da branch feat/touch77-release é somente leitura, sem upload. O
@@ -63,3 +64,30 @@ Não se declara teste físico, precisão do touch, FPS ou heap medido. Não incl
 escala/contraste dos inimigos, novas cidades/biomas, antebraços ou mudanças de poderes.
 Cartão instável pode continuar falhando; não formatar nem repetir downloads sem
 examinar o diagnóstico. A recuperação anterior continua limitada e com SHA/CRC.
+
+RESULTADO PUBLICADO —13/10/2026
+Fonte/tag91c64a364a7c1c697b9cd91b7e72027fa03f2dee
+Árvore1099a6cb0713f22ed805a8ca28f3978f77734727
+Revisão local equivalente6381e70fd63217576d2412f876dd9030234de5cd
+Qualificação: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38374882773
+Publicador: https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38375799485
+Release: https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-touch77
+Main recebeu o fonte qualificado por fast-forward; tag inédita aponta exatamente
+para esse fonte. Commits posteriores de documentação não alteram o binário/tag.
+Firmware2.728.432/3.145.728 bytes; margem417.296. Crescimento51.184 sobrevisual77,
+dentro do guard65.536;41.392 acima do pacote2. Globais54.404/restante linker273.276
+inalterados. Não são medidas de heap disponível nem memória física em execução.
+SHA256 firmware publicado:
+e7756a56caf7a10e19f46eafcd7f8de2cee4543dc2e92947b56ff03d866e940d
+SHA256 firmware da qualificação, mesmo fonte/tamanho, recompilação distinta:
+c00a350a371d83ce2d0bb14499cdec494a997be53108f59456237848cbaf265e
+Não se afirma reprodução bit a bit; o publicador validou também seu próprio binário
+antes de publicar e depois de baixá-lo. Manifesto1074 bytes/SHA256:
+169136814eb1231ef3999ef208e52f2c9f873469f7a6b122008bad4fe7b3fc2a
+O publicador baixou os3 assets públicos e comparou byte a byte com seus outputs,
+reexecutou verificador/parsers reais e comparou latest ao manifesto publicado.
+A API pública reconfirmou tag/source, bytes e digests dos3 assets. A conferência
+adicional local do latest foi cancelada e não terminou; não é declarada concluída
+nem substitui os gates públicos já aprovados. Nenhuma repetição dessa operação.
+Teste físico permanece pendente. Os3 pacotes autorizados estão publicados; item4
+(escala/contraste) e seguintes não foram iniciados e precisam de nova autorização.
