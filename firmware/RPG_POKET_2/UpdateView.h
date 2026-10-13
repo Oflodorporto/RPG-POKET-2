@@ -13,7 +13,7 @@ template<class C>void updateLines(C& c,int y,const char* text,uint16_t color=UI_
 // retrievable after Back/Test connection without SD/NVS writes or new controls.
 template<class C>void updateWriteDetail(C& c,int y,const updater::WriteFailure& f){
  char line[64];
- snprintf(line,sizeof(line),"Ultima SD %s %u%% E%d",updater::fileLabel(f.file),std::min(100u,f.progress),f.error);updateLines(c,y,line,UI_RED);
+ snprintf(line,sizeof(line),"Ultima SD %s %u%% E%d",updater::fileLabel(f.file),unsigned(std::min<uint32_t>(100,f.progress)),f.error);updateLines(c,y,line,UI_RED);
  snprintf(line,sizeof(line),"Pos: %lu/%lu B",(unsigned long)f.offset,(unsigned long)f.total);updateLines(c,y+11,line);
  snprintf(line,sizeof(line),"Gravou %lu de %lu B",(unsigned long)f.written,(unsigned long)f.requested);updateLines(c,y+22,line);
  if(f.freeKnown)snprintf(line,sizeof(line),"Livre antes: %llu KiB",(unsigned long long)(f.initialFree/1024));else snprintf(line,sizeof(line),"Livre antes: nao medido");updateLines(c,y+33,line,UI_MUTED);
