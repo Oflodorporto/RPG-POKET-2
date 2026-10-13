@@ -15,13 +15,22 @@ struct Player {
   uint16_t hp=18,maxhp=18,mp=14,maxmp=14;
   uint32_t xp=0,gold=0;
 };
+enum class DailyPhase:uint8_t {None=0,Leg=1,NightRoll=2,NightBattle=3,Rest=4,Tent=5,RoadRoll=6,RoadBattle=7};
+struct DailyTrip {
+  DailyPhase phase=DailyPhase::None;
+  uint8_t origin=0,totalDays=0,day=0,rationsPaid=0,nightsDone=0,region=0;
+  uint8_t roll=0,difficulty=0,survivalBonus=0,luckBonus=0,kit=0,total=0,enemy=0;
+  uint8_t supplies=0,result=0,policy=0,routeVersion=0;
+};
+inline bool dailyStateEmpty(const DailyTrip& d){return d.phase==DailyPhase::None&&!d.origin&&!d.totalDays&&!d.day&&!d.rationsPaid&&!d.nightsDone&&!d.region&&!d.roll&&!d.difficulty&&!d.survivalBonus&&!d.luckBonus&&!d.kit&&!d.total&&!d.enemy&&!d.supplies&&!d.result&&!d.policy&&!d.routeVersion;}
 struct Game {
   Player p;
   uint8_t race=0,shirt=0,trousers=0,clubStage=0;bool guildMember=false;uint32_t clubSession=0;
   uint8_t questId=0,questProgress=0,questLevel=0,city=0;
   uint8_t tripStage=0,tripTo=0,tripRoll=0,tripDifficulty=0,tripTotal=0,tripEnemy=0,tripSurvival=0,tripLuck=0;
+  DailyTrip daily;
   uint8_t rations=0,charts=0,charms=0;
-  // Runtime state; the separate fatigue record owns persistence, never Save28.
+  // Save29 persists fatigue atomically with the hero and daily trip.
   uint8_t fatigue=0;
   uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
   uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0,eventOfferSlot=0,eventKind=0,eventProgress=0,eventLevel=0,eventFlags=0,eventRoll=0;
@@ -76,7 +85,7 @@ inline const char* goodBonus(uint8_t id){static const char* n[]={"+2 sobrevivenc
 inline uint8_t goodPrice(uint8_t city){static const uint8_t n[]={6,12,12,25};return n[city<4?city:0];}
 inline uint8_t& goodCount(Game& g,uint8_t id){return id==1?g.charts:id==2?g.charms:g.rations;}
 inline const char* buyGood(Game& g){if(g.phase!=Phase::Home||g.tripStage)return "Termine a viagem";auto& n=goodCount(g,localGood(g.city));if(n>=9)return "Limite de 9 unidades";if(g.p.gold<goodPrice(g.city))return "Ouro insuficiente";g.p.gold-=goodPrice(g.city);++n;return nullptr;}
-inline void clearTrip(Game& g){g.tripStage=g.tripTo=g.tripRoll=g.tripDifficulty=g.tripTotal=g.tripEnemy=g.tripSurvival=g.tripLuck=0;}
+inline void clearTrip(Game& g){g.daily=DailyTrip{};g.tripStage=g.tripTo=g.tripRoll=g.tripDifficulty=g.tripTotal=g.tripEnemy=g.tripSurvival=g.tripLuck=0;}
 inline bool tripSafe(const Game& g){return g.tripRoll==20||(g.tripRoll!=1&&g.tripTotal>=g.tripDifficulty);}
 inline uint8_t routeDifficulty(uint8_t a,uint8_t b){return 12+2*abs(int(a)-int(b))+std::max(cityLevel(a),cityLevel(b))/6;}
 
@@ -283,15 +292,17 @@ inline unsigned survivorRecovery(const Game& g){return g.dndProgression&&g.p.cls
 inline void startHeroTurn(Game& g){g.p.hp+=survivorRecovery(g);}
 inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<criticalChance;return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
-inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&g.city==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
-inline unsigned encounterAttack(const Game& g){return g.dndProgression&&g.city==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
+inline uint8_t encounterRegion(const Game& g){return g.tripStage==4&&g.daily.phase==DailyPhase::NightBattle?g.daily.region:g.city;}
+inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&encounterRegion(g)==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
+inline unsigned encounterAttack(const Game& g){return g.dndProgression&&encounterRegion(g)==0&&g.p.level<3&&(g.enemyId<2||g.enemyId==14)?std::min<unsigned>(g.p.level+1,enemySpec(g.enemyId).atk):enemySpec(g.enemyId).atk;}
 inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>28||(id>=20&&id<=24&&(!(g.dungeonFlags&16)||g.campaignEnding!=2))||(id>=18&&id<=19&&g.campaignStage!=(id==18?8:9))||(id>=10&&id<14&&g.eventStage!=2)||(id>=14&&id<18&&(g.discovery!=4||id!=14+g.city))||(id==3&&g.ruinsWins<3))return false;g.enemyId=id;g.seenEnemies|=1u<<id;g.phase=Phase::Hero;g.enemyHp=encounterHp(g,id);g.guard=0;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);g.gainXp=0;g.gainGold=0;g.dropLife=g.dropMana=false;clearFeedback(g);startHeroTurn(g);return true;}
-inline uint8_t regionalEnemy(const Game& g,unsigned n,bool night=false){
- if(g.city==0)return g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1);
- if(g.city==1)return n%2?5:2;
- if(g.city==2){const uint8_t day[]={6,25,6,26},dark[]={26,6,25,26};return (night?dark:day)[n%4];}
+inline uint8_t regionalEnemyAt(const Game& g,uint8_t region,unsigned n,bool night=false){
+ if(region==0)return g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1);
+ if(region==1)return n%2?5:2;
+ if(region==2){const uint8_t day[]={6,25,6,26},dark[]={26,6,25,26};return (night?dark:day)[n%4];}
  const uint8_t day[]={7,27,7,28},dark[]={28,7,27,28};return (night?dark:day)[n%4];
 }
+inline uint8_t regionalEnemy(const Game& g,unsigned n,bool night=false){return regionalEnemyAt(g,g.city,n,night);}
 inline bool explore(Game& g,bool boss=false,bool night=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=regionalEnemy(g,n,night);if(!begin(g,boss?3:id))return false;addFatigue(g,4);return true;}
 inline const char* prepareTrip(Game& g,uint8_t dest){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(dest>3||dest==g.city)return "Destino invalido";if(g.eventStage==2&&(g.eventKind!=2||g.eventProgress||g.city!=g.eventTier||!g.eventTier||dest!=g.eventTier-1))return "Siga o destino da carta";g.tripStage=1;g.tripTo=dest;g.tripSurvival=tripSurvivalBonus(g);g.tripLuck=luck(g);if(g.rations)--g.rations;if(g.charts){--g.charts;++g.tripLuck;}if(g.charms){--g.charms;g.tripLuck+=2;}g.tripRoll=1+random(g)%20;g.tripTotal=g.tripRoll+g.tripSurvival+g.tripLuck;g.tripDifficulty=routeDifficulty(g.city,dest);unsigned danger=std::max(cityLevel(g.city),cityLevel(dest));g.tripEnemy=danger>=18?7:danger>=10?6:danger>=5?5:4;return nullptr;}
 inline bool escortTrip(const Game& g){return g.tripStage&&((g.eventStage==2&&g.eventKind==2&&!g.eventProgress&&g.city==g.eventTier&&g.tripTo+1==g.eventTier)||(g.eventStage!=2&&g.questId&&!g.questProgress&&contractKind(g.questId)==ContractKind::Escort&&g.city==contractCity(g.questId)&&g.tripTo==contractDestination(g.questId)));}
@@ -393,7 +404,7 @@ inline bool enemy(Game& g){
  if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
  g.phase=Phase::Hero;finish(g);if(g.phase==Phase::Hero)startHeroTurn(g);return true;
 }
-inline bool home(Game& g){if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;bool escaped=g.phase==Phase::Fled;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost||(escaped&&((g.eventStage==2&&g.eventKind==2)||(g.questId&&contractKind(g.questId)==ContractKind::Escort))))clearTrip(g);else g.tripStage=3;}return true;}
+inline bool home(Game& g){if(g.tripStage==4)return false;if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;bool escaped=g.phase==Phase::Fled;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost||(escaped&&((g.eventStage==2&&g.eventKind==2)||(g.questId&&contractKind(g.questId)==ContractKind::Escort))))clearTrip(g);else g.tripStage=3;}return true;}
 inline bool rest(Game& g){if(g.phase!=Phase::Home)return false;g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;refreshPowers(g);g.fatigue=0;return true;}
 // Economy.cpp shopLong / UI.cpp invLong: prices and limits from Heltec.
 inline uint8_t potionPrice(bool mana){return mana?12:10;}

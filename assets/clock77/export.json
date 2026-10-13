@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "authorship": "Original clock concept generated for the owner; visual and publication approved 2026-10-13. Existing blank reused, no new image generation.",
+  "source_file": "approved-background.png",
+  "source_png_sha256": "55b43ea33524f4a085703ee74615c20baf20c600e6a61707e53ceb6741dc09aa",
+  "source_rgb565_file": "approved-rgb565.bin.gz.b64",
+  "source_rgb565_sha256": "0e5b0fabf78f506e162f42d6800feada53bd55443323d65444508b0b5472866a",
+  "export_file": "background-idx8.bin.gz.b64",
+  "export_sha256": "916d0b8da80e93783a348d9f23dd51ba333fb1547d5dfa17ee9137405f60d314",
+  "decoded_sha256": "3f9b9c466553bbece48297a021bf82ae3b3ec25c7f8892698d6660530f3bc85d",
+  "reference_rgb565_sha256": "d9204593735da718f86e9b24a40e47e15f604d1a7bed018f076f8ead30d1b4c2",
+  "conversion": "Pillow MEDIANCUT 256 colors, no dithering, RGB565 palette; opaque idx8 plane. Rebuild consumes the verified committed export without Pillow.",
+  "width": 240,
+  "height": 320,
+  "palette_entries": 256,
+  "flash_bytes": 77312,
+  "quantization": {
+    "mean_absolute_channel_error_8bit": 1.227196,
+    "root_mean_square_channel_error_8bit": 3.709504,
+    "maximum_channel_error_8bit": 99,
+    "unchanged_rgb565_pixels": 53168,
+    "total_pixels": 76800
+  },
+  "scope": "Flash-only clock background, no baked text or active notification. Runtime draws the existing clock/date/Guild-letter states. Render uses one 480-byte row and no heap allocation or SD read."
+}

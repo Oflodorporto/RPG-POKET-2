@@ -30,7 +30,7 @@ static void boundsAndSave(){
   }
   // The RAM field has no offset or flag in Save28, even at every band boundary.
   static_assert(SAVE_SIZE==128,"Fatigue must not grow Save28");
-  static_assert(CURRENT_SAVE_FORMAT==28,"Fatigue must not change Save28");
+  static_assert(LEGACY_SAVE_FORMAT==28,"Fatigue must not change Save28");
   for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race)
   for(unsigned level:{1u,5u,10u,18u,20u}){
     auto g=hero(cls,level);g.race=race;g.shirt=7;g.trousers=6;g.rations=9;

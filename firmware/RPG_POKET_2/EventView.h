@@ -54,7 +54,7 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
    snprintf(b,sizeof(b),"Etapa %u/%u%s",g.eventProgress+1,rpg::eventGoal(g.eventKind),rpg::eventNight(g)?" / noite":" / dia");center(184,b,1,UI_GREEN);button(14,216,212,eventActionName(g));
    if(g.eventRoll&&g.eventKind!=6){snprintf(b,sizeof(b),"Ultimo D20: %u",g.eventRoll);center(252,b,1,UI_GOLD);}
   }
-  if(*menu.notice)center(201,menu.notice,1,UI_RED);button(14,272,102,"Bolsa");button(124,272,102,"Retornar");return true;
+  if(*menu.notice)center(201,menu.notice,1,UI_RED);button(14,272,102,rpg::escortCampAllowed(g)?"Preparar":"Bolsa");button(124,272,102,"Retornar");return true;
  }
  if(page==int(Page::EventAbandon)){center(18,"ENCERRAR MISSAO?",2,UI_GOLD);center(99,"Voce voltara ao local de origem.");center(128,"A tarefa ficara incompleta.");center(157,"Nao ha recompensa da carta.");center(186,"Itens pessoais sao preservados.");button(14,272,102,"Continuar");button(124,272,102,"Retornar");return true;}
  if(g.eventKind){bool ready=rpg::eventReady(g),battle=g.phase==rpg::Phase::Won;

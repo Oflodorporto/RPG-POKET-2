@@ -68,7 +68,7 @@ constexpr bool validPalette(unsigned id) {
     artFallback[assetMeta[id].fallback]==0x1f && artFallback[assetMeta[id].fallback+1]==0xf8;
 }
 constexpr bool validCatalog() {
-  if(ART_COUNT!=636 || sizeof(assetMeta)/sizeof(assetMeta[0])!=ART_COUNT) return false;
+  if(ART_COUNT<636 || sizeof(assetMeta)/sizeof(assetMeta[0])!=ART_COUNT) return false;
   unsigned end=0;
   for(unsigned i=0;i<ART_COUNT;++i) {
     const auto& m=assetMeta[i];

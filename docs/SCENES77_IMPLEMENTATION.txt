@@ -1,0 +1,74 @@
+CENARIOS, RELOGIO E VIAGEM DIARIA — CANDIDATO 7.7 / SAVE 29
+
+ESCOPO
+Carvalho mantem a previa aprovada em duas paginas. Mares e Aurora usam as
+artes regionais aprovadas com o mesmo fluxo; os destinos existentes continuam.
+Pre-partida informa duracao/racoes/risco e nao gasta nem sorteia ao cancelar.
+Relogio medieval usa hora/data reais, Carta da Guilda e aviso de ajuste separados.
+Derrota solo/escolta usa cena e pose caida personalizadas; classe/raca/cores de
+roupa permanecem. Cabelo/barba do mago humano/anao usam mascara limitada para
+manter as cores do personagem sem recolorir rosto. Tela de nivel pulsa em verde
+em ciclos de 2,4 segundos e oferece Atributos/Continuar; pontos e regras nao sao inventados.
+A fila visual e RAM: reinicio nao repete recompensa e pode omitir o aviso cosmetico.
+O aviso so aparece depois de save confirmado e fase Home, sem interromper combate.
+
+VIAGEM
+Cada aresta de cidades vizinhas leva 2 dias, uma racao/dia; preflight exige o total.
+D20 de partida preserva mapa/talisma. Cada noite tem teste proprio e perigo regional.
+Descanso diario seguro/vitoria cura uma unica vez no checkpoint; a cena dura 2 s.
+Mapa para com tenda ate Continuar. Fugir a noite nao cura; escolta termina a viagem
+em fuga. Derrota retorna a origem com 1 HP e penalidade existente. Nenhuma chegada
+ou recompensa e reaplicada por toque repetido, retorno, save retry ou reload.
+Posicao no mapa interpola cada aresta: todo segundo dia termina na cidade vizinha,
+mesmo quando os comprimentos em pixels das estradas sao diferentes.
+Camp de escolta inclui carroca aterrada e viajante sentado reutilizado da arte de
+acampamento, com o jogador personalizado do outro lado da fogueira.
+
+RECUPERACAO DA CARTA
+Fim da viagem nao cancela a carta nem paga recompensa. Missao permanece retomavel.
+Preparar abre Bolsa/Acampar pelo painel de recuperacao, inclusive depois de reload.
+O acampamento comum mantem escolha de racao/kit, custo, D20, risco e cura existentes.
+Preparar tambem serve antes de uma escolta: nao ha flag nova para fingir uma derrota.
+Resultados desse camp precedem dispatch da missao; pagamento da carta fica bloqueado
+durante camp. Ao concluir, retorna a missao e permite nova pre-partida.
+
+PERSISTENCIA E INSTALACAO
+Save29 atomico 160 bytes, fadiga/viagem/dia/consumo/RNG no mesmo CRC; tres slots separados.
+Reset autorizado uma vez pela epoca fixa 1, nunca pelo numero do build. Barreira
+verificada antes de preview/criacao/carga. Falha/corrupcao ambigua bloqueia sem
+importar saves antigos. Whitelist de chaves do jogo; sem erase total/NVS/Wi-Fi/SD.
+Primeira instalacao USB sem apagar flash; firmware antigo recusa o manifesto 29.
+Novas OTA leem 29. A inicializacao de reset so comeca apos PSRAM obrigatoria passar.
+Guia do heroi novo e escrito somente depois do primeiro save confirmado, ate no retry.
+Falha da barreira mostra bloqueio explicito; nao afirma falsamente que nada foi apagado.
+
+ARTE E CUSTOS ESTATICOS
+Primeiros 636 assets/pixels e inimigos preservados exatamente. Pacote novo com
+666 assets e 7.470.912 bytes de payload; arquivo de 7.470.928 bytes.
+CRC32: 9b4bcfc0.
+SHA256: 14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56.
+PSRAM conhecida: 7.638.272 bytes (pacote + framebuffer + decoder), sem medir heap.
+Relogio em flash: 77.312 bytes; linha de 480 bytes na pilha, sem leitura SD ou
+alocacao ao render. Conversao idx8: MAE 1,227/255; RMSE 3,710/255; 69,23% dos
+pixels RGB565 identicos. Nao sao medidas de FPS, touch ou desempenho fisico.
+
+EVIDENCIA LOCAL FOCADA
+- Controller real Save29: 576 rotas e 6.318 checkpoints; controle de 2 segundos,
+  Continue manual, retry/reload, fila de nivel, guia apos save e controles de derrota.
+- Casos adicionais: fuga de escolta de carta em perigo inicial/noturno, retry,
+  retorno a missao e nova partida; reload -> Preparar -> camp comum -> retry -> missao.
+- Revisao independente retida em escort29_controller: seis caminhos de resultado
+  de camp (vitoria/derrota/fuga), falha de save, reload, recuperacao e nova partida.
+- 2.058 frames de resultado/nivel, 1.024 combinacoes de identidade/cores por tela.
+- 1.152 frames diarios de mapa/pernoite/descanso/tenda, com fallback, sem mutacao.
+- 1.445 frames do relogio: estados de arte/sem RAM, passagem de data/hora, carta
+  e aviso simultaneo, sem alocacoes de render; ASan/UBSan do relogio aprovados.
+- Seis gates de cena, dez de catalogo original e 58 de transicao de pacotes.
+- Testes extensivos de reset/NVS/save/regras acompanham as suites do pacote.
+
+LIMITES E GATE
+O agregado nativo completo, seus sanitizadores e compilacao ESP32 sao gates finais,
+registrados nos logs/CI do commit exato. Este arquivo nao declara publicacao nem
+flash, teste fisico, queda de energia real, heap, FPS ou touch medidos.
+LeakSanitizer local nao opera sob ptrace; CI deve executar deteccao habilitada.
+Publicacao exige qualificar o mesmo SHA antes da integracao em main/tag/latest.

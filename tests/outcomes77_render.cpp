@@ -1,0 +1,12 @@
+#include "SceneCanvas.h"
+int main(int argc,char**argv){assert(argc==2);std::vector<uint8_t> data(ART_BYTES+128,0xa5);artMemory=data.data()+64;std::ifstream f("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(f);f.seekg(16);f.read((char*)artMemory,ART_BYTES);assert(f.gcount()==ART_BYTES);Canvas c;unsigned frames=0,changed=0;
+ for(unsigned race=0;race<4;++race)for(unsigned cls=0;cls<4;++cls)for(unsigned shirt=0;shirt<8;++shirt)for(unsigned pants=0;pants<8;++pants){auto g=rpg::create(cls,42);g.race=race;g.shirt=shirt;g.trousers=pants;g.p.xp=2700;rpg::levelUp(g);g.phase=rpg::Phase::Lost;g.p.hp=0;ViewState v;v.page=Page::Result;menu.art=ArtStatus::Ready;auto before=g;render(c,g,v,0);assert(!memcmp(&before,&g,sizeof(g)));++frames;
+  if(shirt==1&&pants==7)c.save(std::string(argv[1])+"/defeat-r"+std::to_string(race)+"-c"+std::to_string(cls)+".ppm");
+  if(!shirt&&!pants){for(unsigned layer=0;layer<9;++layer)for(unsigned i=0;i<fallenArt::PIXELS;++i){auto d=fallenArt::layers[layer];const auto* bytes=assetBytes(d.color)+i*2;uint16_t raw=uint16_t(bytes[0])|(uint16_t(bytes[1])<<8);auto old=fallenArt::tint(raw,assetBytes(d.mask)[i],g),now=fallenArt::pixel(layer,i,g);if(old!=now){assert(cls==0&&((race==0&&layer==1)||(race==2&&layer==3)));assert(raw!=0xf81f&&!fallenArt::mageFace(race,i%160,i/160));++changed;}}}
+  g.phase=rpg::Phase::Home;g.p.hp=g.p.maxhp;v.page=Page::LevelUp;before=g;render(c,g,v,10);assert(!memcmp(&before,&g,sizeof(g)));++frames;if(shirt==1&&pants==7)c.save(std::string(argv[1])+"/level-r"+std::to_string(race)+"-c"+std::to_string(cls)+".ppm");
+ }
+ assert(changed);for(unsigned i=0;i<64;++i)assert(data[i]==0xa5&&data[64+ART_BYTES+i]==0xa5);
+ auto g=rpg::create(1,9);g.p.xp=2700;rpg::levelUp(g);ViewState v;v.page=Page::LevelUp;menu.art=ArtStatus::Ready;render(c,g,v,0);auto low=c;render(c,g,v,10);assert(memcmp(low.pixels,c.pixels,sizeof(c.pixels)));
+ for(auto page:{Page::LevelUp,Page::Result,Page::CampaignResult,Page::EventResult,Page::Dungeon})for(auto status:{ArtStatus::Fallback,ArtStatus::Ready}){menu.art=status;v.page=page;g.phase=page==Page::LevelUp?rpg::Phase::Home:rpg::Phase::Lost;g.p.hp=page==Page::LevelUp?g.p.maxhp:0;render(c,g,v);++frames;}
+ artMemory=nullptr;menu.art=ArtStatus::Fallback;v.page=Page::LevelUp;render(c,g,v);v.page=Page::Result;render(c,g,v);printf("PASS: %u outcome frames,1024 personalized combinations each, bounded mage head correction%u pixels,pulse,no mutation,all loss/fallback pages.\n",frames,changed);
+}

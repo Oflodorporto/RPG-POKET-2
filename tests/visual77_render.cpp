@@ -42,7 +42,7 @@ int main(int argc,char** argv){
  updateInfo=updater::Info{};
  for(unsigned city=0;city<4;++city)for(unsigned destination=0;destination<4;++destination)for(unsigned fatigue:{0u,89u,90u,100u})for(bool supplies:{false,true}){
   g=rpg::create(0,77);g.city=city;g.fatigue=fatigue;g.rations=g.charts=g.charms=supplies?9:0;v.page=Page::TravelConfirm;v.tripDestination=destination;immutableRender(c,g,v);++frames;
-  assert(c.has("Cancelar")&&c.has("Viajar"));assert(c.pixels[150*240+16]==0x10c6);assert(c.pixels[220*240+16]==0x10c6);
+  assert(c.has("Cancelar")&&c.has("Viajar")&&c.has("Uma racao por dia de viagem."));for(unsigned y:{150u,220u})assert(c.pixels[y*240+16]==(menu.art==ArtStatus::Ready?sceneArt::pixel(sceneArt::Id::preparar_viagem,16,y):0xef19));
   if(city==0&&destination==3&&fatigue==100&&!supplies)c.save(root+"/travel-fatigue100-supplies0.ppm");
  }
  g=rpg::create(0,77);assert(!rpg::prepareTrip(g,3));menu.rollReady=true;v.page=Page::TravelRoll;immutableRender(c,g,v,24);c.save(root+"/travel-d20-result.ppm");

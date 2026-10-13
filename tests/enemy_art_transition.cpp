@@ -44,10 +44,11 @@ int main(int argc,char** argv){
   const auto own=load(argv[1]),other=load(argv[2]);
   assert(own.size()==ART_BYTES+16&&rpg::get32(own.data(),8)==ART_CRC);
   assert(other.size()!=own.size()&&rpg::get32(other.data(),8)!=ART_CRC);
-  assert(rpg::CURRENT_SAVE_FORMAT==28);
+  assert(rpg::CURRENT_SAVE_FORMAT==29);
   auto game=rpg::create(0,0x7129u);
   std::array<uint8_t,rpg::SAVE_SIZE> save{},check{};
   rpg::encode(game,27,save.data());
+  assert(rpg::get16(save.data(),4)==rpg::LEGACY_SAVE_FORMAT&&rpg::LEGACY_SAVE_FORMAT==28);
   const std::vector<uint8_t> saveFile(save.begin(),save.end());
   constexpr unsigned guard=64;
   std::vector<uint8_t> guarded(ART_BYTES+2*guard,0xa5);
@@ -119,6 +120,6 @@ int main(int argc,char** argv){
   // Null art allocation has the existing distinct Memory result, with no SD activity.
   unsigned ends=cardEnds;artMemory=nullptr;assert(loadSdArt()==ArtStatus::Memory&&cardEnds==ends);
   rpg::encode(game,27,check.data());assert(check==save);++gates;
-  printf("PASS %s: %u paired artifact gates; actual AssetStore + DeviceSettings; Save28/canaries; representative first/middle/last short reads.\n",argv[3],gates);
+  printf("PASS %s: %u paired artifact gates; actual AssetStore + DeviceSettings; frozen Save28/canaries; representative first/middle/last short reads.\n",argv[3],gates);
   return 0;
 }

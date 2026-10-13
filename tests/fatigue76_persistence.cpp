@@ -75,7 +75,7 @@ void verifyCuts(FaultStore original, unsigned slot, const Game& previous, const 
   }
 }
 int main() {
-  static_assert(SAVE_SIZE == 128 && CURRENT_SAVE_FORMAT == 28, "Save28 contract");
+  static_assert(SAVE_SIZE == 128 && LEGACY_SAVE_FORMAT == 28, "Save28 contract");
   static_assert(FATIGUE_RECORD_SIZE == 140, "bounded auxiliary");
   FaultStore s; Backend b(s); Game loaded;
   for (unsigned slot = 0; slot < 3; ++slot) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Dungeon.h"
+#include "Camp.h"
 namespace rpg {
 // Two opportunities per local day: 09h and 18h. Pending letters never expire.
 // Slot 0 is the first offer, slot 1 the second; the recorded day never decreases.
@@ -31,10 +32,10 @@ inline bool eventValid(const Game& g){
  if(!eventReturnPage(g.eventOriginPage)&&g.eventStage!=4)return false;
  if(g.eventStage==4&&(g.eventProgress||flags||g.eventRoll))return false;
  if(g.eventStage!=2)return g.enemyId<10||g.enemyId>=14;
- if(g.campStage||g.discovery||g.campaignStage||g.clubStage==1||g.clubStage==2||(g.dungeonFlags&&g.eventKind!=3))return false;
+ if((g.campStage&&!escortCampAllowed(g))||g.discovery||g.campaignStage||g.clubStage==1||g.clubStage==2||(g.dungeonFlags&&g.eventKind!=3))return false;
  if(!g.eventKind)return !g.tripStage&&g.phase!=Phase::Home&&g.enemyId==10+g.eventTier&&g.city==g.eventTier;
  if(g.enemyId>=10&&g.enemyId<14)return false;
- if(g.eventKind==2){if(g.eventProgress)return !g.tripStage&&g.phase==Phase::Home&&g.city==eventDestination(g);if(g.city!=g.eventTier)return false;if(g.tripStage)return g.tripTo==eventDestination(g)&&(g.tripStage==2||g.phase==Phase::Home);return g.phase==Phase::Home||g.phase==Phase::Lost||g.phase==Phase::Fled;}
+ if(g.eventKind==2){if(g.eventProgress)return !g.tripStage&&g.phase==Phase::Home&&g.city==eventDestination(g);if(g.city!=g.eventTier)return false;if(g.campStage)return escortCampAllowed(g)&&campValid(g);if(g.tripStage)return g.tripTo==eventDestination(g)&&(g.tripStage==2||(g.tripStage==4&&(g.daily.phase==DailyPhase::RoadBattle||g.daily.phase==DailyPhase::NightBattle))||g.phase==Phase::Home);return g.phase==Phase::Home||g.phase==Phase::Lost||g.phase==Phase::Fled;}
  if(g.tripStage||g.city!=g.eventTier)return false;
  if(g.eventKind==6&&((g.eventProgress&&((flags&7)!=7))||(!g.eventProgress&&(flags&8))))return false;
  if(g.eventKind==7&&g.eventProgress&&!flags)return false;
@@ -65,7 +66,7 @@ inline unsigned eventTest(Game& g,unsigned bonus,unsigned dc){g.eventRoll=1+rand
 inline unsigned eventIntelligence(const Game& g){return g.dndProgression?unsigned(std::max(0,abilityMod(g.attributes[3])))+proficiency(g.p.level):luck(g);}
 inline unsigned eventFoe(const Game& g,unsigned variant=0){return regionalEnemy(g,variant,eventNight(g));}
 inline bool resumeEventBattle(Game& g){
- if(g.eventStage!=2||!g.eventKind||g.phase!=Phase::Won)return false;
+ if(g.tripStage==4||g.campStage||g.eventStage!=2||!g.eventKind||g.phase!=Phase::Won)return false;
  if(g.eventKind==3)return dungeonResolve(g);
  if(g.eventKind==4&&g.eventProgress==2)g.eventProgress=3;
  else if(g.eventKind==5){if(g.eventProgress==0){g.eventProgress=1;g.eventFlags&=~1u;}else if(g.eventProgress==1)g.eventProgress=2;else if(g.eventProgress==3){g.eventProgress=4;g.eventFlags&=~4u;}}
@@ -100,8 +101,8 @@ inline const char* eventAct(Game& g,unsigned choice=0){
  }
  return "Acao indisponivel";
 }
-inline bool abandonEvent(Game& g){if(g.eventStage!=2||!g.eventKind||g.phase!=Phase::Home||g.tripStage||eventReady(g))return false;g.phase=Phase::Fled;return true;}
-inline bool finishEvent(Game& g){if(g.eventStage!=2)return false;
+inline bool abandonEvent(Game& g){if(g.campStage||g.eventStage!=2||!g.eventKind||g.phase!=Phase::Home||g.tripStage||eventReady(g))return false;g.phase=Phase::Fled;return true;}
+inline bool finishEvent(Game& g){if(g.tripStage==4||g.campStage||g.eventStage!=2)return false;
  bool won=eventReady(g)||(!g.eventKind&&g.phase==Phase::Won);
  if(!won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;
  uint8_t outcome=won?3:g.phase==Phase::Lost?5:6;

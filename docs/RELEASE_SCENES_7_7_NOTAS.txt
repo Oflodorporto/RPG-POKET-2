@@ -1,0 +1,66 @@
+7.7 - Cenarios e viagem diaria
+Versao 2026.10.13-scenes77 / build 2026101306
+
+PRIMEIRA INSTALACAO DESTA GERACAO: CABO USB
+
+Esta versao grava e le apenas Save29. Os saves antigos nao sao importados.
+A primeira inicializacao conclui um reset unico dos tres slots do jogo, com
+marcador persistente de epoca1. Wi-Fi/configuracoes e arquivos de arte do cartao
+nao fazem parte desse reset. Reiniciar ou instalar outra compilacao da mesma
+epoca nao deve apagar os novos saves. Nao use apagar toda a flash.
+
+O atualizador publicado em touch77 exige leitura de todos os formatos1..28.
+Ele recusa corretamente este manifesto, que informa reads_save_formats=[29]
+e writes_save_format=29. Nao tente contornar a recusa ou anunciar compatibilidade
+com os saves antigos: para sair de touch77 ou anterior, use USB uma vez.
+Depois que Save29 estiver instalado, atualizacoes futuras que leiam Save29 e
+reparo das artes podem voltar a usar Configuracoes > Atualizacao normalmente.
+
+USB, SEM APAGAR TODA A FLASH
+- Baixe o Source code desta tag v2026.10.13-scenes77 e extraia a pasta inteira.
+- Abra firmware/RPG_POKET_2/RPG_POKET_2.ino na Arduino IDE; mantenha todos os
+  cabecalhos e arquivos do sketch junto dele. Nao abra apenas uma copia do .ino.
+- Placa ESP32-S3 / Waveshare-29667, core ESP32 3.3.12, Flash16MB/QIO,
+  PSRAM OPI, CDC habilitado, CPU240MHz e particao app3M_fat9M_16MB
+  (16M Flash /3MB APP/9.9MB FATFS).
+- Erase All Flash: Disabled; EraseFlash=none. Nunca erase_flash/Erase All Flash.
+- Compile e envie normalmente pelo cabo. Nao sobrescreva uma particao NVS.
+- O reset intencional afeta os tres slots de jogo; Wi-Fi e artes ficam fora
+  dele. Ferramentas de gravacao e falhas fisicas nao oferecem garantia absoluta
+  de preservacao: nao habilite erase total como tentativa de recuperacao.
+
+ARTES E TELAS
+O pacote tem666 entradas,7.470.928 bytes incluindo o cabecalho PKA1, CRC do
+conteudo9b4bcfc0. As primeiras636 entradas/conteudo anterior ficam preservadas;
+as novas cenas usam as artes aprovadas. O relogio usa arte embutida no firmware.
+As telas de resultado distinguem vitoria, derrota e fuga; Continuar retorna
+conforme o contexto do combate. O relogio continua usando a hora real local.
+
+O novo artes.pak e necessario para as cenas. Apos instalar pelo USB, use
+Configuracoes > Atualizacao > Verificar versao para obter/reparar o pacote.
+Alternativamente, com o cartao fora do aparelho, copie artes.pak desta mesma
+Release para /RPGPOKET/artes.pak. Nao misture firmware e pacote de tags diferentes.
+O instalador preserva pacotes anteriores; ele valida tamanho, CRC e SHA256.
+
+VIAGEM DIARIA E SAVE29
+A viagem avanca por dias, com custos de partida, acampamento obrigatorio nos
+pernoites, encontros, resultado e chegada persistidos no Save29. Continuar
+retoma o estado salvo; nao cria um novo teste ou cobra novamente um efeito ja
+confirmado. A confirmacao de partida apresenta a rota e os custos antes de sair.
+
+VALIDACAO E LIMITES
+A qualificacao exige regressao nativa normal e ASan/UBSan, geracao deterministica
+das artes, compilacao ESP32-S3 e verificacao do par exato firmware/artes. Inclui
+recusa pelo cliente touch77 inalterado, compatibilidade OTA futura Save29, hashes
+SHA256 reais e falhas simuladas de transferencia/SD/OTA. A publicacao exige o
+mesmo commit previamente qualificado e verifica novamente os tres downloads
+publicos e o manifesto latest. As verificacoes nao demonstram instalacao USB
+fisica, TLS real na placa, corte real de energia, conforto do toque ou memoria
+livre real. Teste fisico permanece necessario, especialmente no cartao com EIO.
+
+Identidade das artes:
+SHA256 14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56
+PSRAM conhecida:7.638.272 bytes (payload+framebuffer+workspace inimigo).
+Esse valor e uma estimativa estatica, nao uma medicao de heap livre.
+O campo save_format=7 do manifesto e um marcador legado do protocolo OTA;
+a compatibilidade real deste pacote e exclusivamente writes29/reads[29].

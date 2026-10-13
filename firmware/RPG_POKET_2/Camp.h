@@ -1,6 +1,9 @@
 #pragma once
 #include "Rules.h"
 namespace rpg {
+// A paused escort letter may be prepared for again using the ordinary camp.
+// This never cancels/completes the mission or bypasses its travel ration budget.
+inline bool escortCampAllowed(const Game& g){return g.eventStage==2&&g.eventKind==2&&!g.eventProgress&&!g.tripStage&&g.eventTier>0&&g.eventTier<4&&g.city==g.eventTier;}
 inline uint8_t campEnemy(const Game& g){return g.city==0?4:g.city==1?5:g.city==2?6:7;}
 inline unsigned campDifficulty(const Game& g){return 11+g.city*2;}
 inline unsigned campTotal(const Game& g){return g.campRoll+survival(g)+luck(g)+(g.campKit?2:0);}
@@ -15,7 +18,7 @@ inline bool campValid(const Game& g){
 }
 inline const char* buySleepKit(Game& g){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags)return "Termine a acao atual";if(g.sleepKit)return "Voce ja tem um kit";if(g.p.gold<80)return "Precisa de 80 ouro";g.p.gold-=80;g.sleepKit=true;return nullptr;}
 inline const char* startCamp(Game& g,bool ration,bool kit){
-  if(g.eventStage==2||g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";
+  if((g.eventStage==2&&!escortCampAllowed(g))||g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";
   if(g.p.hp==g.p.maxhp&&g.p.mp==g.p.maxmp&&!g.laySpent&&!g.channelSpent&&!g.windSpent&&!g.surgeSpent&&!g.rageSpent&&!g.fatigue)return "HP e MP ja estao cheios";
   if(ration&&!g.rations)return "Sem racoes";if(kit&&!g.sleepKit)return "Sem kit de dormir";
   g.campStage=1;g.campRation=ration;g.campKit=kit;if(ration)--g.rations;g.campRoll=1+random(g)%20;return nullptr;

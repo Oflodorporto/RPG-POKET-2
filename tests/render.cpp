@@ -41,11 +41,13 @@ int main(int argc,char** argv){
    rpg::encode(g,1,b);assert(!memcmp(a,b,sizeof(a)));if(cls==0)c.save(root+"/experience72-"+std::to_string(i)+".ppm");
    v.hintError=true;render(c,g,v,10);
   }
-  // Rewards remain legible on parchment for all outcomes, including large values.
+  // Outcomes keep large rewards read-only; the approved final defeat screen
+  // replaces the parchment only for losses.
   for(auto phase:{rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled}){
    g=rpg::testHero(0,42);g.phase=phase;g.gainXp=3276;g.gainGold=255;g.dropLife=g.dropMana=true;v.page=Page::Result;
    uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,11,before);render(c,g,v,10);rpg::encode(g,11,after);
-   assert(c.pixels[70*240+12]==STORY_PAPER&&!memcmp(before,after,sizeof(before)));
+   uint16_t background=phase==rpg::Phase::Lost?(menu.art==ArtStatus::Ready?sceneArt::pixel(sceneArt::Id::defeat_solo,12,70):UI_INK):STORY_PAPER;
+   assert(c.pixels[70*240+12]==background&&!memcmp(before,after,sizeof(before)));
    c.save(root+"/reward-paper-"+std::to_string(int(phase))+".ppm");
   }
   g=rpg::create(2,42);g.p.xp=100000;rpg::levelUp(g);g.phase=rpg::Phase::Won;g.enemyId=0;g.enemyHp=0;g.gainXp=1;g.gainGold=4;v.page=Page::Result;
@@ -179,7 +181,7 @@ int main(int argc,char** argv){
   for(unsigned id=4;id<8;++id){g=rpg::testHero(1,1);rpg::begin(g,id);v.page=Page::Battle;for(unsigned frame=0;frame<4;++frame){v.effectOnHero=frame>=2;v.effect=frame>=2?Effect::Slash:Effect::None;v.effectFrame=frame;render(c,g,v,frame);c.save(root+"/novo-inimigo-"+std::to_string(id)+"-"+std::to_string(frame)+".ppm");}}v.effect=Effect::None;
   g=rpg::testHero(0,1);rpg::prepareTrip(g,3);v.page=Page::TravelRoll;for(unsigned frame=0;frame<20;++frame){menu.rollReady=frame>=15;render(c,g,v,frame);}menu.rollReady=true;render(c,g,v);c.save(root+"/dado-viagem.ppm");
   for(unsigned bars=1;bars<=4;++bars){menu.connected=true;menu.signalBars=bars;menu.signalDbm=bars==4?-48:bars==3?-60:bars==2?-72:-82;v.page=Page::Wifi;menu.savedNetworks=false;menu.networkCount=2;strcpy(menu.network,"RedeCasa2.4GHz");menu.networkDbm=-55;menu.networkChannel=6;render(c,g,v);for(unsigned i=0;i<4;++i)assert(c.pixels[15*240+223+i*4]==(i<bars?0x07e0:0x3186));c.save(root+"/wifi-sinal-"+std::to_string(bars)+".ppm");}
-  menu.savedNetworks=true;menu.savedCount=5;menu.savedIndex=4;v.page=Page::Wifi;render(c,g,v);c.save(root+"/wifi-salvas.ppm");v.page=Page::ForgetWifi;render(c,g,v);c.save(root+"/wifi-esquecer.ppm");v.page=Page::Clock;strcpy(menu.clockTime,"17:05:26");strcpy(menu.clockDate,"06/10/2026");menu.clockValid=true;render(c,g,v);assert(c.pixels[0]==0&&c.pixels[319*240+239]==0);c.save(root+"/relogio.ppm");menu.connected=false;
+  menu.savedNetworks=true;menu.savedCount=5;menu.savedIndex=4;v.page=Page::Wifi;render(c,g,v);c.save(root+"/wifi-salvas.ppm");v.page=Page::ForgetWifi;render(c,g,v);c.save(root+"/wifi-esquecer.ppm");v.page=Page::Clock;strcpy(menu.clockTime,"17:05:26");strcpy(menu.clockDate,"06/10/2026");menu.clockValid=true;render(c,g,v);assert(c.pixels[0]==clockArt::pixel(0,0)&&c.pixels[319*240+239]==clockArt::pixel(239,319));c.save(root+"/relogio.ppm");menu.connected=false;
   v.page=Page::NetworkTest;updateInfo.tested=true;updateInfo.netTrials=3;updateInfo.netSuccess=2;updateInfo.minDbm=-71;updateInfo.maxDbm=-65;updateInfo.avgMs=450;render(c,g,v);c.save(root+"/wifi-teste.png.ppm");
   makeFallback();v.page=Page::Battle;render(c,g,v);c.save(root+"/sem-cartao.ppm");
   for(unsigned cls=0;cls<4;++cls){g=rpg::testHero(cls,42);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g));v.message="";v.effect=Effect::None;

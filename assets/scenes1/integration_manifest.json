@@ -1,0 +1,116 @@
+{
+  "schema": 1,
+  "baseline_sha256": "5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1",
+  "unchanged_assets": 636,
+  "assets": 666,
+  "payload_bytes": 7470912,
+  "file_bytes": 7470928,
+  "crc32": "9b4bcfc0",
+  "pack_sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56",
+  "added_bytes": 809472,
+  "known_psram_bytes": 7638272,
+  "hardware_measured": false,
+  "scenes": [
+    {
+      "name": "mares",
+      "plane": 636,
+      "palette": 637,
+      "reference_rgb565_sha256": "92942b21b17093967df889979d204647bec5187c84c86d1eed9d66eca5a70edc"
+    },
+    {
+      "name": "aurora",
+      "plane": 638,
+      "palette": 639,
+      "reference_rgb565_sha256": "8076ab1320e505ba74b89916ef12e6b9a76782ba4b35ead54b18abb23dfb361a"
+    },
+    {
+      "name": "preparar-viagem",
+      "plane": 640,
+      "palette": 641,
+      "reference_rgb565_sha256": "cb1a3b6c2b9f5fd4bb38ac20c8817d60db057e9e50e6c17e0b4687183a7fb5d5"
+    },
+    {
+      "name": "levelup",
+      "plane": 642,
+      "palette": 643,
+      "reference_rgb565_sha256": "fdd937ca405b50d7acefaf6d951476074e2c2803519848eab5d7739c2c38abe5"
+    },
+    {
+      "name": "defeat-solo",
+      "plane": 644,
+      "palette": 645,
+      "reference_rgb565_sha256": "02e49d130132a85c5eff68a5312860988c33dfa4d1b896fa09f6f77f8c2ee492"
+    },
+    {
+      "name": "defeat-escort",
+      "plane": 646,
+      "palette": 647,
+      "reference_rgb565_sha256": "ab5027cd191838467a6eccae286801a4959b1fe006179480212d963b0213cf3b"
+    }
+  ],
+  "fallen": [
+    {
+      "name": "base",
+      "color": 648,
+      "mask": 649,
+      "color_sha256": "6f6e506fdaa3b843db5b82df741f233842c09ce23022c80882a30b31e517241e",
+      "mask_sha256": "cb1fd2c883f5fe5ba311ebc6b5a54d6140942ea4fd14b88dfef8aef742e4d044"
+    },
+    {
+      "name": "human",
+      "color": 650,
+      "mask": 651,
+      "color_sha256": "7c963fbb34f9903eccc1b63fbac011b63dcd8e567fe18a9f24fb15eac8c9e741",
+      "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712"
+    },
+    {
+      "name": "elf",
+      "color": 652,
+      "mask": 653,
+      "color_sha256": "739f3e2f1a4269c4181fde06861a1a82e00a4ede4dfda49da9ae5ec9fc70efaa",
+      "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712"
+    },
+    {
+      "name": "dwarf",
+      "color": 654,
+      "mask": 655,
+      "color_sha256": "707c42d0abbd84e2672a469af25a0a87fd47a71efa81405914cf56cdfa219509",
+      "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712"
+    },
+    {
+      "name": "orc",
+      "color": 656,
+      "mask": 657,
+      "color_sha256": "d80f539466dc0155ec27c27466369b1749ac184d03574e61c24691e80bc04e7e",
+      "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712"
+    },
+    {
+      "name": "mage",
+      "color": 658,
+      "mask": 659,
+      "color_sha256": "d0eed68bd836059848b1e38c9d1e5e36615e788bed893947d0083b05fbeea5fa",
+      "mask_sha256": "b3b430cb82f34d0544c6851fd0329b08e7bc77c81e799879d2ae4dc197450d7f"
+    },
+    {
+      "name": "paladin",
+      "color": 660,
+      "mask": 661,
+      "color_sha256": "d357bc65d45b15214552a68f54c31572c9a15095cb24e97ff69cd07fd0170349",
+      "mask_sha256": "858b104be661cc038831478c07ca29249737f5d3ba45d4e95b04715500b0aaff"
+    },
+    {
+      "name": "fighter",
+      "color": 662,
+      "mask": 663,
+      "color_sha256": "1ec57da020545b80056d0d37d345af83d4e816612040c0b56bec76807b9313d2",
+      "mask_sha256": "23bc14713c4c52a2062d5b8bf37c260723412ad3bcbb047e80bdab0253bff816"
+    },
+    {
+      "name": "barbarian",
+      "color": 664,
+      "mask": 665,
+      "color_sha256": "80f550f508424b9e1fb8dced6e96a066f26885c3c7a235ffe13655250cfbb026",
+      "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712"
+    }
+  ]
+}

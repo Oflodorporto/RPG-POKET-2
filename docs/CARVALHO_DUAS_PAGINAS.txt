@@ -1,0 +1,61 @@
+CARVALHO — IMPLEMENTAÇÃO DA PRÉVIA APROVADA
+Preparação local em feat/carvalho77-approved. Sem publicação, firmware novo ou flash.
+Base local16bfae6ca1bea4b74879cfc8818842fcb68cc3c5/árvore58d661137c0b5ce772e4aba7941d920b2850da31,
+equivalente ao último main confirmado47e38ef. Fonte publicado touch77:91c64a36.
+Uma atualização opcional do fetch foi cancelada; não foi repetida. Nenhuma operação
+remota de escrita faz parte desta preparação.
+
+REFERÊNCIA VISUAL
+O proprietário aprovou as duas prévias240×320 de13/10/2026, preservando cenário,
+título ornamentado e ícones originais. SHA256 dos PNGs aprovados:
+página1 d07e958e2a8ea40bc98a82b47130bb8a9709207a9575b135c5908978a0596ca6
+página2 c85c77ced4622be1e570d063ff6c24a877faa4bbcd4d40901effb56c08afd234
+A moldura é recortada em9 partes do asset420 existente; a área sob os controles usa
+uma faixa existente de pedras para não deixar os textos antigos aparecerem nas folgas.
+Não há geração de arte, crescimento do pak, dependência nova ou leitura SD no render.
+
+NAVEGAÇÃO
+Página1: Conversar, Loja, Bolsa, Explorar. Página2: Herói, Guilda, Acampar, Mapa.
+Menu permanece visível nas duas. Botões112×40, x6/122, y176/224; rodapé y272.
+Mais/Voltar mostra o indicador1/2 ou2/2. Objetivo{x6,y72,w228,h40} independente.
+Cenário112..175 e título0..49 ficam pixel-idênticos ao fundo antigo.
+Herói/Guilda/Acampar/Mapa passam a exigir um toque em Mais; não há destino removido.
+
+cityPage é apenas ViewState/RAM, sem campo de Game/save. Retorno das telas internas
+preserva a página; entrar pelo mapa, chegada de viagem e troca/reload de slot voltam
+à primeira. Acampar continua voltando para Explorar, conforme a regra anterior.
+Animações e TouchGate mantêm o bloqueio de toques/repetição. Navegar não consome
+item, turno, RNG, fadiga ou ouro e não grava o save.
+Sem arte válida, título, textos, molduras nativas e os mesmos hitboxes continuam
+legíveis; os ícones de arte ausente são omitidos, sem tentar ler pacote incompatível.
+Valores máximos de ouro usam sufixo g para manter todos os dígitos no espaço aprovado.
+
+PRESERVAÇÃO
+Rules, Save28, três slots, FatigueJournal, PvP, recuperação/OTA, DungeonView,
+LaunchView/World e textura/renderer de bolsa não mudam. Mares/Aurora continuam com
+seus controles existentes neste commit. Novas artes aprovadas de Mares/Aurora e
+pré-partida ficam para uma integração posterior, com revisão e gates próprios. Pré-partida e animação de viagem não são alteradas;
+a única linha de loop tocada reseta o campo visual após chegar.
+
+GATES DESTE CANDIDATO
+- carvalho77_controller: oito destinos+Menu, bordas, retorno/reentrada/reload3slots,
+  dois sentidos da paginação, toque mantido, animação e NVS indisponível; partição
+  exaustiva de153.600 pontos nos dois conjuntos de hitboxes.
+- carvalho77_render: comparação pixel-exata com as referências aprovadas, cenário/
+  título preservados, texto/ouro máximo, fallback, heróis antigos/novos e3slots.
+- Regressores touch77, title/dungeon_controller e travel_economy preservados.
+- Chegada no loop: revisão de fonte e guard da única atribuição cityPage; não é
+  apresentada como execução do loop real por teste de controller.
+Resultados locais:7 suítes normais e2 ASan/UBSan concluídas com saída0.
+Carvalho:1.540 casos de controle e288 frames, ambos também nos sanitizadores.
+Regressão touch77:9.330 casos e2.112 frames; title/dungeon_controller e4.752
+viagens persistidas passaram. Foram corrigidas duas expectativas antigas do fixture
+(Menu no novo intervalo sem botão) e a comparação de atributos legados após reload;
+os primeiros logs de falha estão preservados. Nenhuma regra foi alterada para passar.
+LeakSanitizer não executado localmente (detect_leaks=0); compilação ESP32 e teste
+físico não executados neste candidato. Revisão independente visual/fonte e dos
+resultados finais encerrada sem bloqueadores em13/10/2026. Identidade publicada não foi alterada; esta branch
+não é um firmware para distribuir/instalar. Uma futura integração deve escolher
+identidade própria e passar pelos gates de compilação/manifesto antes de publicar,
+no lote visual cuja publicação posterior foi autorizada pelo proprietário.
+Este commit isolado ainda não altera main/tag/Release/latest nem é distribuível.

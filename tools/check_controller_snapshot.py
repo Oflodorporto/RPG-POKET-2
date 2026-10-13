@@ -12,3 +12,11 @@ helper=sketch.split('bool offerFirstHint()',1)[1].split('void beginEffect(',1)[0
 for name in ['title_controller','dungeon_controller']:
  test=(root/'tests'/f'{name}.cpp').read_text().split('bool offerFirstHint()',1)[1].split('void beginEffect(',1)[0]
  assert helper.strip()==test.strip(),name+' hints'
+
+# Startup ordering guard: the authorized reset waits for mandatory art RAM;
+# previews happen only after the reset barrier and a blocked state is explicit.
+setup=sketch.split('void setup(){',1)[1].split('void loop(){',1)[0]
+assert setup.index('if(!artMemory)') < setup.index('nvs.init()') < setup.index('bootTitle()')
+assert 'menu.saveResetBlocked=saveInit==rpg::ResetResult::Blocked' in setup
+assert 'view.page=Page::Blocked' in setup
+print('PASS: PSRAM before reset, reset before previews, explicit blocked startup')

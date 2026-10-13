@@ -49,8 +49,13 @@ int main(){
  // Defeat/flee never auto-exit, grant victory, or use the Continue hitbox in combat.
  for(auto phase:{rpg::Phase::Lost,rpg::Phase::Fled})for(unsigned route=0;route<3;++route){
   encounter(false,0,42);game.phase=phase;if(phase==rpg::Phase::Lost)game.p.hp=0;assert(journal.save(game));selectSlot(0);
-  auto expected=game;assert(rpg::dungeonResolve(expected));acknowledge(route);same(expected);
-  assert(!(game.dungeonEnemies&1));assert(view.page==(phase==rpg::Phase::Lost?Page::Recovery:Page::Dungeon));
+  auto expected=game;assert(rpg::dungeonResolve(expected));
+  if(phase==rpg::Phase::Lost){
+   auto lost=game;auto saved=nvs.blobs;auto seq=journal.seq;
+   for(auto xy:{std::pair<int,int>{100,100},{120,234},{195,300}}){tapped(xy.first,xy.second);same(lost);assert(view.page==Page::Dungeon&&saved==nvs.blobs&&seq==journal.seq);}
+   if(route==0)tapped(124,180);else if(route==1)tapped(225,219);else{tapped(14,180);assert(view.page==Page::DungeonMenu);tapped(120,105);}
+  }else acknowledge(route);
+  same(expected);assert(!(game.dungeonEnemies&1));assert(view.page==(phase==rpg::Phase::Lost?Page::Recovery:Page::Dungeon));
  }
  for(auto phase:{rpg::Phase::Hero,rpg::Phase::Enemy}){encounter(false,0,42);game.phase=phase;assert(journal.save(game));auto before=game;auto saved=nvs.blobs;tapped(120,234);same(before);assert(saved==nvs.blobs);}
  // Interrupted acknowledgement reloads the old Won checkpoint; retry never pays twice.

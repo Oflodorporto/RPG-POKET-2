@@ -6,14 +6,19 @@
 #include "Exploration.h"
 #include <string.h>
 #include "SaveVersion.h"
+// Frozen Save28 codec/journal for historical fixtures. Production uses Persistence.h.
+// This is not a Save29 import or fallback path.
 namespace rpg {
+constexpr unsigned LEGACY_SAVE_FORMAT=28;
 constexpr unsigned SAVE_SIZE=128;
 inline void put16(uint8_t* b,unsigned o,uint16_t v){b[o]=uint8_t(v);b[o+1]=uint8_t(v>>8);}
 inline void put32(uint8_t* b,unsigned o,uint32_t v){put16(b,o,uint16_t(v));put16(b,o+2,uint16_t(v>>16));}
 inline uint16_t get16(const uint8_t* b,unsigned o){return b[o]|uint16_t(b[o+1])<<8;}
 inline uint32_t get32(const uint8_t* b,unsigned o){return get16(b,o)|uint32_t(get16(b,o+2))<<16;}
 inline uint32_t crc(const uint8_t* b,unsigned n){uint32_t c=~0u;for(unsigned i=0;i<n;++i){c^=b[i];for(int k=0;k<8;++k)c=(c>>1)^(0xedb88320u&uint32_t(-int(c&1)));}return ~c;}
-inline bool valid(const Game& g){
+// Shared non-travel invariants. Production may skip only the frozen legacy
+// travel block after validating the complete Save29 daily state separately.
+inline bool validCore(const Game& g,bool validateLegacyTravel=true){
   if(g.seenEnemies>>29)return false;
   if(!discoveryValid(g))return false;
   if(g.originPage>8||(!g.originStory&&g.originPage))return false;
@@ -32,10 +37,13 @@ inline bool valid(const Game& g){
   if(g.dndProgression){if(g.p.level>20||g.advancementSpent>improvementCount(g.p.cls,g.p.level)*2||(g.tough&&g.advancementSpent<2))return false;for(auto score:g.attributes)if(score<8||score>20)return false;}
   else if(g.tough||g.advancementSpent)return false;
   if(!campaignValid(g)||!eventValid(g)||!dungeonValid(g)||!campValid(g))return false;
-  if(g.rations>9||g.charts>9||g.charms>9||g.tripStage>3)return false;
-  if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}
-  else {if(g.tripTo>3||g.tripTo==g.city||g.tripRoll<1||g.tripRoll>20||g.tripEnemy<4||g.tripEnemy>7||g.tripSurvival>13||g.tripLuck>11||g.tripTotal!=g.tripRoll+g.tripSurvival+g.tripLuck||g.tripDifficulty!=routeDifficulty(g.city,g.tripTo)||g.clubStage==1||g.clubStage==2)return false;
-    if(g.tripStage==2){if(g.phase==Phase::Home||tripSafe(g)||g.enemyId!=g.tripEnemy)return false;}else if(g.phase!=Phase::Home)return false;}
+  if(g.rations>9||g.charts>9||g.charms>9)return false;
+  if(validateLegacyTravel){
+    if(g.tripStage>3)return false;
+    if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}
+    else {if(g.tripTo>3||g.tripTo==g.city||g.tripRoll<1||g.tripRoll>20||g.tripEnemy<4||g.tripEnemy>7||g.tripSurvival>13||g.tripLuck>11||g.tripTotal!=g.tripRoll+g.tripSurvival+g.tripLuck||g.tripDifficulty!=routeDifficulty(g.city,g.tripTo)||g.clubStage==1||g.clubStage==2)return false;
+      if(g.tripStage==2){if(g.phase==Phase::Home||tripSafe(g)||g.enemyId!=g.tripEnemy)return false;}else if(g.phase!=Phase::Home)return false;}
+  }
 
   if(g.clubStage&&(!g.guildMember||g.p.level<5))return false;
   if(g.race>3||g.shirt>7||g.trousers>7||g.clubStage>3||(g.clubStage&&!g.clubSession)||g.city>3||g.questId>15)return false;
@@ -54,8 +62,10 @@ inline bool valid(const Game& g){
   if((g.phase==Phase::Home||g.phase==Phase::Fled)&&!p.hp)return false;
   return true;
 }
+// Frozen Save28 must never silently drop any Save29 daily-travel fields.
+inline bool valid(const Game& g){return dailyStateEmpty(g.daily)&&!(g.campStage&&g.eventStage==2)&&validCore(g);}
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
-  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,CURRENT_SAVE_FORMAT);put16(b,6,SAVE_SIZE);put32(b,8,seq);
+  memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,LEGACY_SAVE_FORMAT);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;
   put16(b,18,g.p.hp);put16(b,20,g.p.maxhp);put16(b,22,g.p.mp);put16(b,24,g.p.maxmp);
   put32(b,26,g.p.xp);put32(b,30,g.p.gold);b[34]=uint8_t(g.phase);b[35]=g.guard;put16(b,36,g.enemyHp);put32(b,38,g.randomState);
@@ -66,7 +76,7 @@ inline void encode(const Game& g,uint32_t seq,uint8_t* b){
 enum class Decode{Ok,Corrupt,Unsupported};
 inline Decode decode(const uint8_t* b,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if((get16(b,4)<1||get16(b,4)>CURRENT_SAVE_FORMAT))return Decode::Unsupported;
+  if((get16(b,4)<1||get16(b,4)>LEGACY_SAVE_FORMAT))return Decode::Unsupported;
   if(get16(b,6)!=(get16(b,4)>=11?SAVE_SIZE:get16(b,4)>=7?96:64))return Decode::Corrupt;
   if(get32(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)!=crc(b,get16(b,4)>=11?124:get16(b,4)>=7?92:60)||(get16(b,4)<20&&b[47]>31))return Decode::Corrupt;
   if(get16(b,4)==24&&(b[48]>24||b[67]>63||b[119]>63||b[116]>3||b[60]%8>5))return Decode::Corrupt;

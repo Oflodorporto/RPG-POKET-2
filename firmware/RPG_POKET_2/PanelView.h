@@ -7,7 +7,6 @@ constexpr scenicUi::Rect skillsGuide={14,110,48,29};
 constexpr scenicUi::Rect bagBack={8,276,108,44},bagUse={124,276,108,44},bagGear={12,234,216,40};
 constexpr scenicUi::Rect evolution={10,112,220,26};
 inline scenicUi::Rect bagSlot(unsigned i){return {34+int(i%3)*60,38+int(i/3)*56,52,52};}
-constexpr scenicUi::Rect cityButtons[]={{6,84,112,40},{122,84,112,40},{6,132,112,40},{122,132,112,40},{6,180,112,40},{122,180,112,40},{6,228,112,40},{122,228,112,40},{6,272,228,40}};
 constexpr scenicUi::Rect battleButtons[]={{10,240,108,29},{122,240,108,29},{10,274,108,29},{122,274,108,29}};
 }
 template<class C>void panelImage(C& c,const uint16_t* palette,unsigned asset,int top=0,int bottom=320){
@@ -22,6 +21,7 @@ template<class C>void panelCrop(C& c,const uint16_t* palette,unsigned asset,int 
 template<class C>void panelHero(C& c,const rpg::Game& g,int x,int y,int w,int h,unsigned frame=0){c.fillRect(x,y,w,h,0x0843); // only the live personalized hero is displayed
  for(int py=0;py<h;++py)for(int px=0;px<w;++px){auto color=personalPixel(g,6,(py*66/h)*80+px*80/w);if(color!=0xf81f)c.fillRect(x+px,y+py,1,1,color);} (void)frame;
 }
+#include "CarvalhoView.h"
 template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v){
  PANEL_IMAGE(c,skills);const auto guide=panelUi::skillsGuide;scenicPanel(c,guide.x,guide.y,guide.w,guide.h);panelLabel(c,guide.x+3,guide.y+10,guide.w-6,"Guia",UI_GOLD);panelHero(c,g,90,89,62,48);c.fillRect(75,140,93,18,0x0843);char b[64];
  snprintf(b,sizeof(b),"HP%u/%u",g.p.hp,g.p.maxhp);panelLabel(c,75,142,46,b);snprintf(b,sizeof(b),"MP%u/%u",g.p.mp,g.p.maxmp);panelLabel(c,123,142,46,b);panelBar(c,78,154,37,g.p.hp,g.p.maxhp,UI_RED);panelBar(c,124,154,37,g.p.mp,g.p.maxmp,UI_BLUE);
@@ -67,18 +67,7 @@ template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
  // Intelligence/agility have no gameplay values yet; show only real attributes.
  scenicPanel(c,40,240,160,31);snprintf(b,sizeof(b),"Sobrevivencia %u",rpg::survival(g));panelLabel(c,45,245,150,b,UI_GREEN);snprintf(b,sizeof(b),"Sorte %u",rpg::luck(g));panelLabel(c,45,258,150,b,UI_GOLD);
 }
-template<class C>void drawPanelVillage(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,village);char b[64];
- // Cover baked labels only; the existing Carvalho scenery remains the backdrop.
- for(auto r:{scenicUi::Rect{0,0,240,80},scenicUi::Rect{0,220,240,8},scenicUi::Rect{0,268,240,4}})c.fillRect(r.x,r.y,r.w,r.h,UI_INK);
- scenicPanel(c,6,4,228,24);touchLabel(c,9,8,222,"Carvalho",UI_GOLD,2);
- scenicPanel(c,6,31,112,14);snprintf(b,sizeof(b),"Explorar Nv %u+",rpg::cityLevel(g.city));touchLabel(c,8,34,108,b);
- scenicPanel(c,122,31,112,14);snprintf(b,sizeof(b),"%lu ouro",(unsigned long)g.p.gold);touchLabel(c,124,34,108,b,UI_GOLD);
- const auto mission=touchUi::cityMission;scenicPanel(c,mission.x,mission.y,mission.w,mission.h);auto goal=story::objective(g);
- if(*v.message)touchLines(c,10,53,220,v.message,UI_RED);else {touchLabel(c,10,53,220,goal.title,UI_GOLD);touchLabel(c,10,65,220,"Toque: proximo objetivo");}
- const char* labels[]={"Conversar","Loja","Bolsa","Heroi","Explorar","Guilda","Acampar","Mapa","Menu"};
- for(unsigned i=0;i<9;++i){auto r=panelUi::cityButtons[i];scenicPanel(c,r.x,r.y,r.w,r.h);touchLabel(c,r.x+1,r.y+12,r.w-2,labels[i],0xffff,2);}
-}
+template<class C>void drawPanelVillage(C& c,const rpg::Game& g,const ViewState& v){drawCarvalho(c,g,v);}
 
 template<class C>void panelCampBackdrop(C& c,const rpg::Game& g,const ViewState& v){
  if(v.page==Page::CampSetup){PANEL_IMAGE(c,campSetup);}else if(v.page==Page::CampRoll){PANEL_IMAGE(c,campRoll);}else {PANEL_IMAGE(c,campRest);}

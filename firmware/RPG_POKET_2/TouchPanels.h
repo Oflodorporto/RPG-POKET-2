@@ -16,7 +16,6 @@ template<class C>void touchLines(C& c,int x,int y,int w,const char* s,uint16_t c
 namespace touchUi {
 constexpr scenicUi::Rect gearPrevious={10,198,68,44},gearNext={162,198,68,44};
 constexpr scenicUi::Rect gearBack={10,276,70,44},gearEquip={84,276,70,44},gearSell={158,276,72,44};
-constexpr scenicUi::Rect cityMission={6,49,228,28};
 }
 namespace bagSkin {
 inline uint16_t pixel(unsigned x,unsigned y){if(x>=240||y>=320)return 0;unsigned i=y*240+x;return palette[(plane[i/2]>>(i&1?0:4))&15];}

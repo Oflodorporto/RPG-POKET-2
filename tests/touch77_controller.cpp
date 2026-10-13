@@ -35,9 +35,9 @@ int main(){
   // Equipment save retry persists the result, not a second equip action.
   setup(slot,modern,cls);view.page=Page::BagGear;unsigned valid=1;for(;valid<=rpg::GEAR_COUNT;++valid){auto trial=game;if(!rpg::equipGear(trial,valid)&&memcmp(&trial,&game,sizeof(game)))break;}assert(valid<=rpg::GEAR_COUNT);view.gearIndex=(valid-1)/6;view.choice=(valid-1)%6;nvs.fail=true;tap(touchUi::gearEquip);assert(view.page==Page::SaveError);before=game;nvs.fail=false;tapped(110,269);same(before);assert(view.page==Page::BagGear);++cases;
   const Page destinations[]={Page::People,Page::Market,Page::TownBag,Page::Character,Page::Explore,Page::Guild,Page::CampSetup,Page::Map,Page::Menu};
-  for(unsigned i=0;i<9;++i)for(auto xy:corners(panelUi::cityButtons[i])){setup(slot,modern,cls);view.page=Page::Village;before=game;blobs=nvs.blobs;tapped(xy.first,xy.second);assert(view.page==destinations[i]);same(before);assert(nvs.blobs==blobs);++cases;}
-  for(auto xy:corners(touchUi::cityMission)){setup(slot,modern,cls);view.page=Page::Village;tapped(xy.first,xy.second);assert(view.page==Page::Campaign);++cases;}
-  setup(slot,modern,cls);view.page=Page::Village;for(auto xy:{std::pair<int,int>{5,84},{118,100},{6,124},{6,76+7},{234,272}}){tapped(xy.first,xy.second);assert(view.page==Page::Village);++cases;}
+  for(unsigned page=0;page<2;++page)for(unsigned i=0;i<5;++i)for(auto xy:corners(i==4?carvalhoUi::menu:carvalhoUi::actions[i])){setup(slot,modern,cls);view.page=Page::Village;view.cityPage=page;before=game;blobs=nvs.blobs;tapped(xy.first,xy.second);assert(view.page==destinations[i==4?8:carvalhoUi::actionIds[page][i]]);same(before);assert(nvs.blobs==blobs);++cases;}
+  for(auto xy:corners(carvalhoUi::mission)){setup(slot,modern,cls);view.page=Page::Village;tapped(xy.first,xy.second);assert(view.page==Page::Campaign);++cases;}
+  setup(slot,modern,cls);view.page=Page::Village;for(auto xy:{std::pair<int,int>{5,176},{118,196},{6,216},{6,264},{234,272}}){tapped(xy.first,xy.second);assert(view.page==Page::Village);++cases;}
  }
  // Every enlarged paging/back button uses the same inclusive/exclusive rectangle.
  for(auto r:{touchUi::gearPrevious,touchUi::gearNext,touchUi::gearBack})for(auto xy:corners(r)){setup(0,true,0);view.page=Page::BagGear;tapped(xy.first,xy.second);assert(view.page==(r.y==276?Page::TownBag:Page::BagGear));if(r.y!=276)assert(view.gearIndex==(r.x==10?2u:1u));++cases;}

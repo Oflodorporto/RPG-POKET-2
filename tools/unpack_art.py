@@ -46,7 +46,10 @@ def main():
         from prepare_enemy_art import build, verify_generated
         result = build(baseline_pack=pack)
         verify_generated(result)
-        pack = result.pack
+        from prepare_scene_art import build as build_scenes, verify_generated as verify_scenes
+        scene_result = build_scenes(result)
+        verify_scenes(scene_result)
+        pack = scene_result.pack
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(pack)
     _, size, crc, count = struct.unpack('<4sIII', pack[:16])

@@ -25,10 +25,13 @@ int main() {
   nvs.fail = false; tapped(120, 269);
   assert(view.page != Page::SaveError && game.fatigue == 4 && game.randomState == seed);
   selectSlot(0); assert(game.fatigue == 4 && game.randomState == seed && game.discovery == pending.discovery);
-  // Travel consumes its existing supplies once and keeps its saved penalty/die.
+  // Current preflight cancellation is read-only. The retained legacy trip
+  // checkpoint still keeps its fatigue penalty/die across retry and reboot.
   game = create(0, 31); game.tutorial = true; game.fatigue = 95; game.rations = 2;
   assert(journal.save(game)); view.page = Page::TravelConfirm; view.tripDestination = 1;
-  auto preview = tripSafety(game, 1); nvs.fail = true; tapped(175, 290);
+  auto travelBefore = game; auto travelBlobs = nvs.blobs; tapped(65, 290);
+  assert(view.page == Page::Map && !memcmp(&game, &travelBefore, sizeof(game)) && nvs.blobs == travelBlobs);
+  auto preview = tripSafety(game, 1); assert(!prepareTrip(game, 1)); nvs.fail = true; savedTransition(Page::TravelRoll);
   assert(view.page == Page::SaveError && game.rations == 1 && game.fatigue == 95);
   auto die = game.tripRoll, survival = game.tripSurvival, total = game.tripTotal;
   nvs.fail = false; tapped(120, 269); selectSlot(0);

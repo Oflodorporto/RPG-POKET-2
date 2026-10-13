@@ -1,0 +1,220 @@
+{
+  "schema": 1,
+  "authorship": "Original commissioned game artwork, generated with imagegen and approved by the owner on 2026-10-13.",
+  "source_size": [
+    240,
+    320
+  ],
+  "codec": "Opaque indexed8, 256 RGB565LE colors, row-major; high-resolution originals retained separately.",
+  "scenes": [
+    {
+      "name": "mares",
+      "source_file": "source/mares.png",
+      "source_sha256": "d39d25b9e532e5fa3e43c61867eaefbdc7da590b6c5b20b21cb1f40af694e4be",
+      "original_sha256": "47ed217e7a3da342aaf2d9548a956b0707509a69f181fd4874d60e22f7f556fa",
+      "prompt": "Use case: stylized-concept. Create one ORIGINAL 3:4 portrait full-bleed background asset for the coastal medieval fantasy town Mares in a 240x320 handheld RPG. Match the nostalgic richly detailed jewel-colored SNES/16-bit pixel-art town style of the Carvalho game reference visible in this conversation: intricate warm timber buildings, readable tiny-scale silhouettes, rich navy shadows and golden sunlight. This image is ONLY background artwork, absolutely NO text, letters, signs with lettering, UI, buttons, frames, title plaques, icons, border, device, mockup or watermark.\nMares has a distinct identity as a harbor town importing weapons: turquoise sea, sandstone harbor walls, tiled merchant houses, wooden pier, moored sailing vessel with cream sails, coiled ropes and a small coastal market. Bright clear maritime daylight, teal sea and coral-orange roofs. View from cobbled quayside toward the water, inhabited and welcoming, no large foreground people. Important silhouette: a cream-sailed ship and harbor arch visible in the middle band between 35 and 55 percent of image height, framed by detailed buildings on left and right. Top quarter has blue sky, roofs and distant lighthouse, bottom half has weathered cobblestone and ropes, not empty flat color. Composition must still read at240x320; larger clustered pixels and distinct broad forms, avoid painterly blur. Future code will overlay controls in lower45% and small header above, but do not draw those controls. Town stays a continuous scenic illustration. Output one portrait3:4 image.",
+      "export_file": "mares.idx8.gz.b64",
+      "export_sha256": "bfa6a27f5b130c1a7fc66a0b19e11185e622d7b31522e6d5775ee98a14f90359",
+      "decoded_sha256": "dcd6f0b449ec7ce78f9d39e41f829d081e85fb40ef2e3710dbfd2fc3db11b849",
+      "reference_rgb565_sha256": "92942b21b17093967df889979d204647bec5187c84c86d1eed9d66eca5a70edc",
+      "bytes": 77312
+    },
+    {
+      "name": "aurora",
+      "source_file": "source/aurora.png",
+      "source_sha256": "0b1c913ec9af54722e0b7e47ceba6ab96ba06f43072b48235f6275fc8f596a7d",
+      "original_sha256": "8731d7353031e0ff71238349c8fa16b86046f66be79f8b70cd25a7645319d6ad",
+      "prompt": "Use case: stylized-concept. Create one ORIGINAL3:4 portrait full-bleed fantasy pixel-art background for Aurora, a regal fortified medieval city known for superior armor and its castle, in a240x320 handheld RPG. Match nostalgic richly detailed jewel-colored16-bit SNES fantasy town art: crisp clustered pixels, intricate warm stone architecture, navy shadows and golden light, readable broad silhouettes when tiny. Distinct from a forest village and a seaport. Grand ivory-and-honey stone castle, teal-blue pointed roofs, tall arched gate, royal blue and gold unlettered banners, a stone bridge, modest armorer workshop at the side with ornamental shield and anvil. Dawn sunlight, gentle rose-gold sky, mountain ridgeline in distance. Main grand castle gate and bridge must sit within central35–55% vertical band so they remain visible between future UI overlays. Top has towers and sky; lower half is intricate stone courtyard paving framed by flowering planters, warm lanterns and armor workshop edges. No giant characters. This is ONLY continuous scenic background art: absolutely no UI, frames, buttons, boxes, plaque, readable text, letters, numbers, device frame, screenshot or watermark. Future code overlays the approved navy-gold Carvalho controls independently. Output one portrait3:4 image.",
+      "export_file": "aurora.idx8.gz.b64",
+      "export_sha256": "eead0b636522e7dc61017453b8c0120a7a9c029e0a960ac17a9fcba9c91cef6c",
+      "decoded_sha256": "8418bd3f5aae4407d69fe1587bbd537861985d006f97a945048c259b9ff785e3",
+      "reference_rgb565_sha256": "8076ab1320e505ba74b89916ef12e6b9a76782ba4b35ead54b18abb23dfb361a",
+      "bytes": 77312
+    },
+    {
+      "name": "preparar-viagem",
+      "source_file": "source/preparar-viagem.png",
+      "source_sha256": "9ef4eeddf329eb4be427f5af14ddefea5afa15aaaa0b3f0551723ec7523ce217",
+      "original_sha256": "5e6f0be909850c6ccd308c40ad3c7badab288191ad0346bcc9f5b84f03de5f03",
+      "prompt": "Use case: stylized-concept. ONE3:4 portrait original raster background asset for a medieval fantasy RPG PRE-DEPARTURE journey planning screen. Top-down view of an aged parchment map spread over a dark warm wooden tavern table, richly crafted nostalgic16-bit pixel art matching a jewel-colored SNES fantasy game, antique brass and navy details, warm lamplight. Side props explicitly include a round navigation compass in brass at upper left, a wooden triangular drafting square along right edge, and a brass hinged drawing compass/dividers along left edge; these instruments lie on top of the parchment along its margins. Map shows faint decorative coastline, small mountains and old route marks ONLY near outer parchment margins; there are NO readable labels, letters or numbers anywhere.\nCRITICAL USABILITY: the large CENTER must be uninterrupted pale parchment with very faint paper texture only, reserved for code-rendered dynamic information. In conceptual240x320 coordinates keep x24..216 and y50..264 completely free of objects, borders, dark lines, symbols and map drawings. Instruments should cluster near x0..22 or x218..239, and top corners y0..45; maintain recognizability but accept partially cropped edge objects. Parchment occupies almost the entire screen, irregular rolled or worn edges at left and right, wooden table visible at corners and margins. Lower strip y270..320 should remain simple parchment/wood for future two footer buttons. TOP band leaves room for a later title. NO UI panels, buttons, text, heading, icons, characters, hands or device frame. Beautiful detailed edge objects and quiet creamy center. Full-bleed portrait3:4 image.",
+      "export_file": "preparar-viagem.idx8.gz.b64",
+      "export_sha256": "720180ac14c34925b5ca1e5d98c42d528d064c04e194d3ead42b3a4266b9c181",
+      "decoded_sha256": "ead2b11d7188c95eb4155ffd63d01cb62e4119775d0d772d0249d81b6cad3244",
+      "reference_rgb565_sha256": "cb1a3b6c2b9f5fd4bb38ac20c8817d60db057e9e50e6c17e0b4687183a7fb5d5",
+      "bytes": 77312
+    },
+    {
+      "name": "levelup",
+      "source_file": "source/levelup.png",
+      "source_sha256": "0a985f0e0b34baca791bb34be57935c363db0b514f0000a4f51a6ff34ecdbee1",
+      "original_sha256": "c097edbea35cddba0e0608100c898644a24b22592fcd3448ab46159f5cbfea74",
+      "purpose": "Owner-requested original scene; no baked hero or text.",
+      "export_file": "levelup.idx8.gz.b64",
+      "export_sha256": "bdfe65ebc17075fa0e1f0a7fe35d8b5e1be9dfd79a5566c098706ff7c73de4da",
+      "decoded_sha256": "c185ea71699c32373ac2a2a84d87efeebb84bfab83b589675cc5c9ed84064b60",
+      "reference_rgb565_sha256": "fdd937ca405b50d7acefaf6d951476074e2c2803519848eab5d7739c2c38abe5",
+      "bytes": 77312
+    },
+    {
+      "name": "defeat-solo",
+      "source_file": "source/defeat-solo.png",
+      "source_sha256": "fc16cbb1aab97e2ca2ba4c9328ff528f7d22ae41af8890a7c40617b5bc72ba4f",
+      "original_sha256": "b2ee7dea1edffd61bedc7dce038f32b828671488b39a83d6ae5d233cb5e6b5c8",
+      "purpose": "Owner-requested original scene; no baked hero or text.",
+      "export_file": "defeat-solo.idx8.gz.b64",
+      "export_sha256": "c079d7a39023f508e6f7f2f3c7faee0830c31e7e40b6b99cda0cc4f481497969",
+      "decoded_sha256": "7a9ea10989aa45de80bf5e1c1b7061e1266e68a03301efcec9c4e12d0bbc5bb8",
+      "reference_rgb565_sha256": "02e49d130132a85c5eff68a5312860988c33dfa4d1b896fa09f6f77f8c2ee492",
+      "bytes": 77312
+    },
+    {
+      "name": "defeat-escort",
+      "source_file": "source/defeat-escort.png",
+      "source_sha256": "fbdced11a67a99a82034157bb0f0d69b3a087440e3d66b89650129be3e4ad66b",
+      "original_sha256": "012de2a5c4b26621b882894844188316aa68f5e372d00233214d44124dad9a32",
+      "purpose": "Owner-requested original scene; no baked hero or text.",
+      "export_file": "defeat-escort.idx8.gz.b64",
+      "export_sha256": "19c1f611b390c57ed7c57ded40e01bf000604a93f30ec7c972cfb5b6ed4c377f",
+      "decoded_sha256": "4ceaa5895a7484b06c93b42e2c5ba9b38f0ac8f2be351eb4318972124d003476",
+      "reference_rgb565_sha256": "ab5027cd191838467a6eccae286801a4959b1fe006179480212d963b0213cf3b",
+      "bytes": 77312
+    }
+  ],
+  "authoring_conversion": "Pillow 12.3.0 MEDIANCUT256, no dithering; RGB565 truncation",
+  "fallen": {
+    "width": 160,
+    "height": 80,
+    "transparency_rgb565": "f81f",
+    "atlas_original_sha256": "3e1f95a502f023e358053699b38537c7c9155f2a9b31fda87db6e4fc08907c31",
+    "contract": {
+      "canvas": [
+        160,
+        80
+      ],
+      "key_rgb565": "0xf81f",
+      "mask_values": {
+        "0": "fixed material",
+        "1": "shirt tint matching outfitColors",
+        "2": "trousers tint matching outfitColors",
+        "3": "skin; green hand/neck tint for Orc"
+      },
+      "order": [
+        "base",
+        "class",
+        "race_head"
+      ],
+      "class_order": [
+        "mage",
+        "paladin",
+        "fighter",
+        "barbarian"
+      ],
+      "race_order": [
+        "human",
+        "elf",
+        "dwarf",
+        "orc"
+      ],
+      "color_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "default_color_id": 0,
+      "notes": [
+        "New drawn falling/lateral pose, no rotated standing sprite.",
+        "Shared torso proportions; four drawn racial heads and four class overlays.",
+        "Masks1/2 reuse existing outfit tint; mask3 tints Orc skin.",
+        "QA covered16 race/class combinations and all64 clothing combinations."
+      ]
+    },
+    "layers": [
+      {
+        "name": "base",
+        "export_file": "fallen-base.bin.gz.b64",
+        "export_sha256": "fef000d4df6f57e4fb9b875b808503cc78b22d2915d1c99ab859382482d6d974",
+        "decoded_sha256": "091baa9bd2b4c1b1356799ac1aecaf25fdfdc04cba7905d04536c914976b923e",
+        "color_sha256": "6f6e506fdaa3b843db5b82df741f233842c09ce23022c80882a30b31e517241e",
+        "mask_sha256": "cb1fd2c883f5fe5ba311ebc6b5a54d6140942ea4fd14b88dfef8aef742e4d044",
+        "bytes": 38400
+      },
+      {
+        "name": "human",
+        "export_file": "fallen-human.bin.gz.b64",
+        "export_sha256": "678589eedbc59c9b5539bf8b595d85f5826364e09db1f4190cf13d2e3f4be60a",
+        "decoded_sha256": "0c7bb55c6a686fe72284ff421068b3f45fce77f03d4a85fdf02242d4e294fa53",
+        "color_sha256": "7c963fbb34f9903eccc1b63fbac011b63dcd8e567fe18a9f24fb15eac8c9e741",
+        "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712",
+        "bytes": 38400
+      },
+      {
+        "name": "elf",
+        "export_file": "fallen-elf.bin.gz.b64",
+        "export_sha256": "e0c98739ad3515c345a558145c78002a081f5db2136bb0be48c149b6d6d07f85",
+        "decoded_sha256": "f5f52d9c9a81b8416a06a479a8d6c4aaaa8a59772dce0c921d2622ae86e0ef06",
+        "color_sha256": "739f3e2f1a4269c4181fde06861a1a82e00a4ede4dfda49da9ae5ec9fc70efaa",
+        "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712",
+        "bytes": 38400
+      },
+      {
+        "name": "dwarf",
+        "export_file": "fallen-dwarf.bin.gz.b64",
+        "export_sha256": "17b1d7bbce3114fffa365f20c54f22c7054b7af6cabf05c053fd22cb2506efe3",
+        "decoded_sha256": "13bdb3a1fb5dd801ec53561aaa1d4b1be36ec0c5c84565fd4727bbecb8b7fae9",
+        "color_sha256": "707c42d0abbd84e2672a469af25a0a87fd47a71efa81405914cf56cdfa219509",
+        "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712",
+        "bytes": 38400
+      },
+      {
+        "name": "orc",
+        "export_file": "fallen-orc.bin.gz.b64",
+        "export_sha256": "cfd7073b75e86106dd4716f34e26062c1f530b94b0b52d94d67a57e01ef30154",
+        "decoded_sha256": "359ef0d9299a0b7ab9aed4f2f2a9768f90cbc2b05e5ec96cc90d6dfd11996ed5",
+        "color_sha256": "d80f539466dc0155ec27c27466369b1749ac184d03574e61c24691e80bc04e7e",
+        "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712",
+        "bytes": 38400
+      },
+      {
+        "name": "mage",
+        "export_file": "fallen-mage.bin.gz.b64",
+        "export_sha256": "593057b77a30bc859bc8aade19e497f3ecca08ed71542c859983ec6667bb6955",
+        "decoded_sha256": "946967c38a839f634bf1124d1fa039905b47363ddc9e04b374dd52685a8fd7d3",
+        "color_sha256": "d0eed68bd836059848b1e38c9d1e5e36615e788bed893947d0083b05fbeea5fa",
+        "mask_sha256": "b3b430cb82f34d0544c6851fd0329b08e7bc77c81e799879d2ae4dc197450d7f",
+        "bytes": 38400
+      },
+      {
+        "name": "paladin",
+        "export_file": "fallen-paladin.bin.gz.b64",
+        "export_sha256": "05dd468b1be7b93d549ce617ae9d6e10387e81664cf60ddcd2fa16625f45b72c",
+        "decoded_sha256": "a9610f73aa5406e4af66fcfcfd5a36c7468d55e74db198ea5ab8ca98f20f4241",
+        "color_sha256": "d357bc65d45b15214552a68f54c31572c9a15095cb24e97ff69cd07fd0170349",
+        "mask_sha256": "858b104be661cc038831478c07ca29249737f5d3ba45d4e95b04715500b0aaff",
+        "bytes": 38400
+      },
+      {
+        "name": "fighter",
+        "export_file": "fallen-fighter.bin.gz.b64",
+        "export_sha256": "5d03ca4c33fb570a7c0a3031bd396209f7bc9ec02dea8d3253e95c7619d51100",
+        "decoded_sha256": "971d9664e0c5edd11dc99f37d101faa10adcde6787a3ffab70e7d38105078f8b",
+        "color_sha256": "1ec57da020545b80056d0d37d345af83d4e816612040c0b56bec76807b9313d2",
+        "mask_sha256": "23bc14713c4c52a2062d5b8bf37c260723412ad3bcbb047e80bdab0253bff816",
+        "bytes": 38400
+      },
+      {
+        "name": "barbarian",
+        "export_file": "fallen-barbarian.bin.gz.b64",
+        "export_sha256": "dc2bbc03211fd71649fd8d778ab995b42434073b039d61eb82509c5298ecdf0a",
+        "decoded_sha256": "7475b019c0a627bff8b6fb1e83f378cb06497798a7097cff4a768b55312c6458",
+        "color_sha256": "80f550f508424b9e1fb8dced6e96a066f26885c3c7a235ffe13655250cfbb026",
+        "mask_sha256": "59ec91dcb7dc65b5f928091cb0e25c26729a0a4453ebe7d8244fc1ceae7d9712",
+        "bytes": 38400
+      }
+    ]
+  }
+}

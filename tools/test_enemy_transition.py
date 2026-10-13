@@ -50,6 +50,38 @@ def copy_loader_dependencies(destination):
     return sorted(copied)
 
 
+
+def published_touch77_readback(temporary, compiler, sanitizers, env):
+    """Retain the exact published Save28 client's full636 read-back coverage."""
+    import test_release77_ota as headers
+    from test_scenes77_release import OLD_COMMIT, OLD_TREE
+
+    tree = subprocess.check_output(['git', 'rev-parse', OLD_COMMIT + '^{tree}'],
+                                   cwd=ROOT, text=True).strip()
+    assert tree == OLD_TREE, 'Published touch77 source identity unavailable'
+    staged = temporary / 'published-touch77'
+    copied = headers.stage_headers(staged, OLD_COMMIT)
+    source = temporary / 'published-readback.cpp'
+    source.write_bytes(headers.source_bytes('tests/ota_art_readback.cpp', OLD_COMMIT))
+    manifest = headers.source_bytes('tests/update_fake/visual77-manifest.json', OLD_COMMIT)
+    assert manifest == (ROOT / 'tests/update_fake/visual77-manifest.json').read_bytes()
+    fixture = temporary / 'published-manifest.json'
+    fixture.write_bytes(manifest)
+    flags = ['-std=c++17', '-O1', '-g', '-UNDEBUG', '-DRPG_TEST_VERIFY_DETAIL',
+             '-Wno-deprecated-declarations']
+    if sanitizers:
+        flags += ['-fsanitize=address,undefined', '-fno-omit-frame-pointer', '-no-pie']
+    executable = temporary / 'published-readback'
+    subprocess.run([compiler, *flags, '-I', str(staged), '-I', str(staged / 'fake'),
+                    str(source), str(staged / 'fake/cJSON.c'), '-lcrypto',
+                    '-o', str(executable)], check=True)
+    # new.pak here is the retained original636 pack, not the scenes77/666 pack.
+    subprocess.run([str(executable), str(temporary / 'new.pak'), str(fixture)],
+                   check=True, env=env)
+    print(f'PASS: exact published touch77 {OLD_COMMIT}, tree {OLD_TREE}; '
+          f'unchanged original read-back test and {len(copied)} production headers; '
+          '16 real-SHA256 gates on the original636 pack. Host adapters only.')
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sanitizers', action='store_true', help='Use ASan and UBSan; leak checking follows RPG_DETECT_LEAKS (default 0)')
@@ -82,9 +114,13 @@ def main():
                 env['ASAN_OPTIONS'] = env.get('ASAN_OPTIONS', '') + ':detect_leaks=' + env.get('RPG_DETECT_LEAKS', '0')
                 env['UBSAN_OPTIONS'] = 'halt_on_error=1'
             run = subprocess.run([str(executable), str(temporary / (label + '.pak')), str(temporary / (other + '.pak')), label],
-                                 check=True, capture_output=True, text=True, env=env)
+                                 check=False, capture_output=True, text=True, env=env)
             print(run.stdout, end='')
+            if run.returncode:
+                print(run.stderr, end='', file=sys.stderr)
+                run.check_returncode()
             counts.append(int(re.search(r': (\d+) paired artifact gates;', run.stdout).group(1)))
+        published_touch77_readback(temporary, compiler, args.sanitizers, env)
     print(f'PASS: {sum(counts)} paired package/SD-loader gates across old and new catalogs; {len(copied)} actual production dependency headers staged unchanged except catalog.')
     print('Coverage: representative first/middle/last chunk short reads; not exhaustive all-boundary fault injection. No hardware, OTA installer or full-art rollback-retention claim.')
 

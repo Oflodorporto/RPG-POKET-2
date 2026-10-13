@@ -9,12 +9,12 @@ enum class ArtStatus {Ready,Missing};struct {bool scanning=false,connecting=fals
 static std::vector<uint8_t> bytes(const char* path){std::ifstream f(path,std::ios::binary);assert(f);return {std::istreambuf_iterator<char>(f),{}};}
 static std::string hash(const std::vector<uint8_t>& b){mbedtls_sha256_context c;mbedtls_sha256_init(&c);assert(!mbedtls_sha256_starts(&c,0));for(size_t off=0;off<b.size();off+=4096)assert(!mbedtls_sha256_update(&c,b.data()+off,std::min<size_t>(4096,b.size()-off)));uint8_t d[32];assert(!mbedtls_sha256_finish(&c,d));char s[65];for(unsigned i=0;i<32;++i)snprintf(s+2*i,3,"%02x",d[i]);return s;}
 int main(int argc,char** argv){
- assert(argc==1||argc==3);const auto art=bytes(argc==3?argv[1]:"cartao/RPGPOKET/artes.pak");auto raw=bytes(argc==3?argv[2]:"tests/update_fake/visual77-manifest.json");
- // Preserve published artifact metadata; use the compiled identity to exercise
+ assert(argc==1||argc==3);const auto art=bytes(argc==3?argv[1]:"cartao/RPGPOKET/artes.pak");auto raw=bytes(argc==3?argv[2]:"tests/update_fake/scenes77-readback-manifest.json");
+ // Preserve independently pinned current art metadata; use the compiled identity to exercise
  // same-build repair also on an isolated dev build (no firmware hash shortcut).
- std::string manifest(raw.begin(),raw.end());auto replace=[&](const char* from,const std::string& to){auto pos=manifest.find(from);assert(pos!=std::string::npos);manifest.replace(pos,strlen(from),to);};replace("\"version\":\"2026.10.12-visual77\"",std::string("\"version\":\"")+FW_VERSION+"\"");replace("\"build\":2026101208",std::string("\"build\":")+std::to_string(FW_BUILD));raw.assign(manifest.begin(),manifest.end());
+ std::string manifest(raw.begin(),raw.end());auto replace=[&](const char* from,const std::string& to){auto pos=manifest.find(from);assert(pos!=std::string::npos);manifest.replace(pos,strlen(from),to);};replace("\"version\":\"2026.10.13-scenes77\"",std::string("\"version\":\"")+FW_VERSION+"\"");replace("\"build\":2026101306",std::string("\"build\":")+std::to_string(FW_BUILD));raw.assign(manifest.begin(),manifest.end());
  assert(hash({'a','b','c'})=="ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
- assert(art.size()==6661456&&hash(art)=="5416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1");
+ assert(art.size()==7470928&&hash(art)=="14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56");
  initUpdater();
 #ifdef RPG_TEST_VERIFY_DETAIL
  // Boot diagnostics must not introduce a null-mutex crash on allocation failure.
@@ -27,7 +27,7 @@ int main(int argc,char** argv){
  for(unsigned fault=0;fault<13;++fault){
   disk=protectedFiles;deleted.clear();replies.clear();urls.clear();ranges.clear();openFiles=0;maxFiles=1;card=true;writeFault=readFault=renameFault=false;beginCalls=bootCalls=endCalls=abortCalls=0;otaOpen=false;ESP.restarted=false;updateWorker={};updateInfo={};
   readBackFaultPath="/RPGPOKET/artes.part";readBackFaultAt=~size_t(0);readBackBytes=0;readBackFlipAt=~size_t(0);readBackOpenFail=false;reportedSizeDelta=0;flushFaultPath.clear();flushTrim=0;
-  replies.push_back({200,raw});checkUpdate();assert(updateWorker.state==updater::State::Available&&updateWorker.artOnly&&updatePlan.build==FW_BUILD);assert(updatePlan.assets==636&&updatePlan.artCrc==0x0b84d93f);
+  replies.push_back({200,raw});checkUpdate();assert(updateWorker.state==updater::State::Available&&updateWorker.artOnly&&updatePlan.build==FW_BUILD);assert(updatePlan.assets==666&&updatePlan.artCrc==0x9b4bcfc0);
   auto payload=art;
   if(fault==1)readBackOpenFail=true;
   if(fault==2)reportedSizeDelta=1;
@@ -66,9 +66,9 @@ int main(int argc,char** argv){
   replies.push_back({200,raw});checkUpdate();assert(updateWorker.artOnly);
   if(mode==2)disk[named]=art;
   else {disk["/RPGPOKET/artes.part"]={art.begin(),art.begin()+4096};disk["/RPGPOKET/artes.part.tag"]={updatePlan.art.sha,updatePlan.art.sha+64};
-   if(mode==0){std::vector<uint8_t> tail(art.begin()+4096,art.end());replies.push_back({206,tail,-2,"bytes 4096-6661455/6661456"});}else replies.push_back({200,art});}
+   if(mode==0){std::vector<uint8_t> tail(art.begin()+4096,art.end());replies.push_back({206,tail,-2,"bytes 4096-"+std::to_string(art.size()-1)+"/"+std::to_string(art.size())});}else replies.push_back({200,art});}
   updateInstallTask(nullptr);assert(ESP.restarted&&disk.at(named)==art&&hash(disk.at(named))==updatePlan.art.sha&&!openFiles&&!beginCalls&&!bootCalls);
   assert(urls.size()==(mode==2?1u:2u));if(mode!=2)assert(ranges.back()=="bytes=4096-");for(auto& p:protectedFiles)assert(disk.at(p.first)==p.second);++cases;
  }
- printf("PASS: %u full published-pack same-build repair paths with real SHA-256: clean transfer/read-back succeeds; open/stat/short-read/read-corruption/flush-truncation/header/catalog/CRC/SHA failures reproduce exact 80%% error; firmware never flashed; three Save28 sentinels/manual original unchanged.\n",cases);
+ printf("PASS: %u full current-pack same-build repair paths with real SHA-256: clean transfer/read-back succeeds; open/stat/short-read/read-corruption/flush-truncation/header/catalog/CRC/SHA failures reproduce exact 80%% error; firmware never flashed; three Save28 sentinels/manual original unchanged.\n",cases);
 }

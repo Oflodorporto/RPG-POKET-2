@@ -35,7 +35,7 @@ static void checkFrame(FatigueCanvas& canvas, const rpg::Game& game,
   unsigned band = game.fatigue < 40 ? 0 : game.fatigue < 70 ? 1 :
                   game.fatigue < 90 ? 2 : 3;
   snprintf(text, sizeof(text), "Fadiga %u/100 / %s", game.fatigue, bands[band]);
-  assert(canvas.has(text));
+  if(view.page!=Page::TravelConfirm)assert(canvas.has(text));
   for (const auto& label : canvas.labels) assert(label.find("-2") == std::string::npos);
 
   if (view.page == Page::Home) {
@@ -48,11 +48,17 @@ static void checkFrame(FatigueCanvas& canvas, const rpg::Game& game,
                                      "Fadiga: -50 apos descansar"));
     assert(canvas.has("Voltar") && canvas.has("Acampar"));
   } else {
-    snprintf(text, sizeof(text), "Chance segura: %u%% / CD %u",
+    snprintf(text, sizeof(text), "Partida: %u%% segura / CD %u",
              rpg::tripSafety(game, view.tripDestination),
              rpg::routeDifficulty(game.city, view.tripDestination));
     assert(canvas.has(text));
-    assert(canvas.has("90+: -1 Sobrevivencia ja na chance") == (game.fatigue >= 90));
+    snprintf(text, sizeof(text), "%u dias / %u pernoites",
+             rpg::dailyTripDays(game.city, view.tripDestination),
+             rpg::dailyTripDays(game.city, view.tripDestination)-1);
+    assert(canvas.has(text));
+    snprintf(text, sizeof(text), "Precisa %u / na bolsa %u",
+             rpg::dailyTripDays(game.city, view.tripDestination), game.rations);
+    assert(canvas.has(text) && canvas.has("Uma racao por dia de viagem."));
     assert(canvas.has("Cancelar") && canvas.has("Viajar"));
   }
   if (*view.message) assert(canvas.has(view.message));
