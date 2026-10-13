@@ -1,0 +1,20 @@
+{
+  "authorship": "Original game bag concept generated for the owner and approved on 2026-10-13. Existing concept reused; no new image generation.",
+  "concept_sha256": "d080b63fe43a9c18521c12c9937ba13d7a112df1ac507dc1a287cb8c16844c7c",
+  "concept_dimensions": [
+    1086,
+    1448
+  ],
+  "conversion": "240x320 LANCZOS; Pillow MEDIANCUT 16 colors, no dithering; RGB565; high nibble first",
+  "logical_dimensions": [
+    240,
+    320
+  ],
+  "opaque": true,
+  "palette_entries": 16,
+  "plane_bytes": 38400,
+  "source_bytes": 38432,
+  "source_sha256": "6b8a7991f4b446eb793663c554f7bda4e51d769e608ab1085f235f693f17182c",
+  "reference_rgb565_sha256": "b835a20596a61f33707e51d4cbaf8b8b348e38312689b16459e3cfc5571b156e",
+  "scope": "Bag backdrop only, compiled in flash. External636-entry art package unchanged."
+}

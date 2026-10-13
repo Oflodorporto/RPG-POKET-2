@@ -1,5 +1,8 @@
 RPG POKET 2.0 — CONTINUIDADE ATUAL
-Atualização: 13/10/2026, 08:32 UTC. Pacotes1 SD/download e2 dungeon/interface publicados e verificados.
+Atualização: 13/10/2026. Pacotes1 SD/download e2 dungeon/interface publicados e verificados.
+Pacote3 em qualificação: feat/touch77-release, versão2026.10.13-touch77/build1305.
+Bolsa/Equipamentos/Carvalho, textura flash compacta; artes externas e correções1/2 preservadas.
+Detalhes: docs/BOLSA_TOQUE_7_7.txt. Ainda sem publicação ou teste físico deste candidato.
 
 ESTADO CONFERIDO
 - Release vigente2026.10.13-dungeon77/build2026101304. Fonte/tag59258cec67458e2d05d4db6a6c7f7656eee1959c; árvore04be469dbdc77082381f78a17488f8e92b2217a7. Main integrada, docs posteriores não mudam tag/binário.

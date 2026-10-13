@@ -157,7 +157,7 @@ void tapped(int x,int y){
       else {if(game.originStory)game.originPage=8;menu.storyIndex=0;say("");if(game.originStory)savedTransition(Page::Help);else view.page=Page::Help;}}
     else {menu.storyIndex+=x<120?-1:1;say("");if(!menu.storyReplay&&game.originStory){game.originPage=menu.storyIndex;savedTransition(Page::Prologue);}}
    }return;}
-  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&game.city==0&&hit(x,y,10,80,220,30))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
+  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&game.city==0&&touchUi::cityMission.contains(x,y))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
   if(view.page==Page::Journal){if(hit(x,y,14,272,102))view.page=Page::Menu;
     else if(hit(x,y,124,272,102)){view.objectiveReturn=Page::Journal;view.page=Page::Campaign;}
     else if(hit(x,y,14,224,102))menu.chapterIndex=(menu.chapterIndex+5)%6;
@@ -227,23 +227,23 @@ void tapped(int x,int y){
     if(hit(x,y,14,218,212)){unsigned count=rpg::gearOwnedCount(game.owned),index=0;auto id=view.itemId;if(!id){view.page=Page::Bag;say("");return;}while(index<count&&rpg::gearOwnedAt(game.owned,index)!=id)++index;view.gearIndex=index/6;view.choice=index%6;view.page=Page::BagGear;say("");}return;
   }
   if(view.page==Page::BagGear){
-    if(hit(x,y,10,278,70)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
+    if(touchUi::gearBack.contains(x,y)){view.page=rpg::inDungeon(game)||game.phase!=rpg::Phase::Home?Page::Bag:Page::TownBag;view.choice=0;say("");return;}
     unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
-    if(hit(x,y,10,200,68,24)||hit(x,y,162,200,68,24)){view.gearIndex=(view.gearIndex+(x<120?pages-1:1))%pages;view.choice=0;say("");return;}
+    if(touchUi::gearPrevious.contains(x,y)||touchUi::gearNext.contains(x,y)){view.gearIndex=(view.gearIndex+(x<120?pages-1:1))%pages;view.choice=0;say("");return;}
     for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
-    if(hit(x,y,158,278,72)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}if(rpg::inDungeon(game)||game.phase!=rpg::Phase::Home){say("Venda na cidade");return;}view.itemId=rpg::gearOwnedAt(game.owned,index);view.page=Page::GearSell;say("");return;}
-    if(hit(x,y,84,278,70)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}
+    if(touchUi::gearSell.contains(x,y)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}if(rpg::inDungeon(game)||game.phase!=rpg::Phase::Home){say("Venda na cidade");return;}view.itemId=rpg::gearOwnedAt(game.owned,index);view.page=Page::GearSell;say("");return;}
+    if(touchUi::gearEquip.contains(x,y)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}
       if(game.phase!=rpg::Phase::Home){say("Equipe depois do combate");return;}
       auto err=rpg::equipGear(game,rpg::gearOwnedAt(game.owned,index));if(err)say(err);else {say("Equipamento alterado");savedTransition(Page::BagGear);}}return;
   }
   if(view.page==Page::Bag||view.page==Page::TownBag){
     Page back=rpg::inDungeon(game)?Page::Dungeon:view.page==Page::Bag?Page::Battle:view.bagReturn;
     if(panelUi::bagBack.contains(x,y)){view.page=back;say("");return;}
-    if(panelUi::bagSlot(8).contains(x,y)){if(game.eventStage==2){say("Use depois da missao");return;}view.picksReturn=view.page;view.page=Page::Lockpicks;say("");return;}
-    if(game.phase==rpg::Phase::Home&&panelUi::bagSlot(7).contains(x,y)){if(game.eventStage==2){say("Use depois da missao");return;}view.page=Page::Scrap;say("");return;}
-    for(unsigned i=0;i<7;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
+    for(unsigned i=0;i<9;++i)if(panelUi::bagSlot(i).contains(x,y)){view.choice=i;say("");return;}
     if(panelUi::bagGear.contains(x,y)){view.gearIndex=0;view.choice=0;view.page=Page::BagGear;say("");return;}
     if(!panelUi::bagUse.contains(x,y))return;
+    if(view.choice==8){if(game.eventStage==2){say("Use depois da missao");return;}view.picksReturn=view.page;view.page=Page::Lockpicks;say("");return;}
+    if(view.choice==7){if(game.phase!=rpg::Phase::Home){say("Venda na cidade");return;}if(game.eventStage==2){say("Use depois da missao");return;}view.page=Page::Scrap;say("");return;}
     if(view.choice>=2){if(view.choice==6&&game.phase==rpg::Phase::Home&&!rpg::inDungeon(game)){openCamp();return;}say(view.choice==2?"Cristal: entrada nas Ruinas":"Racao e kit: use ao acampar");return;}
     bool mana=view.choice==1;
     if(game.phase==rpg::Phase::Hero){action(mana?rpg::Action::Mana:rpg::Action::Life);return;}
@@ -663,12 +663,12 @@ int main(){
  for(unsigned i=0;i<9;++i){view.page=Page::Village;auto rect=panelUi::cityButtons[i];tapped(rect.x+rect.w/2,rect.y+rect.h/2);assert(view.page==cityTargets[i]&&nvs.blobs==uiBlobs);}
  view.page=Page::TownBag;game.crystals=3;game.rations=2;game.sleepKit=true;
  for(unsigned i=0;i<7;++i){auto rect=panelUi::bagSlot(i);tapped(rect.x+10,rect.y+10);assert(view.choice==i&&game.crystals==3&&game.rations==2&&nvs.blobs==uiBlobs);}
- tapped(110,270);assert(view.page==Page::BagGear);tapped(45,294);assert(view.page==Page::TownBag);tapped(70,290);assert(view.page==Page::Village&&nvs.blobs==uiBlobs);
+ tapped(panelUi::bagGear.x+20,panelUi::bagGear.y+20);assert(view.page==Page::BagGear);tapped(45,294);assert(view.page==Page::TownBag);tapped(70,290);assert(view.page==Page::Village&&nvs.blobs==uiBlobs);
  view.page=Page::Character;tapped(120,289);assert(view.page==Page::Village&&nvs.blobs==uiBlobs);
  game.phase=rpg::Phase::Hero;view.page=Page::Battle;combatFx.kind=Effect::None;tapped(170,254);assert(view.page==Page::Skills&&nvs.blobs==uiBlobs);tapped(120,290);assert(view.page==Page::Battle);tapped(65,286);assert(view.page==Page::Bag&&nvs.blobs==uiBlobs);
   // Goal shortcuts are read-only and return to their source.
   game=rpg::create(0,42);game.tutorial=true;combatFx.kind=Effect::None;view.page=Page::Home;auto untouched=nvs.blobs;tapped(110,150);assert(view.page==Page::Campaign);tapped(170,290);assert(view.page==Page::Home&&nvs.blobs==untouched);
-  view.page=Page::Village;tapped(110,90);assert(view.page==Page::Campaign);tapped(120,240);assert(view.page==Page::Explore&&nvs.blobs==untouched);
+  view.page=Page::Village;tapped(touchUi::cityMission.x+20,touchUi::cityMission.y+10);assert(view.page==Page::Campaign);tapped(120,240);assert(view.page==Page::Explore&&nvs.blobs==untouched);
   // Spending pauses on save failure; retry never grants the attribute a second time.
   game.p.xp=2700;rpg::levelUp(game);view.page=Page::Character;tapped(120,125);assert(view.page==Page::Progression);tapped(60,278);assert(view.page==Page::Evolution);unsigned con=game.attributes[2];journal.blocked=false;tapped(60,199);assert(view.page==Page::AttributeInfo&&game.attributes[2]==con);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.attributes[2]==con+1);nvs.fail=false;tapped(110,269);assert(view.page==Page::Evolution&&game.attributes[2]==con+1);rpg::Game loadedEvolution;assert(journal.load(loadedEvolution)==rpg::Load::Ok&&loadedEvolution.attributes[2]==con+1);
   // Powers navigation is read-only; oath confirmation and healing retry save once.
@@ -700,7 +700,7 @@ int main(){
   combatFx.kind=Effect::None;game=rpg::create(0,42);game.tutorial=true;game.discovery=2;game.discoverLoot=0;game.discoverAmount=9;journal.blocked=false;assert(journal.save(game));view.page=currentPage();assert(view.page==Page::Discovery);
   nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.discovery==5&&game.p.gold==9);nvs.fail=false;tapped(110,269);assert(view.page==Page::Discovery&&game.p.gold==9);rpg::Game discovered;assert(journal.load(discovered)==rpg::Load::Ok&&discovered.discovery==5&&discovered.p.gold==9);game=discovered;view.page=currentPage();tapped(175,290);assert(view.page==Page::Explore&&!game.discovery&&game.p.gold==9);
   game.discovery=2;game.discoverLoot=7;game.discoverAmount=1;assert(journal.save(game));view.page=currentPage();nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.discovery==4&&game.enemyId==14);nvs.fail=false;tapped(110,269);assert(view.page==Page::Battle);game.enemyHp=0;rpg::finish(game);view.page=currentPage();auto mimicGold=game.p.gold;tapped(120,290);assert(view.page==Page::Explore&&!game.discovery&&game.p.gold==mimicGold);
-  game.scrap=3;view.page=Page::TownBag;auto scrapRect=panelUi::bagSlot(7);tapped(scrapRect.x+10,scrapRect.y+10);assert(view.page==Page::Scrap);tapped(175,290);assert(view.page==Page::TradeConfirm&&game.scrap==3);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&!game.scrap&&game.p.gold==mimicGold+6);nvs.fail=false;tapped(110,269);assert(view.page==Page::TradeReceipt&&game.p.gold==mimicGold+6);
+  game.scrap=3;view.page=Page::TownBag;auto scrapRect=panelUi::bagSlot(7);tapped(scrapRect.x+10,scrapRect.y+10);assert(view.choice==7);tapped(panelUi::bagUse.x+20,panelUi::bagUse.y+20);assert(view.page==Page::Scrap);tapped(175,290);assert(view.page==Page::TradeConfirm&&game.scrap==3);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&!game.scrap&&game.p.gold==mimicGold+6);nvs.fail=false;tapped(110,269);assert(view.page==Page::TradeReceipt&&game.p.gold==mimicGold+6);
   // Lock purchase, opening and trap outcomes survive actual touch/save/reboot paths.
   combatFx.kind=Effect::None;game=rpg::create(0,1);game.tutorial=true;game.p.gold=20;journal.blocked=false;assert(journal.save(game));view.page=Page::CityGoods;tapped(110,191);assert(view.page==Page::Lockpicks);nvs.fail=true;tapped(175,290);assert(view.page==Page::SaveError&&game.gazuas==1&&game.p.gold==16);nvs.fail=false;tapped(110,269);assert(view.page==Page::Lockpicks&&game.gazuas==1&&game.p.gold==16);
   game.discovery=2;game.discoverLoot=0;game.discoverAmount=9;game.chestLock=1;assert(journal.save(game));view.page=currentPage();assert(view.page==Page::ChestLock);nvs.fail=true;tapped(120,269);assert(view.page==Page::SaveError&&game.gazuas==0&&game.chestLock==2);auto lockDie=game.chestRoll;nvs.fail=false;tapped(110,269);assert(view.page==Page::ChestLock&&game.chestRoll==lockDie&&!game.gazuas);rpg::Game lockLoaded;assert(journal.load(lockLoaded)==rpg::Load::Ok&&lockLoaded.chestLock==2);game=lockLoaded;view.page=currentPage();nvs.fail=true;tapped(120,269);assert(view.page==Page::SaveError&&game.discovery==5&&game.p.gold==25&&!game.chestLock);nvs.fail=false;tapped(110,269);assert(view.page==Page::Discovery&&game.p.gold==25);

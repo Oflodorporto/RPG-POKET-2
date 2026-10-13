@@ -1,12 +1,13 @@
 #pragma once
 #include "PanelArt.h"
 #include "Progression.h"
+#include "TouchPanels.h"
 namespace panelUi {
 constexpr scenicUi::Rect skillsGuide={14,110,48,29};
-constexpr scenicUi::Rect bagBack={40,281,82,26},bagUse={126,281,81,26},bagGear={46,263,156,17};
+constexpr scenicUi::Rect bagBack={8,276,108,44},bagUse={124,276,108,44},bagGear={12,234,216,40};
 constexpr scenicUi::Rect evolution={10,112,220,26};
-inline scenicUi::Rect bagSlot(unsigned i){return {53+int(i%3)*47,125+int(i/3)*33,43,30};}
-constexpr scenicUi::Rect cityButtons[]={{26,180,91,23},{122,180,91,23},{26,204,91,23},{122,204,91,23},{26,228,91,23},{122,228,91,23},{26,252,91,23},{122,252,91,23},{70,278,112,21}};
+inline scenicUi::Rect bagSlot(unsigned i){return {34+int(i%3)*60,38+int(i/3)*56,52,52};}
+constexpr scenicUi::Rect cityButtons[]={{6,84,112,40},{122,84,112,40},{6,132,112,40},{122,132,112,40},{6,180,112,40},{122,180,112,40},{6,228,112,40},{122,228,112,40},{6,272,228,40}};
 constexpr scenicUi::Rect battleButtons[]={{10,240,108,29},{122,240,108,29},{10,274,108,29},{122,274,108,29}};
 }
 template<class C>void panelImage(C& c,const uint16_t* palette,unsigned asset,int top=0,int bottom=320){
@@ -33,20 +34,27 @@ template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v
  for(int i=0;i<2;++i)if(g.p.mp<(g.dndProgression&&g.p.cls==0?rpg::powerCost(g,i?rpg::Action::ShieldSpell:rpg::Action::MagicMissile):rpg::skillCost(g.p.cls,i))||(g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2))panelLabel(c,75,180+i*48+19,132,g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2?"Desbloqueia Nv 2":"Sem mana",UI_MUTED);
 }
 template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,bag);char b[64];snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);panelLabel(c,92,57,78,b,UI_GOLD);
- panelHero(c,g,55,72,51,41);c.fillRect(110,72,76,41,0x0843);snprintf(b,sizeof(b),"HP %u/%u",g.p.hp,g.p.maxhp);panelLabel(c,112,77,66,b);panelBar(c,114,88,65,g.p.hp,g.p.maxhp,UI_RED);
- snprintf(b,sizeof(b),"MP %u/%u",g.p.mp,g.p.maxmp);panelLabel(c,112,97,66,b);panelBar(c,114,106,65,g.p.mp,g.p.maxmp,UI_BLUE);
- const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit"};unsigned q[]={g.p.life,g.p.mana,g.crystals,g.rations,g.charts,g.charms,unsigned(g.sleepKit)};
- for(unsigned i=0;i<7;++i){auto r=panelUi::bagSlot(i);c.fillRect(r.x+30,r.y+17,11,9,0x0843);snprintf(b,sizeof(b),"%u",q[i]);panelLabel(c,r.x+22,r.y+17,19,b,q[i]?UI_GREEN:UI_MUTED);for(int border=0;border<3;++border)c.drawRect(r.x+border,r.y+border,r.w-border*2,r.h-border*2,i==v.choice?UI_GOLD:0x3186);}
- auto scrapRect=panelUi::bagSlot(7);scenicPanel(c,scrapRect.x,scrapRect.y,scrapRect.w,scrapRect.h);char scrapText[24];panelLabel(c,scrapRect.x+2,scrapRect.y+4,scrapRect.w-4,"Sucata",UI_GOLD);snprintf(scrapText,sizeof(scrapText),"x%u",g.scrap);panelLabel(c,scrapRect.x+2,scrapRect.y+17,scrapRect.w-4,scrapText,g.scrap?UI_GREEN:UI_MUTED);
- auto pickRect=panelUi::bagSlot(8);scenicPanel(c,pickRect.x,pickRect.y,pickRect.w,pickRect.h);panelLabel(c,pickRect.x+2,pickRect.y+4,pickRect.w-4,"Gazuas",UI_GOLD);snprintf(scrapText,sizeof(scrapText),"x%u",g.gazuas);panelLabel(c,pickRect.x+2,pickRect.y+17,pickRect.w-4,scrapText,g.gazuas?UI_GREEN:UI_MUTED);
- unsigned i=std::min(6u,unsigned(v.choice));c.fillRect(84,228,110,30,0x0843);snprintf(b,sizeof(b),"%s x%u",names[i],q[i]);panelLabel(c,89,231,105,b,UI_GOLD);
- const char* desc=i==0?"Recupera 30% HP":i==1?"Recupera 50% MP":i==2?"Chave da cripta":i==3?"Comida no acampamento":i==6?"Kit de acampamento":"Bonus na viagem";panelLabel(c,89,247,105,desc);
- // The sample detail potion is replaced by the selected inventory icon.
- 
- auto icon=panelUi::bagSlot(i);panelCrop(c,panelArt::bagPalette,panelArt::bagAsset,icon.x+10,icon.y+2,23,18,55,231,29,24);
- snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));panelLabel(c,92,269,101,b);
- if(*v.message)panelLabel(c,4,310,232,v.message,UI_RED);
+ bagSkin::crop(c,0,0,240,320,0,0,240,320);bagSkin::leather(c,8,4,224,270);char b[64];
+ bagSkin::crop(c,48,14,144,20,12,6,216,26);
+ snprintf(b,sizeof(b),"BOLSA / %lu ouro",(unsigned long)g.p.gold);touchLabel(c,16,9,208,b,UI_GOLD);
+ snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);touchLabel(c,16,21,208,b);
+ const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit","Sucata","Gazuas"};
+ unsigned q[]={g.p.life,g.p.mana,g.crystals,g.rations,g.charts,g.charms,unsigned(g.sleepKit),g.scrap,g.gazuas};
+ for(unsigned i=0;i<9;++i){auto r=panelUi::bagSlot(i);bagSkin::frame(c,r);
+  if(i==v.choice){c.drawRect(r.x,r.y,r.w,r.h,0xffff);c.drawRect(r.x+1,r.y+1,r.w-2,r.h-2,UI_GOLD);}
+  if(i<7)panelCrop(c,panelArt::bagPalette,panelArt::bagAsset,53+int(i%3)*47+10,125+int(i/3)*33+2,23,18,r.x+14,r.y+4,24,22);
+  else if(i==7){c.fillRect(r.x+15,r.y+10,14,10,0xbdf7);c.drawRect(r.x+15,r.y+10,14,10,UI_WHITE);c.fillRect(r.x+25,r.y+6,13,10,UI_MUTED);}
+  else {c.fillRect(r.x+12,r.y+8,27,3,UI_GOLD);c.fillRect(r.x+36,r.y+8,3,16,UI_GOLD);c.fillRect(r.x+12,r.y+11,3,5,UI_GOLD);}
+  touchLabel(c,r.x+2,r.y+29,r.w-4,names[i]);snprintf(b,sizeof(b),"x%u",q[i]);touchLabel(c,r.x+2,r.y+40,r.w-4,b,q[i]?UI_GREEN:UI_MUTED);
+ }
+ unsigned i=std::min(8u,unsigned(v.choice));bagSkin::crop(c,29,196,182,19,12,207,216,24);
+ const char* desc=i==0?"Recupera 30% HP":i==1?"Recupera 50% MP":i==2?"Chave da cripta":i==3?"Comida no acampamento":i==4?"Bonus na viagem":i==5?"Bonus na viagem":i==6?"Kit de acampamento":i==7?"Ver sucata / vender na cidade":"Ver gazuas e orientacoes";
+ if(*v.message)touchLines(c,16,210,208,v.message,UI_RED);else {touchLabel(c,16,210,208,names[i],UI_GOLD);touchLabel(c,16,221,208,desc);}
+ bagSkin::crop(c,22,225,196,29,panelUi::bagGear.x,panelUi::bagGear.y,panelUi::bagGear.w,panelUi::bagGear.h);
+ snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));touchLabel(c,16,246,208,b,0xffff,2);
+ for(auto r:{panelUi::bagBack,panelUi::bagUse})bagSkin::crop(c,r.x<120?20:124,263,96,35,r.x,r.y,r.w,r.h);
+ touchLabel(c,panelUi::bagBack.x+2,290,panelUi::bagBack.w-4,"Voltar",0xffff,2);
+ touchLabel(c,panelUi::bagUse.x+2,290,panelUi::bagUse.w-4,i>=7?"Ver":"Usar",0xffff,2);
 }
 template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
  PANEL_IMAGE(c,character);panelHero(c,g,84,59,71,51);scenicPanel(c,10,112,220,26);panelLabel(c,14,115,212,"Trilha de classe >",UI_GOLD);c.fillRect(54,139,132,18,0x0843);c.fillRect(55,161,63,19,0x0843);c.fillRect(124,161,63,19,0x0843);char b[64];
@@ -60,8 +68,18 @@ template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
  scenicPanel(c,40,240,160,31);snprintf(b,sizeof(b),"Sobrevivencia %u",rpg::survival(g));panelLabel(c,45,245,150,b,UI_GREEN);snprintf(b,sizeof(b),"Sorte %u",rpg::luck(g));panelLabel(c,45,258,150,b,UI_GOLD);
 }
 template<class C>void drawPanelVillage(C& c,const rpg::Game& g,const ViewState& v){
- PANEL_IMAGE(c,village);scenicPanel(c,10,80,220,30);auto goal=story::objective(g);panelLabel(c,16,85,208,goal.title,UI_GOLD);panelLabel(c,16,97,208,"Toque: proximo objetivo");char b[48];snprintf(b,sizeof(b),"Explorar Nv %u+",rpg::cityLevel(g.city));panelLabel(c,77,52,89,b);snprintf(b,sizeof(b),"%lu g",(unsigned long)g.p.gold);panelLabel(c,96,61,49,b,UI_GOLD);if(*v.message)panelLabel(c,7,166,226,v.message,UI_RED);
+ PANEL_IMAGE(c,village);char b[64];
+ // Cover baked labels only; the existing Carvalho scenery remains the backdrop.
+ for(auto r:{scenicUi::Rect{0,0,240,80},scenicUi::Rect{0,220,240,8},scenicUi::Rect{0,268,240,4}})c.fillRect(r.x,r.y,r.w,r.h,UI_INK);
+ scenicPanel(c,6,4,228,24);touchLabel(c,9,8,222,"Carvalho",UI_GOLD,2);
+ scenicPanel(c,6,31,112,14);snprintf(b,sizeof(b),"Explorar Nv %u+",rpg::cityLevel(g.city));touchLabel(c,8,34,108,b);
+ scenicPanel(c,122,31,112,14);snprintf(b,sizeof(b),"%lu ouro",(unsigned long)g.p.gold);touchLabel(c,124,34,108,b,UI_GOLD);
+ const auto mission=touchUi::cityMission;scenicPanel(c,mission.x,mission.y,mission.w,mission.h);auto goal=story::objective(g);
+ if(*v.message)touchLines(c,10,53,220,v.message,UI_RED);else {touchLabel(c,10,53,220,goal.title,UI_GOLD);touchLabel(c,10,65,220,"Toque: proximo objetivo");}
+ const char* labels[]={"Conversar","Loja","Bolsa","Heroi","Explorar","Guilda","Acampar","Mapa","Menu"};
+ for(unsigned i=0;i<9;++i){auto r=panelUi::cityButtons[i];scenicPanel(c,r.x,r.y,r.w,r.h);touchLabel(c,r.x+1,r.y+12,r.w-2,labels[i],0xffff,2);}
 }
+
 template<class C>void panelCampBackdrop(C& c,const rpg::Game& g,const ViewState& v){
  if(v.page==Page::CampSetup){PANEL_IMAGE(c,campSetup);}else if(v.page==Page::CampRoll){PANEL_IMAGE(c,campRoll);}else {PANEL_IMAGE(c,campRest);}
  if(g.city!=1){drawBackdrop(c,g.city==0?bg_explore0:g.city==2?bg_explore2:bg_explore3);scenicHeading(c,v.page==Page::CampSetup?"ACAMPAMENTO":v.page==Page::CampRoll?"TESTE DE ACAMPAR":"DESCANSANDO");}

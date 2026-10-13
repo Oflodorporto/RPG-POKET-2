@@ -1,0 +1,25 @@
+7.7 — Bolsa e controles de toque
+
+Bolsa de couro com nove quadrados maiores, nomes/quantidades legíveis, botão grande
+Equipamentos e Voltar/Usar separados. Toque no item para selecionar; toque Usar para
+consumir quando permitido. Sucata e gazuas usam Ver. Selecionar não gasta turno nem
+item. As regras das poções no combate e os três saves continuam iguais.
+
+Equipamentos mantém todos os itens, com seis por página e botões de44px. Carvalho
+recebe botões112×40 em duas colunas, Menu grande e texto mais grosso nos painéis.
+A arte de Carvalho é a existente; outras cidades não mudam. Mensagens longas ficam
+contidas. A textura da bolsa fica no firmware; o artes.pak636 permanece idêntico.
+
+Inclui integralmente os pacotes anteriores: recuperação SD limitada e Continuar
+após vitória/derrota/fuga, com Ficha/HP/Guia separados. Sem mudanças em regras,
+Save28, inventário, recompensas, RNG, fadiga ou PvP. Não muda escala dos inimigos.
+
+Os testes automatizados e a compilação não substituem teste físico. Conforto dos
+alvos de toque ainda depende de conferência na placa. Preferir o cartão funcional;
+a recuperação não garante corrigir EIO persistente do cartão problemático.
+
+Atualizar em Configurações → Atualização → Verificar versão. Não é necessário baixar
+ou trocar manualmente as artes se já estiverem válidas. Pelo cabo, abrir o fonte
+inteiro desta tag, core3.3.12, Flash16MB/QIO, PSRAM OPI, CDC habilitado, partição
+16M Flash (3MB APP/9.9MB FATFS), Erase All Flash Disabled. Fazer backup quando houver
+dados importantes; a IDE/core não oferece garantia absoluta de preservação de NVS.

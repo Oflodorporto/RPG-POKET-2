@@ -14,7 +14,7 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Publicar uma versão
 
-A correção dungeon/interface exige qualificação bem-sucedida do mesmo SHA em `feat/dungeon77-release`, identidade final exata e tag inédita; usa `verify_dungeon77_release.py`, mantendo os verificadores históricos. Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
+A interface bolsa/toque exige qualificação bem-sucedida do mesmo SHA em `feat/touch77-release`, identidade final exata e tag inédita; usa `verify_touch77_release.py`, mantendo os verificadores históricos. Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
 
 1. Atualize `ReleaseVersion.h`: versão e número crescente `FW_BUILD`.
 2. Atualize fontes e pacote `cartao/RPGPOKET/artes.pak`, conservando os identificadores em `AssetCatalog.h`.
@@ -23,6 +23,8 @@ A correção dungeon/interface exige qualificação bem-sucedida do mesmo SHA em
 5. O envio de alteracoes a `main` tambem inicia a publicacao automaticamente. O workflow compila, verifica os tamanhos e publica `firmware.bin`, `artes.pak` e `manifest.json` em uma Release. A placa consulta a última Release publicada.
 
 ## Estado atual
+
+**Candidato em qualificação: 2026.10.13-touch77 / build2026101305.** Bolsa de couro com nove células52×52 e ações separadas, Equipamentos/Carvalho com controles maiores e texto local mais grosso. [Escopo e evidências](docs/BOLSA_TOQUE_7_7.txt). Artes externas e pacotes1/2 preservados; compilação/publicação ainda pendentes. Teste físico não realizado.
 
 **Firmware atual: 7.7 — Dungeon e interface de combate, 2026.10.13-dungeon77 / build2026101304.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-dungeon77) · [Evidências](docs/CORRECOES_POS_TESTE_7_7.txt) · [Uso](docs/RELEASE_DUNGEON_7_7_NOTAS.txt). Fonte/tag `59258cec`; [qualificação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38368462066) e [publicação/downloads](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38369185601) verdes, latest conferido. Continuar visível após vitória/derrota/fuga, estado verde acima das setas, HP/Ficha separados e Guia fora da mensagem. Oito suites/três sanitizadores,1.440 continuidades,136 toques,560 frames, compilação ESP32 e transições reais de artefatos aprovados. Firmware2.687.040 bytes/margem458.688. Recovery77, artes636, Save28, recompensas e RNG preservados. **Teste físico desta interface pendente.** Bolsa/Carvalho e escala/contraste dos inimigos não incluídos.
 

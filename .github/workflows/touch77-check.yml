@@ -1,0 +1,43 @@
+name: Qualificar bolsa e toque final sem publicar
+on:
+  push:
+    branches: [feat/touch77-release]
+    paths: ["firmware/**", "assets/bag-touch1/**", "tests/**", "tools/**", ".github/workflows/touch77-check.yml", ".github/workflows/release.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: touch77-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/touch77-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      RPG_DETECT_LEAKS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Testar bolsa, toque e regressao dungeon/SD
+        run: bash tools/test_touch77.sh
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar sem gravar nem publicar
+        run: >-
+          arduino-cli compile --jobs 4
+          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
+          --output-dir build firmware/RPG_POKET_2
+      - name: Conferir identidade final, transicoes e manifesto sem publicar
+        run: |
+          python3 tools/release_manifest.py
+          python3 tools/verify_touch77_release.py
+          python3 tests/touch77_release_verifier.py
+          python3 tools/test_touch77_release.py release
+          python3 tools/test_touch77_release.py release --sanitizers

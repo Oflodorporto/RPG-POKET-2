@@ -2,12 +2,12 @@
 // Native UI shapes for the bag, existing flash item art for its contents.
 template<class Canvas> void drawBag(Canvas& c,const rpg::Game& g,const ViewState& v){
   c.fillRect(0,0,240,320,UI_INK);c.setTextWrap(false);
-  auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
+  auto text=[&](int x,int y,const char* s,uint16_t color=UI_WHITE){c.setTextSize(1);c.setTextColor(color);c.setCursor(x+1,y);c.print(s);c.setCursor(x,y);c.print(s);};
   auto center=[&](int y,const char* s,uint16_t color=UI_WHITE){text((240-int(strlen(s))*6)/2,y,s,color);};
   // Leather backpack with handle, straps, flap and buckle, built as UI geometry.
   c.drawRect(18,7,16,12,UI_GOLD);c.fillRect(11,16,30,29,0x8b26);c.drawRect(11,16,30,29,UI_GOLD);
   c.fillRect(8,25,3,14,UI_GOLD);c.fillRect(41,25,3,14,UI_GOLD);c.fillRect(13,18,26,9,0xa409);c.fillRect(23,25,6,7,UI_GOLD);
-  text(55,14,"BOLSA DO HEROI",UI_GOLD);char b[48];snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);text(55,30,b);
+  text(55,14,"EQUIPAMENTOS",UI_GOLD);char b[48];snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);text(55,30,b);
   snprintf(b,sizeof(b),"HP %u/%u   MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);center(54,b);
   bool gear=v.page==Page::BagGear;unsigned count=rpg::gearOwnedCount(g.owned);
   const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit"};
@@ -32,15 +32,15 @@ template<class Canvas> void drawBag(Canvas& c,const rpg::Game& g,const ViewState
     text(x+4,y+37,names[i]);snprintf(b,sizeof(b),"%u",quantities[i]);text(x+64-int(strlen(b))*6,y+29,b,quantities[i]?UI_GREEN:UI_MUTED);
   }
   unsigned selected=std::min(gear?5u:6u,unsigned(v.choice));
-  if(gear){for(int x:{10,162}){c.fillRect(x,200,68,24,UI_PANEL);c.drawRect(x,200,68,24,UI_GOLD);text(x+10,208,x==10?"< Pag":"Pag >");}
-    snprintf(b,sizeof(b),"%u/%u",v.gearIndex+1,std::max(1u,(count+5)/6));center(208,b);
+  if(gear){for(auto r:{touchUi::gearPrevious,touchUi::gearNext}){c.fillRect(r.x,r.y,r.w,r.h,UI_PANEL);c.drawRect(r.x,r.y,r.w,r.h,UI_GOLD);text(r.x+10,r.y+18,r.x==10?"< Pag":"Pag >");}
+    snprintf(b,sizeof(b),"%u/%u",v.gearIndex+1,std::max(1u,(count+5)/6));center(216,b);
   }else {snprintf(b,sizeof(b),"%s x%u",names[selected],quantities[selected]);center(228,*v.message?v.message:b,*v.message?UI_RED:UI_GOLD);}
-  int detailY=gear?230:245,detailH=gear?34:28;c.fillRect(14,detailY,212,detailH,UI_PANEL);c.drawRect(14,detailY,212,detailH,UI_GOLD);
+  int detailY=gear?244:245,detailH=gear?20:28;c.fillRect(14,detailY,212,detailH,UI_PANEL);c.drawRect(14,detailY,212,detailH,UI_GOLD);
   unsigned index=v.gearIndex*6+selected;
   if(gear)snprintf(b,sizeof(b),"%.33s",index<count?rpg::gearName(rpg::gearOwnedAt(g.owned,index)):"Nenhum equipamento neste slot");
-  else snprintf(b,sizeof(b),"Equipamentos: %u",count);center(gear?243:255,b);
+  else snprintf(b,sizeof(b),"Equipamentos: %u",count);center(gear?250:255,b);
   const char* notice=*v.message?v.message:gear?"Selecione o item para equipar":selected==2?"Chave da cripta / entrada nas Ruinas":selected>2?"Consumido na viagem quando preciso":"Selecione e toque em Usar";
-  if(gear)center(269,notice,UI_MUTED);
-  if(gear){const char* labels[]={"Voltar","Equipar","Vender"};for(unsigned i=0;i<3;++i){int x=10+i*74;c.fillRect(x,278,70,40,UI_PANEL);c.drawRect(x,278,70,40,UI_GOLD);text(x+(70-int(strlen(labels[i]))*6)/2,294,labels[i]);}return;}
+  if(gear)touchLabel(c,10,266,220,notice,UI_MUTED);
+  if(gear){const char* labels[]={"Voltar","Equipar","Vender"};const scenicUi::Rect buttons[]={touchUi::gearBack,touchUi::gearEquip,touchUi::gearSell};for(unsigned i=0;i<3;++i){auto r=buttons[i];c.fillRect(r.x,r.y,r.w,r.h,UI_PANEL);c.drawRect(r.x,r.y,r.w,r.h,UI_GOLD);touchLabel(c,r.x+2,r.y+18,r.w-4,labels[i]);}return;}
   for(unsigned i=0;i<2;++i){int x=i?124:14;c.fillRect(x,278,102,40,UI_PANEL);c.drawRect(x,278,102,40,UI_GOLD);text(x+(i&&gear?30:33),294,i?(gear?"Equipar":"Usar"):"Voltar");}
 }

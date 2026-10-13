@@ -1,0 +1,65 @@
+PACOTE 3 — BOLSA, EQUIPAMENTOS E CARVALHO
+Candidato final: 2026.10.13-touch77 / build 2026101305
+Base publicada: dungeon77, fonte59258cec, documentação45cd2234.
+
+ESCOPO
+A bolsa usa o conceito de couro aprovado pelo proprietário, adaptado por geometria
+determinística a240×320. São nove células52×52, Equipamentos216×40 e dois botões
+de ação108×44. Tocar numa célula apenas seleciona: Usar mantém as regras anteriores,
+Ver abre a informação de sucata/gazuas com as restrições anteriores. Nenhum item,
+turno, ouro ou RNG é consumido pela seleção. Quantidade e nome continuam visíveis.
+Equipamentos mantém todos os18 itens e6 células por página. Botões de página/rodapé
+medem44px de altura. A mensagem inferior tem largura220px e margem10px, com corte
+explícito. A capacidade do inventário e a compra/venda não foram redesenhadas.
+
+Carvalho mantém sua arte anterior ao fundo e recebe8 botões112×40 em duas colunas,
+Menu228×40, título/nível/ouro/objetivo separados. Mares e outras cidades permanecem
+como antes. Peso de texto adicional é local a esses painéis, sem mudar fonte global.
+
+ARTE E MEMÓRIA
+assets/bag-touch1/provenance.json registra autoria, hash do conceito aprovado,
+conversão e hash de referência RGB565. A fonte compactada é reproduzível por
+prepare_touch_skin.py sem dependências novas. A textura tem240×320,4bpp, nibble alto
+primeiro,16 cores RGB565:38.400 bytes de plano+32 bytes de paleta na flash.
+O decoder usa linha fixa de480 bytes na pilha, sem heap, PSRAM adicional ou leitura
+SD durante render. Crop rejeita dimensões/coordenadas inválidas antes de multiplicar.
+Os ícones existentes vêm do catálogo anterior; fallback ausente continua navegável.
+O pacote externo permanece byte-idêntico:636 entradas,6.661.456 bytes,
+CRC0b84d93f/SHA2565416f6d507601bc131751e89106332f291f8d1d09642faa264a9b61215dd43f1.
+O guard mantém teto de crescimento+64KiB sobre visual77(2.677.248), sem flexibilizar.
+PSRAM conhecida6.828.800 bytes continua estimativa estática, não medição de heap.
+
+PRESERVAÇÃO
+Recovery77 e seus testes são preservados byte a byte. DungeonView, TouchGate e o
+acknowledgeDungeonResult permanecem idênticos ao pacote2. Save28/128 bytes/leitura
+1..28, três slots, fadiga, PvP, regras, recompensas e tempos não mudam. O dispatcher
+muda apenas hitboxes e seleção/ação da bolsa. O snapshot dos controllers é conferido.
+
+QUALIFICAÇÃO
+Testes específicos cobrem todos os9 itens,18 equipamentos/3 páginas, três slots,
+heróis antigos/novos4 classes, Home/Hero/Enemy/Won, dungeon/retorno, vazio/HP cheio,
+animação, toque mantido, falha/retry de save, valores/textos máximos e fallback.
+Renders240×320 verificam limites de texto e Game/Save inalterados; recortes dos7
+ícones são comparados pixel a pixel entre bolsa vazia/cheia. Previews foram conferidos
+visualmente; quantidade alta não apaga os ícones. O caso longo de equipamento fica
+contido na margem declarada. Regressores do pacote2 e save/equipamento integram o gate.
+O verificador exige identidade compilada única, manifesto exato, catálogo636/hash,
+Save28, margem OTA e PSRAM. Transições usam os parsers/adapters reais7.6/dungeon77/
+final com SHA real; a prova local com firmware sintético não é compilação de placa.
+Resultado local:11 suites normais/5 alvos ASan+UBSan,9.234 casos novos de toque,
+2.112 frames novos,1.440 continuações/560frames/136toques do pacote2,15 probes do
+verificador e transições sintéticas normal/SAN passaram. LeakSanitizer fica para CI
+(local detect_leaks=0). Logs preservam os ajustes de dois fixtures antigos, sem
+falha de produção: coordenada anterior do cristal e retorno Menu em Page::Blocked.
+Conferência visual aprovada; revisão de fonte sem bloqueador. Compilação ESP32 e
+publicação ainda pendentes, sem declaração de disponibilidade deste candidato.
+
+PUBLICAÇÃO E LIMITES
+A qualificação da branch feat/touch77-release é somente leitura, sem upload. O
+publicador exige sucesso do mesmoSHA, main, versão exata e tag inédita; recompila,
+revalida e confere os três downloads públicos/latest com parsers reais. Os hashes
+separados devem ser registrados: recompilações podem diferir em metadados de build.
+Não se declara teste físico, precisão do touch, FPS ou heap medido. Não inclui
+escala/contraste dos inimigos, novas cidades/biomas, antebraços ou mudanças de poderes.
+Cartão instável pode continuar falhando; não formatar nem repetir downloads sem
+examinar o diagnóstico. A recuperação anterior continua limitada e com SHA/CRC.
