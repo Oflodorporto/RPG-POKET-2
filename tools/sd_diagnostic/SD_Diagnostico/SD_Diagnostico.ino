@@ -90,4 +90,23 @@ void saveReport(){if(!mountCard("save-report")){unmountCard();return;}char p[96]
 void setup(){Serial.begin(115200);Serial.setTxTimeoutMs(100);pinMode(1,OUTPUT);digitalWrite(1,LOW);pinMode(41,OUTPUT);pinMode(45,OUTPUT);deselect();SPI.begin(39,40,38);WiFi.persistent(false);logLine("%s flash=%lu PSRAM=%lu",VERSION,(unsigned long)ESP.getFlashChipSize(),(unsigned long)ESP.getPsramSize());logLine("PINS MOSI38 SCLK39 MISO40 SDCS41 LCDCS45 DC42 BL1; no reset GPIO (-1). Software checks are not electrical continuity tests.");logLine("Sketch has no direct save/NVS/OTA calls. Standard core startup can affect NVS. Use new board. No automatic tests.");logLine("4: storage4MHz | 1: storage1MHz (choose ONE per cold boot)");logLine("N: WiFi without SD | D: WiFi new SD file (after4/1)");logLine("R: RAM report | S: save new report file | H: commands");}
 void command(char c){if(!diag::commandAllowed(privateInputFailed,c)){Serial.println("Entrada privada cancelada. Reinicie para novos testes; R recupera relatorio.");return;}if(c=='R'){Serial.println("--- RAM REPORT ---");Serial.print(report.data);Serial.printf("--- END truncated=%u ---\n",report.truncated);return;}if(c=='H'){Serial.println("4/1 once per cold boot; N network; D new SD download; R report; S new report file");return;}
  if(c=='D'&&!session.storage){Serial.println("Primeiro execute 4 ou 1.");return;}if(!session.take(c)){Serial.println("Comando invalido ou ja executado. Sem repeticao automatica.");return;}if(c=='4'||c=='1'){hz=c=='4'?4000000:1000000;storageRun();}else if(c=='N'||c=='D')networkRun(c=='D');else if(c=='S')saveReport();}
-void loop(){static char c=0;static bool bad=false;while(Serial.available()){int v=Serial.read();if(v=='\r')continue;if(v=='\n'){char pending=c;bool invalid=bad;c=0;bad=false;if(!invalid&&pending)command(pending);else if(invalid)Serial.println("Envie uma letra e Nova linha.");return;}if(c)bad=true;else c=char(v);}delay(10);}
+void loop() {
+  static char c = 0;
+  static bool bad = false;
+  while (Serial.available()) {
+    int v = Serial.read();
+    if (v == '\r') continue;
+    if (v == '\n') {
+      char pending = c;
+      bool invalid = bad;
+      c = 0;
+      bad = false;
+      if (!invalid && pending) command(pending);
+      else if (invalid) Serial.println("Envie uma letra e Nova linha.");
+      return;
+    }
+    if (c) bad = true;
+    else c = char(v);
+  }
+  delay(10);
+}
