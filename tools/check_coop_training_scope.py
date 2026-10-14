@@ -1,18 +1,39 @@
 #!/usr/bin/env python3
 """Read-only local candidate gate; never schedules CI or publishes."""
 from pathlib import Path
-import hashlib,json,subprocess
+import hashlib,json,subprocess,sys,os
 root=Path(__file__).resolve().parents[1]
 def git(*args):return subprocess.check_output(['git','-C',str(root),*args],text=True)
-assert git('branch','--show-current').strip()=='local/coop-training-firmware'
+branch=git('branch','--show-current').strip()
+if '--ci' in sys.argv or not branch:
+ assert os.environ.get('GITHUB_EVENT_NAME')=='push'
+ assert os.environ.get('GITHUB_REF')=='refs/heads/feat/coop-training-check'
+ assert os.environ.get('GITHUB_SHA')==git('rev-parse','HEAD').strip()
+ assert not git('status','--porcelain','--untracked-files=all').strip(),'CI requires exact clean source'
+else:assert branch in ('local/coop-training-firmware','feat/coop-training-check')
 BASE='6a23dda54114db611b818b51e4b1b942019098fa'
+CANDIDATE='b117da8bd46eb1cb3fa4e051654dc9e32c6f126e'
+CANDIDATE_TREE='56a7bba85c83ba3584589502a81f3c69cde5dc01'
+assert git('rev-parse',CANDIDATE+'^{tree}').strip()==CANDIDATE_TREE,'Reviewed source tree mismatch'
+WORKFLOW='.github/workflows/coop-training-check.yml'
+ci_only={WORKFLOW,'tools/check_coop_training_scope.py','tools/record_coop_training_build.py','tests/coop_training_qualification_config.py','tests/coop_training_build_evidence.py','docs/COOP_TRAINING_CI_QUALIFICATION.md'}
+# Production and 68 of the reviewed 69 files are immutable. This scope script
+# itself is the sole reviewed-file exception for the new qualification gate.
+for line in git('diff',CANDIDATE,'--name-status').splitlines():
+ status,path=line.split('\t',1)
+ assert status in ('A','M') and path in ci_only,line
 allowed={'firmware/RPG_POKET_2/ClubRadio.h','firmware/RPG_POKET_2/RPG_POKET_2.ino','firmware/RPG_POKET_2/View.h'}
 for line in git('diff',BASE,'--name-status').splitlines():
  status,path=line.split('\t',1)
  if status=='M':assert path in allowed,path
- else:assert status=='A' and path.startswith(('firmware/RPG_POKET_2/Coop','prototypes/','tests/coop_','tools/','docs/COOP_')),line
-for prefix in ['assets','cartao','.github','firmware/RPG_POKET_2/Save.h','firmware/RPG_POKET_2/Persistence.h','firmware/RPG_POKET_2/Rules.h','firmware/RPG_POKET_2/ClubProtocol.h','firmware/RPG_POKET_2/ClubProtocol.cpp','firmware/RPG_POKET_2/ClubDuel.cpp']:
+ else:assert status=='A' and (path==WORKFLOW or path.startswith(('firmware/RPG_POKET_2/Coop','prototypes/','tests/coop_','tools/','docs/COOP_'))),line
+assert set(git('diff',BASE,'--name-only','--','.github').splitlines())<={WORKFLOW}
+for prefix in ['assets','cartao','firmware/RPG_POKET_2/Save.h','firmware/RPG_POKET_2/Persistence.h','firmware/RPG_POKET_2/Rules.h','firmware/RPG_POKET_2/ReleaseVersion.h','firmware/RPG_POKET_2/ClubProtocol.h','firmware/RPG_POKET_2/ClubProtocol.cpp','firmware/RPG_POKET_2/ClubDuel.cpp']:
  assert not git('diff',BASE,'--',prefix),prefix
+production=set(git('ls-files','--','firmware').splitlines())
+for p in (root/'firmware').rglob('*'):
+ assert not p.is_symlink(),p
+ if p.is_file():assert str(p.relative_to(root)) in production,('Untracked/ignored production input',p)
 frozen=json.loads((root/'prototypes/cooperative_platform/FROZEN_INPUTS.json').read_text())
 for entry in frozen['files']:
  assert hashlib.sha256((root/entry['path']).read_bytes()).hexdigest()==entry['sha256'],entry['path']
@@ -33,4 +54,4 @@ for path in list((root/'firmware/RPG_POKET_2/Coop').glob('*.h'))+[root/'firmware
   # Inspect lines that are not whole-line comments; inline commentary is harmless.
   live='\n'.join(line.split('//',1)[0] for line in code.splitlines())
   assert forbidden not in live,(path,forbidden)
-print('PASS: candidate-only branch/default-off, only 3 existing integration files changed, campaign/PvP protocol/assets/workflows frozen, 19 prototype hashes, exclusive-loop entry/exit guards, copy-only callback, no campaign/write/allocation APIs')
+print('PASS: candidate-only branch/default-off, reviewed production frozen, only 3 existing integration files changed, campaign/PvP protocol/assets/old workflows frozen, isolated read-only qualification only, 19 prototype hashes, exclusive-loop entry/exit guards, copy-only callback, no campaign/write/allocation APIs')

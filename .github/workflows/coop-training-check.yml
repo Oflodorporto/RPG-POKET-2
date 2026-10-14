@@ -1,0 +1,85 @@
+name: Qualificar treino coop experimental sem publicar
+# Only a separately authorized push to this isolated branch starts this check.
+# Evidence only: no installable binaries, release manifests, tags or publishing.
+on:
+  push:
+    branches: [feat/coop-training-check]
+permissions:
+  contents: read
+concurrency:
+  group: coop-training-check-${{ github.ref }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+jobs:
+  focused-native:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/coop-training-check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verificar configuracao isolada e fontes congeladas
+        run: |
+          python3 -m pip install 'PyYAML==6.0.3'
+          python3 tests/coop_training_qualification_config.py
+          python3 tests/coop_training_build_evidence.py
+          python3 tools/check_coop_training_scope.py --ci
+      - name: Testar treino, Save30 RNG, compatibilidade desligada e tres regressoes PvP
+        run: bash tools/test_coop_training.sh build/coop-training-native
+      - name: Guardar somente provas nativas
+        uses: actions/upload-artifact@v4
+        with:
+          name: coop-training-EXPERIMENTAL-native-${{ github.sha }}
+          path: build/coop-training-native/*.log
+          if-no-files-found: error
+          retention-days: 7
+  esp32-on-off:
+    needs: focused-native
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/coop-training-check'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 historico somente no runner descartavel
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar SHA exato nas duas flags fora do sketch sem exportar
+        run: |
+          python3 tools/check_coop_training_scope.py --ci
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p build/coop-training-evidence
+          arduino-cli version > build/coop-training-evidence/toolchain.txt
+          arduino-cli core list >> build/coop-training-evidence/toolchain.txt
+          for flag in 0 1; do
+            arduino-cli compile --jobs 4 \
+              --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+              --build-property "compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=$flag" \
+              --build-path "$RUNNER_TEMP/coop-training-build/flag-$flag" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/coop-training-evidence/esp32-flag-$flag.log"
+          done
+          python3 tools/record_coop_training_build.py --build-root "$RUNNER_TEMP/coop-training-build" --evidence-dir build/coop-training-evidence
+          python3 tools/check_coop_training_scope.py --ci
+          test -z "$(git status --porcelain --untracked-files=all)"
+      - name: Guardar somente identidade experimental e orcamento, sem firmware instalavel
+        uses: actions/upload-artifact@v4
+        with:
+          name: coop-training-EXPERIMENTAL-NOT-FOR-INSTALL-${{ github.sha }}
+          path: |
+            build/coop-training-evidence/*.json
+            build/coop-training-evidence/*.log
+            build/coop-training-evidence/*.txt
+          if-no-files-found: error
+          retention-days: 7
