@@ -17,11 +17,14 @@ CANDIDATE_TREE='56a7bba85c83ba3584589502a81f3c69cde5dc01'
 assert git('rev-parse',CANDIDATE+'^{tree}').strip()==CANDIDATE_TREE,'Reviewed source tree mismatch'
 WORKFLOW='.github/workflows/coop-training-check.yml'
 ci_only={WORKFLOW,'tools/check_coop_training_scope.py','tools/record_coop_training_build.py','tests/coop_training_qualification_config.py','tests/coop_training_build_evidence.py','docs/COOP_TRAINING_CI_QUALIFICATION.md'}
-# Production and 68 of the reviewed 69 files are immutable. This scope script
-# itself is the sole reviewed-file exception for the new qualification gate.
+# Exact target-compatibility exception after CI38619347753 rejected the
+# Xtensa std::atomic lock-free assumption. No other reviewed source may change.
+TARGET_COMPATIBILITY_PATCH={'firmware/RPG_POKET_2/Coop/CoopRadioDevice.h': '2b3ee80d66ed1e0ab24990fc342a69c3bde2f5ca4a445e05e3909c35589925b7', 'tests/coop_fake/freertos/FreeRTOS.h': '662b4dd45c2113bdd4b93b3a68648dbdf49fb3b366e94135dc6e608d51fbcb15', 'tests/coop_training_radio.cpp': '57f3a513afd58ffce480c1d56bceb39d0fc214650772c5c424eadb5a6baa9466'}
+for name,digest in TARGET_COMPATIBILITY_PATCH.items():
+ assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest,('Target compatibility patch mismatch',name)
 for line in git('diff',CANDIDATE,'--name-status').splitlines():
  status,path=line.split('\t',1)
- assert status in ('A','M') and path in ci_only,line
+ assert status in ('A','M') and path in ci_only|set(TARGET_COMPATIBILITY_PATCH),line
 allowed={'firmware/RPG_POKET_2/ClubRadio.h','firmware/RPG_POKET_2/RPG_POKET_2.ino','firmware/RPG_POKET_2/View.h'}
 for line in git('diff',BASE,'--name-status').splitlines():
  status,path=line.split('\t',1)
@@ -54,4 +57,4 @@ for path in list((root/'firmware/RPG_POKET_2/Coop').glob('*.h'))+[root/'firmware
   # Inspect lines that are not whole-line comments; inline commentary is harmless.
   live='\n'.join(line.split('//',1)[0] for line in code.splitlines())
   assert forbidden not in live,(path,forbidden)
-print('PASS: candidate-only branch/default-off, reviewed production frozen, only 3 existing integration files changed, campaign/PvP protocol/assets/old workflows frozen, isolated read-only qualification only, 19 prototype hashes, exclusive-loop entry/exit guards, copy-only callback, no campaign/write/allocation APIs')
+print('PASS: candidate-only branch/default-off, reviewed production frozen except exact target synchronization fix, only 3 existing integration files changed, campaign/PvP protocol/assets/old workflows frozen, isolated read-only qualification only, 19 prototype hashes, exclusive-loop entry/exit guards, copy-only callback, no campaign/write/allocation APIs')

@@ -6,7 +6,6 @@
 #include <esp_wifi.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
-#include <atomic>
 namespace coopradio {
 struct Datagram {uint32_t generation=0;coopplatform::Mac source{};uint16_t size=0;uint8_t bytes[coop::kMaxPacket]{};};
 // Lifetime is the entire firmware, not a session. A late callback can only
@@ -14,14 +13,28 @@ struct Datagram {uint32_t generation=0;coopplatform::Mac source{};uint16_t size=
 inline StaticQueue_t queueState;
 inline uint8_t queueBytes[8*sizeof(Datagram)]{};
 inline QueueHandle_t inbox=nullptr;
-inline std::atomic<uint32_t> activeGeneration{0},queueDrops{0};
+// ESP-NOW receive callbacks run in the Wi-Fi task, not an ISR. IDF's SMP
+// portMUX provides the cross-core publication barrier that Xtensa std::atomic
+// cannot promise here. Hold it only for scalar access, never queue/driver work.
+class CallbackCounters {
+ portMUX_TYPE mux=portMUX_INITIALIZER_UNLOCKED;
+ uint32_t active=0,dropped=0;
+public:
+ explicit CallbackCounters(uint32_t initialDrops=0):dropped(initialDrops){}
+ CallbackCounters(const CallbackCounters&)=delete;CallbackCounters& operator=(const CallbackCounters&)=delete;
+ uint32_t generation(){portENTER_CRITICAL(&mux);const uint32_t value=active;portEXIT_CRITICAL(&mux);return value;}
+ void publish(uint32_t value){portENTER_CRITICAL(&mux);active=value;portEXIT_CRITICAL(&mux);}
+ void drop(){portENTER_CRITICAL(&mux);if(dropped!=UINT32_MAX)++dropped;portEXIT_CRITICAL(&mux);}
+ uint32_t drops(){portENTER_CRITICAL(&mux);const uint32_t value=dropped;portEXIT_CRITICAL(&mux);return value;}
+};
+static_assert(sizeof(CallbackCounters)<=64,"Callback synchronization exceeded static RAM allowance");
+inline CallbackCounters callbackCounters;
 inline uint32_t nextGeneration=0;
-static_assert(std::atomic<uint32_t>::is_always_lock_free,"32-bit callback counters must be lock-free");
 inline void receiveCallback(const esp_now_recv_info_t* info,const uint8_t* bytes,int length){
- const uint32_t token=activeGeneration.load(std::memory_order_acquire);
+ const uint32_t token=callbackCounters.generation();
  if(!token||!info||!info->src_addr||!bytes||length<4||length>int(coop::kMaxPacket))return;
  Datagram d{};d.generation=token;d.size=uint16_t(length);std::memcpy(d.source.bytes,info->src_addr,6);std::memcpy(d.bytes,bytes,length);
- if(xQueueSend(inbox,&d,0)!=pdTRUE)queueDrops.fetch_add(1,std::memory_order_relaxed);
+ if(xQueueSend(inbox,&d,0)!=pdTRUE)callbackCounters.drop();
 }
 enum class OpenError:uint8_t {None,Busy,Profile,Queue,WifiMode,WifiStorage,Channel,Mac,Radio,Callback,Session};
 class Device {
@@ -84,7 +97,7 @@ public:
   if(esp_wifi_set_channel(6,WIFI_SECOND_CHAN_NONE)!=ESP_OK)return fail(OpenError::Channel);
   coopplatform::Mac own{};if(esp_wifi_get_mac(WIFI_IF_STA,own.bytes)!=ESP_OK||!coopplatform::usableMac(own))return fail(OpenError::Mac);
   if(esp_now_init()!=ESP_OK)return fail(OpenError::Radio);radioReady=true;
-  generation=++nextGeneration;activeGeneration.store(generation,std::memory_order_release);
+  generation=++nextGeneration;callbackCounters.publish(generation);
   if(esp_now_register_recv_cb(receiveCallback)!=ESP_OK)return fail(OpenError::Callback);
   opened=true;peerCount=nextEvict=0;session=&target;target.setSender(send,this);
   if(!target.open(game,own,entropy,now))return fail(OpenError::Session);
@@ -101,7 +114,7 @@ public:
  void close(){
   // Do not release/alter another owner's radio when open() never acquired it.
   if(!lease||owner!=Owner::Training)return;
-  activeGeneration.store(0,std::memory_order_release);opened=false;
+  callbackCounters.publish(0);opened=false;
   if(radioReady){esp_now_unregister_recv_cb();esp_now_deinit();radioReady=false;}
   if(session){session->setSender(nullptr,nullptr);session=nullptr;}
   restoreOk=restoreWifi();generation=0;peerCount=0;release(Owner::Training);lease=false;
