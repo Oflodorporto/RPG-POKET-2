@@ -10,7 +10,7 @@ import functools
 import operator
 sys.dont_write_bytecode=True
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from record_coop_training_build import parse_memory,check_options,check_image,parse_symbols,compare_budgets,validate_evidence_directory,FQBN
+from record_coop_training_build import parse_memory,check_options,check_image,parse_symbols,inspect_shared_linkage,compare_budgets,validate_evidence_directory,FQBN
 checks=0
 def reject(fn):
     global checks
@@ -51,6 +51,16 @@ reject(lambda:parse_symbols('',1))
 reject(lambda:parse_symbols(symbols+symbols,1)) # ambiguous duplicate names must not collapse
 reject(lambda:parse_symbols(symbols.replace('00000f3c','00010000'),1))
 reject(lambda:parse_symbols(symbols.replace('000007e0','00000c00'),1))
+shared=''.join('3fc00000 00000004 B %s\n'%name for name in ('artMemory','enemyArt::workspace','coopradio::owner','coopradio::callbackCounters'))
+assert len(inspect_shared_linkage(shared,1)['shared_mutable']['artMemory'])==1;checks+=1
+assert inspect_shared_linkage('',0)['shared_mutable']['artMemory']==[];checks+=1
+reject(lambda:inspect_shared_linkage('',1))
+for name in ('artMemory','enemyArt::workspace','coopradio::owner','coopradio::callbackCounters'):
+    reject(lambda name=name:inspect_shared_linkage(shared+'3fc00000 00000004 B '+name+'\n',1))
+tables='3c000000 000029a0 r assetMeta\n3c0029a0 000029a0 r assetMeta\n'
+reject(lambda:inspect_shared_linkage(shared+tables,1))
+fonts='3c000000 00000500 r font\n3c000500 00000500 r font\n'
+assert len(inspect_shared_linkage(shared+fonts,1)['readonly_tables']['font'])==2;checks+=1
 off={'image':{'bytes':1900000},'memory':{'linker_static_ram_bytes':80000}}
 on={'image':{'bytes':2000000},'memory':{'linker_static_ram_bytes':86500}}
 assert compare_budgets(off,on)['added_static_ram_bytes']==6500;checks+=1

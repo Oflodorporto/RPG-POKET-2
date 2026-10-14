@@ -5,9 +5,9 @@
 namespace coopui {
 using namespace coop;
 struct Rect { int16_t x,y,w,h; bool contains(int32_t px,int32_t py) const {return px>=x&&py>=y&&px<int32_t(x)+w&&py<int32_t(y)+h;} };
-constexpr Rect kButtons[4]={{4,199,75,30},{83,199,75,30},{162,199,75,30},{241,199,75,30}};
-constexpr Rect kEnemyHits[3]={{185,45,61,50},{252,70,63,53},{185,98,61,50}};
-constexpr Rect kBossHit={202,50,104,98};
+inline constexpr Rect kButtons[4]={{4,199,75,30},{83,199,75,30},{162,199,75,30},{241,199,75,30}};
+inline constexpr Rect kEnemyHits[3]={{185,45,61,50},{252,70,63,53},{185,98,61,50}};
+inline constexpr Rect kBossHit={202,50,104,98};
 constexpr int16_t kWidth=320,kHeight=240;
 enum class Mode:uint8_t { Action, Ability, Items, Target, Pending };
 enum class Notice:uint8_t { Choose, ChooseTarget, ExperimentalFocus, Items, Cancelled, Pending, Confirmed, Updated, Unavailable, Rejected };

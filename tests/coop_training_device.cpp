@@ -1,6 +1,8 @@
 #define RPG_ENABLE_COOP_TRAINING 1
 #include "../firmware/RPG_POKET_2/View.h"
 #include "../firmware/RPG_POKET_2/TouchGate.h"
+#include "../firmware/RPG_POKET_2/Coop/CoopRadioDevice.h"
+#include "../firmware/RPG_POKET_2/Coop/CoopInput.h"
 #include <cassert>
 #include <cstdio>
 rpg::Game game;ViewState view;TouchGate gate;CombatFx combatFx;
@@ -18,8 +20,10 @@ static void release(){sample(true,false,0,0);now+=31;sample(true,false,0,0);}
 int main(){
  fake::reset();game=rpg::create(0,91);view.page=Page::Guild;uint8_t before[160],after[160];rpg::encodePersistent(game,9,0,before);auto random=game.randomState;
  gate.armed=true;pendingTouch=true;CHECK(openCoopTraining());CHECK(coopIsOpen()&&view.page==Page::CoopTraining&&!pendingTouch&&!gate.armed);CHECK(!game.guildMember); // Training never buys guild membership.
+ CHECK(coopradio::owner==coopradio::Owner::Training&&!coopradio::acquire(coopradio::Owner::Pvp)); // Shared across the real runtime/test translation units.
  sample(true,true,280,10);release();CHECK(!coopClosing&&coopIsOpen()); // old held menu press cannot leave
  sample(true,true,280,10);release();CHECK(coopClosing&&coopIsOpen());now+=351;tickCoopTraining(now);CHECK(!coopIsOpen()&&view.page==Page::Guild&&!gate.armed&&!pendingTouch&&dirty);
+ CHECK(coopradio::owner==coopradio::Owner::None);
  CHECK(!gate.update(true,false,now));now+=31;CHECK(!gate.update(true,false,now));CHECK(gate.update(true,true,now)); // portrait press gate re-arms only after release
  rpg::encodePersistent(game,9,0,after);CHECK(!std::memcmp(before,after,160)&&game.randomState==random&&!fake::nvsWrites&&!fake::erases);
  CHECK(openCoopTraining());coopSession.leave(now);finishCoopExit(now);CHECK(!coopIsOpen());

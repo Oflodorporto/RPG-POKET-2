@@ -47,8 +47,17 @@ static void pureView(){
  void fillScreen(uint16_t c){fillRect(0,0,240,320,c);}void setTextWrap(bool){}void setTextSize(int s){size=s;}void setTextColor(uint16_t c){color=c;}void setCursor(int a,int b){x=a;y=b;}
  void print(const char* value){for(;*value;++value){unsigned ch=uint8_t(*value);for(unsigned a=0;a<5;++a)for(unsigned b=0;b<8;++b)if(font[ch*5+a]&(1<<b))fillRect(x+a*size,y+b*size,size,size,color);x+=6*size;}}
  void draw16bitRGBBitmap(int a,int b,uint16_t* data,int w,int h){for(int j=0;j<h;++j)for(int i=0;i<w;++i)drawPixel(a+i,b+j,data[j*w+i]);}
- };static Canvas canvas;ViewState view;view.page=Page::CoopTraining;menu.art=ArtStatus::Missing;auto hash=coop::stateHash(coopSession.training().endpoint.state);
+ };static Canvas canvas,reference;ViewState view;view.page=Page::CoopTraining;menu.art=ArtStatus::Missing;auto hash=coop::stateHash(coopSession.training().endpoint.state);
  for(unsigned i=0;i<20;++i)render(canvas,r.game[0],view,i);CHECK(packed(r.game[0])==before&&coop::stateHash(coopSession.training().endpoint.state)==hash);
+ // Compare the real View dispatch with the renderer pixel for pixel, without
+ // art and with shared artMemory. Session storage is in the separate runtime.
+ for(bool ready:{false,true}){
+  menu.art=ready?ArtStatus::Ready:ArtStatus::Missing;
+  render(canvas,r.game[0],view,0);LandscapeCanvas<Canvas> direct(reference);
+  coopview::draw(direct,coopview::model(coopSession,ready),coopSession.training());
+  CHECK(!std::memcmp(canvas.pixels,reference.pixels,sizeof(canvas.pixels)));
+  CHECK(packed(r.game[0])==before&&coop::stateHash(coopSession.training().endpoint.state)==hash);
+ }
  auto mapped=toPortrait(266,2);CHECK(canvas.pixels[mapped.y*240+mapped.x]!=0);view.page=Page::Guild;render(canvas,r.game[0],view,0);CHECK(packed(r.game[0])==before); // actual View dispatch restores portrait
 }
 int main(){controls();interrupted();pureView();CHECK(!allocations);std::printf("PASS: %u checks; real lobby controls, target/exit, stale row/release/overflow, actual View landscape/portrait dispatch; zero C++ allocations\n",checks);}

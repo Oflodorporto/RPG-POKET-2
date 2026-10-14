@@ -10,6 +10,7 @@ inline QueueHandle_t xQueueCreateStatic(unsigned n,unsigned size,uint8_t* bytes,
 inline int xQueueSend(QueueHandle_t q,const void* p,unsigned wait){assert(!fakeCriticalDepth);return uncheckedQueueSend(q,p,wait);}
 inline int xQueueReceive(QueueHandle_t q,void* p,unsigned wait){assert(!fakeCriticalDepth);return uncheckedQueueReceive(q,p,wait);}
 #include "../firmware/RPG_POKET_2/Coop/CoopRadioDevice.h"
+#include "../firmware/RPG_POKET_2/Coop/CoopEligibilityBridge.h"
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>

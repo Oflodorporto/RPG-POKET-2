@@ -1,6 +1,7 @@
 // Host regression of real firmware admission + authoritative RAM-only combat.
 // No ESP32 timing/radio claim: copied bounded frames are delivered by this rig.
 #include "../firmware/RPG_POKET_2/Coop/CoopSession.h"
+#include "../firmware/RPG_POKET_2/Coop/CoopEligibilityBridge.h"
 #include "../firmware/RPG_POKET_2/ClubProtocol.h"
 #include <cassert>
 #include <cstdio>

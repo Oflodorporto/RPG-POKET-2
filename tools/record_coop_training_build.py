@@ -97,6 +97,23 @@ def parse_symbols(text,flag):
     assert sizes['coopradio::queueBytes']+sizes['coopradio::queueState']<=3072
     return sizes
 
+def inspect_shared_linkage(text,flag):
+    """Enforce singleton mutable/art storage; report inherited font copies."""
+    symbols={}
+    for line in text.splitlines():
+        m=re.match(r'^\s*[0-9a-fA-F]+\s+([0-9a-fA-F]+)\s+(\S)\s+(.+)$',line)
+        if m:symbols.setdefault(m[3],[]).append({'bytes':int(m[1],16),'kind':m[2]})
+    shared=('artMemory','enemyArt::workspace','coopradio::owner','coopradio::callbackCounters')
+    for name in shared:
+        entries=symbols.get(name,[])
+        assert len(entries)<=1,('Duplicate shared mutable state',name)
+        if flag and name!='enemyArt::workspace':assert len(entries)==1,('Missing shared state',name)
+    tables=('assetMeta','artFallback','raceAsset','raceMask','enemyArt::enemies','enemyScale::profiles','font','outfitColors','coopview::kHeroCrop','ruins7Art::palette','ruins7Art::framePixels')
+    for name in tables:
+        if name!='font':assert len(symbols.get(name,[]))<=1,('Duplicate art table',name)
+    return {'shared_mutable':{name:symbols.get(name,[]) for name in shared},
+            'readonly_tables':{name:symbols.get(name,[]) for name in tables}}
+
 def compare_budgets(off,on):
     image=on['image']['bytes']-off['image']['bytes']
     ram=on['memory']['linker_static_ram_bytes']-off['memory']['linker_static_ram_bytes']
@@ -151,12 +168,24 @@ def main():
         sections=subprocess.check_output([str(size),'-A',str(elf)],text=True)
         symbols=subprocess.check_output([str(nm),'-S','-C','--defined-only',str(elf)],text=True)
         object_sizes=parse_symbols(symbols,flag)
+        linkage=inspect_shared_linkage(symbols,flag)
+        translation_units={}
+        for name in ('RPG_POKET_2.ino.cpp.o','CoopRuntime.cpp.o'):
+            obj=folder/'sketch'/name
+            assert obj.is_file() and not obj.is_symlink(),('Expected target object absent',obj)
+            obj_sections=subprocess.check_output([str(size),'-A',str(obj)],text=True)
+            obj_symbols=subprocess.check_output([str(nm),'-S','-C','--defined-only',str(obj)],text=True)
+            if not flag and name=='CoopRuntime.cpp.o':assert not obj_symbols.strip(),'Disabled runtime object has definitions'
+            if name=='CoopRuntime.cpp.o':
+                assert not re.search(r' (?:assetMeta|artFallback|font|artMemory)$|enemyArt::workspace|ruins7Art::',obj_symbols,re.M),'Art storage emitted by runtime object'
+            translation_units[name]={**digest(obj),'defined_symbol_lines':len(obj_symbols.splitlines())}
+            sections+='\nTRANSLATION UNIT '+name+'\n'+obj_sections
         (out/('sections-flag-'+str(flag)+'.txt')).write_text(sections)
         # Keep a small, inspectable symbol extract instead of the entire ELF.
-        (out/('coop-symbols-flag-'+str(flag)+'.txt')).write_text('\n'.join(line for line in symbols.splitlines() if any(token in line for token in ('coopSession','coopInput','coopDevice','coopradio::'))) +'\n')
+        (out/('coop-symbols-flag-'+str(flag)+'.txt')).write_text('\n'.join(line for line in symbols.splitlines() if any(token in line for token in ('coopSession','coopInput','coopDevice','coopradio::','artMemory','enemyArt::workspace','assetMeta','artFallback','raceAsset','raceMask','enemyArt::enemies','enemyScale::profiles',' font','outfitColors','coopview::kHeroCrop','ruins7Art::palette','ruins7Art::framePixels'))) +'\n')
         builds[str(flag)]={'experimental_identity':'coop-training-qualification/'+sha+'/flag-'+str(flag),
             'feature_enabled':bool(flag),'effective_options':effective,'image':image,'image_format':image_format,'elf':digest(elf),
-            'build_log':digest(log),'memory':memory,'target_object_bytes':object_sizes,
+            'build_log':digest(log),'memory':memory,'target_object_bytes':object_sizes,'translation_units':translation_units,'linkage_audit':linkage,
             'binary_uploaded':False,'install_authorized':False}
     budget=compare_budgets(builds['0'],builds['1'])
     sources={name:digest(ROOT/name) for name in git('ls-files').splitlines()}

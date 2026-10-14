@@ -1,5 +1,5 @@
 #pragma once
-#include "CoopView.h"
+#include "CoopViewModel.h"
 #include "CoopSession.h"
 namespace coopplatform {
 // Same-loop capture for FrameBuffer checkpoints. No Session action is dispatched

@@ -1,5 +1,6 @@
 // Actual firmware renderer, real tracked authored art, physical portrait storage.
 #include "../firmware/RPG_POKET_2/Coop/CoopView.h"
+#include "../firmware/RPG_POKET_2/Coop/CoopEligibilityBridge.h"
 #include <array>
 #include <cassert>
 #include <cstdlib>

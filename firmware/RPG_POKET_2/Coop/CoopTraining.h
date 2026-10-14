@@ -1,6 +1,5 @@
 #pragma once
-#include "CoopPortraitBridge.h"
-#include "../Persistence.h"
+#include "CoopTouchSampler.h"
 #include <cstring>
 namespace coopplatform {
 struct Mac {uint8_t bytes[6]{};};
@@ -8,15 +7,9 @@ inline bool sameMac(const Mac&a,const Mac&b){return std::memcmp(a.bytes,b.bytes,
 inline bool usableMac(const Mac&m){uint8_t any=0;for(uint8_t b:m.bytes)any|=b;return any&&!(m.bytes[0]&1);}
 struct Binding {Mac own{},remote{};uint64_t nonce=0;uint8_t local=0;};
 inline bool validBinding(const Binding& b){return b.local<coop::kPlayers&&b.nonce&&usableMac(b.own)&&usableMac(b.remote)&&!sameMac(b.own,b.remote);}
-// Conservative training-only gate. Durable spent abilities remain untouched;
-// active combat buffs/pending actions are not silently imported or discarded.
-inline bool trainingEligible(const rpg::Game& g){
- return rpg::persistentValid(g)&&g.phase==rpg::Phase::Home&&g.p.hp&&
- !g.tripStage&&!g.campStage&&!g.dungeonFlags&&!g.dungeonGenerator&&
- rpg::dailyStateEmpty(g.daily)&&!g.campaignStage&&!g.discovery&&g.eventStage!=2&&
- g.clubStage!=1&&g.clubStage!=2&&!g.guard&&!g.sacredTurns&&!g.turnedTurns&&
- !g.rageTurns&&!g.surgePending&&!g.surgeTurnUsed&&!g.chestLock&&!g.chestPick&&!g.chestTrap;
-}
+// Defined once by CoopEligibilityBridge.h in the original sketch/test TU.
+// Runtime has no dependency on Save/Persistence or their private tables.
+bool trainingEligible(const rpg::Game& g);
 // A wire profile is a bounded combat projection, never a Game or saved character.
 inline bool admittedProfile(const coop::Actor& a,uint8_t owner){
  return owner<coop::kPlayers&&a.id==owner+1&&a.owner==owner&&a.kind==coop::Kind::Player&&
