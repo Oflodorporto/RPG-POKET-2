@@ -4,6 +4,10 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
 #include "ClubUi.h"
+#include "CoopConfig.h"
+#if RPG_ENABLE_COOP_TRAINING
+#include "Coop/RadioOwner.h"
+#endif
 // Radio callbacks only enqueue; all admission, saving and commands run in loop().
 struct ClubInbox {uint8_t mac[6];club::Packet packet;};
 inline StaticQueue_t clubQueueState;inline uint8_t clubQueueBytes[8*sizeof(ClubInbox)];inline QueueHandle_t clubQueue=nullptr;
@@ -22,12 +26,23 @@ inline void clubMoveReceive(void*,uint16_t seq,uint8_t action,bool ack,uint32_t 
 }
 inline bool openClub(){
  if(game.phase!=rpg::Phase::Home||!game.guildMember||game.p.level<5)return false;
+#if RPG_ENABLE_COOP_TRAINING
+ if(!coopradio::acquire(coopradio::Owner::Pvp))return false;
+#endif
  WiFi.disconnect(false,false);WiFi.scanDelete();menu.scanning=menu.connecting=menu.connected=false;WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(false);esp_wifi_set_channel(6,WIFI_SECOND_CHAN_NONE);
- arena=ClubUi{};clubQueue=xQueueCreateStatic(8,sizeof(ClubInbox),clubQueueBytes,&clubQueueState);if(esp_now_init()!=ESP_OK){arena.notice="Radio indisponivel";resumeConnection();return false;}
+ arena=ClubUi{};clubQueue=xQueueCreateStatic(8,sizeof(ClubInbox),clubQueueBytes,&clubQueueState);if(esp_now_init()!=ESP_OK){arena.notice="Radio indisponivel";
+#if RPG_ENABLE_COOP_TRAINING
+ coopradio::release(coopradio::Owner::Pvp);
+#endif
+ resumeConnection();return false;}
  arena.opened=true;esp_now_register_recv_cb(clubReceive);uint8_t mac[6];esp_wifi_get_mac(WIFI_IF_STA,mac);char name[12];const char* radioNames[]={"HUMANO","ELFO","ANAO","ORC"};snprintf(name,sizeof(name),"%s",radioNames[game.race%4]);arena.session.begin(mac,name,game.p.cls,game.p.level,clubSend,nullptr,millis());arena.session.setAppearance(game.race,game.shirt,game.trousers);arena.session.setAdmission(clubAdmission,nullptr);arena.session.setMoveReceiver(clubMoveReceive,nullptr);arena.session.setResultReceiver(clubResultReceive,nullptr);return true;
 }
 inline void closeClub(){
- if(!arena.opened)return;arena.session.cancel(millis());arena.opened=false;esp_now_unregister_recv_cb();esp_now_deinit();clubQueue=nullptr;arena.begun=false;resumeConnection();
+ if(!arena.opened)return;arena.session.cancel(millis());arena.opened=false;esp_now_unregister_recv_cb();esp_now_deinit();clubQueue=nullptr;arena.begun=false;
+#if RPG_ENABLE_COOP_TRAINING
+ coopradio::release(coopradio::Owner::Pvp);
+#endif
+ resumeConnection();
 }
 inline void recoverClubReservation(){if(game.clubStage==1){rpg::refundFight(game);savedTransition(currentPage());}else if(game.clubStage==2){rpg::settleFight(game,game.clubSession,-1);savedTransition(currentPage());}}
 inline void finishClub(int result,bool unconfirmed=false){

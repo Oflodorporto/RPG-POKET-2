@@ -8,6 +8,7 @@
 #include "HeroArt.h"
 #include "PersonalArt.h"
 #include "ClubUi.h"
+#include "CoopUi.h"
 #include "GearArt.h"
 #include "CombatFx.h"
 #include "CombatPresentation.h"
@@ -15,7 +16,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp, CoopTraining };
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::IslandEntry:return bg_explore1;
@@ -71,6 +72,9 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "FirstExperience.h"
 #include "CombatTraceView.h"
 #include "ClubBattleView.h"
+#if RPG_ENABLE_COOP_TRAINING
+#include "Coop/CoopView.h"
+#endif
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -78,6 +82,9 @@ template<class Canvas> struct WifiOverlay {
     for(unsigned i=0;i<4;++i)c.fillRect(223+i*4,17-(i+1)*4,3,(i+1)*4,i<bars?green:0x3186);}
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
+#if RPG_ENABLE_COOP_TRAINING
+  if(v.page==Page::CoopTraining){coopplatform::LandscapeCanvas<Canvas> landscape(c);coopview::draw(landscape,coopview::model(coopSession,menu.art==ArtStatus::Ready),coopSession.training());return;}
+#endif
   if(v.traceOpen){combatTraceUi::drawDetails(c,g,v);return;}
   combatTraceUi::Overlay<Canvas> traceOverlay{c,g,v};
   WifiOverlay<Canvas> wifiOverlay{c,menu.connected&&v.page!=Page::Clock,menu.signalBars};
@@ -196,7 +203,13 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Guild||v.page==Page::GuildJoin){center(12,"GUILDA",2,UI_GOLD);center(43,"DOS AVENTUREIROS",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(68,b);
     npcPortrait(c,story::Npc::Maelis,14,84,48);text(76,88,"Maelis Voss",1,UI_GOLD);text(76,106,"Mestra da Guilda");text(76,124,g.campaignFlags&1?"Respondo pelas cargas.":"Contratos e resgates.");center(141,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(156,v.message,1,UI_RED);
     if(v.page==Page::GuildJoin){center(182,"Pagar 100 ouro para se cadastrar?");button(14,272,102,"Cancelar");button(124,272,102,"Pagar");}
-    else{button(14,170,212,g.guildMember?"Missoes":"Cadastrar");button(14,218,212,"Clube da luta");button(14,272,212,"Voltar");}return;}
+    else{button(14,170,212,g.guildMember?"Missoes":"Cadastrar");
+#if RPG_ENABLE_COOP_TRAINING
+    button(14,218,102,"Clube da luta");button(124,218,102,"Coop treino");
+#else
+    button(14,218,212,"Clube da luta");
+#endif
+    button(14,272,212,"Voltar");}return;}
   if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);npcPortrait(c,story::Npc::Nara,14,45,48);text(76,55,"Nara Veld",1,UI_GOLD);text(76,75,"Dona do Refugio");center(112,"Entre. A fogueira ainda esta acesa.");center(140,"Maelis cuida dos contratos na Guilda.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
   if(v.page==Page::Choose){
     for(int y=8;y<26;y+=7)c.fillRect(8,y,20,3,UI_GOLD);center(12,"RPG POKET 2.0",2,UI_GOLD);center(38,"ESCOLHA SUA CLASSE");auto draft=g;draft.race=menu.draftRace;portrait(v.choice,80,57,&draft);
