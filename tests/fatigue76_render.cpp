@@ -36,10 +36,11 @@ static void checkFrame(FatigueCanvas& canvas, const rpg::Game& game,
                   game.fatigue < 90 ? 2 : 3;
   snprintf(text, sizeof(text), "Fadiga %u/100 / %s", game.fatigue, bands[band]);
   if(view.page!=Page::TravelConfirm)assert(canvas.has(text));
-  for (const auto& label : canvas.labels) assert(label.find("-2") == std::string::npos);
 
   if (view.page == Page::Home) {
     assert(canvas.has("Descanso gratis: fadiga volta a 0"));
+    if(game.fatigue>70){snprintf(text,sizeof(text),"Combate: dano -%u por acao",game.fatigue>=90?2:1);assert(canvas.has(text));}
+    else assert(canvas.has("Combate: sem penalidade ate 70%"));
     assert(canvas.has("Mapa") && canvas.has("Descanso") && canvas.has("Menu"));
   } else if (view.page == Page::CampSetup) {
     assert(canvas.has(menu.campRation ? "Recupera 100% de HP e MP" :

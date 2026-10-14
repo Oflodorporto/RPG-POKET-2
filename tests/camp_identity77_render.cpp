@@ -1,7 +1,9 @@
 #include "SceneCanvas.h"
+#include "../firmware/RPG_POKET_2/Persistence.h"
 #include <filesystem>
 #include <new>
 #include <set>
+#include <chrono>
 
 static bool drawing=false;
 extern "C" void* __real_malloc(size_t);
@@ -12,7 +14,6 @@ extern "C" void* __wrap_calloc(size_t n,size_t s){assert(!drawing);return __real
 extern "C" void* __wrap_realloc(void* p,size_t n){assert(!drawing);return __real_realloc(p,n);}
 void* operator new(size_t n){assert(!drawing);if(auto p=malloc(n))return p;throw std::bad_alloc();}
 void operator delete(void* p)noexcept{free(p);}void operator delete(void* p,size_t)noexcept{free(p);}
-
 namespace {
 constexpr uint16_t sentinel=0x1234;
 struct HeroCanvas {
@@ -21,65 +22,85 @@ struct HeroCanvas {
  void fillRect(int x,int y,int w,int h,uint16_t color){assert(x>=0&&y>=0&&x+w<=width&&y+h<=height);for(int dy=0;dy<h;++dy)for(int dx=0;dx<w;++dx)pixels[(y+dy)*width+x+dx]=color;}
 };
 struct Envelope {int x,y,w,h;};
-Envelope envelope(Page page){return page==Page::CampSetup?Envelope{38,108,58,66}:Envelope{18,114,84,96};}
-constexpr Envelope restSubtitle={14,81,212,17};
-bool inEnvelope(int x,int y,Envelope e){return x>=e.x&&x<e.x+e.w&&y>=e.y&&y<e.y+e.h;}
-void exactSubtitle(const Canvas& scene,bool food,bool kit){
- const char* labels[2][2]={{"Sem comida... dormir no chao","Sem comida, mas com saco de dormir"},{"Carne e uma fogueira quentinha","Carne, fogueira e saco de dormir"}};
- const auto* label=labels[food][kit];const int x=(240-int(strlen(label))*6)/2;
- assert(x>=restSubtitle.x&&x+int(strlen(label))*6<=restSubtitle.x+restSubtitle.w);
- Canvas expected;expected.fillScreen(0x0843);expected.setTextColor(UI_GOLD);expected.setTextSize(1);expected.setCursor(x,85);expected.print(label);
- for(int y=restSubtitle.y;y<restSubtitle.y+restSubtitle.h;++y)for(int px=restSubtitle.x;px<restSubtitle.x+restSubtitle.w;++px)assert(scene.pixels[y*240+px]==expected.pixels[y*240+px]);
+Envelope envelope(Page p){return p==Page::CampSetup?Envelope{46,102,78,78}:Envelope{54,138,84,96};}
+uint64_t hash(const HeroCanvas& c){uint64_t h=1469598103934665603ULL;for(int i=0;i<c.width*c.height;++i){h^=c.pixels[i];h*=1099511628211ULL;}return h;}
+void immutable(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame){
+ auto before=g;auto beforeMenu=menu;auto beforeView=v;uint8_t a[rpg::PERSISTENT_SAVE_SIZE],b[rpg::PERSISTENT_SAVE_SIZE];
+ rpg::encodePersistent(g,73,0,a);drawing=true;render(c,g,v,frame);drawing=false;rpg::encodePersistent(g,73,0,b);
+ assert(!memcmp(&before,&g,sizeof(g))&&!memcmp(&beforeMenu,&menu,sizeof(menu))&&!memcmp(&beforeView,&v,sizeof(v))&&!memcmp(a,b,sizeof(a)));
 }
-uint64_t heroHash(const HeroCanvas& c){uint64_t hash=1469598103934665603ULL;for(int i=0;i<c.width*c.height;++i){hash^=c.pixels[i];hash*=1099511628211ULL;}return hash;}
-void immutable(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame){auto before=g;auto menuBefore=menu;auto viewBefore=v;uint8_t saveBefore[rpg::SAVE_SIZE],saveAfter[rpg::SAVE_SIZE];rpg::encode(g,73,saveBefore);drawing=true;render(c,g,v,frame);drawing=false;rpg::encode(g,73,saveAfter);assert(!memcmp(&before,&g,sizeof(g))&&!memcmp(&menuBefore,&menu,sizeof(menu))&&!memcmp(&viewBefore,&v,sizeof(v))&&!memcmp(saveBefore,saveAfter,sizeof(saveBefore)));}
+void exactPlaque(const Canvas& actual,const char* name){
+ char text[19];snprintf(text,sizeof(text),"%s",name);if(strlen(name)>18)text[15]=text[16]=text[17]='.';
+ Canvas expected;expected.fillScreen(0x0843);expected.drawRect(60,62,120,17,UI_GOLD);int x=64+(112-int(strlen(text))*6)/2;
+ expected.setTextSize(1);expected.setTextColor(UI_INK);expected.setCursor(x,67);expected.print(text);expected.setTextColor(UI_GOLD);expected.setCursor(x,66);expected.print(text);
+ for(int y=62;y<79;++y)for(int x=60;x<180;++x)assert(actual.pixels[y*240+x]==expected.pixels[y*240+x]);
+}
+void exactHero(const Canvas& actual,const rpg::Game& g,Page page,bool meal,unsigned frame){
+ HeroCanvas hero;auto e=envelope(page);hero.clear(e.w,e.h);drawing=true;campUi::hero(hero,g,0,0,e.w,e.h,meal,frame);drawing=false;
+ unsigned shown=0;for(int y=0;y<e.h;++y)for(int x=0;x<e.w;++x)if(hero.pixels[y*e.w+x]!=sentinel){assert(actual.pixels[(e.y+y)*240+e.x+x]==hero.pixels[y*e.w+x]);++shown;}assert(shown>150);
+}
 }
 int main(int argc,char** argv){
  const std::string root=argc>1?argv[1]:"build/screens/camp-identity77";std::filesystem::create_directories(root);
  std::vector<uint8_t> data(ART_BYTES+128,0xa5);artMemory=data.data()+64;std::ifstream pack("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
- unsigned exactRasters=0,scenes=0,visibleShirt=0,visiblePants=0,fallbackMaskGaps=0,subtitleChecks=0;Canvas reference,actual,baseline;HeroCanvas hero;std::set<uint64_t> identities[2];
+ unsigned rasters=0,scenes=0,headPixels=0,colorCases=0,animationChecks=0;Canvas actual,base;HeroCanvas hero;std::set<uint64_t> identities[2];
  for(bool fallback:{false,true}){
   menu=MenuState{};menu.art=fallback?ArtStatus::Fallback:ArtStatus::Ready;if(fallback)makeFallback();
-  // Independent oracle: the normal personalSprite output, nearest-neighbor fit
-  // into the two existing camp hero rectangles. Every race/class/color pair.
-  for(unsigned race=0;race<4;++race)for(unsigned cls=0;cls<4;++cls)for(unsigned shirt=0;shirt<8;++shirt)for(unsigned pants=0;pants<8;++pants){
-   auto g=rpg::create(cls,42);g.race=race;g.shirt=shirt;g.trousers=pants;reference.fillScreen(sentinel);personalSprite(reference,g,0,0,0);
-   for(auto page:{Page::CampSetup,Page::CampRest}){auto e=envelope(page);hero.clear(e.w,e.h);drawing=true;campUi::hero(hero,g,0,0,e.w,e.h);drawing=false;
-    for(int y=0;y<e.h;++y)for(int x=0;x<e.w;++x)assert(hero.pixels[y*e.w+x]==reference.pixels[(y*120/e.h)*240+x*112/e.w]);
-    if(!fallback&&shirt==2&&pants==3)identities[page==Page::CampRest].insert(heroHash(hero));
-    ++exactRasters;
+  for(unsigned race=0;race<4;++race)for(unsigned cls=0;cls<4;++cls){
+   auto g=rpg::create(cls,42);g.race=race;const auto& rig=campUi::rigs[race][cls];
+   // Exact, independent source-head oracle. Face/race/hair/clothing identity
+   // comes from the original idle artwork, not a generic camp replacement.
+   int dx=49-rig.cx,dy=84-rig.hip;
+   for(int sy=rig.top;sy<std::min(rig.neck,rig.armY-7);++sy)for(int sx=rig.left;sx<rig.right;++sx){
+    auto source=personalPixel(g,0,sy*112+sx);if(source==campUi::key)continue;
+    assert(campUi::seatedPixel(g,false,0,sx+dx,sy+dy)==source);++headPixels;
+   }
+   for(unsigned shirt=0;shirt<8;++shirt)for(unsigned pants=0;pants<8;++pants)for(auto page:{Page::CampSetup,Page::CampRest}){
+    g.shirt=shirt;g.trousers=pants;auto e=envelope(page);
+    for(bool meal:{false,true}){hero.clear(e.w,e.h);drawing=true;campUi::hero(hero,g,0,0,e.w,e.h,meal,12);drawing=false;++rasters;
+     unsigned visible=0;for(int i=0;i<e.w*e.h;++i)visible+=hero.pixels[i]!=sentinel;assert(visible>150);
+     if(!fallback&&shirt==2&&pants==3&&meal)identities[page==Page::CampRest].insert(hash(hero));
+    }
+   }
+   // Both recolor channels remain visible in every ready identity. Changing
+   // an unrelated equipment/stat field cannot accidentally recolor the hero.
+   for(auto page:{Page::CampSetup,Page::CampRest}){
+    auto e=envelope(page);g.shirt=g.trousers=0;hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h,true,0);auto original=hero;
+    for(unsigned channel:{1u,2u}){g.shirt=channel==1?2:0;g.trousers=channel==2?3:0;hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h,true,0);
+     if(!fallback)assert(hash(hero)!=hash(original));
+     ++colorCases;
+    }
+    g.shirt=2;g.trousers=3;hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h,true,0);auto first=hero;
+    std::set<uint64_t> poses;for(unsigned frame=0;frame<24;++frame){hero.clear(e.w,e.h);drawing=true;campUi::hero(hero,g,0,0,e.w,e.h,true,frame);drawing=false;poses.insert(hash(hero));++animationChecks;}
+    assert(poses.size()>=8);
+    hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h,false,0);auto noFood=hero;campUi::hero(hero,g,0,0,e.w,e.h,false,12);assert(hash(hero)==hash(noFood)&&hash(first)!=hash(noFood));
    }
   }
-  // Race and outfit only change pixels in the hero envelope; all scene, fire,
-  // sleeping kit, text, progress, and interaction coordinates stay identical.
-  for(auto page:{Page::CampSetup,Page::CampRest})for(unsigned city=0;city<4;++city)for(bool food:{false,true})for(bool kit:{false,true})for(unsigned frame:{0u,1u}){
-   auto g=rpg::create(0,42);g.city=city;g.rations=6;g.sleepKit=true;g.campRation=food;g.campKit=kit;menu.campRation=food;menu.campKit=kit;ViewState v;v.page=page;v.campProgress=500;
-   immutable(baseline,g,v,frame);++scenes;if(page==Page::CampRest){exactSubtitle(baseline,food,kit);++subtitleChecks;}
-   for(unsigned race=0;race<4;++race){g.race=race;g.shirt=2;g.trousers=3;immutable(actual,g,v,frame);++scenes;auto e=envelope(page);unsigned changes=0;
-    for(int y=0;y<320;++y)for(int x=0;x<240;++x){const bool different=actual.pixels[y*240+x]!=baseline.pixels[y*240+x];const bool approvedChange=inEnvelope(x,y,e)||(page==Page::CampRest&&inEnvelope(x,y,restSubtitle));if(!approvedChange)assert(!different);changes+=different;}
-    assert(changes);if(page==Page::CampRest){exactSubtitle(actual,food,kit);++subtitleChecks;}
-   }
+  // Complete production scenes across all races, classes, food/kit choices,
+  // location contexts, and both art modes. Drawing cannot touch a saved byte.
+  for(unsigned city=0;city<4;++city)for(unsigned identity=0;identity<16;++identity)for(bool food:{false,true})for(bool kit:{false,true})for(auto page:{Page::CampSetup,Page::CampRest}){
+   auto g=rpg::create(identity%4,42);g.race=identity/4;g.city=city;g.shirt=2+g.race;g.trousers=1+g.p.cls;g.rations=6;g.sleepKit=true;g.campStage=page==Page::CampRest?3:0;g.campRation=food;g.campKit=kit;
+   menu.campRation=food;menu.campKit=kit;ViewState v;v.page=page;v.campProgress=500;immutable(actual,g,v,12);++scenes;exactPlaque(actual,placeName(city));exactHero(actual,g,page,food,12);
   }
-  // Both clothing channels remain visibly customizable for all 16 identities
-  // at both sizes. Switching one channel must leave the other channel alone.
-  for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race)for(auto page:{Page::CampSetup,Page::CampRest}){
-   auto g=rpg::create(cls,42);g.race=race;const auto e=envelope(page);hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h);const auto before=hero;
-   for(unsigned channel:{1u,2u}){g.shirt=channel==1?2:0;g.trousers=channel==2?3:0;hero.clear(e.w,e.h);campUi::hero(hero,g,0,0,e.w,e.h);unsigned visible=0;
-    for(int y=0;y<e.h;++y)for(int x=0;x<e.w;++x){const unsigned index=(y*120/e.h)*112+x*112/e.w;const uint8_t mask=assetBytes(raceMask[race][cls][0])[index];const bool different=hero.pixels[y*e.w+x]!=before.pixels[y*e.w+x];if(different){assert(mask==channel);++visible;}}
-    // The inherited coarse fallback masks omit these two channels. Ready
-    // artwork must expose both channels for all 16 identities at both sizes.
-    if(!visible){assert(fallback&&race==0&&((cls==1&&channel==2)||(cls==2&&channel==1)));++fallbackMaskGaps;}
-    if(channel==1)visibleShirt+=visible;else visiblePants+=visible;
-   }
+  // Roll/reload uses the same cleared plaque, and never draws/eats a meal.
+  for(unsigned city=0;city<4;++city){auto g=rpg::create(0,42);g.city=city;g.campStage=1;g.campRoll=20;g.campRation=true;ViewState v;v.page=Page::CampRoll;immutable(actual,g,v,12);exactPlaque(actual,placeName(city));++scenes;}
+  for(const char* name:{"", "Ruinas", "Carvalho", "Bosque das Montanhas", "Uma regiao com um nome extraordinariamente longo"}){actual.fillScreen(0xffff);drawing=true;panelCampLocation(actual,name);drawing=false;exactPlaque(actual,name);}
+  // The setup is a preview; a rest uses the committed ration, even when menu
+  // toggles are stale after resume. Empty inventory cannot preview eating.
+  for(bool saved:{false,true})for(bool selected:{false,true})for(unsigned stock:{0u,1u}){
+   auto g=rpg::create(0,42);g.city=1;g.rations=stock;g.campRation=saved;menu.campRation=selected;menu.campKit=false;ViewState v;v.page=Page::CampSetup;immutable(actual,g,v,12);exactHero(actual,g,v.page,selected&&stock,12);++scenes;
+   g.campStage=3;v.page=Page::CampRest;immutable(actual,g,v,12);exactHero(actual,g,v.page,saved,12);++scenes;
+   g.campStage=0;immutable(actual,g,v,12);exactHero(actual,g,v.page,false,12);++scenes;
   }
-  // Native 240x320 production render previews, contrasting races/classes/colors.
+  // Native 240x320 artifacts. Include all 16 identities and the full hand-to-
+  // mouth sequence for selected varied races/classes/colors, with no scaling.
   const unsigned shirts[]={2,5,3,4},pants[]={1,6,4,5};
-  for(unsigned identity=0;identity<4;++identity)for(auto page:{Page::CampSetup,Page::CampRest}){
-   auto g=rpg::create(identity,42);g.race=identity;g.shirt=shirts[identity];g.trousers=pants[identity];g.city=1;g.rations=6;g.sleepKit=true;g.campKit=true;g.campRation=true;menu.campKit=true;menu.campRation=true;ViewState v;v.page=page;v.campProgress=650;immutable(actual,g,v,0);++scenes;
-   actual.save(root+"/"+(page==Page::CampSetup?"setup":"rest")+"-race"+std::to_string(identity)+"-class"+std::to_string(identity)+(fallback?"-fallback":"-ready")+".ppm");
+  for(unsigned identity=0;identity<16;++identity)for(auto page:{Page::CampSetup,Page::CampRest}){
+   auto g=rpg::create(identity%4,42);g.race=identity/4;g.shirt=shirts[g.race];g.trousers=pants[g.p.cls];g.city=1;g.rations=6;g.sleepKit=true;g.campKit=true;g.campRation=true;g.campStage=page==Page::CampRest?3:0;menu.campKit=true;menu.campRation=true;ViewState v;v.page=page;v.campProgress=650;
+   for(unsigned frame=0;frame<(fallback?1u:24u);++frame){immutable(actual,g,v,frame);actual.save(root+"/"+(page==Page::CampSetup?"setup":"rest")+"-race"+std::to_string(g.race)+"-class"+std::to_string(g.p.cls)+(fallback?"-fallback":"-ready")+"-frame"+std::to_string(frame)+".ppm");++scenes;}
   }
   if(!fallback)assert(rpg::crc(artMemory,ART_BYTES)==ART_CRC);
  }
- assert(fallbackMaskGaps==4);assert(identities[0].size()==16&&identities[1].size()==16);for(unsigned i=0;i<64;++i)assert(data[i]==0xa5&&data[64+ART_BYTES+i]==0xa5);artMemory=nullptr;
- printf("PASS: %u exact camp hero rasters (4 races x 4 classes x 8 shirts x 8 trousers x 2 sizes x ready/fallback), 16 distinct silhouettes per size, %u read-only native scenes, visible shirt/trousers pixels %u/%u, %u exact subtitle strips across ration/kit choices and all 4 backgrounds; 2 inherited fallback channel omissions at both sizes; bounds/heap guards and art canaries; 16 native previews.\n",exactRasters,scenes,visibleShirt,visiblePants,subtitleChecks);
+ assert(identities[0].size()==16&&identities[1].size()==16);for(unsigned i=0;i<64;++i)assert(data[i]==0xa5&&data[64+ART_BYTES+i]==0xa5);artMemory=nullptr;
+ printf("PASS: %u seated hero rasters, %u exact source-head pixels, %u recolor cases, %u meal animation checks, %u immutable production scenes; all 16 identities; setup/committed-rest/no-food semantics; 4 locations + long labels; ready/fallback; render bounds, heap guards and art canaries; native animation frames.\n",rasters,headPixels,colorCases,animationChecks,scenes);
 }

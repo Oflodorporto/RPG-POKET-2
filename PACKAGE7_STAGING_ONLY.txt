@@ -1,0 +1,7 @@
+PACKAGE7 QUALIFICATION CANDIDATE ONLY
+Version 2026.10.14-immersion77, build 2026101401.
+Preparation is authorized. Main, tags and release publication require separate approval.
+Run qualification only on feat/package7-release, based on package6's final README-only main follow-up.
+Save30/epoch1 and the exact approved 666-asset package remain unchanged. No new slot reset.
+Frozen feature inventory and packaging exceptions are tracked and fail closed.
+Local synthetic OTA checks are not ESP32 firmware qualification or hardware validation.

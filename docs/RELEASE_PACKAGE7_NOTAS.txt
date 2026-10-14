@@ -1,0 +1,13 @@
+RPG POKET 7.7 — Imersao nas Ruinas
+Identidade: 2026.10.14-immersion77 / build 2026101401
+
+Ruinas medievais redesenhadas, com duas paginas de quatro botoes.
+Refeicao sentada personalizada e correcao pontual do texto de erro no acampamento.
+Relogio com sol/lua animados conforme a hora local e repintura parcial.
+Fadiga PvE uniforme, descontada uma vez por acao: −1 de dano em 71–89 e −2 em 90–100.
+
+Save30 e epoch1 preservados, sem novo reset. Leitura de Save29/30 e gravacao Save30. Os tres slots, seed procedural, progresso, posicoes e RNG sao preservados. Pacote de 666 artes inalterado; novo atlas usa 18144 bytes de flash e nenhuma nova alocacao PSRAM.
+
+Instalacao inicial por USB para firmware anterior ao Save29, preservando as configuracoes Wi-Fi e artes no SD. Usar o par firmware.bin/artes.pak e manifest.json desta release; nao apagar a flash inteira. Firmware Save29 antigo recusa slots Save30 de forma segura, sem sobrescrever o progresso.
+
+Testes de host e compilacao ESP32 nao substituem validacao fisica de USB/OTA, perda de energia, heap, FPS e latencia de toque. A auditoria de lore e separada e nao altera a narrativa deste pacote.

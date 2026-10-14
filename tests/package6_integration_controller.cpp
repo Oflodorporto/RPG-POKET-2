@@ -16,9 +16,9 @@ int main(){
   game=rpg::create(cls,seed);game.p.xp=rpg::dndXp[4];rpg::levelUp(game);
   game.tutorial=true;game.city=1;game.crystals=2;assert(journal.save(game));
   menu=MenuState{};menu.sessionStarted=true;menu.activeSlot=slot;
-  combatFx=CombatFx{};view=ViewState{};view.page=Page::Ruins;now=100;enemyAt=0;
+  combatFx=CombatFx{};view=ViewState{};view.page=Page::Ruins;view.cityPage=1;now=100;enemyAt=0;
   const auto outside=game;const auto before=journal.seq;
-  auto bag=scenicUi::ruinsButtons[scenicUi::ruinsBag];
+  auto bag=scenicUi::ruinsButton(scenicUi::ruinsBag);
   tapped(bag.x+bag.w/2,bag.y+bag.h/2);assert(view.page==Page::TownBag);
   unchanged(outside,before);tapped(panelUi::bagBack.x+5,panelUi::bagBack.y+5);
   assert(view.page==Page::Ruins);unchanged(outside,before);

@@ -1,0 +1,78 @@
+name: Qualificar pacote7 de imersao sem publicar
+on:
+  push:
+    branches: [feat/package7-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "PACKAGE7_STAGING_ONLY.txt", ".github/workflows/package7-check.yml", ".github/workflows/release.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: package7-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/feat/package7-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash --noprofile --norc -euo pipefail {0}
+    env:
+      RPG_DETECT_LEAKS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Instalar dependencia deterministica das artes e capturas
+        run: python3 -m pip install 'Pillow==11.3.0'
+      - name: Verificar inventario e executar agregado herdado mais quatro modulos e integracao
+        run: |
+          mkdir -p build
+          bash tools/test_package7.sh 2>&1 | tee build/package7-tests.log
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar SHA exato sem gravar nem publicar
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          arduino-cli compile --jobs 4 \
+            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+            --output-dir build firmware/RPG_POKET_2 2>&1 | tee build/package7-esp32-build.log
+      - name: Verificar bytes compilados e OTA Save29 para30 e Save30 para30
+        run: |
+          python3 tools/release_package7_manifest.py
+          python3 tools/verify_package7_release.py
+          python3 tests/package7_release_verifier.py
+          python3 tools/test_package7_release.py release
+          python3 tools/test_package7_release.py release --sanitizers
+      - name: Registrar SHA exato, hashes, agregado e orcamento compilado
+        run: python3 tools/record_package7_identity.py
+      - name: Guardar candidato e provas sem publicar
+        uses: actions/upload-artifact@v4
+        with:
+          name: package7-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/package7-scope-budget.json
+            build/package7-source-identity.json
+            build/package7-tests.log
+            build/package7-esp32-build.log
+            build/package7-validation/**
+            build/package7-differential*.json
+            build/screens/procedural6/*
+            build/screens/package6-integration/*
+            build/screens/camp-identity77/*
+            build/d20-camp77/previews/*
+            build/ruins-bag77/ruins-bag-*.png
+            build/ruins7/*.png
+            build/clock-cycle7/previews/*
+            build/fatigue7/screens/*
+          if-no-files-found: error
+          retention-days: 14

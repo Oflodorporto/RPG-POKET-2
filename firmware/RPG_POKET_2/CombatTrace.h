@@ -4,7 +4,7 @@
 // Values are captured by the resolver; presentation never consumes randomness.
 namespace rpg {
 enum class TraceStep:uint8_t {AttackStat, Equipment, Weapon, Critical, Attacks, Technique, Rage, Sacred,
- Dice, RayHit, Save, Evocation, Half, Dodge, Heavy, Guard, Resistance, Flee, Fixed, Defense, Restore, Skip};
+ Dice, RayHit, Save, Evocation, Half, Dodge, Heavy, Guard, Resistance, Flee, Fixed, Defense, Restore, Skip, Fatigue};
 enum class TraceDice:uint8_t {Spell, Missile, Ray1, Ray2, Ray3, Brutal, Smite, Wind};
 struct CombatTraceStep {TraceStep kind=TraceStep::Fixed;int16_t a=0,b=0,c=0;};
 struct CombatTrace {

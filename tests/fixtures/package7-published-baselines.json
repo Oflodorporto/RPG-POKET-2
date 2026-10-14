@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "explore77": {
+    "version": "2026.10.13-explore77",
+    "build": 2026101309,
+    "commit": "3f9d3221b99e6b4ba55dc270a2a1d0a9155ea27b",
+    "tree": "34a32a69aa98ac7e8ba807a04ca065b438148dec",
+    "firmware_sha256": "54a2c13b359dcfce3c32f9be9a8f01d350aab99fedae3350aabf98a6403b7cc3",
+    "firmware_bytes": 2857904,
+    "verified_public": true,
+    "manifest_sha256": "4e4eb9eec4707bee35308f6a827a15f39f88432bcd1d7248e556886a5f912100",
+    "manifest_bytes": 1113,
+    "art_sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56",
+    "publication_run": 38500805596,
+    "firmware_url": "https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v2026.10.13-explore77/firmware.bin"
+  },
+  "qualification_parent": "02a94ca192b8ef915a452527444f8160b90c26aa",
+  "qualification_parent_tree": "8837911990b23450eb5ed1c4d9afbd0eb9afc374",
+  "qualification_parent_readme_sha256": "8b3f6e5dc79048d2a690bd3d44c1dc6e0c973614061d3be8b4a2c3ff4f31bc59"
+}

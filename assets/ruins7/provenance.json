@@ -1,0 +1,30 @@
+{
+  "base_commit": "3f9d3221b99e6b4ba55dc270a2a1d0a9155ea27b",
+  "generation": "built-in image_gen",
+  "source_dimensions": [
+    1086,
+    1448
+  ],
+  "runtime_dimensions": [
+    240,
+    320
+  ],
+  "background_flash_bytes": 77312,
+  "replaces_existing_background": true,
+  "reused_ui_flash_bytes": 18144,
+  "additional_psram_bytes": 0,
+  "sd_art_count": 666,
+  "sd_art_sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56",
+  "source_gzip_sha256": "ebbbde49ee0584f7fd16842c6eaa714078f674925ad56cbe045ed2d71b6e630a",
+  "source_png_sha256": "923d3d9db32dd61f9502b4acde2683bec124444615248d8ff847a7bd42e04762",
+  "quantized_png_sha256": "266f6503cdc78e0f63ff06077e253c7c353a25d244e36905813cc738a440437f",
+  "dynamic_labels_baked_in_art": false,
+  "static_title": "Reused original medieval title plaque; index-255 transparency",
+  "ui_sources": [
+    "assets/abrigo-menu1/conceito-mapa-ruinas.png.gz",
+    "artes.pak: NPC Iria portrait assets 435/436",
+    "assets/reusable/equipment01/props/backpack.png",
+    "DungeonArt.h: existing crystal prop, no duplication"
+  ],
+  "shader": "Global existing day-cycle shader on city scenery only. Live controls retain full contrast. Bolsa uses a modest local RGB565 brightness lift."
+}

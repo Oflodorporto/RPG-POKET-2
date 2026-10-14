@@ -80,6 +80,14 @@ inline uint8_t luck(const Game& g){static const uint8_t n[]={3,2,2,1};return std
 inline uint8_t fatigueBand(const Game& g){return g.fatigue<40?0:g.fatigue<70?1:g.fatigue<90?2:3;}
 inline const char* fatigueName(const Game& g){const char* names[]={"Descansado","Leve","Cansado","Muito cansado"};return names[fatigueBand(g)];}
 inline uint8_t fatigueTravelPenalty(const Game& g){return g.fatigue>=90?1:0;}
+// PvE only: one modest deduction per resolved offensive action, not per hit.
+// Keep 70% unpenalized, and leave the existing travel modifier independent.
+inline uint8_t fatigueCombatPenalty(const Game& g){return g.fatigue>70?(g.fatigue>=90?2:1):0;}
+inline unsigned fatigueCombatDamage(const Game& g,unsigned damage,CombatTrace* trace=nullptr){
+ unsigned penalty=fatigueCombatPenalty(g);if(!penalty||!damage)return damage;
+ unsigned result=damage-std::min(penalty,damage-1);
+ traceStep(trace,TraceStep::Fatigue,penalty,damage,result);return result;
+}
 inline void addFatigue(Game& g,unsigned amount){unsigned value=std::min(100u,unsigned(g.fatigue));g.fatigue=value+std::min(amount,100-value);}
 inline void recoverFatigue(Game& g,unsigned amount){unsigned value=std::min(100u,unsigned(g.fatigue));g.fatigue=value-std::min(value,amount);}
 // Preview and preparation use the same signed, bounded travel-only modifier.
@@ -292,6 +300,7 @@ inline const char* usePower(Game& g,Action a,CombatTrace* trace=nullptr){
  if(damage){unsigned bonus=evocationBonus(g,a);if(bonus)traceStep(trace,TraceStep::Evocation,bonus,damage,damage+bonus);damage+=bonus;}
  if(trace){trace->damaging=true;trace->potential=damage;}
  if(saved){traceStep(trace,TraceStep::Half,damage,damage/2);damage/=2;}
+ damage=fatigueCombatDamage(g,damage,trace);
  g.damage=std::min<unsigned>(g.enemyHp,damage);if(trace){trace->net=damage;trace->applied=g.damage;}g.enemyHp-=g.damage;g.phase=Phase::Enemy;return nullptr;
 }
 // Percentage combat adaptation of the Champion milestones in SRD 5.1.
@@ -363,6 +372,7 @@ inline const char* act(Game& g,Action a,CombatTrace* trace){
   if(g.rageTurns){unsigned bonus=rageBonus(g)*(skill?1:attacksPerAction(g));traceStep(trace,TraceStep::Rage,bonus,damage,damage+bonus);damage+=bonus;}
   if(g.sacredTurns){int bonus=std::max(1,abilityMod(g.attributes[5]));traceStep(trace,TraceStep::Sacred,bonus,damage,damage+bonus);damage+=bonus;--g.sacredTurns;}
   if(!(skill&&g.p.cls==2)){unsigned roll=random(g)%100;g.dodge=roll<6;traceStep(trace,TraceStep::Dodge,roll+1,6);}else g.dodge=false;
+  unsigned potential=damage;
   if(!g.dodge){
     if(g.crit)damage+=brutalDamage(g,trace);
     // SRD 5.1 adaptation: select before the attack; charge mana only on a hit.
@@ -374,9 +384,10 @@ inline const char* act(Game& g,Action a,CombatTrace* trace){
       if(g.crit)dice*=2;
       for(unsigned i=0;i<dice;++i){unsigned die=1+random(g)%8;damage+=die;traceDie(trace,TraceDice::Smite,8,die);}
     }
+    potential=damage;damage=fatigueCombatDamage(g,damage,trace);
     g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;
   }
-  if(trace){trace->damaging=true;trace->potential=damage;trace->net=g.dodge?0:damage;trace->applied=g.damage;}
+  if(trace){trace->damaging=true;trace->potential=potential;trace->net=g.dodge?0:damage;trace->applied=g.damage;}
   endHeroAction(g);finish(g);return nullptr;
 }
 enum class Intent:uint8_t {Strike,Prepare,Heavy,Mend,Drain};

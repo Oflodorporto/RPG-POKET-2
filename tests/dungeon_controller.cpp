@@ -198,7 +198,7 @@ void tapped(int x,int y){
       else {if(game.originStory)game.originPage=8;menu.storyIndex=0;say("");if(game.originStory)savedTransition(Page::Help);else view.page=Page::Help;}}
     else {menu.storyIndex+=x<120?-1:1;say("");if(!menu.storyReplay&&game.originStory){game.originPage=menu.storyIndex;savedTransition(Page::Prologue);}}
    }return;}
-  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&carvalhoUi::paged(game.city)&&carvalhoUi::mission.contains(x,y))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
+  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&carvalhoUi::paged(game.city)&&carvalhoUi::mission.contains(x,y))||(view.page==Page::Ruins&&scenicUi::ruinsMission.contains(x,y))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
   if(view.page==Page::Journal){if(hit(x,y,14,272,102))view.page=Page::Menu;
     else if(hit(x,y,124,272,102)){view.objectiveReturn=Page::Journal;view.page=Page::Campaign;}
     else if(hit(x,y,14,224,102))menu.chapterIndex=(menu.chapterIndex+5)%6;
@@ -462,7 +462,7 @@ void tapped(int x,int y){
     else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)||game.fatigue){rpg::rest(game);say("HP, MP, poderes e fadiga recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
     else if(choice==2){view.page=Page::Menu;say("");}return;
   }
-  if(view.page==Page::Ruins){int choice=scenicUi::ruinsChoice(x,y);
+  if(view.page==Page::Ruins){if(scenicUi::ruinsPager.contains(x,y)){view.cityPage=1-scenicUi::ruinsPage(view.cityPage);say("");return;}int choice=scenicUi::ruinsChoice(view.cityPage,x,y);
     if(choice==scenicUi::ruinsBag){view.bagReturn=Page::Ruins;view.choice=0;view.page=Page::TownBag;say("");return;}
     if(choice==0){menu.storyReturn=int(Page::Ruins);view.page=Page::People;say("");return;}
     if(choice==1){view.page=Page::DungeonEntry;say("");return;}
@@ -683,8 +683,8 @@ int main(){
  game=rpg::testHero(1,33);game.p.gold=99;view.page=Page::Guild;tapped(80,190);assert(view.page==Page::GuildJoin);tapped(170,290);assert(!game.guildMember&&game.p.gold==99&&view.page==Page::GuildJoin);
  game.p.gold=100;tapped(170,290);assert(game.guildMember&&game.p.gold==0&&view.page==Page::Guild);auto joined=nvs.blobs;tapped(80,190);assert(view.page==Page::GuildMissions);tapped(80,290);assert(view.page==Page::Guild&&game.p.gold==0&&nvs.blobs==joined);
  tapped(80,240);assert(view.page==Page::Guild);view.page=Page::Tavern;tapped(80,235);assert(view.page==Page::Guild);tapped(80,190);tapped(80,135);assert(view.page==Page::Contract);
- game=rpg::testHero(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;journal.blocked=false;const auto fixedEntryFixture=game;
- tapped(180,160);assert(view.page==Page::DungeonEntry);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.crystals==0&&rpg::inDungeon(game));
+ game=rpg::testHero(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;view.cityPage=0;journal.blocked=false;const auto fixedEntryFixture=game;
+ tapped(60,245);assert(view.page==Page::DungeonEntry);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.crystals==0&&rpg::inDungeon(game));
  // This historical Save28 harness continues its fixed-coordinate scenario.
  // Production Save30 entry/retry is tested separately by procedural6_controller.
  game=fixedEntryFixture;assert(!rpg::enterDungeon(game,0));
@@ -712,7 +712,7 @@ int main(){
  game=rpg::testHero(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;game.ruinsWins=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  // Camp choices are saved before rolling. Save failure cannot consume another ration.
  combatFx.kind=Effect::None;game=rpg::testHero(0,42);game.city=1;game.p.hp=1;game.p.mp=0;game.p.gold=80;game.rations=2;view.page=Page::Ruins;
- tapped(185,259);assert(view.page==Page::CampSetup);tapped(80,253);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::CampSetup&&menu.campKit);
+ view.cityPage=1;tapped(60,200);assert(view.page==Page::CampSetup);tapped(80,253);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::CampSetup&&menu.campKit);
  tapped(80,218);assert(menu.campRation);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.campStage==1&&game.rations==1);auto campRoll=game.campRoll;
  nvs.fail=false;tapped(100,265);assert(view.page==Page::CampRoll&&game.campRoll==campRoll&&game.rations==1&&!menu.rollReady);tapped(100,290);assert(game.campStage==1);game.campRoll=20;menu.rollReady=true;tapped(100,290);assert(view.page==Page::CampRest&&game.campStage==3&&game.p.hp==1);
  tapped(170,185);assert(view.page==Page::CampRest&&game.campStage==3);rpg::finishCamp(game);savedTransition(Page::Ruins);assert(game.p.hp==game.p.maxhp&&game.p.mp==game.p.maxmp&&game.rations==1);

@@ -1,5 +1,6 @@
 #pragma once
 #include "ScenicArt.h"
+#include "Ruins7Art.h"
 // Geometry is shared with the controller. Drawing is read-only and SD-free.
 namespace scenicUi {
 constexpr int menuX=63,menuWidth=115,menuHeight=25;
@@ -8,12 +9,17 @@ constexpr int homeTop=274,homeHeight=40,homeWidth=72;
 inline int menuChoice(int x,int y){if(x<menuX-3||x>=menuX+menuWidth+3)return -1;for(int n=0;n<7;++n)if(y>=menuYs[n]-1&&y<menuYs[n]+menuHeight+2)return n;return -1;}
 inline int homeChoice(int x,int y){if(y<homeTop||y>=homeTop+homeHeight)return -1;for(int n=0;n<3;++n)if(x>=6+n*78&&x<6+n*78+homeWidth)return n;return -1;}
 struct Rect {int x,y,w,h;bool contains(int px,int py)const{return px>=x&&px<x+w&&py>=y&&py<y+h;}};
-// Conversation, crystal entrance, guardian, explore, camp, map, market, bag.
-// Bolsa uses the free area above the fire without shrinking existing controls.
-constexpr Rect ruinsButtons[]={{69,57,110,16},{108,143,128,63},{105,210,130,30},{52,246,86,29},{144,246,90,29},{52,278,86,30},{144,278,90,30},{10,148,88,44}};
-constexpr int ruinsBag=7,ruinsButtonCount=sizeof(ruinsButtons)/sizeof(ruinsButtons[0]);
+// Stable action IDs preserve the existing rules/routes. Only visible page hitboxes
+// participate in input; all four actions have the same comfortable 112x44 target.
+constexpr Rect ruinsMission={6,80,228,32},ruinsPager={6,274,228,40};
+constexpr Rect ruinsActions[]={{6,178,112,44},{122,178,112,44},{6,226,112,44},{122,226,112,44}};
+constexpr uint8_t ruinsActionIds[2][4]={{0,3,1,2},{4,7,6,5}};
+constexpr int ruinsBag=7,ruinsButtonCount=8;
+inline unsigned ruinsPage(unsigned value){return value==1?1:0;}
+inline int ruinsChoice(unsigned page,int x,int y){for(unsigned i=0;i<4;++i)if(ruinsActions[i].contains(x,y))return ruinsActionIds[ruinsPage(page)][i];return -1;}
+inline unsigned ruinsActionPage(unsigned id){return id==0||id==1||id==2||id==3?0:1;}
+inline Rect ruinsButton(unsigned id){for(unsigned i=0;i<4;++i)if(ruinsActionIds[ruinsActionPage(id)][i]==id)return ruinsActions[i];return {0,0,0,0};}
 constexpr Rect mapButtons[]={{23,278,96,30},{122,278,97,30}};
-inline int ruinsChoice(int x,int y){for(int i=0;i<ruinsButtonCount;++i)if(ruinsButtons[i].contains(x,y))return i;return -1;}
 inline bool atlasChoice(int x,int y){return x>=30&&x<75&&y>=65&&y<95;}
 }
 template<class C>void scenicText(C& c,int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextWrap(false);c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);}
@@ -70,16 +76,18 @@ template<class C>void drawScenicHome(C& c,const rpg::Game& g,const ViewState& v,
  snprintf(b,sizeof(b),"XP %lu/%u",(unsigned long)g.p.xp,rpg::xpNeeded(g));scenicText(c,17,119,b,1,UI_MUTED);
  if(*v.message){scenicPanel(c,10,251,220,17);scenicText(c,(240-int(strlen(v.message))*6)/2,255,v.message,1,UI_GREEN);}
  scenicPanel(c,10,140,220,30);auto goal=story::objective(g);scenicText(c,17,146,goal.title,1,UI_GOLD);scenicText(c,17,158,"Toque: proximo objetivo");
- scenicPanel(c,10,180,220,30);
+ scenicPanel(c,10,180,220,44);
  snprintf(b,sizeof(b),"Fadiga %u/100 / %s",g.fatigue,rpg::fatigueName(g));
  scenicText(c,(240-int(strlen(b))*6)/2,186,b,1,scenicFatigueColor(g));
  scenicText(c,21,198,"Descanso gratis: fadiga volta a 0",1,UI_WHITE);
+ if(rpg::fatigueCombatPenalty(g))snprintf(b,sizeof(b),"Combate: dano -%u por acao",rpg::fatigueCombatPenalty(g));else snprintf(b,sizeof(b),"Combate: sem penalidade ate 70%%");
+ scenicText(c,(240-int(strlen(b))*6)/2,211,b,1,rpg::fatigueCombatPenalty(g)?UI_GOLD:UI_MUTED);
  const char* names[]={"Mapa","Descanso","Menu"};for(int i=0;i<3;++i){int x=6+i*78;scenicPanel(c,x,274,72,40);scenicText(c,x+(72-int(strlen(names[i]))*6)/2,290,names[i]);}
 }
 template<class C>void scenicWorld(C& c,bool ruins,worldClock::Period period){
  const uint16_t* raw=ruins?scenicArt::ruinsPalette:scenicArt::mapPalette;const uint8_t* pixels=ruins?scenicArt::ruinsPixels:scenicArt::mapPixels;
  uint16_t palette[256],row[240];for(int i=0;i<256;++i)palette[i]=worldClock::shade(raw[i],period);
- for(int y=0;y<320;++y){bool ui=ruins?(y<76||y>=142):(y<50||y>=242);for(int x=0;x<240;++x){uint16_t color=(ui?raw:palette)[pixels[y*240+x]];
+ for(int y=0;y<320;++y){bool ui=!ruins&&(y<50||y>=242);for(int x=0;x<240;++x){uint16_t color=(ui?raw:palette)[pixels[y*240+x]];
   // Normalize the concept's green Ruins pin; live presence is drawn separately.
   if(!ruins&&x>=112&&x<=132&&y>=165&&y<=186){uint16_t original=raw[pixels[y*240+x]];int r=(original>>11)&31,g=(original>>5)&63,b=original&31;if(g>r*2+12&&g>b*2+12)color=worldClock::shade(UI_BLUE,period);}
   row[x]=color;}c.draw16bitRGBBitmap(0,y,row,240,1);}
@@ -94,25 +102,57 @@ template<class C>void drawScenicMap(C& c,const rpg::Game& g,const ViewState& v,u
  if(*v.message){c.fillRect(2,229,236,12,UI_INK);scenicText(c,(240-int(strlen(v.message))*6)/2,232,v.message,1,UI_RED);}
  (void)frame;
 }
-template<class C>void scenicRuinsBag(C& c){
- const auto& r=scenicUi::ruinsButtons[scenicUi::ruinsBag];
- auto pixel=[](int x,int y){return scenicArt::ruinsPalette[scenicArt::ruinsPixels[y*240+x]];};
- // Nine-slice the existing rounded gold/blue Explorar frame, excluding its
- // baked icon/text. Reuse the illustrated pouch from Loja, entirely in flash.
- uint16_t row[88];for(int y=0;y<r.h;++y){int sy=y<5?246+y:y>=r.h-5?275-(r.h-y):251+(y-5)*19/(r.h-10);
-  for(int x=0;x<r.w;++x){int sx=x<5?52+x:x>=r.w-5?138-(r.w-x):57+(x-5)*76/(r.w-10);row[x]=pixel(x>=5&&x<r.w-5&&y>=5&&y<r.h-5?130:sx,sy);}c.draw16bitRGBBitmap(r.x,r.y+y,row,r.w,1);}
- for(int y=0;y<24;++y){for(int x=0;x<26;++x)row[x]=pixel(148+x,282+y*22/24);c.draw16bitRGBBitmap(r.x+8,r.y+10+y,row,26,1);}
- scenicText(c,r.x+43,r.y+18,"Bolsa",1,UI_WHITE);scenicText(c,r.x+44,r.y+18,"Bolsa",1,UI_WHITE);
+// Gold bevels and live typography are drawn separately from the generated city.
+// This path uses flash only, including when the SD art pack is unavailable.
+namespace ruins7Ui {
+template<class C>void image(C& c,const uint8_t* pixels,unsigned w,unsigned h,int x,int y,bool lift=false){
+ if(!pixels||!w||w>240||!h||h>320||x<0||y<0||x+int(w)>240||y+int(h)>320)return;
+ uint16_t row[240];for(unsigned py=0;py<h;++py){unsigned px=0;while(px<w){while(px<w&&pixels[py*w+px]==255)++px;unsigned start=px;while(px<w&&pixels[py*w+px]!=255){uint16_t color=ruins7Art::palette[pixels[py*w+px]];if(lift){unsigned red=(color>>11)&31,green=(color>>5)&63,blue=color&31;color=uint16_t(std::min(31u,red*5/4+1)<<11|std::min(63u,green*5/4+2)<<5|std::min(31u,blue*5/4+1));}row[px-start]=color;++px;}if(px>start)c.draw16bitRGBBitmap(x+int(start),y+int(py),row,px-start,1);}}
+}
+template<class C>void frame(C& c,const scenicUi::Rect& r){
+ if(r.x<0||r.y<0||r.w<12||r.h<12||r.x+r.w>240||r.y+r.h>320)return;
+ uint16_t row[240];for(int y=0;y<r.h;++y){int sy=y<5?y:y>=r.h-5?32-(r.h-y):5+(y-5)*22/(r.h-10);
+  for(int x=0;x<r.w;++x){int sx=x<5?x:x>=r.w-5?40-(r.w-x):5+(x-5)*30/(r.w-10);row[x]=ruins7Art::palette[ruins7Art::framePixels[sy*40+sx]];}c.draw16bitRGBBitmap(r.x,r.y+y,row,r.w,1);}
+}
+template<class C>void label(C& c,int x,int y,int w,const char* s,uint16_t color=UI_WHITE,bool bold=false,int size=1){
+ const int n=int(strlen(s))*6*size;if(n>w)return;
+ const int left=x+(w-n)/2;scenicText(c,left,y,s,size,color);if(bold)scenicText(c,left+1,y,s,size,color);
+}
+template<class C>void icon(C& c,unsigned id,int x,int y){
+ if(id==1){magicSprite(c,dungeonArt::props[4],32,32,x,y,24,24);return;}
+ const uint8_t* images[]={ruins7Art::iriaPixels,nullptr,ruins7Art::guardianPixels,ruins7Art::explorePixels,ruins7Art::campPixels,ruins7Art::mapPixels,ruins7Art::shopPixels,ruins7Art::bagPixels};
+ if(id<8&&images[id])image(c,images[id],24,24,x,y,id==7);
+}
+template<class C>void action(C& c,const rpg::Game& g,unsigned id,const scenicUi::Rect& r){
+ static const char* names[]={"Conversar","Cripta","Guardiao","Explorar","Acampar","Mapa","Loja","Bolsa"};
+ char detail[24];uint16_t color=UI_GOLD;bool locked=false;
+ switch(id){
+ case 0:snprintf(detail,sizeof(detail),"Iria Sorel");break;
+ case 1:snprintf(detail,sizeof(detail),"1 cristal / tem %u",g.crystals);break;
+ case 2:locked=g.ruinsWins<3;snprintf(detail,sizeof(detail),g.guardianDefeated?"Vencido / %u de 3":locked?"Trancado %u de 3":"Pronto / %u de 3",g.ruinsWins);color=g.guardianDefeated?UI_GREEN:locked?UI_MUTED:UI_GOLD;break;
+ case 3:snprintf(detail,sizeof(detail),"Encontros Nv%u+",rpg::cityLevel(g.city));break;
+ case 4:snprintf(detail,sizeof(detail),"Kit %s / Rac %u",g.sleepKit?"sim":"nao",g.rations);break;
+ case 5:snprintf(detail,sizeof(detail),"Rotas e cidades");break;
+ case 6:snprintf(detail,sizeof(detail),"Suprimentos");break;
+ default:snprintf(detail,sizeof(detail),"Itens e equip.");break;
+ }
+ frame(c,r);icon(c,id,r.x+7,r.y+4);
+ label(c,r.x+33,r.y+10,r.w-37,names[id],locked?UI_MUTED:UI_WHITE,true);
+ label(c,r.x+4,r.y+29,r.w-8,detail,color);
+}
 }
 template<class C>void drawScenicRuins(C& c,const rpg::Game& g,const ViewState& v,unsigned frame){
  auto period=menu.clockValid&&menu.dayCycle?menu.worldPeriod:worldClock::Period::Day;scenicWorld(c,true,period);
- scenicRuinsBag(c);
- scenicPanel(c,10,94,220,30);auto goal=story::objective(g);scenicText(c,17,100,goal.title,1,UI_GOLD);scenicText(c,17,112,"Toque: proximo objetivo");
- // Never display the sample 3/3 or "vencido" from the concept as real progress.
- c.fillRect(160,178,73,24,0x0843);char b[64];snprintf(b,sizeof(b),"Vitorias %u/3",g.ruinsWins);scenicText(c,160,180,b,1,UI_GOLD);
- scenicText(c,166,193,g.guardianDefeated?"Vencido!":g.ruinsWins>=3?"Liberado":"Bloqueado",1,g.guardianDefeated?UI_GREEN:g.ruinsWins>=3?UI_GOLD:UI_MUTED);
- if(g.ruinsWins<3){c.fillRect(111,213,119,12,0x0843);scenicText(c,116,216,"Guardiao bloqueado",1,UI_MUTED);}
- if(*v.message){c.fillRect(2,78,236,12,UI_INK);scenicText(c,(240-int(strlen(v.message))*6)/2,81,v.message,1,UI_RED);}
- if(g.questId){c.fillRect(3,128,104,12,UI_INK);snprintf(b,sizeof(b),"Missao %u/%u",g.questProgress,rpg::contract(g.questId).count);scenicText(c,7,131,b,1,UI_GREEN);}
- if(frame){c.fillRect(58+int((frame/4)%2),204,2,7,0xff8d);unsigned age=(frame/3)%22;c.fillRect(65,212-int(age),1,1,0xfdc4);}
+ ruins7Ui::image(c,ruins7Art::titlePixels,220,56,10,3);
+ char b[64];c.fillRect(8,63,224,13,0x0843);
+ snprintf(b,sizeof(b),"Nv %u / Vespera",g.p.level);ruins7Ui::label(c,10,66,110,b);
+ snprintf(b,sizeof(b),"%lu ouro",(unsigned long)g.p.gold);ruins7Ui::label(c,124,66,106,b,UI_GOLD);
+ ruins7Ui::frame(c,scenicUi::ruinsMission);auto goal=story::objective(g);
+ ruins7Ui::label(c,12,86,216,goal.title,UI_GOLD);ruins7Ui::label(c,12,99,216,"Toque: proximo objetivo");
+ if(*v.message){c.fillRect(4,157,232,16,0x0843);snprintf(b,sizeof(b),"%.38s",v.message);ruins7Ui::label(c,6,161,228,b,UI_RED);}
+ else if(g.questId){c.fillRect(4,157,232,16,0x0843);snprintf(b,sizeof(b),"Missao %u/%u",g.questProgress,rpg::contract(g.questId).count);ruins7Ui::label(c,6,161,228,b,UI_GREEN);}
+ unsigned page=scenicUi::ruinsPage(v.cityPage);for(unsigned i=0;i<4;++i)ruins7Ui::action(c,g,scenicUi::ruinsActionIds[page][i],scenicUi::ruinsActions[i]);
+ ruins7Ui::frame(c,scenicUi::ruinsPager);ruins7Ui::label(c,10,282,220,page?"< Aventuras":"Provisoes e viagem >",UI_WHITE,true);
+ ruins7Ui::label(c,10,299,220,page?"Pagina 2/2":"Pagina 1/2",UI_GOLD);
+ (void)frame;
 }

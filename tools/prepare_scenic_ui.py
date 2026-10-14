@@ -1,7 +1,7 @@
 """Convert generated paired artwork to firmware-native indexed backgrounds."""
 from pathlib import Path
 from PIL import Image
-import hashlib,json
+import hashlib,json,runpy
 root=Path(__file__).resolve().parents[1]
 out=root/'assets/abrigo-menu1'
 source=out/'conceito-original.png'
@@ -23,5 +23,6 @@ for name,box in panels.items():
  header+='inline constexpr uint8_t '+name+'Pixels[240*320]={'+array(indexed.tobytes())+'};\n'
 header+='}\n'
 (root/'firmware/RPG_POKET_2/ScenicArt.h').write_text(header)
-(out/'proveniencia.json').write_text(json.dumps({'source':'Exact user supplied concepts, deterministic crop/resize/RGB565 indexed conversion; generated alternative retained but unused','prompt':'Preserve original artwork, text, buttons, colors and proportions; clickable regions use the same button rectangles; gameplay status is live.','original_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'map_ruins_sha256':hashlib.sha256((out/'conceito-mapa-ruinas.png').read_bytes()).hexdigest(),'crop_boxes':panels,'dimensions':[240,320],'palette_colors':256,'flash_bytes':309248,'sd_changes':False},indent=2))
-print('Four exact concept panels, 309248 bytes in flash; no SD pack changes')
+(out/'proveniencia.json').write_text(json.dumps({'source':'Original user concepts for shelter/menu/map; generated Ruins7 city replaces only the old Ruins flash slot','prompt':'Shelter/menu/map retain their original art. Ruins uses the new text-free city, original ornate UI crops and separate live controls; see assets/ruins7/provenance.json.','original_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),'map_ruins_sha256':hashlib.sha256((out/'conceito-mapa-ruinas.png').read_bytes()).hexdigest(),'crop_boxes':panels,'dimensions':[240,320],'palette_colors':256,'flash_bytes':309248,'sd_changes':False,'ruins_override':'assets/ruins7/ruins-city-generated.png.gz','ruins_ui_extra_flash_bytes':18144},indent=2))
+runpy.run_path(str(root/'tools/prepare_ruins7_art.py'),run_name='__main__')
+print('Three exact concept panels plus Ruins7 city, 309248 bytes in flash; no SD pack changes')

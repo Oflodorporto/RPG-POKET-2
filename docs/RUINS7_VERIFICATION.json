@@ -1,0 +1,54 @@
+{
+  "base_commit": "3f9d3221b99e6b4ba55dc270a2a1d0a9155ea27b",
+  "status": "local candidate only",
+  "optimized": {
+    "passed": [
+      "ruins7_noalloc",
+      "ruins7_render",
+      "ruins7_controller",
+      "ruins_bag77_controller",
+      "package6_integration_controller",
+      "title_controller",
+      "dungeon_controller",
+      "touch77_controller",
+      "carvalho77_controller",
+      "dungeon77_postvictory",
+      "dungeon77_layout_controller",
+      "save29",
+      "reset29"
+    ],
+    "count": 13
+  },
+  "asan_ubsan": {
+    "passed": [
+      "ruins7_noalloc",
+      "ruins7_render",
+      "ruins7_controller",
+      "ruins_bag77_controller",
+      "package6_integration_controller"
+    ],
+    "count": 5,
+    "leak_detection": false
+  },
+  "render_cases_per_pass": 960,
+  "controller_cases_per_pass": 529,
+  "exhaustive_page_pixels": 153600,
+  "bag_cases_per_pass": 876,
+  "package6_integration_cases_per_pass": 96,
+  "allocation_frames_per_pass": 16,
+  "allocation_calls": 0,
+  "scope": "rules,Save30,epoch,costs,SD666,OTA,other scenic panels unchanged",
+  "source_hashes": {
+    "firmware/RPG_POKET_2/ScenicArt.h": "f293495351d26a83424ff65abea7f5d6af4cc18b37d4c55a63316c8e43b9d160",
+    "firmware/RPG_POKET_2/Ruins7Art.h": "4a2e5ee1f8ca6adcb2998e8ac1d7e362363d157a49c7a4de91162d7f77441fd9",
+    "firmware/RPG_POKET_2/ScenicView.h": "34e40dde7890f526adc0d94617e126a70a0d4c452d37e69c1fc57b734a916518",
+    "firmware/RPG_POKET_2/RPG_POKET_2.ino": "a79219cdf050edac77bca3a5c796506077fd0173806ce62b76dbbcd2a6d58cc8"
+  },
+  "not_run": [
+    "combined package7 full aggregate gate",
+    "ESP32 build and binary OTA budget",
+    "physical LCD/touch",
+    "device heap/FPS",
+    "publication"
+  ]
+}

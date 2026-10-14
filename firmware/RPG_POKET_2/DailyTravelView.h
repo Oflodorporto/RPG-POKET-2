@@ -29,7 +29,7 @@ template<class C>void drawDailyTravel(C& c,const rpg::Game& g,const ViewState& v
  if(rest){
   auto regional=g;regional.city=g.daily.region;const auto previousPeriod=backdropPeriod;backdropPeriod=worldClock::Period::Night;panelCampBackdrop(c,regional,v);backdropPeriod=previousPeriod;carvalhoUi::frame(c,{12,48,216,42});
   snprintf(b,sizeof(b),"Pernoite %u / %s",g.daily.day,placeName(g.daily.region));label(58,b,UI_GOLD);label(76,"Sem cobrar outra racao");
-  if(menu.art==ArtStatus::Ready){if(escort){c.fillRect(149,199,73,4,0x0842);c.fillRect(158,202,58,2,0x1083);dailyUi::wagon(c,144,137,3);}personalSprite(c,g,1,110,0);magicSprite(c,campArt::fires[frame%4],48,48,82,167,60,60);if(escort){c.fillRect(167,232,57,3,0x0842);dailyUi::merchant(c,179,176,frame);}if(g.daily.kit)magicSprite(c,campArt::sleepingbag,48,48,40,221,48,28);}
+  if(menu.art==ArtStatus::Ready){if(escort){c.fillRect(149,199,73,4,0x0842);c.fillRect(158,202,58,2,0x1083);dailyUi::wagon(c,144,137,3);}campUi::hero(c,g,1,110,100,120,g.daily.rationsPaid>0,frame);magicSprite(c,campArt::fires[frame%4],48,48,82,167,60,60);if(escort){c.fillRect(167,232,57,3,0x0842);dailyUi::merchant(c,179,176,frame);}if(g.daily.kit)magicSprite(c,campArt::sleepingbag,48,48,40,221,48,28);}
   carvalhoUi::frame(c,{12,258,216,53});snprintf(b,sizeof(b),"HP %u/%u / MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);label(267,b,UI_GREEN);label(284,"Descansando... 2 segundos");c.fillRect(21,301,198*std::min(1000u,v.campProgress)/1000,3,UI_GREEN);return;
  }
  scenicWorld(c,false,night?worldClock::Period::Night:worldClock::Period::Day);

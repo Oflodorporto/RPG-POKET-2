@@ -47,9 +47,16 @@ void paint(uint32_t now){
   uint32_t started=millis();
   view.effect=combatFx.kind;view.effectFrame=combatFx.frame(now);view.effectOnHero=combatFx.onHero;view.combatResult=combatFx.result;view.effectProgress=combatFx.progress(now);view.effectElapsedMs=uint32_t(now-combatFx.started);view.heroFrame=combatFx.active()&&!combatFx.onHero?1+std::min(4u,combatFx.frame(now)*5/8):0;
   menu.renderNow=now;
-  if(buffered){render(frameBuffer,game,view,now/120);
-    // Short SPI stripes let the touch reader run during each full-screen transfer.
-    for(int y=0;y<320;y+=16){{UpdateSpiLock lock;lcd.draw16bitRGBBitmap(0,y,frameBuffer.pixels+y*240,240,16);}sampleTouch();}
+  if(buffered){
+    // Pulse-only idle frames reuse the existing buffer, restoring just the face.
+    // Entry, second/date/status changes and letters still take the full path.
+    static bool wasClock=false;
+    bool faceOnly=wasClock&&view.page==Page::Clock&&!dirty&&menu.clockValid&&!(menu.sessionStarted&&game.eventStage==1);
+    if(faceOnly)drawClock(frameBuffer,game,now/120,true);else render(frameBuffer,game,view,now/120);
+    wasClock=view.page==Page::Clock;
+    int first=faceOnly?clockCycle7::FACE_TOP:0,last=faceOnly?clockCycle7::FACE_BOTTOM:320;
+    // Short SPI stripes retain touch polling during full and partial transfers.
+    for(int y=first;y<last;y+=16){{UpdateSpiLock lock;lcd.draw16bitRGBBitmap(0,y,frameBuffer.pixels+y*240,240,std::min(16,last-y));}sampleTouch();}
   }
   else {UpdateSpiLock lock;render(lcd,game,view,now/120);}
   frameMax=std::max(frameMax,uint32_t(millis()-started));
@@ -242,7 +249,7 @@ void tapped(int x,int y){
       else {if(game.originStory)game.originPage=8;menu.storyIndex=0;say("");if(game.originStory)savedTransition(Page::Help);else view.page=Page::Help;}}
     else {menu.storyIndex+=x<120?-1:1;say("");if(!menu.storyReplay&&game.originStory){game.originPage=menu.storyIndex;savedTransition(Page::Prologue);}}
    }return;}
-  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&carvalhoUi::paged(game.city)&&carvalhoUi::mission.contains(x,y))||(view.page==Page::Ruins&&hit(x,y,10,94,220,30))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
+  if((view.page==Page::Home&&hit(x,y,10,140,220,30))||(view.page==Page::Village&&carvalhoUi::paged(game.city)&&carvalhoUi::mission.contains(x,y))||(view.page==Page::Ruins&&scenicUi::ruinsMission.contains(x,y))){view.objectiveReturn=view.page;view.page=Page::Campaign;say("");return;}
   if(view.page==Page::Journal){if(hit(x,y,14,272,102))view.page=Page::Menu;
     else if(hit(x,y,124,272,102)){view.objectiveReturn=Page::Journal;view.page=Page::Campaign;}
     else if(hit(x,y,14,224,102))menu.chapterIndex=(menu.chapterIndex+5)%6;
@@ -506,7 +513,7 @@ void tapped(int x,int y){
     else if(choice==1){if(game.p.hp!=game.p.maxhp||game.p.mp!=game.p.maxmp||rpg::powersSpent(game)||game.fatigue){rpg::rest(game);say("HP, MP, poderes e fadiga recuperados");savedTransition(Page::Home);}else say("Voce ja esta recuperado");}
     else if(choice==2){view.page=Page::Menu;say("");}return;
   }
-  if(view.page==Page::Ruins){int choice=scenicUi::ruinsChoice(x,y);
+  if(view.page==Page::Ruins){if(scenicUi::ruinsPager.contains(x,y)){view.cityPage=1-scenicUi::ruinsPage(view.cityPage);say("");return;}int choice=scenicUi::ruinsChoice(view.cityPage,x,y);
     if(choice==scenicUi::ruinsBag){view.bagReturn=Page::Ruins;view.choice=0;view.page=Page::TownBag;say("");return;}
     if(choice==0){menu.storyReturn=int(Page::Ruins);view.page=Page::People;say("");return;}
     if(choice==1){view.page=Page::DungeonEntry;say("");return;}
@@ -729,7 +736,7 @@ void loop(){
     bool safe=game.phase==rpg::Phase::Home&&!game.tripStage&&!game.campStage&&!combatFx.active()&&!arena.opened;
     bool changed=tickClock(safe);if((changed&&(view.page==Page::Clock||view.page==Page::TimeSettings))||before!=menu.worldPeriod||wasValid!=menu.clockValid)dirty=true;}
   tickEnemyTurn(now);
-  if(lcdReady&&(dirty||(((storyPaperPage(view.page)&&view.paperAnimate&&unsigned(now/120-view.paperStartFrame)<7)||(view.page==Page::Dialogue&&view.dialogueAnimate&&unsigned(now/120-view.dialogueStartFrame)<7)||view.page==Page::LevelUp||view.page==Page::Title||view.page==Page::Home||view.page==Page::Menu||view.page==Page::Ruins||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||(view.page==Page::Clock&&game.eventStage==1)||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
+  if(lcdReady&&(dirty||(view.page==Page::Clock&&clockCycle7::animationDue(menu.clockValid,menu.sessionStarted&&game.eventStage==1,now,drawAt))||(((storyPaperPage(view.page)&&view.paperAnimate&&unsigned(now/120-view.paperStartFrame)<7)||(view.page==Page::Dialogue&&view.dialogueAnimate&&unsigned(now/120-view.dialogueStartFrame)<7)||view.page==Page::LevelUp||view.page==Page::Title||view.page==Page::Home||view.page==Page::Menu||view.page==Page::Ruins||view.page==Page::Battle||view.page==Page::Dungeon||view.page==Page::CampSetup||view.page==Page::CampRoll||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||view.page==Page::Travel||view.page==Page::TravelRoll||view.page==Page::Letter||view.page==Page::EventTravel||view.page==Page::Tests||view.page==Page::Updates)&&uint32_t(now-drawAt)>=(combatFx.active()?60u:120u)))){drawAt=now;paint(now);dirty=false;}
   if(uint32_t(now-reportAt)>=5000){reportAt=now;char report[160];int n=snprintf(report,sizeof(report),"TOQUE erros=%lu aceitos=%lu gap=%lu frame=%lu loop=%lu drop=%lu\n",(unsigned long)(busErrors+shortReads+countErrors+rangeErrors),(unsigned long)acceptedTouches,(unsigned long)maxPollGap,(unsigned long)frameMax,(unsigned long)loopGap,(unsigned long)serialDropped);if(Serial&&Serial.availableForWrite()>=n)Serial.write(reinterpret_cast<const uint8_t*>(report),n);else ++serialDropped;maxPollGap=frameMax=loopGap=0;}
 
   delay(1);

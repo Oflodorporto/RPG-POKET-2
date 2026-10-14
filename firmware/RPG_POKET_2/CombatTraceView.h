@@ -26,6 +26,7 @@ template<class Emit>unsigned lines(const rpg::CombatTrace& t,Emit emit){
  case K::RayHit:{bool hit=s.a!=1&&(s.a==20||s.a+s.b>=s.c);snprintf(b,sizeof(b),"Raio d20 %d%+d vs %d: %s",s.a,s.b,s.c,hit?"ACERTO":"ERRO");out(b);if(s.a==1||s.a==20)out(s.a==1?"1 natural: erra este raio.":"20 natural: acerta este raio.");break;}
  case K::Save:snprintf(b,sizeof(b),"Save inimigo: d20 %d + %d = %d",s.a,s.b,s.a+s.b);out(b);snprintf(b,sizeof(b),"CD %d: %s",s.c,s.a+s.b>=s.c?"passou; metade do dano":"falhou; dano integral");out(b);break;
  case K::Half:snprintf(b,sizeof(b),"Metade: %d / 2 = %d (piso)",s.a,s.b);out(b);break;
+ case K::Fatigue:snprintf(b,sizeof(b),"Fadiga: max(1,%d-%d)=%d",s.b,s.a,s.c);out(b);out("Uma reducao por acao ofensiva.");break;
  case K::Dodge:snprintf(b,sizeof(b),"Esquiva d100=%d <=%d? %s",s.a,s.b,s.a<=s.b?"SIM":"NAO");out(b);break;
  case K::Heavy:snprintf(b,sizeof(b),"Golpe forte: %d x 3/2 = %d",s.a,s.b);out(b);break;
  case K::Guard:snprintf(b,sizeof(b),"Defesa %d%%: %d -> %d (teto)",s.a,s.b,s.c);out(b);break;
@@ -62,6 +63,8 @@ template<class C>void drawDetails(C& c,const rpg::Game& g,const ViewState& v){
 // Destructor overlays the controls even on early-return result/dungeon pages.
 template<class C>struct Overlay {
  C& c;const rpg::Game& g;const ViewState& v;
- ~Overlay(){if(v.traceOpen||!surface(v.page,g))return;button(c,4,0,106,22,"Dados >");if(v.effect!=Effect::None){button(c,130,0,86,22,"Pular >");const auto& t=v.combatResult.enemyAction?v.enemyTrace:v.heroTrace;if(t.valid&&t.diceCount){c.fillRect(10,143,220,29,UI_INK);c.drawRect(10,143,220,29,UI_GOLD);char b[64]="Dados reais: ";unsigned ms=v.effectElapsedMs==UINT32_MAX?v.effectFrame*60:v.effectElapsedMs;unsigned n=std::min(unsigned(t.diceCount),1+ms*unsigned(t.diceCount)/480);for(unsigned i=0;i<n;++i){char d[8];snprintf(d,sizeof(d),"%s%u",i?",":"",t.dice[i]);if(strlen(b)+strlen(d)<36)strcat(b,d);}text(c,16,149,b);snprintf(b,sizeof(b),"%s %u  > HP %u",t.healing?"Cura":"Liquido",t.net,t.applied);text(c,16,160,b,UI_GOLD);}}}
+ ~Overlay(){if(v.traceOpen||!surface(v.page,g))return;button(c,4,0,106,22,"Dados >");
+  if(v.effect==Effect::None&&rpg::fatigueCombatPenalty(g)){char b[32];snprintf(b,sizeof(b),"Fadiga %u%% -%u dano",g.fatigue,rpg::fatigueCombatPenalty(g));c.fillRect(114,0,124,22,UI_INK);text(c,116,7,b,UI_GOLD);}
+  if(v.effect!=Effect::None){button(c,130,0,86,22,"Pular >");const auto& t=v.combatResult.enemyAction?v.enemyTrace:v.heroTrace;if(t.valid&&t.diceCount){c.fillRect(10,143,220,29,UI_INK);c.drawRect(10,143,220,29,UI_GOLD);char b[64]="Dados reais: ";unsigned ms=v.effectElapsedMs==UINT32_MAX?v.effectFrame*60:v.effectElapsedMs;unsigned n=std::min(unsigned(t.diceCount),1+ms*unsigned(t.diceCount)/480);for(unsigned i=0;i<n;++i){char d[8];snprintf(d,sizeof(d),"%s%u",i?",":"",t.dice[i]);if(strlen(b)+strlen(d)<36)strcat(b,d);}text(c,16,149,b);snprintf(b,sizeof(b),"%s %u  > HP %u",t.healing?"Cura":"Liquido",t.net,t.applied);text(c,16,160,b,UI_GOLD);}}}
 };
 }

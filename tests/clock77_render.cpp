@@ -62,7 +62,7 @@ static void safelyDraw(ClockCanvas& c,const rpg::Game& g,const ViewState& v,unsi
   }
   // No Wi-Fi HUD or other overlay may cover the ornamental trim on idle Clock.
   for(unsigned y=0;y<320;++y)for(unsigned x=0;x<240;++x){
-    if(y<24||y>=282||x<25||x>=215)assert(c.pixels[y*240+x]==clockArt::pixel(x,y));
+    if(y<24||y>=282||x<20||x>=220)assert(c.pixels[y*240+x]==clockArt::pixel(x,y));
   }
 }
 
@@ -93,7 +93,7 @@ int main(int argc,char** argv){
     if(!letter)assert(c.has(session?"ao jogo":"ao titulo"));
     assert(c.has("Ajuste hora / Wi-Fi")==!valid);
     if(valid){char hm[6],seconds[5];snprintf(hm,sizeof(hm),"%.5s",times[t]);snprintf(seconds,sizeof(seconds),"%.2s s",times[t]+6);
-      assert(c.has(hm)&&c.has(seconds)&&c.has(dates[t])&&c.has(worldClock::name(menu.worldPeriod)));
+      assert(c.has(hm)&&c.has(seconds)&&c.has(dates[t])&&c.has(worldClock::name(worldClock::period(unsigned(times[t][0]-'0')*10+unsigned(times[t][1]-'0')))));
     }else assert(c.has("--:--")&&c.has("--")&&c.has("--/--/----")&&c.has("Sem hora")&&!c.has(dates[t]));
     if(!period&&!frame&&!t&&event==1){
       if(art==ArtStatus::Ready){

@@ -4,14 +4,14 @@
 #include "title_controller.cpp"
 #undef main
 static unsigned cases=0;
-static const auto bag=scenicUi::ruinsButtons[scenicUi::ruinsBag];
+static const auto bag=scenicUi::ruinsButton(scenicUi::ruinsBag);
 static void tap(scenicUi::Rect r){tapped(r.x+r.w/2,r.y+r.h/2);}
 static void same(const rpg::Game& expected){assert(!memcmp(&game,&expected,sizeof(game)));}
 static void setup(unsigned slot,unsigned cls){
  nvs=Store{};
  for(unsigned s=0;s<3;++s){NvsBackend b(nvs);b.slot=s;NvsJournal j(b);rpg::Game hero;assert(j.load(hero)==rpg::Load::Empty);hero=rpg::create(s,77+s);hero.tutorial=true;assert(j.save(hero));}
  backend.slot=slot;assert(journal.load(game)==rpg::Load::Ok);game=rpg::create(cls,42);game.tutorial=true;game.city=1;game.p.life=game.p.mana=9;game.p.hp=1;game.p.mp=0;game.scrap=7;game.gazuas=3;game.owned=(1u<<rpg::GEAR_COUNT)-1;assert(journal.save(game));
- view=ViewState{};view.page=Page::Ruins;view.choice=8;view.bagReturn=Page::Inventory;menu=MenuState{};menu.sessionStarted=true;menu.activeSlot=slot;combatFx=CombatFx{};now=100;
+ view=ViewState{};view.page=Page::Ruins;view.cityPage=1;view.choice=8;view.bagReturn=Page::Inventory;menu=MenuState{};menu.sessionStarted=true;menu.activeSlot=slot;combatFx=CombatFx{};now=100;
 }
 static void otherSlotsUnchanged(const std::map<std::string,std::vector<uint8_t>>& bytes){
  for(unsigned s=0;s<3;++s)if(s!=backend.slot){NvsBackend b(nvs);b.slot=s;for(const char* key:{b.key(false),b.key(true),b.metaKey(),b.guideKey()}){auto old=bytes.find(key);auto current=nvs.blobs.find(key);assert((old==bytes.end())==(current==nvs.blobs.end()));if(old!=bytes.end())assert(old->second==current->second);}}
@@ -21,11 +21,9 @@ static void retry(bool fail,const rpg::Game& expected,Page target){
  same(expected);if(fail){assert(view.page==Page::SaveError);auto bytes=nvs.blobs;tap(panelUi::bagUse);same(expected);assert(nvs.blobs==bytes);nvs.fail=false;tapped(110,269);same(expected);}assert(view.page==target);persisted();
 }
 int main(){
- // Every display pixel maps to at most one action. Existing seven rectangles stay exact.
- const scenicUi::Rect existing[]={{69,57,110,16},{108,143,128,63},{105,210,130,30},{52,246,86,29},{144,246,90,29},{52,278,86,30},{144,278,90,30}};
- assert(scenicUi::ruinsButtonCount==8&&bag.w>=44&&bag.h>=44);
- for(unsigned i=0;i<7;++i)assert(!memcmp(&existing[i],&scenicUi::ruinsButtons[i],sizeof(bag)));
- for(int y=0;y<320;++y)for(int x=0;x<240;++x){unsigned matches=0;int expected=-1;for(int i=0;i<scenicUi::ruinsButtonCount;++i)if(scenicUi::ruinsButtons[i].contains(x,y)){++matches;expected=i;}assert(matches<=1&&scenicUi::ruinsChoice(x,y)==expected);}
+ // Every pixel maps to at most one current-page action, objective or pager.
+ assert(scenicUi::ruinsButtonCount==8&&bag.w==112&&bag.h==44);
+ for(unsigned page=0;page<2;++page)for(int y=0;y<320;++y)for(int x=0;x<240;++x){unsigned matches=scenicUi::ruinsMission.contains(x,y)+scenicUi::ruinsPager.contains(x,y);int expected=-1;for(unsigned i=0;i<4;++i)if(scenicUi::ruinsActions[i].contains(x,y)){++matches;expected=scenicUi::ruinsActionIds[page][i];}assert(matches<=1&&scenicUi::ruinsChoice(page,x,y)==expected);}
  for(unsigned slot=0;slot<3;++slot)for(unsigned cls=0;cls<4;++cls){
   for(int x:{bag.x,bag.x+bag.w/2,bag.x+bag.w-1})for(int y:{bag.y,bag.y+bag.h/2,bag.y+bag.h-1}){
    setup(slot,cls);auto original=game;auto bytes=nvs.blobs;nvs.fail=true;tapped(x,y);assert(view.page==Page::TownBag&&view.bagReturn==Page::Ruins&&view.choice==0);same(original);assert(nvs.blobs==bytes);tap(panelUi::bagBack);assert(view.page==Page::Ruins);same(original);assert(nvs.blobs==bytes);++cases;

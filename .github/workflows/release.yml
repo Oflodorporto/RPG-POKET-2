@@ -1,31 +1,25 @@
-name: Publicar pacote6 somente apos autorizacao separada e SHA qualificado
-# Prepared infrastructure, not authorization to publish.
-# Main must only advance after separate user release approval and exact-SHA qualification.
-# Qualification branches never publish; historical test/verifier gates remain unchanged.
+name: Publicar pacote7 somente apos autorizacao separada e SHA qualificado
+# Prepared infrastructure is not publication authorization.
+# Only an independently authorized main push may start this release.
+# Qualification branches never publish. Historical tools remain unchanged.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE6_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
-  workflow_dispatch:
-    inputs:
-      version:
-        description: Identidade candidata autorizada separadamente
-        required: true
-        type: string
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE7_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: package6-main
+  group: package7-main
   cancel-in-progress: false
 jobs:
   release:
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 120
     defaults:
       run:
-        shell: bash
+        shell: bash --noprofile --norc -euo pipefail {0}
     env:
       RPG_DETECT_LEAKS: "1"
       PYTHONDONTWRITEBYTECODE: "1"
@@ -33,20 +27,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Exigir identidade, autorizacao e qualificacao do SHA exato
+      - name: Exigir main push e qualificacao do SHA exato
         env:
-          REQUESTED_VERSION: ${{ inputs.version }}
           GH_TOKEN: ${{ github.token }}
         run: |
+          test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          test -z "$REQUESTED_VERSION" || test "$REQUESTED_VERSION" = 2026.10.13-explore77
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package6-check.yml/runs?branch=feat%2Fpackage6-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_package6_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.13-explore77" --jq 'length')" = 0
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package7-check.yml/runs?branch=feat%2Fpackage7-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_package7_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-immersion77" --jq 'length')" = 0
       - name: Instalar dependencia deterministica das artes
         run: python3 -m pip install 'Pillow==11.3.0'
-      - name: Rerodar gate completo no SHA aprovado
-        run: bash tools/test_package6.sh
+      - name: Rerodar agregado completo e quatro modulos no SHA aprovado
+        run: |
+          mkdir -p build
+          bash tools/test_package7.sh 2>&1 | tee build/package7-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar ESP32
         run: |
@@ -56,33 +51,36 @@ jobs:
           arduino-cli core install esp32:esp32@3.3.12
       - name: Compilar e verificar bytes finais
         run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           arduino-cli compile --jobs 4 \
             --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
-            --output-dir build firmware/RPG_POKET_2
-          python3 tools/release_package6_manifest.py
-          python3 tools/verify_package6_release.py
-          python3 tests/package6_release_verifier.py
-          python3 tools/test_package6_release.py release
-          python3 tools/test_package6_release.py release --sanitizers
+            --output-dir build firmware/RPG_POKET_2 2>&1 | tee build/package7-esp32-build.log
+          python3 tools/release_package7_manifest.py
+          python3 tools/verify_package7_release.py
+          python3 tests/package7_release_verifier.py
+          python3 tools/test_package7_release.py release
+          python3 tools/test_package7_release.py release --sanitizers
+          python3 tools/check_package7_scope.py
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package7_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
       - name: Publicar somente SHA main autorizado e qualificado
-        if: github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.13-explore77" --jq 'length')" = 0
-          gh release create v2026.10.13-explore77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Dados e exploracao das Ruinas' --notes-file docs/RELEASE_PACKAGE6_NOTAS.txt --latest
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-immersion77" --jq 'length')" = 0
+          gh release create v2026.10.14-immersion77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Imersao nas Ruinas' --notes-file docs/RELEASE_PACKAGE7_NOTAS.txt --latest
       - name: Conferir downloads publicos e manifesto latest
         run: |
-          mkdir -p build/published-package6
+          mkdir -p build/published-package7
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package6/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.13-explore77/$name"
-            cmp "release/$name" "build/published-package6/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package7/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-immersion77/$name"
+            cmp "release/$name" "build/published-package7/$name"
           done
-          python3 tools/verify_package6_release.py build/published-package6
-          python3 tools/test_package6_release.py build/published-package6
+          python3 tools/verify_package7_release.py build/published-package7
+          python3 tools/test_package7_release.py build/published-package7
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-package6/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package6/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-package7/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package7/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

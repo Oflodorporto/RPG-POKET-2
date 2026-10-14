@@ -1,16 +1,6 @@
 #pragma once
 #include "CampArt.h"
-#include "PersonalArt.h"
-namespace campUi {
-// Reuse the real hero's calm idle pose and its existing race/clothes masks.
-// Fit the original camp envelopes without extra art or a render buffer.
-template<class Canvas> void hero(Canvas& c,const rpg::Game& g,int x,int y,int w,int h){
-  for(int py=0;py<h;++py)for(int px=0;px<w;++px){
-    const auto color=personalPixel(g,0,(py*120/h)*112+px*112/w);
-    if(color!=0xf81f)c.fillRect(x+px,y+py,1,1,color);
-  }
-}
-}
+#include "CampHeroView.h"
 template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame){
   panelCampBackdrop(c,g,v);
   c.setTextWrap(false);auto text=[&](int x,int y,const char* s,int size=1,uint16_t color=UI_WHITE){c.setTextSize(size);c.setTextColor(color);c.setCursor(x,y);c.print(s);};
@@ -22,7 +12,7 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
     // Hide the concept's baked caption before drawing the actual rest choices.
     c.fillRect(14,81,212,17,0x0843);
     center(85,g.campRation?(g.campKit?"Carne, fogueira e saco de dormir":"Carne e uma fogueira quentinha"):g.campKit?"Sem comida, mas com saco de dormir":"Sem comida... dormir no chao",1,UI_GOLD);
-    campUi::hero(c,g,18,114,84,96);
+    campUi::hero(c,g,54,138,84,96,g.campStage==3&&g.campRation,frame);
     magicSprite(c,campArt::fires[frame%4],48,48,116,156,64,64);
     if(g.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,188,64,48);
     c.fillRect(14,236,212,77,0x0843);box(14,242,212,18);c.fillRect(17,245,206*std::min(1000u,v.campProgress)/1000,12,UI_GREEN);
@@ -43,7 +33,7 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
   c.fillRect(14,93,212,12,0x0843);
   snprintf(b,sizeof(b),"Fadiga %u/100 / %s",g.fatigue,rpg::fatigueName(g));
   center(95,b,1,scenicFatigueColor(g));
-  campUi::hero(c,g,38,108,58,66);
+  campUi::hero(c,g,46,102,78,78,menu.campRation&&g.rations,frame);
   magicSprite(c,campArt::fires[frame%4],48,48,121,136,42,42);
   if(menu.campKit)magicSprite(c,campArt::sleepingbag,48,48,170,149,43,29);
   c.fillRect(18,180,205,87,0x0843);
@@ -51,6 +41,7 @@ template<class Canvas> void drawCamp(Canvas& c,const rpg::Game& g,const ViewStat
   center(194,menu.campRation?"Fadiga: 0 apos descansar":"Fadiga: -50 apos descansar",1,UI_GREEN);
   box(14,207,212,33);snprintf(b,sizeof(b),"Racao: %s / tem %u",menu.campRation?"SIM":"NAO",g.rations);center(218,b,1,UI_GOLD);
   box(14,244,212,26);center(253,g.sleepKit?(menu.campKit?"Kit: SIM / +2 no teste":"Kit: NAO / dormir no chao"):"Kit: comprar por 80 ouro",1,UI_GOLD);
-  if(*v.message){c.fillRect(3,169,234,12,UI_INK);center(171,v.message,1,UI_RED);}
+  // Errors temporarily replace the second benefit line, clear of the hero and controls.
+  if(*v.message){c.fillRect(3,194,234,12,UI_INK);center(195,v.message,1,UI_RED);}
   button(14,272,102,"Voltar");button(124,272,102,"Acampar");
 }

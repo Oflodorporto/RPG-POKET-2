@@ -241,21 +241,22 @@ static void campAndRest(){
 }
 
 static void unaffectedRules(){
-  // Match RNG and all Save28 bytes after every action: fatigue cannot change
-  // combat, rewards, powers, potion recovery, lock tests or PvP settlement.
+  // The approved package7 penalty begins strictly above 70%. Keep the full
+  // prior combat oracle at that inclusive safe boundary; fatigue7.cpp covers
+  // the intentional 71+ damage-only delta, plus high-fatigue powers and healing.
   for(unsigned cls=0;cls<4;++cls)for(unsigned level:{1u,5u,10u,18u,20u})
   for(unsigned city=0;city<4;++city)for(unsigned seed=1;seed<=16;++seed)
   for(unsigned action=0;action<=unsigned(Action::DivineSmite);++action){
     auto fresh=hero(cls,level,city);fresh.randomState=seed;
     fresh.p.hp=std::max(1u,unsigned(fresh.p.maxhp)/2);fresh.p.mp=fresh.p.maxmp/2;
-    auto tired=fresh;tired.fatigue=100;
+    auto tired=fresh;tired.fatigue=70;
     assert(effectiveAttack(fresh)==effectiveAttack(tired)&&effectiveDefense(fresh)==effectiveDefense(tired));
     assert(totalMana(fresh)==totalMana(tired)&&survival(fresh)==survival(tired));
     assert(begin(fresh,7)&&begin(tired,7)&&bytes(fresh)==bytes(tired));
     assert((act(fresh,Action(action))==nullptr)==(act(tired,Action(action))==nullptr));
-    assert(bytes(fresh)==bytes(tired)&&fresh.fatigue==0&&tired.fatigue==100);
+    assert(bytes(fresh)==bytes(tired)&&fresh.fatigue==0&&tired.fatigue==70);
     assert(enemy(fresh)==enemy(tired)&&bytes(fresh)==bytes(tired));
-    assert(fresh.fatigue==0&&tired.fatigue==100);
+    assert(fresh.fatigue==0&&tired.fatigue==70);
   }
   for(unsigned cls=0;cls<4;++cls)for(unsigned city=0;city<4;++city)
   for(unsigned seed=1;seed<=40;++seed)for(bool pick:{false,true}){

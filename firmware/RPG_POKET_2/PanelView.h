@@ -69,10 +69,18 @@ template<class C>void drawPanelCharacter(C& c,const rpg::Game& g){
 }
 template<class C>void drawPanelVillage(C& c,const rpg::Game& g,const ViewState& v){drawCarvalho(c,g,v);}
 
+// One opaque live label owns this complete area, including the concept's
+// painted word. Clip unusually long labels with an explicit ellipsis.
+template<class C>void panelCampLocation(C& c,const char* place){
+ char label[19];snprintf(label,sizeof(label),"%s",place);
+ if(strlen(place)>18){label[15]=label[16]=label[17]='.';}
+ c.fillRect(60,62,120,17,0x0843);c.drawRect(60,62,120,17,UI_GOLD);
+ panelLabel(c,64,65,112,label,UI_GOLD);
+}
 template<class C>void panelCampBackdrop(C& c,const rpg::Game& g,const ViewState& v){
  if(v.page==Page::CampSetup){PANEL_IMAGE(c,campSetup);}else if(v.page==Page::CampRoll){PANEL_IMAGE(c,campRoll);}else {PANEL_IMAGE(c,campRest);}
  if(g.city!=1){drawBackdrop(c,g.city==0?bg_explore0:g.city==2?bg_explore2:bg_explore3);scenicHeading(c,v.page==Page::CampSetup?"ACAMPAMENTO":v.page==Page::CampRoll?"TESTE DE ACAMPAR":"DESCANSANDO");}
- panelLabel(c,82,64,76,placeName(g.city),UI_GOLD);
+ panelCampLocation(c,placeName(g.city));
 }
 
 template<class C>struct PanelEffectCanvas : CombatCanvas<C> {

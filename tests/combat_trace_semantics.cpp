@@ -13,6 +13,7 @@ void verify(const CombatTrace& t){
  case K::Rage:case K::Sacred:case K::Evocation:assert(amount==s.b);amount+=s.a;assert(amount==s.c);break;
  case K::Dice:{unsigned sides=s.c&255,group=unsigned(s.c)>>8;for(int j=0;j<s.b;++j){assert(unsigned(s.a+j)<t.diceCount);unsigned die=t.dice[s.a+j];assert(die>=1&&die<=sides);amount+=die;++dieCount;}if(group==unsigned(TraceDice::Missile))amount+=s.b;break;}
  case K::Half:case K::Resistance:assert(amount==s.a);amount/=2;assert(amount==s.b);break;
+ case K::Fatigue:assert(amount==s.b&&amount>0&&(s.a==1||s.a==2));amount=std::max(1,amount-s.a);assert(amount==s.c);break;
  case K::Heavy:assert(amount==s.a);amount=amount*3/2;assert(amount==s.b);break;
  case K::Guard:assert(amount==s.b);amount=(amount*(100-s.a)+99)/100;assert(amount==s.c);break;
  case K::Dodge:dodge=s.a<=s.b;break;
@@ -31,4 +32,5 @@ int main(){unsigned checked=0;for(unsigned cls=0;cls<4;++cls)for(unsigned level=
  }
  auto g=create(0,1);g.p.xp=dndXp[2];levelUp(g);g.phase=Phase::Hero;g.enemyHp=17;CombatTrace fire;assert(!act(g,Action::BurningHands,&fire));assert(fire.dice[0]==4&&fire.dice[1]==2&&fire.dice[2]==4&&fire.potential==10&&fire.net==5&&fire.applied==5);verify(fire);
  printf("PASS: %u captured receipts independently reconstructed from actual dice, modifiers, crit/save/dodge, caps and resource changes; sizeof(trace)=%zu bytes\n",checked,sizeof(CombatTrace));
+ return 0;
 }
