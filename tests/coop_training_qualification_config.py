@@ -9,6 +9,8 @@ sys.dont_write_bytecode=True
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from record_coop_training_build import FQBN,BASE
+DIAGNOSTIC_IF="always() && !cancelled() && (steps.compile.outcome == 'success' || steps.compile.outcome == 'failure')"
+DIAGNOSTIC_UPLOAD_IF="always() && !cancelled() && steps.link_diagnostics.outcome == 'success'"
 
 def validate(document):
     assert set(document)=={'name','on','permissions','concurrency','defaults','env','jobs'}
@@ -25,28 +27,45 @@ def validate(document):
         checkouts=[s for s in job['steps'] if s.get('uses')=='actions/checkout@v4']
         assert len(checkouts)==1 and checkouts[0]['with']=={'fetch-depth':'0','persist-credentials':'false'}
         for step in job['steps']:
-            assert set(step)<={'name','uses','with','run'}
+            assert set(step)<={'name','uses','with','run','id','if'}
+            if 'id' in step:assert name=='esp32-on-off' and step['id'] in ('compile','link_diagnostics')
+            if 'if' in step:
+                assert name=='esp32-on-off'
+                if step.get('id')=='link_diagnostics':assert step['if']==DIAGNOSTIC_IF
+                else:assert step.get('uses')=='actions/upload-artifact@v4' and 'LINK-DIAGNOSTICS' in step['with']['name'] and step['if']==DIAGNOSTIC_UPLOAD_IF
             if 'uses' in step:assert step['uses'] in ('actions/checkout@v4','arduino/setup-arduino-cli@v2','actions/upload-artifact@v4')
         uploads=[s for s in job['steps'] if s.get('uses')=='actions/upload-artifact@v4']
-        assert len(uploads)==1
-        upload=uploads[0]['with']
-        assert set(upload)=={'name','path','if-no-files-found','retention-days'}
-        assert upload['if-no-files-found']=='error' and upload['retention-days']=='7'
-        assert 'EXPERIMENTAL' in upload['name'] and '${{ github.sha }}' in upload['name']
-        expected=['build/coop-training-native/*.log'] if name=='focused-native' else ['build/coop-training-evidence/*.json','build/coop-training-evidence/*.log','build/coop-training-evidence/*.txt']
-        assert upload['path'].splitlines()==expected
+        assert len(uploads)==(1 if name=='focused-native' else 2)
+        for index,step in enumerate(uploads):
+            upload=step['with']
+            assert set(upload)=={'name','path','if-no-files-found','retention-days'}
+            assert upload['if-no-files-found']=='error' and upload['retention-days']=='7'
+            assert 'EXPERIMENTAL' in upload['name'] and '${{ github.sha }}' in upload['name']
+            if index==1:
+                assert upload['name']=='coop-training-EXPERIMENTAL-LINK-DIAGNOSTICS-${{ github.sha }}'
+                assert step.get('if')==DIAGNOSTIC_UPLOAD_IF
+                expected=['build/coop-training-link-diagnostics/link-diagnostics.txt','build/coop-training-link-diagnostics/diagnostic-identity.json']
+            else:
+                assert 'if' not in step
+                expected=['build/coop-training-native/*.log'] if name=='focused-native' else ['build/coop-training-evidence/*.json','build/coop-training-evidence/*.log','build/coop-training-evidence/*.txt']
+            assert upload['path'].splitlines()==expected
     native='\n'.join(s.get('run','') for s in document['jobs']['focused-native']['steps'])
-    for command in ['python3 tests/coop_training_qualification_config.py','python3 tests/coop_training_build_evidence.py','python3 tools/check_coop_training_scope.py --ci','bash tools/test_coop_training.sh build/coop-training-native']:assert command in native
+    for command in ['python3 tests/coop_training_qualification_config.py','python3 tests/coop_training_build_evidence.py','python3 tests/coop_training_link_diagnostics.py','python3 tools/check_coop_training_scope.py --ci','bash tools/test_coop_training.sh build/coop-training-native']:assert command in native
     build_job=document['jobs']['esp32-on-off'];assert build_job['needs']=='focused-native'
     build='\n'.join(s.get('run','') for s in build_job['steps'])
-    for command in ['core install esp32:esp32@3.3.12',"--fqbn '"+FQBN+"'",'for flag in 0 1; do',
+    for command in ['core install esp32:esp32@3.3.12',"--fqbn '"+FQBN+"'",'for flag in 0 1; do','arduino-cli compile --verbose --jobs 4',
         '--build-property "compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=$flag"',
         '--build-path "$RUNNER_TEMP/coop-training-build/flag-$flag"','--export-binaries=false firmware/RPG_POKET_2',
         'test "$(git rev-parse HEAD)" = "$GITHUB_SHA"','python3 tools/record_coop_training_build.py',
         'test -z "$(git status --porcelain --untracked-files=all)"']:assert command in build,command
     assert build.count('python3 tools/check_coop_training_scope.py --ci')==2
+    steps=build_job['steps'];compile_steps=[s for s in steps if s.get('id')=='compile'];diagnostics=[s for s in steps if s.get('id')=='link_diagnostics']
+    assert len(compile_steps)==len(diagnostics)==1
+    assert steps.index(compile_steps[0])<steps.index(diagnostics[0])
+    assert diagnostics[0].get('if')==DIAGNOSTIC_IF
+    assert diagnostics[0]['run'].replace('\\\n',' ').split()==['python3','tools/diagnose_coop_link.py','--build-root','"$RUNNER_TEMP/coop-training-build"','--compile-logs','build/coop-training-evidence','--out-dir','build/coop-training-link-diagnostics']
     all_runs=native+'\n'+build
-    for forbidden in ['gh ', 'git push','release/', 'secrets.', 'github.token','curl ', '--output-dir', '--export-binaries=true','build.extra_flags=', 'test_package10.sh','test_package11.sh','upload-port','arduino-cli upload']:
+    for forbidden in ['gh ', 'git push','release/', 'secrets.', 'github.token','curl ', '--output-dir', '--export-binaries=true','build.extra_flags=', 'test_package10.sh','test_package11.sh','upload-port','arduino-cli upload','|| true','set +e','-mtext-section-literals','-mauto-litpools']:
         assert forbidden not in all_runs,forbidden
 
 document=yaml.load((ROOT/'.github/workflows/coop-training-check.yml').read_text(),Loader=yaml.BaseLoader)
@@ -67,6 +86,10 @@ reject(lambda d:d['jobs']['focused-native']['steps'][0]['with'].update({'persist
 reject(lambda d:d['jobs']['esp32-on-off']['steps'][-1]['with'].update(path='build/**'))
 reject(lambda d:d['jobs']['esp32-on-off']['steps'][-1]['with'].update(path='${{ runner.temp }}/**'))
 reject(lambda d:d['jobs']['esp32-on-off']['steps'][-1]['with'].update(name='firmware-${{ github.sha }}'))
+reject(lambda d:d['jobs']['esp32-on-off']['steps'][-1].update({'if':'always()'}))
+reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='compile').update({'continue-on-error':'true'}))
+reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='link_diagnostics').update({'if':'always()'}))
+reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='link_diagnostics').update(run='env'))
 for old,new in [('esp32@3.3.12','esp32@3.3.11'),('--export-binaries=false','--export-binaries=true'),('compiler.cpp.extra_flags','build.extra_flags'),('$RUNNER_TEMP/coop-training-build/flag-$flag','firmware/RPG_POKET_2/build'),('for flag in 0 1','for flag in 1'),(' --ci','')]:
     def mutate(d,old=old,new=new):
         for step in d['jobs']['esp32-on-off']['steps']:

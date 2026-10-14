@@ -16,7 +16,7 @@ CANDIDATE='b117da8bd46eb1cb3fa4e051654dc9e32c6f126e'
 CANDIDATE_TREE='56a7bba85c83ba3584589502a81f3c69cde5dc01'
 assert git('rev-parse',CANDIDATE+'^{tree}').strip()==CANDIDATE_TREE,'Reviewed source tree mismatch'
 WORKFLOW='.github/workflows/coop-training-check.yml'
-ci_only={WORKFLOW,'tools/check_coop_training_scope.py','tools/record_coop_training_build.py','tests/coop_training_qualification_config.py','tests/coop_training_build_evidence.py','docs/COOP_TRAINING_CI_QUALIFICATION.md'}
+ci_only={WORKFLOW,'tools/check_coop_training_scope.py','tools/record_coop_training_build.py','tools/diagnose_coop_link.py','tests/coop_training_qualification_config.py','tests/coop_training_build_evidence.py','tests/coop_training_link_diagnostics.py','docs/COOP_TRAINING_CI_QUALIFICATION.md'}
 # Exact target-compatibility exception after CI38619347753 rejected the
 # Xtensa std::atomic lock-free assumption. No other reviewed source may change.
 TARGET_COMPATIBILITY_PATCH={'firmware/RPG_POKET_2/Coop/CoopRadioDevice.h': '2b3ee80d66ed1e0ab24990fc342a69c3bde2f5ca4a445e05e3909c35589925b7', 'tests/coop_fake/freertos/FreeRTOS.h': '662b4dd45c2113bdd4b93b3a68648dbdf49fb3b366e94135dc6e608d51fbcb15', 'tests/coop_training_radio.cpp': '57f3a513afd58ffce480c1d56bceb39d0fc214650772c5c424eadb5a6baa9466'}

@@ -29,6 +29,7 @@ jobs:
           python3 -m pip install 'PyYAML==6.0.3'
           python3 tests/coop_training_qualification_config.py
           python3 tests/coop_training_build_evidence.py
+          python3 tests/coop_training_link_diagnostics.py
           python3 tools/check_coop_training_scope.py --ci
       - name: Testar treino, Save30 RNG, compatibilidade desligada e tres regressoes PvP
         run: bash tools/test_coop_training.sh build/coop-training-native
@@ -57,6 +58,7 @@ jobs:
           arduino-cli core update-index
           arduino-cli core install esp32:esp32@3.3.12
       - name: Compilar SHA exato nas duas flags fora do sketch sem exportar
+        id: compile
         run: |
           python3 tools/check_coop_training_scope.py --ci
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
@@ -64,7 +66,7 @@ jobs:
           arduino-cli version > build/coop-training-evidence/toolchain.txt
           arduino-cli core list >> build/coop-training-evidence/toolchain.txt
           for flag in 0 1; do
-            arduino-cli compile --jobs 4 \
+            arduino-cli compile --verbose --jobs 4 \
               --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
               --build-property "compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=$flag" \
               --build-path "$RUNNER_TEMP/coop-training-build/flag-$flag" \
@@ -73,6 +75,14 @@ jobs:
           python3 tools/record_coop_training_build.py --build-root "$RUNNER_TEMP/coop-training-build" --evidence-dir build/coop-training-evidence
           python3 tools/check_coop_training_scope.py --ci
           test -z "$(git status --porcelain --untracked-files=all)"
+      - name: Diagnosticar seções e relocations sem alterar o resultado do build
+        id: link_diagnostics
+        if: always() && !cancelled() && (steps.compile.outcome == 'success' || steps.compile.outcome == 'failure')
+        run: |
+          python3 tools/diagnose_coop_link.py \
+            --build-root "$RUNNER_TEMP/coop-training-build" \
+            --compile-logs build/coop-training-evidence \
+            --out-dir build/coop-training-link-diagnostics
       - name: Guardar somente identidade experimental e orcamento, sem firmware instalavel
         uses: actions/upload-artifact@v4
         with:
@@ -81,5 +91,15 @@ jobs:
             build/coop-training-evidence/*.json
             build/coop-training-evidence/*.log
             build/coop-training-evidence/*.txt
+          if-no-files-found: error
+          retention-days: 7
+      - name: Guardar somente diagnostico textual mesmo quando o link falha
+        if: always() && !cancelled() && steps.link_diagnostics.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coop-training-EXPERIMENTAL-LINK-DIAGNOSTICS-${{ github.sha }}
+          path: |
+            build/coop-training-link-diagnostics/link-diagnostics.txt
+            build/coop-training-link-diagnostics/diagnostic-identity.json
           if-no-files-found: error
           retention-days: 7

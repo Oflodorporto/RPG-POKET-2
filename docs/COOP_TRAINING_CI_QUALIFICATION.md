@@ -1,13 +1,13 @@
 # Qualificação isolada do treino cooperativo
 
-Estado: configuração preparada localmente; **nenhum build ESP32/CI executado nesta etapa**. O envio da branch ainda exige o gate do responsável. Não é autorização para publicar, atualizar ou instalar firmware.
+Estado em 14/10/2026: três execuções técnicas autorizadas; a flag0 compila, mas a flag1 ainda falha no link Xtensa. A preparação seguinte coleta diagnóstico textual, sem alterar produção ou flags. Cada novo envio depende do gate responsável. Não é autorização para publicar, atualizar ou instalar firmware.
 
 ## Fonte congelada e execução
 
 - Base: `6a23dda54114db611b818b51e4b1b942019098fa`.
 - Integração revisada de 69 arquivos: commit local `c405231a5dd55be1520b08269cac50e200388d21`; cópia reconstruída pelo conector `b117da8bd46eb1cb3fa4e051654dc9e32c6f126e`, com árvore idêntica `56a7bba85c83ba3584589502a81f3c69cde5dc01`. O gate usa o SHA reconstruído, disponível no histórico remoto, e confere também a árvore congelada.
 - Branch exclusiva: `feat/coop-training-check`. Só um push nessa branch dispara o novo workflow; não há dispatch genérico, PR privilegiado ou gatilho de tag.
-- A preparação de CI altera somente o próprio gate de escopo entre os 69 arquivos; os outros 68, inclusive toda produção revisada, ficam congelados.
+- As exceções posteriores revisadas estão fixadas por SHA-256 no gate: sincronização ESP32 por portMUX e extração do runtime para outra unidade de tradução. Renderer/arte e elegibilidade permanecem na TU original, evitando referências ODR a tabelas internas legadas. A etapa diagnóstica seguinte não muda produção.
 - `contents: read`, checkout com `persist-credentials: false`; nenhum novo segredo/credencial. Workflows e ferramentas históricos de release/PvP permanecem inalterados. Compras em lote/package11 não entram nesta base.
 - Dois jobs limitados: nativo focado (15 min); após sucesso, compilação das duas flags no mesmo runner descartável (45 min). Não executa o agregado completo de release.
 
@@ -38,8 +38,29 @@ Mesmo com CI verde, liberação depende de revisão do SHA, qualificação físi
 
 Referências de formato: [opções de build do Arduino CLI](https://github.com/arduino/arduino-cli/blob/master/internal/arduino/builder/build_options_manager.go) e [formato de imagem ESP32-S3](https://docs.espressif.com/projects/esptool/en/latest/esp32s3/advanced-topics/firmware-image-format.html). O parser da imagem cobre a imagem simples sem assinatura usada neste fluxo; não substitui teste de boot/OTA ou secure boot.
 
-## Verificação local da preparação
+## Histórico da preparação inicial
 
-Em 14/10/2026: 36 checks de configuração/workflows e 59 fixtures positivas/negativas do registrador passaram, inclusive revisão independente. O wrapper focado foi rerodado com sucesso: 6 builds nativos otimizados, 5 ASan/UBSan e 3 regressões PvP. O parser também foi conferido contra imagens ESP32-S3 históricas já existentes. Nenhum desses resultados é uma compilação ESP32 nova; o gate para enviar a branch e iniciar CI permanece pendente.
+Antes do primeiro envio em 14/10/2026: 36 checks de configuração/workflows e 59 fixtures positivas/negativas do registrador passaram, inclusive revisão independente. O wrapper focado passou: 6 builds nativos otimizados, 5 ASan/UBSan e 3 regressões PvP. O parser também foi conferido contra imagens ESP32-S3 históricas existentes. Naquele momento ainda não havia build ESP32 novo; as três execuções posteriores e seu resultado atual estão registradas abaixo. A preparação diagnóstica atual já passa 40 checks de configuração e 68 fixtures do recorder normal, sem alegar que isso resolve o link.
 
-Após autorização explícita do envio, o transporte Git não encontrou autenticação disponível. O conector autorizado reconstruiu os objetos sem alterar os bytes da integração. Somente os pins de proveniência nos dois scripts e este registro mudaram para o SHA retornado; a revisão independente confere a árvore completa antes de criar a branch que dispara a CI.
+Após autorização explícita do envio, o transporte Git não encontrou autenticação disponível. O conector autorizado reconstruiu os objetos preservando árvores e modos de arquivos; os SHAs retornados e o readback de cada ref são registrados antes de acompanhar CI.
+
+## Falha de link e próxima observação
+
+- CI1 `38619347753`: a suposição de atomic lock-free falhou no alvo; corrigida por portMUX revisado e testado.
+- CI2 `38621515603`: compilação C++ passou, link flag1 falhou com 259 diagnósticos l32r.
+- CI3 `38627070256`, fonte `ff1a0cb32265a77fb5035f09ea97b8f3d608e4b3`, árvore `05eef84eac0a2144f3a1c4253dfe353f6cddd0f3`: nativos aprovados; flag0 preserva 2.913.522 bytes de programa e 55.732 bytes RAM estática; flag1 ainda falha. São 169 referências no clone installUpdate e quatro no task, todas para `.literal._Z17updateInstallTaskPv`. A contagem não mede distância, tamanho da função ou margem de flash.
+- Objetos/mapas das execuções anteriores não foram guardados. Portanto ainda não há medição da colocação final que justifique escolher outra correção.
+
+A próxima preparação acrescenta `--verbose` ao CLI (somente logging) e um step separado de diagnóstico após a tentativa de compilação. O erro original permanece erro: sem `continue-on-error`, sem alteração de flags e sem substituir os gates de memória/identidade. O artifact separado aceita exatamente `link-diagnostics.txt` e `diagnostic-identity.json`; não envia objetos, ELF, imagem, artes nem arquivo instalável. O recorder normal e sua allowlist de nove arquivos não mudam.
+
+Por flag, o diagnóstico pretende registrar comandos reais/response files permitidos, seções e símbolos dos objetos, metadata ABI, relocations/disassembly somente das seções afetadas e contexto do mapa existente. Arquivos ausentes, parciais ou truncados serão identificados como tais. Endereços finais VMA e distância instrução→literal precisam ser comparados entre as flags; offsets do objeto isoladamente não bastam. O [core3.3.12 já gera o mapa](https://raw.githubusercontent.com/espressif/arduino-esp32/3.3.12/platform.txt), sem nova opção de link.
+
+Alternativas a comparar somente após essas medidas:
+
+1. `-mtext-section-literals` restrito à TU afetada: mecanismo documentado para aproximar pools; muda organização e possível deduplicação do código, exigindo prova das opções por objeto e nova medição de imagem/RAM. Não está aplicado nem autorizado globalmente.
+2. Extração mecânica do updater: conserva flags, mas envolve fronteiras de estado, callbacks e headers legados de uma área sensível. Não autoriza mudar lógica OTA; requer revisão própria e atenção ODR.
+3. Renderer separado com bridge read-only de arte: conserva updater/flags, mas adiciona interfaces e requer comparação pixel a pixel, ausência de cópias/alocações e medição de desempenho. Incluir diretamente os headers de arte na segunda TU já foi rejeitado pela revisão ODR.
+
+O [GCC14.2 explica pools próximos de funções e a diferença para auto-litpools](https://gcc.gnu.org/onlinedocs/gcc-14.2.0/gcc/Xtensa-Options.html). O [linker GNU Xtensa documenta interleaving, deduplicação de literais e relaxamento de longcalls](https://sourceware.org/binutils/docs/ld/Xtensa.html). Isso fundamenta hipóteses, não comprova a causa desta falha sem o mapa.
+
+Mesmo resolvido o link nesta base anterior à loja, a preparação do pacote coop deve integrar a shop publicada e repetir a qualificação do SHA combinado antes de qualquer proposta de liberação.
