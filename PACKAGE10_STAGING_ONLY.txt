@@ -1,0 +1,2 @@
+PACKAGE 10 PVP CANDIDATE ONLY
+Branch qualification and generated artifacts do not authorize main, tag, release, flash, or device OTA. User approved preparing the package and the two conservative PvP result policies; publication remains separately authorized. Freeze only after verified clock77 publication and README-only final main.

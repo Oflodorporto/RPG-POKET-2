@@ -1,0 +1,15 @@
+RPG POKET 7.7 - Duelo PvP
+
+CANDIDATO. Este arquivo prepara notas; não autoriza publicação.
+
+Duelo com aparência completa dos dois aventureiros, HP/MP, guarda, custos de mana e animações de ações confirmadas. Desistir também funciona no turno do adversário.
+
+As duas placas precisam estar nesta versão para o PvP. O protocolo novo v5/52 bytes não joga com o antigo v4/44 bytes. A tela pede para atualizar as duas placas.
+
+Se a comunicação cair depois do início sem prova do resultado, aparece NAO CONFIRMADO: não há prêmio e a entrada já utilizada continua consumida. Antes do início, permanece a devolução integral. Se ambos desistirem simultaneamente, vale primeiro a desistência de quem possui o turno acordado.
+
+Uma vitória confirmada em memória, mas ainda não gravada, pode ser perdida ao desligar. Não há promessa de reconexão, consenso durável nem proteção contra firmware adulterado. Mantenha as placas ligadas durante a gravação e use Tentar salvar se solicitado.
+
+Preserva o pulso do relógio, a história, Save30/epoch1, artes de 666 assets, regras da campanha, Wi-Fi e SD. Não requer novo reset de progresso. O fluxo anterior USB primeiro/OTA depois permanece; não use erase flash. Pets, coop e a nova bolsa visual não estão neste pacote.
+
+Os testes host/compilação/OTA devem ser conferidos no run do SHA qualificado. Testes reais de rádio entre as placas, latência, toque e energia continuam separados.

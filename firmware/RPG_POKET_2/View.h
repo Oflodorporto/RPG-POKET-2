@@ -70,6 +70,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "LocksView.h"
 #include "FirstExperience.h"
 #include "CombatTraceView.h"
+#include "ClubBattleView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -181,13 +182,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     if(v.page==Page::SaveError)button(14,250,212,"Tentar salvar");else button(14,250,212,"Menu");return;
   }
   if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);npcPortrait(c,story::Npc::Grum,14,29,24);text(44,37,"Grum Pedrafranca / 25 ouro");
-    auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
+    auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.version!=club::VERSION?" / atualizar":peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
     else {center(95,arena.session.opponent.name,2);center(135,state==club::State::Incoming?"Aceitar duelo por 25 ouro?":"Aguardando outra placa...");if(state==club::State::Incoming){button(14,218,102,"Recusar");button(124,218,102,"Aceitar");}}
     center(208,"Duelo nao letal / protejam-se.",1,UI_GOLD);center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
-  if(v.page==Page::ClubBattle){auto& d=arena.duel;auto& me=d.fighters[d.local];auto& foe=d.fighters[1-d.local];center(10,"ARENA DA GUILDA",2,UI_GOLD);personalSprite(c,g,8,44,frame%6);auto opponent=rpg::create(foe.classId,1);personalSprite(c,opponent,124,44,frame%6,true);
-    snprintf(b,sizeof(b),"HP %u/%u",me.hp,me.maxHP);text(14,170,b);snprintf(b,sizeof(b),"HP %u/%u",foe.hp,foe.maxHP);text(144,170,b);snprintf(b,sizeof(b),"MP %u / %s",me.mp,d.waiting?"Confirmando...":!d.ready?"Preparando...":d.turn==d.local?"Seu turno":"Turno adversario");center(190,b,1,UI_GOLD);
-    button(14,220,102,"Ataque");button(124,220,102,"Ofensiva");button(14,270,102,"Defesa");button(124,270,102,"Desistir");return;}
-  if(v.page==Page::ClubResult){center(12,"FIM DO DUELO",2,UI_GOLD);center(96,arena.result==2?"CANCELADO":arena.result>0?"VITORIA":arena.result==0?"EMPATE":"DERROTA",2);center(138,arena.result==2?"Entrada devolvida: 25 ouro":arena.result>0?"Premio: 45 ouro":arena.result==0?"Entrada devolvida: 25 ouro":"Entrada consumida: 25 ouro");center(177,"Antes do inicio: devolucao integral.");snprintf(b,sizeof(b),"Saldo: %lu ouro",(unsigned long)g.p.gold);center(206,b,1,UI_GOLD);center(245,arena.notice,1,UI_MUTED);button(14,272,212,"Voltar");return;}
+  if(v.page==Page::ClubBattle){drawClubBattle(c,g);return;}
+  if(v.page==Page::ClubResult){center(12,"FIM DO DUELO",2,UI_GOLD);center(96,arena.resultUnconfirmed?"NAO CONFIRMADO":arena.result==2?"CANCELADO":arena.result>0?"VITORIA":arena.result==0?"EMPATE":"DERROTA",2);center(138,arena.result==2?"Entrada devolvida: 25 ouro":arena.result>0?"Premio: 45 ouro":arena.result==0?"Entrada devolvida: 25 ouro":"Entrada consumida: 25 ouro");center(177,arena.resultUnconfirmed?"Sem acordo; premio nao creditado.":"Antes do inicio: devolucao integral.");snprintf(b,sizeof(b),"Saldo: %lu ouro",(unsigned long)g.p.gold);center(206,b,1,UI_GOLD);center(245,arena.notice,1,UI_MUTED);button(14,272,212,"Voltar");return;}
   if(v.page==Page::Race){center(12,"ESCOLHA SUA RACA",2,UI_GOLD);
     for(unsigned i=0;i<4;++i){int x=14+(i%2)*110,y=46+(i/2)*104;box(x,y,102,98);auto draft=rpg::create(v.choice,1);draft.race=i;personalSprite(c,draft,x+11,y+5,6);text(x+12,y+78,raceName(i),1,i==menu.draftRace?UI_GOLD:UI_WHITE);if(i==menu.draftRace)c.drawRect(x+2,y+2,98,94,UI_GREEN);}
     button(14,263,102,"Voltar");button(124,263,102,"Classe >");return;}

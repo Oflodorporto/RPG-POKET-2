@@ -15,7 +15,7 @@ struct Network {
   struct Context {Network *network;int source;} contexts[2]={{this,0},{this,1}};
   struct Delivery {int source;uint8_t destination[6];Packet packet;};
   std::deque<Delivery> queue;
-  int drops[10]={};
+  int drops[11]={};
   uint32_t now=0;
   static void send(void *context,const uint8_t *destination,const Packet &p){
     auto &c=*static_cast<Context *>(context);
@@ -33,14 +33,22 @@ struct Network {
   static void moveReceive(void *p,uint16_t seq,uint8_t action,bool ack,uint32_t now){
     auto &c=*static_cast<Context *>(p);c.network->initDuels();c.network->duel[c.source].receive(seq,action,ack,now);
   }
+  static void resultSend(void *p,uint16_t seq,int8_t winner,uint32_t digest){
+    auto &c=*static_cast<Context *>(p);(c.source==0?c.network->a:c.network->b).sendResult(seq,winner,digest);
+  }
+  static void resultReceive(void *p,uint16_t seq,int8_t winner,uint32_t digest,uint32_t now){
+    auto &c=*static_cast<Context *>(p);c.network->duel[c.source].receiveResult(seq,winner,digest,now);
+  }
   void initDuels(){
     if(!combat)return;
     for(int i=0;i<2;++i){auto &s=i==0?a:b;
-      if(s.state==State::Linked && !duel[i].active)
+      if(s.state==State::Linked && !duel[i].active){
         duel[i].begin(s.sessionId(),s.isInitiator(),i==0?1:0,i==0?3:8,s.opponent.classId,s.opponent.level,moveSend,&contexts[i],now);
+        duel[i].setResultSender(resultSend);
+      }
     }
   }
-  void startCombat(){combat=true;a.setMoveReceiver(moveReceive,&contexts[0]);b.setMoveReceiver(moveReceive,&contexts[1]);initDuels();}
+  void startCombat(){combat=true;a.setResultReceiver(resultReceive,&contexts[0]);b.setResultReceiver(resultReceive,&contexts[1]);a.setMoveReceiver(moveReceive,&contexts[0]);b.setMoveReceiver(moveReceive,&contexts[1]);initDuels();}
   void flush(){
     int count=0;
     while(!queue.empty()){
@@ -85,10 +93,11 @@ int main(){
   Network arena;arena.discover();arena.a.invite(0,100,0);arena.flush();arena.b.accept(0);arena.flush();
   arena.startCombat();arena.advance(0);assert(arena.duel[0].ready && arena.duel[1].ready);
   Packet forged{MAGIC,100,VERSION,(uint8_t)Type::Move,1,3,"CAVALEIRO",0,{1,0,0}};
+  forged.stakeSession=100;
   uint8_t stranger[6]={2,3,4,5,6,7};
   arena.b.receive(stranger,forged,0);assert(arena.duel[1].revision==0);
-  forged.session=101;arena.b.receive(arena.mac[0],forged,0);assert(arena.duel[1].revision==0);
-  forged.session=100;forged.classId=3;arena.b.receive(arena.mac[0],forged,0);assert(arena.duel[1].revision==0);
+  forged.session=101;forged.stakeSession=101;arena.b.receive(arena.mac[0],forged,0);assert(arena.duel[1].revision==0);
+  forged.session=100;forged.stakeSession=100;forged.classId=3;arena.b.receive(arena.mac[0],forged,0);assert(arena.duel[1].revision==0);
   arena.drops[(int)Type::Move]=1;
   assert(arena.duel[0].play(Action::Attack,arena.now));arena.flush();arena.advance(400);
   assert(arena.duel[1].revision==1 && !arena.duel[0].waiting);
@@ -130,9 +139,9 @@ int main(){
   bad=hello;std::memset(bad.name,'X',12);invalid.a.receive(third,bad,0);assert(!invalid.a.peers[1].used);
   invalid.a.receive(invalid.mac[0],hello,0);assert(!invalid.a.peers[1].used);
   invalid.a.invite(0,45,0);invalid.flush();
-  bad=hello;bad.type=(uint8_t)Type::Accept;bad.session=45;
+  bad=hello;bad.type=(uint8_t)Type::Accept;bad.session=45;bad.stakeSession=45;
   invalid.a.receive(third,bad,0);assert(invalid.a.state==State::Outgoing);
-  bad.session=46;invalid.a.receive(invalid.mac[1],bad,0);assert(invalid.a.state==State::Outgoing);
+  bad.session=46;bad.stakeSession=46;invalid.a.receive(invalid.mac[1],bad,0);assert(invalid.a.state==State::Outgoing);
   invalid.a.tick(6001);assert(!invalid.a.peers[0].used);
 
   Network lost;lost.discover();lost.a.invite(0,10,0);lost.flush();lost.b.accept(0);lost.flush();
@@ -145,4 +154,5 @@ int main(){
   wrap.a.invite(0,123,wrap.now);wrap.flush();wrap.advance(30000);
   assert(wrap.a.notice==Notice::Expired);
   std::cout<<"PASS: discovery, invitation, acceptance, refusal, cancellation, retries, timeout, collision, validation, disconnect, timer wrap and end-to-end duel\n";
+  return 0;
 }

@@ -4,9 +4,9 @@
 
 namespace club {
 constexpr uint32_t MAGIC = 0x50434C31;
-constexpr uint8_t VERSION = 4;
+constexpr uint8_t VERSION = 5;
 constexpr int MAX_PEERS = 6;
-enum class Type : uint8_t { Hello, Invite, Accept, Confirm, Ready, Reject, Cancel, Busy, Move, MoveAck };
+enum class Type : uint8_t { Hello, Invite, Accept, Confirm, Ready, Reject, Cancel, Busy, Move, MoveAck, Result };
 enum class State : uint8_t { Listing, Outgoing, Incoming, Accepting, Connecting, Linked, Notice };
 enum class Notice : uint8_t { None, Refused, Cancelled, Expired, Busy, Lost };
 struct Standing {
@@ -22,10 +22,13 @@ struct Packet {
   uint8_t available, reserved[3];
   Standing standing{};
   uint32_t stakeSession=0;
+  uint32_t resultDigest=0;
+  uint8_t race=0,shirt=0,trousers=0,appearanceReserved=0;
 };
-static_assert(sizeof(Packet) == 44, "Club wire layout changed");
+static_assert(sizeof(Packet) == 52, "Club wire layout changed");
 struct Peer {
   bool used = false, available = false;
+  uint8_t version=VERSION,race=0,shirt=0,trousers=0;
   uint8_t mac[6] = {}, classId = 0, level = 1;
   char name[12] = {};
   uint32_t lastSeen = 0;
@@ -33,6 +36,7 @@ struct Peer {
 };
 using Sender = void (*)(void *, const uint8_t *, const Packet &);
 using MoveReceiver = void (*)(void *, uint16_t, uint8_t, bool, uint32_t);
+using ResultReceiver = void (*)(void *,uint16_t,int8_t,uint32_t,uint32_t);
 using Admission = bool (*)(void *,uint32_t,const Peer &);
 
 class Session {
@@ -54,12 +58,19 @@ public:
   bool isInitiator() const {return initiator;}
   void setMoveReceiver(MoveReceiver fn, void *ctx) {moveReceiver=fn;moveContext=ctx;}
   void sendMove(uint16_t sequence, uint8_t action, bool ack);
+  void setResultReceiver(ResultReceiver fn,void *ctx) {resultReceiver=fn;resultContext=ctx;}
+  void sendResult(uint16_t sequence,int8_t winner,uint32_t digest);
+  void setAppearance(uint8_t race,uint8_t shirt,uint8_t trousers){
+    profile.race=race<4?race:0;profile.shirt=shirt<8?shirt:0;profile.trousers=trousers<8?trousers:0;
+  }
   void setStanding(const Standing &value){profile.standing=value;}
   void setAdmission(Admission fn,void *ctx){admission=fn;admissionContext=ctx;}
   void setAvailable(bool value){fundsAvailable=value;}
 private:
   Admission admission=nullptr;void *admissionContext=nullptr;
   bool fundsAvailable=true;
+  ResultReceiver resultReceiver=nullptr;
+  void *resultContext=nullptr;
   MoveReceiver moveReceiver = nullptr;
   void *moveContext = nullptr;
   uint8_t ownMac[6] = {};
@@ -67,7 +78,7 @@ private:
   Sender sender = nullptr;
   void *context = nullptr;
   uint32_t session = 0, started = 0, lastHello = 0, lastSend = 0, lastReply = 0;
-  bool initiator = false;
+  bool initiator = false,closedLinked=false;
   uint32_t closedSession = 0, closedAt = 0;
   uint8_t closedPeer[6] = {};
   Type closedReply = Type::Cancel;

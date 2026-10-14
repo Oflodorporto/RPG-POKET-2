@@ -62,8 +62,8 @@ int main(){
   mana.play(Action::Attack);
   Net surrender;surrender.play(Action::Surrender);assert(surrender.d[0].winner==1);
   // Losing the final ACK never applies the final action twice.
-  Net finalAck;finalAck.dropAck=true;finalAck.play(Action::Surrender);
-  assert(finalAck.d[0].waiting);finalAck.advance(400);
+  Net finalAck;finalAck.dropAck=true;assert(finalAck.d[0].play(Action::Surrender,finalAck.now));finalAck.flush();
+  assert(finalAck.d[0].surrenderRequested && !finalAck.d[0].finished);finalAck.advance(400);
   assert(finalAck.d[0].finished && !finalAck.d[0].waiting && finalAck.d[1].revision==1);
   // Ready packets can arrive out of order and be retried independently.
   Duel readyTest;readyTest.begin(24,true,0,3,1,3,nullptr,nullptr,0);

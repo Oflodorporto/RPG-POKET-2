@@ -164,4 +164,5 @@ int main(int argc,char** argv){
     if(selection=="all"||selection=="refund")for(bool reboot:{false,true})rejectionRefund(failure,reboot);
   }
   printf("PASS: fatigue76 real ClubRadio admission compensation, %u compensation power-cut boundaries, queued save-error freeze, and single-refund retry/reboot\n",compensationBoundaries);
+  return 0;
 }
