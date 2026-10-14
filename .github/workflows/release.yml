@@ -1,16 +1,16 @@
-name: Publicar pacote7 somente apos autorizacao separada e SHA qualificado
+name: Publicar pacote8 somente apos autorizacao separada e SHA qualificado
 # Prepared infrastructure is not publication authorization.
 # Only an independently authorized main push may start this release.
 # Qualification branches never publish. Historical tools remain unchanged.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE7_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE8_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: package7-main
+  group: package8-main
   cancel-in-progress: false
 jobs:
   release:
@@ -33,15 +33,15 @@ jobs:
         run: |
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package7-check.yml/runs?branch=feat%2Fpackage7-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_package7_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-immersion77" --jq 'length')" = 0
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package8-check.yml/runs?branch=feat%2Fpackage8-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_package8_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-story77" --jq 'length')" = 0
       - name: Instalar dependencia deterministica das artes
         run: python3 -m pip install 'Pillow==11.3.0'
-      - name: Rerodar agregado completo e quatro modulos no SHA aprovado
+      - name: Rerodar agregado herdado completo e narrativa no SHA aprovado
         run: |
           mkdir -p build
-          bash tools/test_package7.sh 2>&1 | tee build/package7-tests.log
+          bash tools/test_package8.sh 2>&1 | tee build/package8-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar ESP32
         run: |
@@ -52,38 +52,38 @@ jobs:
       - name: Compilar e verificar bytes finais
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          arduino-cli version | tee build/package7-esp32-build.log
+          arduino-cli version | tee build/package8-esp32-build.log
           arduino-cli compile --jobs 4 \
             --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
-            --build-path build/esp32-package7 --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee -a build/package7-esp32-build.log
-          cp build/esp32-package7/RPG_POKET_2.ino.bin build/RPG_POKET_2.ino.bin
-          python3 tools/check_package7_scope.py
-          python3 tools/release_package7_manifest.py
-          python3 tools/verify_package7_release.py
-          python3 tests/package7_release_verifier.py
-          python3 tools/test_package7_release.py release
-          python3 tools/test_package7_release.py release --sanitizers
-          python3 tools/check_package7_scope.py
-          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package7_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
+            --build-path build/esp32-package8 --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee -a build/package8-esp32-build.log
+          cp build/esp32-package8/RPG_POKET_2.ino.bin build/RPG_POKET_2.ino.bin
+          python3 tools/check_package8_scope.py
+          python3 tools/release_package8_manifest.py
+          python3 tools/verify_package8_release.py
+          python3 tests/package8_release_verifier.py
+          python3 tools/test_package8_release.py release
+          python3 tools/test_package8_release.py release --sanitizers
+          python3 tools/check_package8_scope.py
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package8_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
       - name: Publicar somente SHA main autorizado e qualificado
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-immersion77" --jq 'length')" = 0
-          gh release create v2026.10.14-immersion77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Imersao nas Ruinas' --notes-file docs/RELEASE_PACKAGE7_NOTAS.txt --latest
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-story77" --jq 'length')" = 0
+          gh release create v2026.10.14-story77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Ecos de Valdaria' --notes-file docs/RELEASE_PACKAGE8_NOTAS.txt --latest
       - name: Conferir downloads publicos e manifesto latest
         run: |
-          mkdir -p build/published-package7
+          mkdir -p build/published-package8
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package7/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-immersion77/$name"
-            cmp "release/$name" "build/published-package7/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package8/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-story77/$name"
+            cmp "release/$name" "build/published-package8/$name"
           done
-          python3 tools/verify_package7_release.py build/published-package7
-          python3 tools/test_package7_release.py build/published-package7
+          python3 tools/verify_package8_release.py build/published-package8
+          python3 tools/test_package8_release.py build/published-package8
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-package7/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package7/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-package8/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package8/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

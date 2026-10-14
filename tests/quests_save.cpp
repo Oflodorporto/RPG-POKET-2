@@ -26,6 +26,15 @@ int main(){
     old=g;assert(claimQuest(g));same(g,old);assert(!acceptQuest(g,id)&&!g.questProgress);
     assert(!abandonQuest(g)&&!g.questId);
   }
+  // The first Carvalho contract counts threats, including goblins, not only beasts.
+  {auto patrol=testHero(0,77);patrol.guildMember=true;patrol.city=0;
+   assert(!strcmp(contract(4).objective,"Venca 3 ameacas em Carvalho"));
+   assert(contract(4).enemy==-1&&contract(4).count==3&&contract(4).gold==18&&contract(4).percent==15);
+   assert(!acceptQuest(patrol,4));unsigned progress=0;
+   for(uint8_t foe:{uint8_t(0),uint8_t(1),uint8_t(0)}){win(patrol,foe);assert(patrol.questProgress==++progress);}
+   assert(questComplete(patrol));auto gold=patrol.p.gold;auto reward=contractGold(patrol,4,patrol.questLevel);
+   assert(!claimQuest(patrol)&&patrol.p.gold==gold+reward);auto paid=patrol;assert(claimQuest(patrol));same(patrol,paid);
+  }
   assert(contractXp(1,3)==30&&contractXp(2,3)==42&&contractXp(3,3)==72);
   assert(contractGold(1,3)==19&&contractGold(2,3)==22&&contractGold(3,3)==39);
   for(uint8_t level=3;level<=99;++level)for(uint8_t id=1;id<=3;++id){assert(contractXp(id,level)==uint32_t(xpNeeded(level))*contract(id).percent/100);assert(contractGold(id,level)==contract(id).gold+(level-1)*2);}

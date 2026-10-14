@@ -96,7 +96,7 @@ inline const char* eventAct(Game& g,unsigned choice=0){
   else if(g.eventProgress==2){if(choice)return "Acao indisponivel";begin(g,eventFoe(g,2));}return nullptr;
  }
  if(g.eventKind==7){
-  if(!g.eventProgress){if(choice>1)return "Acao indisponivel";if(choice){if(!g.rations)return "Leve uma racao para as tochas";--g.rations;g.eventFlags=(g.eventFlags&16)|2;}else g.eventFlags=(g.eventFlags&16)|1;eventTest(g,choice?luck(g):survival(g),12+g.eventTier);g.eventProgress=1;}
+  if(!g.eventProgress){if(choice>1)return "Acao indisponivel";if(choice){if(!g.rations)return "Leve uma racao para a vigilia";--g.rations;g.eventFlags=(g.eventFlags&16)|2;}else g.eventFlags=(g.eventFlags&16)|1;eventTest(g,choice?luck(g):survival(g),12+g.eventTier);g.eventProgress=1;}
   else {if(choice)return "Acao indisponivel";begin(g,eventFoe(g,g.eventProgress));g.guard=g.eventRoll==20||(g.eventRoll!=1&&g.eventRoll+((g.eventFlags&2)?luck(g):survival(g))>=12+g.eventTier)?75:50;}return nullptr;
  }
  return "Acao indisponivel";

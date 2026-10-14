@@ -6,9 +6,20 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  auto button=[&](int x,int y,int w,const char* s){c.fillRect(x,y,w,40,UI_PANEL);c.drawRect(x,y,w,40,UI_GOLD);c.setTextSize(1);c.setTextColor(UI_WHITE);c.setCursor(x+(w-int(strlen(s))*6)/2,y+15);c.print(s);};
  char b[64];
  if(v.page==Page::Epilogue||(v.page==Page::CampaignResult&&g.campaignStage>=8&&g.phase==rpg::Phase::Won)){
-  unsigned m=v.page==Page::Epilogue?9:g.campaignStage,pages=story::finalePages(g,m),page=std::min(unsigned(v.campaignScene),pages-1);if(!drawStoryBackdrop(c,m==8?bg_castle:bg_explore0,v,frame))return;c.fillRect(8,8,224,253,0xf6d4);c.drawRect(8,8,224,253,UI_GOLD);npcPortrait(c,m==8?story::Npc::Liora:story::Npc::Nara,16,37,48);auto ink=[&](int x,int y,const char* line,int size=1){c.setTextSize(size);c.setTextColor(0x30e4);c.setCursor(x,y);c.print(line);};ink(74,46,m==8?"LIORA VALCER":"EPILOGO DE AELDRA");snprintf(b,sizeof(b),"Pagina %u / %u",page+1,pages);ink(74,68,b);story::wrapStory(story::finaleSpeech(g,m),18,[&](unsigned row,const char* line){if(row/7==page)ink(12,102+(row%7)*17,line,2);});button(14,272,212,page+1<pages?"Proxima":v.page==Page::Epilogue?"Voltar ao mundo":"Registrar no diario");return;
+  unsigned m=v.page==Page::Epilogue?9:g.campaignStage,pages=story::finalePages(g,m),page=std::min(unsigned(v.campaignScene),pages-1);
+  const auto section=story::finalePage(g,m,page);
+  if(!drawStoryBackdrop(c,m==8?bg_castle:bg_explore0,v,frame))return;
+  c.fillRect(8,8,224,253,STORY_PAPER);c.drawRect(8,8,224,253,UI_GOLD);
+  auto ink=[&](int x,int y,const char* line,int size=1){c.setTextSize(size);c.setTextColor(STORY_INK);c.setCursor(x,y);c.print(line);};
+  if(section.npc!=story::Npc::None){npcPortrait(c,section.npc,16,37,48);ink(74,46,section.title);}
+  else {ink((240-int(strlen(section.title))*6)/2,38,section.title);ink(96,59,"NARRADOR");}
+  snprintf(b,sizeof(b),"Pagina %u / %u",page+1,pages);ink(section.npc!=story::Npc::None?74:78,78,b);
+  story::wrapStory(section.text,18,[&](unsigned row,const char* line){if(row/7==section.page)ink(12,102+(row%7)*17,line,2);});
+  if(story::finaleFull(g,m)&&page+1==pages){ink(66,235,"RPG POKET / Rodolfo");ink(48,248,"Fim da campanha de Aeldra");}
+  if(v.page==Page::Epilogue){button(14,272,102,page?"Anterior":"Voltar");button(124,272,102,page+1<pages?"Proxima":"Fechar");}
+  else button(14,272,212,page+1<pages?"Proxima":"Registrar no diario");return;
  }
- if(v.page==Page::CampaignTask&&v.campaignChoice>=8){if(!drawStoryBackdrop(c,bg_castle,v,frame))return;center(16,rpg::campaignTitle(v.campaignChoice),1,UI_GOLD);npcPortrait(c,story::Npc::Liora,88,42,64);center(119,"Liora espera sua decisao");center(147,rpg::anwenReady(g)?"Quatro ajudas: restauracao disponivel":"Sem quatro ajudas: selo temporario",1,rpg::anwenReady(g)?UI_GREEN:UI_GOLD);center(172,"Voce podera voltar para completar.");center(197,"Odran e o Coracao sao dois combates.");center(221,"Bolsa e descanso continuam disponiveis.");center(252,v.message,1,UI_GOLD);button(14,272,102,"Voltar");button(124,272,102,"Enfrentar");return;}
+ if(v.page==Page::CampaignTask&&v.campaignChoice>=8){if(!drawStoryBackdrop(c,bg_castle,v,frame))return;center(16,rpg::campaignTitle(v.campaignChoice),1,UI_GOLD);npcPortrait(c,story::Npc::Liora,88,42,64);center(119,"Liora espera sua decisao");center(147,rpg::anwenReady(g)?"Quatro ajudas: restauracao disponivel":"Sem quatro ajudas: selo temporario",1,rpg::anwenReady(g)?UI_GREEN:UI_GOLD);center(172,g.campaignEnding==1&&!rpg::anwenReady(g)?"Reuna as ajudas antes de retornar.":"Voce podera voltar para completar.");center(197,rpg::finaleMission(g)==8?"Odran e o Coracao sao dois combates.":"Odran esta sob custodia.");center(221,"Bolsa e descanso continuam disponiveis.");center(252,v.message,1,UI_GOLD);button(14,272,102,"Voltar");button(124,272,102,"Enfrentar");return;}
  if(v.page==Page::ContributionResult||(v.page==Page::CampaignResult&&g.campaignStage>=4&&g.phase==rpg::Phase::Won)){
   unsigned m=v.page==Page::ContributionResult?v.campaignChoice:g.campaignStage,pages=story::contributionPages(m),page=std::min(unsigned(v.campaignScene),pages-1);if(!drawStoryBackdrop(c,g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_port:bg_castle,v,frame))return;
   c.fillRect(8,8,224,253,0xf6d4);c.drawRect(8,8,224,253,0xa3c9);auto npc=story::cityNpc(rpg::campaignCity(m),rpg::campaignPerson(m));npcPortrait(c,npc,16,38,48);
@@ -23,7 +34,7 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
  if(v.page==Page::CampaignTask&&v.campaignChoice>=4){
   unsigned m=v.campaignChoice;if(!drawStoryBackdrop(c,g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_port:bg_castle,v,frame))return;center(12,"O LEGADO DE ANWEN",2,UI_GOLD);center(45,rpg::campaignTitle(m),1,UI_GOLD);npcPortrait(c,story::cityNpc(rpg::campaignCity(m),rpg::campaignPerson(m)),16,62,40);text(64,69,story::contributionContact(m),1,UI_GOLD);
   c.fillRect(8,111,224,132,STORY_PAPER);c.drawRect(8,111,224,132,UI_GOLD);story::wrapStory(story::contributionBrief(m),18,[&](unsigned row,const char* line){c.setTextSize(2);c.setTextColor(STORY_INK);c.setCursor(12,115+row*17);c.print(line);});
-  center(93,m==4?"Entrega: 3 racoes / Nv18":m==7?"Componentes: 150 ouro / Nv18":"Proteja a equipe / Nv18");center(252,v.message,1,UI_GOLD);button(14,272,102,"Voltar");button(124,272,102,rpg::campaignDonation(m)?"Entregar":"Escoltar");return;
+  center(93,m==4?"Entrega: 3 racoes / Nv18":m==7?"Componentes: 150 ouro / Nv18":"Proteja a equipe / Nv18");if(m==7)center(233,"Arma e armadura ficam com voce.",1,UI_MUTED);center(252,v.message,1,UI_GOLD);button(14,272,102,"Voltar");button(124,272,102,rpg::campaignDonation(m)?"Entregar":"Escoltar");return;
  }
  if(v.page==Page::CampaignTask){
   unsigned mission=v.campaignChoice;bool royal=mission==3;if(!drawStoryBackdrop(c,royal?bg_castle:bg_port,v,frame))return;center(12,royal?"MISSAO DE LIORA":"MISSAO DE SABELA",2,UI_GOLD);center(48,rpg::campaignTitle(mission),1,UI_GOLD);
@@ -78,18 +89,18 @@ template<class Canvas> void drawNarrative(Canvas& c,const rpg::Game& g,const Vie
   auto paperText=[&](int x,int y,const char* line,int size=1){c.setTextSize(size);c.setTextColor(ink);c.setCursor(x,y);c.print(line);};
   auto paperCenter=[&](int y,const char* line){paperText((240-int(strlen(line))*6)/2,y,line);};
   if(opening==6){
-   paperCenter(20,hidden?"VOZ DESCONHECIDA":who.name);
+   paperCenter(20,hidden?"NARRADOR":who.name);
    if(!hidden){npcPortrait(c,npc,16,38,48);paperText(74,46,who.role);paperText(74,67,"CONVERSA / ");paperText(74,78,placeName(g.city));}
    else paperCenter(61,"Uma voz entre as pedras...");
    snprintf(b,sizeof(b),"Pagina %u / %u",page+1,pages);paperCenter(89,b);c.fillRect(18,99,204,1,edge);
    story::wrapStory(speech,18,[&](unsigned row,const char* line){if(row/7==page)paperText(12,105+(row%7)*17,line,2);});
-   if((menu.personIndex==rpg::campaignPerson(rpg::campaignMission(g))&&rpg::campaignContact(g))||(g.city==3&&menu.personIndex==0&&(g.campaignFlags&4)&&g.campaignEnding!=2)){c.fillRect(14,225,212,32,STORY_PAPER);c.drawRect(14,225,212,32,UI_GOLD);c.setTextColor(UI_GOLD);center(236,g.city==3&&menu.personIndex==0&&(g.campaignFlags&4)?"Impedir a Vigilia":rpg::campaignMission(g)>=4?"Ajudar na restauracao":rpg::campaignMission(g)==3?"Abrir arquivos da Coroa":g.campaignFlags&1?"Resgatar refugiados":"Investigar a carga",1,UI_GOLD);}
+   if((menu.personIndex==rpg::campaignPerson(rpg::campaignMission(g))&&rpg::campaignContact(g))||(g.city==3&&menu.personIndex==0&&(g.campaignFlags&4)&&g.campaignEnding!=2)){c.fillRect(14,225,212,32,STORY_PAPER);c.drawRect(14,225,212,32,UI_GOLD);c.setTextColor(UI_GOLD);center(236,g.city==3&&menu.personIndex==0&&(g.campaignFlags&4)?(rpg::finaleMission(g)==8?"Impedir Odran":g.campaignEnding==1&&rpg::anwenReady(g)?"Restaurar os farois":"Enfrentar o Coracao"):rpg::campaignMission(g)>=4?"Ajudar na restauracao":rpg::campaignMission(g)==3?"Abrir arquivos da Coroa":g.campaignFlags&1?"Resgatar refugiados":"Investigar a carga",1,UI_GOLD);}
   }
   button(14,272,102,page?"Anterior":"Voltar");button(124,272,102,page+1<pages?"Proxima":"Fechar");return;
  }
  unsigned index=menu.chapterIndex%6;center(12,"DIARIO DE AELDRA",2,UI_GOLD);center(46,story::chapterNames[index],1,UI_GOLD);
  bool known=index<=story::knownChapter(g);const auto& chapter=story::chapters[index];center(73,known?chapter.speaker:"AINDA POR DESCOBRIR",1,known?UI_GREEN:UI_MUTED);
- if(known){if(index==5){const char* full[]={"Odran responde por suas ordens.","As memorias voltaram as familias.","Os farois nao exigem novas vitimas.","Aeldra esta livre. O mundo continua."};const char* temporary[]={"Odran perdeu o poder sobre Aurora.","O selo temporario ganhou tempo.","Reuna as quatro ajudas de Anwen.","Volte a Liora para restaurar os farois."};for(unsigned i=0;i<4;++i)center(100+i*23,g.campaignEnding==2?full[i]:temporary[i]);}else if(index==4&&(g.campaignFlags&4)){for(unsigned i=0;i<4;++i){snprintf(b,sizeof(b),"%s: %s",rpg::contributionName(i),rpg::contribution(g,i)?"pronta":"pendente");center(100+i*23,b,1,rpg::contribution(g,i)?UI_GREEN:UI_MUTED);}}else for(unsigned i=0;i<4;++i)center(100+i*23,chapter.lines[i]);}
+ if(known){if(index==5){const char* full[]={"Odran responde por suas ordens.","Algumas memorias voltam as familias.","Outras se despedem. O selo permanece.","Aeldra esta livre. O mundo continua."};const char* temporary[]={"Odran permanece sob custodia.","Nao serao recolhidas novas memorias.",rpg::anwenReady(g)?"As quatro ajudas estao prontas.":"Reuna as ajudas que ainda faltam.","Volte a Liora para restaurar os farois."};for(unsigned i=0;i<4;++i)center(100+i*23,g.campaignEnding==2?full[i]:temporary[i]);}else if(index==4&&(g.campaignFlags&4)){for(unsigned i=0;i<4;++i){snprintf(b,sizeof(b),"%s: %s",rpg::contributionName(i),rpg::contribution(g,i)?"pronta":"pendente");center(100+i*23,b,1,rpg::contribution(g,i)?UI_GREEN:UI_MUTED);}}else for(unsigned i=0;i<4;++i)center(100+i*23,chapter.lines[i]);}
  else {center(113,"Continue a jornada em Aeldra.");center(143,"Esta pagina evita revelar");center(165,"o que voce ainda nao descobriu.");}
  if(index==3&&(g.campaignFlags&1))center(191,"Cargas: provas recuperadas",1,UI_GREEN);
  if(index==3&&(g.campaignFlags&2))center(209,"Refugiados: resgatados",1,UI_GREEN);

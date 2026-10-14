@@ -1,0 +1,2 @@
+PACKAGE 8 CANDIDATE ONLY
+Branch qualification and generated artifacts do not authorize main, tag, release, publication, flash, or device OTA. Separate user publication approval is required.

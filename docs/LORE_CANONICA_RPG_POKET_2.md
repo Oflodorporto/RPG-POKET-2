@@ -1,6 +1,6 @@
 # RPG POKET 2 — As Cinzas da Primeira Aurora
 
-**Cânone v1 — 07/10/2026.** História original de fantasia heroica, com o espírito de uma campanha de mesa inspirada em D&D 5e: descobertas, personagens com interesses próprios, exploração, D20 e escolhas com consequências. O cenário, os nomes e a trama são próprios do RPG POKET. Este documento é a referência narrativa para reorganizar o jogo. Não muda o firmware camp1 nem substitui suas regras atuais.
+**Cânone v1 — 07/10/2026; encenação narrativa revisada em 14/10/2026.** História original de fantasia heroica, com o espírito de uma campanha de mesa inspirada em D&D 5e: descobertas, personagens com interesses próprios, exploração, D20 e escolhas com consequências. O cenário, os nomes e a trama são próprios do RPG POKET. Este documento é a referência narrativa da campanha de Aeldra. A encenação abaixo acompanha o arco implementado; propostas continentais continuam futuras. A revisão de texto não altera regras de combate, economia, requisitos, RNG, recompensas, Save30, epoch1 ou o catálogo de 666 artes.
 
 ## A promessa da aventura
 
@@ -10,27 +10,15 @@ Você começa como alguém que precisa de trabalho, abrigo e uma boa refeição.
 
 O jogador não é um escolhido de sangue real. A importância do herói nasce das pessoas que ajuda, das estradas que percorre e das decisões que assume. Qualquer uma das quatro raças e classes pode protagonizar toda a campanha.
 
-## Abertura cinematográfica — O sino que tocou sozinho
+## Abertura — O sino que tocou sozinho
 
-Chove sobre Carvalho. Uma roda quebra na estrada. O personagem empurra uma carroça até o portão enquanto a velha dona da taverna abre a porta, deixando a luz da lareira escapar para a rua.
+Personagens com origem registrada veem três páginas pessoais antes das cinco páginas comuns de chegada. O mago procura ajuda para o mestre que esquece os alunos; o cavaleiro procura trabalho e um juramento digno após proteger uma família contra ordens; o guerreiro quer retomar o ofício de guarda de caravana e sustentar a família; o bárbaro busca ajuda para sua comunidade atingida pela cinza. Saves sem origem registrada releem somente a chegada comum.
 
-No horizonte, por trás das árvores, uma torre morta acende.
+O herói empurra uma carroça até Carvalho, quase sem ouro. O sino toca na torre vazia; junto dela, uma placa tem um nome raspado. Ainda não se conhece a identidade apagada. Nara oferece sopa, uma cama e abrigo da chuva.
 
-O sino da aldeia toca uma vez. Não há ninguém no campanário.
+O mensageiro informa que Elarin e Borin encontraram a mesma cinza nas raízes e em peças de farol. Na carta, Maelis indica Iria, que estuda os faróis em Véspera. Elarin e Borin ficam cuidando de Carvalho e das provisões. A instrução de interface aparece como narração: Nara oferece um guia, e conversar com os dois moradores é uma opção antes de preparar a bolsa e seguir o rastro.
 
-Um menino olha para uma moeda na palma da mão. O ouro perdeu o brilho. Por um instante, a moeda projeta a sombra de uma ave enorme.
-
-**Nara:** “Entre. Quem fica na estrada depois desse sino acaba virando história.”
-
-O herói entra. Um mensageiro ensopado cai diante da lareira. Sob sua capa há uma carta com o selo da Guilda, manchada de cinza branca.
-
-**Mensageiro:** “As Ruínas… estão lembrando.”
-
-Lá fora, o sino toca pela segunda vez.
-
-Título: **RPG POKET — As Cinzas da Primeira Aurora**.
-
-No aparelho, apresentar essa abertura em quadros curtos e texto legível, com opção de avançar ou pular. Nara conduz o tutorial; a seleção de raça, classe e roupa acontece antes dele na futura reorganização. O tutorial termina com uma tarefa simples de estrada, e só então revela o alcance do mistério.
+A abertura pode ser avançada, pulada e relida. Mantém oito páginas para origens registradas e cinco para legado, sem nova descoberta persistida. O guia conserva sua confirmação atual; não há entrega de encomenda, reparo de marco ou defesa obrigatória de provisões a registrar em Carvalho.
 
 ## Valdária e a região de Aeldra
 
@@ -53,7 +41,7 @@ Nos registros oficiais, o pacto salvou o reino sem preço. A verdade foi escondi
 | Mares, região2 | Caminho | Rotas, comércio, orientação | Marés fora de hora, navios desaparecidos, marcos apontando para lugares impossíveis |
 | Aurora, região3 | Juramento | União dos faróis e proteção do reino | Sentinelas sem comando, luz no céu à noite, soldados que esqueceram suas promessas |
 
-Eles são ligados pelas estradas. Por isso, viajar, defender caravanas e restaurar marcos faz parte da história principal. O mapa precisa mostrar os nomes das cidades, caminhos e faróis; sua aparência futura deve acompanhar a progressão, sem tornar a navegação menos legível.
+Eles são ligados pelas estradas. Por isso, viagens, defesa de caravanas e cuidado com marcos integram o mundo da campanha. Os marcos dos eventos repetíveis não são os quatro grandes faróis, e seus reparos não são requisitos da campanha principal. O mapa precisa mostrar os nomes das cidades, caminhos e faróis; sua aparência futura deve acompanhar a progressão, sem tornar a navegação menos legível.
 
 ## Povos e classes
 
@@ -69,33 +57,31 @@ Os níveis do RPG POKET permanecem próprios. Não reduzir os personagens ao lim
 
 ### Prólogo — Uma cama e um nome
 
-Nara acolhe o herói no Refúgio das Brasas, o abrigo ligado à sua taverna em Carvalho. Dar comida, aprender combate e devolver uma encomenda introduzem os controles. O mensageiro traz um contrato de Maelis Voss: investigar por que um marco da estrada começou a tocar como um sino.
-
-Recompensa narrativa: alguém passa a reconhecer o herói pelo que fez. A Guilda ganha uma razão concreta para convidá-lo. A taxa de100ouro permanece uma contribuição para resgates e o fundo de assistência; tutoriais e socorros urgentes podem existir antes da filiação, sem cobrar a taxa disfarçadamente.
+Nara acolhe o herói no Refúgio das Brasas. O guia apresenta os controles; a chegada estabelece o sino, a ausência na placa e a cinza. A Guilda oferece contratos opcionais, e a taxa de 100 ouro mantém a função econômica já existente.
 
 ### Ato I — A floresta que esqueceu a primavera
 
-Lobos e javalis fugiram da floresta profunda e ameaçam as provisões de Carvalho. Elarin encontra raízes envoltas em cinza branca; Borin identifica o mesmo material em peças antigas dos faróis. O herói restaura um marco e encontra uma placa onde quatro nomes foram raspados.
+Lobos e javalis fogem da floresta e ameaçam as provisões. Elarin encontra cinza branca nas raízes; Borin reconhece o mesmo material em peças antigas dos faróis. A carta de Maelis faz a ponte obrigatória: Iria investiga os faróis em Véspera, enquanto Elarin e Borin ficam cuidando da vila.
 
-Uma ameaça local deve ser resolvida antes da revelação: proteger pessoas e suprimentos importa por si só. O ato termina com uma visão involuntária: homens, elfos, anões e orcs segurando uma porta contra uma noite sem estrelas. Uma quinta figura é cortada da lembrança.
+Conversas locais aprofundam a pista, mas não são requisitos nem registram entregas. A placa de nome raspado prepara uma ausência sem revelar Anwen. Não há quatro fragmentos colecionáveis, missão principal de reparo do marco ou visão obrigatória da quinta figura nesta etapa.
 
 ### Ato II — Os mortos que ainda têm ordens
 
-Nas Ruínas, Iria conduz uma expedição pelas ruas de Véspera. O **Guardião do Limiar**, já existente no jogo, era a defesa externa do farol. Ele luta porque ainda recebeu a ordem de impedir que alguém toque no mecanismo. Sua derrota entrega o cristal de acesso já previsto no gameplay; o cristal funciona como uma chave de frequência, não como uma alma capturada pelo jogador.
+Nas Ruínas, Iria conduz uma expedição pelas ruas de Véspera. O **Guardião do Limiar**, já existente no jogo, era a defesa externa do farol. Ele luta porque ainda recebeu a ordem de impedir que alguém toque no mecanismo. Sua derrota entrega um cristal de acesso, que também pode ser comprado nas Ruínas por 300 ouro. O cristal é o requisito de entrada e é consumido; derrotar o Guardião é uma das formas de obtê-lo, não uma exigência universal. Funciona como chave, não como alma capturada pelo jogador.
 
-Na **Cripta do Arconte**, dois andares apresentam pistas por arquitetura, selos e inscrições. O chefe é **Arconte Vaelor**, a consciência fragmentada do antigo mestre do mecanismo. Ele não é o antagonista final. Sua derrota interrompe a defesa automática, libera o baú e revela o **Livro das Vigílias**: a paz exige memórias, e o custo aumenta a cada ano.
+Na **Cripta do Arconte**, dois andares apresentam pistas por arquitetura, selos e inscrições. O chefe é **Arconte Vaelor**, a consciência fragmentada do antigo mestre do mecanismo. Ele não é o antagonista final. Sua primeira derrota interrompe a defesa automática, libera o baú e revela o **Livro das Vigílias**: os cristais consomem lembranças aprisionadas. Na própria tela da vitória, Vaelor recorda uma pessoa que recusou o sacrifício e cujo nome sumiu dos registros. Ainda não revela sua identidade. A conversa opcional conserva esse relato para consulta.
 
 **Vaelor:** “Não guardávamos um tesouro. Guardávamos a conta.”
 
-A informação importante é encontrada na sala do chefe; não depender de um item aleatório do baú para avançar a história. O baú continua oferecendo armas ou ouro. Concluir a cripta uma vez já realizada deve contar para a futura migração de progresso.
+A informação importante é encontrada na sala do chefe; não depender de um item aleatório do baú para avançar a história. O baú continua oferecendo armas ou ouro. Uma conclusão anterior continua reconhecida nos saves compatíveis. Expedições posteriores à cripta têm resultado próprio, sem repetir a primeira descoberta do Livro.
 
 ### Ato III — O porto das lembranças vendidas
 
 Em Mares, embarcações transportam cristais adulterados. Contrabandistas da **Mão de Cinza** compram memórias de quem precisa alimentar a família. Parte dos saqueadores da costa trabalha para essa rede; outros são desertores. Capitã Sabela investiga navios que voltam sem tripulação, e Tomás conhece uma rota até as cisternas sob o porto.
 
-O herói descobre que a Guilda recebeu recursos da Coroa para recuperar cristais sem saber sua origem. Maelis precisa escolher entre proteger a reputação da instituição e confessar seu erro. Ela confessa e entrega os próprios registros ao herói.
+O herói descobre que a Guilda recebeu recursos da Coroa para transportar os cristais. Tomás admite o ouro que aceitou e abre seus registros. Maelis assume que autorizou as cargas, envia os próprios registros como prova e se compromete a responder com a Guilda. Depois do resgate, promete abrir as contas aos refugiados; sua responsabilidade não desaparece com a entrega das provas.
 
-Durante uma tempestade, o farol do Caminho se apaga. Um barco cheio de refugiados aparece do lado errado da muralha. O resgate deve dar peso humano ao mistério. A última pista leva ao palácio de Aurora.
+Durante uma tempestade, o farol do Caminho se apaga. Um barco cheio de refugiados aparece do lado errado da muralha. A guarda conduz o resgate, e Nilsa repara a rota. A placa encontrada nas peças preserva o nome apagado: **Anwen**, que recusou o sacrifício das memórias. O nome é recuperado nessa cena obrigatória, depois do relato anônimo de Vaelor. Livro e registros seguem para Liora em Aurora; são provas já recuperadas, não novas partes colecionáveis.
 
 ### Ato IV — O rei que guarda o amanhecer
 
@@ -103,9 +89,9 @@ Aurora é bela, disciplinada e sitiada pelo próprio medo. Sentinelas executam o
 
 O regente **Odran Valcér** conhece o preço do pacto. Tentou sustentá-lo usando apenas suas próprias memórias. Já não lembra o rosto da filha, **Liora**, mas conserva a ordem escrita de mantê-la viva. Agora pretende iniciar a **Vigília Perpétua**: transformar os faróis em uma prisão eterna, alimentada pelas lembranças de todo o reino.
 
-Odran é responsável por essa decisão. A perda não o absolve. O herói conhece uma pessoa antes de enfrentar um símbolo de poder.
+Odran é responsável por essa decisão. A perda não o absolve. O registro histórico lido nos arquivos expõe a perda do rosto da filha, a oferta de suas próprias memórias e sua ordem de recolher as dos outros. Liora distingue essa dor da responsabilidade pelas ordens. Esse documento continua histórico depois da deposição.
 
-**Odran:** “Se eu deixar o selo cair, tudo o que perdi terá sido em vão.”
+**Odran, no registro:** “Ordeno que recolham as dos outros.”
 
 **Liora:** “Você não precisa perder mais alguém para provar que nos amava.”
 
@@ -113,19 +99,27 @@ Odran é responsável por essa decisão. A perda não o absolve. O herói conhec
 
 A Guilda reúne os aliados construídos nos atos anteriores. Carvalho oferece alimento e raízes vivas; Ruínas oferece as memórias recuperadas; Mares mantém abertas as rotas; Aurora fornece a estrutura do farol. A contribuição de cada região dá sentido a voltar e ajudar seus habitantes.
 
-A quinta testemunha era **Anwen**, a pessoa que recusou sacrificar inocentes e foi apagada do pacto. Sua alternativa estava incompleta: sustentar os faróis com energia renovável da terra, vínculos voluntários e pequenos juramentos renovados, em vez de consumir identidades. Ela não exige vítimas substitutas. O herói pode reunir as quatro partes desse projeto ao longo da campanha.
+A testemunha apagada era **Anwen**. Nos arquivos de Aurora, Dargan mostra o desenho que preservou: raízes vivas alimentam o selo, vínculos são voluntários e juramentos podem ser renovados ou recusados. A solução não exige vítimas substitutas. O projeto é compreendido nessa cena obrigatória; depois vêm quatro contribuições efetivas para executá-lo, em qualquer ordem: três rações para Elarin sustentar os voluntários das mudas; proteção à equipe de Iria; escolta à equipe de Nilsa; 150 ouro para os componentes da oficina de Dargan. Nenhum fragmento de projeto, novo item ou simples visita substitui essas ajudas.
 
 O confronto final interrompe a Vigília Perpétua e revela o **Coração do Véu**, manifestação da fenda. A batalha exige o herói e o trabalho dos aliados. Não resolver tudo com um discurso nem com um objeto encontrado por acaso.
 
 **Final pleno — Aurora livre:** com as quatro regiões ajudadas e o projeto recuperado, os faróis são reconstruídos. As memórias aprisionadas são libertadas; algumas voltam, outras se despedem. Odran perde o poder e responde por suas decisões. O mundo permanece perigoso, mas seu amanhã deixa de exigir novas vítimas.
 
-**Final incompleto — Mais uma vigília:** se faltarem as condições, o herói pode estabilizar temporariamente o selo e voltar ao mundo para completar a restauração. O jogo não pune o jogador com um save perdido ou um final irreversível sem aviso. Uma segunda tentativa permite alcançar o final pleno.
+**Final incompleto — Mais uma vigília:** se faltarem as condições, o herói pode estabilizar temporariamente o selo e voltar ao mundo para completar a restauração. Odran fica sob custódia. O mecanismo ainda depende das memórias aprisionadas, mas nenhuma nova lembrança será recolhida para alimentá-lo. Isso dá urgência à restauração sem prazo, perda automática de progresso ou novo sacrifício. O diário aponta as contribuições pendentes; quando as quatro estiverem prontas, Liora orienta o retorno ao Coração. Odran não é enfrentado novamente. Personagem, descobertas e entregas continuam preservados; a informação mecânica fica na confirmação e no diário.
 
-Cena final: o sino de Carvalho toca. Desta vez, Nara está no campanário. Na mesa da taverna, uma moeda brilha sob a luz do dia.
+Cena do final pleno: o sino de Carvalho toca. Desta vez, Nara está no campanário, e todos sabem quem o fez soar. O final temporário não usa essa celebração.
 
 **Nara:** “Parece que hoje o sol veio por vontade própria.”
 
-Depois dos créditos, exploração, eventos e Guilda continuam. Aeldra reconhece a vitória; repetir dungeons é uma nova expedição, não negar o final. A restauração resolve esta campanha regional. Uma carta de Sabela informa que um marco semelhante foi encontrado nas ilhas de Talassar: é uma ponte para outras campanhas, sem desfazer a vitória nem transformar o antagonista de Aeldra no único problema do continente.
+Após a celebração, origens registradas recebem um breve retorno pessoal: procurar o mestre do mago, seguir um juramento digno para o cavaleiro, retomar o ofício e procurar a família para o guerreiro, voltar a ajudar a comunidade para o bárbaro. São possibilidades de retorno com respostas novas; não confirmam cura, reencontro, renda concedida ou recuperação de toda memória. Saves sem origem registrada recebem somente o fechamento coletivo.
+
+Em seguida aparece uma carta identificada de Sabela, exclusiva do final pleno e acessível na releitura do epílogo:
+
+> Os faróis de Aeldra continuam firmes. Mas chegou uma carta de Neris, de Talassar. O mapa que ela enviou mostra uma ilha onde os capitães só encontraram mar. Também acharam por lá um marco parecido com os nossos. Guardei os relatos no porto. Quando estiver pronto, venha vê-los.
+
+Aeldra está concluída. A carta não cria objetivo pendente, recompensa, evento diário, segunda região jogável ou viagem. Neris Salvento é a navegadora e agente da Guilda de Talassar citada no atlas. Não há explicação definitiva do mapa, novo vilão ou ligação com Thalvor. A ilha opcional já disponível após o final pleno continua distinta dessa futura região.
+
+Exploração, eventos e Guilda continuam. Cada um dos doze interlocutores reage à vitória segundo seu ofício e suas perdas; Odran não retoma o poder. Repetir a cripta representa nova expedição. A manifestação local do Véu foi contida, sem afirmar que todo o Véu Oco deixou de existir.
 
 ## NPCs que sustentam o mundo
 
@@ -143,10 +137,10 @@ Depois dos créditos, exploração, eventos e Guilda continuam. Aeldra reconhece
 | tomas | **Tomás Valevento**, humano, mercador e cartógrafo | Mares; mapas, comércio e escoltas | Negociador expansivo, medo de água funda. Ajuda outros comerciantes, mas deve dinheiro a pessoas perigosas. |
 | nilsa | **Nilsa Bronzamar**, anã, construtora naval | Mares; reparos e forja costeira | Resolve problemas com ferramentas e perguntas diretas. Descobriu peças de farol escondidas em cascos de navios. |
 | seraphine | **Seraphine Alvor**, elfa, guardiã dos juramentos | Aurora; templo, poções e pesquisa | Fala com cuidado. Acredita que um juramento pode ser reparado; recusa confundir obediência com virtude. |
-| dargan | **Dargan Setemartelos**, anão, mestre da forja real | Aurora; equipamentos avançados e forja | Exigente, leal ao povo antes da Coroa. Guarda a quarta parte do projeto de Anwen entre desenhos de ferramentas. |
+| dargan | **Dargan Setemartelos**, anão, mestre da forja real | Aurora; equipamentos avançados e forja | Exigente, leal ao povo antes da Coroa. Preserva o desenho de Anwen entre ferramentas e oferece a oficina para executar a estrutura. |
 | liora | **Liora Valcér**, humana, herdeira e aliada | Aurora; resistência e campanha | Observadora, sem gosto por cerimônias. Quer salvar o reino e impedir o pai, mesmo se isso encerrar sua dinastia. |
 | odran | **Odran Valcér**, humano, regente | Aurora; antagonista central | Não lembra mais tudo que amou. Escolhe controle e sacrifício alheio para evitar enfrentar sua culpa. |
-| anwen | **Anwen da Primeira Luz**, testemunha apagada | Inscrições e memórias; não comerciante | Projetou a alternativa ao pacto. Seu nome é revelado gradualmente, e só fica completo após as quatro pistas. |
+| anwen | **Anwen da Primeira Luz**, testemunha apagada | Inscrições e memórias; não comerciante | Projetou a alternativa ao pacto. A ausência surge em Carvalho, a recusa no relato de Vaelor, o nome em Mares e o projeto nos arquivos de Aurora. As quatro ajudas executam o plano; não revelam seu nome por coleta. |
 
 Maelis lidera uma única Guilda com agentes nas outras cidades; não criar uma mestra diferente para cada tela. O Clube da Luta continua na Guilda, com inscrição de25ouro. Comerciantes podem atender mais de uma categoria; não multiplicar NPCs sem função. A taverna oferece rumores e acolhimento, enquanto os contratos ficam na Guilda.
 
@@ -162,13 +156,13 @@ Fogueira, sino, cinza branca, moeda e luz dos faróis são os motivos recorrente
 
 O mistério admite momentos calorosos: Grum empresta uma manta sem comentar; Borin conserta uma panela e cobra apenas pelo prego; Nara erra uma receita e ri antes de voltar ao trabalho. Sem esses momentos, o custo da ameaça perde força.
 
-Na tela240×320, uma conversa ocupa páginas curtas, nome do NPC e até três linhas legíveis por página. Cenas importantes permitem avançar; avisos de perigo e decisões não desaparecem sozinhos. O diário guarda a versão resumida das descobertas. Não despejar a lore inteira no tutorial.
+Na tela 240×320, conversas e epílogos usam palavras inteiras em 18 colunas e sete linhas por página. O prólogo mantém até oito linhas por página, e cenas de Mares/Aurora usam quatro linhas fixas de até 34 caracteres, dentro da moldura do pergaminho. O firmware conserva texto ASCII compatível com a fonte atual. Narração, fala, carta e registro histórico têm identificação própria; o retorno pessoal e a carta final começam em páginas separadas. Cenas importantes permitem avançar; avisos de perigo e decisões não desaparecem sozinhos. O diário guarda a versão resumida das descobertas. Não despejar a lore inteira no tutorial.
 
 ## Limites do cânone e migração futura
 
 Manter IDs existentes das quatro regiões e classes, nomes visíveis de cidade, moedas, itens e saves. Renomear Guardião/Arconte apenas na apresentação quando necessário, conservando IDs de combate. Guardião é a defesa externa; Arconte é o chefe da cripta; Odran é o antagonista central: são entidades distintas.
 
-O futuro diário deve reconhecer guardião derrotado e dungeon concluída nos saves atuais. Não obrigar veteranos a perder itens, recriar personagem ou repetir o tutorial. Oferecer “Relembrar a história” e liberar os capítulos compatíveis com o progresso existente. Bandeiras narrativas novas só podem ser gravadas com migração testada.
+O diário reconhece Guardião derrotado, cripta concluída e campanha conforme o estado existente. “Relembrar o início” e o epílogo não mudam ouro, itens, progresso ou RNG. A seleção da origem usa somente os campos já presentes no save; nenhum novo campo foi criado. Não obrigar veteranos a perder itens, recriar personagem ou repetir o tutorial. Qualquer futura mudança de estado exige migração testada.
 
 Dia/noite afeta luz, atividade, criaturas e eventos; não reescreve a história nem torna cidades inacessíveis por causa do horário do jogador. O Refúgio continua um abrigo; acampar na região continua uma ação de recuperação distinta do relógio por inatividade.
 

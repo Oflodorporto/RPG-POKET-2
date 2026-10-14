@@ -15,13 +15,17 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
    {"Iria deixou seus cadernos","ao fugir de um desabamento.","Sem eles, perderemos relatos","dos farois. Recupere dois","volumes entre as pedras."},
    {"Tomas perdeu carga quando o","cais cedeu. As familias do porto","dependem desses sacos. Traga","duas cargas pelas trilhas","junto ao mar."},
    {"Liora escondeu dois registros","para salva-los de uma patrulha.","Eles podem provar abusos da","guarda. Traga as duas cargas.","As familias merecem respostas."}};
-   for(unsigned i=0;i<4;++i)ink(114+i*17,lines[g.eventTier][i]);ending=lines[g.eventTier][4];
+   const char* after[]={"Liora escondeu dois registros","durante as patrulhas de Odran.","Eles podem provar abusos passados.","Traga as duas cargas de provas.","As familias merecem respostas."};
+   const char* const* letter=g.eventTier==3&&(g.campaignFlags&128)?after:lines[g.eventTier];
+   for(unsigned i=0;i<4;++i)ink(114+i*17,letter[i]);ending=letter[4];
   }else if(g.eventKind==2){const char* lines[4][5]={
    {"","","","",""},
    {"Iria resgatou uma testemunha.","Ela viu sinais da Mao de Cinza.","Escolte-a de Ruinas a Carvalho.","Preciso ouvir seu relato.","Ela nao ousa viajar sozinha."},
    {"Tomas precisa entregar mapas","que revelam rotas escondidas.","Escolte-o de Mares a Ruinas.","Ha saqueadores na estrada;","ele nao pode perder os mapas."},
    {"Liora nos confiou uma mensagem","destinada aos aliados de Mares.","Escolte o mensageiro de Aurora","a Mares. A guarda segue seus","passos. Nao o deixe sozinho."}};
-   for(unsigned i=0;i<4;++i)ink(114+i*17,lines[g.eventTier][i]);ending=lines[g.eventTier][4];
+   const char* after[]={"Liora nos confiou uma mensagem","para os aliados de Mares.","Escolte o mensageiro de Aurora","a Mares. A estrada ainda e perigosa.","A mensagem precisa chegar."};
+   const char* const* letter=g.eventTier==3&&(g.campaignFlags&128)?after:lines[g.eventTier];
+   for(unsigned i=0;i<4;++i)ink(114+i*17,letter[i]);ending=letter[4];
   }else if(g.eventKind>=3){for(unsigned i=0;i<4;++i)ink(114+i*17,eventBrief(g,i));ending=eventBrief(g,4);
   }else {ink(114,"Um hipogrifo assustado ameaca");ink(131,rpg::eventPlace(g.eventTier));ink(148,"Afaste-o antes que alguem se fira.");ink(165,"Ha uma luz estranha nas penas.");}
   ink(183,*menu.notice?menu.notice:ending,*menu.notice?0xa800:0x4208);snprintf(b,sizeof(b),"Recompensa: %u ouro / %u XP",rpg::eventGold(g),rpg::eventXp(g));ink(206,b,0x0320);button(14,222,212,"Fechar carta");
@@ -34,9 +38,9 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
   if(g.eventKind==6){for(unsigned i=0;i<3;++i)center(107+i*16,eventSealClue(g.eventTier,i));center(156,*menu.notice?menu.notice:g.eventProgress?"Qual ordem liberta as lembrancas?":"Examine cada selo antes de ordenar.");
     for(unsigned i=0;i<3;++i){snprintf(b,sizeof(b),"%s%s",g.eventProgress?eventOrder(i):(i==0?"Ler selo da Raiz":i==1?"Ler selo da Memoria":"Ler selo do Caminho"),!g.eventProgress&&(g.eventFlags&(1u<<i))?" / lido":"");int y=177+i*31;c.fillRect(14,y,212,28,UI_PANEL);c.drawRect(14,y,212,28,UI_GOLD);c.setTextColor(UI_WHITE);c.setTextSize(1);c.setCursor((240-int(strlen(b))*6)/2,y+10);c.print(b);}}
   else {center(111,g.eventKind==4?"D20 + saber ou sobrevivencia.":g.eventKind==5?"A pocao ajuda o viajante ferido.":"Defesas protegem os dois ataques.");
-    center(132,g.eventKind==4?"Ajuste melhora a cada tentativa.":g.eventKind==5?"Pocao: +4 no retorno ao abrigo.":"Uma racao alimenta as tochas.");
+    center(132,g.eventKind==4?"Ajuste melhora a cada tentativa.":g.eventKind==5?"Pocao: +4 no retorno ao abrigo.":"Uma racao sustenta quem vigia.");
     const char* a=g.eventKind==4?"Estudar / Inteligencia":g.eventKind==5?"Improvisar curativo / gratis":"Erguer barricadas / gratis";
-    const char* z=g.eventKind==4?"Encaixar / Sobrevivencia":g.eventKind==5?"Usar 1 pocao de vida":"Tochas / usar 1 racao";
+    const char* z=g.eventKind==4?"Encaixar / Sobrevivencia":g.eventKind==5?"Usar 1 pocao de vida":"Reforcar vigilia / 1 racao";
     button(14,177,212,a);button(14,220,212,z);}
   if(*menu.notice&&g.eventKind!=6)center(263,menu.notice,1,UI_RED);button(14,276,212,"Voltar");return true;
  }
@@ -45,10 +49,10 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
   if(g.eventKind==1){center(110,rpg::eventPlace(g.eventTier));center(137,"Procure a carga pelas trilhas.");center(154,"Inimigos podem cruzar seu caminho.");snprintf(b,sizeof(b),"Cargas da missao: %u / 2",g.eventProgress);center(179,b,1,UI_GREEN);button(14,216,212,"Procurar carga");}
   else if(g.eventKind==2){snprintf(b,sizeof(b),"%s -> %s",rpg::eventCityName(g.eventTier),rpg::eventCityName(rpg::eventDestination(g)));center(115,b,1,UI_GOLD);center(140,"Seu passageiro confia em voce.");center(162,"D20 decide os perigos da viagem.");center(184,"Chegue ao destino para entrega.");button(14,216,212,"Iniciar escolta");}
   else {center(110,rpg::eventCityName(g.eventTier));const char* lines[5][4]={
-   {"O sino chama por baixo das pedras.","Encontre os ecos e a corda do sino.","Toque na cena para interagir.","Entrada paga; sem cristal pessoal."},
+   {"O sino chama por baixo das pedras.","Criaturas bloqueiam a passagem.","Encontre a corda para cala-lo.","Entrada paga; sem cristal pessoal."},
    {"Uma pequena luz guia os viajantes.","A lente precisa voltar ao encaixe.","Quando acender, proteja o marco.","Nao altera os farois da campanha."},
    {"Alguem deixou rastros na estrada.","Ha viajantes precisando de ajuda.","Curativos improvisados sao gratis.","Pocao opcional melhora o retorno."},
-   {"Tres selos guardam uma lembranca.","Leia todos; as pistas dao a ordem.","Erro acorda um eco; pode tentar.","Cada eco so e enfrentado uma vez."},
+   {"Tres selos guardam uma lembranca.","Leia todos; as pistas dao a ordem.","Erro traz combate; pode tentar.","Cada combate so ocorre uma vez."},
    {"O grupo se reuniu ao redor do fogo.","Prepare o abrigo; proteja duas ondas.","Defesas reduzem o primeiro golpe.","Recompensa extra: 1 racao (max9)."}};
    for(unsigned i=0;i<3;++i)center(131+i*17,lines[g.eventKind-3][i]);
    snprintf(b,sizeof(b),"Etapa %u/%u%s",g.eventProgress+1,rpg::eventGoal(g.eventKind),rpg::eventNight(g)?" / noite":" / dia");center(184,b,1,UI_GREEN);button(14,216,212,eventActionName(g));

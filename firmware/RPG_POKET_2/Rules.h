@@ -171,7 +171,7 @@ enum class ContractKind:uint8_t {Combat,Recover,Escort};
 struct Contract {const char* name;const char* objective;int8_t enemy;uint8_t count,gold,percent;};
 inline const Contract& contract(uint8_t id){static const Contract q[]={
  {"PATRULHA","Vencer 3 inimigos nas ruinas",-1,3,15,25},{"OSSOS DAS RUINAS","Vencer 2 esqueletos",2,2,18,35},{"O GUARDIAO","Vencer 1 Guardiao",3,1,35,60},
- {"TRILHA DOS LENHADORES","Venca 3 feras em Carvalho",-1,3,18,15},{"FARINHA PERDIDA","Recupere 2 sacos ao explorar",-1,2,20,12},{"A CARAVANA DE IRIA","Escolte Carvalho -> Ruinas",-1,1,28,18},
+ {"TRILHA DOS LENHADORES","Venca 3 ameacas em Carvalho",-1,3,18,15},{"FARINHA PERDIDA","Recupere 2 sacos ao explorar",-1,2,20,12},{"A CARAVANA DE IRIA","Escolte Carvalho -> Ruinas",-1,1,28,18},
  {"OSSOS SEM DESCANSO","Venca 2 esqueletos nas Ruinas",2,2,28,15},{"CADERNOS DE IRIA","Recupere 2 cadernos nas Ruinas",-1,2,30,12},{"LEVAR AS TESTEMUNHAS","Escolte Ruinas -> Carvalho",-1,1,32,18},
  {"AS CISTERNAS DE MARES","Venca 2 caranguejos ferreos",25,2,58,15},{"CARGA ENTRE AS PEDRAS","Recupere 2 caixas em Mares",-1,2,52,12},{"O CARTOGRAFO DE TOMAS","Escolte Mares -> Ruinas",-1,1,65,18},
  {"MAQUINAS SEM JURAMENTO","Venca 2 automatos em Aurora",27,2,85,15},{"REGISTROS DA GUARDA","Recupere 2 registros em Aurora",-1,2,78,12},{"A TESTEMUNHA DE LIORA","Escolte Aurora -> Mares",-1,1,95,18}};return q[id>=1&&id<=15?id-1:0];}

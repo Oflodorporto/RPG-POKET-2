@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+"""Exact touch77 refusal and published Save29/30 -> package8 OTA/read-back.
+
+Default input is the exact prepared/downloaded release triple. The explicit
+--synthetic-fixture mode tests host adapters only, never a compiled release.
+Historical clients, codecs and their full quoted-header closures stay unchanged.
+"""
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import os
+import re
+import shutil
+import struct
+import subprocess
+import sys
+import tempfile
+
+sys.dont_write_bytecode = True
+import test_release77_ota as headers
+from verify_package8_release import verify, VERSION, BUILD, PACKAGE, MINIMUM_PSRAM
+
+ROOT = Path(__file__).resolve().parents[1]
+OLD_COMMIT = '91c64a364a7c1c697b9cd91b7e72027fa03f2dee'
+OLD_TREE = '1099a6cb0713f22ed805a8ca28f3978f77734727'
+SCENES_COMMIT = 'dd626414b62bf6f88638ffe5d542196230c51061'
+SCENES_TREE = 'd1d9972abe0e792bd2adbf51f39cd720d354a074'
+SCALE_COMMIT = 'ad8acd8b60f8c4c8bf961f87f8300445ad9d6be5'
+SCALE_TREE = '004fbb47be6953c1437d4607bcba31ffab235ba6'
+CAMP_COMMIT = '7a05617cd1e13843d73de72f970c57a7113af48a'
+CAMP_TREE = 'b58a5c80339f1d87728723991efdc8006ff764f8'
+EXPLORE_COMMIT = '3f9d3221b99e6b4ba55dc270a2a1d0a9155ea27b'
+EXPLORE_TREE = '34a32a69aa98ac7e8ba807a04ca065b438148dec'
+IMMERSION_COMMIT = 'e775b5d1854174b45404ca0cd3305c1e24610861'
+IMMERSION_TREE = '13adcc6eb887cd2e0c7004e908128cb3accb5979'
+HISTORY = (
+    ('touch77', OLD_COMMIT, OLD_TREE, 'RPG_TEST_OLD_TOUCH77'),
+    ('scenes77', SCENES_COMMIT, SCENES_TREE, 'RPG_TEST_OLD_SCENES77'),
+    ('scale77', SCALE_COMMIT, SCALE_TREE, 'RPG_TEST_OLD_SCALE77'),
+    ('camp77', CAMP_COMMIT, CAMP_TREE, 'RPG_TEST_OLD_CAMP77'),
+    ('explore77', EXPLORE_COMMIT, EXPLORE_TREE, 'RPG_TEST_OLD_EXPLORE77'),
+    ('immersion77', IMMERSION_COMMIT, IMMERSION_TREE, 'RPG_TEST_OLD_IMMERSION77'),
+)
+
+
+def stage_persistence(destination, revision=None):
+    pending = ['Persistence.h', 'ResetEpoch.h']
+    copied = set()
+    while pending:
+        name = pending.pop()
+        if name in copied:
+            continue
+        assert '..' not in Path(name).parts
+        data = headers.source_bytes('firmware/RPG_POKET_2/' + name, revision)
+        out = destination / name
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_bytes(data)
+        assert out.read_bytes() == data
+        copied.add(name)
+        pending.extend(re.findall(r'^#include\s+"([^"]+)"', data.decode(), re.M))
+    return copied
+
+
+def synthetic_fixture(folder):
+    """Explicit host fixture; no fallback when compiled firmware is missing."""
+    fw = bytearray(10000)
+    fw[0] = 0xe9
+    struct.pack_into('<H', fw, 12, 9)
+    marker = VERSION.encode() + b'\0'
+    fw[32:32 + len(marker)] = marker
+    art = (ROOT / 'cartao/RPGPOKET/artes.pak').read_bytes()
+    m = dict(schema=2, version=VERSION, build=BUILD, package_name=PACKAGE,
+             board='Waveshare-29667', partition='app3M_fat9M_16MB', minimum_psram_bytes=MINIMUM_PSRAM,
+             installation='usb-first-then-confirmed-device-ota', usb_required_before_save_format=29,
+             usb_erase_flash='none', save_format=7, writes_save_format=30, reads_save_formats=[29, 30],
+             save_reset_epoch=1, reset_game_slots_once=[1, 2, 3], preserves=['wifi-settings', 'sd-art-packages'])
+    base = f'https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v{VERSION}/'
+    folder.mkdir(parents=True, exist_ok=True)
+    for key, name, data in (('firmware', 'firmware.bin', fw), ('art', 'artes.pak', art)):
+        (folder / name).write_bytes(data)
+        m[key] = dict(url=base + name, bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+    m['art'].update(assets=666, payload_crc32='9b4bcfc0')
+    (folder / 'manifest.json').write_text(json.dumps(m, indent=2) + '\n')
+
+
+def snapshot(folder):
+    return {p.relative_to(folder): p.read_bytes() for p in folder.rglob('*') if p.is_file()}
+
+
+def published_lineage(lineage=None):
+    """Pin public baselines and README-only main before exact-source qualification."""
+    if lineage is None:
+        lineage = json.loads((ROOT / 'tests/fixtures/package8-published-baselines.json').read_text())
+    assert lineage['schema'] == 1
+    expected = {
+        'explore77': {
+            'version': '2026.10.13-explore77', 'build': 2026101309,
+            'commit': EXPLORE_COMMIT, 'tree': EXPLORE_TREE,
+            'firmware_bytes': 2857904,
+            'firmware_sha256': '54a2c13b359dcfce3c32f9be9a8f01d350aab99fedae3350aabf98a6403b7cc3',
+            'manifest_bytes': 1113,
+            'manifest_sha256': '4e4eb9eec4707bee35308f6a827a15f39f88432bcd1d7248e556886a5f912100',
+            'publication_run': 38500805596,
+        },
+        'immersion77': {
+            'version': '2026.10.14-immersion77', 'build': 2026101401,
+            'commit': IMMERSION_COMMIT, 'tree': IMMERSION_TREE,
+            'firmware_bytes': 2891632,
+            'firmware_sha256': '3c589ddebe0d4b0de00a0daefa4907ca47ce143ca8fbd64bc45501d94ff3b7d7',
+            'manifest_bytes': 1108,
+            'manifest_sha256': 'e46ec7455be349672fcef08420145d61b9c7314d452fcc4f978c869754df4301',
+            'publication_run': 38521825552,
+        },
+    }
+    def git(*args):
+        return subprocess.check_output(['git', *args], cwd=ROOT)
+    for label, fields in expected.items():
+        old = lineage[label]
+        assert old['verified_public'] is True, 'Verified published '+label+' bytes are required'
+        for field, value in fields.items():
+            assert old[field] == value, label+' published '+field+' changed'
+        assert old['art_bytes'] == 7470928
+        assert old['art_sha256'] == '14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56'
+        assert old['firmware_url'] == 'https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v'+old['version']+'/firmware.bin'
+        assert git('rev-parse', old['commit']+'^{tree}').decode().strip() == old['tree']
+    # Preserve the exact package6 -> package7 history, then pin its public
+    # source and the sole README-only main commit used by this qualification.
+    historical = lineage['historical_readme_base']
+    reviewed = lineage['immersion_qualification_parent']
+    parent = lineage['qualification_parent']
+    assert historical == '02a94ca192b8ef915a452527444f8160b90c26aa', 'Historical README-only base changed'
+    assert lineage['historical_readme_base_tree'] == '8837911990b23450eb5ed1c4d9afbd0eb9afc374'
+    assert lineage['historical_readme_sha256'] == '8b3f6e5dc79048d2a690bd3d44c1dc6e0c973614061d3be8b4a2c3ff4f31bc59'
+    assert reviewed == 'dcacdce1fe3e36f461a92bfc7378e54e23f96e26', 'Historical package7 parent changed'
+    assert lineage['immersion_qualification_parent_tree'] == '90ecaea82ca8809a27c0d4f09c14123e31edc2f3'
+    assert parent == '979822bb48ad10180d182df2232e2dcded4f9d66', 'Exact README-only qualification parent changed'
+    assert lineage['qualification_parent_tree'] == 'a1e76917fd848b5f2dbc77ad81b18a34c7654257'
+    assert lineage['qualification_parent_readme_sha256'] == 'a67f0bb6133c8cc2c82d4d5a02654a6bb9404ed52ed8e0305e1b9b8a91810be7'
+    for commit, tree in ((historical, lineage['historical_readme_base_tree']),
+                         (reviewed, lineage['immersion_qualification_parent_tree']),
+                         (parent, lineage['qualification_parent_tree'])):
+        assert git('rev-parse', commit+'^{tree}').decode().strip() == tree
+    for child, ancestor in ((historical, EXPLORE_COMMIT), (reviewed, historical),
+                            (IMMERSION_COMMIT, reviewed), (parent, IMMERSION_COMMIT)):
+        assert git('rev-list', '--parents', '-n', '1', child).decode().split() == [child, ancestor], 'Exact published ancestry changed: '+child
+    assert git('diff', '--name-only', EXPLORE_COMMIT, historical).decode().splitlines() == ['README.md'], 'Historical base must be package6 README-only housekeeping'
+    assert git('diff', '--name-only', IMMERSION_COMMIT, parent).decode().splitlines() == ['README.md'], 'Current main must be package7 README-only housekeeping'
+    assert hashlib.sha256(git('show', historical+':README.md')).hexdigest() == lineage['historical_readme_sha256']
+    current_readme = git('show', parent+':README.md')
+    assert hashlib.sha256(current_readme).hexdigest() == lineage['qualification_parent_readme_sha256']
+    assert (ROOT/'README.md').read_bytes() == current_readme, 'Qualification README changed from current main'
+    # The independent package8 scope gate owns the narrative/packaging allowlist.
+    # CI must qualify a single candidate commit based on this exact main SHA.
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        assert git('rev-list', '--parents', '-n', '1', 'HEAD').decode().split() == [git('rev-parse', 'HEAD').decode().strip(), parent], 'Qualification HEAD changed parent; requalify exact source SHA'
+    return lineage
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('release_dir', nargs='?', type=Path, default=ROOT / 'release')
+    parser.add_argument('--sanitizers', action='store_true')
+    parser.add_argument('--synthetic-fixture', action='store_true', help='Host fixture only, never a compiled-release qualification')
+    args = parser.parse_args()
+    compiler = os.environ.get('CXX', 'g++')
+    assert shutil.which(compiler), 'C++ compiler unavailable; no OTA/migration gate ran'
+    for label, commit, tree, _ in HISTORY:
+        assert subprocess.check_output(['git', 'rev-parse', '--verify', commit + '^{commit}'], cwd=ROOT, text=True).strip() == commit, label + ' commit mismatch'
+        assert subprocess.check_output(['git', 'rev-parse', '--verify', commit + '^{tree}'], cwd=ROOT, text=True).strip() == tree, label + ' tree mismatch'
+    flags = ['-std=c++17', '-O1', '-g', '-UNDEBUG', '-Wno-deprecated-declarations']
+    env = dict(os.environ)
+    if args.sanitizers:
+        flags += ['-fsanitize=address,undefined', '-fno-omit-frame-pointer', '-no-pie']
+        env.update(ASAN_OPTIONS='detect_leaks=' + os.environ.get('RPG_DETECT_LEAKS', '1'), UBSAN_OPTIONS='halt_on_error=1')
+    with tempfile.TemporaryDirectory(prefix='package8-release-') as temporary:
+        temp = Path(temporary)
+        folder = args.release_dir.resolve()
+        if args.synthetic_fixture:
+            folder = temp / 'synthetic'
+            synthetic_fixture(folder)
+            print('HOST FIXTURE MODE: synthetic firmware, real approved art; not firmware compilation or release validation.', flush=True)
+        verify(folder, ROOT)
+        if not args.synthetic_fixture:
+            lineage = published_lineage()
+            digest = hashlib.sha256((folder/'firmware.bin').read_bytes()).hexdigest()
+            for label in ('explore77', 'immersion77'):
+                assert digest != lineage[label]['firmware_sha256'], 'Recycled published '+label+' firmware bytes'
+        binaries = {}
+        for label, revision, _, define in (*HISTORY, ('package8', None, None, None)):
+            staged = temp / (label + '-headers')
+            closure = headers.stage_headers(staged, revision)
+            if label != 'touch77':
+                closure |= stage_persistence(staged, revision)
+            original = snapshot(staged)
+            exe = temp / (label + '-adapter')
+            defines = ['-D' + define] if define else []
+            subprocess.run([compiler, *flags, *defines, '-I', str(staged), '-I', str(staged / 'fake'),
+                            str(ROOT / 'tests/package8_release.cpp'), str(staged / 'fake/cJSON.c'), '-lcrypto', '-o', str(exe)], check=True)
+            assert snapshot(staged) == original, 'Staged source mutated during compilation'
+            for name in closure:
+                assert (staged / name).read_bytes() == headers.source_bytes('firmware/RPG_POKET_2/' + name, revision)
+            binaries[label] = exe
+            print(f'PASS: {label}, {len(closure)} exact production headers and real cJSON unchanged; source {revision or "working tree"}', flush=True)
+        subprocess.run([str(binaries['touch77']), str(folder), str(temp), 'upgrade'], check=True, env=env)
+        for label in ('scenes77', 'scale77', 'camp77'):
+            saves = temp / (label + '-saves')
+            saves.mkdir()
+            (saves / 'migrated').mkdir()
+            subprocess.run([str(binaries[label]), str(folder), str(saves), 'upgrade'], check=True, env=env)
+            before = snapshot(saves)
+            assert len(before) == 19, 'Expected nine historical records, nine geometry/RNG witnesses, completed epoch'
+            subprocess.run([str(binaries['package8']), str(folder), str(saves), 'upgrade'], check=True, env=env)
+            after = snapshot(saves)
+            assert all(after[p] == data for p, data in before.items()), 'Original historical fixtures were modified'
+            migrated = [p for p in after if p.parts[0] == 'migrated']
+            assert len(migrated) == 12, 'Expected nine lazy migrations and three true procedural Save30 records'
+            for path in migrated:
+                assert struct.unpack_from('<H', after[path], 4)[0] == 30, 'Not an actual Save30 record'
+            subprocess.run([str(binaries[label]), str(folder), str(saves), 'rollback'], check=True, env=env)
+            assert snapshot(saves) == after, 'Rollback changed fixture bytes'
+            print(f'PASS: {label} -> package8 -> exact {label} rollback, all three slots, active legacy floors 0/1, no load-time write/reset, real migrated Save30 rejection', flush=True)
+        for label in ('explore77', 'immersion77'):
+            saves = temp / (label + '-saves')
+            saves.mkdir()
+            (saves / 'preserved').mkdir()
+            subprocess.run([str(binaries[label]), str(folder), str(saves), 'upgrade30'], check=True, env=env)
+            before = snapshot(saves)
+            assert len(before) == 31, 'Expected fifteen historical Save30 records/geometry-RNG witnesses and completed epoch'
+            subprocess.run([str(binaries['package8']), str(folder), str(saves), 'upgrade30'], check=True, env=env)
+            after = snapshot(saves)
+            assert all(after[path] == data for path, data in before.items()), 'Original '+label+' fixtures were modified'
+            saved = [path for path in after if path.parts[0] == 'preserved']
+            assert len(saved) == 15 and all(struct.unpack_from('<H', after[path], 4)[0] == 30 for path in saved)
+            subprocess.run([str(binaries[label]), str(folder), str(saves), 'rollback30'], check=True, env=env)
+            assert snapshot(saves) == after, 'Exact '+label+' read-back modified fixture files'
+            print(f'PASS: exact {label} -> package8 -> exact {label} read-only Save30 codec/journal; all 3 slots/home/both legacy and generated floors; epoch/seed/run/masks/position/geometry/next RNG unchanged; no firmware downgrade claim', flush=True)
+    inputs = 'explicit synthetic firmware/real-art fixture' if args.synthetic_fixture else 'exact prepared/downloaded release bytes'
+    print(f'PASS: touch77 refuses; scenes77/scale77/camp77/explore77/immersion77 accept and install read29,30/write30 with real SHA256; candidate art repair; lazy all-slot migration and exact historical rollback fail closed; {inputs}. No publication/device I/O.')
+
+
+if __name__ == '__main__':
+    main()

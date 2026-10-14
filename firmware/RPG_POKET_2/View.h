@@ -143,12 +143,14 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
   }
   if(v.page==Page::DungeonVictory){
-    center(28,rpg::islandDungeon(g)?"THALVOR VENCIDO!":"VAELOR DERROTADO!",2,UI_GOLD);
-    center(76,"A cripta foi conquistada.");
+    const bool island=rpg::islandDungeon(g),repeat=!island&&g.dungeonClears>0;
+    center(28,island?"THALVOR VENCIDO!":repeat?"EXPEDICAO VENCIDA":"VAELOR DERROTADO!",2,UI_GOLD);
+    if(island)center(76,"A cripta foi conquistada.");
+    else {center(70,repeat?"Voce concluiu outra expedicao":"O Livro das Vigilias revela");center(84,repeat?"a cripta.":"o preco pago em memorias.");}
     snprintf(b,sizeof(b),"+%u XP / +%u ouro",g.gainXp,g.gainGold);center(108,b,2,UI_GREEN);
-    center(148,rpg::islandDungeon(g)?"O tesouro do santuario esta livre.":"O Livro das Vigilias foi revelado.");
-    center(174,"Continue para buscar o saque");center(190,"ou saia com suas recompensas.");
-    center(202,rpg::islandDungeon(g)?"Vitoria preservada no personagem.":"Descoberta registrada no Diario.",1,UI_GREEN);
+    if(!island&&!repeat){center(143,"Vaelor: 'Ela recusou o sacrificio.");center(157,"Seu nome sumiu dos registros.'");center(185,"Explore a sala ou saia com o saque.");}
+    else {center(148,island?"O tesouro do santuario esta livre.":"Os corredores ainda guardam perigos.");center(174,"Continue para buscar o saque");center(190,"ou saia com suas recompensas.");}
+    center(202,island?"Vitoria preservada no personagem.":repeat?"A descoberta permanece no Diario.":"Descoberta registrada no Diario.",1,UI_GREEN);
     button(14,218,212,"Explorar");button(14,272,212,"Sair");return;
   }
   if(v.page==Page::DungeonEntry||v.page==Page::CrystalBuy||v.page==Page::DungeonExit){
@@ -181,7 +183,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);npcPortrait(c,story::Npc::Grum,14,29,24);text(44,37,"Grum Pedrafranca / 25 ouro");
     auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
     else {center(95,arena.session.opponent.name,2);center(135,state==club::State::Incoming?"Aceitar duelo por 25 ouro?":"Aguardando outra placa...");if(state==club::State::Incoming){button(14,218,102,"Recusar");button(124,218,102,"Aceitar");}}
-    center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
+    center(208,"Duelo nao letal / protejam-se.",1,UI_GOLD);center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
   if(v.page==Page::ClubBattle){auto& d=arena.duel;auto& me=d.fighters[d.local];auto& foe=d.fighters[1-d.local];center(10,"ARENA DA GUILDA",2,UI_GOLD);personalSprite(c,g,8,44,frame%6);auto opponent=rpg::create(foe.classId,1);personalSprite(c,opponent,124,44,frame%6,true);
     snprintf(b,sizeof(b),"HP %u/%u",me.hp,me.maxHP);text(14,170,b);snprintf(b,sizeof(b),"HP %u/%u",foe.hp,foe.maxHP);text(144,170,b);snprintf(b,sizeof(b),"MP %u / %s",me.mp,d.waiting?"Confirmando...":!d.ready?"Preparando...":d.turn==d.local?"Seu turno":"Turno adversario");center(190,b,1,UI_GOLD);
     button(14,220,102,"Ataque");button(124,220,102,"Ofensiva");button(14,270,102,"Defesa");button(124,270,102,"Desistir");return;}
@@ -193,7 +195,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,177,102,"Roupa <");button(124,177,102,"Roupa >");button(14,224,102,"Calca <");button(124,224,102,"Calca >");
     button(14,272,102,"Voltar");button(124,272,102,"Criar");return;}
   if(v.page==Page::Guild||v.page==Page::GuildJoin){center(12,"GUILDA",2,UI_GOLD);center(43,"DOS AVENTUREIROS",2,UI_GOLD);snprintf(b,sizeof(b),"Ouro: %lu",(unsigned long)g.p.gold);center(68,b);
-    npcPortrait(c,story::Npc::Maelis,14,84,48);text(76,88,"Maelis Voss",1,UI_GOLD);text(76,106,"Mestra da Guilda");center(141,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(156,v.message,1,UI_RED);
+    npcPortrait(c,story::Npc::Maelis,14,84,48);text(76,88,"Maelis Voss",1,UI_GOLD);text(76,106,"Mestra da Guilda");text(76,124,g.campaignFlags&1?"Respondo pelas cargas.":"Contratos e resgates.");center(141,g.guildMember?"Membro cadastrado":"Cadastro: 100 ouro / uma vez");center(156,v.message,1,UI_RED);
     if(v.page==Page::GuildJoin){center(182,"Pagar 100 ouro para se cadastrar?");button(14,272,102,"Cancelar");button(124,272,102,"Pagar");}
     else{button(14,170,212,g.guildMember?"Missoes":"Cadastrar");button(14,218,212,"Clube da luta");button(14,272,212,"Voltar");}return;}
   if(v.page==Page::Tavern){center(12,"TAVERNA",2,UI_GOLD);npcPortrait(c,story::Npc::Nara,14,45,48);text(76,55,"Nara Veld",1,UI_GOLD);text(76,75,"Dona do Refugio");center(112,"Entre. A fogueira ainda esta acesa.");center(140,"Maelis cuida dos contratos na Guilda.");center(167,v.message,1,UI_GREEN);button(14,220,212,"Ir a guilda");button(14,272,212,"Voltar");return;}
@@ -215,7 +217,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(v.page==Page::CityGoods||v.page==Page::GoodsBuy){bool buy=v.page==Page::GoodsBuy;uint8_t id=rpg::localGood(g.city);auto preview=g;
     center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
     snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
-    if(buy){center(182,"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");}else {box(14,181,212,30);center(191,"Gazuas / ferramentas",1,UI_GOLD);}center(170,v.message,1,UI_RED);
+    if(buy){center(182,id==0?"Uma racao por dia de viagem.":"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");}else {box(14,181,212,30);center(191,"Gazuas / ferramentas",1,UI_GOLD);}center(170,v.message,1,UI_RED);
     if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,102,"Voltar");button(124,270,102,"Kit");}return;}
   if(v.page==Page::Explore){center(12,placeName(g.city),2,UI_GOLD);center(56,rpg::citySpecialty(g.city));snprintf(b,sizeof(b),"Nivel recomendado: %u+",rpg::cityLevel(g.city));center(90,b,1,UI_GOLD);
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);

@@ -18,11 +18,11 @@ constexpr OriginPage origins[4][3]={
   {"POR QUE PARTIR",Npc::None,"Voce leva sua arma a Carvalho em busca de ajuda. Quer comida, respostas e forca para proteger sua casa."}}
 };
 constexpr OriginPage arrival[]={
- {"CHEGADA A CARVALHO",Npc::None,"Apos tres dias na estrada, voce ajuda a empurrar uma carroca ate Carvalho. Esta sem trabalho e quase sem ouro."},
+ {"CHEGADA A CARVALHO",Npc::None,"Voce empurra uma carroca ate Carvalho, quase sem ouro. O sino toca na torre vazia. Uma placa ali tem um nome raspado."},
  {"UMA PORTA ABERTA",Npc::Nara,"Entre, tire a capa molhada. Tenho sopa e uma cama. Amanha Elarin e Borin podem lhe indicar trabalho."},
- {"O MENSAGEIRO",Npc::Messenger,"Feras tomaram a estrada! A carta e da Guilda. Vi cinza branca nas raizes e ouvi o sino da torre vazia."},
- {"UMA CARTA DE MAELIS",Npc::Maelis,"Precisamos investigar a cinza e manter a estrada aberta. Fale com Elarin e Borin. Carvalho precisa de ajuda."},
- {"SEU PRIMEIRO OBJETIVO",Npc::Nara,"Abra Conversar em Carvalho. Procure Elarin e Borin: eles conhecem a estrada. Seu primeiro trabalho comeca aqui."}
+ {"O MENSAGEIRO",Npc::Messenger,"Feras tomaram a estrada! Elarin e Borin viram a mesma cinza nas raizes e em pecas de farol. Trago uma carta da Guilda."},
+ {"UMA CARTA DE MAELIS",Npc::Maelis,"Iria estuda farois em Vespera. Siga a cinza ate ela. Elarin e Borin ficam cuidando da vila e das provisoes."},
+ {"SEU PRIMEIRO OBJETIVO",Npc::None,"Nara oferece um guia. Voce pode ouvir Elarin e Borin em Conversar. Prepare a bolsa para seguir a Vespera."}
 };
 inline const char* nextUnlock(unsigned cls){constexpr const char* label[]={"Nv 3: Raios abrasadores","Nv 3: Arma sagrada","Nv 2: Surto de acao","Nv 5: Ataque extra"};return label[cls%4];}
 inline unsigned originCount(const rpg::Game& g){return g.originStory?8:5;}

@@ -1,5 +1,6 @@
 #include "LegacySave.h"
-#include "../firmware/RPG_POKET_2/Narrative.h"
+#include "../firmware/RPG_POKET_2/DialogueStory.h"
+#include "../firmware/RPG_POKET_2/Persistence.h"
 #include <cassert>
 #include <cstring>
 #include <cstdio>
@@ -10,7 +11,50 @@ using namespace rpg;
 struct AnwenStore{bool fail=false;std::map<std::string,std::vector<uint8_t>> data;Read read(const char* k,uint8_t* b){auto it=data.find(k);if(it==data.end())return Read::Missing;memcpy(b,it->second.data(),SAVE_SIZE);return Read::Ok;}bool write(const char* k,const uint8_t* b){if(fail)return false;data[k]=std::vector<uint8_t>(b,b+SAVE_SIZE);return true;}};
 Game anwenHero(unsigned cls,unsigned race){auto g=create(cls,73);g.race=race;g.p.xp=265000;levelUp(g);g.tutorial=true;g.ruinsWins=3;g.guardianDefeated=true;g.dungeonClears=1;g.campaignFlags=7;g.rations=3;g.p.gold=600;assert(valid(g));return g;}
 Game anwenReboot(const Game& g){assert(valid(g));uint8_t b[SAVE_SIZE],c[SAVE_SIZE];encode(g,17,b);assert(get16(b,4)==28);Game t;uint32_t seq;assert(decode(b,t,seq)==Decode::Ok&&seq==17);encode(t,17,c);assert(!memcmp(b,c,SAVE_SIZE));return t;}
+static void finishAnwenMission(Game& g,unsigned mission){
+ g.city=campaignCity(mission);g.p.hp=g.p.maxhp;g.p.mp=g.p.maxmp;
+ assert(!startCampaign(g,mission));
+ if(!campaignDonation(mission)){g.enemyHp=0;finish(g);assert(resolveCampaign(g));}
+ g=anwenReboot(g);assert(persistentValid(g));
+}
+static unsigned contributionDialogueMatrix(){
+ unsigned checked=0;
+ for(unsigned cls=0;cls<4;++cls)for(unsigned mask=0;mask<16;++mask){
+  auto g=anwenHero(cls,cls);for(unsigned city=0;city<4;++city)if(mask&(1u<<city))finishAnwenMission(g,4+city);
+  for(unsigned stage=0;stage<3;++stage){
+   if(stage)finishAnwenMission(g,stage==1?8:9);
+   for(unsigned city=0;city<4;++city){
+    g.city=city;uint8_t before[PERSISTENT_SAVE_SIZE],after[PERSISTENT_SAVE_SIZE];
+    encodePersistent(g,18,0,before);
+    const unsigned mission=4+city;
+    const char* text=story::conversation(g,campaignPerson(mission));
+    if(g.campaignEnding==2)assert(strcmp(text,story::contributionSpeech(mission)));
+    else {
+     assert(bool(!strcmp(text,story::contributionSpeech(mission)))==bool(mask&(1u<<city)));
+     if(!(mask&(1u<<city))){
+      const char* requests[]={"Traga tres racoes","mantenha-o longe","Escolte-nos","cento e cinquenta moedas"};
+      assert(strstr(text,requests[city]));
+     }
+    }
+    const char* speech=story::contributionSpeech(mission);
+    for(const unsigned char* p=(const unsigned char*)speech;*p;++p)assert(*p>=32&&*p<127);
+    unsigned rows=story::wrapStory(speech,18,[](unsigned,const char* line){assert(strlen(line)<=18);});
+    assert(rows&&rows<=42&&story::contributionPages(mission)==(rows+6)/7);
+    unsigned briefRows=story::wrapStory(story::contributionBrief(mission),18,[](unsigned,const char* line){assert(strlen(line)<=18);});
+    assert(briefRows&&briefRows<=7);
+    encodePersistent(g,18,0,after);assert(!memcmp(before,after,sizeof(before)));++checked;
+   }
+  }
+ }
+ assert(strstr(story::contributionBrief(4),"3 racoes")&&strstr(story::contributionBrief(4),"voluntarios"));
+ assert(strstr(story::contributionBrief(7),"150 ouro"));
+ assert(strstr(story::contributionSpeech(4),"Com essas provisoes")&&!strstr(story::contributionSpeech(4),"silencio"));
+ assert(strstr(story::contributionSpeech(5),"familias")&&strstr(story::contributionSpeech(5),"despedir"));
+ assert(strstr(story::contributionSpeech(6),"ferramentas")&&strstr(story::contributionSpeech(7),"componentes estao pagos"));
+ return checked;
+}
 int main(){
+ unsigned dialogueChecks=contributionDialogueMatrix();
  unsigned runs=0;for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race){unsigned order[]={0,1,2,3};do{auto g=anwenHero(cls,race);for(auto city:order){g.city=city;unsigned mission=4+city;assert(campaignContact(g)&&campaignMission(g)==mission&&!campaignError(g,mission)&&!contribution(g,city));auto before=g;assert(!memcmp(&g,&before,sizeof(g)));unsigned gold=g.p.gold,rations=g.rations,xp=g.p.xp;assert(!startCampaign(g,mission));g=anwenReboot(g);if(!campaignDonation(mission)){assert(g.campaignStage==mission&&!contribution(g,city)&&g.enemyId==campaignEnemy(mission));g.enemyHp=0;finish(g);g=anwenReboot(g);gold=g.p.gold;xp=g.p.xp;assert(resolveCampaign(g));}assert(contribution(g,city)&&g.phase==Phase::Home&&!g.campaignStage&&g.p.gold==gold+(city==3?-150:int(campaignGold(mission)))&&g.rations==rations-(city==0?3:0)&&g.p.xp==xp+4000);g=anwenReboot(g);before=g;assert(startCampaign(g,mission)&&!resolveCampaign(g)&&!memcmp(&g,&before,sizeof(g)));}assert(anwenReady(g)&&g.campaignFlags==127&&strstr(story::objective(g).place,"Liora"));++runs;}while(std::next_permutation(order,order+4));}
  for(unsigned mission:{5u,6u})for(auto outcome:{Phase::Lost,Phase::Fled}){auto g=anwenHero(0,0);g.city=campaignCity(mission);assert(!startCampaign(g,mission));g.phase=outcome;if(outcome==Phase::Lost)g.p.hp=0;auto gold=g.p.gold,xp=g.p.xp;g=anwenReboot(g);assert(resolveCampaign(g)&&!contribution(g,g.city)&&g.p.gold==gold&&g.p.xp==xp);g=anwenReboot(g);assert(!startCampaign(g,mission));}
  for(unsigned mission:{4u,7u}){auto g=anwenHero(2,1);g.city=campaignCity(mission);if(mission==4)g.rations=2;else g.p.gold=149;auto before=g;assert(startCampaign(g,mission)&&!memcmp(&g,&before,sizeof(g)));}
@@ -21,5 +65,5 @@ int main(){
  for(unsigned mission:{4u,7u}){g=anwenHero(0,0);g.city=campaignCity(mission);AnwenStore store;Journal<AnwenStore> j(store);assert(j.load(h)==Load::Empty);assert(j.save(g));auto old=g;assert(!startCampaign(g,mission));store.fail=true;assert(!j.save(g));Journal<AnwenStore> boot(store);assert(boot.load(h)==Load::Ok&&h.p.gold==old.p.gold&&h.rations==old.rations&&!contribution(h,h.city));store.fail=false;assert(j.save(g)&&j.save(g));assert(boot.load(h)==Load::Ok&&contribution(h,h.city)&&startCampaign(h,mission));}
  // A normal encounter, visit, high level or conversation cannot earn a contribution.
  g=anwenHero(2,0);g.city=1;assert(begin(g,5));g.enemyHp=0;finish(g);assert(home(g)&&g.campaignFlags==7);auto before=g;story::objective(g);for(unsigned city=0;city<4;++city){assert(story::contributionPages(4+city)>1);unsigned rows=story::wrapStory(story::contributionBrief(4+city),18,[](unsigned,const char* line){assert(strlen(line)<=18);});assert(rows<=7);}assert(!memcmp(&g,&before,sizeof(g)));
- puts("PASS: Anwen384 ordered campaigns/all classes/races;4 real contributions, exact costs, gated previews, donation atomicity, combat loss/flee/resume, no duplicate rewards, save22/old21 protection, no inference from visits or ordinary fights");
+ printf("PASS: %u request/receipt checks across all16 contribution masks before/after Odran and either ending; Anwen384 ordered campaigns/all classes/races;4 real contributions, exact costs, gated previews, donation atomicity, combat loss/flee/resume, no duplicate rewards, historical Save21/28 protection and Save30 query purity, no inference from visits or ordinary fights\n",dialogueChecks);
 }

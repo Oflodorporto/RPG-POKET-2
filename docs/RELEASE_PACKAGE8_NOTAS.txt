@@ -1,0 +1,21 @@
+RPG POKET 7.7 - Ecos de Valdaria
+
+Revisão narrativa aprovada: falas coerentes com o estado da jornada e com o final
+pleno ou temporário, doze reações individuais, retornos das quatro origens,
+objetivos e cartas mais claros, eventos em primeira pessoa, primeira e novas
+expedições distinguidas. A carta final de Sabela abre um horizonte com Neris e
+Talassar, preservando a vitória de Aeldra. Nenhum segundo mapa foi implementado.
+
+Mantém Save30 com leitura Save29/30, epoch1 sem novo reset, mecânicas, RNG,
+custos, recompensas, PvP e o pacote aprovado de 666 artes. OTA e a preservação
+foram exercitados em host com codecs históricos; isso não substitui teste físico.
+O retorno a clientes Save29 recusa saves30; leitura de saves30 por explore77 e
+immersion77 foi qualificada sem regravar pelo cliente antigo.
+
+Instalação inicial por USB para gerações anteriores à fronteira Save29; depois,
+OTA confirmado no aparelho. Não apagar a flash inteira. Wi-Fi e artes no cartão
+continuam preservados conforme o contrato histórico. Sem garantia de desempenho
+medido na placa: toque, FPS, heap e hardware não foram validados fisicamente.
+
+Estas notas preparadas não autorizam publicação. Publicar somente após aprovação
+separada do usuário, qualificação completa e gate do SHA exato.

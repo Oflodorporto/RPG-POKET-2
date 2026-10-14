@@ -1,8 +1,8 @@
 # Valdária — atlas narrativo do RPG POKET
 
-**Cânonev1 — 07/10/2026.** O continente se chama **Valdária**. O mapa atual é **Aeldra, as Terras da Primeira Aurora**, uma região do continente. Aeldra contém os destinos Carvalho, Ruínas de Véspera, Mares e Aurora. Na interface atual, manter o nome curto “Ruínas” e os quatroIDs existentes.
+**Cânone v1 — 07/10/2026; gancho narrativo revisado em 14/10/2026.** O continente se chama **Valdária**. O mapa atual é **Aeldra, as Terras da Primeira Aurora**, uma região do continente. Aeldra contém os destinos Carvalho, Ruínas de Véspera, Mares e Aurora. Na interface atual, manter o nome curto “Ruínas” e os quatroIDs existentes.
 
-Escala: **continente → região com mapa próprio → cidade/local → dungeon**. “Mares” é uma cidade portuária de Aeldra; “Talassar” é a futura região marítima. Nenhum desses novos mapas está implementado na camp1.
+Escala: **continente → região com mapa próprio → cidade/local → dungeon**. “Mares” é uma cidade portuária de Aeldra; “Talassar” é a futura região marítima. Nenhum desses mapas futuros está implementado. A ilha opcional com três galerias e Thalvor pertence ao conteúdo atual de Aeldra e não é Talassar.
 
 ## As oito regiões
 
@@ -36,6 +36,12 @@ As novas regiões serão acessadas conforme progresso e preparação, com missõ
 Viagens continentais ganham apresentação própria: navio em Talassar, trilha de montanha em Kharum/Nivária, caravana em Sahram, barca em Veldrûm. Custos, comida, D20 e encontros precisam ser apresentados antes de partir. Introduzir frio, sede ou navegação apenas quando houver equipamento, contrajogo e UI adequados; não punir automaticamente jogadores sem novos itens ao importar saves.
 
 Maelis mantém a sede da Guilda em Aeldra. A organização terá filiais com representantes locais nas outras regiões; completar uma missão não exige voltar fisicamente à sede. A filiação já paga acompanha o personagem, e novas filiais não cobram novamente100ouro.
+
+## Carta de Sabela após a restauração de Aeldra
+
+Somente no final pleno, depois da celebração e do fechamento pessoal das origens registradas, Sabela escreve que os faróis de Aeldra continuam firmes. Ela recebeu uma carta de **Neris Salvento**, de Talassar: seu mapa mostra uma ilha onde os capitães encontraram apenas mar, e há relato de um marco semelhante aos de Aeldra. Sabela conserva os relatos no porto e convida o herói a vê-los quando estiver pronto.
+
+A carta pode ser relida com o epílogo. Trata-se de uma possibilidade de campanha futura, sem nova missão, item, recompensa, marcador ou rota disponível. Conversar com Sabela não inicia viagem nem desbloqueia conteúdo adicional. O atlas continua mostrando Talassar como região futura. Não há vínculo estabelecido entre essa ilha cartográfica, Thalvor, Anwen ou Odran, nem uma explicação definitiva do fenômeno. A vitória e a conclusão da campanha de Aeldra permanecem completas.
 
 ## Primeiros representantes das regiões futuras
 
