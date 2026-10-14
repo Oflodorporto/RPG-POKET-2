@@ -1,7 +1,3 @@
-# Package 6 qualification candidate
-
-Unpublished `2026.10.13-explore77`, build `2026101309`. Save30 migration is approved; release/publication is not. Reads29/30, writes30, epoch1 without a new reset; migrated slots cannot be played by Save29 firmware. See the [package6 qualification contract](docs/PACKAGE6_RELEASE_QUALIFICATION.md) and [staging restrictions](PACKAGE6_STAGING_ONLY.txt). Historical package5 gates and notes below are retained unchanged.
-
 # RPG POKET 2.0
 
 RPG para Waveshare ESP32-S3-Touch-LCD-2, SKU 29667 (16 MiB flash, 8 MiB OPI PSRAM, tela 240×320).
@@ -18,21 +14,36 @@ Sem uma Release publicada, a placa informa que ainda não há versão disponíve
 
 ## Publicar uma versão
 
-O Pacote 5 exige qualificação bem-sucedida do mesmo SHA em `feat/package5-release`, identidade final exata e tag inédita; usa `verify_package5_release.py` e `test_package5_release.py`, mantendo os verificadores históricos. Confira o [contrato de qualificação](docs/PACKAGE5_RELEASE_QUALIFICATION.md). Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
+O Pacote 6 exige qualificação bem-sucedida do mesmo SHA em `feat/package6-release`, identidade final exata e tag inédita; usa `verify_package6_release.py` e `test_package6_release.py`, mantendo os verificadores históricos. Confira o [contrato de qualificação](docs/PACKAGE6_RELEASE_QUALIFICATION.md). A promoção de main e a publicação exigem aprovação explícita do proprietário. Para uma versão futura, revisar explicitamente o verificador e o gate de qualificação; mudar apenas a versão ou executar o workflow não basta.
 
 1. Atualize `ReleaseVersion.h`: versão e número crescente `FW_BUILD`.
 2. Atualize fontes e pacote `cartao/RPGPOKET/artes.pak`, conservando os identificadores em `AssetCatalog.h`.
 3. Faça os testes e envie ao repositório.
-4. Em **Actions → Publicar versão → Run workflow**, informe a mesma versão de `FW_VERSION`.
+4. No workflow de publicação em **Actions**, informe a mesma versão de `FW_VERSION` ao usar **Run workflow**.
 5. O envio a `main` de alterações cobertas pelos filtros do workflow também inicia a publicação automaticamente; alterações apenas neste README não iniciam compilação/publicação. O workflow compila, verifica os tamanhos e publica `firmware.bin`, `artes.pak` e `manifest.json` em uma Release. A placa consulta a última Release publicada.
 
 ## Estado atual
 
-**Firmware atual: 7.7 — D20, acampamento e bolsa, 2026.10.13-camp77 / build 2026101308.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-camp77) · [Uso e instalação](docs/RELEASE_PACKAGE5_NOTAS.txt) · [Qualificação e limites](docs/PACKAGE5_RELEASE_QUALIFICATION.md). Fonte/tag [7a05617c](https://github.com/Oflodorporto/RPG-POKET-2/commit/7a05617cd1e13843d73de72f970c57a7113af48a); [qualificação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38486164852) e [publicação/downloads](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38489809271) aprovadas. Publicado em 14/10/2026. Os três downloads públicos foram conferidos independentemente por tamanho/SHA-256, e o manifesto latest é idêntico.
+**Firmware atual: 7.7 — Dados e exploração das Ruínas, 2026.10.13-explore77 / build 2026101309.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-explore77) · [Uso e instalação](docs/RELEASE_PACKAGE6_NOTAS.txt) · [Qualificação e limites](docs/PACKAGE6_RELEASE_QUALIFICATION.md). Fonte/tag [3f9d3221](https://github.com/Oflodorporto/RPG-POKET-2/commit/3f9d3221b99e6b4ba55dc270a2a1d0a9155ea27b); [qualificação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38494326193) e [publicação/downloads](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38500805596) aprovadas. Publicado em 14/10/2026. Os três downloads públicos foram conferidos independentemente por tamanho/SHA-256; o manifesto latest é byte-idêntico e a tag aponta ao SHA qualificado exato.
+
+Dados e recibos refletem as rolagens reais do combate, com pulo da apresentação sem repetir ações/RNG. A faixa animada cobre dados explícitos de dano/cura; variação de arma, crítico e esquiva estão nos recibos Dados. Gerador R5 nas duas plantas de novas entradas pagas das Ruínas, com caminhos/encontros iniciais variados e limites documentados de dificuldade, cura e recompensas. Ilha e expedições de cartas continuam com mapas fixos. D20, acampamento personalizado, tenda e Bolsa nas Ruínas preservados; arte666 inalterada.
+
+**Save30: lê 29/30 e grava 30, mantendo época 1 e sem novo reset.** A leitura de Save29 não grava; cada slot migra no próximo save normal. Runs antigos preservam mapa, piso, posição, máscaras e RNG até terminar. Firmware Save29 antigo bloqueia slots migrados sem apagá-los nem retomar silenciosamente uma cópia anterior; para reabrir é necessário firmware compatível Save30. De scenes77, scale77 ou camp77, atualizar por **Configurações → Atualização → Verificar versão → Instalar**, em Wi-Fi 2,4 GHz. A primeira passagem de touch77 ou anterior continua exigindo USB com `EraseFlash=none`, sem importação de Save1..28.
+
+Agregado herdado: 91 suítes otimizadas e 50 sanitizadas mais todas as suites procedurais, trace, diferencial, integração e regressões Pacote5 aprovadas; ASan/UBSan e LeakSanitizer habilitados no CI. Revisão de 9.216 fixtures Save29 e falhas de journal/NVS; transições reais com os bytes publicados e 90 probes de rollback por leitores históricos aprovados. As 47 capturas procedurais/trace/combinadas do CI são byte-idênticas às locais congeladas. Firmware publicado 2.857.904 bytes, margem OTA 287.824 bytes, core ESP32 3.3.12 / flash 16 MiB / OPI PSRAM 8 MiB / partição 3 MiB. PSRAM conhecida estimada em 7.638.272 bytes. **Teste físico do explore77, toque, heap livre, FPS, latência e falhas de energia na placa pendentes.** Testes host não substituem validação física.
+
+SHA-256 dos arquivos publicados no explore77:
+- `firmware.bin`: `54a2c13b359dcfce3c32f9be9a8f01d350aab99fedae3350aabf98a6403b7cc3`
+- `artes.pak`: `14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56`
+- `manifest.json`: `4e4eb9eec4707bee35308f6a827a15f39f88432bcd1d7248e556886a5f912100`
+
+Os arquivos `PACKAGE6_STAGING_ONLY.txt` e os documentos de candidato/integração registram a etapa anterior à publicação; suas restrições locais são históricas. O estado publicado vigente está descrito acima.
+
+**Entrega anterior: 7.7 — D20, acampamento e bolsa, 2026.10.13-camp77 / build 2026101308.** [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.13-camp77) · [Uso e instalação](docs/RELEASE_PACKAGE5_NOTAS.txt) · [Qualificação e limites](docs/PACKAGE5_RELEASE_QUALIFICATION.md). Fonte/tag [7a05617c](https://github.com/Oflodorporto/RPG-POKET-2/commit/7a05617cd1e13843d73de72f970c57a7113af48a); [qualificação](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38486164852) e [publicação/downloads](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38489809271) aprovadas. Publicado em 14/10/2026. Os três downloads públicos foram conferidos independentemente por tamanho/SHA-256, e o manifesto latest é idêntico.
 
 D20 geométrico com vinte faces, acampamento comum com raça/classe/cores do personagem, tenda proporcional no mapa e botão Bolsa nas Ruínas. Bibliotecas reutilizáveis de equipamentos e efeitos preservadas como fontes; artes666 continuam idênticas. 96 suítes otimizadas e 55 com ASan/UBSan, com LeakSanitizer habilitado no CI; 68 capturas PNG/GIF do CI byte-idênticas às prévias congeladas. Compilação ESP32 3.3.12 do SHA exato e transições com os arquivos publicados aprovadas.
 
-De scenes77 ou scale77/Save29, atualizar por **Configurações → Atualização → Verificar versão → Instalar**, em Wi-Fi 2,4 GHz. Os três slots e o marcador Done da mesma época1 são preservados byte a byte, sem novo reset; Wi-Fi e artes válidas também permanecem. A primeira passagem de touch77 ou anterior continua exigindo USB com `EraseFlash=none`, sem importação de Save1..28. Firmware publicado de 2.839.488 bytes, margem OTA de 306.240 bytes; PSRAM conhecida estimada em 7.638.272 bytes. **Teste físico de toque, heap livre, FPS e estabilidade na placa pendente.** Registro detalhado das rolagens de combate e geração procedural de dungeon não fazem parte deste pacote.
+De scenes77 ou scale77/Save29, atualizar por **Configurações → Atualização → Verificar versão → Instalar**, em Wi-Fi 2,4 GHz. Os três slots e o marcador Done da mesma época1 são preservados byte a byte, sem novo reset; Wi-Fi e artes válidas também permanecem. A primeira passagem de touch77 ou anterior continua exigindo USB com `EraseFlash=none`, sem importação de Save1..28. Firmware publicado de 2.839.488 bytes, margem OTA de 306.240 bytes; PSRAM conhecida estimada em 7.638.272 bytes. **Teste físico rápido do camp77 relatado pelo proprietário sem detalhamento de cenários; medições de heap livre, FPS e ensaios prolongados continuam pendentes.** Registro detalhado das rolagens de combate e geração procedural de dungeon não fazem parte deste pacote.
 
 SHA-256 dos arquivos publicados no camp77:
 - `firmware.bin`: `81670f9aa9383e64e86ee65460031680ace898ef3732e280bb36d305a9893562`
