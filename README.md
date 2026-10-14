@@ -18,6 +18,19 @@ Crie seu aventureiro, converse com os habitantes de Aeldra, atravesse estradas, 
 **Versão publicada:** 7.7 · Duelo PvP · `2026.10.14-pvp77` · build `2026101404`.
 Firmware, artes e downloads verificados. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
 
+## As Cinzas da Primeira Aurora
+
+Em Aeldra, um sino toca numa torre vazia, a cinza adoece as raízes e nomes desaparecem das lembranças. Você chega a Carvalho quase sem ouro, em busca de abrigo e trabalho. Uma carta da Guilda conduz seus passos às ruínas de Véspera e ao mistério dos quatro faróis que protegem o reino. Sua história nasce das pessoas que você decide ajudar.
+
+### Pelas estradas de Aeldra
+
+O mapa atual percorre Aeldra, no oeste de Valdária, entre o mar e as montanhas. As estradas ligam quatro destinos:
+
+- **Carvalho:** vila junto ao bosque, onde Nara oferece acolhimento e a jornada começa.
+- **Ruínas de Véspera:** cidade abandonada, com expedições, mortos inquietos e a Cripta do Arconte.
+- **Mares:** porto de mercadores e construtores navais, ameaçado por desaparecimentos e cargas suspeitas.
+- **Aurora:** cidade da Coroa, dos arquivos e das forjas, onde antigos juramentos estão em disputa.
+
 ## Um pequeno mundo para explorar
 
 <p align="center">
