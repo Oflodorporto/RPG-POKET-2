@@ -7,6 +7,7 @@
 namespace clockCycle7 {
 constexpr int FACE_TOP=40,FACE_BOTTOM=184;
 constexpr uint32_t FRAME_MS=200,DAY_SECONDS=86400;
+constexpr int MEDALLION_RADIUS=11; // Whole halo stays within the existing 144-row redraw band.
 inline bool animationDue(bool valid,bool letter,uint32_t now,uint32_t last){
   return (valid||letter)&&uint32_t(now-last)>=(valid?FRAME_MS:480u);
 }
@@ -43,19 +44,27 @@ inline State state(const char (&time)[9],bool valid,uint32_t now){
   s.night=s.period==worldClock::Period::Night;
   s.x=120-scaled(sine(s.second),89);s.y=111+scaled(sine(s.second+21600),59);
   // 4.096-second breathing light; a power-of-two period stays continuous
-  // across uint32 millis rollover. Fixed radius, never an on/off blink.
-  unsigned phase=now&4095u;s.pulse=phase<2048?phase/8:(4096-phase)/8;
+  // across uint32 millis rollover. Smoothstep eases the visible size/light
+  // change at each end of the breath; it never switches the medallion off.
+  unsigned phase=now&4095u,breath=phase<2048?phase/8:(4096-phase)/8;
+  s.pulse=breath*breath*(768-2*breath)/65536;
   struct Key {uint32_t second;uint16_t top,bottom;unsigned stars,glow;};
   static constexpr Key keys[]={
     {0,rgb(8,20,42),rgb(13,28,47),210,0},
     {5*3600,rgb(8,20,42),rgb(13,28,47),210,0},
     {6*3600,rgb(31,36,63),rgb(91,53,33),60,190},
-    {7*3600,rgb(18,51,86),rgb(51,61,76),0,135},
-    {18*3600,rgb(18,51,86),rgb(51,61,76),0,135},
+    {7*3600,rgb(22,42,68),rgb(77,59,42),0,155},
+    {9*3600,rgb(22,52,81),rgb(53,70,78),0,120},
+    {12*3600,rgb(30,72,109),rgb(68,98,116),0,75},
+    {15*3600,rgb(30,61,90),rgb(76,79,77),0,110},
+    {18*3600,rgb(43,37,61),rgb(96,62,36),0,165},
     {19*3600,rgb(43,29,51),rgb(87,44,31),35,180},
     {20*3600,rgb(8,20,42),rgb(13,28,47),210,0},
     {DAY_SECONDS,rgb(8,20,42),rgb(13,28,47),210,0}};
-  unsigned i=0;while(i<6&&s.second>=keys[i+1].second)++i;
+  // Continuous local-time palette: morning, noon and afternoon no longer
+  // share one flat 07:00-18:00 color. Existing civil/game phases are unchanged.
+  constexpr unsigned lastKey=sizeof(keys)/sizeof(keys[0])-1;
+  unsigned i=0;while(i+1<lastKey&&s.second>=keys[i+1].second)++i;
   const auto& a=keys[i];const auto& b=keys[i+1];
   unsigned weight=(s.second-a.second)*256/(b.second-a.second);
   s.top=mix(a.top,b.top,weight);s.bottom=mix(a.bottom,b.bottom,weight);

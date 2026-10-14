@@ -14,3 +14,4 @@ for target in clock_cycle7_logic clock_cycle7_render clock77_render; do
 done
 python3 tools/test_clock_cycle7.py
 python3 tools/capture_clock_cycle7.py
+python3 tools/capture_clock_visibility7.py

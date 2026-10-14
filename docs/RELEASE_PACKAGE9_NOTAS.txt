@@ -1,0 +1,14 @@
+RPG POKET 7.7 - Pulso do relogio
+Identidade: 2026.10.14-clock77 / build 2026101403
+
+O pequeno sol e a lua do relogio agora pulsam com variacao mais visivel de tamanho e luz. O fundo muda gradualmente entre manha, meio-dia e tarde usando a hora local configurada. A orbita de 24 horas, as estrelas, os textos e o retorno ao jogo continuam iguais.
+
+A narrativa Ecos de Valdaria da atualizacao anterior permanece integral. Esta correcao nao altera bolsa, regras de PvP, pets ou outros sistemas de jogo. O backlight em repouso continua em 10%, a cadencia em 200 ms e a repintura parcial em 144 linhas. Nenhuma nova arte ou alocacao de framebuffer/PSRAM foi acrescentada.
+
+Save30 e epoch1 permanecem inalterados, sem novo reset. A leitura Save29/30, os tres slots, progresso, seed, posicoes, equipamentos e RNG sao preservados. As 666 artes continuam com os mesmos bytes. De scenes77, scale77, camp77, explore77, immersion77 ou story77, use Configuracoes > Atualizacao > Verificar versao e confirme a instalacao no aparelho. Para touch77/Save28 ou anterior continua necessaria a instalacao inicial USB com EraseFlash=none; nao apague a flash inteira. Firmware Save29 antigo nao abre registros que ja migraram para Save30.
+
+Qualificacao em software
+O processo exige o agregado herdado completo, testes ampliados de relogio e narrativa, ASan/UBSan/LeakSanitizer, compilacao ESP32-S3 com core3.3.12, identidade exata e OTA com bytes reais. As transicoes testam os clientes historicos, incluindo story77, e leitura dos tres slots de Save30 nos codecs historicos, preservando seed/progresso/RNG. Isso nao autoriza downgrade de firmware.
+
+Validacao fisica
+A previa aprovada dura 12 segundos em velocidade normal. Capturas e testes de host nao medem a visibilidade real a 10% de backlight, consumo, heap livre, FPS, latencia de toque, USB/OTA fisico ou resistencia a falhas de energia. A visibilidade e o comportamento no aparelho dependem do teste do proprietario. Nao retire alimentacao ou cartao durante a instalacao.

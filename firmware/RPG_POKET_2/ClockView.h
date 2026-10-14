@@ -18,25 +18,39 @@ template<class C>void draw(C& c,const clockCycle7::State& sky={},unsigned first=
 }
 
 namespace clockUi {
-// Tiny gilded medallion, drawn on the existing rim instead of replacing it.
+// Gilded medallion breathes in both area and luminance. The 6..9 px body
+// and 8..11 px halo keep all orbit extremes inside the existing redraw band.
+// Fixed-point radii avoid per-pixel floating point, sqrt, heap or art changes.
 template<class C>void medallion(C& c,const clockCycle7::State& s){
   if(!s.valid)return;
-  const uint16_t ink=0x0844,gold=clockCycle7::mix(clockCycle7::rgb(184,132,43),clockCycle7::rgb(255,205,93),s.pulse/2);
-  for(int dy=-10;dy<=10;++dy)for(int dx=-10;dx<=10;++dx){
-    int d=dx*dx+dy*dy;if(d>100)continue;
+  const uint16_t ink=0x0844;
+  const uint16_t gold=clockCycle7::mix(clockCycle7::rgb(165,108,29),clockCycle7::rgb(255,231,142),s.pulse);
+  const uint16_t light=clockCycle7::mix(clockCycle7::rgb(199,147,62),clockCycle7::rgb(255,239,174),s.pulse);
+  const uint16_t moon=clockCycle7::mix(clockCycle7::rgb(151,173,192),clockCycle7::rgb(240,251,255),s.pulse);
+  const unsigned body=6*256+3*s.pulse,halo=8*256+3*s.pulse;
+  const unsigned body2=body*body,halo2=halo*halo;
+  for(int dy=-clockCycle7::MEDALLION_RADIUS;dy<=clockCycle7::MEDALLION_RADIUS;++dy)
+  for(int dx=-clockCycle7::MEDALLION_RADIUS;dx<=clockCycle7::MEDALLION_RADIUS;++dx){
+    unsigned d=unsigned(dx*dx+dy*dy)*65536;if(d>=halo2)continue;
     int x=s.x+dx,y=s.y+dy;
-    uint16_t color=clockArt::pixel(x,y);
-    if(d>72)color=clockCycle7::mix(color,gold,24+s.pulse/5);
-    else if(d>53)color=(dx+dy<0)?gold:0x7265;
-    else if(d>40)color=0x51e4;
-    else color=ink;
-    if(d<=25){
-      if(s.night){if((dx+2)*(dx+2)+(dy+2)*(dy+2)>20)color=0xe73b;}
-      else if(d<=8||dx==0||dy==0||dx==dy||dx==-dy)color=gold;
+    uint16_t color=clockCycle7::skyPixel(clockArt::pixel(x,y),x,y,s);
+    if(d>=body2){
+      unsigned alpha=(halo2-d)*(48+s.pulse/2)/(halo2-body2);
+      color=clockCycle7::mix(color,s.night?moon:gold,alpha);
+    }else{
+      unsigned scaled=d*64/body2;
+      if(scaled>48)color=dx+dy<0?light:gold;
+      else if(scaled>36)color=0x51e4;
+      else color=ink;
+      int sx=(dx<0?-1:1)*int((unsigned(dx<0?-dx:dx)*8*256+body/2)/body);
+      int sy=(dy<0?-1:1)*int((unsigned(dy<0?-dy:dy)*8*256+body/2)/body);
+      if(scaled<=25){
+        if(s.night){if((sx+2)*(sx+2)+(sy+2)*(sy+2)>20)color=moon;}
+        else if(scaled<=8||sx==0||sy==0||sx==sy||sx==-sy)color=scaled<=8?light:gold;
+      }
     }
     c.fillRect(x,y,1,1,color);
   }
-  if(s.night){c.fillRect(s.x-2,s.y-3,1,1,0xffff);c.fillRect(s.x-4,s.y,1,1,0x9cf3);}
 }
 template<class C>void starPixel(C& c,int x,int y,uint16_t color,unsigned alpha,const clockCycle7::State& s){
   if(!clockCycle7::sky(x,y))return;

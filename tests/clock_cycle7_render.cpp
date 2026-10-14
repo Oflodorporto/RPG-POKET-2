@@ -28,7 +28,7 @@ int main(int argc,char** argv){
     menu.worldPeriod=worldClock::Period::Night; // Gameplay phase may legitimately be frozen.
     snprintf(menu.clockTime,sizeof(menu.clockTime),"%02u:30:17",hour);strcpy(menu.clockDate,"14/10/2026");
     menu.renderNow=1000;draw(partial,g,v,false);
-    for(unsigned ms:{1200u,2000u,13200u,13600u,14200u,14400u,UINT_MAX,0u}){
+    for(unsigned ms:{1200u,2000u,2048u,13200u,13600u,14200u,14400u,UINT_MAX,0u}){
       menu.renderNow=ms;draw(full,g,v,false);draw(partial,g,v,true);assert(!memcmp(full.pixels,partial.pixels,sizeof(full.pixels)));frames+=2;
       for(unsigned y=0;y<320;++y)for(unsigned x=0;x<240;++x)if(y<24||y>=282||x<20||x>=220)assert(full.pixels[y*240+x]==clockArt::pixel(x,y));
     }
@@ -45,6 +45,25 @@ int main(int argc,char** argv){
   // Genuine firmware-rendered frames: one-day timelapse and real-speed pulses.
   for(unsigned f=0;f<96;++f){unsigned second=f*900;snprintf(menu.clockTime,sizeof(menu.clockTime),"%02u:%02u:00",second/3600,second/60%60);menu.renderNow=f*200;draw(full,g,v,false);full.save(out+"/daycycle-"+std::to_string(f)+".ppm");}
   for(bool night:{false,true})for(unsigned f=0;f<50;++f){menu.renderNow=10000+f*200;snprintf(menu.clockTime,sizeof(menu.clockTime),"%02u:18:%02u",night?23:12,10+f/5);draw(full,g,v,false);full.save(out+(night?"/night-":"/day-")+std::to_string(f)+".ppm");}
+  // User feedback time: 12 real seconds, no orbit/time acceleration.
+  menu.sessionStarted=true;
+  for(unsigned f=0;f<60;++f){
+    menu.renderNow=f*200;snprintf(menu.clockTime,sizeof(menu.clockTime),"08:33:%02u",13+f/5);
+    draw(full,g,v,false);full.save(out+"/morning-realtime-"+std::to_string(f)+".ppm");
+  }
+  for(const char* time:{"08:33:13","12:00:00","17:00:00","23:00:00"}){
+    strcpy(menu.clockTime,time);menu.renderNow=2048;draw(full,g,v,false);
+    full.save(out+"/visibility-phase-"+std::string(time,2)+".ppm");
+  }
+  strcpy(menu.clockTime,"08:33:13");menu.renderNow=0;draw(full,g,v,false);auto pulseLow=full;
+  full.save(out+"/visibility-pulse-low.ppm");
+  menu.renderNow=2048;draw(full,g,v,false);full.save(out+"/visibility-pulse-high.ppm");
+  unsigned changed=0;auto pulseState=clockCycle7::state(menu.clockTime,true,0);
+  for(int y=0;y<320;++y)for(int x=0;x<240;++x)if(full.pixels[y*240+x]!=pulseLow.pixels[y*240+x]){
+    ++changed;assert(std::abs(x-pulseState.x)<=clockCycle7::MEDALLION_RADIUS&&std::abs(y-pulseState.y)<=clockCycle7::MEDALLION_RADIUS);
+  }
+  assert(changed>=300); // A visible area/contrast change, not the old 156-pixel color-only breath.
+  printf("PASS: morning pulse min/max changes %u pixels, entirely within the medallion; actual-render preview is 60 frames at 200 ms.\n",changed);
   g.eventStage=1;draw(full,g,v,false);full.save(out+"/clock-letter.ppm");g.eventStage=0;
   const auto started=std::chrono::steady_clock::now();for(unsigned i=0;i<1000;++i){menu.renderNow=i*200;draw(full,g,v,true);}
   auto us=std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now()-started).count();

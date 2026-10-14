@@ -1,0 +1,2 @@
+PACKAGE 9 CLOCK CORRECTION CANDIDATE ONLY
+Branch qualification and generated artifacts do not authorize main, tag, release, flash, or device OTA. Publication must remain separately authorized and requires exact-source qualification after the verified story77 release.

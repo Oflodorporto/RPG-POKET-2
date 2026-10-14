@@ -1,0 +1,5531 @@
+{
+  "schema": 1,
+  "baseline_commit": "8aa3d649fc2bae4e3050d79e02ee4b141971e490",
+  "baseline_tree": "e0a9131d1c78205b6d463b13c049c3fe9e079f63",
+  "frozen_feature_tree": "28c3d96d8f8c13aa74239637bb8612899fbe47f8",
+  "approved_clock_production_patch_sha256": "eac634fdb033f77a124b44f2d4c06dc7f5c4de099ac3d7928cac4e4478d3ac7c",
+  "preserved_story_commit": "9ca94294daf185ac80603e3ba409f0201eef72fb",
+  "packaging_exceptions": [
+    ".github/workflows/package9-check.yml",
+    ".github/workflows/release.yml",
+    "PACKAGE9_STAGING_ONLY.txt",
+    "docs/PACKAGE9_RELEASE_QUALIFICATION.md",
+    "docs/RELEASE_PACKAGE9_NOTAS.txt",
+    "firmware/RPG_POKET_2/ReleaseVersion.h",
+    "tests/fixtures/package9-approved-sources.json",
+    "tests/fixtures/package9-published-baselines.json",
+    "tests/package9_qualification_config.py",
+    "tests/package9_release.cpp",
+    "tests/package9_release_gate.py",
+    "tests/package9_release_verifier.py",
+    "tools/check_package9_release_gate.py",
+    "tools/check_package9_scope.py",
+    "tools/record_package9_identity.py",
+    "tools/release_package9_manifest.py",
+    "tools/test_package9.sh",
+    "tools/test_package9_local.py",
+    "tools/test_package9_release.py",
+    "tools/verify_package9_release.py"
+  ],
+  "contract": {
+    "version": "2026.10.14-clock77",
+    "build": 2026101403,
+    "package": "7.7 - Pulso do relogio",
+    "generation": "7.7",
+    "save_format": 30,
+    "reads_save_formats": [
+      29,
+      30
+    ],
+    "save_reset_epoch": 1,
+    "art_assets": 666,
+    "art_payload_bytes": 7470912,
+    "art_total_bytes": 7470928,
+    "art_crc32": "9b4bcfc0",
+    "art_sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56",
+    "known_psram_bytes": 7638272,
+    "ota_partition_bytes": 3145728,
+    "new_atlas_flash_bytes": 0,
+    "new_psram_allocations": 0
+  },
+  "frozen_files": [
+    {
+      "path": ".github/workflows/combined77-check.yml",
+      "bytes": 1722,
+      "sha256": "d6ba53df0f4e0ab5d5d66c1ad1e10a0f200dbedbed7ac49ec5a8501370c21d47",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/dungeon77-check.yml",
+      "bytes": 1805,
+      "sha256": "7e2011ea54c096daef2ef3da186bc1c46dee5edab637eebbdfedd994ccb23ba4",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/enemy77-check.yml",
+      "bytes": 1681,
+      "sha256": "4218300e8c6dc0071c6654d22e4ee0cbc63b446af699eb46b9b1e1aedcf4ef62",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/fatigue76-check.yml",
+      "bytes": 1607,
+      "sha256": "7fff79e9e4836b76fabbece0a00dc1b592b136e602f31c4f3e7e416883a6b28a",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/ota77-check.yml",
+      "bytes": 1574,
+      "sha256": "df83ae6e2ff92433bd292f729d5088bb1298756fa8b7b8bb1f8e7f0656a86a14",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/ota77-final-check.yml",
+      "bytes": 1838,
+      "sha256": "bc5c6e95c902921a81afb9fc5cfbf332491d1ae795eefc10c2c2aacb42fe6ae6",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/package5-check.yml",
+      "bytes": 5386,
+      "sha256": "ddd44321a63d578accc6e59aa19acbca4cfeec9c9fcf89c8cf3d5cfac5ea2f99",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/package6-check.yml",
+      "bytes": 4077,
+      "sha256": "bd13a0115e910f533e0ea5f3521bce1f6cf4a80291a68076635e77aa78e1445a",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/package7-check.yml",
+      "bytes": 3652,
+      "sha256": "4a8819f027d32ae937fd77d41d87bd8e49b4da280452f97b740a97b79c1768da",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/package8-check.yml",
+      "bytes": 3996,
+      "sha256": "013ea3a70e295c81a966b2e5d7d63813706f48c55a88228555a63bfd048a7e32",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/recovery77-check.yml",
+      "bytes": 1865,
+      "sha256": "5d5a225ffad9e7f6bfd0f04717373e782cca523675a3f969099773deec3e32a6",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "bytes": 5033,
+      "sha256": "43f02e24e3053d9f8b93954cf11af5c0a10506bdef98bec31eaa0cb511bc8ba5",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/release77-check.yml",
+      "bytes": 1935,
+      "sha256": "7bab83a233a9f15a1c361c3e234eb90abdc992f4c28a5eb7876d300958111db1",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/scale77-check.yml",
+      "bytes": 4600,
+      "sha256": "3a076489ce66a85b060583910b44d8de8e36e43aec6cb094ca4479b4b41c7c26",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/scenes77-check.yml",
+      "bytes": 2793,
+      "sha256": "7c26a5cbd516b94f7b7500d9209029a2651650bda64db06fd74d8bfb93d61897",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/touch77-check.yml",
+      "bytes": 1785,
+      "sha256": "3e51d2a313eadc72a267545a9bc73e6c0c0816dba43e353dbd2fa0aad371347f",
+      "executable": false
+    },
+    {
+      "path": ".github/workflows/visual77-check.yml",
+      "bytes": 1644,
+      "sha256": "f193ddb96c7685fb68fce96611348adee873cd9cce134ff39eaea3a94570615b",
+      "executable": false
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 152,
+      "sha256": "416de3a43747c6b0ca2abb5e9a19665f1b9e39af7b5d583f76c7a1fc5e9ac416",
+      "executable": false
+    },
+    {
+      "path": "PACKAGE6_STAGING_ONLY.txt",
+      "bytes": 1011,
+      "sha256": "375a4fd03da16dfffea1feba04f171866bbe336df847c864955a0a955495ba09",
+      "executable": false
+    },
+    {
+      "path": "PACKAGE7_STAGING_ONLY.txt",
+      "bytes": 539,
+      "sha256": "538e335d70a4debbcd5469ea29134a1f9430dbd4822b179e6ff919c10e286806",
+      "executable": false
+    },
+    {
+      "path": "PACKAGE8_STAGING_ONLY.txt",
+      "bytes": 190,
+      "sha256": "be13e415624a03f4d37167164fd1c5c58711b656d112fb4497e260bad9259db4",
+      "executable": false
+    },
+    {
+      "path": "README.md",
+      "bytes": 41838,
+      "sha256": "e33ba1c597cbdc82264f6e0323c3187788d06d1169a18743953090d65a3e1fb7",
+      "executable": false
+    },
+    {
+      "path": "assets/abrigo-menu1/conceito-mapa-ruinas.png.gz",
+      "bytes": 2761465,
+      "sha256": "5fb3dba1ebeeed70bf823799ea3b2edd0976d68a7f25e20a0c3d040d3ae70450",
+      "executable": false
+    },
+    {
+      "path": "assets/abrigo-menu1/conceito-original.png.gz",
+      "bytes": 2019174,
+      "sha256": "85c47bcfd58f0d7d5573c8905c137a3b81b8475fedbb61e3125d87ff23558b4e",
+      "executable": false
+    },
+    {
+      "path": "assets/abrigo-menu1/proveniencia.json",
+      "bytes": 974,
+      "sha256": "1ddb58e7f40e62fe6cdf0a53cde7f0bf73f49c307cde516948ba20b1660e9ce9",
+      "executable": false
+    },
+    {
+      "path": "assets/bag-touch1/provenance.json",
+      "bytes": 809,
+      "sha256": "e3232503c7145d17e10b083b477e0de2a811b09833304297758097cdae0e5a6b",
+      "executable": false
+    },
+    {
+      "path": "assets/bag-touch1/skin.bin.gz.b64",
+      "bytes": 28157,
+      "sha256": "b8934696fba715fd191f56c9476a634fc3b586d852785ed77abbe07de08f6405",
+      "executable": false
+    },
+    {
+      "path": "assets/camp1/PROMPTS.json",
+      "bytes": 2241,
+      "sha256": "1d6a42b8cb4c2afd3db4204b5177e97827bf403e2079584c380f98c723b9e593",
+      "executable": false
+    },
+    {
+      "path": "assets/camp1/manifest.json",
+      "bytes": 8996,
+      "sha256": "8a11174dfa85736e124dccf9b1c918a015ad7ac9140230e62cdd1d860feefe8f",
+      "executable": false
+    },
+    {
+      "path": "assets/cartas1/hipogrifo-original.png",
+      "bytes": 1299329,
+      "sha256": "040af3e56429e415473ddc68c46a8bb9bc81c36e8402c1b6c3b4e8364f31a0f6",
+      "executable": false
+    },
+    {
+      "path": "assets/cartas1/hipogrifo-sprites.png",
+      "bytes": 32433,
+      "sha256": "06f90b41d804365e408430b58a6b6a50c06efd7a25dcfdd1ed103a5ddb161ca8",
+      "executable": false
+    },
+    {
+      "path": "assets/cartas1/proveniencia.json",
+      "bytes": 402,
+      "sha256": "6c412c77cc459242d7dc6b6a6bd620c338e30c0c69ddb04687fce9708ddd2492",
+      "executable": false
+    },
+    {
+      "path": "assets/clock77/approved-background.png",
+      "bytes": 90691,
+      "sha256": "55b43ea33524f4a085703ee74615c20baf20c600e6a61707e53ceb6741dc09aa",
+      "executable": false
+    },
+    {
+      "path": "assets/clock77/approved-rgb565.bin.gz.b64",
+      "bytes": 100497,
+      "sha256": "3e5e37b5031b289f5b535aadfe42e361de13831edadf422d95c41040974755e8",
+      "executable": false
+    },
+    {
+      "path": "assets/clock77/background-idx8.bin.gz.b64",
+      "bytes": 68561,
+      "sha256": "916d0b8da80e93783a348d9f23dd51ba333fb1547d5dfa17ee9137405f60d314",
+      "executable": false
+    },
+    {
+      "path": "assets/clock77/export.json",
+      "bytes": 1456,
+      "sha256": "1fcfb369734bf021e856f7a7b46627a459d6e3f1f8200efece86c46794230a3d",
+      "executable": false
+    },
+    {
+      "path": "assets/dungeon1/PROMPTS.json",
+      "bytes": 5366,
+      "sha256": "a37e8c6b44769b86778a3dab3ac95579601011931ca2a3f751eeaf3e19faa8ea",
+      "executable": false
+    },
+    {
+      "path": "assets/dungeon1/manifest.json",
+      "bytes": 9670,
+      "sha256": "61338007fae745dc7bbb4db582b0aa96c46b853a9e6e8da74c09266e798a3ae9",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/README.md",
+      "bytes": 10192,
+      "sha256": "02c6270471d7a45f7b3f45a203d2452a5fc05487c51fe69ac339ee0c190756f4",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/baseline/catalog.json",
+      "bytes": 45306,
+      "sha256": "d7bbda610d1fca2845c3ff93e5f8c12c254bbbd70ae9803c0a4c1a6c80dca6b5",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/baseline/fallback.bin.gz",
+      "bytes": 60324,
+      "sha256": "07408f09ccd22da841b1643fc30fa10184713d164c4df432510367b39c61b796",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/exports.tar.gz",
+      "bytes": 513634,
+      "sha256": "950f3741678774c8de263ed40ada025bd05cb3b0957f0ad9d04dd2dfb2d64346",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/generated/AssetCatalog636.h",
+      "bytes": 490230,
+      "sha256": "1a33bb2fc3fe6cb4371c0e6dee6d07a74aee7fb9f9a94621400da3d9a6e3b321",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/integration_manifest.json",
+      "bytes": 163338,
+      "sha256": "bf0084a67f77b86781c9a638031758949bb3dfefd4c71a82998e27d5a51a611a",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/provenance.json",
+      "bytes": 102517,
+      "sha256": "66d86ed22383ffee367240281d896970d7ed4df95614ae2834452e3295e981c0",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/CHECKSUMS.json",
+      "bytes": 122848,
+      "sha256": "0d7696ce01ce8a98698f1d523b56d367ff07c0f435ea93794d41034c0d85ad68",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/CONTRATO_ASSETS.txt",
+      "bytes": 2853,
+      "sha256": "333c121a59e3d5c36f042aa5ed3a9c5b8b1805da71480beb6962552804436265",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/INVENTARIO_E_MIGRACAO.txt",
+      "bytes": 5610,
+      "sha256": "d32339a78a9f1023345007b9b6f0b926ef8cb0279d152133f56567ca12995ec4",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/LEIA_PRIMEIRO.txt",
+      "bytes": 4637,
+      "sha256": "896755aca353056078ac416452bd3f33e298399c8eaa8d51b59d6ef0af108f3b",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/ORCAMENTO_ASSETS.json",
+      "bytes": 1016,
+      "sha256": "9aea065a6b8502c4abe8ec628050c181071db41a42789980a769c92b85cea08c",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/batch_manifest.json",
+      "bytes": 39671,
+      "sha256": "9c35e87e0f5abf12b066b00263e2ae90be8638884af9800562117e4cc8b6f29d",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/determinism_validation.json",
+      "bytes": 86,
+      "sha256": "0d7e7d12e8e526c4cc1a58a6b8c3a795c607916f7964dc38092ccab38d059896",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/bite/manifest.json",
+      "bytes": 503,
+      "sha256": "9f0ea71a051d5e99430ddd395931403227cc36bbd44e0ad4b05d10d8bb8fe3bb",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/charge/manifest.json",
+      "bytes": 505,
+      "sha256": "4992d3e0f7124bc47e01066eb963c5e0e200cd16f73f1a3c57f70137d7a38496",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/claw/manifest.json",
+      "bytes": 503,
+      "sha256": "11e460bb12901950113262fce9df6ae03512b6e794c92ab04d64f4a001307fe4",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/crush/manifest.json",
+      "bytes": 504,
+      "sha256": "f23fd755cae682963a174b8df525def8abb1f297080e98b16cb2c0f85a38a303",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/magic/manifest.json",
+      "bytes": 504,
+      "sha256": "d883ddd8eea8bbdfdb1a28e4bbee4245e01fbd7f99d36671fccc361748786630",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/manifest.json",
+      "bytes": 1042,
+      "sha256": "d0e745ea2cb7b0fd00901f2257a1c84cd419c72e587a3cad1754b79896bd887e",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/pulse/manifest.json",
+      "bytes": 504,
+      "sha256": "c91375c8f946749b2b9330658603363b7e7868a632a1918a020fdce35acb6fd6",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/effects/slash/manifest.json",
+      "bytes": 504,
+      "sha256": "5f37ce1a4d461e66a4581b11afb75cd11ed673423e50dd50d97c6cd5736d892f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/roster_manifest.json",
+      "bytes": 266222,
+      "sha256": "1c04b5138a379925c7f716232260be0c8147fae471e511f91b6e60045770a6c0",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/exports/validation.json",
+      "bytes": 9202,
+      "sha256": "86f164d0321f5f59b8ba3cebd8d5ed4d4e5c781ce9c8f7e599bf505e99a81cd1",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/inventario_29_inimigos.json",
+      "bytes": 80296,
+      "sha256": "b7629ac1b8987e11b0b9555a875a7dbe0c418f06f2b289cb9a2324ff9c685956",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/00_goblin.txt",
+      "bytes": 3044,
+      "sha256": "9d0f575ba3426c8504bdb7e2250d64068d23ed0c6ea90588eadcad57acc085ac",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/01_lobo.txt",
+      "bytes": 3153,
+      "sha256": "070d4691617c3f0fad3b3e77fa68720c428a0d929ef9a0eba95fae943f9d118f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/02_esqueleto.txt",
+      "bytes": 3381,
+      "sha256": "aa17fe442f9a04e08bbc4ce70eb29de12f5b4c689c213bcab8f5bfe094e4845c",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/03_guardiao.txt",
+      "bytes": 2583,
+      "sha256": "fe7580065361cf6a22ce092336a6f2c139a75353f946295fcedaf26ffde2814a",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/04_javali.txt",
+      "bytes": 2506,
+      "sha256": "5bd2401c3c723b9245ba9073dee948865dcd9d5b08196627674952ecc23f848d",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/05_espectro.txt",
+      "bytes": 2692,
+      "sha256": "356d28a22418b637891ce3f2f78ab82cbbc1c0bdf0c3a65359c766e009a6e4ab",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/06_saqueador.txt",
+      "bytes": 2633,
+      "sha256": "4b209bc090b4c906099c6acc384d8b0e96d9747743217f8c6bf300a3ad9e5cb6",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/07_sentinela.txt",
+      "bytes": 2664,
+      "sha256": "9770de09db7ae18fcc59f2b9a36c64f27bccbb99f47e3b4a7c2c4992a6053e4f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/08_arconte.txt",
+      "bytes": 2752,
+      "sha256": "d12f9297dc8f43ccf402e5d521d75fc6b4bf37415876206c9528c69009f862a1",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/09_vigia_ossudo.txt",
+      "bytes": 2652,
+      "sha256": "38f6c3e8bcef93968cc8ddb76d832822dd70c799b9d2239bc2df9589322ef574",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/10_hipogrifo_jovem.txt",
+      "bytes": 2669,
+      "sha256": "bee845e4ce843b22de51c80cd1b75962b5883370ccf4e5fb93043ff182aa37e5",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/11_hipogrifo.txt",
+      "bytes": 2729,
+      "sha256": "2a724884c24ca12fcb93f3ec71abae4bf01504ec752ee40b986f0526b6068f22",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/11_hipogrifo_correcao.txt",
+      "bytes": 1047,
+      "sha256": "9392efc693c9a522786b61107bd7f2cb04762e6966d63fadb5a68247555eb1cf",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/12_hipogrifo_marcado.txt",
+      "bytes": 3041,
+      "sha256": "19ddfe61f732b0af7ec8a5b5f2e726416dd7d4af175b43266f9b059cf24f8b43",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/13_hipogrifo_alfa.txt",
+      "bytes": 3150,
+      "sha256": "3c1c0f3d6da69579221746b6580a209a9bc653fe7cd290586d2fac3f04859e1f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/14_mimico_do_bosque.txt",
+      "bytes": 3116,
+      "sha256": "cd96de3bd72ac8df50905cb7c9bb7e5271b92e027a9bfee163e942c601f13577",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/15_mimico_das_ruinas.txt",
+      "bytes": 3148,
+      "sha256": "fb87cbb5ab201e1ea9fe3fb26fd06a362d0107d2346b24c714a17d0e234b4d7a",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/16_mimico_do_porto.txt",
+      "bytes": 2864,
+      "sha256": "911ca202002b3a8813b1fe3e5e7f89a7a57b770440aac125f976d4be4671cefa",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/17_mimico_do_castelo.txt",
+      "bytes": 2832,
+      "sha256": "325692464699d1a5f34ac5198c1f8bd233fc4db80f0d9f9fa0ab10b5a7bd456f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/18_odran.txt",
+      "bytes": 3003,
+      "sha256": "878428261e75beb47654cac055e571ebe9163db12f4345f76e4c44df1ab04d06",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/19_coracao_do_veu.txt",
+      "bytes": 3030,
+      "sha256": "346abf1987c09420af4e42d7b3d9de08b5e027ac5e4d45bdc976410a047f0ab4",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/20_sentinela_coral.txt",
+      "bytes": 2776,
+      "sha256": "280060b62b3b38120b07d4864191c074f1fc7913a21d1aa559ffb62109617400",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/21_arraia_runar.txt",
+      "bytes": 3020,
+      "sha256": "564243463387ec1e8d82294f3653c685e55c39525b2a375fab0e851f8a68304b",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/22_corsario_afogado.txt",
+      "bytes": 2771,
+      "sha256": "1e9849640a484ad82667a0d46c0cf9bf8c673f1dcb4260c3010bc9b646684105",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/22_corsario_afogado_correcao.txt",
+      "bytes": 3511,
+      "sha256": "f116af949481e409b71e5a9bb500e4626729fa867befd5819746576c33057ed0",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/23_oraculo_abissal.txt",
+      "bytes": 2954,
+      "sha256": "b2acc3738a9ab4cdd3171ffcef92779cc0557fd146d8765ea6fd83e6c06b2e5c",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/24_thalvor.txt",
+      "bytes": 3078,
+      "sha256": "938aaa680cf485db84a4907da6a4d08633d5ee932687e75fd090946fd1cd6c6e",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/25_caranguejo_ferreo.txt",
+      "bytes": 2903,
+      "sha256": "37deb3fccf7ab79c532ff51c68104a63be83ff5183fa609cfc44bf67f5919ca0",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/26_mao_de_cinza.txt",
+      "bytes": 2970,
+      "sha256": "34d363e0402a3e1b2cad3388bfd174710762465c1067c8b3381fab8a16a83501",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/27_automato_dourado.txt",
+      "bytes": 2893,
+      "sha256": "339ad65e86219d1b3185ab0c14c5e2e7cbaca36990d0e89e70569a68fcb98753",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/prompts/28_eco_do_veu.txt",
+      "bytes": 3095,
+      "sha256": "a670ce2691f82cd75fbac2b1fb42b8d276cec811b65c2df000a5f30ce4a64970",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/requirements.txt",
+      "bytes": 42,
+      "sha256": "d538ac6c0cbfabc0e95e9f4e026a502d30a60069f2f2026c1e43d5e68b7c8aaf",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/tools/export_effects.py",
+      "bytes": 2090,
+      "sha256": "28bd01def9b378d82afb0313f45880cfa8385b0a11d4953c21857aae705e5a2a",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/tools/export_enemies.py",
+      "bytes": 17529,
+      "sha256": "da43f3bb4e96ad0e9d6b929f06ac8174395fa9da24aef8a786d18e408940b56f",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/tools/test_preview_js.js",
+      "bytes": 1424,
+      "sha256": "b08a19a78654bfb4daa896f5810d67f0647a0db1fbf4f5433c60f31c9def013a",
+      "executable": false
+    },
+    {
+      "path": "assets/enemies-original1/source/tools/validate_assets.py",
+      "bytes": 2861,
+      "sha256": "5c17656eab7b9c843e6f4be09cfd9f5b9c9922a95c613ae43cf451fcdacc494e",
+      "executable": false
+    },
+    {
+      "path": "assets/estradas1/README.md",
+      "bytes": 397,
+      "sha256": "6f609dac2d2af605d820fab09753d969e14831c25f8bb50486cefd0a606ad661",
+      "executable": false
+    },
+    {
+      "path": "assets/estradas1/sprites-originais.zip",
+      "bytes": 105490,
+      "sha256": "472f730fd2de01d6293796b36a98a723b235277f15b1a51367ef55eb6d6c76ac",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/README.md",
+      "bytes": 1610,
+      "sha256": "1d6c7e6b2cd907c8a247c1b61d3921c2f120d70096029bca8b308e04b5a85e47",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/all_effects_512x512.png",
+      "bytes": 49765,
+      "sha256": "3224c3a414e70f17577eaf0cf27ad915e39bd935f57c0e157a01ec2113e42286",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/arcane.png",
+      "bytes": 7025,
+      "sha256": "1d7211c20f397be8480805d3c42b684c30b4f653d2c18248808c8df636a26c99",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/campfire.png",
+      "bytes": 3137,
+      "sha256": "da8021a19dbbb62f6441b5e459139c5357c1e318b284fca2c9c50031e796b883",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/fire_burst.png",
+      "bytes": 5782,
+      "sha256": "c3dda16dae017f5cae218afce9fd70121f703920223f8724b1b5e5c07c5e847c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/frost.png",
+      "bytes": 6781,
+      "sha256": "2fb147b80254f5917bc7b75a031c06e43d8af26dffbde8e62fbe5c068e24c374",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/guard.png",
+      "bytes": 6582,
+      "sha256": "a2e4dbcc113ee8914ad65e88916478ca5b63ee6889ecd9dd302895f29b719a77",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/healing.png",
+      "bytes": 9603,
+      "sha256": "9978fa7f20f6f5411c6d598b1d64a620b3a48b86871d8a4718e27785eeef35b4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/lightning.png",
+      "bytes": 5854,
+      "sha256": "b34e42bffe4594140d2397f98e79106e945bbcb33f5d2738a95074cfe29a8b22",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/atlases/slash.png",
+      "bytes": 4482,
+      "sha256": "901db69e13b70a3b25efef5adba7d1b1ebe9a7a0ee27b31d526c48bf65cfeed5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/check_library.py",
+      "bytes": 866,
+      "sha256": "5680e4ca909bf4bc18898ac78eea9cc6b8b4972a5b62e4eceae228429b4a9345",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/00.png",
+      "bytes": 935,
+      "sha256": "2c92cd7bd952e92282ae0eb2caee33dcbdf488462bd6d93027b065b590d83156",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/01.png",
+      "bytes": 1063,
+      "sha256": "2d9a7f9cdf26410eb921a19b2276b41ad64994c577c77a54927255487f63e8e3",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/02.png",
+      "bytes": 1117,
+      "sha256": "3798a53ca6c5a13357d04f05453211d21c4f18458ed87c48c345895f15b8fb5b",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/03.png",
+      "bytes": 1170,
+      "sha256": "bc8bd6500b5df2859accd09d47201a452ed88ff4a1839de5b499ae339a4b5425",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/04.png",
+      "bytes": 1196,
+      "sha256": "c9b49412ad6793568a03efe285fd0d24d093d7b862555b47ecc48f8fcbd8e20a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/05.png",
+      "bytes": 1151,
+      "sha256": "4ae8c60db9545ff33b08fccd269df5390a0d2b3242d25a5ba24244c260e45d3d",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/06.png",
+      "bytes": 1083,
+      "sha256": "3d4f39e52ade96f8c906877ab8f83af8dc6931a0922293b254a28165637541f0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/arcane/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/00.png",
+      "bytes": 1135,
+      "sha256": "a0048e914906ba616b6197bc68f1481eed9171ccbfd9cc033bae028217ca6ee5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/01.png",
+      "bytes": 1152,
+      "sha256": "90f8fd83f0acac84f73636bdac2be18c54ae7f9984a7f3363d0263923e7e4fd6",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/02.png",
+      "bytes": 1167,
+      "sha256": "b628ddeac78ca063cb3b5d0d91a58c4d6ebf2383f87a6a010d7c8c646a42615c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/03.png",
+      "bytes": 1187,
+      "sha256": "9c085424827b5ce2e4fafe15dc4d63dc569dbe3e7e8cbe5113b8bd1d0856e51f",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/04.png",
+      "bytes": 1146,
+      "sha256": "9eccd8047f8bb30ee8441da7cf943ef6aa532aed8725cda0886acce42f0c7998",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/05.png",
+      "bytes": 1156,
+      "sha256": "297bff7c35fa55b766f7b88d96ed176ac55f723ac5a32552eb65403bffa5ea83",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/06.png",
+      "bytes": 1143,
+      "sha256": "ce904f10195fd2b4d5f52e2dd5229c1cf67d131624190baa28b6a496196ee404",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/campfire/07.png",
+      "bytes": 1158,
+      "sha256": "6e9dfeb87d92b103025b7fad0eaf5bc4fba5e95ecb4b1d660ddbdb8965f357ea",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/00.png",
+      "bytes": 449,
+      "sha256": "93969a84b2474b8c0a143d794ed820546c1fc76b821f277ed346b7118c6f4e17",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/01.png",
+      "bytes": 747,
+      "sha256": "4abb018a65ee4870cd0ee4074cf57f46be1a42dabbc19e1215e96d32b2a17aeb",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/02.png",
+      "bytes": 958,
+      "sha256": "91840ef28e87bfb176293313beb32f074bcd5d09b671749ccefdc9424e6c0d60",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/03.png",
+      "bytes": 1061,
+      "sha256": "a3242679c606d6f9500b8fe663cdf723ccd4b94253891ec9e8313e645d7b4e0f",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/04.png",
+      "bytes": 1055,
+      "sha256": "7d413761f26c2c99c9d9a883e97c9643b21184441dde1526d18b2e3c522a5988",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/05.png",
+      "bytes": 1169,
+      "sha256": "32739c06c512c6b15bbce389bd1a686d8f4eeafc4a03217bad960695fe257d9a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/06.png",
+      "bytes": 942,
+      "sha256": "02411ec3b818a7a4ad532c6fd33d70897746adff945b3c2a56acf1e41e7accfc",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/fire_burst/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/00.png",
+      "bytes": 968,
+      "sha256": "174e260ebdfc94389d96da7c05d6eaa64fd38d101a183577df146362cd6c0c15",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/01.png",
+      "bytes": 1105,
+      "sha256": "a31dc08f601d74e214bb142d726f1b1cda198728ad3ec33162c11a17e73b0c3a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/02.png",
+      "bytes": 1179,
+      "sha256": "f59fdf86eb5fcc58c023a14ba5934c8560c6625928ab7d7414301da148552d46",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/03.png",
+      "bytes": 1275,
+      "sha256": "d5f57a80ee4b4c3fa118e6104ec02353be629d371c57dab34dcaf7911e4f7dc8",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/04.png",
+      "bytes": 1258,
+      "sha256": "c984e89034e72ce32fdc2baebe50337261d7ea36ba5e1b85d99a28bd9defcbc2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/05.png",
+      "bytes": 1295,
+      "sha256": "61317dfd1b1917e70d497926b5f456487e38ad32bec7d936f1ce8f25f33c95fb",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/06.png",
+      "bytes": 1195,
+      "sha256": "cd3fce79cdd190458f3db6d59962df0005bf16a1400f43d53e02158f1bf492b9",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/frost/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/00.png",
+      "bytes": 1136,
+      "sha256": "1766b8b0a944936887e5f03c54515321a38958258aea06f462514104e2e5d78b",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/01.png",
+      "bytes": 1200,
+      "sha256": "08855e9405c267ffc60636870066cd463d652e19634f95e7c72eea95d5fb9daa",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/02.png",
+      "bytes": 1145,
+      "sha256": "8d9b9d7ddacd758b2c8b6c3df7ac8b19bcea76f8cc922a088d41f55e6ce92a40",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/03.png",
+      "bytes": 1174,
+      "sha256": "de9ea23c98820cbf5b9092e3ec5badd319160e476478dec4fbd15b53565ed580",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/04.png",
+      "bytes": 1170,
+      "sha256": "2804b815028b3223607d26ff322c2959a2da31cc5e5ba9ad040fddc63a186113",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/05.png",
+      "bytes": 1175,
+      "sha256": "350a7a4d3ec3ec95c1b49b0ed89a7e07a57362eb97212fcab90a54388b5a403c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/06.png",
+      "bytes": 1167,
+      "sha256": "70dd920e7ab411675fe00a695557bcca1bcd96f215046a4d268e4ab8bc83fe56",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/guard/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/00.png",
+      "bytes": 1162,
+      "sha256": "1a9f5d140fe163607b93e557f1fbaba0755d803f3fb46ff3707967ab050c05da",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/01.png",
+      "bytes": 1383,
+      "sha256": "52a93a7d39c28206e6825dfca6790f9e8bdfd01f44eb391edbcaf518170fc58c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/02.png",
+      "bytes": 1444,
+      "sha256": "94ea797fa5e376a4d9827d72427eb8fcec7f7bc25204b220b912f400251cec93",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/03.png",
+      "bytes": 1549,
+      "sha256": "bb0688bd8460c72675b08e69ec99f22ce5e92abf4b60b77d310fdba690b03744",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/04.png",
+      "bytes": 1527,
+      "sha256": "695c9c4973063ac73c04294261d209b007e68fd01fd3de94294394a41a7425d5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/05.png",
+      "bytes": 1570,
+      "sha256": "c79969f285229e14a08606104dd67f0cce62a03b19fd712086378d798016534e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/06.png",
+      "bytes": 1670,
+      "sha256": "b97372aa880f1bc9c4b9e08e17bcd7d6f6d6d1c573dd6d69e20c869d394c537e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/healing/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/00.png",
+      "bytes": 649,
+      "sha256": "98703fadf39fe97ccdb26ea3c9a3fe259da133989263207ded70f11efa76322a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/01.png",
+      "bytes": 919,
+      "sha256": "8a29b9e0c4a633a27ffd9a487b32c790eb46f7cd6c4977cff64770063b0e495a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/02.png",
+      "bytes": 1464,
+      "sha256": "66874f1a73478fb15e6751ad5348141418d70a5271a8b1ceedafa8e6b3323d29",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/03.png",
+      "bytes": 1490,
+      "sha256": "fcb050f5d22fc6a5e6cccd2830a716a1afa200f2fe21f1712da5e5363483e135",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/04.png",
+      "bytes": 1488,
+      "sha256": "0cb0383edca3c72f100f9e19fb1f89611273704fd8e40a404a537c4f6c933667",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/05.png",
+      "bytes": 1491,
+      "sha256": "2f4d34c2b6c42cce3920834cc3bf9ec63e24d63506f2fb4be78bf8aab6613baf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/06.png",
+      "bytes": 1494,
+      "sha256": "ce2da7c27d08c3179fc67cab81d87705af5ee1f095e2c89972422a8be9ccadcf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/lightning/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/00.png",
+      "bytes": 661,
+      "sha256": "aba7d2665ecec410dbecd671110c1d4aa0569f1daa38e1b9ecec5e6fd4d39a96",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/01.png",
+      "bytes": 783,
+      "sha256": "c82a58647e994415aec7a0748e30fefcbae2b93005ffa72837e0a4514a779383",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/02.png",
+      "bytes": 911,
+      "sha256": "09171918444f426048cbb1bb0c5ce6d017927afd4a32811cb97bff7fb52e140a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/03.png",
+      "bytes": 925,
+      "sha256": "aacf0f5e833688ae79a5fd2e10195c74f42f2fa814547e923806392176627562",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/04.png",
+      "bytes": 891,
+      "sha256": "e319c70d2dd11392d496787402f783c74f19464778ace9c95951caffdb2fbd13",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/05.png",
+      "bytes": 854,
+      "sha256": "a834810be485115cf3faecb4abd96d1fcf279c63b08268e8818248380440fab2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/06.png",
+      "bytes": 828,
+      "sha256": "1f90b47bda4b3bb07ed084fd37ad3ebf1ca1b6d2d0c4f959689a3f8ccb8994c1",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/frames/slash/07.png",
+      "bytes": 96,
+      "sha256": "8d447892b6efbc450beab391a7003090694cfcd0014d20766150112cab1675a0",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/manifest.json",
+      "bytes": 34129,
+      "sha256": "5cb3aa038009a433b8f0b1b8208090a9dbe15d4ee8a364feb7f6896864f24486",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/00.png",
+      "bytes": 361,
+      "sha256": "550e279028b714513267dabbc53d8b793824c86be91a8cfecc07c0a30e6b9978",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/01.png",
+      "bytes": 479,
+      "sha256": "a9a795d5c622aa9c55df79281c539ff80f86b02bdaa60c7388b03d1e7929e280",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/02.png",
+      "bytes": 598,
+      "sha256": "47e00d5ea424f35ae8ec7ad04735d960562dca33c8a9f7dc3ad869e2131d88d2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/03.png",
+      "bytes": 687,
+      "sha256": "b88373e44f764bc28aa6f612f2a69acb30d10cba63376fe24ebc85207d9704ee",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/04.png",
+      "bytes": 700,
+      "sha256": "f47a0927027e6ae737657b0097efe7390389b9ef61eb097b340306b8df423449",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/05.png",
+      "bytes": 667,
+      "sha256": "c2a961cfa5b8677489e8764001eaea399d4af9b38adaa891d7c27081224ed3b8",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/06.png",
+      "bytes": 605,
+      "sha256": "4033b61aab68ea6035167d5c4ab89a663bef51ff34f7b435b2ecb6a5f5bb2301",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/07.png",
+      "bytes": 83,
+      "sha256": "b0775cba09eadf2fde241b35daa28cdcd03af6d23e99e0decd32b42f13f6d220",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/atlas.png",
+      "bytes": 2935,
+      "sha256": "1d37c4438b5a8603508063a2f175bf07877958364e29f517e1a9fa23b73dbce4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/arcane/metadata.json",
+      "bytes": 3352,
+      "sha256": "bd0e44d3c02456c5751f102063d944b412104e85905ee9b575fa3ebecc95b15c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/00.png",
+      "bytes": 624,
+      "sha256": "adcef3e1f6e036117c27af4ea07e7d2bf076aa586f11c4345c98d309aa5c958f",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/01.png",
+      "bytes": 616,
+      "sha256": "95d4788a3146e86c9d5f4d2458d87516591cedceb6592ed773af36241fe1b697",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/02.png",
+      "bytes": 625,
+      "sha256": "58c5a04045e34b1e6175cbc771d7fd2593ae18e70366751baac1fdefac96204a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/03.png",
+      "bytes": 605,
+      "sha256": "915ab25fdaf0f089931f14127d4f09d0f647d509bf2a3cf63bc29ded1e15d890",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/04.png",
+      "bytes": 624,
+      "sha256": "d4b44c20a89f61f112b779bfa3978feb657f89b659a32ea3ef0ccc145810963b",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/05.png",
+      "bytes": 607,
+      "sha256": "86c9b3307b8d04b4a2bfec6a4378e2b558934a9e10623cf4319599f08f16c39a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/06.png",
+      "bytes": 604,
+      "sha256": "9036530d2577cf41757fb2de43418a542dedc8376b3020cf7b84601841180800",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/07.png",
+      "bytes": 613,
+      "sha256": "478684984a436b3813694c462caf3f2ff0e301f2a34615cb84fbffa46b577d76",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/atlas.png",
+      "bytes": 1683,
+      "sha256": "3645a0a225c1e106cd4c9417e8940293376a29343bf92689226cc2a9ea9ee4df",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/campfire/metadata.json",
+      "bytes": 3419,
+      "sha256": "7b8a3e8e108fb1b84f946315bd4e55d4ce873c8da28a5e2bb03f76718d47603e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/00.png",
+      "bytes": 451,
+      "sha256": "7d430a6bc285578b3272bd4cb9d6b186c0c95cc83c5be53fa2a892ac8e2460b7",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/01.png",
+      "bytes": 586,
+      "sha256": "4945dbcd5a1ca566947da0f7665f5b579efeaad79134980b0d577ee5ba095827",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/02.png",
+      "bytes": 736,
+      "sha256": "ec50641cd58252932f24cb3f7ec270c796e0ac11a3ec42cbbb784a1266cbf9e5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/03.png",
+      "bytes": 859,
+      "sha256": "d1c8efd8983537a976efe7a298446bf2cae47664a6cea5ff06c5440202e6e411",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/04.png",
+      "bytes": 863,
+      "sha256": "f8457024e356b41f840aad506c5e9a2e2e69bfbd2f71d73faf861702906d14f1",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/05.png",
+      "bytes": 861,
+      "sha256": "17f9557dc21774d42d0bb114dfb6be253ed28637563f54796cdbb0dc8f0d2ae6",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/06.png",
+      "bytes": 838,
+      "sha256": "2aa3f9501117b24da741db07a0ae65866f257efbdab9b3af55229201063a1c0d",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/07.png",
+      "bytes": 83,
+      "sha256": "b0775cba09eadf2fde241b35daa28cdcd03af6d23e99e0decd32b42f13f6d220",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/atlas.png",
+      "bytes": 4043,
+      "sha256": "8384b69e2a2d8598c901505d34a8cd2017e0f3e304ac2068925038c56677d30c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/healing/metadata.json",
+      "bytes": 3363,
+      "sha256": "36b47c3f76a1f12031ac1c424e4c58197c7d70d5e61056277e78e5e6cc5f73df",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/map32/manifest.json",
+      "bytes": 12322,
+      "sha256": "693f871708d6f74775b8548b955c8b027351c027b9a56a863dab37c6082c5cb9",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/arcane.json",
+      "bytes": 3467,
+      "sha256": "4be201ea3781539c3684607d70876820b385147b808e7a5ca0fb818eecee43eb",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/campfire.json",
+      "bytes": 3518,
+      "sha256": "2ae54d5f21414de07fd4e9b560fb3c8ce2743b18bb965f2fb303242f224b74af",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/fire_burst.json",
+      "bytes": 3500,
+      "sha256": "cb7b31b193bd8ead81c486c0bc218f10471918014fd211c8a9fbe2628587d4b8",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/frost.json",
+      "bytes": 3443,
+      "sha256": "cff78741a28dc69649da6f0f6f33c6cb8fd351a575fbf4af2c9bc5f051e3e507",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/guard.json",
+      "bytes": 3463,
+      "sha256": "9151a153e8805e281a65231ebfc2a708f6455f4e23d89a8d5ccc9a5023690537",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/healing.json",
+      "bytes": 3458,
+      "sha256": "abfe06fbaccd31a41437b7f1e8d2d4f7d848cbadd65246f813e683408884beaf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/lightning.json",
+      "bytes": 3490,
+      "sha256": "d9f8f76818192da38bd82f62b3cfbcc30ef5d4e7a874975029dbf3c81853fa98",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/metadata/slash.json",
+      "bytes": 3434,
+      "sha256": "6b8ad896f778d811cfdb1c8c65681aed6cfe5bd2e789370fb35c80d37c1e2808",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/source/generate_effects.py",
+      "bytes": 19350,
+      "sha256": "474090152e986f8a143f91f2bc85e5a496081f2f292ee67ba6ee23c4192743b4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/source/generate_map_variants.py",
+      "bytes": 4209,
+      "sha256": "6564ec31fad926ed524761b29722198c49dede07f40833a360c50995bd15750f",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/source/requirements.txt",
+      "bytes": 16,
+      "sha256": "d04e560e63cd11f6dc1ecb501e58ff0a564896874d3e26b40c5fd65242fc7e3b",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/effects01/source/validate_effects.py",
+      "bytes": 4958,
+      "sha256": "b2dd354984b5c3e9f357741605ca1093220f73a27c3adaabb72c6e708b370ebd",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/README.md",
+      "bytes": 6118,
+      "sha256": "49dfb9e6002247f1c1c9ed8e99ec0cb225f58c868563cbff3c795a8df467204c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/atlases/equipment_camp_32.json",
+      "bytes": 10491,
+      "sha256": "9b881b7e2169f8ca2b43a00eeb44a67ee17218f0cd1bec24ea40169ad13084c3",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/atlases/equipment_camp_32.png",
+      "bytes": 28934,
+      "sha256": "6078c343e5745f2b78aa204e0978087afd0f50428513fc273d4bd113ba62f472",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/atlases/equipment_camp_48.json",
+      "bytes": 10501,
+      "sha256": "8019da76b0618e6b8610a9275801e11a2abec1c42fea6e2e4c49ef321ff6bed1",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/atlases/equipment_camp_48.png",
+      "bytes": 65577,
+      "sha256": "c7a373f48d167176832681a01fbef8ea72544581e0186464274182f7c0a3d514",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/check_library.py",
+      "bytes": 1507,
+      "sha256": "b78bd1376296712ff64253a6613f885e38586522f28049e5bd3e3efbff11343a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/manifest.json",
+      "bytes": 23680,
+      "sha256": "b710509d3a06b6c68bb6c9c202aa00b65d6113a050e7f3324cb96d01d9b52d44",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/backpack_24x24.png",
+      "bytes": 1092,
+      "sha256": "9d77d3ca2a1c1aecc463fa6f60043526825514b4b12bc99a2971db8a1281df23",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/bedroll_24x24.png",
+      "bytes": 927,
+      "sha256": "13060f2c29a7fdf14c3aca03fbe081a3142b9a5f79d532763e4de2e34e3daaa2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/cooking_tripod_24x24.png",
+      "bytes": 674,
+      "sha256": "b0f6e046a48f90d1a2f50dc698045e13c923d2b44b67e5254ed61e62bb9530cc",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/firewood_24x24.png",
+      "bytes": 988,
+      "sha256": "9227de197b9cf793d28d006ee36cf5e27e82cfe1158ec2a69b06583b6479bbf8",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/lantern_24x24.png",
+      "bytes": 726,
+      "sha256": "78f94d0fd29116f137dfa1814fe5e5594b8f6f9b682749d8f65dee8b4f5ff891",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/tent_canvas_23x16.png",
+      "bytes": 656,
+      "sha256": "f90e47fc23a9ef293db1f9d0d2e20a8429885752903acbe5deb64cf02d1d5c41",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/tent_canvas_24x24.png",
+      "bytes": 786,
+      "sha256": "20c45e10a65da54f46fad74e0191d43550c338792b9e76f3f876f0d6e7336917",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/map/tent_canvas_27x20.png",
+      "bytes": 964,
+      "sha256": "840c5c616a2c8a792440775ab0ba34e8d6cf3d4bbb03ae8d0b03b8c6a370587c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/backpack.png",
+      "bytes": 1730,
+      "sha256": "1cc34c202d54e14037507d865873a59fba1c5a94ec5c62197d1f0a27296dae69",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/bandage_kit.png",
+      "bytes": 1827,
+      "sha256": "7fde1e135dcc2422f1474d0dd642fb21213bb12adaf56a9b3f056b673e922f97",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/bedroll.png",
+      "bytes": 1374,
+      "sha256": "fbb4b084634ef260be7e494cf8e076b782fece1f141016d1353309233d219abf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/compass.png",
+      "bytes": 1331,
+      "sha256": "2a532ec3a74a7e1c41ec39d61ea44a915c8f4acf6b69725e0d214944c16356ae",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/cooking_pot.png",
+      "bytes": 1320,
+      "sha256": "b5dfe05586851f75cbd7afa13bf87f8572b9cd29efc37f4896e608ece19b8211",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/cooking_tripod.png",
+      "bytes": 991,
+      "sha256": "ef0d8e1df6639d1cf227431966ed44572f371828aa4202900d1e42dd08a5dc54",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/firewood.png",
+      "bytes": 1488,
+      "sha256": "10e79dee562fb953b9bd216980659b54531d1bcd945303e1b89a1eb53bffd72d",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/iron_axe.png",
+      "bytes": 895,
+      "sha256": "f5b49065f7bf5fb0604655bc1a65f8556b4865bc55e8ea2069ee54521f61abc7",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/iron_spear.png",
+      "bytes": 456,
+      "sha256": "47f106d7b9204dfb04addbff648796bc9e6372ff0c4848c31ecc10af8cc99707",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/iron_sword.png",
+      "bytes": 731,
+      "sha256": "7bad3f7872681a371f4c51523eca1d45d1c754e4c57126226d4d4faba23c1d0e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/lantern.png",
+      "bytes": 1037,
+      "sha256": "9ec2c1114a3f508a5b9f4ed7782729b3662bf7fbab5197ea04daca77a1751176",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/leather_armor.png",
+      "bytes": 1494,
+      "sha256": "5c415dcb67de98c04f4a2c5c1680eda56215b6ebf8a8459b83894384df969770",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/map.png",
+      "bytes": 1579,
+      "sha256": "bcf81904c58ddf2a9506554339316e3ad32a5513f694a94bb67d5fed6e595ba5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/metal_scrap.png",
+      "bytes": 1889,
+      "sha256": "949e489289c982a659dab90406cddd06713a26fcaaad3fa40597cf07cb08472c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/oak_staff.png",
+      "bytes": 627,
+      "sha256": "c6b7cc00b4af353f138096ea675e49c03ce5e02e7838f1f649e7493ece9f0467",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/ration_bundle.png",
+      "bytes": 1843,
+      "sha256": "31086efc7ac10c85e2a1d826495a364b1f4d1cdc6bebb340dd829b8afbbd2caf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/repair_kit.png",
+      "bytes": 1484,
+      "sha256": "4ef40ccacee32c88b2d255efd7f58c68c3d9a68bffa8f8885da0cc2b7f708cb4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/rope.png",
+      "bytes": 2112,
+      "sha256": "17783c7d23e092928a93320d6af49a5c798e9249522245e3497c685b08e1de4a",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/simple_amulet.png",
+      "bytes": 983,
+      "sha256": "528c01ca2cab662703af68a15c577049c367be3c2e95c97a985f1858747d75f3",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/sleeping_bag.png",
+      "bytes": 1360,
+      "sha256": "2dc35de2c437cb57c7a1eb7ab7709f258268d97ee3554516230c3c8305f99b68",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/tent_canvas.png",
+      "bytes": 1146,
+      "sha256": "4cce41bd02d19748eeef271e3d0fafe941530152bec8ccf3c6cb56d1121b71e2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/torch.png",
+      "bytes": 619,
+      "sha256": "9487588977558dc54d1e07f44b74708bae1eace6f0b07c71522202777c2ee078",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/waterskin.png",
+      "bytes": 1378,
+      "sha256": "0f4bf5daa556d99510085eb0b721b345b2ef6766a3f388dfae1eb6ddbf1d1804",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png32/wooden_shield.png",
+      "bytes": 1577,
+      "sha256": "2e49c524f5e95a6175c50cddff134eabecb21e8784c654eca0271de9dc20c832",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/backpack.png",
+      "bytes": 3863,
+      "sha256": "75a8df1fcc9a172a87032e1eadf9d3005fa0ce98f0b2dfde01da64cc2666eee2",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/bandage_kit.png",
+      "bytes": 4003,
+      "sha256": "496c4dd96bb03d9ad20342917ff5da56ffb9f68e191e13248b878ee9fa9bd0ee",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/bedroll.png",
+      "bytes": 3021,
+      "sha256": "1ccd2b97736f00ac23f1b6cf2375ce6b74ea70d02f05d150c68b584466201d2b",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/compass.png",
+      "bytes": 2787,
+      "sha256": "0b7c5ae64c9ee4a66d07183ebb946bf97e7ab55a9c63f184aad27780442ecb89",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/cooking_pot.png",
+      "bytes": 2775,
+      "sha256": "a35385f24adda01434f9ebf877eca7a355e4d0af3918ddd00919e5a6eac2c053",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/cooking_tripod.png",
+      "bytes": 2032,
+      "sha256": "172f8a64194bfeb939c30ede4251c6d16e781970bbe088e29c6748c8bdbe50bf",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/firewood.png",
+      "bytes": 3292,
+      "sha256": "5d1ea52846c9b80a3f6a95485f64f52905b7eb50632471788b5c3ec4d5f22fc5",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/iron_axe.png",
+      "bytes": 1752,
+      "sha256": "a1b667a0c827fc9130019fa8e48f7bb7e87ee4bc67dce4d59b599283e40d3ae4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/iron_spear.png",
+      "bytes": 980,
+      "sha256": "afeb1da5945e0c04524d8842dcc0f4db9b8c51dc60a46612dc0db4c85ee12e34",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/iron_sword.png",
+      "bytes": 1350,
+      "sha256": "15653102bc1164db38270d67f8a2bda7c64ca31d3c6ea3ed75401eda9d98e675",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/lantern.png",
+      "bytes": 2242,
+      "sha256": "202e05e580142542d1acead5a23374e267e237e5b62507230bfe07d9db8f4b27",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/leather_armor.png",
+      "bytes": 3331,
+      "sha256": "247dbd9a64c2e7dee4b8c6fa942eb822ae632d5442cd59f81dcbec7c5e31515e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/map.png",
+      "bytes": 3504,
+      "sha256": "2e5a3af27c1d57074206896bcec07e3ee5e7e8055dc813780c3fd3f704458e5e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/metal_scrap.png",
+      "bytes": 4167,
+      "sha256": "f929c955a93efaf14b3499ae16e3ea805df70fe0292c0288fc3d79c5823945cc",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/oak_staff.png",
+      "bytes": 1282,
+      "sha256": "20a77ef26a5995b33b15965f112871f3b024dca63e8a9303a269b40334b81659",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/ration_bundle.png",
+      "bytes": 4010,
+      "sha256": "e2c67056ff573639aa51bb5e60046e541ff0e8f5bc5db9ae12d177afaa3e6063",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/repair_kit.png",
+      "bytes": 3252,
+      "sha256": "7bf965a252a91439f10607fee300b34e2b8228b5afb3133ea7358bd8c1abe5a4",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/rope.png",
+      "bytes": 4644,
+      "sha256": "0cb31eb54809c9dc5b48c811d370adc54de325e45110fa6ef3c8eae891c41925",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/simple_amulet.png",
+      "bytes": 1919,
+      "sha256": "0ba6c0f14405468e394a86579c028af569dd38f6aa054da8647472085525e5ee",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/sleeping_bag.png",
+      "bytes": 2866,
+      "sha256": "d05f3af6ffc576208b73655e3d48206f39bf2827fbd67873ed7c7c0d793ed370",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/tent_canvas.png",
+      "bytes": 2466,
+      "sha256": "a8fc02ff3b3a082d0c038b22379e58a0120f5b52d041a51b519e4dd0de77977e",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/torch.png",
+      "bytes": 1207,
+      "sha256": "68fed5b4e0a337936b288072def3a80051703371d5b0c9636d388e0b267835fe",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/waterskin.png",
+      "bytes": 2840,
+      "sha256": "15c562a7e6573cfcec3cd79b162c67fdf9dd03216a92c21c84850e21549c2ad9",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/png48/wooden_shield.png",
+      "bytes": 3367,
+      "sha256": "596812fe6bbcde934d28a5997dd80f8247aa893a6fadc14ebc2661beed8a794c",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/backpack.png",
+      "bytes": 5849,
+      "sha256": "7764a4d2fcf3d2eb89cf1ba22b825936d0893865d49c711d906826412cfcbb05",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/bedroll.png",
+      "bytes": 3872,
+      "sha256": "0afed6e2561c44ca8e042e42a8d55bd3f71b7ca26c0682c952f3d028c4f25a02",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/cooking_pot.png",
+      "bytes": 3342,
+      "sha256": "c499de0ca22b84f7afcccae09ae829a62c90f97bea8ee648045762bc9eafa846",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/cooking_tripod.png",
+      "bytes": 5137,
+      "sha256": "b4ded72a0299a825fb957fa734607526b7957dcc6a3afb11d6f746197e1cf3c3",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/firewood.png",
+      "bytes": 3128,
+      "sha256": "a28bc6b3da54b864a2d66fd4d3364b11dc49a82560e058f105b5ed83c0e89b53",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/lantern.png",
+      "bytes": 3513,
+      "sha256": "f3f062ec3da56d8fad0cd0ba8d362d219d8560521160e51d757b309485ff1a53",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/sleeping_bag.png",
+      "bytes": 4450,
+      "sha256": "6448cc89fbf1ac3455372a4baca1699403293a228756bce0e3e5ae17fc36c623",
+      "executable": false
+    },
+    {
+      "path": "assets/reusable/equipment01/props/tent_canvas.png",
+      "bytes": 8573,
+      "sha256": "44655ba74a00a919c81e1c848958154156d51948143473995a3a8873218952a6",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/prompt.txt",
+      "bytes": 2139,
+      "sha256": "feecd4155e34e3a32d86d78027efce83c5f7ff221d46f9a798149299d5195448",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/provenance.json",
+      "bytes": 1246,
+      "sha256": "301e8fd414b33f957ffaeeb54a670b3941bbefbbbab2c2bfbf47c6d67841e6e3",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ruins-city-240x320.png",
+      "bytes": 173778,
+      "sha256": "266f6503cdc78e0f63ff06077e253c7c353a25d244e36905813cc738a440437f",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ruins-city-generated.png.gz",
+      "bytes": 3097247,
+      "sha256": "ebbbde49ee0584f7fd16842c6eaa714078f674925ad56cbe045ed2d71b6e630a",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-bag.png",
+      "bytes": 1610,
+      "sha256": "72f8b49f96a9fda238d84bf12f8a0e9fd0593fede9bf1cc07cd885da8c91ec08",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-camp.png",
+      "bytes": 1463,
+      "sha256": "2faf3d2641067f6599ef5a74cbd8ee9f833cf6b9b76bd60690a738aba530e0bc",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-explore.png",
+      "bytes": 1753,
+      "sha256": "4f2887867a7baafa0630d6a380c5d04dd4cdabeda72d133531994cac64d74698",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-frame.png",
+      "bytes": 1204,
+      "sha256": "cbd4c373a124d4bada696ea8790a0826c1a86136cc65160535de141119bc4733",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-guardian.png",
+      "bytes": 1808,
+      "sha256": "c47716a782d63a99459dd651705fb206d3079be780914678a48f959255edb8ae",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-iria.png",
+      "bytes": 1445,
+      "sha256": "2601242956d346924e3226547bc05ea3e8f753e84331fe8a1d613a58112f2320",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-map.png",
+      "bytes": 1649,
+      "sha256": "7e51233ec336b83dbb2f23fc4e32e3bff7f115322ab3636e19e9ad1bd6045bec",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-shop.png",
+      "bytes": 1601,
+      "sha256": "9a3aa4314376f2bd4a7514ac965866356c1b5de5ea3d20e8d1f5ed9341391504",
+      "executable": false
+    },
+    {
+      "path": "assets/ruins7/ui-title.png",
+      "bytes": 21351,
+      "sha256": "0438aee4374d1ffbcfeff96f552c3aff52e6a9e1fb9079cac18b818abd4349d0",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/aurora.idx8.gz.b64",
+      "bytes": 86969,
+      "sha256": "eead0b636522e7dc61017453b8c0120a7a9c029e0a960ac17a9fcba9c91cef6c",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/defeat-escort.idx8.gz.b64",
+      "bytes": 84765,
+      "sha256": "19c1f611b390c57ed7c57ded40e01bf000604a93f30ec7c972cfb5b6ed4c377f",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/defeat-solo.idx8.gz.b64",
+      "bytes": 87361,
+      "sha256": "c079d7a39023f508e6f7f2f3c7faee0830c31e7e40b6b99cda0cc4f481497969",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-barbarian.bin.gz.b64",
+      "bytes": 7153,
+      "sha256": "dc2bbc03211fd71649fd8d778ab995b42434073b039d61eb82509c5298ecdf0a",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-base.bin.gz.b64",
+      "bytes": 8637,
+      "sha256": "fef000d4df6f57e4fb9b875b808503cc78b22d2915d1c99ab859382482d6d974",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-dwarf.bin.gz.b64",
+      "bytes": 2381,
+      "sha256": "17b1d7bbce3114fffa365f20c54f22c7054b7af6cabf05c053fd22cb2506efe3",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-elf.bin.gz.b64",
+      "bytes": 2873,
+      "sha256": "e0c98739ad3515c345a558145c78002a081f5db2136bb0be48c149b6d6d07f85",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-fighter.bin.gz.b64",
+      "bytes": 7541,
+      "sha256": "5d03ca4c33fb570a7c0a3031bd396209f7bc9ec02dea8d3253e95c7619d51100",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-human.bin.gz.b64",
+      "bytes": 2761,
+      "sha256": "678589eedbc59c9b5539bf8b595d85f5826364e09db1f4190cf13d2e3f4be60a",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-mage.bin.gz.b64",
+      "bytes": 5549,
+      "sha256": "593057b77a30bc859bc8aade19e497f3ecca08ed71542c859983ec6667bb6955",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-orc.bin.gz.b64",
+      "bytes": 2069,
+      "sha256": "cfd7073b75e86106dd4716f34e26062c1f530b94b0b52d94d67a57e01ef30154",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/fallen-paladin.bin.gz.b64",
+      "bytes": 8745,
+      "sha256": "05dd468b1be7b93d549ce617ae9d6e10387e81664cf60ddcd2fa16625f45b72c",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/integration_manifest.json",
+      "bytes": 3809,
+      "sha256": "0dde49ca60efc43e5cdd09c2726d708ddd2810692a2822a68b9550645f6aacef",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/levelup.idx8.gz.b64",
+      "bytes": 86737,
+      "sha256": "bdfe65ebc17075fa0e1f0a7fe35d8b5e1be9dfd79a5566c098706ff7c73de4da",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/mares.idx8.gz.b64",
+      "bytes": 83425,
+      "sha256": "bfa6a27f5b130c1a7fc66a0b19e11185e622d7b31522e6d5775ee98a14f90359",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/preparar-viagem.idx8.gz.b64",
+      "bytes": 67085,
+      "sha256": "720180ac14c34925b5ca1e5d98c42d528d064c04e194d3ead42b3a4266b9c181",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/provenance.json",
+      "bytes": 14584,
+      "sha256": "672201376dbd0449e6aaa9bdc8871606ce06332edd8a6bf78e6c068d276e12d1",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/aurora.png",
+      "bytes": 134644,
+      "sha256": "0b1c913ec9af54722e0b7e47ceba6ab96ba06f43072b48235f6275fc8f596a7d",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/defeat-escort.png",
+      "bytes": 177163,
+      "sha256": "fbdced11a67a99a82034157bb0f0d69b3a087440e3d66b89650129be3e4ad66b",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/defeat-solo.png",
+      "bytes": 182049,
+      "sha256": "fc16cbb1aab97e2ca2ba4c9328ff528f7d22ae41af8890a7c40617b5bc72ba4f",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/levelup.png",
+      "bytes": 128514,
+      "sha256": "0a985f0e0b34baca791bb34be57935c363db0b514f0000a4f51a6ff34ecdbee1",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/mares.png",
+      "bytes": 132961,
+      "sha256": "d39d25b9e532e5fa3e43c61867eaefbdc7da590b6c5b20b21cb1f40af694e4be",
+      "executable": false
+    },
+    {
+      "path": "assets/scenes1/source/preparar-viagem.png",
+      "bytes": 90092,
+      "sha256": "9ef4eeddf329eb4be427f5af14ddefea5afa15aaaa0b3f0551723ec7523ce217",
+      "executable": false
+    },
+    {
+      "path": "assets/titulo1/logo-original.png",
+      "bytes": 1106159,
+      "sha256": "a983abe8098f9aae7469c59a73cca0e7d87262b87441543e7a432259b657af70",
+      "executable": false
+    },
+    {
+      "path": "assets/titulo1/proveniencia.json",
+      "bytes": 518,
+      "sha256": "d8dc755b4fee55deb77bc3adc815d79749d4fa2a3c5f86a89c9488ee01ae3bc6",
+      "executable": false
+    },
+    {
+      "path": "assets/titulo1/titulo-original.png",
+      "bytes": 2589755,
+      "sha256": "0626a34a614b1d52a8fd9b83bee83956b0dd4dcdbe098d414ce9841234881718",
+      "executable": false
+    },
+    {
+      "path": "cartao/RPGPOKET/artes.pak.gz",
+      "bytes": 1247064,
+      "sha256": "83e28c622c915f99b6e123a05e6548c3446f5e5392b571b17284b51f187bc3d4",
+      "executable": false
+    },
+    {
+      "path": "cartao/RPGPOKET/ilha1.bin.gz.b64",
+      "bytes": 38508,
+      "sha256": "5ae019c6f865e9a8331beba89558153e9b2028b40e1b3093555a1edd3727a610",
+      "executable": false
+    },
+    {
+      "path": "cartao/RPGPOKET/mundovivo1.bin.gz.b64",
+      "bytes": 29240,
+      "sha256": "5929330a80ea31b1a4960b00c4fba0b2d62d650892fc570770b48aae9fe9b221",
+      "executable": false
+    },
+    {
+      "path": "cartao/RPGPOKET/origens1.bin.gz",
+      "bytes": 58554,
+      "sha256": "f5c90f94581ea0a578d2b01a327753d40beee33f6c84c3aba25c1217cad7ed1a",
+      "executable": false
+    },
+    {
+      "path": "cartao/RPGPOKET/paineis1.bin.gz",
+      "bytes": 483928,
+      "sha256": "3411d86026d2f656b1404c980a4bf01a4073b99b9383098f73ef877cbad6a0db",
+      "executable": false
+    },
+    {
+      "path": "docs/ABRIGO_E_MENU_CONCEITO.md",
+      "bytes": 3642,
+      "sha256": "394c6110018b8a0187bb20ce2b8beb64797eec52de716f8e2bef92d9ffb0f90a",
+      "executable": false
+    },
+    {
+      "path": "docs/ACAMPAMENTO_MAGIA_E_SAQUE.md",
+      "bytes": 4146,
+      "sha256": "a1c816b2e165efd4106068ed90ef6d1c365cacc13981327f9a9fff83bbf095e7",
+      "executable": false
+    },
+    {
+      "path": "docs/ATUALIZACAO_WIFI.md",
+      "bytes": 7795,
+      "sha256": "6e171076c982311ab1f5ef3b7e9eb9d2670a5f11b46a87e84cc160cce750a277",
+      "executable": false
+    },
+    {
+      "path": "docs/AUDITORIA_LANCAMENTO.md",
+      "bytes": 6257,
+      "sha256": "a690549855c374bffc5f7265b511f4c8b17400a7371d61b30cae6ba07c7fdb82",
+      "executable": false
+    },
+    {
+      "path": "docs/BOLSA_ANIMACOES_E_VITORIA.md",
+      "bytes": 4019,
+      "sha256": "cdfca813fe5ccf0970763baf21d12ce17241e34a3d083249a2568d0fd7070178",
+      "executable": false
+    },
+    {
+      "path": "docs/BOLSA_TOQUE_7_7.txt",
+      "bytes": 6572,
+      "sha256": "2c376db266481b848b9f91011a744fadaedf2a9564f0e1b6c3744895842335eb",
+      "executable": false
+    },
+    {
+      "path": "docs/CAMPANHA_MARES.md",
+      "bytes": 4024,
+      "sha256": "dda3e79861bcfd210e20a4bd50c5cdec7d77e26eff476460572da1502fcbc791",
+      "executable": false
+    },
+    {
+      "path": "docs/CAMP_MEAL7_CANDIDATE.md",
+      "bytes": 4167,
+      "sha256": "4937b5d7ddbbd400cf853772341368aab7b3f5791de4f683249a7021166bbf1f",
+      "executable": false
+    },
+    {
+      "path": "docs/CARTAS_E_HIPOGRIFO.md",
+      "bytes": 4051,
+      "sha256": "c20b1e187ba633937ada0fc5469086871ac9575bdeb452c8316cae08d7992f6a",
+      "executable": false
+    },
+    {
+      "path": "docs/CARVALHO_DUAS_PAGINAS.txt",
+      "bytes": 4351,
+      "sha256": "4225c689011e45e21a65aeea57503c9574cfa8fcaed528eeba7437a30472ff03",
+      "executable": false
+    },
+    {
+      "path": "docs/CLOCK_CYCLE7_CANDIDATE.md",
+      "bytes": 6031,
+      "sha256": "8a339c232e6ff0a47199d2898e04000105d7789d6e0043c0467564f47a2ed024",
+      "executable": false
+    },
+    {
+      "path": "docs/CLOCK_VISIBILITY7_LOCAL_REVIEW.md",
+      "bytes": 6988,
+      "sha256": "7d71a1aa2b511e3115bc527697f091ec047bdd3c0e4ff0f839504e7f8f436a27",
+      "executable": false
+    },
+    {
+      "path": "docs/COMBAT_TRACE6_CANDIDATE.md",
+      "bytes": 4787,
+      "sha256": "f70311de2184a180a0078e98bd38d2ea8ec5a4e9e6a74aeb90fc2337730debbd",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINENTE_VALDARIA.md",
+      "bytes": 10311,
+      "sha256": "095daf2ab97f54d9ce1ada93fa20673b946f5afbef93ff93ed898b6cf147a10a",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_ANWEN1.txt",
+      "bytes": 8169,
+      "sha256": "86e26d80a3796b4dc1c07c3bedf8dce233d9c9d1b7a8bf9c616510333775f865",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_ARCANO1.txt",
+      "bytes": 5230,
+      "sha256": "6f37aab62f42db9d3cee2e124f1ce8d5aef55c7be1cb6299cba1745d98ac087d",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_ATUAL.txt",
+      "bytes": 3430,
+      "sha256": "7365c7e676592d1ff8f4c2a936df6ad7920d4c3a8a8129fa4e6d2fa51a60115f",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_AURORA1.txt",
+      "bytes": 8186,
+      "sha256": "21f48b1898a7512e63c252ec1f801d0fc79c36ff7d33b8ff1ab5a9d03dd2b8fc",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_AURORA_LIVRE1.txt",
+      "bytes": 8257,
+      "sha256": "a1e980103ae4a7c93cf9b3baf03f309ba0f0489c4a709a600dc5dd19b610ad4c",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_BARBARO1.txt",
+      "bytes": 7083,
+      "sha256": "5f16bc20cc26d1dafd5a93b8778363912a12c4cc8cd0f9e86b0812bbd8f6d822",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_BESTIARIO1.txt",
+      "bytes": 6554,
+      "sha256": "62eb29f0b1689702977c1e33bde300b7f4a86ff6e6767ae7d68a0f075c722186",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_CAMPEAO1.txt",
+      "bytes": 4925,
+      "sha256": "579d94fb8ff85d3a1801a8f109d7e6fb89fb8d448aac55f593263126fe4703b2",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_EXPLORACAO1.txt",
+      "bytes": 3885,
+      "sha256": "0aecc3c7b7a756e2cc817878f0a4c546efebe839bab4d083e909e51e17218bce",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_ILHA2.txt",
+      "bytes": 6173,
+      "sha256": "ba1504f5f7416c9e62b39a18b2b9a9e3600b4c6ca99f4c2c5c88d6fc16c11822",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_INIMIGOS1.txt",
+      "bytes": 6088,
+      "sha256": "e5881c735b17a93cdb046fd730ef7c7af23d75ed6e6ca576ce59005a98b1f7ed",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_LANCAMENTO1.txt",
+      "bytes": 4192,
+      "sha256": "819c3367a5245d1108d28afdd3da7eeddfbd9ddc41452d674766c1406d9a9291",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_MARES1.txt",
+      "bytes": 4591,
+      "sha256": "72478c9d02446a45bf3c928edf8f1c9a1ede84b7cd7b344e1071a9313d89d929",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_MARTIAIS1.txt",
+      "bytes": 4901,
+      "sha256": "91cc5ba0c7469445d717fdc42a381c9e24f11d4f2c35c909a2fbe12d3ddd84e1",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_MUNDOVIVO1.txt",
+      "bytes": 9250,
+      "sha256": "5cfb30a6ea232a2ecfaf5c08f6091f1cd9240829ead8ef47c635f6420feaed47",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_ORIGENS1.txt",
+      "bytes": 3089,
+      "sha256": "2c0ac243af0e13848021262b1a9c392cfb84d205409e6e6c5ab5b0842ec9216e",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_PACOTE_7_4.txt",
+      "bytes": 2447,
+      "sha256": "07b3cab5ab9f4e1190ceabee99aa67ff08157df5849c94c0246a77497563c48f",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_PACOTE_7_5.txt",
+      "bytes": 1768,
+      "sha256": "17515fc8f21fc29329c83fa568385f0808bc867fc70d947e508b04188f25c3c6",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_PALADINO1.txt",
+      "bytes": 4265,
+      "sha256": "291d4ade21d97f2c9624466ee7c192572f49382fc6f5530422e969b82e83108a",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_PROGRESSAO1.txt",
+      "bytes": 5048,
+      "sha256": "6619699db1f207e1aca139f8743116c6c6ea0ad368962619af0f77fe79100535",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_TRANCAS1.txt",
+      "bytes": 4299,
+      "sha256": "630766ca892f57dd450dc36aa5cf86f735bc2c0c919a412836c41ba2db8045c9",
+      "executable": false
+    },
+    {
+      "path": "docs/CONTINUE_VOZES1.txt",
+      "bytes": 7297,
+      "sha256": "41a96dcf59df39550fb814286c6c8a4bea8f91e45c5e3004b9905d731e5f817b",
+      "executable": false
+    },
+    {
+      "path": "docs/CORRECOES_POS_TESTE_7_7.txt",
+      "bytes": 7079,
+      "sha256": "e260a1da827fc0bd1e85071d046eea922efc5576dbd482f3b67504f3a37b706d",
+      "executable": false
+    },
+    {
+      "path": "docs/D20_TENDA_7_7_PREVIA.txt",
+      "bytes": 3212,
+      "sha256": "c429860faffc42d4013bc71891af26f7a2b8a9bddeb01ecfeb2ba393891bc913",
+      "executable": false
+    },
+    {
+      "path": "docs/DUNGEON_PRIMEIRA_PESSOA.md",
+      "bytes": 3357,
+      "sha256": "cdbd240ca74aaf085088c52b702b77be4c3fc2c24ffa9cfd745e8f6641250ace",
+      "executable": false
+    },
+    {
+      "path": "docs/ESCALA_CONTRASTE_7_7.txt",
+      "bytes": 4763,
+      "sha256": "83718b53d4242e018f7ba5f2a9bc014e8552032d6f6a100505257c0b18af5f60",
+      "executable": false
+    },
+    {
+      "path": "docs/ESTRADAS_E_CIDADES.md",
+      "bytes": 6149,
+      "sha256": "ab61e8b01557cb75af2dead24bfb19841f1af8fbc9379b7e25dffef6b46b30ec",
+      "executable": false
+    },
+    {
+      "path": "docs/EVENTOS_E_CICLO_DIA_NOITE.md",
+      "bytes": 14349,
+      "sha256": "917586b82dda81719faaa0b05ee51fc1344082c2d4fef769d965bf2ba01d014b",
+      "executable": false
+    },
+    {
+      "path": "docs/EVOLUCAO_DND.md",
+      "bytes": 6967,
+      "sha256": "e12a7a7b115f95654e409e6b84db9a735bc512fd847baca0bc165c5a0d3d7d99",
+      "executable": false
+    },
+    {
+      "path": "docs/FATIGUE7_LOCAL_CANDIDATE.md",
+      "bytes": 3482,
+      "sha256": "f2d4b3d73aa91b3c4983496fa48a35462c6f029c3d9e9f628e066583d2e0d857",
+      "executable": false
+    },
+    {
+      "path": "docs/HORA_E_DIA_NOITE.md",
+      "bytes": 2788,
+      "sha256": "6c8e375475b08523fd9728ac62f332a9dc1a683e1b121e0a1dcbfe24fe6eb76c",
+      "executable": false
+    },
+    {
+      "path": "docs/LORE_CANONICA_RPG_POKET_2.md",
+      "bytes": 23211,
+      "sha256": "ef8f444e8525b88a62098c8f6568863785a3faa79916ca72c68cbd5a12b282ca",
+      "executable": false
+    },
+    {
+      "path": "docs/LORE_INDICE.json",
+      "bytes": 2313,
+      "sha256": "35a188f5c8eba5bd2a1bfc9b243a5d7fba49a60061c2213faeef1a11f1877292",
+      "executable": false
+    },
+    {
+      "path": "docs/NOVAS_TELAS_CONCEITO.md",
+      "bytes": 3692,
+      "sha256": "b3f25aa8bf771e8e9a4a424ba43e0e34357751d5503ab136aa75eb16792c33cd",
+      "executable": false
+    },
+    {
+      "path": "docs/OTA_ARTES_CONFIABILIDADE.txt",
+      "bytes": 10663,
+      "sha256": "45610ab4fbadb8d66e70d094e4c7b6ba0de413ed7ed7bb6c3cb4721462356fb4",
+      "executable": false
+    },
+    {
+      "path": "docs/OTA_RECUPERACAO_7_7.txt",
+      "bytes": 5534,
+      "sha256": "126afdcdfe33089cac4e1440401dcc161e7179892fe4e5c3ffc9ef91c288bb51",
+      "executable": false
+    },
+    {
+      "path": "docs/OTA_SD_DIAGNOSTICO.txt",
+      "bytes": 5188,
+      "sha256": "a2c0eec21a1170ab65958ac71333a6e2846a8898afe0626d70d5112229994d00",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE5_RELEASE_QUALIFICATION.md",
+      "bytes": 4696,
+      "sha256": "b437030989ffdcfd3ea301ea183dd6b68118b1ba9f4ce209f5eb450a0676ae78",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE6_LOCAL_INTEGRATION.md",
+      "bytes": 5163,
+      "sha256": "c35ba14ada09fd935142c936d743906149279ea1b9f6e5019d9705d486e19ffb",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE6_RELEASE_QUALIFICATION.md",
+      "bytes": 6603,
+      "sha256": "ff823600525f81eaf1506c3a6552b2e9514d9b89fe9002800f5aaf7bf903ee48",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE7_LOCAL_INTEGRATION.md",
+      "bytes": 3929,
+      "sha256": "399be6c5dd5192d932bd65eb30f3b1dd4bd20e8abfe9df8662795903c7c9e7ce",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE7_RELEASE_QUALIFICATION.md",
+      "bytes": 5076,
+      "sha256": "eb993bdd5cb215bc60e880bc2559d7eb9fbb892a84f27959f91cd4e0e20283ed",
+      "executable": false
+    },
+    {
+      "path": "docs/PACKAGE8_RELEASE_QUALIFICATION.md",
+      "bytes": 4566,
+      "sha256": "fafd93e3597317271563c95c15fe82dbb9223367e480d65d436c27411d932c42",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_1_ORIGEM_E_ROSTOS.md",
+      "bytes": 5610,
+      "sha256": "a06145db07d7f0a6ea2ba9b84a3a5bcfe1a0f064919aee380f9c33bbfe7a2f30",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_2_EXPLORACAO_VARIADA.md",
+      "bytes": 3244,
+      "sha256": "e19cc3eb190a15bbbd7c4d48b75a3b16437f5d892a78c87958c5248a10bfcb77",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_3_TRANCAS_E_GAZUAS.md",
+      "bytes": 3124,
+      "sha256": "46b84ea4aa8773ff73192a9bb537eb02df23e0c40cc6d05ee90c3674833f804c",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_1_PALADINO.md",
+      "bytes": 2865,
+      "sha256": "f77cfd552325f66073db7d2f1a57f06f15a9ec6573d91a591c3a009c405b1916",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_2_CAMPEAO.md",
+      "bytes": 3880,
+      "sha256": "1305ddc3113122abb9944c6e4bad80bdbeb41995a8965f32f53849e99229621a",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_3_DOMINIO_ARCANO.md",
+      "bytes": 3623,
+      "sha256": "a7feb1c761adab03dd662931fa4c4090a505a77c78bf5d3b89ddcb5c7312cb0f",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_4_FURIA_ANCESTRAL.md",
+      "bytes": 3710,
+      "sha256": "1e92516f13ecdc38cf6871075ecb78d52e9b45d95bf026c2c129557e068cf23f",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_5_CONHECA_O_INIMIGO.md",
+      "bytes": 2982,
+      "sha256": "53e1a1f25a216b752c19a84a33e870a47a71c1253a25cbaef55fe4424aded9f1",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_6_BESTIARIO_DO_HEROI.md",
+      "bytes": 3183,
+      "sha256": "047448eb39fa94129eb6209f414d16ace7b2beccc09ed27e2e70f3675db9fa81",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_4_PROGRESSAO_RECOMPENSADORA.md",
+      "bytes": 5152,
+      "sha256": "d1bd3d0e43edc5d67d973c23b414540232971af43e074242e80c1eb58b3fce5d",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_5_AURORA_ARQUIVOS_DA_COROA.md",
+      "bytes": 4322,
+      "sha256": "4408b9a24973052255b16a7bdc9cd7acaacfbe7b4f4de8cb9c33433d0cadf3cd",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_5_AURORA_LIVRE.md",
+      "bytes": 4525,
+      "sha256": "3b40298804e027251c4caa5b98606468beaeef942107a7e08dbe71e6f64d5b90",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_5_ILHA_REVELADA.md",
+      "bytes": 3099,
+      "sha256": "9c3f983327d96a0351e5f5702812f16e51e5bdad03fe63b6ec917ce6d6a07733",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_5_LEGADO_DE_ANWEN.md",
+      "bytes": 3929,
+      "sha256": "4f9509356a1000f7a4be7356e5a0bc16220dcb7b4fc613cec4ebc50995990a36",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_5_VOZES_DE_AELDRA.md",
+      "bytes": 3485,
+      "sha256": "334c448decd6f122f9710e97135ef0f084430835691ca6c71d2bd701ae071b5a",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_6_2_CARTAS_AO_ENTARDECER.md",
+      "bytes": 2994,
+      "sha256": "88fe64ee899b0895acae047ce21ee2588e1d11b16de0e69394cb7afa546b8c60",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_6_3_VIDAS_NA_ESTRADA.md",
+      "bytes": 4495,
+      "sha256": "cc8cbf5ac7d0eba63f61112592484d8aff99d126e6e136ac59ebaa6e1bbb1c69",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_6_CAMINHOS_VIVOS.md",
+      "bytes": 4212,
+      "sha256": "4520bb8c0d433cd47109883e202c824e83ecfc89c8737473376588a94a880c21",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_6_OITO_CAMINHOS.txt",
+      "bytes": 5004,
+      "sha256": "207072b2b5f668986980e41d10b109930297e858182f57bc5cb8f20606c73456",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_1_AUDITORIA.txt",
+      "bytes": 11267,
+      "sha256": "91d69643afa4577b038400913c7b15c5e149080c0b35d8c2f3851b29d0201bb5",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_2_PRIMEIRA_EXPERIENCIA.txt",
+      "bytes": 8956,
+      "sha256": "8308aa8ef607dd550a7d36dc57bd44f3130d116a45730a8eba05a6d5b39be4d4",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_3_ESTABILIDADE.txt",
+      "bytes": 9081,
+      "sha256": "71c3dcad864d0aed5bf5d56767c440e3111678333287a2b1705ebae32acc7323",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_3_EVIDENCIAS.json",
+      "bytes": 12320,
+      "sha256": "e17d30f02928d15d39abf9dc0f39d15d48e9b1289c5b7562fa2dc8bab2d27e9d",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_ALTERADOS.json",
+      "bytes": 899,
+      "sha256": "44545a2bc09db4a387b6f3ab3afe84b7efe5b8e6ec9cf0aa577a6959161561bc",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_COMBATES_after.csv",
+      "bytes": 22909,
+      "sha256": "106bc03892d95c625407aa3cc1d5301696dc9fb7b918552fd8a67935db30cb52",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_COMBATES_before.csv",
+      "bytes": 23087,
+      "sha256": "6f53a209a8835c8d1ce1666e5b457021082bfef86e1a0953bb0743ee7177dd73",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_MEDICOES.json",
+      "bytes": 35534,
+      "sha256": "2ae3b77dc74cd14d85dd35f8f9b24d84379b6e3e976076a8a25cd60e68ad12b2",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_PROGRESSAO.txt",
+      "bytes": 10271,
+      "sha256": "12f22d43cfd7f65e7f0f4d834a655952aa9176e36f091d46ff4f6ae4831bac65",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_4_VALIDACAO.json",
+      "bytes": 3502,
+      "sha256": "b4059b2caeda59b79dd3d3a3a0c183ee41b0476f938a0291282f4dd4f8c5717a",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_5_ALTERADOS.json",
+      "bytes": 778,
+      "sha256": "ce1d08d87749557e7119df84dedfa14ba4e73222c4c85c904d2f8249b025897c",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_5_COMERCIO.txt",
+      "bytes": 17435,
+      "sha256": "dfd0db79aef5545abf1d4b6f96554e5efd146cf9a054bbe13e24cfe481089c15",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_5_ECONOMIA.csv",
+      "bytes": 871,
+      "sha256": "147bdb20a5cf942600556c75f035f8154090f37f2c570ae33d4b2b92902c7ebe",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_5_VALIDACAO.json",
+      "bytes": 7137,
+      "sha256": "01e4117bb9cb7572f410ab8db61c6532beb9b85ecaf676a30cb9d8c3206c4cff",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_6_FADIGA_DESCANSO_PLANO.txt",
+      "bytes": 18328,
+      "sha256": "7846f77088f3a67a2557a5ce9d52264fe727236af30f0edb1555c416af6cb2d3",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_APRESENTACAO.txt",
+      "bytes": 8578,
+      "sha256": "d97f1a62b305bd6bb849085a1c5fe379d14944c80bc7a9d0e569101b36685eae",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_COMBINADO.txt",
+      "bytes": 10372,
+      "sha256": "dc9a86c8d40380a84f2e3105748af8d543577a6421ff3c50bafdf615bd843c17",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_COMBINADO_VALIDACAO.json",
+      "bytes": 6590,
+      "sha256": "76e3151218b9f19e047cd9dfe8a377c8b7999d796c69049d42ea21776f46d07e",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_HEROIS_PRIMEIRA_PESSOA.txt",
+      "bytes": 14553,
+      "sha256": "267a911a911ec7553d18db69e17ff5da5d6881952272dadaad039cf03a2982da",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_INIMIGOS_AUTORAIS.txt",
+      "bytes": 10622,
+      "sha256": "f11063b0e9357af14bcd3f1c3d322e90d8b374340957176ead9c705e47c34c61",
+      "executable": false
+    },
+    {
+      "path": "docs/PACOTE_7_7_RELEASE.txt",
+      "bytes": 6882,
+      "sha256": "86bcb29d0db7e9a4da111a78d82038056d4dee07df4e7b46cb941798674a6a18",
+      "executable": false
+    },
+    {
+      "path": "docs/PODERES_DAS_CLASSES.md",
+      "bytes": 7506,
+      "sha256": "7009cfb3effb33972fc2ec9f7ffc4d1297580af996b5057b3edb859ee74fdfdf",
+      "executable": false
+    },
+    {
+      "path": "docs/PODERES_MARCIAIS.md",
+      "bytes": 5876,
+      "sha256": "3b55547ae3eb089eca6dcfba2ffd8977b8ccd51924c13ca8a3d534167f5c712b",
+      "executable": false
+    },
+    {
+      "path": "docs/PROCEDURAL6_LOCAL_CANDIDATE.md",
+      "bytes": 10761,
+      "sha256": "89039d27990376f85b512b8450450a69af9661c9d716c589cf6c86022ab002aa",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_7_7_NOTAS.txt",
+      "bytes": 2619,
+      "sha256": "7d901536891164d6b01b82be200e59f60632b57d30f94e185d8bd49ec611e36e",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_DUNGEON_7_7_NOTAS.txt",
+      "bytes": 1582,
+      "sha256": "c5cbc75466a75beb102e2871ffb1280b689df22cb11dc80185c967f70576111e",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_OTA_7_7_NOTAS.txt",
+      "bytes": 2006,
+      "sha256": "b7f23def9403b43f35e9ffbe2b89b8214a7496fc99cd52fa09dd88ac06e3ef83",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_PACKAGE5_NOTAS.txt",
+      "bytes": 1792,
+      "sha256": "50ed82319ef5c1468a28d6f9704ff4730aadaae500337b4f7c8693ec91341c04",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_PACKAGE6_NOTAS.txt",
+      "bytes": 1878,
+      "sha256": "eb0869be83789206d1c84bcb28353b1adc45a89121c14539d17a6c2c59384544",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_PACKAGE7_NOTAS.txt",
+      "bytes": 1160,
+      "sha256": "90d3d2db882361512994291314f75bd458c5b0505d131a2fd282a9af0c344f58",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_PACKAGE8_NOTAS.txt",
+      "bytes": 1305,
+      "sha256": "123eb998e7d9094b0a3552ec0e6ddb655e05b031670f60794771f0ddec7c5b83",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_RECOVERY_7_7_NOTAS.txt",
+      "bytes": 2857,
+      "sha256": "be6dc7d8199bb5630fc0c901280184a9324a54932bb351127ebfa0d0bfcb7337",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_SCALE_7_7_NOTAS.txt",
+      "bytes": 3391,
+      "sha256": "a8db1cfbac25c3ef0d9bccdcd2b3468a47afbb102d7244f32358597ba979885b",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_SCENES_7_7_NOTAS.txt",
+      "bytes": 3957,
+      "sha256": "1e12a227cbc95c98865dbe60b953aa9580c9a39aa70b7bea891b02db8d4f8e07",
+      "executable": false
+    },
+    {
+      "path": "docs/RELEASE_TOUCH_7_7_NOTAS.txt",
+      "bytes": 1645,
+      "sha256": "6f7e499f11eb02466a4d572316e167a170e7df39d142a0ebeeff1f2b7ebdf250",
+      "executable": false
+    },
+    {
+      "path": "docs/REORGANIZACAO_AELDRA.md",
+      "bytes": 4415,
+      "sha256": "b489a6241ea72a1b8770f540619d5022d8963340ba8b0710fa88e28c5568579b",
+      "executable": false
+    },
+    {
+      "path": "docs/RETRATOS_NPCS_PROVENIENCIA.json",
+      "bytes": 11793,
+      "sha256": "f9e57fd3be24cd99800afb161205f3525ac48ff3f373a4e0f101210ee4e47bec",
+      "executable": false
+    },
+    {
+      "path": "docs/REVISAO_LANCAMENTO_10_MELHORIAS.md",
+      "bytes": 9843,
+      "sha256": "923c8614f9aa3aa712e0c038d58a66d920d69eda3f1509fce756c1fb0708de53",
+      "executable": false
+    },
+    {
+      "path": "docs/ROADMAP_PACOTES_EXPERIENCIA.md",
+      "bytes": 25713,
+      "sha256": "19ca48e2233277560d3ed79ac0fd8ffff5150b2f16470283d2753f354eb02f59",
+      "executable": false
+    },
+    {
+      "path": "docs/RUINS7_LOCAL_CANDIDATE.md",
+      "bytes": 5339,
+      "sha256": "7819f4db9896dfd4add5f3ee0e66e7046fff858d2ed3e13419b30eda82eec5bf",
+      "executable": false
+    },
+    {
+      "path": "docs/RUINS7_VERIFICATION.json",
+      "bytes": 1710,
+      "sha256": "d7afba3ae271f40112c81981e31ef54394fadd5f5389a2c0b007639ce4e94524",
+      "executable": false
+    },
+    {
+      "path": "docs/RUINS_BAG_7_7_PREVIA.txt",
+      "bytes": 1912,
+      "sha256": "dd8d2288aae6d9e7e13e0eff6a4e44361e48bc4e4291f7979c512bf67da2c7fc",
+      "executable": false
+    },
+    {
+      "path": "docs/SCALE77_RELEASE_QUALIFICATION.md",
+      "bytes": 6220,
+      "sha256": "f5c927534167ea773203c2a1565c40f462cff50de4c41f6dd9c708155b8dcaab",
+      "executable": false
+    },
+    {
+      "path": "docs/SCENES77_IMPLEMENTATION.txt",
+      "bytes": 4913,
+      "sha256": "d0dd92166862eb8834583e426d67a497fa0b97ab35e0316abea57ea62529afb3",
+      "executable": false
+    },
+    {
+      "path": "docs/SCENES77_RELEASE_QUALIFICATION.md",
+      "bytes": 4219,
+      "sha256": "f8ca1c8539bd2c3392f4684aedebf24a4e589b5f54c08c879feee802723ee1c0",
+      "executable": false
+    },
+    {
+      "path": "docs/TELA_TITULO_E_JORNADA.md",
+      "bytes": 3521,
+      "sha256": "a54cfa21820b82fd7e57e20e3f29d72a8fbb2dcf29f5cb582b66b9f8781971b3",
+      "executable": false
+    },
+    {
+      "path": "docs/WIFI_RELOGIO_E_DIAGNOSTICO.md",
+      "bytes": 5242,
+      "sha256": "de6428eabf388c34abb11bee3608243c908204b5f10f63b5412be0180459e053",
+      "executable": false
+    },
+    {
+      "path": "docs/arcano-balance.csv",
+      "bytes": 22927,
+      "sha256": "42669a4f82bd107bcb6875562be298d36e11d7b98262b0c8769d2682da3a0efa",
+      "executable": false
+    },
+    {
+      "path": "docs/barbaro-balance.csv",
+      "bytes": 22927,
+      "sha256": "949907ec2452f2c8ad3f1ca3d0f38a59a1073aa33f6f0f7f840751b9226bebbc",
+      "executable": false
+    },
+    {
+      "path": "docs/campeao-balance.csv",
+      "bytes": 22926,
+      "sha256": "9f007cc617742fa61ead6b569084610d479357ae184097f2e891347562c2b4e0",
+      "executable": false
+    },
+    {
+      "path": "docs/ilha1/manifest.json",
+      "bytes": 4506,
+      "sha256": "56dbe587f90fdd07572600139f41f4780dd55d59c57f0333797ef09fd57f7249",
+      "executable": false
+    },
+    {
+      "path": "docs/ilha1/prompts.json",
+      "bytes": 6128,
+      "sha256": "aa0abf3c50bfdd6a4e31c19fb3df918908f3e4338a80af66b64c6018bb67f522",
+      "executable": false
+    },
+    {
+      "path": "docs/paladino-balance.csv",
+      "bytes": 22922,
+      "sha256": "7953811876423267c3d8d48fb7b1b5d6ce1c62eab7d85d4654ec7327bb94829c",
+      "executable": false
+    },
+    {
+      "path": "docs/progressao-balance.csv",
+      "bytes": 22910,
+      "sha256": "e4cb9af1428129615d86dd5f18660928210396a98f2d59514fe95acb0ae94970",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/AnwenStory.h",
+      "bytes": 2000,
+      "sha256": "ffb5df8e3d6339ed617bf70c8344bf1ac29f79d4452af218f632cb76695704e9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Art.h",
+      "bytes": 683043,
+      "sha256": "4cc5c60241497dcf52de12e58c9601b3366e9109861568c34999f54784680aa9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ArtPromotion.h",
+      "bytes": 2048,
+      "sha256": "489af03f6ec6da21d6fc48b2dd6b85009f073dea9a1c7b17004f2d2357820f28",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/AssetCatalog.h",
+      "bytes": 507381,
+      "sha256": "4ec0e698e50ecefcbc5a4c0e76ac349b415edf71036dd5a3b62aafd6a70c29d4",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/AssetStore.h",
+      "bytes": 1820,
+      "sha256": "fde3062092884c1202f494c2d4d8166ed9455f266768f421fc8909f1f07638d9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/BackgroundArt.h",
+      "bytes": 7785,
+      "sha256": "06418af5b22e37ce10769673ff6af71f689f3c378a1ca49875930caea8c7ff46",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/BagSkinData.h",
+      "bytes": 136650,
+      "sha256": "689a024c45651e67ba2e7d4bf35f0c7b5983c66fa1f9ef8f166b80bc14f461d1",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/BagView.h",
+      "bytes": 4739,
+      "sha256": "2ecec2939769e23c2ec89db66ef2aba806cd7cca0cde06ffede55ae8131971e9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Bestiary.h",
+      "bytes": 547,
+      "sha256": "2905cf3eeb0a4894feb378edc8ef16cf34d934e937626510381da3e2f849bf2f",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/BestiaryView.h",
+      "bytes": 1313,
+      "sha256": "60a10eb75502913b70289ee38b6c1e227751bceedb130a27ccf05c7e0f7c273b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Camp.h",
+      "bytes": 3649,
+      "sha256": "ff608ed557297d9c2518fab707da2823b630cb14282bc937a099ccc4d859b90a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CampArt.h",
+      "bytes": 1179712,
+      "sha256": "44e5b4d23fda86d57038d164394192f2954a63d05410e8c7939fab8755fdde9d",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CampHeroView.h",
+      "bytes": 6766,
+      "sha256": "a4ff951c837f469d076256bfd834e7cd2f32d77d22f9ccdf14b5eee97d6ba917",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CampView.h",
+      "bytes": 3588,
+      "sha256": "259515cdb5d82751334a456533ac6d24af713066e34315a00849eb53dcf8a471",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Campaign.h",
+      "bytes": 5947,
+      "sha256": "4e45b02d5bd5f695262449a9e0da6ecd2d118f5427ecf3fc919b31e0804c318f",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CardCheck.h",
+      "bytes": 1779,
+      "sha256": "b3be44db4d3f1e0d046a55a41885b32bd10765a01b588432b8314c93f1381529",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CarvalhoView.h",
+      "bytes": 4554,
+      "sha256": "b1efa462dbbcc110a44717a741185c28f6123ea295b07f45e19db61c9a053ce0",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClassProgression.h",
+      "bytes": 2170,
+      "sha256": "b4e732594aeda713b27539970884132686eb43cc2e0b674d9b2dbbbdaeac0474",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClockArtData.h",
+      "bytes": 290878,
+      "sha256": "c9e627cfe0bdf2e434e32d8db2d33366a20fb9185f630b03aa7e7db00e1a7e45",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClockCycle7.h",
+      "bytes": 4959,
+      "sha256": "60b20739ab48449ae49e6ba05b8b955fce5ae2a823685f0d4d136a2bbc46c616",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClockView.h",
+      "bytes": 5884,
+      "sha256": "e06e1e8edbd6d80cb1f5fb78a4f99bcf1d8c35bd7a5dab7b7713ef939f1dd772",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubDuel.cpp",
+      "bytes": 3464,
+      "sha256": "9ae58e4245e9205ebf11be00dc625b18c6f6a42813758a24292197b5f26297dd",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubDuel.h",
+      "bytes": 1292,
+      "sha256": "15dd6adcdef42311f67c742b7f89a25ef0bab4c02bb83edc1a7cece70a0cd0fa",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubProtocol.cpp",
+      "bytes": 7002,
+      "sha256": "904faf9cb7c54de3f296063a32022bf0f59f89bde8ea065fe6a9fcd56b82a0bb",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubProtocol.h",
+      "bytes": 2878,
+      "sha256": "18853f9555503c000927e42cd5cd9d2442d12116ce29116e9e6e677f28e36c51",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubRadio.h",
+      "bytes": 6546,
+      "sha256": "a85510fba944faa00d1cdd015265e81fdf779589409d9d40ac8fe8f591094b92",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ClubUi.h",
+      "bytes": 243,
+      "sha256": "fdc50a5cf1eed2a09494f8746393f38d0eae9aea51881587859455d08c4b4405",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatFx.h",
+      "bytes": 1949,
+      "sha256": "e66e31064a21c6f2d18beca1042c709d3644a0042b079512bc454ca3754a3c66",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatPresentation.h",
+      "bytes": 3348,
+      "sha256": "c00575d64a195e6fc2d7c49974eea15064d3107dc87b00561470eac6f1ed6075",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatResultView.h",
+      "bytes": 1849,
+      "sha256": "39ffddfa1756f68a25b4286d5445fbafdf5bd72a254293c06e2f630d2aee7478",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatTrace.h",
+      "bytes": 1814,
+      "sha256": "6051428f0145e0e292ab45f9af83efac91e15e3669c260ca4b8888526d97868c",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatTraceView.h",
+      "bytes": 9490,
+      "sha256": "ff04b629a47ac0fdd35b0025113dfc469ff43a6213ee05771f1434b6c2db73b6",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/D20Mesh.h",
+      "bytes": 4144,
+      "sha256": "ff440acd010ad6dddceeb52ac5455c606275cd5a1976633aec80b9a23798a54e",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/D20View.h",
+      "bytes": 4750,
+      "sha256": "7e0b50a8443db4ed993e2b1f13754106891aeeb7770f6eda25a96de9bfa88761",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DailyTravel.h",
+      "bytes": 8049,
+      "sha256": "a4db093f5aef00bdcc46cbada00a540fbba89966905acbda759a516713371ce5",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DailyTravelView.h",
+      "bytes": 6209,
+      "sha256": "9e0761fd305b392d19576fffd59707879107901778c35d35f9083522511156a2",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DeviceSettings.h",
+      "bytes": 14362,
+      "sha256": "308bfda6b01163bad43f632d1d6ba475d9d515afa450a9ea11b8754c5ad0824e",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DialogueStory.h",
+      "bytes": 18840,
+      "sha256": "b77f52c19c94d408933775e7c39aa06f2b6809aedfb55566d4715b62805ac53a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Dungeon.h",
+      "bytes": 13201,
+      "sha256": "ffcbef825954fba7026fd1b54b7d0a56fc774eeda7003e070304454ed968a457",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DungeonArt.h",
+      "bytes": 563245,
+      "sha256": "c4927ae263d26f2b1d1ce1173d87bfcdaadf951576e0aa3ede1874f329e660b4",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DungeonGeneration.h",
+      "bytes": 13437,
+      "sha256": "8ffc0aa7efce9ddc4b7ea8486a220c2d42ee8098a14f757d1d4e3c9d2d2a5e55",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DungeonView.h",
+      "bytes": 12106,
+      "sha256": "8763023ad58ca27ddd554955eef07f9a6b5003454d165d1517b4ce46daa89437",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyArt.h",
+      "bytes": 4142,
+      "sha256": "5c1d35d40f5df9875527c24b1665c3e15e5959224671bebe470389e84eabf68e",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyArtCatalog.h",
+      "bytes": 6113,
+      "sha256": "1f3f9da4b0f52853deae851cd7f03fca09c840972fa71b68f957cd3b12ffecc0",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyInfo.h",
+      "bytes": 729,
+      "sha256": "4589661ccefd9156dfd1c8231c4f4daff09fcbb2cd2aa045e6c9c27d4be2269f",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyInfoView.h",
+      "bytes": 1174,
+      "sha256": "e894205b118072d03e70afa69ec4eeb26521ce2bfb4316f1370217346872520c",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyPresentation.h",
+      "bytes": 2529,
+      "sha256": "7ae5ac9c84f80c0fbbac330d9d28f1df8c220dc99dd8587294d4f6abca15bc59",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EnemyScale.h",
+      "bytes": 5064,
+      "sha256": "85ee26a86570535b5be31f3c70acde47fa328b59bb58823c319f531ddb7d951c",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EventCatalog.h",
+      "bytes": 3440,
+      "sha256": "805d6b46b24aba4213afdb34e78513b5bdda7c86b50b0e257e21ef7b23c6adc4",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EventView.h",
+      "bytes": 11011,
+      "sha256": "89538821679e2e3cc8ae420fd1fb74e180ae67e6de271f8f3a91593bdb2121af",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EvolutionView.h",
+      "bytes": 1646,
+      "sha256": "d19d50d8248433f18b69087564b4160a2df48d364e4613c6a5d3303f3d8f814a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Exploration.h",
+      "bytes": 6625,
+      "sha256": "b012e71a505fc72b1778256abe86e5b496ff7e49de775f1aa4a80bb673294e96",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ExplorationView.h",
+      "bytes": 3910,
+      "sha256": "d68d538424e410e3a69a4742164e71340b0e37694086878f7bf8f0f69c3941db",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FallenArt.h",
+      "bytes": 2568,
+      "sha256": "bdb5f654b51ac7c366ec07bdf2a4cfb12d656c2a5a93843284f32ed7ff433bd9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FallenArtCatalog.h",
+      "bytes": 612,
+      "sha256": "9ed7702941344b76ac7f2ba9723d61ed55bda387660b4d47eae4ad93ebb12d59",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FatigueJournal.h",
+      "bytes": 6250,
+      "sha256": "574cd23a9aa1ff8a7890d5bc5fd265c2f3e6d094e2424d2354a875b58cb124d2",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FinaleStory.h",
+      "bytes": 5025,
+      "sha256": "c385af92685b5d6770e626e30dd6c44c081979f1014e67d2456c45c0088f3039",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FirstExperience.h",
+      "bytes": 4788,
+      "sha256": "227e2451e14ced50c49bcdeee1d9c5efa5256d550e371438d14b53a21140474a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ForgeArt.h",
+      "bytes": 164302,
+      "sha256": "077efe18f8abbb7a25486447f575d2d915c7a8afb158f32376450201a51a6a2a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/FrameBuffer.h",
+      "bytes": 1211,
+      "sha256": "73307abcc219d99b62f2841447d71893da29d43359a3bce9dbdc1d8834cceb10",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Gear.h",
+      "bytes": 1876,
+      "sha256": "1abc55383ef2cd425e2cd990138d57efd9591dab298c872242593b8bd2fd91db",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/GearArt.h",
+      "bytes": 831,
+      "sha256": "09c664a417ac05143e067e2e5a85e74b719a9c6523f0a62e0b372de1654f4d70",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/GuildEvents.h",
+      "bytes": 11216,
+      "sha256": "2e30626c9b19bf3e67d0affae9c5591368063098dc2c1bc617b7f35e410642f9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/HeroActionView.h",
+      "bytes": 6970,
+      "sha256": "9bd0e7376cc6abb19cc017be3b30f60c03092953899420e4da8cf2c79a0859be",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/HeroArt.h",
+      "bytes": 3503,
+      "sha256": "71aaded127c33974c3f76d1d7b800c7509995f0278f2fdf85b2a0579648c1c05",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/HeroPresentation.h",
+      "bytes": 5966,
+      "sha256": "29e44085f15b44170e89dda2872776f69d6e265a69fbfd84bdc4c1264e6dcb8a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/HippogriffArt.h",
+      "bytes": 164648,
+      "sha256": "08d5e3a2379fe049bef6bfb6c3d6581215397cce5866913125a6b896ba844ea9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Indexed4.h",
+      "bytes": 1107,
+      "sha256": "8fba6215fb2ef52aff9e4b4ad6ae35fba4086f5b66de4bc2392391780a3e4882",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/IslandArt.h",
+      "bytes": 1903,
+      "sha256": "ba16cd8cee2fe23ce8b44b3564a08ed36ec67632fcc61602e76c2310997c2cd5",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/LaunchView.h",
+      "bytes": 5285,
+      "sha256": "e7c5270b17bb87ce79c9967c3648c1b13b9900812b09ec5521cabbc2c09e609c",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/LocksView.h",
+      "bytes": 2938,
+      "sha256": "9b35b07fa36223d30f5493921e7d415f24f16d6d0d739b0922a21196556612d6",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/MagicView.h",
+      "bytes": 4586,
+      "sha256": "e692b461868a585ac1098f064adaa55015a715c5882c930f50b911e8767b1378",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/MenuView.h",
+      "bytes": 13342,
+      "sha256": "4b6ae573460cf3a24166569b45f9bcd03b74fbdd26915bc7ee67b9984e316e3d",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Narrative.h",
+      "bytes": 11750,
+      "sha256": "3462f83328b1dd9ec5cc881f53075e913bccd1e358d3f9931429e545ba326df4",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/NarrativeView.h",
+      "bytes": 17179,
+      "sha256": "c4a82ef01b1f7cbed9a756a93d9fb5759470e53d94b93d17bc467686b7bde93f",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/NpcArt.h",
+      "bytes": 2106,
+      "sha256": "658bae785374d493a34f322219472ec2912969488e3b400e86ab1288bfabfe8d",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/NvsPersistence.h",
+      "bytes": 9372,
+      "sha256": "ce8f03798c6f6b28629b516ad0f69438485380eb368572803442cc36dc76cf60",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/NvsRecord.h",
+      "bytes": 795,
+      "sha256": "36edec4d4465355c65ce87f64adbd6b84aec28defb7d3831dcfd0a7ce920f603",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/OriginStory.h",
+      "bytes": 3532,
+      "sha256": "e8ae44d903458a7d3e38358500e0a79756eb4be2196ac7087b9e60cea08fdd7d",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/OutcomeView.h",
+      "bytes": 3845,
+      "sha256": "da9228d44e6a93db6a9330e8110b97ee4cedfcb371bc267a19c44f1401b13a44",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/PanelArt.h",
+      "bytes": 10313,
+      "sha256": "6dd785a6fe60d298f52397445f3e2dfda4d67111013e9b0d427a07f5a99aeec6",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/PanelView.h",
+      "bytes": 10049,
+      "sha256": "4724347afd3126716ea5df36a6926dfe5fe9b0e4845f1690241129152e38b1f9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Persistence.h",
+      "bytes": 14555,
+      "sha256": "99b19c1e62aeb6e70c3d9c57fba3c5580fca6f6c4e59f0052331d4ce1059ebe3",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/PersonalArt.h",
+      "bytes": 1410,
+      "sha256": "44bfde0f16e136597846c70128e001826c42fc83bb17b4c1140f35e5419ddd54",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/PowersView.h",
+      "bytes": 8291,
+      "sha256": "105c48f0353c57698612c81b64307377594f58377b732e779179dc8aaf16c1cb",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Progression.h",
+      "bytes": 3379,
+      "sha256": "90b019234eb6a853f5d6a7508a34baeb90af2a28267853f51c2fd0b0365c079d",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ProgressionView.h",
+      "bytes": 3215,
+      "sha256": "0ad3206c1683d914e4f6f4209f5603681617e651ca78a6d736a5b684e8ba4832",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/RPG_POKET_2.ino",
+      "bytes": 77372,
+      "sha256": "feb35426464a115645b59bdf858fc6868f07e6363eaf33757718a3f6d547d083",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/RaceArt.h",
+      "bytes": 1290,
+      "sha256": "49929b921218166d3130f1366365603277551a2179de231ad17b38a45e7f0b49",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/RegionalArt.h",
+      "bytes": 95,
+      "sha256": "6d55cc5ecea914612c9cc7a8a0a996aa42732247279afe3025fb4c5784cc4389",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ReleaseVersion.h",
+      "bytes": 168,
+      "sha256": "cdceb9e8e52c46c57e32aec6114cd1bd59ee32fb904e3976973c01c6890ef717",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ResetEpoch.h",
+      "bytes": 3911,
+      "sha256": "7244e6211854be4c528d472916ea4798472d704a955374e7358331fb91ed367c",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Ruins7Art.h",
+      "bytes": 66408,
+      "sha256": "4a2e5ee1f8ca6adcb2998e8ac1d7e362363d157a49c7a4de91162d7f77441fd9",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Rules.h",
+      "bytes": 49518,
+      "sha256": "12a5416b48e8fb5c194081af544a587732cf0c22ea6d769d5786cde4fefac9b2",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Save.h",
+      "bytes": 14978,
+      "sha256": "2bde03941df5f3abc4e8ee805135b7ac733ebb12548d7c674c33c9deb65f145b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SaveVersion.h",
+      "bytes": 208,
+      "sha256": "d35e1373594c12fc294a93a013e91395ece9daf741ec7a05daca3dbd09b1e52a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SceneArt.h",
+      "bytes": 773,
+      "sha256": "2babc71928590057aa3158ea4d649c98e204ed799e80e9a55b33fc6bd02bdd77",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SceneArtCatalog.h",
+      "bytes": 596,
+      "sha256": "f9b8da09f8e1651afcc26a37d34ff079c661c8396ba0e1e52f1841c7f6c23165",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ScenicArt.h",
+      "bytes": 1105993,
+      "sha256": "f293495351d26a83424ff65abea7f5d6af4cc18b37d4c55a63316c8e43b9d160",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/ScenicView.h",
+      "bytes": 13772,
+      "sha256": "24d0d011ce5f2fab7e26bfc2c6e152f75bf965d94f55e85a5ab0cfd2d33e34f2",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SdReader.h",
+      "bytes": 943,
+      "sha256": "2f79449948ff2acc8156c1bf1c22dfa429e76970387bca432aafb2cf124b9ad3",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SharedStorage.h",
+      "bytes": 627,
+      "sha256": "ca133cca9a17677bba5df1406778e027aecaf4f3243baef15cdc4eb2846fc12b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Slots.h",
+      "bytes": 1171,
+      "sha256": "f0fcaedc5a3dc3d6b756f91f282a6f44b625efaff152ab7272d8b34e728ad9a8",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SpriteArt.h",
+      "bytes": 3062,
+      "sha256": "4ca094467aa6e4f4485cca568f0465cd26828da3093cef82c4df6cd335a59dbe",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/StorageDiagnostics.h",
+      "bytes": 2508,
+      "sha256": "da4afd060d137f29b4c4a7d9635f7deb2bc16efd622ba0588622cec98bf4f8bb",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/StoryPaper.h",
+      "bytes": 1850,
+      "sha256": "301639f03daaa7ce44943fad1e67e1da26f0fad6275feb073404aa86c5d6abfc",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TentMarker.h",
+      "bytes": 4616,
+      "sha256": "f46813b484d665139dc78b9b006d88aab5a070ed47fb37b6ae1be2b313d3bc92",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TitleArt.h",
+      "bytes": 276998,
+      "sha256": "b7a6cc74f3a7f827861d04825a90e438440657f60dd5a262977a376b7205c2f0",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TitleLogo.h",
+      "bytes": 59338,
+      "sha256": "68c20114bf2e2d48247113810a488e72ce163d5239544bdb51952fe2ad6aa378",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TitleView.h",
+      "bytes": 2864,
+      "sha256": "0dfd776fc753f6bfd0fa23fe51916c09ed696c1c82298e041d5dc76c474eae7b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TouchGate.h",
+      "bytes": 635,
+      "sha256": "6156256171ab04da99cb9e7e61fd2c7fac293c01b18de7cc92b3e45e9ebb31f2",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TouchPanels.h",
+      "bytes": 2065,
+      "sha256": "0d380e10022d92045a246291ec6c737ed1dd4481394e928d4a0a45652b1a75cc",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Trading.h",
+      "bytes": 3307,
+      "sha256": "5b8a6d74e1c6a4c401c1abf668cfa1ddbd3f75082e6f7c4ee1091d4b4b33d2af",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/TradingView.h",
+      "bytes": 3102,
+      "sha256": "7749e090a6a0cfa7148563b651718a17224685891374147a5da95af74ab0e056",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/UpdateDevice.h",
+      "bytes": 30568,
+      "sha256": "1ef88bec8ffeb9315851e4a41f722310b423fb36247e6972d6045eaaa599b9ed",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/UpdateModel.h",
+      "bytes": 3316,
+      "sha256": "aa93100ee6cabcc1479fd20d7a508e9b2aceaccb266aa4c105b9c073daa0c0fd",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/UpdateView.h",
+      "bytes": 6206,
+      "sha256": "9370fbd225e0af3ea67acb159616f97a7a717bfa6a27bac2304b303799eb10c0",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/View.h",
+      "bytes": 46533,
+      "sha256": "2a2b933b054126a3c0b82906f66a318dc5340d7cf600b6b95b38e33e8038e135",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/World.h",
+      "bytes": 2109,
+      "sha256": "1dec7b397de3b47e071bc390fa2b31638a7398c2d93e0832e91cf99ee9ff44d3",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/WorldClock.h",
+      "bytes": 1759,
+      "sha256": "d82f943213256638f1eadd5b9875c5c1f8445f199753c37ef7baf89bf357c622",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/WorldEnemyArt.h",
+      "bytes": 95,
+      "sha256": "6d55cc5ecea914612c9cc7a8a0a996aa42732247279afe3025fb4c5784cc4389",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_DataBus.cpp",
+      "bytes": 4233,
+      "sha256": "20e3a0b4b60048f2df8bf96227680bb0555ecf0406490214356bca920b89251b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_DataBus.h",
+      "bytes": 12964,
+      "sha256": "b11d347fc7783d9e56bf3134e58997299f39dac0a71456d597fc2d940b62f956",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_G.cpp",
+      "bytes": 6519,
+      "sha256": "fb539168ad2f39c9d0a6db9045d392e7cf75723811880f60035f8454cfbe5888",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_G.h",
+      "bytes": 2059,
+      "sha256": "bfa9ac677740a086a61b5843aa6deab5be67ff200f6a0246034d69948b957417",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_GFX.cpp",
+      "bytes": 94283,
+      "sha256": "5912fb75582ef1a65bf5016d5990607ffe55d0a4de6c2f6f12887b7b08fd0a22",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_GFX.h",
+      "bytes": 21146,
+      "sha256": "f46c767710253226e00a574055af9dfd6e625ece58bfe481d73ddbcf181e9d40",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_TFT.cpp",
+      "bytes": 25672,
+      "sha256": "d9dafc1b7cae9bb0de79dd11421aa14686493141c9f6fcf955e239adea9c79ba",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/Arduino_TFT.h",
+      "bytes": 3703,
+      "sha256": "4d9eb70fc543ebe43b4deba19f27210a1c9de709c88e0d111aa2019fa1deb1de",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/YCbCr2RGB.h",
+      "bytes": 27384,
+      "sha256": "5b75c28bf83a8eef05a85919c08175696e9920100f4b9736a759d6b6014458b7",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/databus/Arduino_HWSPI.cpp",
+      "bytes": 12798,
+      "sha256": "c42a8c22b8da71014df32875eb847ea458da1656f029e9a2a06007c93d8fe42b",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/databus/Arduino_HWSPI.h",
+      "bytes": 4103,
+      "sha256": "e0c2ef7289c88dba49a5999fa8fc58ab13f72ba83f18f9a603ba5840f9f11f95",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/display/Arduino_ST7789.cpp",
+      "bytes": 2904,
+      "sha256": "19c6fe624ee73c0ccc480b1b8fa721a142020ad21a04ba47e2712e8c8c83fbf0",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/display/Arduino_ST7789.h",
+      "bytes": 4967,
+      "sha256": "69be4345f6a6a920b8483c6ccf7081c624a90f733e2f2b2cba8bc08e7ea5100a",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/font/glcdfont.h",
+      "bytes": 8894,
+      "sha256": "04d399ad4a25a132b52239b3c53c5638350845dfc3a2d036a0fb67bac353025e",
+      "executable": false
+    },
+    {
+      "path": "firmware/RPG_POKET_2/src/GFX/gfxfont.h",
+      "bytes": 1077,
+      "sha256": "1a5044a5b5c80feaf2c8eada02cf077a0977b42bbfd6c5409d8cee3e681c6562",
+      "executable": false
+    },
+    {
+      "path": "tests/ControllerStore29.h",
+      "bytes": 1476,
+      "sha256": "59bce9fd9061fcc7f4b9407e8c3ecd12a7ad8deb4ef30f90a04b0767f6666be9",
+      "executable": false
+    },
+    {
+      "path": "tests/Fatigue7Trace.h",
+      "bytes": 846,
+      "sha256": "c1ffc8e11291e82402c4711a075655eab0e7239f2aa70a37e7f449191dd3d51a",
+      "executable": false
+    },
+    {
+      "path": "tests/LegacyEventOffer.h",
+      "bytes": 346,
+      "sha256": "35cfb5145b5f40d7377e3364b16aca9077db5c6827c8863a6814d1b598793456",
+      "executable": false
+    },
+    {
+      "path": "tests/LegacySave.h",
+      "bytes": 367,
+      "sha256": "c62a30588155ff0d1944e1c38099fa2ab7deab645bd70dfac851d4a8116cc3ba",
+      "executable": false
+    },
+    {
+      "path": "tests/SceneCanvas.h",
+      "bytes": 1911,
+      "sha256": "135c269f29e09c8d11009363feb07a1dd0c493ba4a2c8e4c3b8ee449432c7e1d",
+      "executable": false
+    },
+    {
+      "path": "tests/TestHero.h",
+      "bytes": 308,
+      "sha256": "e6b49a8c2d546905e03c24eb42d9a51c2289ca504fe6393e2a0848b8d7cb927a",
+      "executable": false
+    },
+    {
+      "path": "tests/arcane_progression.cpp",
+      "bytes": 3110,
+      "sha256": "4e9e5447df3683a9b4f033f15ab3e7d3d694fcd61dff1abe68b277d87ea7208c",
+      "executable": false
+    },
+    {
+      "path": "tests/balance74.cpp",
+      "bytes": 3897,
+      "sha256": "2c726269082ca06e16fb3fd0d5d8068ee9a51e081d023da8dc26fcebfd853489",
+      "executable": false
+    },
+    {
+      "path": "tests/barbarian_progression.cpp",
+      "bytes": 3453,
+      "sha256": "5caa8935338cd130223985a91dee33a0f071b38aefcf32aeb622ee1fc0740156",
+      "executable": false
+    },
+    {
+      "path": "tests/bestiary_save.cpp",
+      "bytes": 2677,
+      "sha256": "e7aae3dc9898cbcb7bb47d2b4cc5c3dd1128be0ca6888894f2c23d3e1c04b61d",
+      "executable": false
+    },
+    {
+      "path": "tests/boot_art_diagnostics.cpp",
+      "bytes": 3698,
+      "sha256": "412a1b2d00ac32ac3fdfc3580247a17785c2e1f9d1681d49dc779f14969523ab",
+      "executable": false
+    },
+    {
+      "path": "tests/camp_identity77_render.cpp",
+      "bytes": 9286,
+      "sha256": "b3686f55c5b414c4d8855bd3c12fa67d2c596c1658bb9fa1c07fc4cd0cf711fc",
+      "executable": false
+    },
+    {
+      "path": "tests/camp_loot.cpp",
+      "bytes": 4286,
+      "sha256": "ca43a726a5296fba008d9debaf46dec7a055b3fe13077b8a85e662f94691ea15",
+      "executable": false
+    },
+    {
+      "path": "tests/camp_meal7_controller.cpp",
+      "bytes": 3378,
+      "sha256": "90f4e878a79968d58ec36f39faca3689a3e28607bd2fd632784ca8d57afd6ee8",
+      "executable": false
+    },
+    {
+      "path": "tests/camp_meal7_errors.cpp",
+      "bytes": 3257,
+      "sha256": "05acc51f489049c074c94aa5545d904d81d16a5937db66da9c84fc5b8db62fd7",
+      "executable": false
+    },
+    {
+      "path": "tests/campaign_anwen.cpp",
+      "bytes": 7677,
+      "sha256": "eda4c7892ecd77ea7fd55f8b8a9154dfd2235ad3d5b18bcd9ab666ad3e5a0300",
+      "executable": false
+    },
+    {
+      "path": "tests/campaign_aurora.cpp",
+      "bytes": 5185,
+      "sha256": "e5e4f75ea790ff708da9b2cf48b676e120d896f94bdeed23979ad05fa210d6f4",
+      "executable": false
+    },
+    {
+      "path": "tests/campaign_finale.cpp",
+      "bytes": 8082,
+      "sha256": "d3116d5ea1bec10f3e11ec604c0cfce75f1374e2254db03c455c2beb9119f18a",
+      "executable": false
+    },
+    {
+      "path": "tests/campaign_port.cpp",
+      "bytes": 5336,
+      "sha256": "02aec17d5e422033bbdfb3b1d259f4bda61c0982f618d2ba4d414bc420f90459",
+      "executable": false
+    },
+    {
+      "path": "tests/card_read.cpp",
+      "bytes": 2652,
+      "sha256": "bde5988ec8fd0d5170a19380dbf873e46e8c361f6cf5f78aa580159e7893a32f",
+      "executable": false
+    },
+    {
+      "path": "tests/carvalho77_controller.cpp",
+      "bytes": 4536,
+      "sha256": "6cdc9484a964a9238286aa2134521dad03f269ffd7d0120eadb6456b9d0e81e5",
+      "executable": false
+    },
+    {
+      "path": "tests/carvalho77_render.cpp",
+      "bytes": 2699,
+      "sha256": "207fa7d4d6582d64ab0e1be9d22df0915d5827abb83e43e60bcb895ce4f17860",
+      "executable": false
+    },
+    {
+      "path": "tests/champion_progression.cpp",
+      "bytes": 3600,
+      "sha256": "7a1832cfd308381f77887cdda612eaecce2d3595806503fce46e6bd1075c90c4",
+      "executable": false
+    },
+    {
+      "path": "tests/class_powers.cpp",
+      "bytes": 3387,
+      "sha256": "146f82ddc3aed370a45b6e7292a35c4b07bf74f9506254586ed186770f0c6563",
+      "executable": false
+    },
+    {
+      "path": "tests/class_progression.cpp",
+      "bytes": 2797,
+      "sha256": "5e1e697ce4391bdf08fada491f5acd87a4d57c2a0f96b01d900691210e56ba1e",
+      "executable": false
+    },
+    {
+      "path": "tests/clock77_render.cpp",
+      "bytes": 7156,
+      "sha256": "cc5fb7e3832eeceacd675b583a7d6ff0acdac83814d2643fd424ad994c9fb9da",
+      "executable": false
+    },
+    {
+      "path": "tests/clock_cycle7_logic.cpp",
+      "bytes": 4498,
+      "sha256": "d0b4c9caa13f677a821aeea2a249b26793002f9cefb5d01b9c0d439151c23536",
+      "executable": false
+    },
+    {
+      "path": "tests/clock_cycle7_render.cpp",
+      "bytes": 5902,
+      "sha256": "f2bf452cecc80c3218aa9a0f8885c60f459d2b2c3a41f7bca21549efc4ae1e1e",
+      "executable": false
+    },
+    {
+      "path": "tests/club_duel.cpp",
+      "bytes": 4512,
+      "sha256": "55495b27ab08603cbb605804332c48b8ae29c8b0662d7123151a90c2fb8f73cb",
+      "executable": false
+    },
+    {
+      "path": "tests/club_fake/esp_now.h",
+      "bytes": 1087,
+      "sha256": "cf7a3c06dd6df662daa7cb91a4476a82ec360d764b589b2730e150e68f7db527",
+      "executable": false
+    },
+    {
+      "path": "tests/club_fake/esp_wifi.h",
+      "bytes": 455,
+      "sha256": "4a96bbe6a0be1d6a79c2faba10e154c90af7bb579ee58650dab12626441ec22d",
+      "executable": false
+    },
+    {
+      "path": "tests/club_fake/freertos/FreeRTOS.h",
+      "bytes": 47,
+      "sha256": "184990cdc039a9108b803fdcbca434270cd177cf783b5f2dd65c0f7aeb12e547",
+      "executable": false
+    },
+    {
+      "path": "tests/club_fake/freertos/queue.h",
+      "bytes": 876,
+      "sha256": "9518e2deafbf12c633520d0d22dc3b516fc5c94f3963bdceb4ced50b3fabb89b",
+      "executable": false
+    },
+    {
+      "path": "tests/club_protocol.cpp",
+      "bytes": 8212,
+      "sha256": "80884e1d28977d8773bad04fadb018386d664bb387955e6c1f31ef9fd04b0297",
+      "executable": false
+    },
+    {
+      "path": "tests/combat_trace_controller.cpp",
+      "bytes": 6555,
+      "sha256": "b0c08a3551c3015d9143b9cf95292742ce624076e48264de421d9d29e9a21edd",
+      "executable": false
+    },
+    {
+      "path": "tests/combat_trace_differential.cpp",
+      "bytes": 10420,
+      "sha256": "54955404dacbf022c4fc483a38c8e669250d924881d755493beb8b4a6fce9c8f",
+      "executable": false
+    },
+    {
+      "path": "tests/combat_trace_render.cpp",
+      "bytes": 4847,
+      "sha256": "ff6257bbc83e7ad828250b42e0c259389aa88f0c377edd52d8cfc7adc62cac61",
+      "executable": false
+    },
+    {
+      "path": "tests/combat_trace_semantics.cpp",
+      "bytes": 2986,
+      "sha256": "9647860335d430e725d8143fa44e5f3413f2b699f1a7d358521739e94ddfd83b",
+      "executable": false
+    },
+    {
+      "path": "tests/commerce75.cpp",
+      "bytes": 5301,
+      "sha256": "682402225f8b8e4ddd68a8981c655970906d3d4228f8cda143caae613ed0c79d",
+      "executable": false
+    },
+    {
+      "path": "tests/commerce75_render.cpp",
+      "bytes": 1588,
+      "sha256": "b4c7bf1283160a94967aba088bdcdfd9ebbd12ec6945026ca8304eb68d71db1e",
+      "executable": false
+    },
+    {
+      "path": "tests/d20_camp77_capture.cpp",
+      "bytes": 1686,
+      "sha256": "173518b8460219e49d9c2332be67376d210fc20ce43167a52f347f7278150d98",
+      "executable": false
+    },
+    {
+      "path": "tests/d20_camp77_controller.cpp",
+      "bytes": 8668,
+      "sha256": "0890ac4d49a4afc9c1f73c8f050b5261627adfef10d23041bcd51cab459137ff",
+      "executable": false
+    },
+    {
+      "path": "tests/d20_camp77_render.cpp",
+      "bytes": 6856,
+      "sha256": "382bf1b8b2bd01810e24c411e3ff84c06b1df57ca141d379b86df1b489d9e40e",
+      "executable": false
+    },
+    {
+      "path": "tests/daily77_render.cpp",
+      "bytes": 2665,
+      "sha256": "a123fde721a9b479ea1f57561dafcb5a03f64130f8c08e763d2de987b8f49ec1",
+      "executable": false
+    },
+    {
+      "path": "tests/daily_travel29.cpp",
+      "bytes": 7508,
+      "sha256": "166ebb106ca5b97cc3bad5db79a596d3ad2f2bcaae582efebf3ec23b4cd57c5a",
+      "executable": false
+    },
+    {
+      "path": "tests/daily_travel29_combat.cpp",
+      "bytes": 1991,
+      "sha256": "beca215cf0fe2945725fc670633490bd38727adcc8ddc9c3489753a7e24b6e7d",
+      "executable": false
+    },
+    {
+      "path": "tests/dialogue_story.cpp",
+      "bytes": 9162,
+      "sha256": "52cbf716afb09172971205f4384baf8b38a0a9b9a149b6c4e001abd4479cce19",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon77_layout_controller.cpp",
+      "bytes": 2354,
+      "sha256": "4a219e57c62bf4cb1f57f1493ad472aa18a7621a0c6821f933a7edb4d3e8b081",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon77_postvictory.cpp",
+      "bytes": 5740,
+      "sha256": "74349521247faaadcc925575d9241d29a6ac9c45123c8dc4205bae983229ae91",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon77_release_verifier.py",
+      "bytes": 4447,
+      "sha256": "6472e34000a0fcdaef1ff7261d4a350455467fb88d3d4cf2e40d924da8389fd4",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon77_result_render.cpp",
+      "bytes": 5124,
+      "sha256": "d169744b3726505826f3656ee01f18d9b09383fd86229bf487f10352f3738094",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon77_upgrade.cpp",
+      "bytes": 2648,
+      "sha256": "9a19bd092a1ccd3f0c04b32cec89d341302712fd62e38fb7e6f69c9d8a7d35cf",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon_controller.cpp",
+      "bytes": 88745,
+      "sha256": "b4082b003f65fdda85c47297d512d6072830a711c2bd72944367513b924dd7ce",
+      "executable": false
+    },
+    {
+      "path": "tests/dungeon_save.cpp",
+      "bytes": 3748,
+      "sha256": "f21eb3e5acd0ef2970714dace10b9f17f597e9ad94d57663b877143ae8d9c9e4",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_art_transition.cpp",
+      "bytes": 7280,
+      "sha256": "3a8e205c73098ecf964082cb1ef2acad1fc16c63842cc31bc460ae28b0fcf49f",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_asset_catalog.py",
+      "bytes": 10439,
+      "sha256": "39a1b4a80a6f538c07a7ac1b63e721a9b79735b885fefff808220c075768e1aa",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_codec.cpp",
+      "bytes": 5383,
+      "sha256": "316493a3f95f12765054b50726b55d11b8463ece1f3c2671b4952d9bf9b3d220",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_controller.cpp",
+      "bytes": 5825,
+      "sha256": "bce9b37e24c6c31d544421bd4461b98a17a04cde3f7a12bd0ee30b28abdc773c",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_info.cpp",
+      "bytes": 876,
+      "sha256": "4cfe7de51c00f990ff6095fdd5ebb8dd79896711fbacfc726dd80d46381e5d61",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_ota.cpp",
+      "bytes": 2639,
+      "sha256": "17bb136b651d072a8d05c8cf671879eee11e4c0979e8a8a8004c7117af07c2f7",
+      "executable": false
+    },
+    {
+      "path": "tests/enemy_render.cpp",
+      "bytes": 12240,
+      "sha256": "8b6f2a8332f37580d5d2df1b48c86f4436a54468526eaf7229be673f50b1c125",
+      "executable": false
+    },
+    {
+      "path": "tests/escort29_controller.cpp",
+      "bytes": 2898,
+      "sha256": "7b9322c4e2af81476b1ac29dae9779177212724e4746503a6e1f779d9d97052b",
+      "executable": false
+    },
+    {
+      "path": "tests/escort_recovery29.cpp",
+      "bytes": 3474,
+      "sha256": "811fb013c57f377bdc30e5f6349508feb3d2aae7d4e513dfb285c62ea1519bc9",
+      "executable": false
+    },
+    {
+      "path": "tests/event_catalog.cpp",
+      "bytes": 6242,
+      "sha256": "dc8169853e2cc2ad3169ef216657b1f8e3f131ace0dd6f8e35b939fbf0ad1ccf",
+      "executable": false
+    },
+    {
+      "path": "tests/event_expedition.cpp",
+      "bytes": 4521,
+      "sha256": "e3a3d17e642ca8773f072186ba2b74a2c4b61923b21a4e023ef230ea4bf29666",
+      "executable": false
+    },
+    {
+      "path": "tests/event_objectives.cpp",
+      "bytes": 6384,
+      "sha256": "2bdc4a924cd5941977ef1de67fa137cc9dbf80f9f5124bc6ed00f35220c22f60",
+      "executable": false
+    },
+    {
+      "path": "tests/exploration_save.cpp",
+      "bytes": 3130,
+      "sha256": "898baf6654496caf516e3372666bda93270fd90db0b4e5209c26fa8222b32867",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue7.cpp",
+      "bytes": 6201,
+      "sha256": "527cbefddb18e05077a71eda07be23ad1dfea89942bb1f47ae9752c9fe91f12a",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue76.cpp",
+      "bytes": 17010,
+      "sha256": "1fba6743877e4a7dd2a4f20e22f9aa5ceda86037f2dc9503faa61d818d88b1f7",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue76_club_radio.cpp",
+      "bytes": 10556,
+      "sha256": "8ca34713c5855cc5bb746511bd6ec3312232918dc64d7f17f934760dc489857d",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue76_controller.cpp",
+      "bytes": 4292,
+      "sha256": "b57610c57c57228c2090f1f7cbf4a9e392a25269e21bab9ece502671ff0245f3",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue76_persistence.cpp",
+      "bytes": 18894,
+      "sha256": "c4c0ab5ec1563f5b6f43fc29fe8e1d83b66de4be57db1836edc2ce8e33267b43",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue76_render.cpp",
+      "bytes": 7083,
+      "sha256": "89cda2ce87115d52e722e4a9c499373993ea58173b279eccff826a44577c2228",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue7_controller.cpp",
+      "bytes": 2312,
+      "sha256": "4ced08ec95956fb1c9d08f9711ab36195e5ffb942115d5dc97d6e5fe6ea7758d",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue7_crossings.cpp",
+      "bytes": 2296,
+      "sha256": "844c596762b6c4da6d7618f90e4947d2bc17080c98447053a8242693175d4620",
+      "executable": false
+    },
+    {
+      "path": "tests/fatigue7_render.cpp",
+      "bytes": 3747,
+      "sha256": "3590479aa82e6146f0d9915097373f7b82020485b4220fb4266f2d1a68c45562",
+      "executable": false
+    },
+    {
+      "path": "tests/first_experience.cpp",
+      "bytes": 3842,
+      "sha256": "b2d173566f981f8f3751075d84af8c3ced3bba49f81ad1660560964670b935ce",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package5-approved-sources.json",
+      "bytes": 45669,
+      "sha256": "e25f7c4d107b0d2d49b764dbe07fb181f47339a685880deacbd9fe42b1020a73",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-approved-sources.json",
+      "bytes": 15063,
+      "sha256": "8d0d3fbcbf1eb28b7bc67a02b633dd7b5577452353224ed232d480b48a93216b",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-baseline.json",
+      "bytes": 1339,
+      "sha256": "a96572adc9af7e835028d13d2b863210798b14e35f9ffc0a84564572ad294626",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Camp.h",
+      "bytes": 3649,
+      "sha256": "ff608ed557297d9c2518fab707da2823b630cb14282bc937a099ccc4d859b90a",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Campaign.h",
+      "bytes": 5947,
+      "sha256": "4e45b02d5bd5f695262449a9e0da6ecd2d118f5427ecf3fc919b31e0804c318f",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DailyTravel.h",
+      "bytes": 8049,
+      "sha256": "a4db093f5aef00bdcc46cbada00a540fbba89966905acbda759a516713371ce5",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Dungeon.h",
+      "bytes": 13201,
+      "sha256": "ffcbef825954fba7026fd1b54b7d0a56fc774eeda7003e070304454ed968a457",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DungeonGeneration.h",
+      "bytes": 13437,
+      "sha256": "8ffc0aa7efce9ddc4b7ea8486a220c2d42ee8098a14f757d1d4e3c9d2d2a5e55",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Exploration.h",
+      "bytes": 6625,
+      "sha256": "b012e71a505fc72b1778256abe86e5b496ff7e49de775f1aa4a80bb673294e96",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Gear.h",
+      "bytes": 1876,
+      "sha256": "1abc55383ef2cd425e2cd990138d57efd9591dab298c872242593b8bd2fd91db",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/GuildEvents.h",
+      "bytes": 11216,
+      "sha256": "856d83aa5233cdd0e143855dbf86b81703562a8eb445db26a9039a3499575dfb",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Persistence.h",
+      "bytes": 14555,
+      "sha256": "99b19c1e62aeb6e70c3d9c57fba3c5580fca6f6c4e59f0052331d4ce1059ebe3",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Rules.h",
+      "bytes": 44607,
+      "sha256": "5476a873ba677c65b24bd40f8cf45bdde0c501cf98ff678f3bb0ca2fcac70d8d",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Save.h",
+      "bytes": 14978,
+      "sha256": "2bde03941df5f3abc4e8ee805135b7ac733ebb12548d7c674c33c9deb65f145b",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/SaveVersion.h",
+      "bytes": 208,
+      "sha256": "d35e1373594c12fc294a93a013e91395ece9daf741ec7a05daca3dbd09b1e52a",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package7-approved-sources.json",
+      "bytes": 174802,
+      "sha256": "9e9d5a020f367209a9e9c2846816e9365ed6220b0009390573caf5bb383dd609",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package7-published-baselines.json",
+      "bytes": 1121,
+      "sha256": "1af267ce082f08a28560a849eaccaf88653f217e4e4699cdac5f7b25b164862c",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package8-approved-sources.json",
+      "bytes": 179136,
+      "sha256": "dc3617f1260d00dbd6435f42a7ec093abe559f0fdcc7feeb95da0d963b37356d",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/package8-published-baselines.json",
+      "bytes": 2163,
+      "sha256": "2598cbd5ebd1d5b28a6da7845c4a902c0f3d6eb6264a1b6a6940291ad1ab346f",
+      "executable": false
+    },
+    {
+      "path": "tests/forge_save.cpp",
+      "bytes": 6334,
+      "sha256": "de806562b8d70a6c349933f93e03475ec4502313817d67523eca5653dece3357",
+      "executable": false
+    },
+    {
+      "path": "tests/gear_save.cpp",
+      "bytes": 7276,
+      "sha256": "a9ca55a98319be09ea79aab2a8abaa6d94ad21a62b038bb2ba74109036205edb",
+      "executable": false
+    },
+    {
+      "path": "tests/guild_events.cpp",
+      "bytes": 6465,
+      "sha256": "11ed2d796739a943510deae3dddfce488fc146a386c91abdb05cf802938e486f",
+      "executable": false
+    },
+    {
+      "path": "tests/guild_save.cpp",
+      "bytes": 1808,
+      "sha256": "9dfa599bfc39d06056b3c5aacd44cbc745fdba87bd893e7e580e783faeebf68e",
+      "executable": false
+    },
+    {
+      "path": "tests/hero77_controller.cpp",
+      "bytes": 9867,
+      "sha256": "75711ccf1ec3cc67269902e97b81be48060cf18fa5a7dc14091a368845c40362",
+      "executable": false
+    },
+    {
+      "path": "tests/hero77_render.cpp",
+      "bytes": 30300,
+      "sha256": "088e297a3caf55fe05eabe5d2d2edb67a8443c029ce93a58bdfddc0c3af0e6eb",
+      "executable": false
+    },
+    {
+      "path": "tests/island_save.cpp",
+      "bytes": 4518,
+      "sha256": "2ffc1265d600bf015b7f97f4b7683bbd72bc3b0eb7bdc5357eccbb9322f0c85d",
+      "executable": false
+    },
+    {
+      "path": "tests/launch_readiness.cpp",
+      "bytes": 3438,
+      "sha256": "bc19ef4f2f8acc96fdc520b04635c260f468d5de9f9a6ea745a646ede74a16ec",
+      "executable": false
+    },
+    {
+      "path": "tests/locks_save.cpp",
+      "bytes": 2972,
+      "sha256": "581c6b0dbecdf1456925acd3921ab627c22b7f598f4c7b2fe616bdb4006dd5db",
+      "executable": false
+    },
+    {
+      "path": "tests/long_session.cpp",
+      "bytes": 7663,
+      "sha256": "f053dd0f9ecf092b7d32f05f58c408db9c19de72b1b8b2bad69ae9bd76639473",
+      "executable": false
+    },
+    {
+      "path": "tests/martial_powers.cpp",
+      "bytes": 4997,
+      "sha256": "3e8bc7c79876d9fd7fcbbf7120b4d7b9dfff2f47fb89ce8ea1357b98e1d337db",
+      "executable": false
+    },
+    {
+      "path": "tests/menu_state.cpp",
+      "bytes": 5999,
+      "sha256": "a96f34863c687124d8d33697ecf1f49c311b413fdedc5f7425bcaf52dc96ca71",
+      "executable": false
+    },
+    {
+      "path": "tests/narrative8_controller.cpp",
+      "bytes": 6949,
+      "sha256": "f3c5748dc9bc84688364046d3e816711c066d9db9daba13572f570c30bcf0b91",
+      "executable": false
+    },
+    {
+      "path": "tests/narrative8_events.cpp",
+      "bytes": 11422,
+      "sha256": "2b15648e3b27a7a54c5ea701a3d51b9b5d1741808cf55a16da754bdc68fcd696",
+      "executable": false
+    },
+    {
+      "path": "tests/narrative8_render.cpp",
+      "bytes": 21412,
+      "sha256": "95da713bbaf1f6977884cd569995099fb7bf8a75970b34e19050cce6ce2aced6",
+      "executable": false
+    },
+    {
+      "path": "tests/origin_story.cpp",
+      "bytes": 3869,
+      "sha256": "b712e31448fdf72dc44dc10c30f76c4639c29aec9690a0549bf7f76db8c44f4e",
+      "executable": false
+    },
+    {
+      "path": "tests/ota77_release_verifier.py",
+      "bytes": 4411,
+      "sha256": "f716472584293c31d8c14a000378480e82f93955a99f2a74edc915b72755b248",
+      "executable": false
+    },
+    {
+      "path": "tests/ota77_upgrade.cpp",
+      "bytes": 2636,
+      "sha256": "d580fd0f54645e8a40c6948e8c142673a728ce04bf2e63fcd7ba5d775d45c35f",
+      "executable": false
+    },
+    {
+      "path": "tests/ota_art_readback.cpp",
+      "bytes": 7055,
+      "sha256": "e2a9a401a5bafe0dc91740de553aabc7b9a7da3dd6103a298a29236cb3113db1",
+      "executable": false
+    },
+    {
+      "path": "tests/ota_recovery.cpp",
+      "bytes": 7801,
+      "sha256": "0344f09ae2d3ce81acfef9bd4c43fba813c9865ba7896cd413e3126b8caf9735",
+      "executable": false
+    },
+    {
+      "path": "tests/ota_sd_diagnostics.cpp",
+      "bytes": 4263,
+      "sha256": "08709a6b804ae6d6dd53ff38f53040fa9637b9743a7cc3e3ab231de3a9a47acb",
+      "executable": false
+    },
+    {
+      "path": "tests/ota_sd_diagnostics_render.cpp",
+      "bytes": 3057,
+      "sha256": "e3b59cd1d072a80cdfa1d22bf626a38c13c5387df799a396d0912b496d6a2e21",
+      "executable": false
+    },
+    {
+      "path": "tests/ota_verify_render.cpp",
+      "bytes": 4239,
+      "sha256": "203310a2edf99293d1118b1584a6f356bed2318512b61e460e1c4844ac76fc55",
+      "executable": false
+    },
+    {
+      "path": "tests/outcomes77_render.cpp",
+      "bytes": 2476,
+      "sha256": "3a2a89e76ffb353f5243ff610fc2dc1f19169c40bbbc2877e3771ff142776478",
+      "executable": false
+    },
+    {
+      "path": "tests/package5_release.cpp",
+      "bytes": 11158,
+      "sha256": "bfc42b94befe0bbc1c7f11dc968b9402d7259fcd20fb2295878df694eec95379",
+      "executable": false
+    },
+    {
+      "path": "tests/package5_release_verifier.py",
+      "bytes": 6006,
+      "sha256": "79b0c8ca7b60ce9b561dbcc0694b5bce16a9c4e3e23b6218b5aecce48f1597a6",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_integration_controller.cpp",
+      "bytes": 3507,
+      "sha256": "cef09ac18f0a7fc0c3866416a2e2e354dd925e9834b067a86cc225976922a9cc",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_integration_render.cpp",
+      "bytes": 2308,
+      "sha256": "a2c89854b1a929a0e9237e5bb480bc20c26e402896a8274fc2c6fac992fa8480",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_release.cpp",
+      "bytes": 19694,
+      "sha256": "77a6a13d7930af7d43b9570cb9138af080d7416172fdf33cdf430d5c2f4931b9",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_release_gate.py",
+      "bytes": 1258,
+      "sha256": "42b70d4d9ba6a25be7707d25d58a807ddab362930f51dbe2e68f11aab523cbb7",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_release_verifier.py",
+      "bytes": 7048,
+      "sha256": "82a281ca8f4b611a7259e9fb6885265feac0c13b5254f87849ad0be96c4f1dbe",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/generate29.cpp",
+      "bytes": 3925,
+      "sha256": "49c1914f27be9c225c7e0058e98c30a3ae29173fab5c3355c6a206e6efe281dc",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/geometry.inc",
+      "bytes": 561,
+      "sha256": "c242ce28b6f782f33435510b7b59b6d1f8dc88833a860b09e1df8c9219ee95ab",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/migrate30.cpp",
+      "bytes": 7532,
+      "sha256": "27bb8df04dd39e0815cd8585de73c47b599d62686451918db50badea5e3a0c58",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/nvs_fake.inc",
+      "bytes": 6268,
+      "sha256": "9b3699c5bb5a44d90f53c25605398233258a0745cd6d7fb063a268c5aaa83512",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/nvs_migrate30.cpp",
+      "bytes": 3966,
+      "sha256": "93235c867a77d0027298216a3dd064a3c5e6b99ee8767b42604afd198941d1b8",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/nvs_rollback29.cpp",
+      "bytes": 1444,
+      "sha256": "d462458fa4214ddd43e8dc52ac9a029197847efd11cd53a43d4b5d37e638f057",
+      "executable": false
+    },
+    {
+      "path": "tests/package6_save_review/rollback29.cpp",
+      "bytes": 4976,
+      "sha256": "45319f66aa51b4b29585ae32cb6e6ba682dcc0859ebf340a71398f0f6847be19",
+      "executable": false
+    },
+    {
+      "path": "tests/package7_integration_controller.cpp",
+      "bytes": 6603,
+      "sha256": "d0ce9ec36b0e5c1b732e57f0a20ddf90f3fa4c352944f4ff6c55eb25de174584",
+      "executable": false
+    },
+    {
+      "path": "tests/package7_qualification_config.py",
+      "bytes": 10181,
+      "sha256": "a9529509b44fcf997d90e625efa642d96e8a25872e66341441c23f11bf3e47aa",
+      "executable": false
+    },
+    {
+      "path": "tests/package7_release.cpp",
+      "bytes": 26322,
+      "sha256": "85fb220dab6825d8abd81701ede33bc6c3ccb7d83df26e122f15586df8b60170",
+      "executable": false
+    },
+    {
+      "path": "tests/package7_release_gate.py",
+      "bytes": 1779,
+      "sha256": "6287e4ecf6f390fea2a7ba8501e2f68a05c6370b794e5eb56bec7d3f85469d01",
+      "executable": false
+    },
+    {
+      "path": "tests/package7_release_verifier.py",
+      "bytes": 7485,
+      "sha256": "3fcfabbc6b3cb640f59d9aa7e6b5fad9ff7c734e077ff6f2c2aa0cbaf157261c",
+      "executable": false
+    },
+    {
+      "path": "tests/package8_qualification_config.py",
+      "bytes": 11560,
+      "sha256": "07560616dacff708340cdfe6387695af2a2cecd7dc77586973bc3bc2436f5177",
+      "executable": false
+    },
+    {
+      "path": "tests/package8_release.cpp",
+      "bytes": 26861,
+      "sha256": "690ee935e5740afcd293f5e12b5e4ee08e2f5c06cde3b76e2b1a4f7927273ce4",
+      "executable": false
+    },
+    {
+      "path": "tests/package8_release_gate.py",
+      "bytes": 1775,
+      "sha256": "afd2f20079e33e1d5543a1456cef06d62158324c75ba5c11cd460697db96031f",
+      "executable": false
+    },
+    {
+      "path": "tests/package8_release_verifier.py",
+      "bytes": 7899,
+      "sha256": "91ac8d9516f663b8c95ad3612a1f7ff8ebf6b16626ccc7cfe71f718fb4284584",
+      "executable": false
+    },
+    {
+      "path": "tests/paladin_smite.cpp",
+      "bytes": 2632,
+      "sha256": "8b22da0ae68b4b8c202dd1e4202f492d87fb73e9a41cfe4c51ddc0f5125dd2fe",
+      "executable": false
+    },
+    {
+      "path": "tests/persistence29_adapter.cpp",
+      "bytes": 26703,
+      "sha256": "7385cf5bf01e597059fc0169aa4aa21af94851fb05f521af6a50f854eb343f2b",
+      "executable": false
+    },
+    {
+      "path": "tests/persistence_adapter.cpp",
+      "bytes": 3838,
+      "sha256": "c195566d15cef72e8c1a78d32c5ecd1e2c93d3404581ad0c5b7c51b4d0db8d08",
+      "executable": false
+    },
+    {
+      "path": "tests/procedural6.cpp",
+      "bytes": 10382,
+      "sha256": "c5c6dcdad6d3baf3d8da9a9b6c87b11fc6a7ee1fd9545f638e8f8f1ee11a2a55",
+      "executable": false
+    },
+    {
+      "path": "tests/procedural6_controller.cpp",
+      "bytes": 2779,
+      "sha256": "ce64647c26be9eb76c1a0ec97134e0d3a6678eef60c4762f096850917ce28107",
+      "executable": false
+    },
+    {
+      "path": "tests/procedural6_persistence.cpp",
+      "bytes": 2986,
+      "sha256": "6fbac39b0c49afa569557bab8787e8ae487e41d9a08f4609ba592101f7123ded",
+      "executable": false
+    },
+    {
+      "path": "tests/procedural6_render.cpp",
+      "bytes": 1313,
+      "sha256": "ac72b88b0e832fb11409cb294a17bccb2e053ac2579c8ad57f6e8579bf4c1148",
+      "executable": false
+    },
+    {
+      "path": "tests/progression_journey.cpp",
+      "bytes": 3879,
+      "sha256": "54d546ae9f31b45c4bd6b13cfd141bcd3eca7c63c652c3f3758b415836159c83",
+      "executable": false
+    },
+    {
+      "path": "tests/quests_save.cpp",
+      "bytes": 6343,
+      "sha256": "4b9b0b6a39f8ca867afa5e8652ab63565d8c99c833e1e5525d0bfbf2a0ff7ffb",
+      "executable": false
+    },
+    {
+      "path": "tests/recovery77_release_verifier.py",
+      "bytes": 4451,
+      "sha256": "30075e67f6b3ea7b0ab0c6a4ae8eece381ba4f6e9f9c518ad268c688c86cdaa1",
+      "executable": false
+    },
+    {
+      "path": "tests/recovery77_upgrade.cpp",
+      "bytes": 2635,
+      "sha256": "896d5b1545c59cfff9058b1e8c189fe1499cec21a41aa452a72a3c66cfe7174f",
+      "executable": false
+    },
+    {
+      "path": "tests/regional_world.cpp",
+      "bytes": 5275,
+      "sha256": "4e2389713dadc73e87e3d2d2a96b69d38fca2970323cf526371e7143fb31621e",
+      "executable": false
+    },
+    {
+      "path": "tests/release77_ota.cpp",
+      "bytes": 10964,
+      "sha256": "e628754fd323aef7d5a513dc492e6c484c9f0be4a6413a9d36b03482ca52a24f",
+      "executable": false
+    },
+    {
+      "path": "tests/release77_verifier.py",
+      "bytes": 4436,
+      "sha256": "6b17f3277870e7ae7dc44f0557aebf1c41f9847eead9fedb5dccaba8b7aec4a7",
+      "executable": false
+    },
+    {
+      "path": "tests/render.cpp",
+      "bytes": 48182,
+      "sha256": "391e0da883a737646c494bba09f9de569dfc2a014cbe6b0964319f3a47a26b25",
+      "executable": false
+    },
+    {
+      "path": "tests/render_session.cpp",
+      "bytes": 1358,
+      "sha256": "29ad4054f5f5d07f36b74bbdcfcf18b984b00adc2037564e4ca6a02df5eb7e49",
+      "executable": false
+    },
+    {
+      "path": "tests/reset29.cpp",
+      "bytes": 15878,
+      "sha256": "253c55b5340b729beacf6f69dadbe85e423af6acf68bf3eebbc2a31725d7930d",
+      "executable": false
+    },
+    {
+      "path": "tests/ruins7_controller.cpp",
+      "bytes": 6618,
+      "sha256": "aa20ca388d25720fbbe2e12cd854adf23945aae28c0002358ed89b74ff48af18",
+      "executable": false
+    },
+    {
+      "path": "tests/ruins7_noalloc.cpp",
+      "bytes": 1422,
+      "sha256": "7659f6acdc182dc96d90cd5c038bd307def9379f29e2956aa59432447f467374",
+      "executable": false
+    },
+    {
+      "path": "tests/ruins7_render.cpp",
+      "bytes": 2728,
+      "sha256": "0972b8faae346f14fe074ca0263955dcca9db729de0b77402491c24f510995dc",
+      "executable": false
+    },
+    {
+      "path": "tests/ruins_bag77_controller.cpp",
+      "bytes": 7011,
+      "sha256": "a50c394142f73047f307780dcdf2aba9aa039e5cf11a8141b30a2d672b9474c7",
+      "executable": false
+    },
+    {
+      "path": "tests/ruins_bag77_render.cpp",
+      "bytes": 185,
+      "sha256": "53af2b27f1488646e2ae557f6f30c0484fcd37e927ac2e6fd6f2837c2407a69d",
+      "executable": false
+    },
+    {
+      "path": "tests/rules_save.cpp",
+      "bytes": 11557,
+      "sha256": "780fb7cd5563777a1714a1bba02bbdfb4e67ddd14dc8669889d0470ce5884ea4",
+      "executable": false
+    },
+    {
+      "path": "tests/save29.cpp",
+      "bytes": 17645,
+      "sha256": "72b4ccd3a24801c7045e28ad46a832af2b4fe009d61495ea19cbe386b98e896a",
+      "executable": false
+    },
+    {
+      "path": "tests/scale77_capture.cpp",
+      "bytes": 9305,
+      "sha256": "0b6477d029da05026816b704df687fcdebb171a902af0b2244a8e9976072419f",
+      "executable": false
+    },
+    {
+      "path": "tests/scale77_depth.cpp",
+      "bytes": 4777,
+      "sha256": "0e3ef44185669d8d2445950f5db0c3cfc1eef977bb72c4dc812611409b5095d7",
+      "executable": false
+    },
+    {
+      "path": "tests/scale77_release.cpp",
+      "bytes": 10459,
+      "sha256": "60235b93ea954b19f93584be1a2a71fe552d5138563117eacc1918f724fedb40",
+      "executable": false
+    },
+    {
+      "path": "tests/scale77_release_verifier.py",
+      "bytes": 5293,
+      "sha256": "ed10ad59bd410ebf7ea537f5c44258ffbcc190f2a501993a3d56316922898bab",
+      "executable": false
+    },
+    {
+      "path": "tests/scale77_render.cpp",
+      "bytes": 7172,
+      "sha256": "a2e4b56cce4887dae8c6e2f6fcbd16e36427950b345c4e5f8258a49417d48c63",
+      "executable": false
+    },
+    {
+      "path": "tests/scene_asset_catalog.py",
+      "bytes": 2131,
+      "sha256": "e720c000d8e4ee3127b9902cf6ab57112abc4de7149d794b20fa699445863e10",
+      "executable": false
+    },
+    {
+      "path": "tests/scenes29_controller.cpp",
+      "bytes": 7230,
+      "sha256": "f4ee4f6bbea8a48b8bb07872927aa09f4ca44ab7fcddd25d27125a4e9392c5a5",
+      "executable": false
+    },
+    {
+      "path": "tests/scenes77_controller.cpp",
+      "bytes": 3039,
+      "sha256": "74769b08046b61d6f9e578ad7d177faf7430b8abca636e98d0d0661336d1d2ee",
+      "executable": false
+    },
+    {
+      "path": "tests/scenes77_release.cpp",
+      "bytes": 7397,
+      "sha256": "b49649d232163d3a6b9b043e405493e8e055f77f0fc8152550e52bd46aaad58b",
+      "executable": false
+    },
+    {
+      "path": "tests/scenes77_release_verifier.py",
+      "bytes": 4983,
+      "sha256": "021b70117934afb58ff4013a88e189acdb8f3c93461ffda1bcaba69cb9a85673",
+      "executable": false
+    },
+    {
+      "path": "tests/scenes77_render.cpp",
+      "bytes": 3193,
+      "sha256": "e3212a82a8b6151397390701aaf4a5ce125cb9296b66e06bec128379567341f7",
+      "executable": false
+    },
+    {
+      "path": "tests/sd_adapter.cpp",
+      "bytes": 897,
+      "sha256": "51b8b26e7eb2242a95d87b1b2de09bb7957fe84c94f23b8a9706d19892244ebe",
+      "executable": false
+    },
+    {
+      "path": "tests/sd_fake/Arduino.h",
+      "bytes": 315,
+      "sha256": "a083e81f0d6b8629774b17e204d4138bcdd5a69e81dfbf96c3407c99b31fe427",
+      "executable": false
+    },
+    {
+      "path": "tests/sd_fake/SD.h",
+      "bytes": 1224,
+      "sha256": "95f89941ffb2a9c6ec6676fd356905745bb5b064424f23a89975441f66389d50",
+      "executable": false
+    },
+    {
+      "path": "tests/sd_fake/SPI.h",
+      "bytes": 54,
+      "sha256": "39695f318820869f1f1210d32866b76952bface6fd3c0cbfae1a1232c45a33fe",
+      "executable": false
+    },
+    {
+      "path": "tests/settings_adapter.cpp",
+      "bytes": 7866,
+      "sha256": "752855d136d1cf09db261b4bd6f003c71d74a59aa216f98f845eeef1876a2c34",
+      "executable": false
+    },
+    {
+      "path": "tests/settings_fake/Preferences.h",
+      "bytes": 717,
+      "sha256": "5fa1ffdaf56b5e497f70cea27507e703524fb66f0f1ab9a6d03d6ebd600ac58e",
+      "executable": false
+    },
+    {
+      "path": "tests/settings_fake/SD.h",
+      "bytes": 2676,
+      "sha256": "ae8580334f35db72000248d6f1613bf1c6984823d05939d9ee325534244789b4",
+      "executable": false
+    },
+    {
+      "path": "tests/settings_fake/WiFi.h",
+      "bytes": 1499,
+      "sha256": "77c5c72f02951c797c5327372dd2c247428ebd170266d0e92be549ae9209804e",
+      "executable": false
+    },
+    {
+      "path": "tests/shared_spi_fake/Arduino.h",
+      "bytes": 370,
+      "sha256": "ea1f1a7c5ad8e56624d0621f919cb691d59e7553e87767116ebac6d16e2e736d",
+      "executable": false
+    },
+    {
+      "path": "tests/shared_spi_fake/SD.h",
+      "bytes": 424,
+      "sha256": "439d7604f379a6ab09dcf513a5158571861e5031de90de5a47ec7bc91dfb0a55",
+      "executable": false
+    },
+    {
+      "path": "tests/shared_spi_fake/SPI.h",
+      "bytes": 187,
+      "sha256": "bd4682186004c0a05f0b415ee0a7b1b258a5e05b02395d2e595f8bdc37e985aa",
+      "executable": false
+    },
+    {
+      "path": "tests/shared_spi_startup.cpp",
+      "bytes": 812,
+      "sha256": "5ecb76145245894487fa6cf4393c29ec092d9626c23aacf0d912cd6f6ac8bbab",
+      "executable": false
+    },
+    {
+      "path": "tests/title_controller.cpp",
+      "bytes": 113307,
+      "sha256": "349174a35a061eeb92ed055c19f095b9da7f54db11ad96e23d1a8330e2ff772e",
+      "executable": false
+    },
+    {
+      "path": "tests/touch77_controller.cpp",
+      "bytes": 9251,
+      "sha256": "4b40114b2bde44dcd5908f391f6e511b5ab755aedb79e75f1961f132b7d96c2b",
+      "executable": false
+    },
+    {
+      "path": "tests/touch77_release_verifier.py",
+      "bytes": 4429,
+      "sha256": "0a30f957753f004c358aa883ebc8a9b900f563e68f98ba02788dcd68e587b581",
+      "executable": false
+    },
+    {
+      "path": "tests/touch77_render.cpp",
+      "bytes": 4615,
+      "sha256": "3b87e3728892faeaa79be6e1a6e5c41e06803d981df7be14488cf57932f052e2",
+      "executable": false
+    },
+    {
+      "path": "tests/touch77_upgrade.cpp",
+      "bytes": 2641,
+      "sha256": "4b01a2a46674cce7cbe4b8c44f3f28d3e32b090a3ecc2a95d7a1bf2ccadf9b8b",
+      "executable": false
+    },
+    {
+      "path": "tests/travel_economy.cpp",
+      "bytes": 3309,
+      "sha256": "69dcbc1cd623d13357270119bd370dd4a01b68455c8a21b3eec1c251311d19aa",
+      "executable": false
+    },
+    {
+      "path": "tests/update_adapter.cpp",
+      "bytes": 8393,
+      "sha256": "33d6bbd19d84d4f95f04b3a9b03c47188690575b22b3612e76e598516447b3c2",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/FakeDevice.h",
+      "bytes": 8970,
+      "sha256": "42cc8801a85d4546d208c67763bf22af04c2217c5390561862f7ba2b78c2ff79",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/HTTPClient.h",
+      "bytes": 37,
+      "sha256": "6fe990c463e91e7f2b7201d577020b6a5afb79314024704640a9f69f98f484fa",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/NetworkClientSecure.h",
+      "bytes": 37,
+      "sha256": "6fe990c463e91e7f2b7201d577020b6a5afb79314024704640a9f69f98f484fa",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/README.txt",
+      "bytes": 388,
+      "sha256": "bf18d55349340fc67da75b96295f62a9dff79eb395a186619dcba5b506ca79ee",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/cJSON.c",
+      "bytes": 80399,
+      "sha256": "298581a04a36c0165da4b0aade235c23088cb2faa58651d720ea2f3706ed0b0d",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/cJSON.h",
+      "bytes": 16394,
+      "sha256": "25b0145150d500498e4d209cec69c18c42cf818bffcc54690be3b895a2a16dee",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/esp_ota_ops.h",
+      "bytes": 37,
+      "sha256": "6fe990c463e91e7f2b7201d577020b6a5afb79314024704640a9f69f98f484fa",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/manifest.json",
+      "bytes": 1079,
+      "sha256": "fa715358233443a3ad6f1609633a3a53c4e8fc0ed1039850d2b0408f072020c6",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/manifest_save29.json",
+      "bytes": 875,
+      "sha256": "46c2fdff5025d7d8baffc2273dbbdbb1b3284e27036cf4b83169e2f03fd901b8",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/manifest_save30.json",
+      "bytes": 883,
+      "sha256": "37f10b05518708cb661191f2b16b89393642cc42538ba34274f24484fe0d2ddd",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/mbedtls/sha256.h",
+      "bytes": 40,
+      "sha256": "63cb6084e8f206b4abfcd41dab025d8990b155bdb481839a30e9b5f851bada00",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/procedural6-readback-manifest.json",
+      "bytes": 770,
+      "sha256": "833c2834feba0daa31019303a9fb2e96ff3b13215ea38cb7e8c3f29ab4e6deaf",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/scenes77-readback-manifest.json",
+      "bytes": 767,
+      "sha256": "6760d56a9fbc1efe177ae88683cb2df746891c89d72a2d4c89c643b70cd63d44",
+      "executable": false
+    },
+    {
+      "path": "tests/update_fake/visual77-manifest.json",
+      "bytes": 827,
+      "sha256": "c4fa3b75b736f33dfbf8f81ae92e1a2768bfc175b008c9cd67262fa137c588b3",
+      "executable": false
+    },
+    {
+      "path": "tests/visual77_controller.cpp",
+      "bytes": 6212,
+      "sha256": "d057dfa53ae8c12b4619bb3791ada14781f7b8e71cf9656f16388e1a2ddc6051",
+      "executable": false
+    },
+    {
+      "path": "tests/visual77_render.cpp",
+      "bytes": 9098,
+      "sha256": "4e8914bb3e0ca73dfe45a0de1a6e671a25dd2160137fa404aa565e1b87cc89e2",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_camp_identity77.py",
+      "bytes": 212,
+      "sha256": "f3f36ea8b6acc001b78b55ebf4e62996063c83ca249b5fe6ceedeb885bcfcd92",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_camp_meal7.py",
+      "bytes": 3374,
+      "sha256": "4df2d9659bb4212717b896c5b510b3c2e55fd6cd08b05bd6c1951d64fd379956",
+      "executable": true
+    },
+    {
+      "path": "tools/capture_clock_cycle7.py",
+      "bytes": 2973,
+      "sha256": "ad80f2e3c1fa82a2b04b47d4ff6e7341308651d31f7af35fe6daafeade041151",
+      "executable": true
+    },
+    {
+      "path": "tools/capture_clock_visibility7.py",
+      "bytes": 3139,
+      "sha256": "f84a733d8dda66ec168df75c35f9e398fe27ac536a9a1cc34c87150cbdad41af",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_d20_camp77.py",
+      "bytes": 2288,
+      "sha256": "0684d0333f0f506e80c2d82436ae26559508960bf3ce4f8b960af1a25a4e21ca",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_narrative8.py",
+      "bytes": 7217,
+      "sha256": "7aa3c0eb842f386484659bf418078f28afb4d82aa07d776fa40b06fe4e3b3555",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_ruins7.py",
+      "bytes": 947,
+      "sha256": "3df89b1891dccc5a35e45cb8e54f34d161291abd8b6f6ebcff7483dd86fd7f5d",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_ruins_bag77.py",
+      "bytes": 974,
+      "sha256": "2bc0adcd09f6d609b94e96d4cc191e47f79147939d65f3f14d32ba3c8f75a255",
+      "executable": false
+    },
+    {
+      "path": "tools/capture_scale77.py",
+      "bytes": 15782,
+      "sha256": "5a9a97b119f5476c564a2a47ccb1aad34db89146eb51b2234b7c4823b3318002",
+      "executable": false
+    },
+    {
+      "path": "tools/check_camp_meal7_scope.py",
+      "bytes": 1855,
+      "sha256": "d5c924298695cf5f16a0a96ef7d77b092979462e2748cafcadbb3fbebebceb54",
+      "executable": true
+    },
+    {
+      "path": "tools/check_combined77_budget.py",
+      "bytes": 3307,
+      "sha256": "ed67be710ee520a8f50ffca41ae5b72d2d46eb321e1bdbaa556bb6d8c5c21549",
+      "executable": false
+    },
+    {
+      "path": "tools/check_controller_snapshot.py",
+      "bytes": 1383,
+      "sha256": "3464c48b84d17fe909709f44e7d182e7deb99b5ff041b9cc078705a749547d38",
+      "executable": false
+    },
+    {
+      "path": "tools/check_d20_camp77_scope.py",
+      "bytes": 1650,
+      "sha256": "cde375d97a16e32937bc6aea455fc8ee15f12e03032adb56468c29c860f21645",
+      "executable": false
+    },
+    {
+      "path": "tools/check_enemy77_budget.py",
+      "bytes": 3272,
+      "sha256": "1caa0b1ab6e274d282f3c7ecb83d1710b6bf27dfb8a4d455cb734f4c8544e2d1",
+      "executable": false
+    },
+    {
+      "path": "tools/check_narrative8_scope.py",
+      "bytes": 2832,
+      "sha256": "cc0f7a19f6c7902b77a188db94a15a6dfc01975ace74428e7f078d60c704d14b",
+      "executable": false
+    },
+    {
+      "path": "tools/check_ota77_budget.py",
+      "bytes": 3546,
+      "sha256": "540c6efdad7d6dc94ee237802500e5eb01e41675e3ade94ab8d586f97c561aa7",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package5_scope.py",
+      "bytes": 6633,
+      "sha256": "9d9225181e2dca59eb0cec2990e9a89b509f7f86553b7763cba44fa0994375f1",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package6_release_gate.py",
+      "bytes": 1140,
+      "sha256": "35322e6be35911e5b7fc843d349f8681aa976cda04096d7b4cf27fc56221f1cc",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package6_scope.py",
+      "bytes": 8832,
+      "sha256": "95206ba8f737a38c103ce55d5bbc4bda4b6d83eba648b875abf21c4cdf2dfb3f",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package7_release_gate.py",
+      "bytes": 1654,
+      "sha256": "681f7f9546741e3d8d620f1600d609daf21518b79957c513c2a088c1e87dae0b",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package7_scope.py",
+      "bytes": 7879,
+      "sha256": "170eeee74b276edbfc1f65040ffe6840dbde793cf7aa05d2ddfefb5d82231ec1",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package8_release_gate.py",
+      "bytes": 1654,
+      "sha256": "f2cba0705e33b62ece8a1147cafcaa792f574451e48b3c537d7ac80cfa3c5cb1",
+      "executable": false
+    },
+    {
+      "path": "tools/check_package8_scope.py",
+      "bytes": 7952,
+      "sha256": "e8002fe26be2771b004ca7fbf63f9057e2af3d04d6cb1c38456f9c05df9c5b7b",
+      "executable": false
+    },
+    {
+      "path": "tools/check_ruins7_scope.py",
+      "bytes": 2562,
+      "sha256": "f10d7fb56214edf5189cb66e9e36a3b33a114bbc5a7dbb7289df747fd5d3859f",
+      "executable": false
+    },
+    {
+      "path": "tools/check_ruins_bag77_scope.py",
+      "bytes": 2568,
+      "sha256": "31fe02a426d3b079de61179877d3e2b05f7a76cd7566e2f6f11243b18426b4fd",
+      "executable": false
+    },
+    {
+      "path": "tools/check_scale77_scope.py",
+      "bytes": 2665,
+      "sha256": "fc0c1e49766475d37a1e20b96beed735ebdac79845d28623613f27adb2aed93a",
+      "executable": false
+    },
+    {
+      "path": "tools/check_visual77_budget.py",
+      "bytes": 3100,
+      "sha256": "3cea28ae6f5ce867025713fab852af0019793c6a66b1f9a0990f6023b819c579",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_camp_art.py",
+      "bytes": 3976,
+      "sha256": "59e0ba20dbd2e88784f28d181259f2149c5ae32ccace008630224c3d09ee727d",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_clock_art.py",
+      "bytes": 3576,
+      "sha256": "0a7307541fb32491890a80e8fbf2b18971c4d78be914535c9332c7fb9c6253d5",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_d20_mesh.py",
+      "bytes": 3058,
+      "sha256": "efb3a12d5f7fefaaf532b786ef5a08fd94dfae4bb544fd306a18f570f59642a8",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_dungeon_art.py",
+      "bytes": 4829,
+      "sha256": "e87a5d44f74fd60a9c90c19f5f56b89fa5a6851bf7c86a9c13df6ea12a6ef25d",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_enemy_art.py",
+      "bytes": 22869,
+      "sha256": "183e6271875eac8b768ddc244bbdf1b9ab67a2c98164195d47061dfabc1801f9",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_hippogriff.py",
+      "bytes": 2135,
+      "sha256": "2d83a3766e99bed5537828f33ecd0bc81b05c97258f7f1a50884026fe1d7a62c",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_ruins7_art.py",
+      "bytes": 1357,
+      "sha256": "efc098a90e8c20558c7e8a0ba5c819f17ca9ac4393aef859a5b00f3fcac7de58",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_ruins7_ui.py",
+      "bytes": 3750,
+      "sha256": "a54b7635c802aad3e52ac5c9dfe10c7eb32353f9083bc8ffd45135a0ad632cfc",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_scene_art.py",
+      "bytes": 6648,
+      "sha256": "a07e1803d03104e5e0c4b46ae757c2a72d4b6fa1696bc8cb1f1744e5a42511fa",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_scene_sources.py",
+      "bytes": 1381,
+      "sha256": "3dac948d499b50496fe12e57e3bebcef13c806ec68022bc075468258eb7862ce",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_scenic_ui.py",
+      "bytes": 2345,
+      "sha256": "9c44ac8b85539ea89909ea2f515afe69b7abb849385bf15adf89e242e91db387",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_tent_marker.py",
+      "bytes": 1868,
+      "sha256": "f462ffdeb89d44d958ca569a2f9f60e1ec7fc5665209d452e988967575c2acce",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_title.py",
+      "bytes": 2339,
+      "sha256": "f07e139985c61a73938841161e556baba6da1561b7cbb1548c4410849a844fd4",
+      "executable": false
+    },
+    {
+      "path": "tools/prepare_touch_skin.py",
+      "bytes": 1323,
+      "sha256": "3968d6e096a2f6138f816909803ca28f3c93d9a5d0718cfaaf47eab56da7b757",
+      "executable": false
+    },
+    {
+      "path": "tools/record_package6_identity.py",
+      "bytes": 1738,
+      "sha256": "ed3bd90ddd7c9191796f38749a67ae8966f0ecaf9758b91a88e5f1f8cd67c1b7",
+      "executable": false
+    },
+    {
+      "path": "tools/record_package7_identity.py",
+      "bytes": 2633,
+      "sha256": "1167427d4a4d4a2561c805c9f6035958fcd1b001b7882a158bf4b3e9857f0c76",
+      "executable": false
+    },
+    {
+      "path": "tools/record_package8_identity.py",
+      "bytes": 2824,
+      "sha256": "69036c1dcaf286bba9971d41f5bd5a12057e0265e494e9cc7df3ce9e86888e75",
+      "executable": false
+    },
+    {
+      "path": "tools/release_manifest.py",
+      "bytes": 3816,
+      "sha256": "7aee32ac6fd5d5a176e1b7ce193442153262db865584b3b5f347ac2c4fd2903d",
+      "executable": false
+    },
+    {
+      "path": "tools/release_package6_manifest.py",
+      "bytes": 3926,
+      "sha256": "e0e9393a1911ce2b0011abd5caa4330b434477e5fd55350b87f099df8c5019b2",
+      "executable": true
+    },
+    {
+      "path": "tools/release_package7_manifest.py",
+      "bytes": 3928,
+      "sha256": "78a9e8556bbd71179f88fd2fd0771ce34601b2b520b493150ab1df6b81dac86e",
+      "executable": false
+    },
+    {
+      "path": "tools/release_package8_manifest.py",
+      "bytes": 3924,
+      "sha256": "4c467edfbd712870261582c3218276688dbe8345e0046e12b72ae3d4853e38d2",
+      "executable": false
+    },
+    {
+      "path": "tools/test_camp_meal7.sh",
+      "bytes": 1094,
+      "sha256": "30b7beda8b80a8a38781eee5ae9757c1c4b2fb5abbccc2073330180a23dc6e7a",
+      "executable": true
+    },
+    {
+      "path": "tools/test_carvalho77.sh",
+      "bytes": 1982,
+      "sha256": "353bcc5eeefe6e31b52c6be441eddda2ae0bd7b693e5cea76515477027958ecc",
+      "executable": true
+    },
+    {
+      "path": "tools/test_clock_cycle7.py",
+      "bytes": 6504,
+      "sha256": "30fc012830c495039804275fa74e7dd39b4d4ef379ae5fda78aabfe59a39fca8",
+      "executable": true
+    },
+    {
+      "path": "tools/test_clock_cycle7.sh",
+      "bytes": 1008,
+      "sha256": "5541174f7dd36b80520983d472a1fa907ba719fc9f06f0d1fec88c61e85b86be",
+      "executable": true
+    },
+    {
+      "path": "tools/test_combat_trace.py",
+      "bytes": 8446,
+      "sha256": "6abb7d929dfb8add885ef7385bec7daec235de5261f0aeab85f73331b6561b1e",
+      "executable": true
+    },
+    {
+      "path": "tools/test_combat_trace_ui.sh",
+      "bytes": 728,
+      "sha256": "71e6c80ce971713233339e5cf8cb88efc92ea4c923a7b3cfa67b8f442270ee3b",
+      "executable": true
+    },
+    {
+      "path": "tools/test_d20_camp77.sh",
+      "bytes": 1227,
+      "sha256": "9d846d51b9ba5ce6bd35089bf9634baf75832787c49ecdc2237ea8a2ff466a3e",
+      "executable": true
+    },
+    {
+      "path": "tools/test_dungeon77.sh",
+      "bytes": 1550,
+      "sha256": "149e78f94023f1dd16763990bb0988cf315a7d26c2aaf22e5b6e7bad1a6aa060",
+      "executable": false
+    },
+    {
+      "path": "tools/test_dungeon77_release.py",
+      "bytes": 2599,
+      "sha256": "d9e19aa91ee80e4ae35001cc772d13316fe3e7882f85604e1b8aea66f933e8c4",
+      "executable": false
+    },
+    {
+      "path": "tools/test_enemy_transition.py",
+      "bytes": 6674,
+      "sha256": "af422e8bc53e16e5588bb83982695fe209762eeec8106165b0484fcfc5e06961",
+      "executable": false
+    },
+    {
+      "path": "tools/test_fatigue7.sh",
+      "bytes": 1407,
+      "sha256": "f58df4bbdadb99d4b2a2be01fd7cbf18132132683b9200a0bf8de789f8231627",
+      "executable": true
+    },
+    {
+      "path": "tools/test_narrative8.sh",
+      "bytes": 1936,
+      "sha256": "d2f763bc7843343d6e45d6bb2ca1ccc9f0d162d782670bf42a2a7c18aab8b01c",
+      "executable": true
+    },
+    {
+      "path": "tools/test_native.sh",
+      "bytes": 7425,
+      "sha256": "22112eeda97d42dd245024d22ebcc92b9e35b0e7d3dfd15e8421e24aa4d968ce",
+      "executable": false
+    },
+    {
+      "path": "tools/test_ota77_release.py",
+      "bytes": 2557,
+      "sha256": "d89f976b54f81f4eac25a230b524331769b204a62310b0c79679b71cd6e38c43",
+      "executable": false
+    },
+    {
+      "path": "tools/test_ota_reliability.sh",
+      "bytes": 1927,
+      "sha256": "c7030dc15265037e4424e77429f7f612692e8bf89f421bc98a62fd06fcf1ae93",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package5.sh",
+      "bytes": 1593,
+      "sha256": "f11370d7a581979087c9f500ae7a48ada0af5d0bf532e2a43472b086a505ec61",
+      "executable": true
+    },
+    {
+      "path": "tools/test_package5_release.py",
+      "bytes": 7359,
+      "sha256": "9be53eeee7a4fa049d128151d952fd76b5d15e41206dcbe2b8ed967013828c96",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package6.sh",
+      "bytes": 2683,
+      "sha256": "5d9db02084bc3d2194a28b89a44c14e8c72f525737dd4661893dc2d561971e09",
+      "executable": true
+    },
+    {
+      "path": "tools/test_package6_local.sh",
+      "bytes": 2384,
+      "sha256": "08804b491bd6fe6d9b1a4ab5f2f99f4e1a65d5616f50c698d5669acbc1caa101",
+      "executable": true
+    },
+    {
+      "path": "tools/test_package6_release.py",
+      "bytes": 8193,
+      "sha256": "c8f3cf40ec693b831191753fc25ff92111be537341db2aa68b96606dcc264ead",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package6_save_review.py",
+      "bytes": 2295,
+      "sha256": "5ee0a19dc83df6f6694d8d07bbb629329696b3bc1b68570edfb5f32c2f828898",
+      "executable": true
+    },
+    {
+      "path": "tools/test_package7.sh",
+      "bytes": 2076,
+      "sha256": "192689375fae99586f0ea22f337af3cb5c6f4ee818edfc805ea8506677a8af22",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package7_cadence.py",
+      "bytes": 1879,
+      "sha256": "ed858db156faaa7444dcfc47436ebc9abe702eaaf3798e1266fde69b9362db9d",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package7_local.py",
+      "bytes": 10441,
+      "sha256": "ea62e68ec8615e0572111ea1cccac52e4c23847ef3016f3438c557d40b6acc44",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package7_release.py",
+      "bytes": 12915,
+      "sha256": "979ba4f8e67f296b370b56464f087320a15cc56cc75e4bff5740b5d796b52a6e",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package8.sh",
+      "bytes": 2347,
+      "sha256": "173fcb58f084390cb111fede246b83461364171892b82bfabfec8a2e480c9317",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package8_local.py",
+      "bytes": 10817,
+      "sha256": "be9fb615aa3e77673a2f64ef76f1ea355472e7dbee5e3399a6c5d94b79c4c4a5",
+      "executable": false
+    },
+    {
+      "path": "tools/test_package8_release.py",
+      "bytes": 15263,
+      "sha256": "d6143390489a9f01b1e7fe80175f5c742133b9da292045440b0ad53cb150628a",
+      "executable": false
+    },
+    {
+      "path": "tools/test_procedural6.sh",
+      "bytes": 896,
+      "sha256": "4fe9968421fec1f4663fb0b2acfdf8beb3dee31b809761b4936057e8aec3eef9",
+      "executable": true
+    },
+    {
+      "path": "tools/test_recovery77_release.py",
+      "bytes": 2576,
+      "sha256": "76c7616182463619f5249242440040826dd636afa8f0785ab4083b7a3f81865e",
+      "executable": false
+    },
+    {
+      "path": "tools/test_release77_ota.py",
+      "bytes": 12436,
+      "sha256": "6efc23f23a936a5ebe1c1305a2c15da715acf56f1a38eb55b4f9b20a1b3926f0",
+      "executable": false
+    },
+    {
+      "path": "tools/test_ruins7.sh",
+      "bytes": 1145,
+      "sha256": "2dc8d4095f1f796b58bf53156b3b155b777caa3821c8f927caf65d4657ed0461",
+      "executable": true
+    },
+    {
+      "path": "tools/test_ruins_bag77.sh",
+      "bytes": 762,
+      "sha256": "7e396843817c3a6ec5222be4b29e2987282eb9f86e6ecd8d407fd4399f4260f1",
+      "executable": false
+    },
+    {
+      "path": "tools/test_scale77.sh",
+      "bytes": 338,
+      "sha256": "6a9484bf30c7668af25e7f5d92c97bf470586318966f7e4a83e9a3fe153fde53",
+      "executable": true
+    },
+    {
+      "path": "tools/test_scale77_release.py",
+      "bytes": 6046,
+      "sha256": "b28721c1f7c091bb1437971be70d289390f80116dbf495b91f9a661f14a95f66",
+      "executable": false
+    },
+    {
+      "path": "tools/test_scenes77.sh",
+      "bytes": 340,
+      "sha256": "306c658c6a68f68701fb55ceb53d078d47de6f61615a8acb50a80b38c31b3e0f",
+      "executable": true
+    },
+    {
+      "path": "tools/test_scenes77_release.py",
+      "bytes": 5029,
+      "sha256": "3d7c765ae393319d82a93d46fa565215b0fcf2ad763598ab699b3bef90115b76",
+      "executable": false
+    },
+    {
+      "path": "tools/test_touch77.sh",
+      "bytes": 1564,
+      "sha256": "a1b17a39bdaa385f27cf7cb309ab541cded18b765f24f2d68646c5288cdc93a8",
+      "executable": true
+    },
+    {
+      "path": "tools/test_touch77_release.py",
+      "bytes": 2589,
+      "sha256": "1bab26894aa0d2d41f445d2ee0e7b30528573c3c4c0735d2a4dbf51661ab0bdc",
+      "executable": false
+    },
+    {
+      "path": "tools/unpack_art.py",
+      "bytes": 2516,
+      "sha256": "f7f2fc1a59cb4df1419fbeaa7de64787e2f0064af9e7036454c6f065d048b1cd",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_dungeon77_release.py",
+      "bytes": 3067,
+      "sha256": "75ff46b570f0343a0f09ecffca9052e3ddf0e0112a0e5b822c5d737c6eab253d",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_ota77_release.py",
+      "bytes": 3045,
+      "sha256": "651aec36093d8ef964e0fb76d89ebf31956cc6d46efb114ab30e7ed96d4e05cf",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_package5_release.py",
+      "bytes": 4126,
+      "sha256": "126643fe6376951d10206f5dc21299e2ea6d90f68c5cee479f39ff823d3ade4a",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_package6_release.py",
+      "bytes": 4194,
+      "sha256": "d1f1d77b122c8e451d872ac6279396a0773e17c892159ec9fc862aa9b3c017ae",
+      "executable": true
+    },
+    {
+      "path": "tools/verify_package7_release.py",
+      "bytes": 4222,
+      "sha256": "dae097bf49c69c4d4fd91f5369c9e1b4e629a5c8ebba3716c35a4e46bf3e44a9",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_package8_release.py",
+      "bytes": 4265,
+      "sha256": "9adc0b1ec368ffb8f4bf1542f155412de81bdaa2236904ec14bf315333a10835",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_recovery77_release.py",
+      "bytes": 3060,
+      "sha256": "93b7f01813af9e4339c51170df24d8b2186be523feb70d5737852004f288e3c1",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_release.py",
+      "bytes": 2995,
+      "sha256": "2e12bc25d17aba96f3aa3d3cc7eee65dd20ce5d6d9a4d623829b90d90de0d86a",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_scale77_release.py",
+      "bytes": 4085,
+      "sha256": "8edab2446bfa31636a424b64734eb2816ddc487fc16f68f9717defec1cd48366",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_scenes77_release.py",
+      "bytes": 4003,
+      "sha256": "74dc924651944eeb4ddd17a75fc99cc20c7b94e595ac9d0476939a8246081a30",
+      "executable": false
+    },
+    {
+      "path": "tools/verify_touch77_release.py",
+      "bytes": 3051,
+      "sha256": "4ae513b84266435d5a6a0f3042108c5cb2e953e8821bbc727ccc74c0de74d7e1",
+      "executable": false
+    }
+  ]
+}

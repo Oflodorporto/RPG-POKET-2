@@ -15,7 +15,19 @@ int main(){
     assert(std::abs(s.x-(120-89*std::sin(angle)))<1.1&&std::abs(s.y-(111+59*std::cos(angle)))<1.1);
     if(second)assert(std::abs(s.x-previous.x)<=1&&std::abs(s.y-previous.y)<=1);
     assert(s.night==(second<18000||second>=72000));
-    assert(s.stars<=210&&s.glow<=190&&s.pulse==256);previous=s;
+    assert(s.stars<=210&&s.glow<=190&&s.pulse==256);
+    assert(s.x-clockCycle7::MEDALLION_RADIUS>=20&&s.x+clockCycle7::MEDALLION_RADIUS<=220);
+    assert(s.y-clockCycle7::MEDALLION_RADIUS>=clockCycle7::FACE_TOP&&s.y+clockCycle7::MEDALLION_RADIUS<clockCycle7::FACE_BOTTOM);
+    if(second){ // RGB565 quantization may step by one channel level, never jump at a key.
+      assert(std::abs(int(s.top>>11)-int(previous.top>>11))<=1);
+      assert(std::abs(int((s.top>>5)&63)-int((previous.top>>5)&63))<=1);
+      assert(std::abs(int(s.top&31)-int(previous.top&31))<=1);
+      assert(std::abs(int(s.bottom>>11)-int(previous.bottom>>11))<=1);
+      assert(std::abs(int((s.bottom>>5)&63)-int((previous.bottom>>5)&63))<=1);
+      assert(std::abs(int(s.bottom&31)-int(previous.bottom&31))<=1);
+      assert(std::abs(int(s.glow)-int(previous.glow))<=1);
+    }
+    previous=s;
   }
   strcpy(text,"00:00:00");auto zero=clockCycle7::state(text,true,0);
   assert(std::abs(previous.x-zero.x)<=1&&std::abs(previous.y-zero.y)<=1&&zero.x==120&&zero.y==170);
@@ -32,7 +44,7 @@ int main(){
     unsigned step=unsigned(std::abs(int(s.pulse)-int(lastPulse)));if(step>maxStep)maxStep=step;lastPulse=s.pulse;
     auto repeat=clockCycle7::state(text,true,ms);assert(s.x==repeat.x&&s.y==repeat.y&&s.meteor==repeat.meteor);
   }
-  assert(meteorFrames==14&&maxStep<=26);
+  assert(meteorFrames==14&&maxStep<=38);
   strcpy(text,"12:00:00");assert(clockCycle7::state(text,true,13600).meteor<0);
   assert(!clockCycle7::animationDue(false,false,100000,0));
   assert(!clockCycle7::animationDue(true,false,1199,1000)&&clockCycle7::animationDue(true,false,1200,1000));
@@ -41,6 +53,11 @@ int main(){
   assert(!clockCycle7::animationDue(true,false,99,UINT_MAX-99));
   auto rolloverBefore=clockCycle7::state(text,true,UINT_MAX),rolloverAfter=clockCycle7::state(text,true,0);
   assert(rolloverBefore.valid&&rolloverAfter.valid&&std::abs(int(rolloverBefore.pulse)-int(rolloverAfter.pulse))<=1);
+  strcpy(text,"08:33:13");auto morning=clockCycle7::state(text,true,0);
+  strcpy(text,"12:00:00");auto midday=clockCycle7::state(text,true,0);
+  strcpy(text,"17:00:00");auto afternoon=clockCycle7::state(text,true,0);
+  assert(morning.top!=midday.top&&midday.top!=afternoon.top&&morning.bottom!=afternoon.bottom);
+  assert((midday.top>>11)>(morning.top>>11)&&((midday.top>>5)&63)>((morning.top>>5)&63));
   assert(clockCycle7::mix(0x1234,0xabcd,0)==0x1234&&clockCycle7::mix(0x1234,0xabcd,256)==0xabcd);
   // Sky is clipped inside the original oval; the ornament and text plates stay intact.
   for(int y=0;y<320;++y)for(int x=0;x<240;++x)if(clockCycle7::sky(x,y))assert(x>=41&&x<=199&&y>=67&&y<=155);
