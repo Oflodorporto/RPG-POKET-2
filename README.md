@@ -7,7 +7,7 @@
 <p align="center">Fantasia medieval em português · Pixel art inspirada nos 16 bits · ESP32-S3 · Tela de toque</p>
 
 <p align="center">
-  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-shop77"><strong>Baixar a versão atual</strong></a> ·
+  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-coop77"><strong>Baixar a versão atual</strong></a> ·
   <a href="docs/GUIA_RAPIDO.md">Instalar e jogar</a> ·
   <a href="#um-pequeno-mundo-para-explorar">Ver o jogo</a> ·
   <a href="#documentação">Documentação</a>
@@ -15,8 +15,8 @@
 
 Crie seu aventureiro, converse com os habitantes de Aeldra, atravesse estradas, explore ruínas e enfrente combates por turnos. Escolha uma classe, personalize sua aparência e acompanhe uma campanha com diário, cartas, personagens e progressão até o nível 20.
 
-**Versão publicada:** 7.7 · Comércio em lote · `2026.10.14-shop77` · build `2026101405`.
-Firmware, artes e downloads públicos verificados. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
+**Versão publicada:** 7.7 · Treino cooperativo experimental · `2026.10.14-coop77` · build `2026101406`.
+Qualificação de software, publicação e downloads públicos verificados no SHA exato. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
 
 ## As Cinzas da Primeira Aurora
 
@@ -64,6 +64,20 @@ Duas perspectivas da mesma partida, com os dois aventureiros completos, HP/MP, g
 
 Se a comunicação cair **depois do início**, sem resultado confirmado, o duelo termina em **NAO CONFIRMADO**, sem prêmio e com a entrada já consumida. Antes do início, permanece a devolução integral. Uma vitória ainda não gravada pode ser perdida ao desligar. [Regras de interrupção e evidências](docs/ESTADO_ATUAL.md).
 
+## Treino cooperativo experimental
+
+<p align="center">
+  <img src="docs/media/coop-aceite-host.png" width="320" alt="Captura host do treino cooperativo: anfitrião confere o parceiro antes de aceitar">
+  <img src="docs/media/coop-combate-host.png" width="320" alt="Captura host do treino cooperativo em paisagem: dois aventureiros, alvos e ações da primeira onda">
+</p>
+<p align="center"><strong>Aceite do parceiro · Primeira onda · Capturas do renderer host</strong></p>
+
+Na Guilda, abra **Coop treino**. Uma placa cria a sala, a outra escolhe a sala, e o anfitrião confere e aceita o parceiro. São **dois jogadores, duas ondas e um chefe**, em paisagem; ao sair, a Guilda volta ao retrato.
+
+O encontro usa **cópias dos personagens somente em RAM**. Não concede XP, ouro ou recompensas, não avança missões, não consome poções da campanha e não altera seus saves nem o RNG da campanha. Ataque e escolha o alvo, use **Foco teste** (habilidade experimental de 2 MP), defenda ou use poções da cópia RAM. O treino não inclui o conjunto completo de poderes de classe nem coop com progressão de campanha.
+
+Cancelar antes do envio não gasta recurso; depois de enviar, aguarde a confirmação. Uma queda prolongada encerra o treino, sem retomada durável nem migração de anfitrião. **RF entre duas placas, toque/orientação, restauração de Wi-Fi, OTA físico, heap e FPS ainda precisam de validação no aparelho.** As imagens acima não comprovam esses testes. [Controles do treino](docs/COOP_TRAINING_CONTROLS.md) · [Escopo e qualificação](docs/PACKAGE12_RELEASE_QUALIFICATION.md).
+
 ## O tempo também passa por aqui
 
 <p align="center">
@@ -80,13 +94,13 @@ Sol e lua acompanham a hora local, com pulso e mudanças graduais de luz. A pré
 
 ### Instalação e atualização
 
-1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-shop77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
-2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-shop77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
+1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-coop77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
+2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-coop77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
 3. **Já usa scenes77 ou posterior?** Conecte ao Wi-Fi **2,4 GHz** e abra **Configurações → Atualização → Verificar versão → Instalar**. Mantenha cartão e alimentação conectados até terminar.
 
 > **Atenção aos saves:** a versão atual grava Save30 de 160 bytes, lê Save29/30 e mantém época 1, **sem novo reset**. A primeira passagem de **touch77 ou anterior** exige USB e reinicia uma única vez os três slots antigos, sem importar Save1…28; Wi-Fi e artes ficam fora desse reset. Não tente contornar a recusa do OTA nem apagar toda a flash. [Confira o seu caso antes de instalar](docs/GUIA_RAPIDO.md#compatibilidade-dos-saves).
 
-> **Não há garantia de downgrade seguro:** firmwares antigos rejeitam saves com **10 rações**. Num journal misto, podem recuperar um registro anterior com até 9 e perder o progresso posterior; se ambos os registros tiverem 10, a leitura antiga fica bloqueada. Compartilhar Save30 não elimina essa diferença. Não apague seu progresso para atualizar.
+> **Não há garantia de downgrade seguro:** o leitor shop77 aceita **0..10 rações**, mas firmwares anteriores à shop77, limitados a **9 rações**, rejeitam saves com **10 rações**. Num journal misto, podem recuperar um registro anterior com até 9 e perder o progresso posterior; se ambos os registros tiverem 10, a leitura antiga fica bloqueada. Compartilhar Save30 não elimina essa diferença. Não apague seu progresso para atualizar.
 
 ### Como jogar
 
@@ -94,9 +108,9 @@ Use **toques nos botões da tela** e solte o dedo entre comandos. Em Carvalho, *
 
 ## O que vem depois
 
-- **Validação em hardware:** PvP entre duas placas, toque, relógio a 10% de brilho, USB/OTA, energia e medições reais de desempenho.
+- **Validação em hardware:** PvP e treino coop entre duas placas, toque/orientação, restauração de Wi-Fi, relógio a 10% de brilho, USB/OTA, energia, heap e medições reais de desempenho.
 - **Nova bolsa visual:** frente separada; não integrada nesta versão.
-- **Pets e cooperação:** planejamento/protótipos separados; não são recursos lançados do `shop77`.
+- **Pets e coop com progressão de campanha:** fora desta entrega. O modo coop deste pacote é somente o treino experimental descrito acima.
 
 Sem datas prometidas. O que está publicado e suas limitações ficam registrados no [estado atual](docs/ESTADO_ATUAL.md).
 

@@ -2,7 +2,7 @@
 
 [Voltar à apresentação](../README.md) · [Estado publicado](ESTADO_ATUAL.md) · [Índice de documentação](INDICE.md)
 
-Este guia descreve a versão **2026.10.14-pvp77 / build 2026101404**, publicada em 14/10/2026. Documentos de entregas antigas podem descrever outro formato de save ou outro fluxo de publicação.
+Este guia descreve a versão **2026.10.14-coop77 / build 2026101406**, publicada em 14/10/2026. Documentos de entregas antigas podem descrever outro formato de save ou outro fluxo de publicação.
 
 ## Antes de começar
 
@@ -10,7 +10,7 @@ Este guia descreve a versão **2026.10.14-pvp77 / build 2026101404**, publicada 
 - Flash de **16 MiB**, PSRAM **OPI de 8 MiB**, tela **240 × 320**.
 - MicroSD **FAT32**, cabo USB de dados e alimentação estável.
 - Para atualizar pela placa, rede Wi-Fi de **2,4 GHz**.
-- Baixe código e artes da [Release pvp77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-pvp77). Não misture arquivos de tags diferentes.
+- Baixe código e artes da [Release coop77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-coop77). Não misture arquivos de tags diferentes.
 
 Os saves ficam em NVS na placa, não no cartão. Copiar o microSD não é um backup dos três slots. Evite trocar partições ou usar ferramentas de apagamento total como tentativa de recuperação.
 
@@ -25,11 +25,11 @@ Os saves ficam em NVS na placa, não no cartão. Copiar o microSD não é um bac
 
 A versão atual **grava Save30 e lê Save29/30**. O leitor e o instalador não migram o save por conta própria. A compatibilidade de leitura dos codecs antigos **não autoriza downgrade de firmware**.
 
-Se você está em touch77 ou anterior e precisa manter aquele progresso, **não avance esperando importação**. O reset dos três slots faz parte da fronteira de compatibilidade. O [registro da transição para Save29](RELEASE_SCENES_7_7_NOTAS.txt) explica o motivo; os dados de versão e leitura Save29-only desse registro são históricos, não o contrato do pvp77.
+Se você está em touch77 ou anterior e precisa manter aquele progresso, **não avance esperando importação**. O reset dos três slots faz parte da fronteira de compatibilidade. O [registro da transição para Save29](RELEASE_SCENES_7_7_NOTAS.txt) explica o motivo; os dados de versão e leitura Save29-only desse registro são históricos, não o contrato do coop77.
 
 ## Instalar pelo USB
 
-1. Abra a [tag da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-pvp77), baixe o código-fonte completo e extraia a pasta inteira.
+1. Abra a [tag da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-coop77), baixe o código-fonte completo e extraia a pasta inteira.
 2. Abra `firmware/RPG_POKET_2/RPG_POKET_2.ino` no Arduino IDE, mantendo todos os cabeçalhos e arquivos do sketch ao lado dele.
 3. Use o core **Espressif ESP32 3.3.12** e a placa **ESP32S3 Dev Module**.
 4. Configure:
@@ -88,7 +88,7 @@ Se aparecer **Tentar salvar**, mantenha a placa ligada e use a recuperação ofe
 
 ## PvP entre duas placas
 
-Acesse **Carvalho → Mais → Guilda → Clube**, com cadastro na Guilda e personagem de nível 5 ou superior. Use **pvp77 nas duas placas**. O protocolo v5/52 bytes não é compatível com o v4/44 bytes. Não há troca de protocolo durante a partida.
+Acesse **Carvalho → Mais → Guilda → Clube**, com cadastro na Guilda e personagem de nível 5 ou superior. Use **coop77 nas duas placas**. O protocolo v5/52 bytes não é compatível com o v4/44 bytes. Não há troca de protocolo durante a partida.
 
 - Antes do início, uma interrupção mantém a devolução integral existente.
 - Depois do início, sem prova confirmada do resultado, aparece **NAO CONFIRMADO**: sem prêmio de vitória, e a entrada utilizada permanece consumida.

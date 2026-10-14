@@ -2,7 +2,7 @@
 
 [Voltar à apresentação](../README.md) · [Estado publicado](ESTADO_ATUAL.md)
 
-As imagens do jogo são saídas reais do renderer em testes **host** (no computador). Os GIFs são sequências de capturas host. Não são fotos nem vídeos da placa, prova de comunicação por rádio, medida de FPS ou validação de brilho físico. Não há imagem de protótipo da nova bolsa, pets ou coop nesta apresentação.
+As imagens do jogo são saídas reais do renderer em testes **host** (no computador). Os GIFs são sequências de capturas host. Não são fotos nem vídeos da placa, prova de comunicação por rádio, medida de FPS ou validação de brilho físico. Não há imagem de protótipo da nova bolsa ou de pets nesta apresentação. As duas capturas de coop abaixo mostram apenas o treino experimental qualificado em host; não comprovam execução em duas placas.
 
 ## Origem
 
@@ -12,11 +12,13 @@ As imagens do jogo são saídas reais do renderer em testes **host** (no computa
 - **PvP:** GIF copiado byte a byte de `mago-ataque-duas-perspectivas.gif`, produzido pela [captura de apresentação PvP](../tools/capture_pvp_presentation.py). São dois participantes simulados da mesma partida; não duas placas físicas.
 - **Relógio:** GIF copiado byte a byte de `Relogio-pulso-manha-velocidade-real-12s.gif`, produzido pela [captura de visibilidade](../tools/capture_clock_visibility7.py). A prévia dura 12 segundos em velocidade normal no host; não comprova a legibilidade a 10% de backlight.
 
-As capturas da versão publicada pertencem à [qualificação do SHA exato](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38580662456). O [registro completo da entrega](ESTADO_ATUAL.md) explica a comparação das prévias, a publicação e os limites dos testes.
+- **Treino cooperativo experimental:** `host-accept.png` e `playing.png`, copiados byte a byte como `coop-aceite-host.png` e `coop-combate-host.png` do artefato `11934642412` do [run de qualificação 38645121720](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38645121720), fonte `da68148210b3155b72e41deb08a46ab854d09a0e`, tree `6c003c6df520658297b832f6abc6e61645defd8c`. Caminho de origem no artefato: `build/coop-training-render/`. O [gate de captura Package12](../tools/capture_package12_coop.py) usa o [harness do renderer real](../tests/coop_training_render.cpp), `CoopView.h` e a ponte de paisagem sobre o framebuffer retrato existente. As imagens mostram aceite e combate simulados no computador. Não houve recorte, redimensionamento, retoque, edição ou nova geração; somente cópia dos PNGs originais. Os atributos de largura do README controlam apenas sua apresentação na página.
+
+As capturas herdadas da apresentação pertencem à [qualificação anterior](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38580662456). A origem das novas capturas coop é o run Package12 identificado acima. O [registro completo da entrega](ESTADO_ATUAL.md) explica a comparação das prévias, a publicação e os limites dos testes.
 
 ## Inventário e SHA-256
 
-Os cinco arquivos novos de mídia somam **723.522 bytes** (cerca de 707 KiB). Os dois GIFs juntos somam **490.816 bytes**. O logo de 1.106.159 bytes já existia no repositório e não foi duplicado.
+Os cinco arquivos herdados de mídia somam **723.522 bytes** (cerca de 707 KiB) e permanecem byte-idênticos. Os dois GIFs juntos somam **490.816 bytes**. As duas capturas coop acrescentam **37.073 bytes**, totalizando **760.595 bytes** de mídia da apresentação, sem contar o logo. O logo de 1.106.159 bytes já existia no repositório e não foi duplicado.
 
 ### [carvalho-host.png](media/carvalho-host.png)
 
@@ -59,6 +61,24 @@ Os cinco arquivos novos de mídia somam **723.522 bytes** (cerca de 707 KiB). Os
 - Tamanho: 1,106,159 bytes
 - Quadros: 1
 - SHA-256: `a983abe8098f9aae7469c59a73cca0e7d87262b87441543e7a432259b657af70`
+
+### [coop-aceite-host.png](media/coop-aceite-host.png)
+
+- Dimensões: 320 × 240
+- Tamanho: 11,157 bytes
+- Quadros: 1
+- SHA-256: `761cc034cb67739511266a69e35ddf583e8f184de94280f7fe14db00ec86d962`
+- Origem exata: `build/coop-training-render/host-accept.png`, artefato `11934642412`, run `38645121720`, commit `da68148210b3155b72e41deb08a46ab854d09a0e`.
+
+### [coop-combate-host.png](media/coop-combate-host.png)
+
+- Dimensões: 320 × 240
+- Tamanho: 25,916 bytes
+- Quadros: 1
+- SHA-256: `77824e68e4c2ff82714461a75af64b358d335d798aac33254a22e78411a9a590`
+- Origem exata: `build/coop-training-render/playing.png`, artefato `11934642412`, run `38645121720`, commit `da68148210b3155b72e41deb08a46ab854d09a0e`.
+
+O manifesto original das capturas, `build/coop-training-render/manifest.json`, tem SHA-256 `9e4961e4b94f1d7d121083845cfec097c82fe5c58c740b3c99d67f9f920f0e68`. Ele vincula estes PNGs ao renderer e registra paridade de pixels normal/sanitizado. Esse hash é da evidência de captura; não é o hash do manifesto público de atualização.
 
 ## Direitos e uso
 
