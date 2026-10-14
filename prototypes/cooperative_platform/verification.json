@@ -1,0 +1,36 @@
+{
+  "status": "local-unhooked-training-candidate",
+  "date": "2026-10-14",
+  "base_commit": "dfc68c49f3264d4f2d3642266d44b82ca9b7c563",
+  "published_pvp_commit_prefix": "0541056",
+  "production_tracked_files_unchanged": 971,
+  "frozen_prototype_files_unchanged": 19,
+  "platform_checks_per_build": 230981,
+  "platform_builds": [
+    "optimized",
+    "ASan+UBSan"
+  ],
+  "cpp_heap_allocations_instrumented": 0,
+  "final_state_hash_stable_and_lossy": 230425349,
+  "native_x86_64_bytes": {
+    "training": 3480,
+    "radio_port_with_fake_queue_metadata": 2088,
+    "contact_sampler_included_in_training": 12
+  },
+  "focused_pvp_passed": [
+    "club_protocol",
+    "club_duel",
+    "pvp_reliability_save30"
+  ],
+  "not_run": [
+    "full aggregate suite",
+    "ESP32 compilation",
+    "CI",
+    "real RF",
+    "physical LCD/touch",
+    "board free heap/stack/PSRAM/timing"
+  ],
+  "publication": false,
+  "menu_hook": false,
+  "save_or_campaign_writes": false
+}

@@ -319,8 +319,8 @@ inline bool begin(Game& g,uint8_t id=2){if(g.phase!=Phase::Home||!g.p.hp||id>28|
 inline uint8_t regionalEnemyAt(const Game& g,uint8_t region,unsigned n,bool night=false){
  if(region==0)return g.dndProgression&&g.p.level<3?(n%2?0:1):(n%2?4:1);
  if(region==1)return n%2?5:2;
- if(region==2){const uint8_t day[]={6,25,6,26},dark[]={26,6,25,26};return (night?dark:day)[n%4];}
- const uint8_t day[]={7,27,7,28},dark[]={28,7,27,28};return (night?dark:day)[n%4];
+ if(region==2){const uint8_t day[]={6,25,6,26},dark[]={26,6,25,26};return night?dark[n%4]:day[n%4];}
+ const uint8_t day[]={7,27,7,28},dark[]={28,7,27,28};return night?dark[n%4]:day[n%4];
 }
 inline uint8_t regionalEnemy(const Game& g,unsigned n,bool night=false){return regionalEnemyAt(g,g.city,n,night);}
 inline bool explore(Game& g,bool boss=false,bool night=false){if(g.phase!=Phase::Home||g.campStage||g.tripStage||g.dungeonFlags||g.discovery||!g.p.hp||(boss&&(g.city!=1||g.ruinsWins<3)))return false;unsigned n=random(g);uint8_t id=regionalEnemy(g,n,night);if(!begin(g,boss?3:id))return false;addFatigue(g,4);return true;}

@@ -1,22 +1,21 @@
-name: Publicar comercio em lote apos autorizacao e SHA qualificado
-# Prepared infrastructure is not publication authorization.
-# Only an independently authorized main push may start this release.
-# Qualification branches never publish. Historical tools remain unchanged.
+name: Publicar treino coop experimental apos SHA qualificado
+# Publication is conditional on the authorized exact-SHA qualification and all repeated gates.
+# Qualification alone never publishes, flashes USB, or performs physical OTA.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE11_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "PACKAGE12_STAGING_ONLY.txt", ".github/workflows/package12-check.yml", ".github/workflows/release.yml"]
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: package11-main
+  group: package12-main
   cancel-in-progress: false
 jobs:
   release:
     if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     defaults:
       run:
         shell: bash --noprofile --norc -euo pipefail {0}
@@ -27,65 +26,140 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Exigir main push e qualificacao do SHA exato
+          persist-credentials: false
+      - name: Exigir main push e qualificacao bem-sucedida do SHA exato
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package11-check.yml/runs?branch=feat%2Fpackage11-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_package11_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-shop77" --jq 'length')" = 0
-      - name: Instalar dependencia deterministica das artes
-        run: python3 -m pip install 'Pillow==11.3.0'
-      - name: Rerodar agregado herdado completo, PvP e comercio em lote no SHA aprovado
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package12-check.yml/runs?branch=feat%2Fpackage12-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-coop77" --jq 'length')" = 0
+      - name: Instalar dependencias deterministicas das capturas e gates
+        run: |
+          python3 -m pip install 'Pillow==11.3.0' 'PyYAML==6.0.3'
+      - name: Executar agregado completo herdado e coop ON com LSan obrigatorio
         run: |
           mkdir -p build
-          bash tools/test_package11.sh 2>&1 | tee build/package11-tests.log
+          bash tools/test_package12.sh 2>&1 | tee build/package12-tests.log
       - uses: arduino/setup-arduino-cli@v2
-      - name: Instalar ESP32
+      - name: Instalar core ESP32 historico confirmado na placa
         run: |
           arduino-cli config init
           arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
           arduino-cli core update-index
           arduino-cli core install esp32:esp32@3.3.12
-      - name: Compilar e verificar bytes finais
+      - name: Compilar SHA exato default ON e fallback OFF fora do sketch
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          arduino-cli version | tee build/package11-esp32-build.log
-          arduino-cli compile --jobs 4 \
-            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
-            --build-path build/esp32-package11 --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee -a build/package11-esp32-build.log
-          cp build/esp32-package11/RPG_POKET_2.ino.bin build/RPG_POKET_2.ino.bin
-          python3 tools/check_package11_scope.py
-          python3 tools/release_package11_manifest.py
-          python3 tools/verify_package11_release.py
-          python3 tests/package11_release_verifier.py
-          python3 tools/test_package11_release.py release
-          python3 tools/test_package11_release.py release --sanitizers
-          python3 tools/check_package11_scope.py
-          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package11_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
-      - name: Publicar somente SHA main autorizado e qualificado
+          python3 tools/check_package12_scope.py
+          arduino-cli version | tee build/package12-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/package12-esp32-toolchain.txt
+          for flag in 1 0; do
+            extra=()
+            if [[ "$flag" = 0 ]]; then extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=0'); fi
+            arduino-cli compile --verbose --jobs 4 \
+              --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+              "${extra[@]}" \
+              --build-path "$RUNNER_TEMP/esp32-package12/flag-$flag" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/package12-esp32-flag-$flag.log"
+          done
+          cp "$RUNNER_TEMP/esp32-package12/flag-1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_package12_scope.py
+      - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
+        run: |
+          python3 tools/release_package12_manifest.py
+          python3 tools/verify_package12_release.py
+          python3 tests/package12_release_verifier.py
+          python3 tools/test_package12_release.py release
+          python3 tools/test_package12_release.py release --sanitizers
+          python3 tools/check_package12_scope.py
+      - name: Registrar SHA, ambos builds, agregado, capturas e orcamentos
+        run: |
+          python3 tools/record_package12_identity.py --build-root "$RUNNER_TEMP/esp32-package12"
+      - name: Guardar candidato e provas do SHA exato
+        uses: actions/upload-artifact@v4
+        with:
+          name: package12-publisher-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/package12-scope-budget.json
+            build/package12-source-identity.json
+            build/package12-tests.log
+            build/package12-esp32*
+            build/package12-validation/**
+            build/package7-differential*.json
+            build/screens/procedural6/*
+            build/screens/package6-integration/*
+            build/screens/camp-identity77/*
+            build/d20-camp77/previews/*
+            build/ruins-bag77/ruins-bag-*.png
+            build/ruins7/*.png
+            build/clock-cycle7/previews/*
+            build/clock-cycle7/visibility-preview/*
+            build/fatigue7/screens/*
+            build/narrative8-render/*.json
+            build/narrative8-render/*.jsonl
+            build/narrative8-render/*.html
+            build/narrative8-render/*.txt
+            build/narrative8-render/*.log
+            build/narrative8-render/png/*
+            build/narrative8-render/contact-sheets/*
+            build/narrative8-events/*
+            build/pvp-presentation/previews/*
+            build/pvp-presentation/capture-manifest.json
+            build/pvp-presentation/screens/*.txt
+            build/pvp-presentation/sanitized/*.txt
+            build/pvp-review/screens-normal/*
+            build/pvp-review/screens-sanitizer/*
+            build/bulk-shop/screens/*.png
+            build/bulk-shop/screens/*.ppm
+            build/bulk-shop/sanitized/*.ppm
+            build/ration-limit10-oldreader/**
+            build/coop-training-native/**/*.log
+            build/coop-training-native/**/*.json
+            build/coop-training-native/**/*.txt
+            build/coop-training-native/**/*.d
+            build/coop-training-render/**/*.png
+            build/coop-training-render/**/*.ppm
+            build/coop-training-render/**/*.json
+            build/coop-training-render/**/*.log
+            build/coop-training-render/**/*.tsv
+          if-no-files-found: error
+          retention-days: 14
+      - name: Publicar somente SHA main autorizado apos repetir todos os gates
         if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 tools/check_package11_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-shop77" --jq 'length')" = 0
-          gh release create v2026.10.14-shop77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Comercio em lote' --notes-file docs/RELEASE_PACKAGE11_NOTAS.txt --latest
-      - name: Conferir downloads publicos e manifesto latest
+          test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REF" = refs/heads/main
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package12-check.yml/runs?branch=feat%2Fpackage12-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-coop77" --jq 'length')" = 0
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package12_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" > "$RUNNER_TEMP/main-ref.json"
+          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
+          gh release create v2026.10.14-coop77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Treino cooperativo experimental' --notes-file docs/RELEASE_PACKAGE12_NOTAS.txt --latest
+      - name: Conferir downloads publicos, OTA real e manifesto latest
         run: |
-          mkdir -p build/published-package11
+          mkdir -p build/published-package12
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package11/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-shop77/$name"
-            cmp "release/$name" "build/published-package11/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package12/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-coop77/$name"
+            cmp "release/$name" "build/published-package12/$name"
           done
-          python3 tools/verify_package11_release.py build/published-package11
-          python3 tools/test_package11_release.py build/published-package11
+          python3 tools/verify_package12_release.py build/published-package12
+          python3 tools/test_package12_release.py build/published-package12
+          python3 tools/test_package12_release.py build/published-package12 --sanitizers
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-package11/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package11/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-package12/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package12/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

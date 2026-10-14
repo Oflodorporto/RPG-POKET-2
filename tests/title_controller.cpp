@@ -39,6 +39,9 @@ bool pendingTouch=false;int pendingX=0,pendingY=0;Page pendingPage=Page::Home;rp
 uint32_t loopAt=0,loopGap=0,frameMax=0,serialDropped=0,wifiPollAt=0;
 uint32_t acceptedTouches=0,maxPollGap=0,touchFeedbackUntil=0;bool polledOnce=false;
 char message[40]="";
+#if RPG_ENABLE_COOP_TRAINING
+bool coopIsOpen();bool openCoopTraining();void tickCoopTraining(uint32_t now);void captureCoopTouch(bool valid,bool down,int x,int y,uint32_t now);
+#endif
 firstExperience::Progress<Store> firstHints(nvs);
 bool offerFirstHint(){
  if(!menu.sessionStarted||journal.blocked||journal.active<0||!game.tutorial||!game.originStory||game.originPage!=8||combatFx.active()||view.traceOpen||menu.journey.active)return false;
@@ -466,7 +469,18 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Race){if(hit(x,y,14,263,102)){if(menu.creationFromTitle)openTitle();else {view.page=Page::Menu;say("");}}else if(hit(x,y,124,263,102)){view.page=Page::Choose;dirty=true;}else for(unsigned i=0;i<4;++i)if(hit(x,y,14+(i%2)*110,46+(i/2)*104,102,98)){menu.draftRace=i;dirty=true;}return;}
   if(view.page==Page::Clothes){if(hit(x,y,14,272,102)){view.page=Page::Choose;dirty=true;}else if(hit(x,y,124,272,102)){if(journal.blocked||journal.active>=0){say("Crie em um slot vazio");return;}menu.sessionStarted=true;view.createHintsPending=true;view.trackedLevel=0;game=rpg::create(view.choice,esp_random());game.originStory=true;game.race=menu.draftRace;game.shirt=menu.draftShirt;game.trousers=menu.draftPants;menu.storyIndex=0;menu.storyReplay=false;savedTransition(Page::Prologue);}else if(hit(x,y,14,177,102)||hit(x,y,124,177,102)){menu.draftShirt=(menu.draftShirt+(x<120?7:1))%8;dirty=true;}else if(hit(x,y,14,224,102)||hit(x,y,124,224,102)){menu.draftPants=(menu.draftPants+(x<120?7:1))%8;dirty=true;}return;}
-  if(view.page==Page::Guild){if(hit(x,y,14,272,212)){view.page=Page::Village;say("");}else if(hit(x,y,14,170,212)){view.page=game.guildMember?Page::GuildMissions:Page::GuildJoin;say("");}else if(hit(x,y,14,218,212)){if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}}return;}
+  if(view.page==Page::Guild){
+    if(hit(x,y,14,272,212)){view.page=Page::Village;say("");}
+    else if(hit(x,y,14,170,212)){view.page=game.guildMember?Page::GuildMissions:Page::GuildJoin;say("");}
+#if RPG_ENABLE_COOP_TRAINING
+    else if(hit(x,y,124,218,102)){if(!openCoopTraining())say("Treino indisponivel agora");}
+    else if(hit(x,y,14,218,102)){
+#else
+    else if(hit(x,y,14,218,212)){
+#endif
+      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}
+    }return;
+  }
   if(view.page==Page::GuildJoin){if(hit(x,y,14,272,102)){view.page=Page::Guild;say("");}else if(hit(x,y,124,272,102)){if(!rpg::joinGuild(game)){say("Cadastro concluido");savedTransition(Page::Guild);}else say("Ouro insuficiente para cadastro");}return;}
   if(view.page==Page::Tavern){if(hit(x,y,14,220,212)){view.page=Page::Guild;say("");}else if(hit(x,y,14,272,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Choose){

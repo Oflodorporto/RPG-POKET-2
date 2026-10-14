@@ -1,0 +1,24 @@
+RPG POKET - 7.7 - Treino cooperativo experimental
+Versao 2026.10.14-coop77 | build 2026101406
+
+TREINO EXPERIMENTAL PARA DOIS JOGADORES
+Na Guilda, abra “Coop treino”. Uma placa cria a sala; a outra escolhe a sala e o anfitriao aceita o parceiro. Confira o codigo e o personagem antes do aceite. O encontro usa a tela em paisagem e volta a Guilda em retrato ao sair.
+
+Use Ataque e escolha um inimigo, Habilidade para “Foco teste”, Defender ou as pocoes copiadas para o treino. “Foco teste” e uma habilidade experimental de 2 MP, nao o conjunto completo de poderes de classe. Cancelar antes de enviar nao gasta recurso; apos enviar, aguarde a confirmacao. Sala ocupada, alvo invalido e turno do parceiro nao aceitam a acao.
+
+O modo usa copias RAM dos personagens. Nao concede XP, ouro ou recompensa, nao avanca missoes e nao gasta as pocoes nem altera o progresso persistente da campanha. Nao ha retomada duravel nem migracao de anfitriao. Uma queda prolongada encerra o treino; “Sair” retorna a Guilda. O treino nao deve abrir junto de PvP, atualizacao ou operacao incompativel de Wi-Fi.
+
+O treino vem habilitado no firmware de producao deste pacote. O processo de qualificacao tambem compila a variante desligada como fallback; apenas o binario default ligado e publicado.
+
+PRESERVACAO DO PACOTE ATUAL
+Mantem comercio em lote, ate 10 racoes, historia, relogio, PvP, campanha, Wi-Fi, SD e as 666 artes existentes. Save30 de 160 bytes, leitura de Save29/30, tres slots e epoch1 continuam iguais, sem novo reset. Pets e a nova bolsa visual nao fazem parte desta versao.
+
+ATENCAO AO RETORNO DE VERSAO
+Firmwares antigos aceitam no maximo 9 racoes. Um save com 10 e rejeitado por esses leitores; num journal misto eles podem recuperar um registro anterior, perdendo alteracoes posteriores. Se ambos os registros tiverem 10, a leitura antiga fica bloqueada. Nao ha garantia de downgrade seguro. Nao apague o progresso para atualizar.
+
+ATUALIZACAO E LIMITES EXPERIMENTAIS
+O fluxo USB primeiro/OTA depois permanece, com EraseFlash=none. A OTA exige confirmacao no aparelho. Preserve seu backup habitual e nao desligue durante gravacao. Publicacao nao inicia instalacao automatica.
+
+Os gates de software exigem o agregado completo de 152 checkpoints, asserts, ASan/UBSan/LSan, render real, conservacao Save30/RNG, instalador multi-TU, ESP32 core3.3.12 nas duas configuracoes e adapters OTA sobre os bytes finais. O publisher repete os gates no SHA exato aprovado e confere os downloads publicos e o manifesto latest. Consulte os runs desse SHA para os resultados, sem extrapolar testes focados ou sinteticos.
+
+O treino ainda precisa de validacao fisica em duas placas: RF, distancia e reconexao, Wi-Fi restaurado, toque, LCD/orientacao, SD, energia, heap, stack e ritmo de frames. Capturas host e tamanhos de linker nao comprovam esses pontos. Trate esta versao como experimental e registre o codigo da sala, os passos e a identidade do firmware ao relatar problemas.

@@ -41,6 +41,9 @@ uint32_t loopAt=0,loopGap=0,frameMax=0,serialDropped=0,wifiPollAt=0;
 uint32_t acceptedTouches=0,maxPollGap=0,touchFeedbackUntil=0;bool polledOnce=false;
 char message[40]="";
 void sampleTouch();
+#if RPG_ENABLE_COOP_TRAINING
+bool coopIsOpen();bool openCoopTraining();void tickCoopTraining(uint32_t now);void captureCoopTouch(bool valid,bool down,int x,int y,uint32_t now);
+#endif
 void paint(uint32_t now){
   static Page paperLastPage=Page::Choose;if(view.page!=paperLastPage){paperLastPage=view.page;view.paperStartFrame=now/120;view.paperAnimate=storyPaperPage(view.page)&&!commercePage(view.page);}
   view.campProgress=rpg::dailyTrip(game)&&game.daily.phase==rpg::DailyPhase::Rest?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/2000):game.campStage==3?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/4500):0;
@@ -77,6 +80,9 @@ void sampleTouch(){
   uint32_t now=millis();if(uint32_t(now-pollAt)<8)return;
   if(polledOnce)maxPollGap=std::max(maxPollGap,uint32_t(now-pollAt));polledOnce=true;pollAt=now;
   bool down=false;uint16_t x=0,y=0;bool valid=touchReady&&readTouch(down,x,y);
+#if RPG_ENABLE_COOP_TRAINING
+  if(coopIsOpen()){captureCoopTouch(valid,down,x,y,now);return;}
+#endif
   if(gate.update(valid,down,now)){
     ++acceptedTouches;touchFeedbackUntil=now+140;view.touchFeedback=true;dirty=true;
     // Never carry an input made during an animation/enemy turn into the next turn.
@@ -512,7 +518,18 @@ void tapped(int x,int y){
   }
   if(view.page==Page::Race){if(hit(x,y,14,263,102)){if(menu.creationFromTitle)openTitle();else {view.page=Page::Menu;say("");}}else if(hit(x,y,124,263,102)){view.page=Page::Choose;dirty=true;}else for(unsigned i=0;i<4;++i)if(hit(x,y,14+(i%2)*110,46+(i/2)*104,102,98)){menu.draftRace=i;dirty=true;}return;}
   if(view.page==Page::Clothes){if(hit(x,y,14,272,102)){view.page=Page::Choose;dirty=true;}else if(hit(x,y,124,272,102)){if(journal.blocked||journal.active>=0){say("Crie em um slot vazio");return;}menu.sessionStarted=true;view.createHintsPending=true;view.trackedLevel=0;game=rpg::create(view.choice,esp_random());game.originStory=true;game.race=menu.draftRace;game.shirt=menu.draftShirt;game.trousers=menu.draftPants;menu.storyIndex=0;menu.storyReplay=false;savedTransition(Page::Prologue);}else if(hit(x,y,14,177,102)||hit(x,y,124,177,102)){menu.draftShirt=(menu.draftShirt+(x<120?7:1))%8;dirty=true;}else if(hit(x,y,14,224,102)||hit(x,y,124,224,102)){menu.draftPants=(menu.draftPants+(x<120?7:1))%8;dirty=true;}return;}
-  if(view.page==Page::Guild){if(hit(x,y,14,272,212)){view.page=Page::Village;say("");}else if(hit(x,y,14,170,212)){view.page=game.guildMember?Page::GuildMissions:Page::GuildJoin;say("");}else if(hit(x,y,14,218,212)){if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}}return;}
+  if(view.page==Page::Guild){
+    if(hit(x,y,14,272,212)){view.page=Page::Village;say("");}
+    else if(hit(x,y,14,170,212)){view.page=game.guildMember?Page::GuildMissions:Page::GuildJoin;say("");}
+#if RPG_ENABLE_COOP_TRAINING
+    else if(hit(x,y,124,218,102)){if(!openCoopTraining())say("Treino indisponivel agora");}
+    else if(hit(x,y,14,218,102)){
+#else
+    else if(hit(x,y,14,218,212)){
+#endif
+      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}
+    }return;
+  }
   if(view.page==Page::GuildJoin){if(hit(x,y,14,272,102)){view.page=Page::Guild;say("");}else if(hit(x,y,124,272,102)){if(!rpg::joinGuild(game)){say("Cadastro concluido");savedTransition(Page::Guild);}else say("Ouro insuficiente para cadastro");}return;}
   if(view.page==Page::Tavern){if(hit(x,y,14,220,212)){view.page=Page::Guild;say("");}else if(hit(x,y,14,272,212)){view.page=game.city==1?Page::Ruins:Page::Village;say("");}return;}
   if(view.page==Page::Choose){
@@ -701,6 +718,9 @@ void tickTravelProgress(uint32_t now){
   if(view.page==Page::CampRest&&game.campStage==3&&uint32_t(now-menu.campStarted)>=4500){rpg::finishCamp(game);say("Descanso concluido");savedTransition(rpg::escortCampAllowed(game)?Page::EventMission:game.city==1?Page::Ruins:Page::Explore);}
 }
 #include "ClubRadio.h"
+#if RPG_ENABLE_COOP_TRAINING
+#include "CoopDevice.h"
+#endif
 void setup(){
   Serial.begin(115200);Serial.setTxTimeoutMs(0);pinMode(41,OUTPUT);digitalWrite(41,HIGH);pinMode(1,OUTPUT);digitalWrite(1,LOW);
   Wire.begin(48,47);Wire.setClock(400000);Wire.setTimeOut(20);
@@ -726,6 +746,15 @@ void loop(){
   uint32_t now=millis();
   menu.frameMs=frameMax;menu.pollMs=maxPollGap;menu.loopMs=loopGap;menu.touches=acceptedTouches;menu.touchErrors=busErrors+shortReads+countErrors+rangeErrors;
   if(loopAt)loopGap=std::max(loopGap,uint32_t(now-loopAt));loopAt=now;
+#if RPG_ENABLE_COOP_TRAINING
+  // Entire campaign/UI background flow is suspended while training owns radio.
+  // In particular: no automatic letters, journal writes, world RNG or PvP tick.
+  if(coopIsOpen()){
+    sampleTouch();tickCoopTraining(now);
+    if(lcdReady && (dirty||uint32_t(now-drawAt)>=120)){drawAt=now;paint(now);dirty=false;}
+    delay(1);return;
+  }
+#endif
   if(tickUpdater())dirty=true;
   tickClub(now);
   if(!arena.opened&&uint32_t(now-wifiPollAt)>=250){wifiPollAt=now;if(tickWifi())dirty=true;}
@@ -738,6 +767,11 @@ void loop(){
   offerLevelNotice();
   offerFirstHint();
   if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
+#if RPG_ENABLE_COOP_TRAINING
+  // Entry may have happened in tapped() above; do not run campaign transitions
+  // once the newly opened training is active, even in this first iteration.
+  if(coopIsOpen()){delay(1);return;}
+#endif
   now=millis();
   if(menu.clockValid&&uint32_t(now-menu.eventCheckAt)>=1000){menu.eventCheckAt=now;if(canOfferEvents()&&!updateInfo.busy&&!arena.opened&&view.page!=Page::SaveError&&view.page!=Page::FirstTip&&view.page!=Page::Letter&&view.page!=Page::LetterRefuse&&rpg::offerEvent(game,menu.eventDay,menu.eventHour)){say("Nova carta de Maelis");savedTransition(view.page);}}
   tickIdleClock(now,view.traceOpen||view.page==Page::FirstTip||updateInfo.busy||arena.opened||menu.connecting||menu.scanning||menu.journey.active||combatFx.active()||view.page==Page::EventTravel||view.page==Page::Letter||view.page==Page::LetterRefuse||view.page==Page::CampRest||(view.page==Page::CampRoll&&!menu.rollReady)||(view.page==Page::TravelRoll&&!menu.rollReady)||((view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy));

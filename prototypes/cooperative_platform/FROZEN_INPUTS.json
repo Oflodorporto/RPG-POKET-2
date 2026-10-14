@@ -1,0 +1,82 @@
+{
+  "source": "coop-ui-targeting-work",
+  "production_base": "dfc68c49f3264d4f2d3642266d44b82ca9b7c563",
+  "files": [
+    {
+      "path": "prototypes/cooperative/CoopEndpoint.h",
+      "sha256": "0dba475ea3bd7f84fab0caa694f1c8ae43aed86c9dd54b78842e488e103af472"
+    },
+    {
+      "path": "prototypes/cooperative/CoopModel.h",
+      "sha256": "339edc2921c6fbefe46b9e3abbb552dfb1bcc58ca8836f614af8592ffe9a78b0"
+    },
+    {
+      "path": "prototypes/cooperative/CoopWire.h",
+      "sha256": "c192c2966acac877f563c6e5a35e556b623dedecd4fc31902a9fac484c4cdc33"
+    },
+    {
+      "path": "prototypes/cooperative/README.md",
+      "sha256": "34546e41eed90b97089aeddef3ed47433239f664049a0e7b2660339ffa22ed22"
+    },
+    {
+      "path": "prototypes/cooperative/review_tests.cpp",
+      "sha256": "ef8c2f3fc05da1834a54833357d8b1cf9fab41dce75a8a47a89e720ea1e1953f"
+    },
+    {
+      "path": "prototypes/cooperative/run_tests.sh",
+      "sha256": "9e0a3abccbf61ec84edab86deba984a45f9cf058712c8f227caa24fec12518c3"
+    },
+    {
+      "path": "prototypes/cooperative/tests.cpp",
+      "sha256": "3dcbcc550181668bacc90973da1771e935af52c59abee00cb8c1a036108495f9"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/CoopTouchUi.h",
+      "sha256": "93426be93b2b399f53d299dc381625734648eb794686b01799975090c6674263"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/README.md",
+      "sha256": "424e25785d423bf3e2dac2a8ead48fc760d88472646324f22e989d695b40d76f"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/RENDERING.md",
+      "sha256": "59a29316375090f1507da6eb0a69751c8c796f48841316b3421ac5746b206bd4"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/REVIEW.md",
+      "sha256": "d3ef32fd2fa53c490b3a7188f5eb59792f82dd2e7e729c8f893eb63ae7d81dbf"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/render_touch_flow.py",
+      "sha256": "697a9817ed6e1d3c73c69f148f5b7b33a1c76f0a39e69b21611a19aa4659b0be"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/review_tests.cpp",
+      "sha256": "0dcca2cc8d0c41f754659c45aac30ba13996409344431989e2ea86de46ae3977"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/run_tests.sh",
+      "sha256": "6e5218257779c9e177115607b83a7dd87761c8fca7683aa2e1a6d9c6f6339ca7"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/test_render_touch_flow.py",
+      "sha256": "2644f32f365788abd586978340a0e81803254f08533260a518acf5ce902193e6"
+    },
+    {
+      "path": "prototypes/cooperative_targeting/tests.cpp",
+      "sha256": "ea6ffcde3320d0efa8501be92afdb31de1a3ec7084e84e0be97ea51bdd6acd37"
+    },
+    {
+      "path": "prototypes/cooperative_preview/README.md",
+      "sha256": "ba10e3e6a171763aeaa58771add7dfc3677ddbdb7309f3ee88bec75ac50129f8"
+    },
+    {
+      "path": "prototypes/cooperative_preview/extract_assets.py",
+      "sha256": "e6fe4a27547138bf4b9955dee541b486f077e24d79a57ce3d20e2f2bdcffaf52"
+    },
+    {
+      "path": "prototypes/cooperative_preview/render_preview.py",
+      "sha256": "aeeb02c7713c2f074e356db37757afa2ab8a7537774d5981fb090bb56aef6e0a"
+    }
+  ]
+}

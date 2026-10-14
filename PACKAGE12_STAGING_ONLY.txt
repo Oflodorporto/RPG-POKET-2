@@ -1,0 +1,24 @@
+PACKAGE 12 EXPERIMENTAL COOP QUALIFICATION CANDIDATE
+
+Identity: v2026.10.14-coop77, build2026101406.
+Base main: 136c748fd35aebd2df7c9bdaddd01d224646fddd.
+Qualification branch: feat/package12-release, read-only workflow.
+
+This branch qualifies experimental cooperative training integrated with the
+existing shop77 package. Arduino production defaults ON; legacy standalone host
+harnesses default OFF and new integrated host gates explicitly test ON. Both the
+default-ON ESP32 build and a forced-OFF fallback must pass on the same SHA.
+
+User publication approval is conditional on all tests and compilation passing.
+Qualification artifacts alone do not satisfy publication or authorize promotion.
+The main publisher must verify successful exact-SHA qualification, repeat the
+complete 152-checkpoint aggregate, mandatory LSan, both target builds and real-byte
+OTA gates, then verify public downloads and latest. Never publish a different SHA
+or reuse the shop77 identity. No USB flashing or physical OTA is authorized here.
+
+Experimental status remains explicit. Two-board radio, physical touch/LCD,
+Wi-Fi restoration, SD/power-loss and measured heap/stack/FPS validation are pending.
+Historical documents retain their earlier context; PACKAGE12_RELEASE_QUALIFICATION
+and RELEASE_PACKAGE12_NOTAS describe this integrated candidate. No pets or new
+visual bag integration is included. Existing saves, epoch, artifacts and README
+are preserved under the reviewed source inventory; no new reset is introduced.
