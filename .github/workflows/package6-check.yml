@@ -1,0 +1,89 @@
+name: Qualificar dados e exploracao das Ruinas sem publicar
+on:
+  push:
+    branches: [feat/package6-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "PACKAGE6_STAGING_ONLY.txt", ".github/workflows/package6-check.yml", ".github/workflows/release.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: package6-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.ref == 'refs/heads/feat/package6-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
+    env:
+      RPG_DETECT_LEAKS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Instalar dependencia deterministica das artes e capturas
+        run: python3 -m pip install 'Pillow==11.3.0'
+      - name: Testar agregado completo, features, migracao e rollback Save30
+        run: |
+          mkdir -p build
+          bash tools/test_package6.sh 2>&1 | tee build/package6-tests.log
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar candidato sem gravar nem publicar
+        run: |
+          arduino-cli compile --jobs 4 \
+            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+            --output-dir build firmware/RPG_POKET_2 2>&1 | tee build/package6-esp32-build.log
+      - name: Verificar bytes reais, upgrades scenes77 scale77 camp77 e Save30
+        run: |
+          python3 tools/release_package6_manifest.py
+          python3 tools/verify_package6_release.py
+          python3 tests/package6_release_verifier.py
+          python3 tools/test_package6_release.py release
+          python3 tools/test_package6_release.py release --sanitizers
+      - name: Capturar features herdadas para comparacao visual
+        run: |
+          python3 tools/capture_d20_camp77.py
+          python3 tools/capture_camp_identity77.py
+          python3 tools/capture_ruins_bag77.py
+          test -s build/d20-camp77/previews/d20-rolling.gif
+          test -s build/d20-camp77/previews/d20-all-faces.png
+          test -s build/screens/camp-identity77/camp-identity-contact.png
+          test -s build/screens/camp-identity77/camp-identity-fallback-contact.png
+          for period in dawn day dusk night; do test -s "build/ruins-bag77/ruins-bag-$period.png"; done
+          test -n "$(find build/screens/procedural6 -type f -name '*.ppm' -print -quit)"
+          test -n "$(find build/screens/combat6 -type f -name '*.ppm' -print -quit)"
+          test -n "$(find build/screens/package6-integration -type f -name '*.ppm' -print -quit)"
+      - name: Registrar SHA exato, hashes e orcamento compilado
+        run: |
+          python3 tools/record_package6_identity.py
+      - name: Guardar candidato e evidencias para revisao sem publicar
+        uses: actions/upload-artifact@v4
+        with:
+          name: package6-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/package6-scope-budget.json
+            build/package6-source-identity.json
+            build/package6-tests.log
+            build/package6-esp32-build.log
+            build/package6/*.json
+            build/screens/procedural6/*
+            build/screens/combat6/*
+            build/screens/package6-integration/*
+            build/d20-camp77/previews/*
+            build/screens/camp-identity77/*
+            build/ruins-bag77/ruins-bag-*.png
+          if-no-files-found: error
+          retention-days: 14

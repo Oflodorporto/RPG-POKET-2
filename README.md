@@ -1,3 +1,7 @@
+# Package 6 qualification candidate
+
+Unpublished `2026.10.13-explore77`, build `2026101309`. Save30 migration is approved; release/publication is not. Reads29/30, writes30, epoch1 without a new reset; migrated slots cannot be played by Save29 firmware. See the [package6 qualification contract](docs/PACKAGE6_RELEASE_QUALIFICATION.md) and [staging restrictions](PACKAGE6_STAGING_ONLY.txt). Historical package5 gates and notes below are retained unchanged.
+
 # RPG POKET 2.0
 
 RPG para Waveshare ESP32-S3-Touch-LCD-2, SKU 29667 (16 MiB flash, 8 MiB OPI PSRAM, tela 240×320).

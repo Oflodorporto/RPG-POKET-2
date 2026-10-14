@@ -1,0 +1,14 @@
+RPG POKET 7.7 — Dados e exploração das Ruínas
+2026.10.13-explore77 / build2026101309
+
+Dados e recibos mostram resultados reais já usados pelo combate; apresentação pode ser pulada sem refazer rolagens. A faixa animada cobre dados explícitos de dano/cura; variação de arma, crítico e esquiva estão detalhados nos recibos Dados.
+
+As duas plantas de novas entradas pagas nas Ruínas variam com gerador R5, incluindo caminhos e encontros iniciais. Inimigos, recompensas, custo e acesso à cura mantêm os limites documentados. Ilha e expedições de cartas continuam com mapas fixos. D20, tenda/acampamento personalizado e Bolsa nas Ruínas permanecem.
+
+MIGRAÇÃO IMPORTANTE: lê Save29/30 e grava Save30, mantendo época1, sem novo reset. Saves29 são lidos sem alteração e cada slot migra no próximo salvamento normal. Tentativas antigas mantêm mapa, posição e progresso fixos até terminar. Depois de migrado, o slot não abre em firmware Save29 antigo; os dados não são apagados. Para reabrir, reinstale firmware compatível Save30.
+
+Caminhos de qualificação: scenes77, scale77 e camp77 para este candidato. touch77/Save28 ou anterior não deve tentar OTA direto: continua a fronteira histórica USB/Save29 com EraseFlash=none e o reset único da época1. Não se promete importar saves1–28.
+
+Arte666 permanece igual. Placa Waveshare ESP32-S3-Touch-LCD-2 (29667), flash16MB, PSRAM8MB OPI, partição3MB OTA. Wi-Fi, artes e saves compatíveis são preservados. Não retire alimentação nem cartão durante instalação. Não se promete rollback automático de firmware nem resistência a toda falha física de energia.
+
+Testes host e capturas não substituem a validação física de toque, heap, FPS, latência e falhas de energia na placa. O relatório de qualificação registra os gates executados e seus limites; não presume resultados físicos.

@@ -3,10 +3,10 @@
 #include "DailyTravel.h"
 #include <initializer_list>
 
-// Production Save29 reuses the frozen packed-field encoder and shared core
-// invariants from Save.h, never its decoder or journal. No legacy import.
+// Production Save30 migrates canonical Save29 records in place and reuses the frozen packed-field encoder and shared core
+// invariants from Save.h, never its decoder or journal. No Save1..28 import.
 namespace rpg {
-constexpr unsigned PERSISTENT_SAVE_FORMAT=29;
+constexpr unsigned PERSISTENT_SAVE_FORMAT=30;
 constexpr unsigned PERSISTENT_SAVE_SIZE=160;
 constexpr unsigned SLOT_LIFECYCLE_SIZE=16;
 static_assert(CURRENT_SAVE_FORMAT==PERSISTENT_SAVE_FORMAT,"Update the production codec explicitly for a new format");
@@ -18,10 +18,10 @@ inline bool persistentValid(const Game& g){
   if(!dailyTravelValid(g))return false;
   return validCore(g,g.tripStage!=4);
 }
-inline void encodePersistent(const Game& g,uint32_t seq,uint8_t slot,uint8_t* b){
+inline void encodePersistentVersion(const Game& g,uint32_t seq,uint8_t slot,uint8_t* b,unsigned format){
   uint8_t core[SAVE_SIZE];encode(g,seq,core);
   memset(b,0,PERSISTENT_SAVE_SIZE);memcpy(b,core,124);
-  put16(b,4,PERSISTENT_SAVE_FORMAT);put16(b,6,PERSISTENT_SAVE_SIZE);
+  put16(b,4,format);put16(b,6,PERSISTENT_SAVE_SIZE);
   b[124]=g.fatigue;
   // Explicit byte layout, independent of struct padding and compiler ABI.
   const auto& d=g.daily;
@@ -30,19 +30,29 @@ inline void encodePersistent(const Game& g,uint32_t seq,uint8_t slot,uint8_t* b)
   b[133]=d.difficulty;b[134]=d.survivalBonus;b[135]=d.luckBonus;b[136]=d.kit;
   b[137]=d.total;b[138]=d.enemy;b[139]=d.supplies;b[140]=d.result;
   b[141]=d.policy;b[142]=d.routeVersion;
-  // 143 is reserved; epoch and slot identity retain their fixed positions.
+  // Save29's reserved bytes are assigned ONLY under the new format number.
+  // The complete identity, entry cost and masks remain in the same CRC/blob.
   put32(b,144,SAVE_RESET_EPOCH);b[152]=slot;
+  if(format==30){b[143]=g.dungeonGenerator;put32(b,148,g.dungeonSeed);
+    b[153]=uint8_t(g.dungeonRun);b[154]=uint8_t(g.dungeonRun>>8);b[155]=uint8_t(g.dungeonRun>>16);}
   put32(b,156,crc(b,156));
+}
+inline void encodePersistent(const Game& g,uint32_t seq,uint8_t slot,uint8_t* b){
+  encodePersistentVersion(g,seq,slot,b,PERSISTENT_SAVE_FORMAT);
 }
 inline Decode decodePersistent(const uint8_t* b,uint8_t slot,Game& g,uint32_t& seq){
   if(memcmp(b,"PKT2",4))return Decode::Corrupt;
-  if(get16(b,4)!=PERSISTENT_SAVE_FORMAT)return Decode::Unsupported;
+  const unsigned format=get16(b,4);
+  if(format!=29&&format!=30)return Decode::Unsupported;
   if(get16(b,6)!=PERSISTENT_SAVE_SIZE)return Decode::Corrupt;
   if(get32(b,144)!=SAVE_RESET_EPOCH||b[152]!=slot||slot>2)return Decode::Unsupported;
   if(get32(b,156)!=crc(b,156))return Decode::Corrupt;
-  if(b[143]||b[141]>DAILY_TRAVEL_POLICY||b[142]>DAILY_ROUTE_VERSION)return Decode::Unsupported;
-  for(unsigned i=148;i<152;++i)if(b[i])return Decode::Unsupported;
-  for(unsigned i=153;i<156;++i)if(b[i])return Decode::Unsupported;
+  if(b[141]>DAILY_TRAVEL_POLICY||b[142]>DAILY_ROUTE_VERSION)return Decode::Unsupported;
+  if(format==29){
+    if(b[143])return Decode::Unsupported;
+    for(unsigned i=148;i<152;++i)if(b[i])return Decode::Unsupported;
+    for(unsigned i=153;i<156;++i)if(b[i])return Decode::Unsupported;
+  }else if(b[143]>DUNGEON_GENERATOR_VERSION)return Decode::Unsupported;
   // Guard every array-indexing discriminator before gameplay validation.
   if(b[12]>3||b[13]<1||b[13]>99||b[34]>5||b[48]>28||b[64]>3||b[65]>7||b[66]>7||
      b[100]>1||b[101]>1)return Decode::Corrupt;
@@ -75,6 +85,8 @@ inline Decode decodePersistent(const uint8_t* b,uint8_t slot,Game& g,uint32_t& s
   t.enemyBeat=b[119]&3;t.islandTraps=(b[119]>>2)&7;t.islandCleared=b[119]&32;
   t.campaignFlags=b[120];t.campaignStage=b[121]&15;t.campaignEnding=b[121]>>4;
   t.originStory=b[122];t.originPage=b[123];t.fatigue=b[124];
+  if(format==30){t.dungeonGenerator=b[143];t.dungeonSeed=get32(b,148);
+    t.dungeonRun=uint32_t(b[153])|uint32_t(b[154])<<8|uint32_t(b[155])<<16;}
   auto& d=t.daily;
   d.phase=DailyPhase(b[125]);d.origin=b[126];d.totalDays=b[127];d.day=b[128];
   d.rationsPaid=b[129];d.nightsDone=b[130];d.region=b[131];d.roll=b[132];
@@ -86,7 +98,7 @@ inline Decode decodePersistent(const uint8_t* b,uint8_t slot,Game& g,uint32_t& s
   if(!persistentValid(t))return Decode::Corrupt;
   // Reject noncanonical booleans and packed/reserved bits, not just fields
   // which happen to survive unpacking. This also protects future extensions.
-  uint8_t check[PERSISTENT_SAVE_SIZE];encodePersistent(t,s,slot,check);
+  uint8_t check[PERSISTENT_SAVE_SIZE];encodePersistentVersion(t,s,slot,check,format);
   if(memcmp(b,check,PERSISTENT_SAVE_SIZE))return Decode::Corrupt;
   g=t;seq=s;return Decode::Ok;
 }

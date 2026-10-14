@@ -58,13 +58,13 @@ template<class Canvas,class Text,class Center,class Box,class Button>bool render
  }
  if(page==int(Page::EventAbandon)){center(18,"ENCERRAR MISSAO?",2,UI_GOLD);center(99,"Voce voltara ao local de origem.");center(128,"A tarefa ficara incompleta.");center(157,"Nao ha recompensa da carta.");center(186,"Itens pessoais sao preservados.");button(14,272,102,"Continuar");button(124,272,102,"Retornar");return true;}
  if(g.eventKind){bool ready=rpg::eventReady(g),battle=g.phase==rpg::Phase::Won;
-  center(18,ready?"MISSAO CUMPRIDA":battle?"CAMINHO LIVRE":"MISSAO ENCERRADA",2,ready?UI_GREEN:UI_GOLD);
+  center(28,ready?"MISSAO CUMPRIDA":battle?"CAMINHO LIVRE":"MISSAO ENCERRADA",2,ready?UI_GREEN:UI_GOLD);
   if(ready){center(89,eventCompletion(g));center(116,"A Guilda agradece sua ajuda.");snprintf(b,sizeof(b),"+%u ouro",rpg::eventGold(g));center(147,b,2,UI_GOLD);snprintf(b,sizeof(b),"+%u XP",rpg::eventXp(g));center(175,b,2,UI_GOLD);center(225,g.eventKind==7?"Extra: 1 racao na bolsa (max9).":"Retorno ao seu local de origem.");}
   else if(battle){center(90,"O inimigo nao impede mais voce.");snprintf(b,sizeof(b),"+%u XP / +%u ouro",g.gainXp,g.gainGold);center(121,b);center(164,"A tarefa da carta continua.");center(197,"A viagem e a busca nao reiniciam.");}
   else {center(99,"A Guilda providencia seu retorno.");center(134,"Sem recompensa pela carta.");center(169,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Seu HP e MP foram preservados.");}
   button(14,272,212,ready?"Receber e voltar":battle?"Continuar missao":"Voltar");return true;
  }
- bool won=g.phase==rpg::Phase::Won;center(14,won?"CIDADE PROTEGIDA":g.phase==rpg::Phase::Lost?"RESGATE DA GUILDA":"RETIRADA SEGURA",2,won?UI_GREEN:UI_GOLD);
+ bool won=g.phase==rpg::Phase::Won;center(28,won?"CIDADE PROTEGIDA":g.phase==rpg::Phase::Lost?"RESGATE DA GUILDA":"RETIRADA SEGURA",2,won?UI_GREEN:UI_GOLD);
  center(81,won?"O hipogrifo fugiu para o ceu.":"A missao terminou sem recompensa.");center(110,won?"A ave foi poupada.":g.phase==rpg::Phase::Lost?"Voce volta com 1 HP.":"Seu HP e MP foram preservados.");
  if(won){snprintf(b,sizeof(b),"%u ouro / %u XP",rpg::eventGold(g),rpg::eventXp(g));center(153,b,2,UI_GOLD);center(186,"Maelis agradece sua ajuda.");}else if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Perda de XP: %u",g.gainXp);center(153,b);}
  center(228,"Retorno ao seu local de origem.");button(14,272,212,won?"Receber e voltar":"Voltar");return true;

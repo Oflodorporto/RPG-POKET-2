@@ -150,7 +150,7 @@ void dailyCodecTests(){
 
 int main(){
  dailyCodecTests();
- static_assert(PERSISTENT_SAVE_SIZE==160&&CURRENT_SAVE_FORMAT==29&&SAVE_SIZE==128&&LEGACY_SAVE_FORMAT==28,"Separate formats");
+ static_assert(PERSISTENT_SAVE_SIZE==160&&CURRENT_SAVE_FORMAT==30&&SAVE_SIZE==128&&LEGACY_SAVE_FORMAT==28,"Separate formats");
  for(unsigned slot=0;slot<3;++slot)for(unsigned cls=0;cls<4;++cls)for(unsigned race=0;race<4;++race)for(unsigned shirt=0;shirt<8;++shirt)for(unsigned pants=0;pants<8;++pants){
   auto g=create(cls,151+slot);g.race=race;g.shirt=shirt;g.trousers=pants;g.fatigue=(shirt*13+pants)%101;auto b=packed(g,UINT32_MAX,slot);Game h;uint32_t seq=0;assert(decodePersistent(b.data(),slot,h,seq)==Decode::Ok&&same(g,h)&&seq==UINT32_MAX);assert(decodePersistent(b.data(),(slot+1)%3,h,seq)==Decode::Unsupported);++checks;
  }
@@ -167,7 +167,7 @@ int main(){
   Store damaged=base;Backend d(damaged);d.slot=slot;auto good=damaged.blobs[d.key(false)];
   damaged.blobs[d.key(false)][20]^=1;J recover(d);assert(recover.load(h)==Load::Recovered&&h.fatigue==hero(slot).fatigue&&h.p.gold==hero(slot).p.gold-1);
   damaged.blobs[d.key(true)][20]^=1;auto before=damaged.blobs;J bad(d);assert(bad.load(h)==Load::Blocked&&!bad.save(next)&&damaged.blobs==before);
-  for(auto kind:{0,1,2}){damaged=base;auto& bytes=damaged.blobs[d.key(false)];if(kind==0)put16(bytes.data(),4,30);if(kind==1)put32(bytes.data(),144,2);if(kind==2)bytes[152]=(slot+1)%3;put32(bytes.data(),156,crc(bytes.data(),156));before=damaged.blobs;J future(d);assert(future.load(h)==Load::Blocked&&!future.save(next)&&before==damaged.blobs);}
+  for(auto kind:{0,1,2}){damaged=base;auto& bytes=damaged.blobs[d.key(false)];if(kind==0)put16(bytes.data(),4,31);if(kind==1)put32(bytes.data(),144,2);if(kind==2)bytes[152]=(slot+1)%3;put32(bytes.data(),156,crc(bytes.data(),156));before=damaged.blobs;J future(d);assert(future.load(h)==Load::Blocked&&!future.save(next)&&before==damaged.blobs);}
   damaged=base;damaged.blobs.erase(d.metaKey());before=damaged.blobs;J missing(d);assert(missing.load(h)==Load::Blocked&&!missing.save(next)&&before==damaged.blobs);
   damaged=base;damaged.blobs[d.metaKey()][2]^=1;before=damaged.blobs;J corrupt(d);assert(corrupt.load(h)==Load::Blocked&&!corrupt.save(next)&&before==damaged.blobs);
   damaged=base;damaged.blobs.erase(d.key(false));damaged.blobs.erase(d.key(true));J absent(d);assert(absent.load(h)==Load::Blocked);
@@ -185,4 +185,5 @@ int main(){
  {Store s;Backend b(s);J j(b);assert(j.load(h)==Load::Empty);b.slot=1;auto before=s.blobs;assert(!j.save(g)&&s.blobs==before);}
  {Store s;Backend b(s);J j(b);assert(j.load(h)==Load::Empty);s.ready=false;auto before=s.blobs;assert(!j.save(g)&&!b.remove()&&before==s.blobs);}
  printf("PASS Save29: %u codec/action checks, %u power cuts, %u error/ACK retries; 3 slots, clothing, RNG, lifecycle, corruption, wrap, compensation\n",checks,cuts,faults);
+ return 0;
 }

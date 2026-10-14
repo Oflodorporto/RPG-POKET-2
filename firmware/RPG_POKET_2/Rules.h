@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include "Gear.h"
+#include "CombatTrace.h"
 // Adapted from Heltec 2026.09.24-polimento1: Combat, Skills, State,
 // Economy, UI, World and Gear. Network/calendar are not part of this slice.
 namespace rpg {
@@ -35,6 +36,10 @@ struct Game {
   uint8_t campStage=0,campRoll=0;bool campRation=false,campKit=false,sleepKit=false;
   uint32_t eventDay=0;uint8_t eventStage=0,eventTier=0,eventOriginCity=0,eventOriginPage=0,eventOfferSlot=0,eventKind=0,eventProgress=0,eventLevel=0,eventFlags=0,eventRoll=0;
   uint8_t crystals=0,dungeonFlags=0,dungeonXY=0,dungeonLoot=0,dungeonEnemies=0,dungeonClears=0;
+  // Save30: generation never advances the combat/loot randomState. The last
+  // seed and 24-bit run sequence survive exit/death; version is active-run only.
+  uint32_t dungeonSeed=0,dungeonRun=0;
+  uint8_t dungeonGenerator=0;
   uint32_t owned=0;
   uint8_t equipped[3]={},forge[3]={};
   Phase phase=Phase::Home;
@@ -236,7 +241,7 @@ inline unsigned rageUses(const Game& g){return g.p.level>=20?255:g.p.level>=17?6
 inline bool persistentRage(const Game& g){return g.dndProgression&&g.p.cls==3&&g.p.level>=15;}
 inline unsigned brutalDice(const Game& g){return g.dndProgression&&g.p.cls==3&&g.p.level>=9?(g.p.level>=17?3:g.p.level>=13?2:1):0;}
 // The current weapon engine has no item dice: each brutal die uses d6.
-inline unsigned brutalDamage(Game& g){unsigned damage=0;for(unsigned i=0;i<brutalDice(g);++i)damage+=1+random(g)%6;return damage;}
+inline unsigned brutalDamage(Game& g,CombatTrace* trace=nullptr){unsigned damage=0;for(unsigned i=0;i<brutalDice(g);++i){unsigned die=1+random(g)%6;damage+=die;traceDie(trace,TraceDice::Brutal,6,die);}return damage;}
 inline void tickRage(Game& g){if(g.rageTurns&&!persistentRage(g))--g.rageTurns;}
 inline unsigned rageBonus(const Game& g){return g.p.level>=16?4:g.p.level>=9?3:2;}
 // Spectres and the Arconte deal magical damage; other current encounters are physical.
@@ -267,30 +272,33 @@ inline const char* powerError(const Game& g,Action a){
  if(a==Action::SacredWeapon||a==Action::TurnUndead){if(!g.oath)return "Firme o juramento antes";if(g.channelSpent)return "Canalizar esgotado: descanse";}
  if(a==Action::TurnUndead&&!undead(g.enemyId))return "Alvo nao e morto-vivo";return nullptr;
 }
-inline const char* act(Game& g,Action a);
-inline const char* usePower(Game& g,Action a){
+inline const char* act(Game& g,Action a,CombatTrace* trace=nullptr);
+inline const char* usePower(Game& g,Action a,CombatTrace* trace=nullptr){
  if(auto err=powerError(g,a))return err;
- if(a==Action::DivineSmite)return act(g,a);
+ if(a==Action::DivineSmite)return act(g,a,trace);
+ if(trace){trace->start(uint8_t(a));trace->actorClass=g.p.cls;trace->enemyId=g.enemyId;trace->mpCost=powerCost(g,a);trace->targetHp=g.enemyHp;}
  g.p.mp-=powerCost(g,a);g.damage=0;g.crit=g.dodge=false;
- if(a==Action::SecondWind){g.damage=std::min<unsigned>(g.p.maxhp-g.p.hp,1+random(g)%10+g.p.level);g.p.hp+=g.damage;g.windSpent=1;return nullptr;}
+ if(a==Action::SecondWind){unsigned die=1+random(g)%10;g.damage=std::min<unsigned>(g.p.maxhp-g.p.hp,die+g.p.level);traceDie(trace,TraceDice::Wind,10,die);traceStep(trace,TraceStep::Fixed,g.p.level);if(trace){trace->healing=true;trace->potential=trace->net=die+g.p.level;trace->applied=g.damage;trace->targetHp=g.p.maxhp-g.p.hp;}g.p.hp+=g.damage;g.windSpent=1;return nullptr;}
  if(a==Action::ActionSurge){++g.surgeSpent;g.surgePending=g.surgeTurnUsed=true;return nullptr;}
  if(a==Action::RagePower){if(g.p.level<20)++g.rageSpent;g.rageTurns=3;return nullptr;}
- if(a==Action::LayHands){g.damage=std::min<unsigned>(layRemaining(g),g.p.maxhp-g.p.hp);g.p.hp+=g.damage;g.laySpent+=g.damage;if(g.phase==Phase::Hero)g.phase=Phase::Enemy;return nullptr;}
- if(a==Action::ShieldSpell){g.guard=75;g.phase=Phase::Enemy;return nullptr;}
+ if(a==Action::LayHands){if(trace){trace->healing=true;trace->potential=trace->net=layRemaining(g);trace->targetHp=g.p.maxhp-g.p.hp;}g.damage=std::min<unsigned>(layRemaining(g),g.p.maxhp-g.p.hp);if(trace)trace->applied=g.damage;g.p.hp+=g.damage;g.laySpent+=g.damage;if(g.phase==Phase::Hero)g.phase=Phase::Enemy;return nullptr;}
+ if(a==Action::ShieldSpell){g.guard=75;traceStep(trace,TraceStep::Defense,75);g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::SacredWeapon){g.channelSpent=true;g.sacredTurns=3;g.phase=Phase::Enemy;return nullptr;}
  if(a==Action::TurnUndead){g.channelSpent=true;g.turnedTurns=2;g.phase=Phase::Enemy;return nullptr;}
  unsigned damage=0;bool saved=false;
- if(a==Action::MagicMissile){for(unsigned i=0;i<3;++i)damage+=2+random(g)%4;}
- else if(a==Action::ScorchingRay){for(unsigned i=0;i<3;++i){unsigned roll=random(g)%20+1;if(roll!=1&&(roll==20||int(roll)+abilityMod(g.attributes[3])+int(proficiency(g.p.level))>=10+enemySpec(g.enemyId).def/3))damage+=2+random(g)%6+random(g)%6;}}
- else {for(unsigned i=0;i<(a==Action::Fireball?8u:3u);++i)damage+=1+random(g)%6;if(int(random(g)%20+1)+2>=8+int(proficiency(g.p.level))+abilityMod(g.attributes[3]))saved=true;}
- if(damage)damage+=evocationBonus(g,a);if(saved)damage/=2;
- g.damage=std::min<unsigned>(g.enemyHp,damage);g.enemyHp-=g.damage;g.phase=Phase::Enemy;return nullptr;
+ if(a==Action::MagicMissile){for(unsigned i=0;i<3;++i){unsigned die=1+random(g)%4;damage+=die+1;traceDie(trace,TraceDice::Missile,4,die);}}
+ else if(a==Action::ScorchingRay){for(unsigned i=0;i<3;++i){unsigned roll=random(g)%20+1;int bonus=abilityMod(g.attributes[3])+int(proficiency(g.p.level)),dc=10+enemySpec(g.enemyId).def/3;traceStep(trace,TraceStep::RayHit,roll,bonus,dc);if(roll!=1&&(roll==20||int(roll)+bonus>=dc)){unsigned d1=1+random(g)%6,d2=1+random(g)%6;damage+=d1+d2;traceDie(trace,TraceDice(unsigned(TraceDice::Ray1)+i),6,d1);traceDie(trace,TraceDice(unsigned(TraceDice::Ray1)+i),6,d2);}}}
+ else {for(unsigned i=0;i<(a==Action::Fireball?8u:3u);++i){unsigned die=1+random(g)%6;damage+=die;traceDie(trace,TraceDice::Spell,6,die);}unsigned roll=random(g)%20+1;int dc=8+int(proficiency(g.p.level))+abilityMod(g.attributes[3]);saved=int(roll)+2>=dc;traceStep(trace,TraceStep::Save,roll,2,dc);}
+ if(damage){unsigned bonus=evocationBonus(g,a);if(bonus)traceStep(trace,TraceStep::Evocation,bonus,damage,damage+bonus);damage+=bonus;}
+ if(trace){trace->damaging=true;trace->potential=damage;}
+ if(saved){traceStep(trace,TraceStep::Half,damage,damage/2);damage/=2;}
+ g.damage=std::min<unsigned>(g.enemyHp,damage);if(trace){trace->net=damage;trace->applied=g.damage;}g.enemyHp-=g.damage;g.phase=Phase::Enemy;return nullptr;
 }
 // Percentage combat adaptation of the Champion milestones in SRD 5.1.
 inline unsigned weaponCriticalChance(const Game& g){return g.dndProgression&&g.p.cls==2&&g.p.level>=3?(g.p.level>=15?30:20):12;}
 inline unsigned survivorRecovery(const Game& g){return g.dndProgression&&g.p.cls==2&&g.p.level>=18&&g.phase==Phase::Hero&&g.p.hp&&unsigned(g.p.hp)*2<=g.p.maxhp?std::min<unsigned>(g.p.maxhp-g.p.hp,std::max(0,5+abilityMod(g.attributes[2]))):0;}
 inline void startHeroTurn(Game& g){g.p.hp+=survivorRecovery(g);}
-inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12){int d=std::max(1,atk+int(random(g)%3)-def/3);g.crit=random(g)%100<criticalChance;return g.crit?d+(d>>1):d;}
+inline int rollDamage(Game& g,int atk,int def,unsigned criticalChance=12,CombatTrace* trace=nullptr){unsigned variation=random(g)%3;int d=std::max(1,atk+int(variation)-def/3);unsigned critical=random(g)%100;g.crit=critical<criticalChance;traceStep(trace,TraceStep::Weapon,atk,variation+1,def);traceStep(trace,TraceStep::Critical,critical+1,criticalChance,g.crit?d+(d>>1):d);return g.crit?d+(d>>1):d;}
 inline void clearFeedback(Game& g){g.damage=0;g.crit=g.dodge=false;}
 inline uint8_t encounterRegion(const Game& g){return g.tripStage==4&&g.daily.phase==DailyPhase::NightBattle?g.daily.region:g.city;}
 inline unsigned encounterHp(const Game& g,uint8_t id){return g.dndProgression&&encounterRegion(g)==0&&g.p.level<3&&(id<2||id==14)?(g.p.level==1?6:10):enemySpec(id).hp;}
@@ -321,48 +329,54 @@ inline void finish(Game& g){
   }else if(!g.p.hp){g.phase=Phase::Lost;g.gainXp=uint16_t(std::min(g.p.xp,uint32_t(xpNeeded(g)/20)));g.p.xp-=g.gainXp;clearMartialCombat(g);}
 }
 // Return nullptr on accepted action; rejected actions do not consume a turn.
-inline const char* act(Game& g,Action a){
+inline const char* act(Game& g,Action a,CombatTrace* trace){
   if(g.phase!=Phase::Hero)return "Aguarde seu turno";
   if(uint8_t(a)>uint8_t(Action::DivineSmite))return "Acao invalida";
   if(g.dndProgression&&g.p.cls==0&&a==Action::Offensive)a=Action::MagicMissile;
   if(g.dndProgression&&g.p.cls==0&&a==Action::Defensive)a=Action::ShieldSpell;
   if(a==Action::DivineSmite){if(auto err=powerError(g,a))return err;}
-  if(powerAction(a)&&a!=Action::DivineSmite){auto err=usePower(g,a);if(!err)finish(g);return err;}
+  if(powerAction(a)&&a!=Action::DivineSmite){auto err=usePower(g,a,trace);if(!err)finish(g);return err;}
+  unsigned traceCost=0;
   if(a==Action::Offensive||a==Action::Defensive){
     if(g.dndProgression&&g.p.cls==1&&a==Action::Offensive&&g.p.level<2)return "Desbloqueia no nivel 2";
-    uint8_t cost=skillCost(g.p.cls,a==Action::Defensive);if(g.p.mp<cost)return "Mana insuficiente";g.p.mp-=cost;
+    uint8_t cost=skillCost(g.p.cls,a==Action::Defensive);if(g.p.mp<cost)return "Mana insuficiente";g.p.mp-=cost;traceCost=cost;
   }
   if(a==Action::Life||a==Action::Mana){
     bool m=a==Action::Mana;auto &v=m?g.p.mp:g.p.hp;auto &count=m?g.p.mana:g.p.life;
     if(!count)return "Sem pocoes";uint16_t heal=recovery(v,m?g.p.maxmp:g.p.maxhp,m);if(!heal)return "Ja esta cheio";
+    if(trace){trace->start(uint8_t(a));trace->actorClass=g.p.cls;trace->enemyId=g.enemyId;trace->healing=true;trace->potential=trace->net=std::max<uint16_t>(1,uint32_t(m?g.p.maxmp:g.p.maxhp)*(m?50:30)/100);trace->applied=heal;trace->targetHp=(m?g.p.maxmp:g.p.maxhp)-v;traceStep(trace,TraceStep::Restore,m?g.p.maxmp:g.p.maxhp,m?50:30,trace->potential);}
     v+=heal;--count;clearFeedback(g);g.damage=heal;endHeroAction(g);return nullptr;
   }
+  if(trace){trace->start(uint8_t(a));trace->actorClass=g.p.cls;trace->enemyId=g.enemyId;trace->targetHp=g.enemyHp;trace->mpCost=traceCost;}
   clearFeedback(g);
-  if(a==Action::Flee){g.phase=random(g)%100<65?Phase::Fled:Phase::Enemy;if(g.phase==Phase::Fled)clearMartialCombat(g);else if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}return nullptr;}
+  if(a==Action::Flee){unsigned roll=random(g)%100;traceStep(trace,TraceStep::Flee,roll+1,65);g.phase=roll<65?Phase::Fled:Phase::Enemy;if(g.phase==Phase::Fled)clearMartialCombat(g);else if(g.surgePending){g.surgePending=false;g.phase=Phase::Hero;}return nullptr;}
   if(a==Action::Defensive){
-    g.guard=g.p.cls<2?75:50;
-    if(g.p.cls==3)g.p.hp=std::min<uint16_t>(g.p.maxhp,g.p.hp+std::max<uint16_t>(1,g.p.maxhp/4));
+    g.guard=g.p.cls<2?75:50;traceStep(trace,TraceStep::Defense,g.guard);
+    if(g.p.cls==3){if(trace){trace->healing=true;trace->potential=trace->net=std::max<uint16_t>(1,g.p.maxhp/4);trace->targetHp=g.p.maxhp-g.p.hp;trace->applied=std::min(trace->net,trace->targetHp);}g.p.hp=std::min<uint16_t>(g.p.maxhp,g.p.hp+std::max<uint16_t>(1,g.p.maxhp/4));}
     endHeroAction(g);return nullptr;
   }
-  bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def,weaponCriticalChance(g));
-  if(g.dndProgression&&!skill)damage*=attacksPerAction(g);
-  if(skill)damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;
-  if(g.rageTurns)damage+=rageBonus(g)*(skill?1:attacksPerAction(g));
-  if(g.sacredTurns){damage+=std::max(1,abilityMod(g.attributes[5]));--g.sacredTurns;}
-  g.dodge=!(skill&&g.p.cls==2)&&random(g)%100<6;
+  traceStep(trace,TraceStep::AttackStat,g.p.atk,g.dndProgression?abilityMod(g.attributes[primaryAbility(g.p.cls)]):0,g.dndProgression?int(proficiency(g.p.level))-2:0);
+  traceStep(trace,TraceStep::Equipment,g.forge[0]*2,gearBonus(g.equipped[0]),effectiveAttack(g));
+  bool skill=a==Action::Offensive;int damage=rollDamage(g,effectiveAttack(g),skill&&g.p.cls==0?0:enemySpec(g.enemyId).def,weaponCriticalChance(g),trace);
+  if(g.dndProgression&&!skill){traceStep(trace,TraceStep::Attacks,attacksPerAction(g),damage,damage*attacksPerAction(g));damage*=attacksPerAction(g);}
+  if(skill){unsigned percent=g.p.cls==0?180:g.p.cls==3?200:150;traceStep(trace,TraceStep::Technique,percent,damage,damage*percent/100);damage=g.p.cls==0?damage*180/100:g.p.cls==3?damage*2:damage*150/100;}
+  if(g.rageTurns){unsigned bonus=rageBonus(g)*(skill?1:attacksPerAction(g));traceStep(trace,TraceStep::Rage,bonus,damage,damage+bonus);damage+=bonus;}
+  if(g.sacredTurns){int bonus=std::max(1,abilityMod(g.attributes[5]));traceStep(trace,TraceStep::Sacred,bonus,damage,damage+bonus);damage+=bonus;--g.sacredTurns;}
+  if(!(skill&&g.p.cls==2)){unsigned roll=random(g)%100;g.dodge=roll<6;traceStep(trace,TraceStep::Dodge,roll+1,6);}else g.dodge=false;
   if(!g.dodge){
-    if(g.crit)damage+=brutalDamage(g);
+    if(g.crit)damage+=brutalDamage(g,trace);
     // SRD 5.1 adaptation: select before the attack; charge mana only on a hit.
     // Extra Attack is aggregated by the existing engine. Smite applies once;
     // Improved Divine Smite applies to each melee hit in that action.
     if(g.dndProgression&&g.p.cls==1){
       unsigned dice=g.p.level>=11?(skill?1:attacksPerAction(g)):0;
-      if(a==Action::DivineSmite){g.p.mp-=powerCost(a);dice+=2+unsigned(undead(g.enemyId));}
+      if(a==Action::DivineSmite){g.p.mp-=powerCost(a);if(trace)trace->mpCost=powerCost(a);dice+=2+unsigned(undead(g.enemyId));}
       if(g.crit)dice*=2;
-      for(unsigned i=0;i<dice;++i)damage+=1+random(g)%8;
+      for(unsigned i=0;i<dice;++i){unsigned die=1+random(g)%8;damage+=die;traceDie(trace,TraceDice::Smite,8,die);}
     }
     g.damage=uint16_t(std::min<int>(g.enemyHp,damage));g.enemyHp-=g.damage;
   }
+  if(trace){trace->damaging=true;trace->potential=damage;trace->net=g.dodge?0:damage;trace->applied=g.damage;}
   endHeroAction(g);finish(g);return nullptr;
 }
 enum class Intent:uint8_t {Strike,Prepare,Heavy,Mend,Drain};
@@ -392,16 +406,18 @@ inline unsigned incomingCeiling(const Game& g,unsigned guard=0){
  int damage=std::max(1,int(encounterAttack(g))+2-effectiveDefense(g)/3);
  damage+=damage/2;if(enemyIntent(g)==Intent::Heavy)damage=damage*3/2;damage=(damage*(100-std::min(75u,guard))+99)/100;if(g.rageTurns&&physicalEnemy(g.enemyId))damage/=2;return damage;
 }
-inline bool enemy(Game& g){
- if(g.phase!=Phase::Enemy)return false;clearFeedback(g);g.surgeTurnUsed=false;
- if(g.turnedTurns){--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;startHeroTurn(g);return true;}
+inline bool enemy(Game& g,CombatTrace* trace=nullptr){
+ if(g.phase!=Phase::Enemy)return false;if(trace){trace->start(0,true);trace->actorClass=g.p.cls;trace->enemyId=g.enemyId;trace->intent=uint8_t(enemyIntent(g));trace->targetHp=g.p.hp;}clearFeedback(g);g.surgeTurnUsed=false;
+ if(g.turnedTurns){traceStep(trace,TraceStep::Skip);--g.turnedTurns;g.guard=0;g.phase=Phase::Hero;startHeroTurn(g);return true;}
  auto intent=enemyIntent(g);if(g.dndProgression)g.enemyBeat=(g.enemyBeat+1)%3;
- if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend)g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);if(g.eventStage!=2||g.eventKind!=7)g.guard=0;tickRage(g);g.phase=Phase::Hero;startHeroTurn(g);return true;}
- int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g));if(intent==Intent::Heavy)damage=damage*3/2;
- unsigned guard=g.guard;if(g.guard){damage=(damage*(100-g.guard)+99)/100;g.guard=0;}
- if(g.rageTurns){if(physicalEnemy(g.enemyId))damage/=2;tickRage(g);}
- g.dodge=random(g)%100<6;
- if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75)g.p.mp-=std::min<unsigned>(2,g.p.mp);}
+ if(intent==Intent::Prepare||intent==Intent::Mend){if(intent==Intent::Mend){unsigned before=g.enemyHp;g.enemyHp=std::min<unsigned>(encounterHp(g,g.enemyId),g.enemyHp+4);if(trace){trace->healing=true;trace->potential=trace->net=4;trace->applied=g.enemyHp-before;trace->targetHp=encounterHp(g,g.enemyId)-before;}}if(g.eventStage!=2||g.eventKind!=7)g.guard=0;tickRage(g);g.phase=Phase::Hero;startHeroTurn(g);return true;}
+ int damage=rollDamage(g,encounterAttack(g),effectiveDefense(g),12,trace);if(intent==Intent::Heavy){traceStep(trace,TraceStep::Heavy,damage,damage*3/2);damage=damage*3/2;}
+ if(trace){trace->damaging=true;trace->potential=damage;}
+ unsigned guard=g.guard;if(g.guard){int reduced=(damage*(100-g.guard)+99)/100;traceStep(trace,TraceStep::Guard,g.guard,damage,reduced);damage=reduced;g.guard=0;}
+ if(g.rageTurns){if(physicalEnemy(g.enemyId)){traceStep(trace,TraceStep::Resistance,damage,damage/2);damage/=2;}tickRage(g);}
+ unsigned dodgeRoll=random(g)%100;g.dodge=dodgeRoll<6;traceStep(trace,TraceStep::Dodge,dodgeRoll+1,6);
+ if(!g.dodge){g.damage=uint16_t(std::min<int>(g.p.hp,damage));g.p.hp-=g.damage;if(intent==Intent::Drain&&guard<75){unsigned drain=std::min<unsigned>(2,g.p.mp);g.p.mp-=drain;if(trace)trace->mpDrained=drain;}}
+ if(trace){trace->net=g.dodge?0:damage;trace->applied=g.damage;}
  g.phase=Phase::Hero;finish(g);if(g.phase==Phase::Hero)startHeroTurn(g);return true;
 }
 inline bool home(Game& g){if(g.tripStage==4)return false;if(g.phase!=Phase::Won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;bool lost=g.phase==Phase::Lost;bool escaped=g.phase==Phase::Fled;g.phase=Phase::Home;g.enemyBeat=0;g.sacredTurns=g.turnedTurns=0;clearMartialCombat(g);if(!g.p.hp)g.p.hp=1;if(g.discovery==4){g.discovery=g.discoverLoot=g.discoverAmount=0;g.chestLock=g.chestTries=g.chestRoll=0;g.chestPick=g.chestTrap=false;}if(g.tripStage==2){if(lost||(escaped&&((g.eventStage==2&&g.eventKind==2)||(g.questId&&contractKind(g.questId)==ContractKind::Escort))))clearTrip(g);else g.tripStage=3;}return true;}

@@ -110,7 +110,7 @@ static void dungeonMovement(){
   // Ordinary dungeon, island and letter expedition use the same move path.
   for(unsigned mode=0;mode<3;++mode){
     auto g=hero(2,18,1);g.fatigue=39;
-    if(mode==0){g.crystals=1;assert(!enterDungeon(g));}
+    if(mode==0){g.crystals=1;assert(!enterDungeon(g,0));}
     else if(mode==1){g.campaignEnding=2;g.campaignFlags=127;assert(!enterIsland(g));}
     else {g.eventStage=2;g.eventKind=3;g.eventTier=1;g.eventLevel=18;assert(!eventAct(g));}
     assert(g.fatigue==39);

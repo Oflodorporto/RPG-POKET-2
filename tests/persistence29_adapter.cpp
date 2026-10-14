@@ -129,7 +129,7 @@ using Backend=NvsBackendFor<FakeNvsDriver>;
 using Journal29=NvsJournalFor<FakeNvsDriver>;
 static_assert(std::is_same<Backend,PersistentSlotBackend<Store>>::value,"Production backend alias");
 static_assert(std::is_same<Journal29,PersistentJournal<Backend>>::value,"Production journal alias");
-static_assert(PERSISTENT_SAVE_SIZE==160&&CURRENT_SAVE_FORMAT==29,"Save29 record contract");
+static_assert(PERSISTENT_SAVE_SIZE==160&&CURRENT_SAVE_FORMAT==30,"Save29 record contract");
 constexpr const char* newKeys[]={"a","b","a1","b1","a2","b2","m0","m1","m2","h0","h1","h2"};
 unsigned checks=0,cutChecks=0,faultChecks=0;
 

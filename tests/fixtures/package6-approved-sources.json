@@ -1,0 +1,419 @@
+{
+  "schema": 1,
+  "baseline_commit": "7a05617cd1e13843d73de72f970c57a7113af48a",
+  "baseline_tree": "b58a5c80339f1d87728723991efdc8006ff764f8",
+  "frozen_feature_tree": "814f16a9f6e11a2d5fe0cf6a32f7da67c92bbb17",
+  "approved_sources": [
+    {
+      "path": "docs/COMBAT_TRACE6_CANDIDATE.md",
+      "bytes": 4787,
+      "sha256": "f70311de2184a180a0078e98bd38d2ea8ec5a4e9e6a74aeb90fc2337730debbd"
+    },
+    {
+      "path": "docs/PACKAGE6_LOCAL_INTEGRATION.md",
+      "bytes": 5163,
+      "sha256": "c35ba14ada09fd935142c936d743906149279ea1b9f6e5019d9705d486e19ffb"
+    },
+    {
+      "path": "docs/PROCEDURAL6_LOCAL_CANDIDATE.md",
+      "bytes": 10761,
+      "sha256": "89039d27990376f85b512b8450450a69af9661c9d716c589cf6c86022ab002aa"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatTrace.h",
+      "bytes": 1805,
+      "sha256": "ad28dc02e881f11d11bcdf8007ff3430791801a40ef7a95e152222259f06e442"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/CombatTraceView.h",
+      "bytes": 9146,
+      "sha256": "160b3d918ad10b82ceb7f1579c7142c4a59602b91e0a236f5cd147c1b3321364"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Dungeon.h",
+      "bytes": 13201,
+      "sha256": "ffcbef825954fba7026fd1b54b7d0a56fc774eeda7003e070304454ed968a457"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DungeonGeneration.h",
+      "bytes": 13437,
+      "sha256": "8ffc0aa7efce9ddc4b7ea8486a220c2d42ee8098a14f757d1d4e3c9d2d2a5e55"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/DungeonView.h",
+      "bytes": 12106,
+      "sha256": "8763023ad58ca27ddd554955eef07f9a6b5003454d165d1517b4ce46daa89437"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/EventView.h",
+      "bytes": 10490,
+      "sha256": "6dba84acfd5c9f271cee83489c10e665664309adfef8bc92ed1e165d163d0413"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/NarrativeView.h",
+      "bytes": 16435,
+      "sha256": "3485d79f5ced99e70b04c34cea2db7ebabd8631eca182bb38e88255f9fe31a5d"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Persistence.h",
+      "bytes": 14555,
+      "sha256": "99b19c1e62aeb6e70c3d9c57fba3c5580fca6f6c4e59f0052331d4ce1059ebe3"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/PowersView.h",
+      "bytes": 8291,
+      "sha256": "105c48f0353c57698612c81b64307377594f58377b732e779179dc8aaf16c1cb"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/RPG_POKET_2.ino",
+      "bytes": 76491,
+      "sha256": "9f02d94ccd3eedd7b546f448d371a2b29c9415353e58f756d4296def7c5e3557"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Rules.h",
+      "bytes": 48823,
+      "sha256": "7b46083131d2699b08d984a9644cf85c8c1dbcea32c35dd8229a6da78b9ecf91"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/Save.h",
+      "bytes": 14978,
+      "sha256": "2bde03941df5f3abc4e8ee805135b7ac733ebb12548d7c674c33c9deb65f145b"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/SaveVersion.h",
+      "bytes": 208,
+      "sha256": "d35e1373594c12fc294a93a013e91395ece9daf741ec7a05daca3dbd09b1e52a"
+    },
+    {
+      "path": "firmware/RPG_POKET_2/View.h",
+      "bytes": 45922,
+      "sha256": "6bc11f9dc8de2028f3ad02c1aa2bf0dfeedef6b986c6ca5664fd15e6e6c3ac40"
+    },
+    {
+      "path": "tests/camp_loot.cpp",
+      "bytes": 4286,
+      "sha256": "ca43a726a5296fba008d9debaf46dec7a055b3fe13077b8a85e662f94691ea15"
+    },
+    {
+      "path": "tests/combat_trace_controller.cpp",
+      "bytes": 6555,
+      "sha256": "b0c08a3551c3015d9143b9cf95292742ce624076e48264de421d9d29e9a21edd"
+    },
+    {
+      "path": "tests/combat_trace_differential.cpp",
+      "bytes": 10420,
+      "sha256": "54955404dacbf022c4fc483a38c8e669250d924881d755493beb8b4a6fce9c8f"
+    },
+    {
+      "path": "tests/combat_trace_render.cpp",
+      "bytes": 4847,
+      "sha256": "ff6257bbc83e7ad828250b42e0c259389aa88f0c377edd52d8cfc7adc62cac61"
+    },
+    {
+      "path": "tests/combat_trace_semantics.cpp",
+      "bytes": 2853,
+      "sha256": "326fbde6d3518c93a1dbd18810b43b9a044e8cdfed9edade4e74554105ab03a7"
+    },
+    {
+      "path": "tests/dungeon77_postvictory.cpp",
+      "bytes": 5740,
+      "sha256": "74349521247faaadcc925575d9241d29a6ac9c45123c8dc4205bae983229ae91"
+    },
+    {
+      "path": "tests/dungeon77_result_render.cpp",
+      "bytes": 5124,
+      "sha256": "d169744b3726505826f3656ee01f18d9b09383fd86229bf487f10352f3738094"
+    },
+    {
+      "path": "tests/dungeon_controller.cpp",
+      "bytes": 88461,
+      "sha256": "767a24b06d30fa19ee1b0e2492f675885a932b3395dc2d6449eb283aa86e16fd"
+    },
+    {
+      "path": "tests/dungeon_save.cpp",
+      "bytes": 3748,
+      "sha256": "f21eb3e5acd0ef2970714dace10b9f17f597e9ad94d57663b877143ae8d9c9e4"
+    },
+    {
+      "path": "tests/enemy_art_transition.cpp",
+      "bytes": 7280,
+      "sha256": "3a8e205c73098ecf964082cb1ef2acad1fc16c63842cc31bc460ae28b0fcf49f"
+    },
+    {
+      "path": "tests/enemy_render.cpp",
+      "bytes": 12240,
+      "sha256": "8b6f2a8332f37580d5d2df1b48c86f4436a54468526eaf7229be673f50b1c125"
+    },
+    {
+      "path": "tests/fatigue76.cpp",
+      "bytes": 16932,
+      "sha256": "8322fa7623a0ff64062929aacaf78154c349688371e25971a4832286d2ff6102"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-baseline.json",
+      "bytes": 1339,
+      "sha256": "a96572adc9af7e835028d13d2b863210798b14e35f9ffc0a84564572ad294626"
+    },
+    {
+      "path": "tests/hero77_controller.cpp",
+      "bytes": 9867,
+      "sha256": "75711ccf1ec3cc67269902e97b81be48060cf18fa5a7dc14091a368845c40362"
+    },
+    {
+      "path": "tests/ota_art_readback.cpp",
+      "bytes": 7055,
+      "sha256": "e2a9a401a5bafe0dc91740de553aabc7b9a7da3dd6103a298a29236cb3113db1"
+    },
+    {
+      "path": "tests/package6_integration_controller.cpp",
+      "bytes": 3492,
+      "sha256": "a1bd6d87526104307943d962d287242fa4c1d4f4e87b4fdd6ddd7b0384f525a6"
+    },
+    {
+      "path": "tests/package6_integration_render.cpp",
+      "bytes": 2308,
+      "sha256": "a2c89854b1a929a0e9237e5bb480bc20c26e402896a8274fc2c6fac992fa8480"
+    },
+    {
+      "path": "tests/persistence29_adapter.cpp",
+      "bytes": 26703,
+      "sha256": "7385cf5bf01e597059fc0169aa4aa21af94851fb05f521af6a50f854eb343f2b"
+    },
+    {
+      "path": "tests/procedural6.cpp",
+      "bytes": 10382,
+      "sha256": "c5c6dcdad6d3baf3d8da9a9b6c87b11fc6a7ee1fd9545f638e8f8f1ee11a2a55"
+    },
+    {
+      "path": "tests/procedural6_controller.cpp",
+      "bytes": 2779,
+      "sha256": "ce64647c26be9eb76c1a0ec97134e0d3a6678eef60c4762f096850917ce28107"
+    },
+    {
+      "path": "tests/procedural6_persistence.cpp",
+      "bytes": 2986,
+      "sha256": "6fbac39b0c49afa569557bab8787e8ae487e41d9a08f4609ba592101f7123ded"
+    },
+    {
+      "path": "tests/procedural6_render.cpp",
+      "bytes": 1313,
+      "sha256": "ac72b88b0e832fb11409cb294a17bccb2e053ac2579c8ad57f6e8579bf4c1148"
+    },
+    {
+      "path": "tests/render.cpp",
+      "bytes": 48182,
+      "sha256": "391e0da883a737646c494bba09f9de569dfc2a014cbe6b0964319f3a47a26b25"
+    },
+    {
+      "path": "tests/save29.cpp",
+      "bytes": 17645,
+      "sha256": "72b4ccd3a24801c7045e28ad46a832af2b4fe009d61495ea19cbe386b98e896a"
+    },
+    {
+      "path": "tests/title_controller.cpp",
+      "bytes": 112969,
+      "sha256": "5c316a2ffe0484d3f43c2c823e4f4e903167b135ae5330dd99d3296574cf13c3"
+    },
+    {
+      "path": "tests/touch77_controller.cpp",
+      "bytes": 9251,
+      "sha256": "4b40114b2bde44dcd5908f391f6e511b5ab755aedb79e75f1961f132b7d96c2b"
+    },
+    {
+      "path": "tests/update_adapter.cpp",
+      "bytes": 8393,
+      "sha256": "33d6bbd19d84d4f95f04b3a9b03c47188690575b22b3612e76e598516447b3c2"
+    },
+    {
+      "path": "tests/update_fake/manifest_save30.json",
+      "bytes": 883,
+      "sha256": "37f10b05518708cb661191f2b16b89393642cc42538ba34274f24484fe0d2ddd"
+    },
+    {
+      "path": "tests/update_fake/procedural6-readback-manifest.json",
+      "bytes": 770,
+      "sha256": "833c2834feba0daa31019303a9fb2e96ff3b13215ea38cb7e8c3f29ab4e6deaf"
+    },
+    {
+      "path": "tests/visual77_render.cpp",
+      "bytes": 9098,
+      "sha256": "4e8914bb3e0ca73dfe45a0de1a6e671a25dd2160137fa404aa565e1b87cc89e2"
+    },
+    {
+      "path": "tools/test_combat_trace.py",
+      "bytes": 8446,
+      "sha256": "6abb7d929dfb8add885ef7385bec7daec235de5261f0aeab85f73331b6561b1e"
+    },
+    {
+      "path": "tools/test_combat_trace_ui.sh",
+      "bytes": 728,
+      "sha256": "71e6c80ce971713233339e5cf8cb88efc92ea4c923a7b3cfa67b8f442270ee3b"
+    },
+    {
+      "path": "tools/test_package6_local.sh",
+      "bytes": 2384,
+      "sha256": "08804b491bd6fe6d9b1a4ab5f2f99f4e1a65d5616f50c698d5669acbc1caa101"
+    },
+    {
+      "path": "tools/test_procedural6.sh",
+      "bytes": 896,
+      "sha256": "4fe9968421fec1f4663fb0b2acfdf8beb3dee31b809761b4936057e8aec3eef9"
+    }
+  ],
+  "qualification_inputs": [
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Camp.h",
+      "bytes": 3649,
+      "sha256": "ff608ed557297d9c2518fab707da2823b630cb14282bc937a099ccc4d859b90a"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Campaign.h",
+      "bytes": 5947,
+      "sha256": "4e45b02d5bd5f695262449a9e0da6ecd2d118f5427ecf3fc919b31e0804c318f"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DailyTravel.h",
+      "bytes": 8049,
+      "sha256": "a4db093f5aef00bdcc46cbada00a540fbba89966905acbda759a516713371ce5"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Dungeon.h",
+      "bytes": 13201,
+      "sha256": "ffcbef825954fba7026fd1b54b7d0a56fc774eeda7003e070304454ed968a457"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DungeonGeneration.h",
+      "bytes": 13437,
+      "sha256": "8ffc0aa7efce9ddc4b7ea8486a220c2d42ee8098a14f757d1d4e3c9d2d2a5e55"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Exploration.h",
+      "bytes": 6625,
+      "sha256": "b012e71a505fc72b1778256abe86e5b496ff7e49de775f1aa4a80bb673294e96"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Gear.h",
+      "bytes": 1876,
+      "sha256": "1abc55383ef2cd425e2cd990138d57efd9591dab298c872242593b8bd2fd91db"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/GuildEvents.h",
+      "bytes": 11216,
+      "sha256": "856d83aa5233cdd0e143855dbf86b81703562a8eb445db26a9039a3499575dfb"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Persistence.h",
+      "bytes": 14555,
+      "sha256": "99b19c1e62aeb6e70c3d9c57fba3c5580fca6f6c4e59f0052331d4ce1059ebe3"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Rules.h",
+      "bytes": 44607,
+      "sha256": "5476a873ba677c65b24bd40f8cf45bdde0c501cf98ff678f3bb0ca2fcac70d8d"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Save.h",
+      "bytes": 14978,
+      "sha256": "2bde03941df5f3abc4e8ee805135b7ac733ebb12548d7c674c33c9deb65f145b"
+    },
+    {
+      "path": "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/SaveVersion.h",
+      "bytes": 208,
+      "sha256": "d35e1373594c12fc294a93a013e91395ece9daf741ec7a05daca3dbd09b1e52a"
+    },
+    {
+      "path": "tests/package6_save_review/generate29.cpp",
+      "bytes": 3925,
+      "sha256": "49c1914f27be9c225c7e0058e98c30a3ae29173fab5c3355c6a206e6efe281dc"
+    },
+    {
+      "path": "tests/package6_save_review/geometry.inc",
+      "bytes": 561,
+      "sha256": "c242ce28b6f782f33435510b7b59b6d1f8dc88833a860b09e1df8c9219ee95ab"
+    },
+    {
+      "path": "tests/package6_save_review/migrate30.cpp",
+      "bytes": 7532,
+      "sha256": "27bb8df04dd39e0815cd8585de73c47b599d62686451918db50badea5e3a0c58"
+    },
+    {
+      "path": "tests/package6_save_review/nvs_fake.inc",
+      "bytes": 6268,
+      "sha256": "9b3699c5bb5a44d90f53c25605398233258a0745cd6d7fb063a268c5aaa83512"
+    },
+    {
+      "path": "tests/package6_save_review/nvs_migrate30.cpp",
+      "bytes": 3966,
+      "sha256": "93235c867a77d0027298216a3dd064a3c5e6b99ee8767b42604afd198941d1b8"
+    },
+    {
+      "path": "tests/package6_save_review/nvs_rollback29.cpp",
+      "bytes": 1444,
+      "sha256": "d462458fa4214ddd43e8dc52ac9a029197847efd11cd53a43d4b5d37e638f057"
+    },
+    {
+      "path": "tests/package6_save_review/rollback29.cpp",
+      "bytes": 4976,
+      "sha256": "45319f66aa51b4b29585ae32cb6e6ba682dcc0859ebf340a71398f0f6847be19"
+    }
+  ],
+  "packaging_exceptions": [
+    ".github/workflows/package6-check.yml",
+    ".github/workflows/release.yml",
+    "PACKAGE6_STAGING_ONLY.txt",
+    "README.md",
+    "docs/PACKAGE6_RELEASE_QUALIFICATION.md",
+    "docs/RELEASE_PACKAGE6_NOTAS.txt",
+    "firmware/RPG_POKET_2/ReleaseVersion.h",
+    "tests/fixtures/package6-approved-sources.json",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Camp.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Campaign.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DailyTravel.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Dungeon.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/DungeonGeneration.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Exploration.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Gear.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/GuildEvents.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Persistence.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Rules.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/Save.h",
+    "tests/fixtures/package6-procedural-only/firmware/RPG_POKET_2/SaveVersion.h",
+    "tests/package6_release.cpp",
+    "tests/package6_release_gate.py",
+    "tests/package6_release_verifier.py",
+    "tests/package6_save_review/generate29.cpp",
+    "tests/package6_save_review/geometry.inc",
+    "tests/package6_save_review/migrate30.cpp",
+    "tests/package6_save_review/nvs_fake.inc",
+    "tests/package6_save_review/nvs_migrate30.cpp",
+    "tests/package6_save_review/nvs_rollback29.cpp",
+    "tests/package6_save_review/rollback29.cpp",
+    "tools/check_package6_release_gate.py",
+    "tools/check_package6_scope.py",
+    "tools/record_package6_identity.py",
+    "tools/release_package6_manifest.py",
+    "tools/test_package6.sh",
+    "tools/test_package6_release.py",
+    "tools/test_package6_save_review.py",
+    "tools/verify_package6_release.py"
+  ],
+  "contract": {
+    "version": "2026.10.13-explore77",
+    "build": 2026101309,
+    "package": "7.7 - Dados e exploracao das Ruinas",
+    "generation": "7.7",
+    "save_format": 30,
+    "reads_save_formats": [
+      29,
+      30
+    ],
+    "save_reset_epoch": 1,
+    "art_assets": 666,
+    "art_payload_bytes": 7470912,
+    "art_total_bytes": 7470928,
+    "art_crc32": "9b4bcfc0",
+    "art_sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56",
+    "known_psram_bytes": 7638272,
+    "ota_partition_bytes": 3145728
+  }
+}

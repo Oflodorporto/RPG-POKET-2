@@ -1,0 +1,17 @@
+PACKAGE 6 QUALIFICATION CANDIDATE — NOT PUBLISHED
+
+Identity: 2026.10.13-explore77 / build 2026101309.
+Base package5 commit: 7a05617cd1e13843d73de72f970c57a7113af48a.
+Frozen integrated gameplay tree: 814f16a9f6e11a2d5fe0cf6a32f7da67c92bbb17.
+
+This isolated copy prepares local qualification infrastructure. Save30 migration
+is approved; package6 publication is not. Do not push, promote main, tag, publish or install without separate explicit approval.
+The source integration and historical package5 test/verifier gates remain unchanged.
+
+Save30 reads29/30 and writes30, epoch1 without a new reset. Migration is lazy
+on ordinary save. Existing active Save29 maps stay fixed. Old Save29 firmware
+blocks migrated slots without erasing; compatible Save30 firmware is needed.
+Only new paid Ruins runs are procedural; Island and event maps remain fixed.
+
+See docs/PACKAGE6_RELEASE_QUALIFICATION.md for independent gates and limits.
+Source/host tests do not establish ESP32 size, CI/LSan or physical-device results.

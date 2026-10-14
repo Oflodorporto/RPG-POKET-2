@@ -7,7 +7,7 @@ static void encounter(bool modern,unsigned cls,unsigned seed,unsigned place=0){
  game=modern?rpg::create(cls,seed):rpg::testHero(cls,seed);game.tutorial=true;game.city=1;game.crystals=1;
  if(place==1){game.campaignFlags=255;game.campaignEnding=2;game.dungeonClears=1;assert(!rpg::enterIsland(game));}
  else if(place==2){assert(modern);game.city=2;assert(rpg::offerEvent(game,20733,10));game.eventKind=3;assert(!rpg::acceptEvent(game,27));assert(!rpg::eventAct(game));}
- else assert(!rpg::enterDungeon(game));
+ else assert(!rpg::enterDungeon(game,0));
  if(place==2){game.dungeonXY=0x21;rpg::dungeonFace(game,0);}else game.dungeonXY=0x72;
  assert(rpg::dungeonEnemyAhead(game)==0);assert(rpg::begin(game,rpg::dungeonSpawn(game,0).id));
  game.enemyHp=1;game.p.life=73;game.p.mana=71;assert(rpg::valid(game)&&journal.save(game));

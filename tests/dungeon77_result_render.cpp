@@ -15,7 +15,7 @@ int main(int argc,char** argv){
  std::ifstream pack("cartao/RPGPOKET/artes.pak",std::ios::binary);assert(pack);pack.seekg(16);pack.read(reinterpret_cast<char*>(artMemory),ART_BYTES);assert(pack.gcount()==ART_BYTES&&rpg::crc(artMemory,ART_BYTES)==ART_CRC);
  unsigned count=0;ResultCanvas c;
  for(unsigned cls=0;cls<4;++cls)for(auto phase:{rpg::Phase::Home,rpg::Phase::Hero,rpg::Phase::Enemy,rpg::Phase::Won,rpg::Phase::Lost,rpg::Phase::Fled})for(bool active:{false,true}){
-  auto g=rpg::testHero(cls,42);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g));g.dungeonXY=0x72;g.phase=phase;g.enemyId=2;g.enemyHp=phase==rpg::Phase::Won?0:5;g.gainXp=3276;g.gainGold=255;
+  auto g=rpg::testHero(cls,42);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g,0));g.dungeonXY=0x72;g.phase=phase;g.enemyId=2;g.enemyHp=phase==rpg::Phase::Won?0:5;g.gainXp=3276;g.gainGold=255;
   ViewState v;v.page=Page::Dungeon;v.message="Explore e encontre o selo";v.effect=active?Effect::Slash:Effect::None;v.effectProgress=900;v.effectFrame=7;v.combatResult={CombatFeedback::Damage,5,false,false};v.combatResult.enemyDefeated=phase==rpg::Phase::Won;
   uint8_t before[rpg::SAVE_SIZE],after[rpg::SAVE_SIZE];rpg::encode(g,19,before);auto state=g;c.labels.clear();render(c,g,v);rpg::encode(g,19,after);assert(!memcmp(before,after,sizeof(before))&&!memcmp(&g,&state,sizeof(g)));++count;
   bool pending=dungeonUi::pendingResult(g),finalLoss=phase==rpg::Phase::Lost&&!active;assert(c.has("Continuar")==bool(pending&&!active));assert(c.has("Aguarde...")==bool(pending&&active));assert(c.has("Avancar")==!pending);assert(c.has("Girar <")==!pending);assert(c.has("Bolsa")==!finalLoss&&c.has("Menu"));

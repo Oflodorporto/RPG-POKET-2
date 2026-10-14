@@ -1,0 +1,19 @@
+{
+  "source_base_commit": "ad8acd8b60f8c4c8bf961f87f8300445ad9d6be5",
+  "procedural_patch_sha256": "c4bb4bb86deb4225acf99fa2c7682ab322b0d0c568cc80b2bc5dd4180b1eb4bc",
+  "incremental_over_original_patch_sha256": "8c1002c4955d00d0eedaeec3c6dc3af2aa6a67a4ed5a952662164eac4a2afef6",
+  "headers": {
+    "Camp.h": "ff608ed557297d9c2518fab707da2823b630cb14282bc937a099ccc4d859b90a",
+    "Campaign.h": "4e45b02d5bd5f695262449a9e0da6ecd2d118f5427ecf3fc919b31e0804c318f",
+    "DailyTravel.h": "a4db093f5aef00bdcc46cbada00a540fbba89966905acbda759a516713371ce5",
+    "Dungeon.h": "ffcbef825954fba7026fd1b54b7d0a56fc774eeda7003e070304454ed968a457",
+    "DungeonGeneration.h": "8ffc0aa7efce9ddc4b7ea8486a220c2d42ee8098a14f757d1d4e3c9d2d2a5e55",
+    "Exploration.h": "b012e71a505fc72b1778256abe86e5b496ff7e49de775f1aa4a80bb673294e96",
+    "Gear.h": "1abc55383ef2cd425e2cd990138d57efd9591dab298c872242593b8bd2fd91db",
+    "GuildEvents.h": "856d83aa5233cdd0e143855dbf86b81703562a8eb445db26a9039a3499575dfb",
+    "Persistence.h": "99b19c1e62aeb6e70c3d9c57fba3c5580fca6f6c4e59f0052331d4ce1059ebe3",
+    "Rules.h": "5476a873ba677c65b24bd40f8cf45bdde0c501cf98ff678f3bb0ca2fcac70d8d",
+    "Save.h": "2bde03941df5f3abc4e8ee805135b7ac733ebb12548d7c674c33c9deb65f145b",
+    "SaveVersion.h": "d35e1373594c12fc294a93a013e91395ece9daf741ec7a05daca3dbd09b1e52a"
+  }
+}

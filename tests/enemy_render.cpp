@@ -91,7 +91,7 @@ int main(){
   }
  }
  // Lethal dungeon effect retains only the existing spawn during its fade. No resurrected mask.
- g=rpg::create(0,31);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g));g.dungeonXY=0x72;rpg::dungeonFace(g,1);assert(rpg::dungeonEnemyAhead(g)==0);assert(rpg::begin(g,2));g.enemyHp=0;rpg::finish(g);assert(g.phase==rpg::Phase::Won&&!g.dungeonEnemies);
+ g=rpg::create(0,31);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g,0));g.dungeonXY=0x72;rpg::dungeonFace(g,1);assert(rpg::dungeonEnemyAhead(g)==0);assert(rpg::begin(g,2));g.enemyHp=0;rpg::finish(g);assert(g.phase==rpg::Phase::Won&&!g.dungeonEnemies);
  v=ViewState{};v.page=Page::Dungeon;v.effect=Effect::MagicDarts;v.combatResult={CombatFeedback::Damage,1,false,false};v.combatResult.enemyDefeated=true;
  unsigned fullDefeatPixels=0,lateDefeatPixels=0;Canvas hiddenCanvas;
  for(unsigned p:{491u,650u,800u,950u,1000u}){v.effectProgress=p;v.effectFrame=p*8/1000;frozen(c,g,v);c.save(output+"/dungeon-defeat-"+std::to_string(p)+".ppm");assert(!g.dungeonEnemies);

@@ -78,7 +78,7 @@ int main(int argc,char** argv){
   assert((combatRecoil(result,600)>0)==result.injury());
  }
  // Shared feedback in the existing dungeon, with no weapon-range or game changes.
- g=rpg::testHero(0,77);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g));v=ViewState{};v.page=Page::Dungeon;v.effect=Effect::MagicDarts;v.combatResult={CombatFeedback::Damage,8,false,false};
+ g=rpg::testHero(0,77);g.city=1;g.crystals=1;assert(!rpg::enterDungeon(g,0));v=ViewState{};v.page=Page::Dungeon;v.effect=Effect::MagicDarts;v.combatResult={CombatFeedback::Damage,8,false,false};
  for(unsigned ms:{0u,180u,540u,900u}){v.effectElapsedMs=ms;v.effectFrame=ms*8/1100;v.effectProgress=ms*1000/1100;immutableRender(c,g,v);++battleFrames;c.save(root+"/dungeon-pilot-"+std::to_string(ms)+".ppm");}
  // Player-target and enemy-target dungeon outcomes have distinct visual anchors.
  for(auto kind:{CombatFeedback::Heal,CombatFeedback::Damage})for(bool targetHero:{false,true}){

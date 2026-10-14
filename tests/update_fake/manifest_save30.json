@@ -1,0 +1,28 @@
+{
+  "schema": 2,
+  "package_name": "Host Save29 parser fixture only",
+  "version": "2099.01.01-save29-fixture",
+  "build": 2099010101,
+  "board": "Waveshare-29667",
+  "partition": "app3M_fat9M_16MB",
+  "firmware": {
+    "url": "https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v2026.10.10-eventos8/firmware.bin",
+    "bytes": 2765952,
+    "sha256": "d9cd31fd4d7a1df596ebb7533a69caf4710aec6d8bd6561bedd0d9b9b2b227fd"
+  },
+  "art": {
+    "url": "https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v2026.10.10-eventos8/artes.pak",
+    "bytes": 6991952,
+    "sha256": "bf8c7a085791805b3f9a72ab4f9f6877b9c46a0cb842e25f073029d053a524f8",
+    "payload_crc32": "53dcc3a5",
+    "assets": 488
+  },
+  "minimum_psram_bytes": 7145536,
+  "installation": "confirmed-device-ota",
+  "save_format": 7,
+  "writes_save_format": 30,
+  "reads_save_formats": [
+    30,
+    29
+  ]
+}

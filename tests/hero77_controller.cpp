@@ -27,7 +27,7 @@ void fixture(unsigned cls,bool modern,unsigned level,unsigned seed,bool dungeon=
  game=modern?rpg::create(cls,seed):rpg::testHero(cls,seed);
  if(modern){game.p.xp=rpg::dndXp[level-1];rpg::levelUp(game);game.oath=cls==1&&level>=3;}
  game.tutorial=true;game.city=1;game.p.life=game.p.mana=2;
- if(dungeon){game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonXY=0x72;game.dungeonFlags=(game.dungeonFlags&3)|4;}
+ if(dungeon){game.crystals=1;assert(!rpg::enterDungeon(game,0));game.dungeonXY=0x72;game.dungeonFlags=(game.dungeonFlags&3)|4;}
  assert(rpg::begin(game,2));game.p.hp=std::max(1u,unsigned(game.p.maxhp)/2);game.p.mp=game.p.maxmp;game.fatigue=seed%101;
  assert(rpg::valid(game)&&journal.save(game));view=ViewState{};view.page=dungeon?Page::Dungeon:Page::Battle;combatFx=CombatFx{};menu.journey=Journey{};now=UINT32_MAX-200;
 }

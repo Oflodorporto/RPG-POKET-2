@@ -44,7 +44,7 @@ int main(int argc,char** argv){
   const auto own=load(argv[1]),other=load(argv[2]);
   assert(own.size()==ART_BYTES+16&&rpg::get32(own.data(),8)==ART_CRC);
   assert(other.size()!=own.size()&&rpg::get32(other.data(),8)!=ART_CRC);
-  assert(rpg::CURRENT_SAVE_FORMAT==29);
+  assert(rpg::CURRENT_SAVE_FORMAT==30);
   auto game=rpg::create(0,0x7129u);
   std::array<uint8_t,rpg::SAVE_SIZE> save{},check{};
   rpg::encode(game,27,save.data());

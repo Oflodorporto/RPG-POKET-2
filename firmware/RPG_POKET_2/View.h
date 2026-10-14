@@ -38,7 +38,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {uint8_t trackedLevel=0;bool levelPending=false,levelAttributes=false,createHintsPending=false;Page levelReturn=Page::Home;rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0,cityPage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {rpg::CombatTrace heroTrace,enemyTrace;bool traceOpen=false,traceEnemy=false;uint8_t tracePage=0;uint32_t tracePauseAt=0,traceBlockUntil=0;uint8_t trackedLevel=0;bool levelPending=false,levelAttributes=false,createHintsPending=false;Page levelReturn=Page::Home;rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0,cityPage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "StoryPaper.h"
 #include "MenuView.h"
@@ -69,6 +69,7 @@ constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,
 #include "TradingView.h"
 #include "LocksView.h"
 #include "FirstExperience.h"
+#include "CombatTraceView.h"
 // Rendering shared by device and native screenshot test. No gameplay mutation.
 template<class Canvas> struct WifiOverlay {
   Canvas& c;bool connected;uint8_t bars;
@@ -76,6 +77,8 @@ template<class Canvas> struct WifiOverlay {
     for(unsigned i=0;i<4;++i)c.fillRect(223+i*4,17-(i+1)*4,3,(i+1)*4,i<bars?green:0x3186);}
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
+  if(v.traceOpen){combatTraceUi::drawDetails(c,g,v);return;}
+  combatTraceUi::Overlay<Canvas> traceOverlay{c,g,v};
   WifiOverlay<Canvas> wifiOverlay{c,menu.connected&&v.page!=Page::Clock,menu.signalBars};
   if(v.page==Page::Clock){drawClock(c,g,frame);return;}
   if(rpg::dailyTrip(g)&&(v.page==Page::Travel||v.page==Page::TravelRoll||v.page==Page::CampRoll||v.page==Page::CampRest)){drawDailyTravel(c,g,v,frame);return;}
@@ -140,7 +143,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,218,212,"Ver na bolsa");button(14,272,212,"Explorar");return;
   }
   if(v.page==Page::DungeonVictory){
-    center(18,rpg::islandDungeon(g)?"THALVOR VENCIDO!":"VAELOR DERROTADO!",2,UI_GOLD);
+    center(28,rpg::islandDungeon(g)?"THALVOR VENCIDO!":"VAELOR DERROTADO!",2,UI_GOLD);
     center(76,"A cripta foi conquistada.");
     snprintf(b,sizeof(b),"+%u XP / +%u ouro",g.gainXp,g.gainGold);center(108,b,2,UI_GREEN);
     center(148,rpg::islandDungeon(g)?"O tesouro do santuario esta livre.":"O Livro das Vigilias foi revelado.");
@@ -350,7 +353,7 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   }
   if(v.page==Page::Result){
     // Rewards use dark ink on the shared parchment; no dark overlay.
-    center(15,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
+    center(28,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
     if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP",g.gainXp);center(77,b,2);snprintf(b,sizeof(b),"+%u ouro",g.gainGold);center(99,b,2);
       center(124,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(137,rpg::reducedCombatXp(g)?"XP menor: inimigo fraco":g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou do encontro.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}

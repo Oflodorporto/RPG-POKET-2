@@ -36,7 +36,7 @@ uint32_t acceptedTouches=0,maxPollGap=0,touchFeedbackUntil=0;bool polledOnce=fal
 char message[40]="";
 firstExperience::Progress<Store> firstHints(nvs);
 bool offerFirstHint(){
- if(!menu.sessionStarted||journal.blocked||journal.active<0||!game.tutorial||!game.originStory||game.originPage!=8||combatFx.active()||menu.journey.active)return false;
+ if(!menu.sessionStarted||journal.blocked||journal.active<0||!game.tutorial||!game.originStory||game.originPage!=8||combatFx.active()||view.traceOpen||menu.journey.active)return false;
  int topic=firstExperience::topic(view.page,game);if(topic<0||!firstHints.pending(topic))return false;
  view.hintReturn=view.page;view.hintIndex=topic;view.hintError=false;view.page=Page::FirstTip;pendingTouch=false;gate=TouchGate{};dirty=true;return true;
 }
@@ -48,6 +48,7 @@ void say(const char* s){snprintf(message,sizeof(message),"%s",s);view.message=me
 Page currentPage(){if(rpg::dailyTrip(game)){if(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)return Page::Battle;if(game.phase!=rpg::Phase::Home)return Page::Result;switch(game.daily.phase){case rpg::DailyPhase::RoadRoll:return Page::TravelRoll;case rpg::DailyPhase::NightRoll:return Page::CampRoll;case rpg::DailyPhase::Rest:return Page::CampRest;default:return Page::Travel;}}if(game.campStage){if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::Result;}if(game.discovery&&game.phase==rpg::Phase::Home)return game.chestLock?Page::ChestLock:Page::Discovery;if(game.campaignStage)return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::CampaignResult;if(game.eventStage==2){if(rpg::eventReady(game))return Page::EventResult;if(rpg::eventExpedition(game)&&rpg::inDungeon(game))return game.phase==rpg::Phase::Lost||game.phase==rpg::Phase::Fled?Page::EventResult:Page::Dungeon;if(game.eventKind&&game.phase==rpg::Phase::Home){if(game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return rpg::eventReady(game)?Page::EventResult:Page::EventMission;}return game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy?Page::Battle:Page::EventResult;}if(game.campStage==1)return Page::CampRoll;if(game.campStage==3)return Page::CampRest;if(rpg::inDungeon(game))return rpg::dungeonBossWon(game)?Page::DungeonVictory:Page::Dungeon;if(game.phase==rpg::Phase::Home&&game.tripStage)return game.tripStage==1?Page::TravelRoll:Page::Travel;return game.phase==rpg::Phase::Home?(game.tutorial?Page::Home:game.originStory&&game.originPage==8?Page::Help:Page::Prologue):(game.phase==rpg::Phase::Hero||game.phase==rpg::Phase::Enemy)?Page::Battle:Page::Result;}
 void activateTripPage(){menu.journey=Journey{};menu.rollReady=false;if(view.page==Page::TravelRoll||view.page==Page::CampRoll){menu.rollStarted=millis();}else if(view.page==Page::CampRest){menu.campStarted=millis();}else if(view.page==Page::Travel&&(game.tripStage==3||(rpg::dailyTrip(game)&&game.daily.phase==rpg::DailyPhase::Leg)))menu.journey.start(game.city,game.tripTo,millis(),rpg::escortTrip(game));pendingTouch=false;gate=TouchGate{};}
 void savedTransition(Page next){
+  if(game.phase==rpg::Phase::Home){view.heroTrace=rpg::CombatTrace{};view.enemyTrace=rpg::CombatTrace{};view.traceOpen=false;}
   afterSave=next;
   if(!journal.save(game)){view.page=Page::SaveError;Serial.println("SAVE FALHOU; jogo pausado para nova tentativa");}
   else{if(view.trackedLevel&&game.p.level>view.trackedLevel)view.levelPending=true;view.trackedLevel=game.p.level;if(view.createHintsPending){firstHints.start(backend.slot);view.createHintsPending=false;}view.page=next;enemyAt=millis()+850;if(next==Page::TravelRoll||next==Page::Travel||next==Page::CampRoll||next==Page::CampRest)activateTripPage();}
@@ -57,7 +58,7 @@ void action(rpg::Action a){
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Offensive)a=rpg::Action::MagicMissile;
   if(game.dndProgression&&game.p.cls==0&&a==rpg::Action::Defensive)a=rpg::Action::ShieldSpell;
   const unsigned previousHeroHp=game.p.hp;
-  const char* err=rpg::act(game,a);if(err){say(err);return;}
+  rpg::CombatTrace receipt;const char* err=rpg::act(game,a,&receipt);if(err){say(err);return;}view.heroTrace=receipt;view.traceEnemy=false;
   if(a==rpg::Action::LayHands||a==rpg::Action::SecondWind)snprintf(message,sizeof(message),"%s: +%u HP",rpg::powerName(a),game.damage);
   else if(a==rpg::Action::ActionSurge)say("Surto: sua proxima acao e extra");
   else if(a==rpg::Action::RagePower)say(rpg::persistentRage(game)?"Furia: ate o fim da luta":"Furia: 3 rodadas; resiste fisico");
@@ -84,10 +85,12 @@ void showMap(){menu.destination=game.city;view.page=Page::Map;say("");}
 void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
+  view.heroTrace=rpg::CombatTrace{};view.enemyTrace=rpg::CombatTrace{};view.traceOpen=false;view.traceBlockUntil=0;
   view.sale.open=false;backend.slot=slot;firstHints.load(slot);menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.levelPending=false;view.levelAttributes=false;view.createHintsPending=false;view.trackedLevel=game.p.level;view.choice=0;view.cityPage=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered){bool fatigueReset=journal.fatigueReset;recoverClubReservation();if(fatigueReset)say("Fadiga reiniciada; heroi preservado");}
 }
 void openTitle(){
+  view.heroTrace=rpg::CombatTrace{};view.enemyTrace=rpg::CombatTrace{};view.traceOpen=false;view.traceBlockUntil=0;
   view.sale.open=false;menu.sessionStarted=false;menu.creationFromTitle=false;menu.newGameSlots=false;menu.notice="";
   menu.journey=Journey{};combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};refreshSlots();view.page=Page::Title;say("");
 }
@@ -117,10 +120,26 @@ void acknowledgeDungeonResult(){
 // A level notice is a cosmetic RAM queue. Rewards/points were already saved;
 // opening/dismissing it never replays gameplay and never interrupts a combat.
 bool offerLevelNotice(){
- if(!view.levelPending||!menu.sessionStarted||journal.blocked||combatFx.active()||menu.journey.active||view.page==Page::SaveError||view.page==Page::Blocked||view.page==Page::LevelUp||view.page==Page::CampRest||view.page==Page::Clock||game.phase!=rpg::Phase::Home)return false;
+ if(!view.levelPending||!menu.sessionStarted||journal.blocked||combatFx.active()||view.traceOpen||menu.journey.active||view.page==Page::SaveError||view.page==Page::Blocked||view.page==Page::LevelUp||view.page==Page::CampRest||view.page==Page::Clock||game.phase!=rpg::Phase::Home)return false;
  view.levelReturn=view.page;view.levelPending=false;view.page=Page::LevelUp;pendingTouch=false;gate=TouchGate{};dirty=true;return true;
 }
+// Receipt controls are handled before blocked action buttons. They never resolve.
+bool tapCombatReceipt(int x,int y){
+ if(view.traceBlockUntil&&int32_t(millis()-view.traceBlockUntil)<0)return true;
+ if(view.traceOpen){
+  if(hit(x,y,12,38,102,28)||hit(x,y,126,38,102,28)){view.traceEnemy=x>=126;view.tracePage=0;dirty=true;}
+  else if(hit(x,y,12,246,62,28)||hit(x,y,166,246,62,28)){unsigned n=combatTraceUi::pageCount(view.traceEnemy?view.enemyTrace:view.heroTrace);view.tracePage=(view.tracePage+(x<120?n-1:1))%n;dirty=true;}
+  else if(hit(x,y,12,282,216,30)){view.traceOpen=false;if(game.phase==rpg::Phase::Enemy)enemyAt+=uint32_t(millis()-view.tracePauseAt);view.traceBlockUntil=millis()+180;pendingTouch=false;dirty=true;}
+  return true;
+ }
+ if(!combatTraceUi::surface(view.page,game))return false;
+ if(combatTraceUi::detailsHit(x,y)){view.traceOpen=true;view.tracePauseAt=millis();view.tracePage=0;pendingTouch=false;dirty=true;return true;}
+ // Consume repeated skip taps even after the animation ended: no click-through.
+ if(combatTraceUi::skipHit(x,y)){if(combatFx.active()){combatFx.kind=Effect::None;view.page=currentPage();view.traceBlockUntil=millis()+180;pendingTouch=false;dirty=true;}return true;}
+ return false;
+}
 void tapped(int x,int y){
+  if(tapCombatReceipt(x,y))return;
   lastActivity=millis();if(view.page==Page::Clock){if(menu.sessionStarted&&game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
   if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt){
     if(view.page==Page::TradeReceipt){if(hit(x,y,14,272,212)){view.saleIndex=0;view.page=Page::TradeList;say("");}return;}
@@ -608,8 +627,8 @@ void tapped(int x,int y){
 }
 // Isolated dispatcher preserves the loop order and can be checked by native fixtures.
 void tickEnemyTurn(uint32_t now){
-  if(!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
-    auto intent=rpg::enemyIntent(game);bool skipped=game.turnedTurns!=0;unsigned previousEnemyHp=game.enemyHp;rpg::enemy(game);snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
+  if(!view.traceOpen&&!combatFx.active()&&(view.page==Page::Battle||view.page==Page::Dungeon)&&game.phase==rpg::Phase::Enemy&&int32_t(now-enemyAt)>=0){
+    auto intent=rpg::enemyIntent(game);bool skipped=game.turnedTurns!=0;unsigned previousEnemyHp=game.enemyHp;rpg::enemy(game,&view.enemyTrace);view.traceEnemy=true;snprintf(message,sizeof(message),game.dodge?"Voce esquivou!":game.crit?"Critico inimigo! -%u HP":"Inimigo causou %u de dano",game.damage);
     if(skipped)snprintf(message,sizeof(message),"Inimigo expulso: sem acao");else if(intent==rpg::Intent::Prepare)snprintf(message,sizeof(message),"Inimigo prepara um golpe forte");else if(intent==rpg::Intent::Mend)snprintf(message,sizeof(message),"Inimigo recomposto: %u HP",game.enemyHp);else if(intent==rpg::Intent::Drain&&!game.dodge)snprintf(message,sizeof(message),"Drenagem: -%u HP; confira MP",game.damage);
     view.message=message;savedTransition(currentPage());beginEffect(intent==rpg::Intent::Mend?Effect::Radiant:intent==rpg::Intent::Prepare?Effect::Shield:game.enemyId==5?Effect::Projectile:Effect::Slash,!skipped&&intent!=rpg::Intent::Mend&&intent!=rpg::Intent::Prepare,enemyCombatResult(game,intent,previousEnemyHp,skipped));
   }
@@ -664,12 +683,15 @@ int main(){
  game=rpg::testHero(1,33);game.p.gold=99;view.page=Page::Guild;tapped(80,190);assert(view.page==Page::GuildJoin);tapped(170,290);assert(!game.guildMember&&game.p.gold==99&&view.page==Page::GuildJoin);
  game.p.gold=100;tapped(170,290);assert(game.guildMember&&game.p.gold==0&&view.page==Page::Guild);auto joined=nvs.blobs;tapped(80,190);assert(view.page==Page::GuildMissions);tapped(80,290);assert(view.page==Page::Guild&&game.p.gold==0&&nvs.blobs==joined);
  tapped(80,240);assert(view.page==Page::Guild);view.page=Page::Tavern;tapped(80,235);assert(view.page==Page::Guild);tapped(80,190);tapped(80,135);assert(view.page==Page::Contract);
- game=rpg::testHero(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;journal.blocked=false;
+ game=rpg::testHero(0,42);game.city=1;game.crystals=1;game.tutorial=true;view.page=Page::Ruins;journal.blocked=false;const auto fixedEntryFixture=game;
  tapped(180,160);assert(view.page==Page::DungeonEntry);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.crystals==0&&rpg::inDungeon(game));
+ // This historical Save28 harness continues its fixed-coordinate scenario.
+ // Production Save30 entry/retry is tested separately by procedural6_controller.
+ game=fixedEntryFixture;assert(!rpg::enterDungeon(game,0));
  nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.crystals==0);tapped(30,230);auto sequence=journal.seq;tapped(110,230);assert(journal.seq==sequence);tapped(190,230);assert(rpg::dungeonHeading(game)==1&&journal.seq==sequence+1);
  tapped(110,230);tapped(110,230);assert(game.phase==rpg::Phase::Hero&&game.enemyId==2&&view.page==Page::Dungeon);combatFx.kind=Effect::None;game.enemyHp=1;game.p.atk=99;tapped(80,100);assert(view.page==Page::Dungeon||view.page==Page::SaveError);combatFx.kind=Effect::None;
  game.phase=rpg::Phase::Won;game.enemyHp=0;assert(journal.save(game));tapped(80,100);assert(game.phase==rpg::Phase::Home&&game.dungeonEnemies&1);tapped(190,305);assert(view.page==Page::DungeonMenu);tapped(100,250);assert(view.page==Page::DungeonExit);tapped(180,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game));
- game=rpg::testHero(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;view.page=Page::Dungeon;
+ game=rpg::testHero(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game,0));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;view.page=Page::Dungeon;
  tapped(80,100);assert(view.page==Page::Dungeon&&game.phase==rpg::Phase::Hero&&game.enemyId==8&&!(game.dungeonLoot&128));combatFx.kind=Effect::None;
  // Bag quantities survive reload, potions use once, crystal is not consumed by browsing.
  combatFx.kind=Effect::None;game.phase=rpg::Phase::Home;view.page=Page::Dungeon;game.p.hp=1;game.p.life=2;game.crystals=3;
@@ -681,11 +703,11 @@ int main(){
  tapped(40,294);game.p.hp=1;auto potionCount=game.p.life;nvs.fail=true;view.choice=0;tapped(180,294);assert(view.page==Page::SaveError&&game.p.life==potionCount-1);nvs.fail=false;tapped(100,265);assert(view.page==Page::Bag&&game.p.life==potionCount-1);
  rpg::FatigueJournal<NvsBackend> bagRestart(backend);rpg::Game bagCopy;assert(bagRestart.load(bagCopy)==rpg::Load::Ok&&bagCopy.p.life==game.p.life&&bagCopy.crystals==3&&bagCopy.equipped[0]==1);
  // Boss victory is explicit and resumable; reward/mask applied once on the chosen exit.
- game=rpg::testHero(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;
+ game=rpg::testHero(0,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game,0));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;
  assert(currentPage()==Page::DungeonVictory);view.page=currentPage();nvs.fail=true;tapped(80,240);assert(view.page==Page::SaveError&&game.dungeonClears==1&&game.dungeonEnemies&64);
  nvs.fail=false;tapped(100,265);assert(view.page==Page::Dungeon&&game.dungeonClears==1);tapped(80,100);assert(game.dungeonLoot&128&&view.page==Page::DungeonLoot);tapped(80,240);assert(view.page==Page::Bag||view.page==Page::BagGear);if(view.page==Page::BagGear)assert(rpg::gearOwnedAt(game.owned,view.gearIndex*6+view.choice)==view.itemId);
  // Leaving directly after the boss needs no maze backtracking and preserves gold.
- game=rpg::testHero(1,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;game.p.gold=456;view.page=currentPage();tapped(80,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game)&&game.p.gold==456&&game.dungeonClears==1);
+ game=rpg::testHero(1,42);game.city=1;game.crystals=1;assert(!rpg::enterDungeon(game,0));game.dungeonFlags=3;game.dungeonXY=0x27;game.dungeonLoot=8;game.dungeonEnemies=32;game.enemyId=8;game.phase=rpg::Phase::Won;game.enemyHp=0;game.p.gold=456;view.page=currentPage();tapped(80,290);assert(view.page==Page::Ruins&&!rpg::inDungeon(game)&&game.p.gold==456&&game.dungeonClears==1);
  // Map Guardian returns to the Ruins screen, not the refuge.
  game=rpg::testHero(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;game.ruinsWins=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  // Camp choices are saved before rolling. Save failure cannot consume another ration.

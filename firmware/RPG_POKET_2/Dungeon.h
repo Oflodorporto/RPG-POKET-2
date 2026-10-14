@@ -1,5 +1,6 @@
 #pragma once
 #include "Rules.h"
+#include "DungeonGeneration.h"
 namespace rpg {
 inline bool islandUnlocked(const Game& g){return g.campaignEnding==2&&(g.campaignFlags&127)==127;}
 inline bool islandDungeon(const Game& g){return g.dungeonFlags&16;}
@@ -11,13 +12,10 @@ inline int dungeonY(const Game& g){return g.dungeonXY>>4;}
 constexpr int dungeonDx[]={0,1,0,-1},dungeonDy[]={-1,0,1,0};
 inline void dungeonFace(Game& g,unsigned d){g.dungeonFlags=(g.dungeonFlags&~12u)|((d&3)<<2);}
 inline void dungeonSetFloor(Game& g,unsigned n){g.dungeonFlags=(g.dungeonFlags&~34u)|((n&1)<<1)|((n&2)<<4);}
-inline char dungeonCell(unsigned floor,int x,int y){
- static const char* maps[2][9]={
- {"#########","#...#..S#","#.#.#.#.#","#.#...#.#","#.###.#.#","#...#...#","###.#.###","#E......#","#########"},
- {"#########","#...#..B#","#.#.#..T#","#.#.#...#","#.#####D#","#...#...#","###.#.###","#S......#","#########"}};
- return floor<2&&x>=0&&x<9&&y>=0&&y<9?maps[floor][y][x]:'#';
-}
+inline char dungeonCell(unsigned floor,int x,int y){return fixedRuinsCell(floor,x,y);}
+inline bool proceduralRuins(const Game& g){return inDungeon(g)&&!islandDungeon(g)&&!eventExpedition(g)&&g.dungeonGenerator==1;}
 inline char dungeonCell(const Game& g,int x,int y){
+ if(proceduralRuins(g)){unsigned floor=dungeonFloor(g);return floor<2&&x>=0&&x<9&&y>=0&&y<9?ruinsLayout(g.dungeonSeed).cells[floor][ruinsIndex(x,y)]:'#';}
  if(eventExpedition(g)){
   static const char* maps[2][5]={{"#####","#..S#","#.#.#","#E..#","#####"},{"#####","#..B#","#.#.#","#U..#","#####"}};
   unsigned floor=dungeonFloor(g);if(x<0||x>=5||y<0||y>=5||floor>unsigned(g.eventTier>0))return '#';
@@ -32,6 +30,12 @@ inline char dungeonCell(const Game& g,int x,int y){
  unsigned n=dungeonFloor(g);return n<3&&x>=0&&x<9&&y>=0&&y<9?maps[n][y][x]:'#';
 }
 inline bool dungeonWall(const Game& g,int x,int y){char c=dungeonCell(g,x,y);return c=='#'||(c=='D'&&!(g.dungeonLoot&(islandDungeon(g)?128:8)));}
+// Only new procedural arrivals select an open view. Legacy saved headings and
+// stairs keep their exact original behavior; no movement or RNG is consumed.
+inline void dungeonFaceOpenArrival(Game& g,unsigned preferred){
+ if(!proceduralRuins(g))return;for(unsigned i=0;i<4;++i){unsigned d=(preferred+i)%4;
+  if(!dungeonWall(g,dungeonX(g)+dungeonDx[d],dungeonY(g)+dungeonDy[d])){dungeonFace(g,d);return;}}
+}
 struct DungeonSpawn {uint8_t floor,x,y,id;};
 constexpr DungeonSpawn dungeonSpawns[]={{0,3,7,2},{0,5,5,2},{0,7,3,5},{1,3,7,5},{1,5,5,9},{1,7,3,9},{1,7,1,8}};
 constexpr DungeonSpawn dungeonPickups[]={{0,1,5,0},{0,5,3,6},{0,5,1,7},{0,3,1,5},{1,3,1,1},{1,1,5,6},{1,7,5,7},{1,7,2,2}};
@@ -42,18 +46,26 @@ inline unsigned dungeonSpawnCount(const Game& g){return eventExpedition(g)?(g.ev
 inline unsigned dungeonPickupCount(const Game& g){return eventExpedition(g)?0:islandDungeon(g)?6:8;}
 inline DungeonSpawn dungeonSpawn(const Game& g,unsigned i){
  if(eventExpedition(g)){uint8_t id=g.eventTier==0?(g.eventLevel<3?0:1):g.eventTier==1?(i==2?5:2):g.eventTier==2?(i==2?26:25):(i==2?28:27);return i==0?DungeonSpawn{0,1,1,id}:i==1?DungeonSpawn{0,3,uint8_t(g.eventTier?2:1),id}:DungeonSpawn{1,3,1,id};}
+ if(proceduralRuins(g)){auto s=dungeonSpawns[i%7];auto point=ruinsLayout(g.dungeonSeed).enemies[i%7];s.x=point.x;s.y=point.y;return s;}
  return islandDungeon(g)?islandSpawns[i%8]:dungeonSpawns[i%7];}
-inline DungeonSpawn dungeonPickup(const Game& g,unsigned i){return islandDungeon(g)?islandPickups[i%6]:dungeonPickups[i%8];}
+inline DungeonSpawn dungeonPickup(const Game& g,unsigned i){if(proceduralRuins(g)){auto s=dungeonPickups[i%8];auto point=ruinsLayout(g.dungeonSeed).pickups[i%8];s.x=point.x;s.y=point.y;return s;}return islandDungeon(g)?islandPickups[i%6]:dungeonPickups[i%8];}
 inline unsigned dungeonBossIndex(const Game& g){return dungeonSpawnCount(g)-1;}
 inline unsigned dungeonChestBit(const Game& g){return islandDungeon(g)?32:128;}
 inline bool dungeonBossWon(const Game& g){return !eventExpedition(g)&&inDungeon(g)&&g.phase==Phase::Won&&g.enemyId==(islandDungeon(g)?24:8);}
 inline int dungeonEnemyAt(const Game& g,int x,int y){for(unsigned i=0;i<dungeonSpawnCount(g);++i){auto s=dungeonSpawn(g,i);if(!(g.dungeonEnemies&(1u<<i))&&s.floor==dungeonFloor(g)&&s.x==x&&s.y==y)return i;}return -1;}
 inline int dungeonEnemyAhead(const Game& g){unsigned d=dungeonHeading(g);return dungeonEnemyAt(g,dungeonX(g)+dungeonDx[d],dungeonY(g)+dungeonDy[d]);}
-inline void clearDungeon(Game& g){g.dungeonFlags=g.dungeonXY=g.dungeonLoot=g.dungeonEnemies=g.islandTraps=0;}
+inline void clearDungeon(Game& g){g.dungeonFlags=g.dungeonXY=g.dungeonLoot=g.dungeonEnemies=g.islandTraps=g.dungeonGenerator=0;}
 inline const char* buyCrystal(Game& g){if(g.phase!=Phase::Home||g.campStage||g.tripStage||inDungeon(g)||g.city!=1)return "Compre nas Ruinas";if(g.crystals>=9)return "Limite: 9 cristais";if(g.p.gold<300)return "Precisa de 300 ouro";g.p.gold-=300;++g.crystals;return nullptr;}
-inline const char* enterDungeon(Game& g){if(g.phase!=Phase::Home||g.campStage||g.tripStage||inDungeon(g)||g.city!=1||g.discovery||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(!g.crystals)return "Precisa de um cristal";--g.crystals;clearDungeon(g);g.dungeonFlags=5;g.dungeonXY=0x71;return nullptr;}
+// generator=0 is only for explicit historical fixtures/legacy entry routes.
+// Production always calls the default; loading a saved fixed run never calls it.
+inline const char* enterDungeon(Game& g,uint8_t generator=DUNGEON_GENERATOR_VERSION){if(generator>DUNGEON_GENERATOR_VERSION)return "Gerador indisponivel";if(g.phase!=Phase::Home||g.campStage||g.tripStage||inDungeon(g)||g.city!=1||g.discovery||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";if(!g.crystals)return "Precisa de um cristal";uint32_t seed=generator?nextRuinsSeed(g.dungeonSeed,g.randomState):0;if(generator&&!seed)return "Geracao indisponivel";--g.crystals;clearDungeon(g);g.dungeonFlags=5;g.dungeonXY=0x71;
+ if(generator){g.dungeonRun=(g.dungeonRun%0xffffffu)+1;
+   g.dungeonSeed=seed;g.dungeonGenerator=generator;dungeonFaceOpenArrival(g,1);}
+ return nullptr;}
 inline const char* enterIsland(Game& g){if(!islandUnlocked(g))return "Entrada indisponivel";if(g.phase!=Phase::Home||g.campStage||g.tripStage||inDungeon(g)||g.discovery||g.campaignStage||g.eventStage==2||g.clubStage==1||g.clubStage==2)return "Termine a acao atual";clearDungeon(g);g.dungeonFlags=21;g.dungeonXY=0x71;return nullptr;}
 inline bool dungeonValid(const Game& g){
+ if(g.dungeonRun>0xffffffu||bool(g.dungeonSeed)!=bool(g.dungeonRun)||g.dungeonGenerator>DUNGEON_GENERATOR_VERSION)return false;
+ if(g.dungeonGenerator&&(!g.dungeonSeed||!inDungeon(g)||islandDungeon(g)||eventExpedition(g)))return false;
  if(g.crystals>9||g.dungeonFlags>63||g.islandTraps>7||(g.islandCleared&&!islandUnlocked(g)))return false;
  if(!inDungeon(g))return !g.dungeonFlags&&!g.dungeonXY&&!g.dungeonLoot&&!g.dungeonEnemies&&!g.islandTraps;
  if(eventExpedition(g)){
@@ -103,7 +115,7 @@ inline const char* dungeonCollect(Game& g){
 inline bool dungeonStairs(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home)return false;char cell=dungeonCell(g,dungeonX(g),dungeonY(g));unsigned floor=dungeonFloor(g);
  if(eventExpedition(g)){if(cell=='S'&&g.eventTier&&!floor&&(g.dungeonEnemies&3)==3){dungeonSetFloor(g,1);dungeonFace(g,0);g.dungeonXY=0x31;return true;}if(cell=='U'&&floor){dungeonSetFloor(g,0);dungeonFace(g,2);g.dungeonXY=0x13;return true;}return false;}
  if(islandDungeon(g)){if(cell=='S'&&floor<2&&(g.dungeonLoot&(64u<<floor))){dungeonSetFloor(g,floor+1);dungeonFace(g,0);g.dungeonXY=0x71;return true;}if(cell=='U'&&floor){dungeonSetFloor(g,floor-1);dungeonFace(g,2);g.dungeonXY=0x17;return true;}return false;}
- if(cell!='S')return false;bool down=!floor;g.dungeonFlags=down?7:9;g.dungeonXY=down?0x71:0x17;return true;}
+ if(cell!='S')return false;bool down=!floor;g.dungeonFlags=down?7:9;g.dungeonXY=down?0x71:0x17;dungeonFaceOpenArrival(g,down?1:2);return true;}
 inline bool dungeonResolve(Game& g){if(!inDungeon(g)||g.phase==Phase::Home||g.phase==Phase::Hero||g.phase==Phase::Enemy)return false;int e=dungeonEnemyAhead(g);bool won=g.phase==Phase::Won,lost=g.phase==Phase::Lost;if(won&&e>=0){g.dungeonEnemies|=1u<<e;if(!eventExpedition(g)&&unsigned(e)==dungeonBossIndex(g)){if(islandDungeon(g))g.islandCleared=true;else if(g.dungeonClears<255)++g.dungeonClears;}}if(eventExpedition(g)){if(won)home(g);return true;}home(g);if(lost)clearDungeon(g);return true;}
 inline bool leaveDungeon(Game& g){if(!inDungeon(g)||g.phase!=Phase::Home)return false;clearDungeon(g);return true;}
 }

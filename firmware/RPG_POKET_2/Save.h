@@ -63,7 +63,7 @@ inline bool validCore(const Game& g,bool validateLegacyTravel=true){
   return true;
 }
 // Frozen Save28 must never silently drop any Save29 daily-travel fields.
-inline bool valid(const Game& g){return dailyStateEmpty(g.daily)&&!(g.campStage&&g.eventStage==2)&&validCore(g);}
+inline bool valid(const Game& g){return !g.dungeonSeed&&!g.dungeonRun&&!g.dungeonGenerator&&dailyStateEmpty(g.daily)&&!(g.campStage&&g.eventStage==2)&&validCore(g);}
 inline void encode(const Game& g,uint32_t seq,uint8_t* b){
   memset(b,0,SAVE_SIZE);memcpy(b,"PKT2",4);put16(b,4,LEGACY_SAVE_FORMAT);put16(b,6,SAVE_SIZE);put32(b,8,seq);
   b[12]=g.p.cls;b[13]=g.p.level;b[14]=g.p.atk;b[15]=g.p.def;b[16]=g.p.life;b[17]=g.p.mana;

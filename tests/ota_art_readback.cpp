@@ -9,7 +9,7 @@ enum class ArtStatus {Ready,Missing};struct {bool scanning=false,connecting=fals
 static std::vector<uint8_t> bytes(const char* path){std::ifstream f(path,std::ios::binary);assert(f);return {std::istreambuf_iterator<char>(f),{}};}
 static std::string hash(const std::vector<uint8_t>& b){mbedtls_sha256_context c;mbedtls_sha256_init(&c);assert(!mbedtls_sha256_starts(&c,0));for(size_t off=0;off<b.size();off+=4096)assert(!mbedtls_sha256_update(&c,b.data()+off,std::min<size_t>(4096,b.size()-off)));uint8_t d[32];assert(!mbedtls_sha256_finish(&c,d));char s[65];for(unsigned i=0;i<32;++i)snprintf(s+2*i,3,"%02x",d[i]);return s;}
 int main(int argc,char** argv){
- assert(argc==1||argc==3);const auto art=bytes(argc==3?argv[1]:"cartao/RPGPOKET/artes.pak");auto raw=bytes(argc==3?argv[2]:"tests/update_fake/scenes77-readback-manifest.json");
+ assert(argc==1||argc==3);const auto art=bytes(argc==3?argv[1]:"cartao/RPGPOKET/artes.pak");auto raw=bytes(argc==3?argv[2]:"tests/update_fake/procedural6-readback-manifest.json");
  // Preserve independently pinned current art metadata; use the compiled identity to exercise
  // same-build repair also on an isolated dev build (no firmware hash shortcut).
  std::string manifest(raw.begin(),raw.end());auto replace=[&](const char* from,const std::string& to){auto pos=manifest.find(from);assert(pos!=std::string::npos);manifest.replace(pos,strlen(from),to);};replace("\"version\":\"2026.10.13-scenes77\"",std::string("\"version\":\"")+FW_VERSION+"\"");replace("\"build\":2026101306",std::string("\"build\":")+std::to_string(FW_BUILD));raw.assign(manifest.begin(),manifest.end());

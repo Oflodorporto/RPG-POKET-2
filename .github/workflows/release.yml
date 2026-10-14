@@ -1,106 +1,88 @@
-name: Publicar versão
-# Main must only advance after package5 qualification and release-owner technical/visual approval.
-# Physical touch/heap/FPS status must remain explicit; this workflow is not authorization to publish.
-# Qualification branches never publish; exact SHA is still required below.
+name: Publicar pacote6 somente apos autorizacao separada e SHA qualificado
+# Prepared infrastructure, not authorization to publish.
+# Main must only advance after separate user release approval and exact-SHA qualification.
+# Qualification branches never publish; historical test/verifier gates remain unchanged.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE5_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/RELEASE_PACKAGE6_NOTAS.txt", "tests/**", "tools/**", ".github/workflows/release.yml"]
   workflow_dispatch:
     inputs:
       version:
-        description: Versão inédita (ex. 2026.10.13-camp77)
+        description: Identidade candidata autorizada separadamente
         required: true
         type: string
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: package5-main
+  group: package6-main
   cancel-in-progress: false
 jobs:
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash
     env:
       RPG_DETECT_LEAKS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: arduino/setup-arduino-cli@v2
-      - name: Identificar versao
+      - name: Exigir identidade, autorizacao e qualificacao do SHA exato
         env:
           REQUESTED_VERSION: ${{ inputs.version }}
-        run: |
-          python3 - <<'PY' >> "$GITHUB_ENV"
-          from pathlib import Path
-          import re,os
-          version=re.search(r'FW_VERSION="([^"]+)"',Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()).group(1)
-          requested=os.environ.get("REQUESTED_VERSION")
-          assert not requested or requested==version, "Versao diferente do firmware"
-          assert version == "2026.10.13-camp77", "Somente D20, acampamento e bolsa 7.7 qualificados"
-          print("RELEASE_VERSION="+version)
-          header=Path("firmware/RPG_POKET_2/ReleaseVersion.h").read_text()
-          package=re.search(r'FW_PACKAGE="([^"]+)"',header)
-          print("RELEASE_PACKAGE="+(package.group(1) if package else version))
-          PY
-      - name: Exigir qualificacao deste commit exato
-        env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package5-check.yml/runs?branch=feat%2Fpackage5-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 - <<'PY'
-          import json,os
-          runs=json.load(open(os.environ['RUNNER_TEMP']+'/qualification.json'))['workflow_runs']
-          assert any(r['head_sha']==os.environ['GITHUB_SHA'] and r['head_branch']=='feat/package5-release' and r['path']=='.github/workflows/package5-check.yml' and r['conclusion']=='success' for r in runs), 'Fonte sem qualificacao exata'
-          PY
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')" = 0
+          test "$GITHUB_REF" = refs/heads/main
+          test -z "$REQUESTED_VERSION" || test "$REQUESTED_VERSION" = 2026.10.13-explore77
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package6-check.yml/runs?branch=feat%2Fpackage6-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_package6_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.13-explore77" --jq 'length')" = 0
       - name: Instalar dependencia deterministica das artes
         run: python3 -m pip install 'Pillow==11.3.0'
-      - name: Testar regressao completa, D20, acampamento, bolsa, Save29 e reset
-        run: bash tools/test_package5.sh
+      - name: Rerodar gate completo no SHA aprovado
+        run: bash tools/test_package6.sh
+      - uses: arduino/setup-arduino-cli@v2
       - name: Instalar ESP32
         run: |
           arduino-cli config init
           arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
           arduino-cli core update-index
           arduino-cli core install esp32:esp32@3.3.12
-      - name: Compilar sem gravar
-        run: >-
-          arduino-cli compile --jobs 4
-          --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none'
-          --output-dir build firmware/RPG_POKET_2
-      - name: Preparar arquivos e manifesto
+      - name: Compilar e verificar bytes finais
         run: |
-          python3 tools/release_manifest.py
-          python3 tools/verify_package5_release.py
-          python3 tests/package5_release_verifier.py
-          python3 tools/test_package5_release.py release
-          python3 tools/test_package5_release.py release --sanitizers
-      - name: Publicar Release
+          arduino-cli compile --jobs 4 \
+            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+            --output-dir build firmware/RPG_POKET_2
+          python3 tools/release_package6_manifest.py
+          python3 tools/verify_package6_release.py
+          python3 tests/package6_release_verifier.py
+          python3 tools/test_package6_release.py release
+          python3 tools/test_package6_release.py release --sanitizers
+      - name: Publicar somente SHA main autorizado e qualificado
         if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # Refuse to reuse an existing tag; pin new tags to this tested source commit.
-          existing=$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v$RELEASE_VERSION" --jq 'length')
-          test "$existing" = 0
-          gh release create "v$RELEASE_VERSION" release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title "RPG POKET - $RELEASE_PACKAGE" --notes-file docs/RELEASE_PACKAGE5_NOTAS.txt --latest
-      - name: Conferir downloads publicados e manifesto latest
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.13-explore77" --jq 'length')" = 0
+          gh release create v2026.10.13-explore77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Dados e exploracao das Ruinas' --notes-file docs/RELEASE_PACKAGE6_NOTAS.txt --latest
+      - name: Conferir downloads publicos e manifesto latest
         run: |
-          mkdir -p build/published77
+          mkdir -p build/published-package6
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v$RELEASE_VERSION/$name"
-            cmp "release/$name" "build/published77/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package6/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.13-explore77/$name"
+            cmp "release/$name" "build/published-package6/$name"
           done
-          python3 tools/verify_package5_release.py build/published77
-          python3 tools/test_package5_release.py build/published77
+          python3 tools/verify_package6_release.py build/published-package6
+          python3 tools/test_package6_release.py build/published-package6
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published77/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-package6/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package6/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1
-          echo "PASS: three public downloads byte-identical to tested outputs; SHA256, old touch77 rejection, published scenes77/scale77 upgrades, Save29 preservation/no repeated reset host adapters and latest manifest verified"
