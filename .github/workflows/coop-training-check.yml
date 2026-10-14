@@ -30,9 +30,12 @@ jobs:
           python3 tests/coop_training_qualification_config.py
           python3 tests/coop_training_build_evidence.py
           python3 tests/coop_training_link_diagnostics.py
+          python3 tests/coop_update_install_equivalence.py
           python3 tools/check_coop_training_scope.py --ci
       - name: Testar treino, Save30 RNG, compatibilidade desligada e tres regressoes PvP
         run: bash tools/test_coop_training.sh build/coop-training-native
+      - name: Testar instalador extraido em TUs reais com falhas e sanitizers
+        run: python3 tools/test_coop_update_install.py --mode both --output-dir build/coop-training-native
       - name: Guardar somente provas nativas
         uses: actions/upload-artifact@v4
         with:

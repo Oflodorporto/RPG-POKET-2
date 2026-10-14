@@ -10,7 +10,7 @@ import functools
 import operator
 sys.dont_write_bytecode=True
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from record_coop_training_build import parse_memory,check_options,check_image,parse_symbols,inspect_shared_linkage,compare_budgets,validate_evidence_directory,FQBN
+from record_coop_training_build import parse_memory,check_options,check_image,parse_symbols,inspect_shared_linkage,inspect_updater_linkage,UPDATER_STATE,compare_budgets,validate_evidence_directory,FQBN
 checks=0
 def reject(fn):
     global checks
@@ -61,6 +61,17 @@ tables='3c000000 000029a0 r assetMeta\n3c0029a0 000029a0 r assetMeta\n'
 reject(lambda:inspect_shared_linkage(shared+tables,1))
 fonts='3c000000 00000500 r font\n3c000500 00000500 r font\n'
 assert len(inspect_shared_linkage(shared+fonts,1)['readonly_tables']['font'])==2;checks+=1
+updater=''.join('3fc00000 00000004 B %s\n'%name for name in UPDATER_STATE)+'42010000 00000e8d T installUpdate(bool)\n'
+assert set(inspect_updater_linkage(updater))==set(UPDATER_STATE)|{'installUpdate(bool)'};checks+=1
+for name in (*UPDATER_STATE,'installUpdate(bool)'):
+    lines=updater.splitlines(keepends=True)
+    selected=next(line for line in lines if line.endswith(' '+name+'\n'))
+    reject(lambda selected=selected:inspect_updater_linkage(updater.replace(selected,'')))
+    reject(lambda selected=selected:inspect_updater_linkage(updater+selected))
+    weak=selected.replace(' B ',' V ').replace(' T ',' W ')
+    reject(lambda selected=selected,weak=weak:inspect_updater_linkage(updater.replace(selected,weak)))
+    zero=selected.split(' ',1)[0]+' 00000000 '+selected.split(' ',2)[2]
+    reject(lambda selected=selected,zero=zero:inspect_updater_linkage(updater.replace(selected,zero)))
 off={'image':{'bytes':1900000},'memory':{'linker_static_ram_bytes':80000}}
 on={'image':{'bytes':2000000},'memory':{'linker_static_ram_bytes':86500}}
 assert compare_budgets(off,on)['added_static_ram_bytes']==6500;checks+=1

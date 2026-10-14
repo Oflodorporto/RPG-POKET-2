@@ -25,7 +25,7 @@ COMMAND_LIMIT = 2 * 1024 * 1024
 TARGET = re.compile(r'^\.(?:text|literal)\.[\w.$]*?(?:installUpdate|updateInstallTask)[\w.$]*$')
 TOOL_SUFFIXES = {'size', 'nm', 'objdump', 'readelf'}
 PREFIXES = ('xtensa-esp32s3-elf-', 'xtensa-esp-elf-')
-OBJECTS = ('RPG_POKET_2.ino.cpp.o', 'CoopRuntime.cpp.o')
+OBJECTS = ('RPG_POKET_2.ino.cpp.o', 'CoopRuntime.cpp.o', 'UpdateInstall.cpp.o')
 SECRET = re.compile(r'password|passwd|secret|token|api[_-]?key|credential|authorization', re.I)
 
 
@@ -291,7 +291,7 @@ def capture_objects(flag, folder, tools, report):
         names = section_names(headers['text'])
         records[name]['target_sections'] = names
         if not names:
-            report.incomplete |= name == 'RPG_POKET_2.ino.cpp.o'
+            report.incomplete |= name in ('RPG_POKET_2.ino.cpp.o', 'UpdateInstall.cpp.o')
             report.add(label + ' target sections', 'No installUpdate/updateInstallTask text/literal sections found.')
         else:
             selected = [item for section in names for item in ('-j', section)]

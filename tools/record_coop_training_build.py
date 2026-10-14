@@ -21,6 +21,7 @@ OTA_BYTES=3145728
 MAX_ADDED_IMAGE=262144
 MAX_ADDED_STATIC_RAM=16384
 OBJECT_LIMITS={'coopSession':6144,'coopInput':1024,'coopDevice':256}
+UPDATER_STATE=('updateSpi','updateGuard','updateWorker','updatePlan','downloadReason','updateRecovery','updateSdHz','updateInitialFree','updateInitialFreeKnown')
 EVIDENCE_NAMES={'toolchain.txt','esp32-flag-0.log','esp32-flag-1.log','sections-flag-0.txt','sections-flag-1.txt','coop-symbols-flag-0.txt','coop-symbols-flag-1.txt','experimental-build-evidence.json','NOT_FOR_INSTALL.txt'}
 
 def git(*args):
@@ -123,6 +124,20 @@ def compare_budgets(off,on):
             'added_image_cap_bytes':MAX_ADDED_IMAGE,'added_static_ram_cap_bytes':MAX_ADDED_STATIC_RAM,
             'image_partition_margin_bytes':OTA_BYTES-on['image']['bytes']}
 
+def inspect_updater_linkage(text):
+    """The extracted installer and its pre-existing state have one strong owner."""
+    result={}
+    for name in (*UPDATER_STATE,'installUpdate(bool)'):
+        entries=[]
+        for line in text.splitlines():
+            match=re.match(r'^\s*[0-9a-fA-F]+\s+([0-9a-fA-F]+)\s+(\S)\s+(.+)$',line)
+            if match and match[3]==name:entries.append({'bytes':int(match[1],16),'kind':match[2]})
+        assert len(entries)==1,('Updater definition absent/duplicated',name,entries)
+        expected=('T',) if name=='installUpdate(bool)' else ('B','D')
+        assert entries[0]['bytes']>0 and entries[0]['kind'] in expected,('Updater requires strong external definition',name,entries)
+        result[name]=entries[0]
+    return result
+
 def find_tool(folder,suffix):
     for name in ('xtensa-esp32s3-elf-'+suffix,'xtensa-esp-elf-'+suffix):
         found=list(folder.glob('**/bin/'+name))
@@ -169,8 +184,9 @@ def main():
         symbols=subprocess.check_output([str(nm),'-S','-C','--defined-only',str(elf)],text=True)
         object_sizes=parse_symbols(symbols,flag)
         linkage=inspect_shared_linkage(symbols,flag)
+        updater_linkage=inspect_updater_linkage(symbols)
         translation_units={}
-        for name in ('RPG_POKET_2.ino.cpp.o','CoopRuntime.cpp.o'):
+        for name in ('RPG_POKET_2.ino.cpp.o','CoopRuntime.cpp.o','UpdateInstall.cpp.o'):
             obj=folder/'sketch'/name
             assert obj.is_file() and not obj.is_symlink(),('Expected target object absent',obj)
             obj_sections=subprocess.check_output([str(size),'-A',str(obj)],text=True)
@@ -178,15 +194,27 @@ def main():
             if not flag and name=='CoopRuntime.cpp.o':assert not obj_symbols.strip(),'Disabled runtime object has definitions'
             if name=='CoopRuntime.cpp.o':
                 assert not re.search(r' (?:assetMeta|artFallback|font|artMemory)$|enemyArt::workspace|ruins7Art::',obj_symbols,re.M),'Art storage emitted by runtime object'
+            if name=='UpdateInstall.cpp.o':
+                inspect_updater_linkage(obj_symbols)
+                assert not re.search(r' (?:assetMeta|artFallback|font|artMemory|game|menu|journal)$|enemyArt::workspace|ruins7Art::|coopSession|coopDevice|coopInput',obj_symbols,re.M),'Unrelated campaign/art/coop storage emitted by installer object'
+            else:
+                for state in UPDATER_STATE:
+                    assert not re.search(r'\s'+re.escape(state)+r'$',obj_symbols,re.M),('Updater state defined outside installer TU',name,state)
+                assert not re.search(r'\sinstallUpdate\(bool\)$',obj_symbols,re.M),('Installer defined in original TU',name)
             translation_units[name]={**digest(obj),'defined_symbol_lines':len(obj_symbols.splitlines())}
             sections+='\nTRANSLATION UNIT '+name+'\n'+obj_sections
         (out/('sections-flag-'+str(flag)+'.txt')).write_text(sections)
         # Keep a small, inspectable symbol extract instead of the entire ELF.
-        (out/('coop-symbols-flag-'+str(flag)+'.txt')).write_text('\n'.join(line for line in symbols.splitlines() if any(token in line for token in ('coopSession','coopInput','coopDevice','coopradio::','artMemory','enemyArt::workspace','assetMeta','artFallback','raceAsset','raceMask','enemyArt::enemies','enemyScale::profiles',' font','outfitColors','coopview::kHeroCrop','ruins7Art::palette','ruins7Art::framePixels'))) +'\n')
+        (out/('coop-symbols-flag-'+str(flag)+'.txt')).write_text('\n'.join(line for line in symbols.splitlines() if any(token in line for token in (*UPDATER_STATE,'installUpdate(bool)','coopSession','coopInput','coopDevice','coopradio::','artMemory','enemyArt::workspace','assetMeta','artFallback','raceAsset','raceMask','enemyArt::enemies','enemyScale::profiles',' font','outfitColors','coopview::kHeroCrop','ruins7Art::palette','ruins7Art::framePixels'))) +'\n')
         builds[str(flag)]={'experimental_identity':'coop-training-qualification/'+sha+'/flag-'+str(flag),
             'feature_enabled':bool(flag),'effective_options':effective,'image':image,'image_format':image_format,'elf':digest(elf),
-            'build_log':digest(log),'memory':memory,'target_object_bytes':object_sizes,'translation_units':translation_units,'linkage_audit':linkage,
+            'build_log':digest(log),'memory':memory,'target_object_bytes':object_sizes,'translation_units':translation_units,'linkage_audit':linkage,'updater_linkage_audit':updater_linkage,
             'binary_uploaded':False,'install_authorized':False}
+    historical_off={'run_id':38630032831,'source_commit':'7c9e0db7276558772d2cd6df556590ca6b9e3921',
+        'arduino_program_bytes':2913522,'linker_static_ram_bytes':55732,
+        'program_delta_bytes':builds['0']['memory']['arduino_program_bytes']-2913522,
+        'static_ram_delta_bytes':builds['0']['memory']['linker_static_ram_bytes']-55732,
+        'note':'Measured pre-extraction flag0 baseline, retained for comparison. Mechanical installer linkage may change code size; all original budgets remain enforced.'}
     budget=compare_budgets(builds['0'],builds['1'])
     sources={name:digest(ROOT/name) for name in git('ls-files').splitlines()}
     identity={'schema':1,'kind':'EXPERIMENTAL_COMPILE_EVIDENCE_ONLY','source_commit':sha,'source_tree':git('rev-parse','HEAD^{tree}'),
@@ -194,10 +222,10 @@ def main():
         'event':os.environ['GITHUB_EVENT_NAME'],'run_id':os.environ.get('GITHUB_RUN_ID'),'core':CORE,'fqbn':FQBN,
         'inherited_release_identity':{'version':'2026.10.14-pvp77','build':2026101404,'package':'7.7 - Duelo PvP',
             'header_unchanged':(ROOT/'firmware/RPG_POKET_2/ReleaseVersion.h').read_text()==subprocess.check_output(['git','show',BASE+':firmware/RPG_POKET_2/ReleaseVersion.h'],cwd=ROOT,text=True)},
-        'experimental_builds':builds,'compiled_budget':budget,'source_inventory':sources,
+        'experimental_builds':builds,'compiled_budget':budget,'historical_flag0_comparison':historical_off,'source_inventory':sources,
         'save_format':30,'pvp_protocol_version':5,'pvp_packet_bytes':52,'existing_art_count':666,
         'existing_known_psram_bytes':7638272,'additional_explicit_psram_allocations':0,
-        'native_suite':'6 optimized + 5 ASan/UBSan + 3 existing PvP, including Save30/RNG checks',
+        'native_suite':'6 coop optimized + 5 coop ASan/UBSan + 3 existing PvP, including Save30/RNG; 6 actual multi-TU OTA harnesses optimized and ASan/UBSan; strict installer text-equivalence',
         'target_compile_verified':True,'physical_validation':False,'free_heap_measured':False,'stack_high_water_measured':False,
         'radio_touch_wifi_validated_on_hardware':False,'release_qualified':False,'published':False,'install_authorized':False,
         'note':'Both binaries retain the inherited PvP release header. They are experimental build outputs, never uploaded or offered for installation. Linker sizes are not measured heap/stack/PSRAM/FPS.'}

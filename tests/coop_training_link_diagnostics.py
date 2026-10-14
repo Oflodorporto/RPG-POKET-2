@@ -223,23 +223,24 @@ LAST
                 self.assertEqual(d.collect_maps(self.build, report, 1), [path.name])
                 self.assertEqual(report.incomplete, incomplete)
 
-    def test_only_sketch_requires_target_sections(self):
+    def test_sketch_and_installer_require_target_sections(self):
         folder = self.build / 'flag-1'
         (folder / 'sketch').mkdir(parents=True)
         for name in d.OBJECTS:
             (folder / 'sketch' / name).write_bytes(b'OFFLINE SYNTHETIC OBJECT')
         tools = {name: self.tools / ('xtensa-esp-elf-' + name) for name in d.TOOL_SUFFIXES}
-        for sketch_has_target in (False, True):
-            with self.subTest(sketch_has_target=sketch_has_target):
+        for sketch_has_target, installer_has_target in ((False,False),(True,False),(False,True),(True,True)):
+            with self.subTest(sketch_has_target=sketch_has_target, installer_has_target=installer_has_target):
                 def fake_run(argv):
                     # Runtime has no updater section in either case, as expected.
-                    target = sketch_has_target and Path(argv[-1]).name == d.OBJECTS[0]
+                    name = Path(argv[-1]).name
+                    target = (sketch_has_target and name == d.OBJECTS[0]) or (installer_has_target and name == d.OBJECTS[2])
                     text = ' 0 .text._Z13installUpdateb$isra$0 00000e90 00000000 00000000 00000034 2**2\n' if target else ''
                     return {'text': text, 'returncode': 0, 'limited': None}
                 report = d.Report()
                 with mock.patch.object(d, 'run', fake_run):
                     records = d.capture_objects(1, folder, tools, report)
-                self.assertEqual(report.incomplete, not sketch_has_target)
+                self.assertEqual(report.incomplete, not (sketch_has_target and installer_has_target))
                 self.assertEqual(records[d.OBJECTS[1]]['target_sections'], [])
 
     def test_end_to_end_missing_failed_build_outputs(self):

@@ -11,6 +11,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 from record_coop_training_build import FQBN,BASE
 DIAGNOSTIC_IF="always() && !cancelled() && (steps.compile.outcome == 'success' || steps.compile.outcome == 'failure')"
 DIAGNOSTIC_UPLOAD_IF="always() && !cancelled() && steps.link_diagnostics.outcome == 'success'"
+OTA_NATIVE_COMMAND='python3 tools/test_coop_update_install.py --mode both --output-dir build/coop-training-native'
 
 def validate(document):
     assert set(document)=={'name','on','permissions','concurrency','defaults','env','jobs'}
@@ -50,7 +51,7 @@ def validate(document):
                 expected=['build/coop-training-native/*.log'] if name=='focused-native' else ['build/coop-training-evidence/*.json','build/coop-training-evidence/*.log','build/coop-training-evidence/*.txt']
             assert upload['path'].splitlines()==expected
     native='\n'.join(s.get('run','') for s in document['jobs']['focused-native']['steps'])
-    for command in ['python3 tests/coop_training_qualification_config.py','python3 tests/coop_training_build_evidence.py','python3 tests/coop_training_link_diagnostics.py','python3 tools/check_coop_training_scope.py --ci','bash tools/test_coop_training.sh build/coop-training-native']:assert command in native
+    for command in ['python3 tests/coop_training_qualification_config.py','python3 tests/coop_training_build_evidence.py','python3 tests/coop_training_link_diagnostics.py','python3 tests/coop_update_install_equivalence.py','python3 tools/check_coop_training_scope.py --ci','bash tools/test_coop_training.sh build/coop-training-native','python3 tools/test_coop_update_install.py --mode both --output-dir build/coop-training-native']:assert command in native
     build_job=document['jobs']['esp32-on-off'];assert build_job['needs']=='focused-native'
     build='\n'.join(s.get('run','') for s in build_job['steps'])
     for command in ['core install esp32:esp32@3.3.12',"--fqbn '"+FQBN+"'",'for flag in 0 1; do','arduino-cli compile --verbose --jobs 4',
@@ -64,7 +65,10 @@ def validate(document):
     assert steps.index(compile_steps[0])<steps.index(diagnostics[0])
     assert diagnostics[0].get('if')==DIAGNOSTIC_IF
     assert diagnostics[0]['run'].replace('\\\n',' ').split()==['python3','tools/diagnose_coop_link.py','--build-root','"$RUNNER_TEMP/coop-training-build"','--compile-logs','build/coop-training-evidence','--out-dir','build/coop-training-link-diagnostics']
-    all_runs=native+'\n'+build
+    # Only this exact host harness output directory is allowed. The Arduino
+    # --output-dir prohibition remains intact for every compiler/build command.
+    assert native.count(OTA_NATIVE_COMMAND)==1
+    all_runs=native.replace(OTA_NATIVE_COMMAND,'')+'\n'+build
     for forbidden in ['gh ', 'git push','release/', 'secrets.', 'github.token','curl ', '--output-dir', '--export-binaries=true','build.extra_flags=', 'test_package10.sh','test_package11.sh','upload-port','arduino-cli upload','|| true','set +e','-mtext-section-literals','-mauto-litpools']:
         assert forbidden not in all_runs,forbidden
 
@@ -90,6 +94,8 @@ reject(lambda d:d['jobs']['esp32-on-off']['steps'][-1].update({'if':'always()'})
 reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='compile').update({'continue-on-error':'true'}))
 reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='link_diagnostics').update({'if':'always()'}))
 reject(lambda d:next(s for s in d['jobs']['esp32-on-off']['steps'] if s.get('id')=='link_diagnostics').update(run='env'))
+for changed in (OTA_NATIVE_COMMAND.replace('--mode both','--mode normal'),OTA_NATIVE_COMMAND.replace('build/coop-training-native','firmware/RPG_POKET_2'),OTA_NATIVE_COMMAND+'\n'+OTA_NATIVE_COMMAND):
+    reject(lambda d,changed=changed:next(s for s in d['jobs']['focused-native']['steps'] if s.get('run')==OTA_NATIVE_COMMAND).update(run=changed))
 for old,new in [('esp32@3.3.12','esp32@3.3.11'),('--export-binaries=false','--export-binaries=true'),('compiler.cpp.extra_flags','build.extra_flags'),('$RUNNER_TEMP/coop-training-build/flag-$flag','firmware/RPG_POKET_2/build'),('for flag in 0 1','for flag in 1'),(' --ci','')]:
     def mutate(d,old=old,new=new):
         for step in d['jobs']['esp32-on-off']['steps']:
