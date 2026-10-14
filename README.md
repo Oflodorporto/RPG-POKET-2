@@ -7,7 +7,7 @@
 <p align="center">Fantasia medieval em português · Pixel art inspirada nos 16 bits · ESP32-S3 · Tela de toque</p>
 
 <p align="center">
-  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-pvp77"><strong>Baixar a versão atual</strong></a> ·
+  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-shop77"><strong>Baixar a versão atual</strong></a> ·
   <a href="docs/GUIA_RAPIDO.md">Instalar e jogar</a> ·
   <a href="#um-pequeno-mundo-para-explorar">Ver o jogo</a> ·
   <a href="#documentação">Documentação</a>
@@ -15,8 +15,8 @@
 
 Crie seu aventureiro, converse com os habitantes de Aeldra, atravesse estradas, explore ruínas e enfrente combates por turnos. Escolha uma classe, personalize sua aparência e acompanhe uma campanha com diário, cartas, personagens e progressão até o nível 20.
 
-**Versão publicada:** 7.7 · Duelo PvP · `2026.10.14-pvp77` · build `2026101404`.
-Firmware, artes e downloads verificados. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
+**Versão publicada:** 7.7 · Comércio em lote · `2026.10.14-shop77` · build `2026101405`.
+Firmware, artes e downloads públicos verificados. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
 
 ## As Cinzas da Primeira Aurora
 
@@ -49,6 +49,7 @@ As imagens e animações desta página são **capturas do renderer do jogo em te
 - **Exploração e decisões.** Viagens por dias, provisões, encontros, baús, trancas e D20. A Cripta tem visão em primeira pessoa; novas entradas na Cripta das Ruínas usam geração procedural.
 - **Combate por turnos.** Ataques, defesa, magias e poderes de classe, com HP/MP, intenção do inimigo, recompensas e bestiário.
 - **Pausas que fazem parte da aventura.** Fadiga, refeições, acampamento personalizado e um relógio medieval que acompanha a hora local.
+- **Comércio em lote.** Escolha quantas unidades comprar ou vender e confira o total antes de confirmar. A quantidade respeita o ouro e o inventário; rações agora cabem até **10**, com os demais limites e preços preservados.
 - **Três jornadas salvas.** Três slots em NVS. As transições relevantes do jogo são gravadas automaticamente; se houver falha, a tela oferece **Tentar salvar**.
 
 ## Duelo na Arena da Guilda
@@ -59,7 +60,7 @@ As imagens e animações desta página são **capturas do renderer do jogo em te
 
 Duas perspectivas da mesma partida, com os dois aventureiros completos, HP/MP, guarda, custos de mana e animações das ações confirmadas. A versão atual também permite desistir durante o turno do adversário.
 
-**Atualize as duas placas para `pvp77`.** O protocolo v5, de 52 bytes, é incompatível com o v4 anterior. A animação acima usa dois participantes simulados no host; o teste físico de ESP-NOW/RF entre as placas está pendente.
+**O protocolo PvP permanece v5, de 52 bytes, como em `pvp77`, e é incompatível com o v4 anterior.** Se a tela indicar protocolo incompatível, atualize as placas que ainda usam v4. A animação acima usa dois participantes simulados no host; a validação física completa desta versão, incluindo ESP-NOW/RF entre as placas, está pendente.
 
 Se a comunicação cair **depois do início**, sem resultado confirmado, o duelo termina em **NAO CONFIRMADO**, sem prêmio e com a entrada já consumida. Antes do início, permanece a devolução integral. Uma vitória ainda não gravada pode ser perdida ao desligar. [Regras de interrupção e evidências](docs/ESTADO_ATUAL.md).
 
@@ -79,11 +80,13 @@ Sol e lua acompanham a hora local, com pulso e mudanças graduais de luz. A pré
 
 ### Instalação e atualização
 
-1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-pvp77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
-2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-pvp77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
+1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.14-shop77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
+2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.14-shop77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
 3. **Já usa scenes77 ou posterior?** Conecte ao Wi-Fi **2,4 GHz** e abra **Configurações → Atualização → Verificar versão → Instalar**. Mantenha cartão e alimentação conectados até terminar.
 
-> **Atenção aos saves:** a versão atual grava Save30, lê Save29/30 e mantém época 1, **sem novo reset**. A primeira passagem de **touch77 ou anterior** exige USB e reinicia uma única vez os três slots antigos, sem importar Save1…28; Wi-Fi e artes ficam fora desse reset. Não tente contornar a recusa do OTA nem apagar toda a flash. [Confira o seu caso antes de instalar](docs/GUIA_RAPIDO.md#compatibilidade-dos-saves).
+> **Atenção aos saves:** a versão atual grava Save30 de 160 bytes, lê Save29/30 e mantém época 1, **sem novo reset**. A primeira passagem de **touch77 ou anterior** exige USB e reinicia uma única vez os três slots antigos, sem importar Save1…28; Wi-Fi e artes ficam fora desse reset. Não tente contornar a recusa do OTA nem apagar toda a flash. [Confira o seu caso antes de instalar](docs/GUIA_RAPIDO.md#compatibilidade-dos-saves).
+
+> **Não há garantia de downgrade seguro:** firmwares antigos rejeitam saves com **10 rações**. Num journal misto, podem recuperar um registro anterior com até 9 e perder o progresso posterior; se ambos os registros tiverem 10, a leitura antiga fica bloqueada. Compartilhar Save30 não elimina essa diferença. Não apague seu progresso para atualizar.
 
 ### Como jogar
 
@@ -93,7 +96,7 @@ Use **toques nos botões da tela** e solte o dedo entre comandos. Em Carvalho, *
 
 - **Validação em hardware:** PvP entre duas placas, toque, relógio a 10% de brilho, USB/OTA, energia e medições reais de desempenho.
 - **Nova bolsa visual:** frente separada; não integrada nesta versão.
-- **Pets e cooperação:** planejamento/protótipos separados; não são recursos lançados do `pvp77`.
+- **Pets e cooperação:** planejamento/protótipos separados; não são recursos lançados do `shop77`.
 
 Sem datas prometidas. O que está publicado e suas limitações ficam registrados no [estado atual](docs/ESTADO_ATUAL.md).
 
