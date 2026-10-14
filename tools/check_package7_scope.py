@@ -41,6 +41,17 @@ def assert_generated_inventory(root, tracked):
             assert path.is_file() and not path.is_symlink(), 'Generated output must be a regular non-symlink file: '+name
 
 
+def production_inventory(root, expected):
+    production = set()
+    for path in (root/'firmware').rglob('*'):
+        name = str(path.relative_to(root))
+        assert not path.is_symlink(), 'Production symlink outside frozen inventory: '+name
+        if path.is_file():
+            production.add(name)
+    assert production <= expected, 'Ignored production input outside frozen inventory: '+repr(sorted(production-expected))
+    return production
+
+
 def main():
     assert git('rev-parse', BASELINE+'^{tree}').decode().strip() == BASELINE_TREE
     frozen = json.loads((ROOT/'tests/fixtures/package7-approved-sources.json').read_text())
@@ -69,8 +80,7 @@ def main():
     assert expected <= actual, 'Missing tracked/source inputs: '+repr(sorted(expected-actual))
     for name in PACKAGING:
         assert (ROOT/name).is_file() and not (ROOT/name).is_symlink(), name
-    production = {str(path.relative_to(ROOT)) for path in (ROOT/'firmware').rglob('*') if path.is_file()}
-    assert production <= expected, 'Ignored production input outside frozen inventory'
+    production = production_inventory(ROOT, expected)
     header = (ROOT/'firmware/RPG_POKET_2/ReleaseVersion.h').read_text()
     assert re.search(r'FW_VERSION="([^"]+)"', header).group(1) == CONTRACT['version']
     assert int(re.search(r'FW_BUILD=(\d+)u', header).group(1)) == CONTRACT['build']

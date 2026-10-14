@@ -39,9 +39,12 @@ jobs:
       - name: Compilar SHA exato sem gravar nem publicar
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          arduino-cli version | tee build/package7-esp32-build.log
           arduino-cli compile --jobs 4 \
             --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
-            --output-dir build firmware/RPG_POKET_2 2>&1 | tee build/package7-esp32-build.log
+            --build-path build/esp32-package7 --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee -a build/package7-esp32-build.log
+          cp build/esp32-package7/RPG_POKET_2.ino.bin build/RPG_POKET_2.ino.bin
+          python3 tools/check_package7_scope.py
       - name: Verificar bytes compilados e OTA Save29 para30 e Save30 para30
         run: |
           python3 tools/release_package7_manifest.py

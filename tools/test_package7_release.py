@@ -85,18 +85,42 @@ def snapshot(folder):
     return {p.relative_to(folder): p.read_bytes() for p in folder.rglob('*') if p.is_file()}
 
 
-def published_lineage():
-    lineage = json.loads((ROOT / 'tests/fixtures/package7-published-baselines.json').read_text())
+def published_lineage(lineage=None):
+    if lineage is None:
+        lineage = json.loads((ROOT / 'tests/fixtures/package7-published-baselines.json').read_text())
     old = lineage['explore77']
     assert lineage['schema'] == 1 and old['verified_public'] is True, 'Verified published explore77 bytes are still required'
     assert old['commit'] == EXPLORE_COMMIT and old['tree'] == EXPLORE_TREE
     assert old['version'] == '2026.10.13-explore77' and old['build'] == 2026101309
     assert re.fullmatch('[0-9a-f]{64}', old['firmware_sha256']) and 24 <= old['firmware_bytes'] <= 0x300000
+    # Retry is a strict child of the already-qualified, unpublished package7 SHA.
+    # Keep the package6 README-only base independently pinned; never rewrite main.
+    base = lineage['historical_readme_base']
     parent = lineage['qualification_parent']
-    assert isinstance(parent, str) and re.fullmatch('[0-9a-f]{40}', parent), 'Final package6 README-only qualification parent is missing'
-    assert subprocess.check_output(['git','diff','--name-only',EXPLORE_COMMIT,parent],cwd=ROOT,text=True).splitlines() == ['README.md'], 'Qualification parent must be package6 README-only housekeeping'
+    assert base == '02a94ca192b8ef915a452527444f8160b90c26aa', 'Historical README-only base changed'
+    assert lineage['historical_readme_base_tree'] == '8837911990b23450eb5ed1c4d9afbd0eb9afc374'
+    assert lineage['historical_readme_sha256'] == '8b3f6e5dc79048d2a690bd3d44c1dc6e0c973614061d3be8b4a2c3ff4f31bc59'
+    assert parent == 'dcacdce1fe3e36f461a92bfc7378e54e23f96e26', 'Exact reviewed retry parent changed'
+    assert lineage['qualification_parent_tree'] == '90ecaea82ca8809a27c0d4f09c14123e31edc2f3'
+    def git(*args):
+        return subprocess.check_output(['git', *args], cwd=ROOT)
+    assert git('rev-parse', base+'^{tree}').decode().strip() == lineage['historical_readme_base_tree']
+    assert git('rev-parse', parent+'^{tree}').decode().strip() == lineage['qualification_parent_tree']
+    assert git('diff', '--name-only', EXPLORE_COMMIT, base).decode().splitlines() == ['README.md'], 'Historical base must be package6 README-only housekeeping'
+    assert git('rev-list', '--parents', '-n', '1', parent).decode().split() == [parent, base], 'Retry parent ancestry changed'
+    assert hashlib.sha256(git('show', base+':README.md')).hexdigest() == lineage['historical_readme_sha256']
+    assert (ROOT/'README.md').read_bytes() == git('show', base+':README.md'), 'Qualification README changed from historical base'
+    # No production, art, narrative or historical tooling can change in this retry.
+    retry_files = {
+        '.github/workflows/package7-check.yml', '.github/workflows/release.yml',
+        'tests/fixtures/package7-published-baselines.json', 'tests/package7_qualification_config.py',
+        'tools/test_package7_release.py', 'tools/check_package7_scope.py',
+        'docs/PACKAGE7_RELEASE_QUALIFICATION.md',
+    }
+    changed = set(git('diff', '--name-only', parent).decode().splitlines())
+    assert changed <= retry_files, 'Retry changed non-packaging source: '+repr(sorted(changed-retry_files))
     if os.environ.get('GITHUB_ACTIONS') == 'true':
-        assert subprocess.check_output(['git','rev-parse','HEAD^'],cwd=ROOT,text=True).strip() == parent, 'Qualification HEAD changed parent; requalify exact source SHA'
+        assert git('rev-list', '--parents', '-n', '1', 'HEAD').decode().split() == [git('rev-parse', 'HEAD').decode().strip(), parent], 'Qualification HEAD changed parent; requalify exact source SHA'
     return lineage
 
 

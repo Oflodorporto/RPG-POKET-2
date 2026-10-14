@@ -14,7 +14,9 @@
     "publication_run": 38500805596,
     "firmware_url": "https://github.com/Oflodorporto/RPG-POKET-2/releases/download/v2026.10.13-explore77/firmware.bin"
   },
-  "qualification_parent": "02a94ca192b8ef915a452527444f8160b90c26aa",
-  "qualification_parent_tree": "8837911990b23450eb5ed1c4d9afbd0eb9afc374",
-  "qualification_parent_readme_sha256": "8b3f6e5dc79048d2a690bd3d44c1dc6e0c973614061d3be8b4a2c3ff4f31bc59"
+  "qualification_parent": "dcacdce1fe3e36f461a92bfc7378e54e23f96e26",
+  "qualification_parent_tree": "90ecaea82ca8809a27c0d4f09c14123e31edc2f3",
+  "historical_readme_base": "02a94ca192b8ef915a452527444f8160b90c26aa",
+  "historical_readme_base_tree": "8837911990b23450eb5ed1c4d9afbd0eb9afc374",
+  "historical_readme_sha256": "8b3f6e5dc79048d2a690bd3d44c1dc6e0c973614061d3be8b4a2c3ff4f31bc59"
 }
