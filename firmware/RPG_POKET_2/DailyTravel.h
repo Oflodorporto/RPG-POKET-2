@@ -101,7 +101,7 @@ inline bool dailyTravelValid(const Game& g){
      d.totalDays!=dailyTripDays(d.origin,g.tripTo)||!d.day||d.day>d.totalDays||d.rationsPaid!=d.day||
      d.region>3||d.policy!=DAILY_TRAVEL_POLICY||d.routeVersion!=DAILY_ROUTE_VERSION||d.supplies>7||
      ((d.supplies&4)&&!g.sleepKit)||g.campStage||g.campRoll||g.campRation||g.campKit||g.discovery||
-     g.dungeonFlags||g.campaignStage||g.clubStage==1||g.clubStage==2||g.rations>9||
+     g.dungeonFlags||g.campaignStage||g.clubStage==1||g.clubStage==2||g.rations>RATION_LIMIT||
      g.rations<d.totalDays-d.rationsPaid)return false;
   if(g.tripRoll<1||g.tripRoll>20||g.tripSurvival>13||g.tripLuck>11||g.tripTotal!=g.tripRoll+g.tripSurvival+g.tripLuck||
      g.tripDifficulty!=routeDifficulty(d.origin,g.tripTo))return false;

@@ -86,12 +86,12 @@ void recoverClubReservation();
 void selectSlot(uint8_t slot){
   if(slot>2)return;if(!rememberSlot(slot)){menu.notice="Falha ao trocar slot";dirty=true;return;}
   view.heroTrace=rpg::CombatTrace{};view.enemyTrace=rpg::CombatTrace{};view.traceOpen=false;view.traceBlockUntil=0;
-  view.sale.open=false;backend.slot=slot;firstHints.load(slot);menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.levelPending=false;view.levelAttributes=false;view.createHintsPending=false;view.trackedLevel=game.p.level;view.choice=0;view.cityPage=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
+  view.purchase.open=false;view.sale.open=false;backend.slot=slot;firstHints.load(slot);menu.sessionStarted=true;game=rpg::Game{};auto loaded=journal.load(game);view.recovered=loaded==rpg::Load::Recovered;view.levelPending=false;view.levelAttributes=false;view.createHintsPending=false;view.trackedLevel=game.p.level;view.choice=0;view.cityPage=0;view.campaignScene=0;helpReturn=Page::Home;menu.storyIndex=game.originStory?std::min(7u,unsigned(game.originPage)):0;menu.storyReplay=false;
   view.page=loaded==rpg::Load::Blocked?Page::Blocked:loaded==rpg::Load::Empty?Page::Race:currentPage();combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};enemyAt=millis()+1200;activateTripPage();say("");if(loaded==rpg::Load::Ok||loaded==rpg::Load::Recovered){bool fatigueReset=journal.fatigueReset;recoverClubReservation();if(fatigueReset)say("Fadiga reiniciada; heroi preservado");}
 }
 void openTitle(){
   view.heroTrace=rpg::CombatTrace{};view.enemyTrace=rpg::CombatTrace{};view.traceOpen=false;view.traceBlockUntil=0;
-  view.sale.open=false;menu.sessionStarted=false;menu.creationFromTitle=false;menu.newGameSlots=false;menu.notice="";
+  view.purchase.open=false;view.sale.open=false;menu.sessionStarted=false;menu.creationFromTitle=false;menu.newGameSlots=false;menu.notice="";
   menu.journey=Journey{};combatFx.kind=Effect::None;pendingTouch=false;gate=TouchGate{};refreshSlots();view.page=Page::Title;say("");
 }
 bool canOfferEvents(){return !rpg::dailyTrip(game)&&!game.discovery&&menu.sessionStarted&&!journal.blocked&&journal.active>=0;}
@@ -138,18 +138,39 @@ bool tapCombatReceipt(int x,int y){
  if(combatTraceUi::skipHit(x,y)){if(combatFx.active()){combatFx.kind=Effect::None;view.page=currentPage();view.traceBlockUntil=millis()+180;pendingTouch=false;dirty=true;}return true;}
  return false;
 }
+// Quotes are RAM-only and bound to the selected item, city and inventory.
+// An explicit receipt separates payment from navigation and prevents replay.
+void openPurchase(unsigned id,Page page,Page back){
+ auto err=rpg::quotePurchase(game,view.purchase,id);if(err){say(err);return;}
+ view.purchaseReturn=back;view.page=page;
+ auto maximum=rpg::purchaseMaximum(game,id);if(!maximum)view.purchase.quantity=0;
+ say(maximum?"":rpg::purchaseError(game,id,1));pendingTouch=false;
+}
+void openSale(unsigned id,Page back,bool all=false,Page page=Page::TradeConfirm){
+ auto err=rpg::quoteSale(game,view.sale,id);if(err){say(err);return;}
+ view.saleReturn=back;if(all)view.sale.quantity=rpg::saleMaximum(game,id);view.page=page;say("");pendingTouch=false;
+}
 void tapped(int x,int y){
   if(tapCombatReceipt(x,y))return;
   lastActivity=millis();if(view.page==Page::Clock){if(menu.sessionStarted&&game.eventStage==1){menu.eventReturn=int(clockReturn);menu.notice="";menu.letterStarted=millis();view.page=Page::Letter;menu.clockIdle=false;applyBrightness();dirty=true;return;}view.page=clockReturn;menu.clockIdle=false;applyBrightness();dirty=true;return;}
-  if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt){
-    if(view.page==Page::TradeReceipt){if(hit(x,y,14,272,212)){view.saleIndex=0;view.page=Page::TradeList;say("");}return;}
+  if(purchasePage(view.page)||view.page==Page::PurchaseReceipt){
+    if(view.page==Page::PurchaseReceipt){if(hit(x,y,14,272,212)){view.page=view.purchaseReturn;say("");}return;}
+    if(hit(x,y,14,272,102)){view.purchase.open=false;view.page=view.purchaseReturn;say("Compra cancelada");return;}
+    unsigned maximum=rpg::purchaseMaximum(game,view.purchase.item);
+    if(hit(x,y,14,174,102)){if(view.purchase.quantity>1)--view.purchase.quantity;say("");return;}
+    if(hit(x,y,124,174,102)){if(view.purchase.quantity<maximum)++view.purchase.quantity;say(maximum?"":rpg::purchaseError(game,view.purchase.item,1));return;}
+    if(hit(x,y,14,220,212,32)){view.purchase.quantity=maximum;say(maximum?"":rpg::purchaseError(game,view.purchase.item,1));return;}
+    if(hit(x,y,124,272,102)){auto err=rpg::confirmPurchase(game,view.purchase);if(err)say(err);else {if(view.purchase.item==7&&view.purchaseReturn==Page::CampSetup)menu.campKit=true;say("Compra concluida");savedTransition(Page::PurchaseReceipt);}}return;
+  }
+  if(view.page==Page::TradeList||view.page==Page::TradeConfirm||view.page==Page::TradeReceipt||view.page==Page::GearSell){
+    if(view.page==Page::TradeReceipt){if(hit(x,y,14,272,212)){view.saleIndex=0;view.page=view.saleReturn;say("");}return;}
     if(view.page==Page::TradeList){unsigned count=rpg::tradeCount(game);if(hit(x,y,14,272,212)){view.sale.open=false;view.page=Page::Market;say("");return;}
       if(count&&(hit(x,y,14,178,102)||hit(x,y,124,178,102))){view.saleIndex=(view.saleIndex+(x<120?count-1:1))%count;say("");return;}
-      if(count&&hit(x,y,14,222,212)){auto err=rpg::quoteSale(game,view.sale,rpg::tradeOffer(game,view.saleIndex));if(err)say(err);else {view.page=Page::TradeConfirm;say("");}}return;}
-    if(hit(x,y,14,272,102)){view.sale.open=false;view.page=Page::TradeList;say("Venda cancelada");return;}
+      if(count&&hit(x,y,14,222,212)){openSale(rpg::tradeOffer(game,view.saleIndex),Page::TradeList);}return;}
+    if(hit(x,y,14,272,102)){view.sale.open=false;view.page=view.saleReturn;say("Venda cancelada");return;}
     if(hit(x,y,14,174,102)){if(view.sale.quantity>1)--view.sale.quantity;say("");return;}
-    if(hit(x,y,124,174,102)){if(view.sale.quantity<view.sale.stock)++view.sale.quantity;say("");return;}
-    if(hit(x,y,14,220,212,32)){view.sale.quantity=view.sale.stock;say("");return;}
+    if(hit(x,y,124,174,102)){if(view.sale.quantity<rpg::saleMaximum(game,view.sale.item))++view.sale.quantity;say("");return;}
+    if(hit(x,y,14,220,212,32)){view.sale.quantity=rpg::saleMaximum(game,view.sale.item);say("");return;}
     if(hit(x,y,124,272,102)){auto err=rpg::confirmSale(game,view.sale);if(err)say(err);else {say("Venda concluida");savedTransition(Page::TradeReceipt);}}return;
   }
   if(view.page==Page::FirstTip){
@@ -186,11 +207,11 @@ void tapped(int x,int y){
     bool pick=hit(x,y,14,256,212,28);if(!pick&&!hit(x,y,14,224,212,28))return;
     auto err=rpg::attemptLock(game,pick);if(err)say(err);else {say(rpg::lockSuccess(game)?"Fechadura aberta":game.chestTrap?"Armadilha: confira seu HP":"Tentativa falhou");savedTransition(Page::ChestLock);}return;
   }
-  if(view.page==Page::Lockpicks){if(hit(x,y,14,270,102)){view.page=view.picksReturn;say("");}else if(hit(x,y,124,270,102)){auto err=rpg::buyGazua(game);if(err)say(err);else {say("Uma gazua guardada na bolsa");savedTransition(Page::Lockpicks);}}return;}
+  if(view.page==Page::Lockpicks){if(hit(x,y,14,270,102)){view.page=view.picksReturn;say("");}else if(hit(x,y,124,270,102)){openPurchase(6,Page::Buy,Page::Lockpicks);}return;}
   if(view.page==Page::Discovery){
     if(hit(x,y,14,270,102)){rpg::clearDiscovery(game);say("Exploracao concluida");savedTransition(game.city==1?Page::Ruins:Page::Explore);}
     else if(hit(x,y,124,270,102)){if(game.discovery==5||game.discovery==7){rpg::clearDiscovery(game);say("");savedTransition(game.city==1?Page::Ruins:Page::Explore);}else {auto err=rpg::collectDiscovery(game);if(err)say(err);else {say(game.discovery==4?"O bau era um mimico!":game.discovery==7?"Carga guardada para a guilda":"Guardado na bolsa");savedTransition(currentPage());}}}return;}
-  if(view.page==Page::Scrap){if(hit(x,y,14,270,102)){view.page=Page::TownBag;say("");}else if(hit(x,y,124,270,102)||hit(x,y,14,216,212)){if(y>=260){auto err=rpg::quoteSale(game,view.sale,5);if(err)say(err);else {view.sale.quantity=view.sale.stock;view.page=Page::TradeConfirm;say("");}return;}auto err=rpg::sellScrap(game,true);if(err)say(err);else {say(y<260?"Sucata descartada":"Sucata vendida");savedTransition(Page::Scrap);}}return;}
+  if(view.page==Page::Scrap){if(hit(x,y,14,270,102)){view.page=Page::TownBag;say("");}else if(hit(x,y,124,270,102)||hit(x,y,14,216,212)){if(y>=260){openSale(5,Page::Scrap,true);return;}auto err=rpg::sellScrap(game,true);if(err)say(err);else {say(y<260?"Sucata descartada":"Sucata vendida");savedTransition(Page::Scrap);}}return;}
   if(view.page==Page::Prologue&&!menu.storyReplay&&hit(x,y,14,254,212,14)){if(game.originStory)game.originPage=8;menu.storyIndex=0;say("");savedTransition(Page::Help);return;}
   if(view.page==Page::Prologue){if(hit(x,y,14,272,102)||hit(x,y,124,272,102)){
     bool finish=x<120?menu.storyIndex==0:menu.storyIndex+1>=story::originCount(game);
@@ -244,21 +265,17 @@ void tapped(int x,int y){
   if(view.page==Page::CampSetup){
     if(hit(x,y,14,272,102)){view.page=rpg::escortCampAllowed(game)?Page::EventMission:game.city==1?Page::Ruins:Page::Explore;say("");}
     else if(hit(x,y,14,207,212,33)){if(!game.rations){say("Sem racoes");return;}menu.campRation=!menu.campRation;say("");}
-    else if(hit(x,y,14,244,212,26)){if(!game.sleepKit){menu.campShopReturn=false;view.page=Page::CampKit;say("");}else {menu.campKit=!menu.campKit;say("");}}
+    else if(hit(x,y,14,244,212,26)){if(!game.sleepKit){menu.campShopReturn=false;openPurchase(7,Page::CampKit,Page::CampSetup);}else {menu.campKit=!menu.campKit;say("");}}
     else if(hit(x,y,124,272,102)){auto err=rpg::startCamp(game,menu.campRation,menu.campKit);if(err)say(err);else {say("");savedTransition(Page::CampRoll);}}return;
-  }
-  if(view.page==Page::CampKit||view.page==Page::GearSell){bool selling=view.page==Page::GearSell;Page back=selling?Page::BagGear:menu.campShopReturn?Page::CityGoods:Page::CampSetup;
-    if(hit(x,y,14,272,102)){view.page=back;say("");}
-    else if(hit(x,y,124,272,102)){auto err=selling?rpg::sellGear(game,view.itemId):rpg::buySleepKit(game);if(err)say(err);else {if(!selling)menu.campKit=true;say(selling?"Item vendido":"Kit comprado");savedTransition(back);}}return;
   }
   if(view.page==Page::IslandEntry){
     if(hit(x,y,14,272,102)){showMap();return;}
     if(hit(x,y,124,272,102)){auto err=rpg::enterIsland(game);if(err)say(err);else {say("Explore o santuario");savedTransition(Page::Dungeon);}}return;
   }
-  if(view.page==Page::DungeonEntry||view.page==Page::CrystalBuy||view.page==Page::DungeonExit){
-    Page page=view.page;if(hit(x,y,14,272,102)){view.page=page==Page::DungeonExit?Page::Dungeon:page==Page::CrystalBuy?Page::CityGoods:Page::Ruins;say("");}
+  if(view.page==Page::DungeonEntry||view.page==Page::DungeonExit){
+    Page page=view.page;if(hit(x,y,14,272,102)){view.page=page==Page::DungeonExit?Page::Dungeon:Page::Ruins;say("");}
     else if(hit(x,y,124,272,102)){if(page==Page::DungeonExit&&rpg::eventExpedition(game)){if(rpg::abandonEvent(game)){auto back=Page(game.eventOriginPage);rpg::finishEvent(game);say("Expedicao encerrada");savedTransition(back);}return;}if(page==Page::DungeonExit){bool island=rpg::islandDungeon(game);if(rpg::leaveDungeon(game)){say("Saque preservado");savedTransition(island?Page::Map:Page::Ruins);}}
-      else {const char* err=page==Page::CrystalBuy?rpg::buyCrystal(game):rpg::enterDungeon(game);if(err)say(err);else {say(page==Page::CrystalBuy?"Cristal comprado":"Explore e encontre o selo");savedTransition(page==Page::CrystalBuy?Page::CityGoods:Page::Dungeon);}}}return;}
+      else {const char* err=rpg::enterDungeon(game);if(err)say(err);else {say("Explore e encontre o selo");savedTransition(Page::Dungeon);}}}return;}
   if(view.page==Page::DungeonVictory){
     if(hit(x,y,14,218,212)||hit(x,y,14,272,212)){bool exit=y>=272;
       bool island=rpg::islandDungeon(game);if(rpg::dungeonResolve(game)){if(exit)rpg::leaveDungeon(game);say(exit?"Saque preservado":"Bau liberado! Explore a sala");savedTransition(exit?(island?Page::Map:Page::Ruins):Page::Dungeon);}}return;
@@ -272,7 +289,7 @@ void tapped(int x,int y){
     unsigned count=rpg::gearOwnedCount(game.owned),pages=std::max(1u,(count+5)/6);
     if(touchUi::gearPrevious.contains(x,y)||touchUi::gearNext.contains(x,y)){view.gearIndex=(view.gearIndex+(x<120?pages-1:1))%pages;view.choice=0;say("");return;}
     for(unsigned i=0;i<6;++i)if(hit(x,y,10+(i%3)*76,74+(i/3)*64,68,58)){view.choice=i;say("");return;}
-    if(touchUi::gearSell.contains(x,y)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}if(rpg::inDungeon(game)||game.phase!=rpg::Phase::Home){say("Venda na cidade");return;}view.itemId=rpg::gearOwnedAt(game.owned,index);view.page=Page::GearSell;say("");return;}
+    if(touchUi::gearSell.contains(x,y)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}if(rpg::inDungeon(game)||game.phase!=rpg::Phase::Home){say("Venda na cidade");return;}view.itemId=rpg::gearOwnedAt(game.owned,index);openSale(19+view.itemId,Page::BagGear,false,Page::GearSell);return;}
     if(touchUi::gearEquip.contains(x,y)){unsigned index=view.gearIndex*6+view.choice;if(index>=count){say("Slot vazio");return;}
       if(game.phase!=rpg::Phase::Home){say("Equipe depois do combate");return;}
       auto err=rpg::equipGear(game,rpg::gearOwnedAt(game.owned,index));if(err)say(err);else {say("Equipamento alterado");savedTransition(Page::BagGear);}}return;
@@ -498,8 +515,7 @@ void tapped(int x,int y){
     else if(hit(x,y,124,258,102)){view.page=Page::Menu;say("");}return;
   }
   if(view.page==Page::Explore){if(hit(x,y,14,270,102)){openCamp();return;}if(hit(x,y,124,270,102)){view.page=Page::Village;say("");}else if(hit(x,y,14,220,212)&&rpg::startDiscovery(game,menu.clockValid&&menu.dayCycle&&menu.worldPeriod==worldClock::Period::Night)){say(game.discovery?"":"Seu turno");savedTransition(currentPage());}return;}
-  if(view.page==Page::CityGoods){if(hit(x,y,14,181,212,30)){view.picksReturn=Page::CityGoods;view.page=Page::Lockpicks;say("");return;}if(hit(x,y,124,270,102)){menu.campShopReturn=true;view.page=Page::CampKit;say("");return;}if(game.city==1&&hit(x,y,124,218,102)){view.page=Page::CrystalBuy;say("");return;}if(hit(x,y,14,270,102)){view.page=Page::Market;say("");}else if(hit(x,y,14,218,212)){view.page=Page::GoodsBuy;say("");}return;}
-  if(view.page==Page::GoodsBuy){if(hit(x,y,14,270,102)){view.page=Page::CityGoods;say("");}else if(hit(x,y,124,270,102)){auto err=rpg::buyGood(game);if(err)say(err);else {say("Suprimento comprado");savedTransition(Page::CityGoods);}}return;}
+  if(view.page==Page::CityGoods){if(hit(x,y,14,181,212,30)){view.picksReturn=Page::CityGoods;view.page=Page::Lockpicks;say("");return;}if(hit(x,y,124,270,102)){menu.campShopReturn=true;openPurchase(7,Page::CampKit,Page::CityGoods);return;}if(game.city==1&&hit(x,y,124,218,102)){openPurchase(8,Page::CrystalBuy,Page::CityGoods);return;}if(hit(x,y,14,270,102)){view.page=Page::Market;say("");}else if(hit(x,y,14,218,212)){openPurchase(2+rpg::localGood(game.city),Page::GoodsBuy,Page::CityGoods);}return;}
   if(view.page==Page::GuildMissions){
     if(!game.guildMember){view.page=Page::Guild;say("Cadastre-se primeiro");return;}
     if(hit(x,y,14,272,212)){view.page=Page::Guild;say("");return;}
@@ -585,15 +601,15 @@ void tapped(int x,int y){
     if(!hit(x,y,14,180,212))return;
     view.itemId=shop?rpg::cityGearOffer(game,view.gearIndex%count):rpg::gearOwnedAt(game.owned,view.gearIndex%count);
     if(shop){const char* err=rpg::gearBuyError(game,view.itemId);if(err){say(err);return;}}
-    view.page=shop?Page::GearBuy:Page::GearEquip;say("");return;
+    if(shop)openPurchase(19+view.itemId,Page::GearBuy,Page::GearShop);else {view.page=Page::GearEquip;say("");}return;
   }
-  if(view.page==Page::GearBuy||view.page==Page::GearEquip){
-    bool buy=view.page==Page::GearBuy;Page back=buy?Page::GearShop:Page::GearBag;
+  if(view.page==Page::GearEquip){
+    Page back=Page::GearBag;
     if(hit(x,y,14,270,102)){view.page=back;say("Acao cancelada");}
     else if(hit(x,y,124,270,102)){
-      const char* err=buy?rpg::buyGear(game,view.itemId):rpg::equipGear(game,view.itemId);
+      const char* err=rpg::equipGear(game,view.itemId);
       if(err){say(err);return;}
-      say(buy?"Item comprado":game.equipped[rpg::gearSlot(view.itemId)]==view.itemId?"Item equipado":"Item retirado");savedTransition(back);
+      say(game.equipped[rpg::gearSlot(view.itemId)]==view.itemId?"Item equipado":"Item retirado");savedTransition(back);
     }return;
   }
   if(view.page==Page::Shop){
@@ -601,14 +617,7 @@ void tapped(int x,int y){
     int item=hit(x,y,14,172,212)?0:hit(x,y,14,218,212)?1:-1;if(item<0)return;
     if((item?game.p.mana:game.p.life)>=99){say("Bolsa cheia");return;}
     if(game.p.gold<rpg::potionPrice(game,item)){say("Ouro insuficiente");return;}
-    view.choice=item;view.page=Page::Buy;say("");return;
-  }
-  if(view.page==Page::Buy){
-    if(hit(x,y,14,270,102)){view.page=Page::Shop;say("Compra cancelada");}
-    else if(hit(x,y,124,270,102)){
-      const char* err=rpg::buyPotion(game,view.choice==1);if(err){say(err);return;}
-      say(view.choice?"+1 pocao de mana":"+1 pocao de vida");savedTransition(Page::Shop);
-    }return;
+    view.choice=item;openPurchase(item,Page::Buy,Page::Shop);return;
   }
   if(view.page==Page::Result){if(game.campStage==2){if(hit(x,y,14,268,212)&&rpg::resolveCamp(game)){say(game.campStage?"Descanso depois da batalha":"Acampamento interrompido");savedTransition(game.campStage?Page::CampRest:game.phase==rpg::Phase::Home&&game.p.hp==1?Page::Recovery:rpg::escortCampAllowed(game)?Page::EventMission:game.city==1?Page::Ruins:Page::Explore);}return;}if(hit(x,y,14,268,212)){bool lost=game.phase==rpg::Phase::Lost;if(rpg::home(game)){say("");savedTransition(lost?Page::Recovery:game.tripStage?currentPage():game.city==1?Page::Ruins:Page::Explore);}}return;}
   if(game.phase!=rpg::Phase::Hero)return;
@@ -673,7 +682,7 @@ int main(){
  assert(view.page==Page::Travel&&menu.journey.active&&game.city==0);tapped(100,150);assert(view.page==Page::Travel);assert(menu.journey.tick(now+3000));rpg::arriveTrip(game);savedTransition(Page::Village);
  rpg::FatigueJournal<NvsBackend> restart(backend);rpg::Game copy;assert(restart.load(copy)==rpg::Load::Ok&&copy.city==3&&!copy.tripStage);
  // New city controls and prices use the actual controller.
- view.page=Page::Village;view.cityPage=0;tapped(170,244);assert(view.page==Page::Explore);tapped(170,285);assert(view.page==Page::Village);tapped(170,195);tapped(170,240);assert(view.page==Page::CityGoods);tapped(80,235);assert(view.page==Page::GoodsBuy);game.p.gold=100;tapped(170,285);assert(view.page==Page::CityGoods&&game.charms==1&&game.p.gold==75);
+ view.page=Page::Village;view.cityPage=0;tapped(170,244);assert(view.page==Page::Explore);tapped(170,285);assert(view.page==Page::Village);tapped(170,195);tapped(170,240);assert(view.page==Page::CityGoods);game.p.gold=100;tapped(80,235);assert(view.page==Page::GoodsBuy);tapped(170,285);assert(view.page==Page::PurchaseReceipt&&game.charms==1&&game.p.gold==75);tapped(120,290);assert(view.page==Page::CityGoods);
  menu.journey=Journey{};rpg::clearTrip(game);view.page=Page::Home;
 
  // Creation is preview-only until the final confirmation, with outfit and race per slot.
@@ -712,7 +721,7 @@ int main(){
  game=rpg::testHero(0,42);game.city=1;game.phase=rpg::Phase::Won;game.enemyHp=0;game.enemyId=3;game.ruinsWins=3;view.page=Page::Result;tapped(80,285);assert(view.page==Page::Ruins&&game.phase==rpg::Phase::Home);
  // Camp choices are saved before rolling. Save failure cannot consume another ration.
  combatFx.kind=Effect::None;game=rpg::testHero(0,42);game.city=1;game.p.hp=1;game.p.mp=0;game.p.gold=80;game.rations=2;view.page=Page::Ruins;
- view.cityPage=1;tapped(60,200);assert(view.page==Page::CampSetup);tapped(80,253);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::CampSetup&&menu.campKit);
+ view.cityPage=1;tapped(60,200);assert(view.page==Page::CampSetup);tapped(80,253);assert(view.page==Page::CampKit);tapped(180,290);assert(game.sleepKit&&game.p.gold==0&&view.page==Page::PurchaseReceipt&&menu.campKit);tapped(120,290);assert(view.page==Page::CampSetup);
  tapped(80,218);assert(menu.campRation);nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.campStage==1&&game.rations==1);auto campRoll=game.campRoll;
  nvs.fail=false;tapped(100,265);assert(view.page==Page::CampRoll&&game.campRoll==campRoll&&game.rations==1&&!menu.rollReady);tapped(100,290);assert(game.campStage==1);game.campRoll=20;menu.rollReady=true;tapped(100,290);assert(view.page==Page::CampRest&&game.campStage==3&&game.p.hp==1);
  tapped(170,185);assert(view.page==Page::CampRest&&game.campStage==3);rpg::finishCamp(game);savedTransition(Page::Ruins);assert(game.p.hp==game.p.maxhp&&game.p.mp==game.p.maxmp&&game.rations==1);
@@ -720,7 +729,7 @@ int main(){
  game.p.hp=1;openCamp();tapped(180,290);game.campRoll=1;menu.rollReady=true;tapped(100,290);assert(view.page==Page::Battle&&game.campStage==2&&game.enemyId==5);game.enemyHp=0;rpg::finish(game);view.page=currentPage();tapped(100,285);assert(view.page==Page::CampRest&&game.campStage==3);
  rpg::finishCamp(game);savedTransition(Page::Ruins);
  // Sale confirmation and save retry never pay twice; equipped and foreign-class gear are distinct.
- game.owned|=1u<<(rpg::gearOffer(1,1)-1);view.page=Page::BagGear;view.gearIndex=0;view.choice=0;tapped(180,295);assert(view.page==Page::GearSell);tapped(75,290);assert(view.page==Page::BagGear);tapped(180,295);auto saleGold=game.p.gold;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.p.gold>saleGold);auto paid=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::BagGear&&game.p.gold==paid);
+ game.owned|=1u<<(rpg::gearOffer(1,1)-1);view.page=Page::BagGear;view.gearIndex=0;view.choice=0;tapped(180,295);assert(view.page==Page::GearSell);tapped(75,290);assert(view.page==Page::BagGear);tapped(180,295);auto saleGold=game.p.gold;nvs.fail=true;tapped(180,290);assert(view.page==Page::SaveError&&game.p.gold>saleGold);auto paid=game.p.gold;nvs.fail=false;tapped(100,265);assert(view.page==Page::TradeReceipt&&game.p.gold==paid);tapped(120,290);assert(view.page==Page::BagGear);
  // Narrative navigation must not mutate any save, reroll, charge or heal a veteran.
  game=rpg::testHero(0,42);game.tutorial=true;game.ruinsWins=3;game.guardianDefeated=true;game.dungeonClears=1;game.p.gold=123;assert(journal.save(game));auto narrativeBlobs=nvs.blobs;
  view.page=Page::Menu;tapped(120,176);assert(view.page==Page::Journal&&menu.chapterIndex==3);tapped(180,290);assert(view.page==Page::Campaign);tapped(100,210);assert(view.page==Page::Prologue&&menu.storyReplay);for(unsigned i=0;i<story::originCount(game);++i)tapped(180,290);assert(view.page==Page::Campaign&&game.tutorial&&nvs.blobs==narrativeBlobs);tapped(75,290);assert(view.page==Page::Journal);

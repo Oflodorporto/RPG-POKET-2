@@ -15,7 +15,9 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp, PurchaseReceipt };
+inline bool purchasePage(Page p){return p==Page::Buy||p==Page::GoodsBuy||p==Page::CrystalBuy||p==Page::CampKit||p==Page::GearBuy;}
+inline bool commercePage(Page p){return purchasePage(p)||p==Page::PurchaseReceipt||p==Page::TradeList||p==Page::TradeConfirm||p==Page::TradeReceipt||p==Page::GearSell;}
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   switch(page){
   case Page::IslandEntry:return bg_explore1;
@@ -29,7 +31,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Tavern:return bg_tavern;case Page::Contract:return bg_contract;case Page::QuestConfirm:return bg_questconfirm;
   case Page::Choose:return bg_choose;case Page::Help:return bg_guide;case Page::Home:return bg_camp;
   case Page::Village:return g.city==2?bg_port:g.city==3?bg_castle:bg_village;case Page::Map:return bg_world;case Page::Character:return bg_character;
-  case Page::TradeList:case Page::TradeConfirm:case Page::TradeReceipt:case Page::Market:return bg_market;case Page::Inventory:return bg_inventory;case Page::Shop:return bg_shop;
+  case Page::PurchaseReceipt:case Page::TradeList:case Page::TradeConfirm:case Page::TradeReceipt:case Page::Market:return bg_market;case Page::Inventory:return bg_inventory;case Page::Shop:return bg_shop;
   case Page::Buy:return bg_buy;case Page::GearShop:return bg_gearshop;case Page::GearBag:return bg_gearbag;
   case Page::GearBuy:return bg_gearbuy;case Page::GearEquip:return bg_gearequip;case Page::Forge:return bg_forge;
   case Page::Upgrade:return bg_upgrade;case Page::Skills:return bg_skills;case Page::Bag:return bg_bag;
@@ -38,7 +40,7 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
   case Page::Battle:if(g.eventStage==2)return g.eventTier==0?bg_explore0:g.eventTier==1?bg_explore1:g.eventTier==2?bg_explore2:bg_explore3;if(g.enemyId>=14)return g.city==0?bg_explore0:g.city==1?bg_explore1:g.city==2?bg_explore2:bg_explore3;if(g.enemyId>=4)return g.enemyId==4?bg_explore0:g.enemyId==5?bg_explore1:g.enemyId==6?bg_explore2:bg_explore3;return g.enemyId==0?bg_battle0:g.enemyId==1?bg_battle1:g.enemyId==2?bg_battle2:bg_battle3;
   }return bg_camp;
 }
-struct ViewState {rpg::CombatTrace heroTrace,enemyTrace;bool traceOpen=false,traceEnemy=false;uint8_t tracePage=0;uint32_t tracePauseAt=0,traceBlockUntil=0;uint8_t trackedLevel=0;bool levelPending=false,levelAttributes=false,createHintsPending=false;Page levelReturn=Page::Home;rpg::SaleQuote sale;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0,cityPage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
+struct ViewState {rpg::CombatTrace heroTrace,enemyTrace;bool traceOpen=false,traceEnemy=false;uint8_t tracePage=0;uint32_t tracePauseAt=0,traceBlockUntil=0;uint8_t trackedLevel=0;bool levelPending=false,levelAttributes=false,createHintsPending=false;Page levelReturn=Page::Home;rpg::SaleQuote sale;rpg::PurchaseQuote purchase;Page purchaseReturn=Page::Shop,saleReturn=Page::TradeList;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0,cityPage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
 #include "StoryPaper.h"
 #include "MenuView.h"
@@ -98,7 +100,8 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int row=0;row<h;++row){int col=0;while(col<w){while(col<w&&pixels[row*w+col]==SPRITE_KEY)++col;int start=col;while(col<w&&pixels[row*w+col]!=SPRITE_KEY)++col;if(col>start)c.draw16bitRGBBitmap(x+start,y+row,const_cast<uint16_t*>(pixels+row*w+start),col-start,1);}}
   };
   auto portrait=[&](uint8_t cls,int x,int y,const rpg::Game* overrideGame=nullptr){box(x-1,y-1,82,68);auto who=overrideGame?*overrideGame:g;who.p.cls=cls;personalSprite(c,who,x,y,6);c.drawRect(x-1,y-1,82,68,UI_GOLD);};
-  if(v.page==Page::TradeList||v.page==Page::TradeConfirm||v.page==Page::TradeReceipt){drawTrading(c,g,v,frame);return;}
+  if(purchasePage(v.page)||v.page==Page::PurchaseReceipt){drawPurchase(c,g,v,frame);return;}
+  if(v.page==Page::TradeList||v.page==Page::TradeConfirm||v.page==Page::TradeReceipt||v.page==Page::GearSell){drawTrading(c,g,v,frame);return;}
   if(v.page==Page::FirstTip){drawFirstExperience(c,g,v,frame);return;}
   if(v.page==Page::Title){drawTitle(c,frame);return;}
   if(v.page==Page::Menu){drawScenicMenu(c,g,v,frame);return;}
@@ -124,12 +127,6 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
   if(storyPaperPage(v.page)&&!drawStoryPaper(c,v,frame))return;
   if(renderEvent(c,g,int(v.page),text,center,box,button,frame))return;
   if(renderMenu(c,g,int(v.page),text,center,box,button,portrait,frame))return;
-  if(v.page==Page::CampKit||v.page==Page::GearSell){bool selling=v.page==Page::GearSell;if(selling&&!rpg::gearId(v.itemId)){center(100,"Item indisponivel");button(14,272,102,"Voltar");return;}
-    center(16,selling?"VENDER EQUIPAMENTO":"KIT DE ACAMPAMENTO",2,UI_GOLD);
-    if(selling){center(130,"Quantidade: 1");box(86,55,68,68);sprite(92,61,gear_icons[rpg::gearFamily(v.itemId)],56,56);center(146,rpg::gearName(v.itemId));snprintf(b,sizeof(b),"Receber: %u ouro",rpg::sellPrice(g,v.itemId));center(174,b,2,UI_GOLD);snprintf(b,sizeof(b),"Unidade: %u ouro",rpg::sellPrice(g,v.itemId));center(193,b);center(207,"O item sera retirado da bolsa.");}
-    else {magicSprite(c,campArt::kit,48,48,84,55,72,72);center(146,"Preco: 80 ouro",2,UI_GOLD);center(180,"Reutilizavel / +2 no teste");center(204,"Saco de dormir ao lado do heroi.");}
-    center(241,v.message,1,UI_RED);button(14,272,102,"Voltar");button(124,272,102,selling?"Vender":"Comprar");return;
-  }
   if(v.page==Page::IslandEntry){
     center(21,"DIANTE DO DESCONHECIDO",1,UI_GOLD);
     const char* speech="Voce encontra pedras tomadas pelo sal. Um frio atravessa sua roupa. Do interior vem um som que voce nao reconhece. A passagem espera.";
@@ -154,17 +151,17 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(202,island?"Vitoria preservada no personagem.":repeat?"A descoberta permanece no Diario.":"Descoberta registrada no Diario.",1,UI_GREEN);
     button(14,218,212,"Explorar");button(14,272,212,"Sair");return;
   }
-  if(v.page==Page::DungeonEntry||v.page==Page::CrystalBuy||v.page==Page::DungeonExit){
-    bool buy=v.page==Page::CrystalBuy,exit=v.page==Page::DungeonExit;
+  if(v.page==Page::DungeonEntry||v.page==Page::DungeonExit){
+    bool exit=v.page==Page::DungeonExit;
     if(exit&&rpg::eventExpedition(g)){center(18,"RETORNAR A GUILDA?",2,UI_GOLD);center(95,"A carta ficara incompleta.");center(123,"Voce volta ao local de origem.");center(151,"XP e ouro das lutas ficam com voce.");center(180,"Sem a recompensa final da carta.");center(209,"Nenhum cristal foi consumido.");button(14,272,102,"Continuar");button(124,272,102,"Retornar");return;}
-    center(16,buy?"CRISTAL DA CRIPTA":exit?"SAIR DA CRIPTA?":"CRIPTA DO ARCONTE",2,UI_GOLD);
+    center(16,exit?"SAIR DA CRIPTA?":"CRIPTA DO ARCONTE",2,UI_GOLD);
     snprintf(b,sizeof(b),"Cristais: %u / ouro: %lu",g.crystals,(unsigned long)g.p.gold);center(64,b);
-    center(98,buy?"Preco: 300 ouro":exit?"Seu saque sera preservado.":"Entrada: consome 1 cristal");
-    center(124,buy?"Guardiao tambem deixa cristal.":exit?(rpg::islandDungeon(g)?"Voce voltara ao mapa.":"Nova entrada custa outro cristal."):"2 andares + sala do chefe");
-    center(152,buy?"Compra limitada a 9 cristais.":exit?"O labirinto sera reiniciado.":"Nivel recomendado: 8+");
+    center(98,exit?"Seu saque sera preservado.":"Entrada: consome 1 cristal");
+    center(124,exit?(rpg::islandDungeon(g)?"Voce voltara ao mapa.":"Nova entrada custa outro cristal."):"2 andares + sala do chefe");
+    center(152,exit?"O labirinto sera reiniciado.":"Nivel recomendado: 8+");
     center(182,exit?"Confirme somente para sair.":"Setas: mover / girar / andar de lado");
     center(206,exit?"": "Toque na cena: interagir / atacar");center(237,v.message,1,UI_RED);
-    button(14,272,102,"Voltar");button(124,272,102,buy?"Comprar":exit?"Sair":"Entrar");return;
+    button(14,272,102,"Voltar");button(124,272,102,exit?"Sair":"Entrar");return;
   }
   if(v.page==Page::DungeonMenu&&dungeonUi::pendingResult(g)){
     center(14,g.phase==rpg::Phase::Won?"VITORIA!":"COMBATE ENCERRADO",2,UI_GOLD);
@@ -213,11 +210,11 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     scenicPanel(c,14,233,212,27);panelLabel(c,18,242,204,"Abrir guia completo >",UI_GOLD);
     button(14,268,102,"Sem dicas");button(124,268,102,"Com dicas");return;
   }
-  if(v.page==Page::CityGoods||v.page==Page::GoodsBuy){bool buy=v.page==Page::GoodsBuy;uint8_t id=rpg::localGood(g.city);auto preview=g;
-    center(12,buy?"CONFIRMAR COMPRA":"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
-    snprintf(b,sizeof(b),"Preco %u ouro / tem %u de 9",rpg::goodPrice(g.city),rpg::goodCount(preview,id));center(156,b,1,UI_GOLD);
-    if(buy){center(182,id==0?"Uma racao por dia de viagem.":"Uma unidade usada por viagem.");center(200,"Cada tipo soma seu bonus ao dado.");}else {box(14,181,212,30);center(191,"Gazuas / ferramentas",1,UI_GOLD);}center(170,v.message,1,UI_RED);
-    if(buy){button(14,270,102,"Cancelar");button(124,270,102,"Comprar");}else {if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,102,"Voltar");button(124,270,102,"Kit");}return;}
+  if(v.page==Page::CityGoods){uint8_t id=rpg::localGood(g.city);auto preview=g;
+    center(12,"SUPRIMENTOS",2,UI_GOLD);center(48,story::supplier(g.city),1,UI_GOLD);center(88,rpg::goodName(id),2);center(124,rpg::goodBonus(id));
+    snprintf(b,sizeof(b),"Preco %u ouro / tem %u de %u",rpg::goodPrice(g.city),rpg::goodCount(preview,id),rpg::goodLimit(id));center(156,b,1,UI_GOLD);
+    box(14,181,212,30);center(191,"Gazuas / ferramentas",1,UI_GOLD);center(170,v.message,1,UI_RED);
+    if(g.city==1){button(14,218,102,"Comprar");button(124,218,102,"Cristal");}else button(14,218,212,"Comprar");button(14,270,102,"Voltar");button(124,270,102,"Kit");return;}
   if(v.page==Page::Explore){center(12,placeName(g.city),2,UI_GOLD);center(56,rpg::citySpecialty(g.city));snprintf(b,sizeof(b),"Nivel recomendado: %u+",rpg::cityLevel(g.city));center(90,b,1,UI_GOLD);
     center(123,g.p.level<rpg::cityLevel(g.city)?"PERIGO: acima do seu nivel!":"Prepare equipamento e pocoes.",1,g.p.level<rpg::cityLevel(g.city)?UI_RED:UI_WHITE);center(160,v.message,1,UI_RED);
     center(195,"Combate, achados e surpresas.");button(14,220,212,"Explorar");button(14,270,102,"Acampar");button(124,270,102,"Voltar");return;}
@@ -316,24 +313,18 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,180,212,shop?(rpg::gearOwns(g.owned,id)?"Ja adquirido":"Comprar"):(g.equipped[rpg::gearSlot(id)]==id?"Retirar":"Equipar"));
     button(14,226,102,"Anterior");button(124,226,102,"Proximo");button(14,272,212,"Voltar");return;
   }
-  if(v.page==Page::GearBuy||v.page==Page::GearEquip){
+  if(v.page==Page::GearEquip){
     uint8_t id=v.itemId;if(!rpg::gearId(id)){center(100,"Item indisponivel");return;}
-    bool buy=v.page==Page::GearBuy;bool remove=g.equipped[rpg::gearSlot(id)]==id;
-    center(12,buy?"COMPRAR ITEM":remove?"RETIRAR ITEM":"EQUIPAR ITEM",2,UI_GOLD);
+    bool remove=g.equipped[rpg::gearSlot(id)]==id;
+    center(12,remove?"RETIRAR ITEM":"EQUIPAR ITEM",2,UI_GOLD);
     box(86,39,68,68);sprite(92,45,gear_icons[rpg::gearFamily(id)],56,56);center(113,rpg::gearName(id),1,UI_GOLD);
-    if(buy){snprintf(b,sizeof(b),"Preco: %u ouro",rpg::cityGearPrice(g,id));center(142,b,2,UI_GOLD);
-      snprintf(b,sizeof(b),"Ouro: %lu -> %lu",(unsigned long)g.p.gold,(unsigned long)(g.p.gold>=rpg::cityGearPrice(g,id)?g.p.gold-rpg::cityGearPrice(g,id):g.p.gold));center(177,b);
-      auto preview=rpg::gearPreview(g,id);
-      snprintf(b,sizeof(b),"ATQ: %d -> %d",rpg::effectiveAttack(g),rpg::effectiveAttack(preview));center(196,b);
-      snprintf(b,sizeof(b),"DEF: %d -> %d",rpg::effectiveDefense(g),rpg::effectiveDefense(preview));center(211,b);
-      snprintf(b,sizeof(b),"MP MAX: %u -> %u",g.p.maxmp,preview.p.maxmp);center(226,b);if(!*v.message)center(246,"Na bolsa: equipe para usar.",1,UI_MUTED);}
-    else{auto preview=g;rpg::equipGear(preview,id);
+    {auto preview=g;rpg::equipGear(preview,id);
       snprintf(b,sizeof(b),"ATAQUE: %d -> %d",rpg::effectiveAttack(g),rpg::effectiveAttack(preview));center(144,b);
       snprintf(b,sizeof(b),"DEFESA: %d -> %d",rpg::effectiveDefense(g),rpg::effectiveDefense(preview));center(163,b);
       snprintf(b,sizeof(b),"MP MAX: %u -> %u",g.p.maxmp,preview.p.maxmp);center(182,b);
       if(preview.p.mp<g.p.mp){snprintf(b,sizeof(b),"MP atual: %u -> %u",g.p.mp,preview.p.mp);center(207,b,1,UI_RED);center(223,"Mana acima do limite sera perdida.",1,UI_RED);}
       else center(212,remove?"O item continua na sua bolsa.":"Trocar item nao recupera mana.",1,UI_MUTED);}
-    center(246,v.message,1,UI_RED);button(14,270,102,"Cancelar");button(124,270,102,buy?"Comprar":"Aplicar");return;
+    center(246,v.message,1,UI_RED);button(14,270,102,"Cancelar");button(124,270,102,"Aplicar");return;
   }
   if(v.page==Page::Shop){
     center(12,"LOJA DE POCOES",2,UI_GOLD);center(41,story::supplier(g.city),1,UI_GOLD);box(14,62,212,70);
@@ -342,15 +333,6 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     for(int i=0;i<2;++i){int y=172+i*46;box(14,y,212,40);snprintf(b,sizeof(b),"%s / %u ouro",i?"Mana":"Vida",rpg::potionPrice(g,i));center(y+5,b,2);
       snprintf(b,sizeof(b),"Na bolsa %u/99 / recupera %u%%",i?g.p.mana:g.p.life,i?50:30);center(y+26,b);}
     button(14,270,212,"Voltar");return;
-  }
-  if(v.page==Page::Buy){
-    const bool mana=v.choice==1;uint8_t price=rpg::potionPrice(g,mana);center(18,"CONFIRMAR COMPRA",2,UI_GOLD);
-    center(76,mana?"1 POCAO DE MANA":"1 POCAO DE VIDA",2);
-    snprintf(b,sizeof(b),"Preco: %u ouro",price);center(111,b,2,UI_GOLD);
-    snprintf(b,sizeof(b),"Voce tem: %lu ouro",(unsigned long)g.p.gold);center(150,b);
-    snprintf(b,sizeof(b),"Depois: %lu ouro",(unsigned long)(g.p.gold>=price?g.p.gold-price:g.p.gold));center(172,b);
-    center(195,"A pocao vai para sua bolsa.");center(220,v.message,1,UI_RED);
-    button(14,270,102,"Cancelar");button(124,270,102,"Comprar");return;
   }
   if(v.page==Page::Result){
     // Rewards use dark ink on the shared parchment; no dark overlay.

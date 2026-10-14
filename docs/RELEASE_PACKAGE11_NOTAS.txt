@@ -1,0 +1,11 @@
+RPG POKET 7.7 - Comercio em lote
+
+Na loja, escolha a quantidade para comprar ou vender de uma vez. A tela mostra o total e só confirma quantidades possíveis para o saldo e o inventário atuais. Rações agora cabem até 10. Poções, ferramentas, mapas, talismãs e itens vendáveis mantêm seus preços e os demais limites existentes.
+
+Uma operação confirmada é gravada inteira, com proteção contra toque repetido e cancelamento. Em caso de falha de gravação, siga a mensagem na tela; não desligue durante a gravação. A compra de kit necessária para recuperar uma escolta continua disponível.
+
+Mantém o pulso do relógio, história, PvP, campanha, arte de 666 assets, Wi-Fi e SD. Save30 de 160 bytes, leitura de Save29/30 e epoch1 continuam iguais, sem novo reset. A versão nova lê o progresso anterior normalmente.
+
+ATENÇÃO AO RETORNO DE VERSÃO: firmwares antigos aceitam no máximo 9 rações. Um save com 10 é rejeitado por esses leitores; em um journal misto eles podem recuperar um registro anterior com até 9, perdendo as alterações posteriores. Se ambos os registros tiverem 10, a leitura antiga fica bloqueada. Não há garantia de downgrade seguro. Não apague o progresso para atualizar.
+
+O fluxo USB primeiro/OTA depois permanece, com EraseFlash=none. A atualização por OTA exige confirmação no aparelho. Testes automatizados, compilação ESP32 e adapters OTA devem ser conferidos no run do SHA exato; teste físico, toque/LCD, rádio, SD e energia continuam separados. Pets, coop e a nova bolsa visual não fazem parte desta versão.

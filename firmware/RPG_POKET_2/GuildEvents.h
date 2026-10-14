@@ -106,7 +106,7 @@ inline bool finishEvent(Game& g){if(g.tripStage==4||g.campStage||g.eventStage!=2
  bool won=eventReady(g)||(!g.eventKind&&g.phase==Phase::Won);
  if(!won&&g.phase!=Phase::Lost&&g.phase!=Phase::Fled)return false;
  uint8_t outcome=won?3:g.phase==Phase::Lost?5:6;
- if(won){if(g.eventKind==7&&g.rations<9)++g.rations;g.p.gold=std::min<uint32_t>(999999u,g.p.gold+eventGold(g));unsigned xp=eventXp(g);g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);}
+ if(won){if(g.eventKind==7&&g.rations<RATION_LIMIT)++g.rations;g.p.gold=std::min<uint32_t>(999999u,g.p.gold+eventGold(g));unsigned xp=eventXp(g);g.p.xp=g.p.xp>UINT32_MAX-xp?UINT32_MAX:g.p.xp+xp;levelUp(g);}
  if(g.phase!=Phase::Home)home(g);if(g.eventKind==3)clearDungeon(g);clearTrip(g);g.city=g.eventOriginCity;g.eventStage=outcome;g.enemyId=2;g.enemyHp=enemySpec(2).hp;g.guard=0;g.gainGold=g.gainXp=0;g.dropLife=g.dropMana=false;clearFeedback(g);return true;
 }
 }

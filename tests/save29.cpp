@@ -123,7 +123,7 @@ void dailyCodecTests(){
   bad=original;bad.owned=1u<<GEAR_COUNT;invalid.push_back(bad);
   bad=original;bad.questProgress=1;invalid.push_back(bad);
   bad=original;bad.attributes[0]=21;invalid.push_back(bad);
-  bad=original;bad.rations=10;invalid.push_back(bad);
+  bad=original;bad.rations=RATION_LIMIT+1;invalid.push_back(bad);
   bad=original;bad.eventStage=7;invalid.push_back(bad);
   bad=original;bad.dungeonFlags=1;invalid.push_back(bad);
   bad=original;bad.discovery=1;invalid.push_back(bad);

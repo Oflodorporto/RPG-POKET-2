@@ -1,0 +1,100 @@
+name: Qualificar comercio em lote sem publicar
+on:
+  push:
+    branches: [feat/package11-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "PACKAGE11_STAGING_ONLY.txt", ".github/workflows/package11-check.yml", ".github/workflows/release.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: package11-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/feat/package11-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: bash --noprofile --norc -euo pipefail {0}
+    env:
+      RPG_DETECT_LEAKS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Instalar dependencia deterministica das artes e capturas
+        run: python3 -m pip install 'Pillow==11.3.0'
+      - name: Verificar inventario e executar agregado herdado mais narrativa, relogio, PvP, comercio em lote e integracao
+        run: |
+          mkdir -p build
+          bash tools/test_package11.sh 2>&1 | tee build/package11-tests.log
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar SHA exato sem gravar nem publicar
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          arduino-cli version | tee build/package11-esp32-build.log
+          arduino-cli compile --jobs 4 \
+            --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+            --build-path build/esp32-package11 --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee -a build/package11-esp32-build.log
+          cp build/esp32-package11/RPG_POKET_2.ino.bin build/RPG_POKET_2.ino.bin
+          python3 tools/check_package11_scope.py
+      - name: Verificar bytes compilados e OTA Save29 para30 e Save30 para30
+        run: |
+          python3 tools/release_package11_manifest.py
+          python3 tools/verify_package11_release.py
+          python3 tests/package11_release_verifier.py
+          python3 tools/test_package11_release.py release
+          python3 tools/test_package11_release.py release --sanitizers
+      - name: Registrar SHA exato, hashes, agregado e orcamento compilado
+        run: python3 tools/record_package11_identity.py
+      - name: Guardar candidato e provas sem publicar
+        uses: actions/upload-artifact@v4
+        with:
+          name: package11-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/package11-scope-budget.json
+            build/package11-source-identity.json
+            build/package11-tests.log
+            build/package11-esp32-build.log
+            build/package11-validation/**
+            build/package7-differential*.json
+            build/screens/procedural6/*
+            build/screens/package6-integration/*
+            build/screens/camp-identity77/*
+            build/d20-camp77/previews/*
+            build/ruins-bag77/ruins-bag-*.png
+            build/ruins7/*.png
+            build/clock-cycle7/previews/*
+            build/clock-cycle7/visibility-preview/*
+            build/fatigue7/screens/*
+            build/narrative8-render/*.json
+            build/narrative8-render/*.jsonl
+            build/narrative8-render/*.html
+            build/narrative8-render/*.txt
+            build/narrative8-render/*.log
+            build/narrative8-render/png/*
+            build/narrative8-render/contact-sheets/*
+            build/narrative8-events/*
+            build/pvp-presentation/previews/*
+            build/pvp-presentation/capture-manifest.json
+            build/pvp-presentation/screens/*.txt
+            build/pvp-presentation/sanitized/*.txt
+            build/pvp-review/screens-normal/*
+            build/pvp-review/screens-sanitizer/*
+            build/bulk-shop/screens/*.png
+            build/bulk-shop/screens/*.ppm
+            build/bulk-shop/sanitized/*.ppm
+            build/ration-limit10-oldreader/**
+          if-no-files-found: error
+          retention-days: 14

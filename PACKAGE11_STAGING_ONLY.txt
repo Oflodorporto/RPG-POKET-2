@@ -1,0 +1,2 @@
+PACKAGE 11 SHOP CANDIDATE ONLY
+This branch prepares isolated qualification for approved bulk buying/selling and a ration cap of 10. Qualification and generated artifacts never authorize main, tag, release, USB flashing, or physical device OTA. Current main README, history, screenshots and published PvP remain preserved. A future publication requires separate user approval and the exact successful qualification SHA. No coop, pets or visual bag integration is included.

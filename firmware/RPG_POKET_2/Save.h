@@ -37,7 +37,7 @@ inline bool validCore(const Game& g,bool validateLegacyTravel=true){
   if(g.dndProgression){if(g.p.level>20||g.advancementSpent>improvementCount(g.p.cls,g.p.level)*2||(g.tough&&g.advancementSpent<2))return false;for(auto score:g.attributes)if(score<8||score>20)return false;}
   else if(g.tough||g.advancementSpent)return false;
   if(!campaignValid(g)||!eventValid(g)||!dungeonValid(g)||!campValid(g))return false;
-  if(g.rations>9||g.charts>9||g.charms>9)return false;
+  if(g.rations>RATION_LIMIT||g.charts>9||g.charms>9)return false;
   if(validateLegacyTravel){
     if(g.tripStage>3)return false;
     if(!g.tripStage){if(g.tripTo||g.tripRoll||g.tripDifficulty||g.tripTotal||g.tripEnemy||g.tripSurvival||g.tripLuck)return false;}

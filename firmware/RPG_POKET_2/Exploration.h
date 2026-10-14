@@ -70,7 +70,7 @@ inline const char* collectDiscovery(Game& g){
  if(g.discovery==6){++g.questProgress;clearLock(g);g.discovery=7;g.discoverLoot=3;return nullptr;}
  if(g.discoverLoot==0){if(g.p.gold>999999u-g.discoverAmount)return "Gaste ouro ou deixe o achado";g.p.gold+=g.discoverAmount;}
  else if(g.discoverLoot==6){uint32_t bit=1u<<(g.discoverAmount-1);if(g.owned&bit){unsigned gold=6+g.city*3;if(g.p.gold>999999u-gold)return "Gaste ouro ou deixe o achado";g.p.gold+=gold;g.discoverLoot=0;g.discoverAmount=gold;}else g.owned|=bit;}
- else {uint8_t& n=g.discoverLoot==1?g.p.life:g.discoverLoot==2?g.p.mana:g.discoverLoot==3?g.rations:g.scrap;unsigned cap=g.discoverLoot<3?99:9;if(n>=cap)return "Bolsa cheia; pode deixar aqui";++n;}
+ else {uint8_t& n=g.discoverLoot==1?g.p.life:g.discoverLoot==2?g.p.mana:g.discoverLoot==3?g.rations:g.scrap;unsigned cap=g.discoverLoot<3?99:g.discoverLoot==3?RATION_LIMIT:9;if(n>=cap)return "Bolsa cheia; pode deixar aqui";++n;}
  clearLock(g);g.discovery=5;return nullptr;
 }
 inline const char* sellScrap(Game& g,bool discard=false){if(g.phase!=Phase::Home||g.discovery)return "Termine o encontro";if(!g.scrap)return "Sem sucata";if(!discard&&g.p.gold>999999u-g.scrap*2)return "Gaste ouro primeiro";if(!discard)g.p.gold+=g.scrap*2;g.scrap=0;return nullptr;}

@@ -7,6 +7,8 @@
 // Adapted from Heltec 2026.09.24-polimento1: Combat, Skills, State,
 // Economy, UI, World and Gear. Network/calendar are not part of this slice.
 namespace rpg {
+// Carried rations use the existing full-byte inventory field in Save29/30.
+constexpr uint8_t RATION_LIMIT=10;
 enum class Phase:uint8_t { Home, Hero, Enemy, Won, Lost, Fled };
 enum class Action:uint8_t { Attack, Offensive, Defensive, Life, Mana, Flee, MagicMissile, BurningHands, ShieldSpell, ScorchingRay, Fireball, LayHands, SacredWeapon, TurnUndead, SecondWind, ActionSurge, RagePower, DivineSmite };
 struct EnemySpec {const char* name;uint8_t hp,atk,def,xp,gold;};
@@ -96,8 +98,9 @@ inline uint8_t localGood(uint8_t city){return city==2?1:city==3?2:0;}
 inline const char* goodName(uint8_t id){static const char* n[]={"RACAO DE VIAGEM","MAPA DO VIAJANTE","TALISMA DA SORTE"};return n[id<3?id:0];}
 inline const char* goodBonus(uint8_t id){static const char* n[]={"+2 sobrevivencia","+1 sobrevivencia / +1 sorte","+2 sorte"};return n[id<3?id:0];}
 inline uint8_t goodPrice(uint8_t city){static const uint8_t n[]={6,12,12,25};return n[city<4?city:0];}
+inline uint8_t goodLimit(uint8_t id){return id==0?RATION_LIMIT:9;}
 inline uint8_t& goodCount(Game& g,uint8_t id){return id==1?g.charts:id==2?g.charms:g.rations;}
-inline const char* buyGood(Game& g){if(g.phase!=Phase::Home||g.tripStage)return "Termine a viagem";auto& n=goodCount(g,localGood(g.city));if(n>=9)return "Limite de 9 unidades";if(g.p.gold<goodPrice(g.city))return "Ouro insuficiente";g.p.gold-=goodPrice(g.city);++n;return nullptr;}
+inline const char* buyGood(Game& g){if(g.phase!=Phase::Home||g.tripStage)return "Termine a viagem";const auto id=localGood(g.city);auto& n=goodCount(g,id);if(n>=goodLimit(id))return id==0?"Limite de 10 racoes":"Limite de 9 unidades";if(g.p.gold<goodPrice(g.city))return "Ouro insuficiente";g.p.gold-=goodPrice(g.city);++n;return nullptr;}
 inline void clearTrip(Game& g){g.daily=DailyTrip{};g.tripStage=g.tripTo=g.tripRoll=g.tripDifficulty=g.tripTotal=g.tripEnemy=g.tripSurvival=g.tripLuck=0;}
 inline bool tripSafe(const Game& g){return g.tripRoll==20||(g.tripRoll!=1&&g.tripTotal>=g.tripDifficulty);}
 inline uint8_t routeDifficulty(uint8_t a,uint8_t b){return 12+2*abs(int(a)-int(b))+std::max(cityLevel(a),cityLevel(b))/6;}

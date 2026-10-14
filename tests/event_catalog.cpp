@@ -22,7 +22,7 @@ int main(){
    assert(!eventAct(g,choice));g=rebootEvent(g);if(g.phase==Phase::Hero)winEvent(g);
   }
   assert(eventReady(g)&&actions<24&&eventGold(g)==pay&&eventXp(g)==xp);auto money=g.p.gold,total=totalExperience(g);auto food=g.rations;assert(eventAct(g)&&!abandonEvent(g));
-  Disk disk;Journal<Disk> j(disk);Game old;assert(j.load(old)==Load::Empty&&j.save(g));disk.fail=true;assert(finishEvent(g)&&!j.save(g));Journal<Disk> loaded(disk);assert(loaded.load(old)==Load::Ok&&eventReady(old));assert(finishEvent(old));disk.fail=false;assert(loaded.save(old));Journal<Disk> paid(disk);assert(paid.load(old)==Load::Ok&&!finishEvent(old)&&old.p.gold==money+pay&&totalExperience(old)==total+xp&&old.city==3);assert(old.rations==food+unsigned(kind==7&&food<9));
+  Disk disk;Journal<Disk> j(disk);Game old;assert(j.load(old)==Load::Empty&&j.save(g));disk.fail=true;assert(finishEvent(g)&&!j.save(g));Journal<Disk> loaded(disk);assert(loaded.load(old)==Load::Ok&&eventReady(old));assert(finishEvent(old));disk.fail=false;assert(loaded.save(old));Journal<Disk> paid(disk);assert(paid.load(old)==Load::Ok&&!finishEvent(old)&&old.p.gold==money+pay&&totalExperience(old)==total+xp&&old.city==3);assert(old.rations==food+unsigned(kind==7&&food<RATION_LIMIT));
  }
  // Cargo always advances within eight searches, including worst consecutive battles.
  for(unsigned seed=1;seed<500;++seed){auto cargo=fresh(0,5,1,seed);unsigned searches=0;while(!eventReady(cargo)&&searches++<8){assert(!searchEvent(cargo,eventNight(cargo)));cargo=rebootEvent(cargo);if(cargo.phase==Phase::Hero)winEvent(cargo);}assert(eventReady(cargo)&&searches<=8);}
