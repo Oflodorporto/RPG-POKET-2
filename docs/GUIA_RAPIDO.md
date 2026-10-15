@@ -2,7 +2,7 @@
 
 [Voltar à apresentação](../README.md) · [Estado publicado](ESTADO_ATUAL.md) · [Índice de documentação](INDICE.md)
 
-Este guia descreve a versão **2026.10.15-coopfix77 / build 2026101501**, publicada em 15/10/2026. Documentos de entregas antigas podem descrever outro formato de save ou outro fluxo de publicação.
+Este guia descreve a versão **2026.10.15-coopdiag77 / build 2026101502**, publicada em 15/10/2026. Documentos de entregas antigas podem descrever outro formato de save ou outro fluxo de publicação.
 
 ## Antes de começar
 
@@ -10,7 +10,7 @@ Este guia descreve a versão **2026.10.15-coopfix77 / build 2026101501**, public
 - Flash de **16 MiB**, PSRAM **OPI de 8 MiB**, tela **240 × 320**.
 - MicroSD **FAT32**, cabo USB de dados e alimentação estável.
 - Para atualizar pela placa, rede Wi-Fi de **2,4 GHz**.
-- Baixe código e artes da [Release coopfix77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopfix77). Não misture arquivos de tags diferentes.
+- Baixe código e artes da [Release coopdiag77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77). Não misture arquivos de tags diferentes.
 
 Os saves ficam em NVS na placa, não no cartão. Copiar o microSD não é um backup dos três slots. Evite trocar partições ou usar ferramentas de apagamento total como tentativa de recuperação.
 
@@ -21,15 +21,15 @@ Os saves ficam em NVS na placa, não no cartão. Copiar o microSD não é um bac
 | Primeira instalação, sem jogo anterior | USB | Cria a geração atual de saves. |
 | touch77 ou anterior / Save1…28 | **USB uma vez, sem apagar toda a flash** | Reinicia os três slots antigos uma única vez; não importa Save1…28. Wi-Fi e artes ficam fora desse reset. |
 | scenes77, scale77, camp77 / Save29 | Atualização compatível pela placa | Preserva os três slots. Migração para Save30 só no próximo save normal. |
-| explore77, immersion77, story77, clock77, pvp77, shop77, coop77 / Save30 | Atualização compatível pela placa | Mantém Save30 e época 1, sem novo reset. |
+| explore77, immersion77, story77, clock77, pvp77, shop77, coop77, coopfix77 / Save30 | Atualização compatível pela placa | Mantém Save30 e época 1, sem novo reset. |
 
 A versão atual **grava Save30 e lê Save29/30**. O leitor e o instalador não migram o save por conta própria. A compatibilidade de leitura dos codecs antigos **não autoriza downgrade de firmware**.
 
-Se você está em touch77 ou anterior e precisa manter aquele progresso, **não avance esperando importação**. O reset dos três slots faz parte da fronteira de compatibilidade. O [registro da transição para Save29](RELEASE_SCENES_7_7_NOTAS.txt) explica o motivo; os dados de versão e leitura Save29-only desse registro são históricos, não o contrato do coopfix77.
+Se você está em touch77 ou anterior e precisa manter aquele progresso, **não avance esperando importação**. O reset dos três slots faz parte da fronteira de compatibilidade. O [registro da transição para Save29](RELEASE_SCENES_7_7_NOTAS.txt) explica o motivo; os dados de versão e leitura Save29-only desse registro são históricos, não o contrato do coopdiag77.
 
 ## Instalar pelo USB
 
-1. Abra a [tag da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.15-coopfix77), baixe o código-fonte completo e extraia a pasta inteira.
+1. Abra a [tag da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.15-coopdiag77), baixe o código-fonte completo e extraia a pasta inteira.
 2. Abra `firmware/RPG_POKET_2/RPG_POKET_2.ino` no Arduino IDE, mantendo todos os cabeçalhos e arquivos do sketch ao lado dele.
 3. Use o core **Espressif ESP32 3.3.12** e a placa **ESP32S3 Dev Module**.
 4. Configure:
@@ -86,21 +86,23 @@ As transições relevantes gravam o progresso automaticamente pelo journal: comb
 
 Se aparecer **Tentar salvar**, mantenha a placa ligada e use a recuperação oferecida. Não presuma que uma vitória ou recompensa ainda em memória já está durável. Testes simulados sustentam crédito no máximo uma vez, não gravação atômica ou exatamente uma vez em toda falha de energia.
 
-## Treino cooperativo experimental · coopfix77
+## Treino cooperativo experimental · coopdiag77
 
-Use **coopfix77 nas duas placas**, `2026.10.15-coopfix77` / build `2026101501`. O protocolo de convite v2 não permite misturar esta versão com coop77 no treino. A instalação compatível mantém os saves; a publicação não atualiza os aparelhos automaticamente. [Estado e hashes verificados](ESTADO_ATUAL.md).
+Use **coopdiag77 nas duas placas**, `2026.10.15-coopdiag77` / build `2026101502`. O protocolo de convite v2 continua compatível com coopfix77 e incompatível com coop77; use a versão atual em ambas para obter os novos controles e diagnósticos. A instalação compatível mantém os saves; a publicação não atualiza os aparelhos automaticamente. [Estado e hashes verificados](ESTADO_ATUAL.md).
 
 1. Na Guilda, abra **Coop treino** nas duas placas. Uma cria a sala; a outra toca na sala correta.
 2. O anfitrião confere o parceiro e escolhe **ACEITAR** antes de acabar a contagem de 30 segundos. O convidado vê um prazo aproximado; retransmissões não renovam o prazo do anfitrião.
-3. **CONVITE EXPIRADO** indica falta de aceite dentro do prazo; **PEDIDO RECUSADO** indica recusa explícita. **TEMPO DE CONEXAO ESGOTADO** corresponde ao limite técnico de 12 segundos na conexão inicial/sincronização. Siga a tela para pedir entrada novamente ou voltar à Guilda.
+3. **CONVITE EXPIRADO** indica falta de aceite dentro do prazo; **PEDIDO RECUSADO** indica recusa explícita. **TEMPO DE CONEXAO ESGOTADO** corresponde ao limite técnico de 12 segundos na conexão inicial/sincronização. Siga a tela para pedir entrada novamente; no timeout técnico, o botão central **VOLTAR A SALA** retorna ao lobby.
 4. Durante o combate, escolher habilidade ou alvo não tem prazo humano com o link saudável. Uma interrupção prolongada do link ainda pode encerrar o treino.
-5. Nas telas finais, toque e solte **VOLTAR A GUILDA**, o botão central maior. **SAIR** continua disponível no combate. Confira o retorno ao retrato antes de entrar novamente.
+5. O rodapé mostra intensidade recebida ou ausência de sinal; **INFO** mostra a idade da amostra e abre o diagnóstico local. **VOLTAR** fecha o painel. A versão da outra placa não é inferida e não há medição de ping.
+6. Durante **Reconectando...**, os pontos animam enquanto o protocolo tenta recuperar a mesma sessão. **CANCELAR RECONEXAO** descarta o encontro em RAM e volta à criação/entrada de sala. Depois de encerramento definitivo não há retomada da sessão antiga.
+7. Após conexão encerrada ou timeout técnico, toque **VOLTAR A SALA**. Nos demais resultados, use **VOLTAR A GUILDA**. **SAIR** continua disponível no topo; ao sair à Guilda, confira o retorno ao retrato antes de entrar novamente.
 
 O treino usa cópias em RAM, sem XP, ouro, recompensas ou mudanças nos personagens da campanha. Save30/160, leitura 29/30, época 1 e rações até 10 permanecem, sem novo reset. A qualificação de software não substitui o reteste físico do toque e rádio. [Mapa dos controles](COOP_TRAINING_CONTROLS.md) · [Roteiro físico](COOP_TRAINING_HARDWARE_CHECKLIST.md).
 
 ## PvP entre duas placas
 
-Acesse **Carvalho → Mais → Guilda → Clube**, com cadastro na Guilda e personagem de nível 5 ou superior. Use **coopfix77 nas duas placas**. O protocolo v5/52 bytes não é compatível com o v4/44 bytes. Não há troca de protocolo durante a partida.
+Acesse **Carvalho → Mais → Guilda → Clube**, com cadastro na Guilda e personagem de nível 5 ou superior. Use **coopdiag77 nas duas placas**. O protocolo v5/52 bytes não é compatível com o v4/44 bytes. Não há troca de protocolo durante a partida.
 
 - Antes do início, uma interrupção mantém a devolução integral existente.
 - Depois do início, sem prova confirmada do resultado, aparece **NAO CONFIRMADO**: sem prêmio de vitória, e a entrada utilizada permanece consumida.
@@ -115,6 +117,7 @@ O fluxo tem testes host e compilação com ESP-NOW/FreeRTOS real. **O duelo por 
 - **Artes ausentes/inválidas:** confira FAT32, caminho, arquivo final e versão. Use o reparo de artes da mesma versão quando disponível.
 - **Manifesto recusado:** confira a geração instalada e o caminho USB/OTA correto; não force a instalação.
 - **Falha no download/SD:** siga o diagnóstico da tela, mantenha a alimentação e evite apagar a flash como tentativa.
+- **Sala coop só aparece de perto ou conexão interrompe:** abra INFO nas duas placas e registre as telas no momento da falha, distância aproximada e alimentação. Não altere potência/canal/sleep nem apague saves para tentar recuperar; [roteiro de diagnóstico](COOP_TRAINING_HARDWARE_CHECKLIST.md).
 - **Problema persistente:** [abra uma issue](https://github.com/Oflodorporto/RPG-POKET-2/issues) com versão/build, placa e passos para reproduzir. Não publique senha Wi-Fi, tokens ou informações pessoais.
 
 [Hashes e evidências da versão](ESTADO_ATUAL.md) · [Guias detalhados e registros históricos](INDICE.md)

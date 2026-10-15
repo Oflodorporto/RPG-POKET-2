@@ -2,7 +2,60 @@
 
 [Apresentação](../README.md) · [Instalação e controles](GUIA_RAPIDO.md) · [Histórico completo](historico/README-2026-10-14.md)
 
-## Firmware atual · correção do treino cooperativo
+## Firmware atual · sinal e diagnóstico do treino cooperativo
+
+Versão `2026.10.15-coopdiag77` / build `2026101502`, identidade `7.7 - Treino cooperativo: sinal e diagnostico`. [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77) · [Uso e limites](RELEASE_COOPDIAG77_NOTAS.txt) · [Contrato de qualificação](COOPDIAG77_RELEASE_QUALIFICATION.md) · [Controles](COOP_TRAINING_CONTROLS.md).
+
+### Escopo entregue e limites
+
+- Indicador de intensidade recebida (RSSI), idade e estados sem amostra/sem sinal. A leitura é RX local; barras não medem ping, alcance garantido ou qualidade nos dois sentidos.
+- **INFO** mostra diagnóstico local: versão desta placa, RX/aceitos/rejeitados, descoberta PROBE/BEACON, JOIN/WAIT/START, envios API e conclusões MAC separados de ACKs válidos, retries/snapshots, fila/idade, canal, potência máxima configurada, power-save, modo/protocolo e erros dos getters. Os contadores são voláteis; não são gravados nem enviados. Broadcast concluído não prova recepção pelo parceiro.
+- Overlay central **Reconectando...**, com três pontos animados e **CANCELAR RECONEXAO**. Somente a recuperação que o protocolo existente permite conserva a mesma sessão; cancelar limpa encontro/tokens/entrada em RAM e volta ao lobby em paisagem, sem reiniciar batalha ou conceder recompensas.
+- **VOLTAR A SALA** central após LinkLost/timeout técnico; demais resultados mantêm **VOLTAR A GUILDA** e o topo **SAIR**. Gestos antigos são invalidados ao abrir/fechar diagnóstico, entrar/sair da recuperação ou cancelar.
+
+Permanecem convite v2/30 segundos, prazos técnicos, heartbeat/retries e protocolo de combate; coopfix77 e coopdiag77 compartilham o convite v2, mas ambas devem atualizar para os mesmos controles/diagnósticos. Não há alteração de potência, canal6, sleep, PHY/LR, segurança da rede, antena, regras/recompensas, campanha, SHOP, preços, lore, PvP v5/52 bytes ou artes. **Save30/160, leitores29/30, três slots, época1 e limite10 rações, sem novo reset.** O treino continua apenas em RAM, sem XP/ouro/itens ou consumo/RNG da campanha. A ressalva histórica de downgrade permanece.
+
+### Qualificação concluída
+
+Fonte [6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3](https://github.com/Oflodorporto/RPG-POKET-2/commit/6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3), tree `5ad62cddfe052bea09bf99c29989731722088981`, sole parent `c8738eb67bde3817feaab9f3a53c30607396a5f5`. [Run 38762209168](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38762209168), job `116516146624`, artefato `11990837049`, concluído em **15/10/2026 às 16:30:58 UTC**. Auditoria independente dos 1.178 arquivos-fonte, 2.652 arquivos do artefato, logs, bytes reais, capturas e 72 probes negativos: aprovada.
+
+- **157/157 grupos**, incluindo preparação: 153 herdados e quatro de diagnóstico/recuperação/Device/runtime/render. Otimizado e ASan/UBSan com **LeakSanitizer obrigatório, detect_leaks=1**. A limitação local de ptrace/LSan não foi considerada aprovação.
+- **ESP32-S3/core 3.3.12/esp-x32/2601**, padrão Arduino ON sem override e OFF explícito. Imagem ON **2.964.656 bytes**, margem OTA **181.072 bytes**; RAM estática **63.044 bytes**. OFF **2.910.176 bytes/55.748 RAM**. Crescimento ON/OFF **54.480 bytes de imagem/7.296 RAM**, dentro dos tetos herdados. Novos objetos de diagnóstico **620/864 bytes**. Contra coopfix77 público, +8.192 bytes de imagem e +704 RAM. RAM estática não mede heap livre.
+- **86 cenários/10.222 verificações de recuperação**, **16 cenários/232 verificações do Device** e **18 casos de runtime/98 comparações exatas de desenho**, por modo. Preservados 98 casos de toque/4.000 diferenciais, 45 de convite e seis instaladores multi-TU. Campanha/Save30/RNG/NVS inalterados e controles sem alocação C++ nos testes.
+- Renderer: **18 novos pares/36 desenhos por modo**, além dos **58 pares herdados e 16 de convite/1.183 renders por modo**. Pixels/textos/limites/controles e animação dos pontos conferidos. Capturas são do host com sinais simulados, não medições de RF ou FPS.
+- **12 clientes históricos OTA**, incluindo o coopfix77 público, e instalador atual sobre bytes finais reais, nos dois modos. Três slots, Save29→30/Save30→30, leitura/backup/falhas, época/RNG e rações 0..10 de shop77/coop77/coopfix77 preservados; leitores pré-shop mantêm rejeição de 10. As 666 artes permanecem byte-idênticas.
+
+ELF/objetos de alvo e imagem OFF não são distribuídos no artefato; seus relatórios reais de compilação/seções/símbolos foram auditados. Os bytes ON foram verificados diretamente. Não há comprovação de heap/stack livre, frame-time ou hardware.
+
+### Publicação e downloads públicos
+
+Publisher [38770945726](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38770945726), job `116546276849`: **concluído com sucesso em 15/10/2026 às 17:35:46 UTC**. A [Release coopdiag77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77), ID `414086108`, foi publicada às **17:30:58 UTC**. A tag e main, no fechamento da publicação, foram confirmados no commit qualificado `6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3`, tree `5ad62cddfe052bea09bf99c29989731722088981`; latest aponta para a mesma entrega.
+
+O publisher repetiu **157/157 grupos**, ASan/UBSan com **LeakSanitizer obrigatório, detect_leaks=1**, ambos os builds ESP32 **default ON/override OFF**, orçamentos e OTA com os bytes reais finais. Os 12 clientes históricos e o instalador atual passaram nos modos otimizado e sanitizado antes da publicação e novamente sobre os downloads públicos. A auditoria independente conferiu o artefato final `11993918653` (2.652 arquivos), logs, snapshots remotos e bytes públicos; não repetiu OTA nem sanitizadores localmente.
+
+| Arquivo público | Tamanho | SHA-256 |
+| --- | ---: | --- |
+| `firmware.bin` | 2.964.656 bytes | `600fd558cc3d8b2852470f7a48b23250c23a4370f456197a54a8878a673000a6` |
+| `artes.pak` | 7.470.928 bytes | `14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56` |
+| `manifest.json` | 1.228 bytes | `baa489750d50553c22027a6b5f6853364838f0c927c7144aff43bbfd567744e0` |
+
+Correspondência byte a byte dos três downloads com o artefato do publisher e de `releases/latest/download/manifest.json` com o manifesto da tag: **confirmada**. O ZIP do publisher tem 113.558.644 bytes e SHA-256 `ceb6e8a0024615e3b61153caeee44e29937c3f43e507090bc63fca455fbedc53`.
+
+O publisher recompilou o mesmo SHA, por isso firmware e manifesto têm hashes diferentes dos da qualificação. A comparação independente encontrou **67 bytes diferentes** no firmware, restritos ao horário de compilação (`16:24:02` → `17:24:09` UTC), digest ELF do descritor e checksum/SHA final; instruções e dados fora desses campos são idênticos. O manifesto mudou apenas no SHA-256 do firmware. As artes permanecem byte-idênticas. Os hashes da tabela pertencem aos downloads públicos.
+
+A publicação não instala automaticamente. Estes passos não realizaram instalação USB/OTA física, medição de alcance, teste de rádio ou validação de toque nas placas.
+
+### Relatos físicos e próximo teste
+
+Em 15/10, o proprietário relatou descoberta/conexão somente ao aproximar as placas a cerca de **12 cm** e falha mesmo lado a lado depois de informar atualização; alimentação descrita como independente. As fotos mostram **BUSCANDO SALAS** longe e **ENTRAR** perto, antes do JOIN/aceite. Isso não identifica causa, antena defeituosa ou configuração de alcance. A coopdiag77 instrumenta o comportamento sem ajuste RF às cegas.
+
+**Reteste físico pendente:** confirmar versão nas duas placas; A cria/B procura; quando falhar, fotografar INFO de ambas com distância aproximada, sem mudar alimentação/orientação/configuração. Conferir recuperação/cancelamento/reentrada, depois toque/orientação, restauração Wi-Fi/PvP, OTA/SD/saves, energia, heap/stack/PSRAM e tempo de quadro. [Roteiro existente](COOP_TRAINING_HARDWARE_CHECKLIST.md). Não há promessa de que diagnóstico/reconexão visual resolvam a causa da perda de rádio.
+
+## Histórico preservado: coopfix77 · versão anterior
+
+O registro abaixo pertence à publicação coopfix77. Referências a “atual”, “latest”, necessidade de atualização e retestes pendentes descrevem aquela etapa; os relatos posteriores e a identidade vigente estão acima. Dados de publicação/qualificação originais são preservados.
+
+### Firmware da entrega coopfix77
 
 **Firmware atual:** 7.7 — Treino cooperativo: toque, saída e convite, `2026.10.15-coopfix77` / build `2026101501`, tag `v2026.10.15-coopfix77`. [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopfix77) · [Uso e limites](RELEASE_COOPFIX77_NOTAS.txt) · [Qualificação da correção](COOPFIX77_RELEASE_QUALIFICATION.md) · [Controles](COOP_TRAINING_CONTROLS.md).
 

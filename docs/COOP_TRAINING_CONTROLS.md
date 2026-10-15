@@ -2,15 +2,22 @@
 
 Coordenadas lógicas em paisagem **320×240**, com origem no canto superior esquerdo. Os retângulos são semiabertos: origem inclusiva, limite final exclusivo. A prévia real do renderer acompanha este documento.
 
-## Atualização coopfix77 · convite e retorno
+## Atualização coopdiag77 · sinal, diagnóstico e reconexão
 
-Este complemento descreve a versão publicada `2026.10.15-coopfix77` / build `2026101501`, qualificada em software, com [publicação e downloads verificados](ESTADO_ATUAL.md). A validação física do toque, orientação e rádio permanece pendente.
+Este complemento descreve `2026.10.15-coopdiag77` / build `2026101502`, com qualificação de software e [publicação verificadas no estado atual](ESTADO_ATUAL.md). A validação física do toque, orientação e rádio permanece pendente.
 
-- O convite usa protocolo **v2** e exige a atualização das duas placas. O anfitrião decide em **30 segundos desde o primeiro pedido válido**; repetições não reiniciam o prazo. No convidado, a contagem é aproximada e aparece após a confirmação de espera do anfitrião.
+- **INFO / VOLTAR:** `(214,2,48,18)`, abre/fecha o diagnóstico local sem parar a rede. Enquanto o painel está aberto, comandos de combate ficam bloqueados; gestos anteriores não atravessam a mudança de tela. A linha LOCAL informa apenas a versão desta placa, não a versão remota.
+- **Sinal:** barras por RSSI recebido, idade e estados sem amostra/sem sinal; uma amostra antiga não se torna ping ou prova de comunicação nos dois sentidos. Contadores de envio aceito pela API, conclusão MAC e ACK válido do protocolo são separados.
+- **Reconectando...:** overlay central com três pontos animados, somente enquanto o protocolo ainda pode recuperar a mesma sessão. **CANCELAR RECONEXAO** em `(66,116,188,32)` limpa encontro/tokens em RAM e volta ao lobby em paisagem; não reinicia nem repete a batalha antiga. Não concede recompensa nem altera campanha/saves.
+- **Retorno central:** após `CONEXAO ENCERRADA` ou `TEMPO DE CONEXAO ESGOTADO`, **VOLTAR A SALA** em `(48,180,224,38)` permite criar/entrar novamente. Nos demais resultados e indisponibilidade, **VOLTAR A GUILDA** mantém a saída em retrato. **SAIR** no topo continua sempre disponível.
+
+### Convite e toque preservados
+
+- O convite continua em protocolo **v2**, compatível com coopfix77 e incompatível com coop77. Atualize as duas placas para os mesmos controles/diagnósticos. O anfitrião decide em **30 segundos desde o primeiro pedido válido**; repetições não reiniciam o prazo. No convidado, a contagem é aproximada e aparece após a confirmação de espera do anfitrião.
 - Conexão inicial e sincronização pós-aceite mantêm limites técnicos de **12 segundos**. Expiração do convite, recusa manual e timeout técnico têm mensagens diferentes.
 - A escolha de ação, habilidade e alvo em combate **não tem prazo humano enquanto o link estiver saudável**; os limites de perda de conexão continuam.
 - Amostras consecutivas idênticas de toque são reunidas sem descartar bordas/mudanças; excesso de eventos ainda cancela o contato de forma segura. Solte o dedo entre comandos. A confiabilidade física exige reteste.
-- Em encerramento/indisponibilidade: botão **VOLTAR A GUILDA** em `(48,180,224,38)`, central, usa a mesma saída com limpeza de 350 ms e retorno ao retrato. O gesto iniciado na tela anterior não pode confirmar essa saída. **SAIR** permanece durante o combate.
+- A saída à Guilda usa limpeza de 350 ms e retorno ao retrato. O gesto iniciado na tela anterior não pode confirmar a saída nem o retorno à sala. **SAIR** permanece durante o combate; a reconexão não retoma uma sessão que já terminou.
 
 ## Entrar e sair
 

@@ -8,7 +8,7 @@
 - [Estado publicado: hashes, evidências e limitações](ESTADO_ATUAL.md)
 - [Origem e integridade das imagens da apresentação](MIDIA_README.md)
 - [Controles do treino cooperativo](COOP_TRAINING_CONTROLS.md) e [ensaios físicos pendentes](COOP_TRAINING_HARDWARE_CHECKLIST.md)
-- [Correção coopfix77: publicação, hashes e limites verificados](ESTADO_ATUAL.md)
+- [Coopdiag77: sinal, diagnóstico, reconexão e estado da publicação](ESTADO_ATUAL.md)
 
 ## História e mundo
 
@@ -39,8 +39,9 @@ Os documentos a seguir registram a construção de cada entrega. A ambientação
 - [Sketch e firmware](../firmware/RPG_POKET_2)
 - [Testes](../tests) e [ferramentas](../tools)
 - [Fontes de arte](../assets)
-- [Contrato de qualificação do pacote 10](PACKAGE10_RELEASE_QUALIFICATION.md)
-- [Workflow de qualificação](../.github/workflows/package10-check.yml)
+- [Contrato de qualificação coopdiag77](COOPDIAG77_RELEASE_QUALIFICATION.md)
+- [Workflow de qualificação coopdiag77](../.github/workflows/coopdiag77-check.yml)
+- [Contrato histórico do pacote 10](PACKAGE10_RELEASE_QUALIFICATION.md)
 - [Workflow de publicação](../.github/workflows/release.yml)
 
 O contrato e as notas do pacote 10 conservam a etapa de preparação anterior à publicação. Seus marcadores de candidato não substituem o [estado publicado verificado](ESTADO_ATUAL.md). Alterar código, fluxos de CI ou versões futuras pede nova revisão e qualificação; esta reorganização de documentação não muda o firmware nem autoriza uma nova Release.

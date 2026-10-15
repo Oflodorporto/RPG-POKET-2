@@ -1,6 +1,32 @@
 # Treino cooperativo — ensaio em duas placas
 
-## Reteste da correção coopfix77 · pendente
+## Reteste coopdiag77 · pendente
+
+Identidade publicada: `2026.10.15-coopdiag77` / build `2026101502`. Qualificação de software, publicação e downloads públicos verificados. Conferir a mesma versão nas duas placas e manter os três slots, a partição e as artes. Não apagar flash, saves ou credenciais.
+
+O proprietário relatou descoberta/conexão somente a uma distância estimada de cerca de **12 cm** e falha mesmo lado a lado após informar que atualizou. As fotos de descoberta mostram o convidado sem sala listada longe e com **ENTRAR** ao aproximar; não mostram por si só o aceite do anfitrião. A alimentação foi descrita como independente. Não há causa física/RF comprovada nem ajuste de potência, sleep, canal ou LR nesta entrega.
+
+### Primeiro teste de diagnóstico
+
+- [ ] A cria sala; B procura. Confirmar versão local nas duas telas INFO. Manter alimentação e orientação; não alterar configurações de rádio.
+- [ ] Quando a sala deixa de aparecer ou a conexão falha, fotografar **INFO nas duas placas**. Registrar distância aproximada, RSSI/idade, CH/RX, PS/TXmax, TX/RX PROBE/BEACON/JOIN/WAIT, API/MAC e ACK/retries, fila e retornos dos getters. Os números são locais; transmissão broadcast concluída não confirma recebimento pelo parceiro.
+- [ ] Reaproximar uma vez e observar se os contadores e a listagem voltam. Só depois, se necessário, inverter anfitrião/convidado para distinguir o sentido afetado. Não repetir toda a campanha nem apagar saves para coletar esse diagnóstico.
+
+### Recuperação e controles
+
+- [ ] Em combate, conferir pontos animados durante **Reconectando...** e ausência de ações enquanto a sessão está pausada. Uma retomada dentro do prazo existente deve conservar revisão, recursos e resultado, sem gasto/ataque duplicado.
+- [ ] **CANCELAR RECONEXAO** deve voltar ao lobby em paisagem, sem encontro/token/gesto antigo. Criar nova sala ou entrar como o papel oposto. Depois de um encerramento definitivo não há retomada automática da sessão anterior.
+- [ ] Após LinkLost/timeout técnico, conferir **VOLTAR A SALA** central. Vitória, derrota e saída do parceiro mantêm **VOLTAR A GUILDA**; **SAIR** no topo continua retornando ao retrato com limpeza de 350 ms. Verificar toque, quatro cantos e reentrada.
+- [ ] Abrir/fechar INFO com toque segurado e em mudança de estado; nenhum comando de combate pode atravessar o painel. Conferir funcionamento da rede com INFO aberto e legibilidade dos contadores extremos.
+- [ ] Comparar campanha/Save30/RNG/poções/XP/ouro antes/depois. Conferir restauração de Wi-Fi/PvP, OTA física, SD, alimentação, heap/stack/PSRAM e tempo de quadro em ensaios separados.
+
+Nenhum item acima está aprovado fisicamente. As barras indicam uma medição RX com idade, não alcance garantido, ping ou qualidade bidirecional. Sem amostra, campo desconhecido ou getter com erro não deve ser interpretado como valor medido válido.
+
+## Registro histórico: reteste coopfix77
+
+O trecho seguinte registra o estado após aquela publicação. As referências a “atual” e a retestes pendentes pertencem àquela etapa; os relatos posteriores e o ensaio vigente estão acima.
+
+### Reteste da correção coopfix77 · pendente
 
 Identidade publicada: `2026.10.15-coopfix77` / build `2026101501`; qualificação de software, publicação e downloads conferidos. Use a identidade e os hashes do [estado publicado](ESTADO_ATUAL.md). As duas placas devem ter o novo protocolo de convite v2; a compilação Arduino qualificada usa treino **ON por padrão**, sem override. As instruções antigas de flag OFF abaixo são histórico, não configuração de instalação desta correção.
 

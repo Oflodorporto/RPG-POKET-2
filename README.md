@@ -7,7 +7,7 @@
 <p align="center">Fantasia medieval em português · Pixel art inspirada nos 16 bits · ESP32-S3 · Tela de toque</p>
 
 <p align="center">
-  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopfix77"><strong>Baixar a versão atual</strong></a> ·
+  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77"><strong>Baixar a versão atual</strong></a> ·
   <a href="docs/GUIA_RAPIDO.md">Instalar e jogar</a> ·
   <a href="#um-pequeno-mundo-para-explorar">Ver o jogo</a> ·
   <a href="#documentação">Documentação</a>
@@ -15,7 +15,7 @@
 
 Crie seu aventureiro, converse com os habitantes de Aeldra, atravesse estradas, explore ruínas e enfrente combates por turnos. Escolha uma classe, personalize sua aparência e acompanhe uma campanha com diário, cartas, personagens e progressão até o nível 20.
 
-**Versão publicada:** 7.7 · Treino cooperativo: toque, saída e convite · `2026.10.15-coopfix77` · build `2026101501`.
+**Versão publicada:** 7.7 · Treino cooperativo: sinal e diagnóstico · `2026.10.15-coopdiag77` · build `2026101502`.
 Qualificação de software, publicação e downloads públicos verificados no SHA exato. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
 
 ## As Cinzas da Primeira Aurora
@@ -76,9 +76,11 @@ Na Guilda, abra **Coop treino**. Uma placa cria a sala, a outra escolhe a sala, 
 
 O encontro usa **cópias dos personagens somente em RAM**. Não concede XP, ouro ou recompensas, não avança missões, não consome poções da campanha e não altera seus saves nem o RNG da campanha. Ataque e escolha o alvo, use **Foco teste** (habilidade experimental de 2 MP), defenda ou use poções da cópia RAM. O treino não inclui o conjunto completo de poderes de classe nem coop com progressão de campanha.
 
-**Correção coopfix77 publicada:** reúne amostras repetidas do toque, acrescenta o botão central **VOLTAR A GUILDA** nas telas de encerramento e separa o prazo de aceite do anfitrião (**30 segundos**, com estimativa no convidado) dos limites técnicos de conexão/sincronização (**12 segundos**). Não há prazo humano para escolher ações ou alvos em combate. **O protocolo de convite v2 exige atualizar as duas placas.** A correção não comprova a resolução física de falhas de toque ou rádio. [Evidências e estado da correção](docs/ESTADO_ATUAL.md).
+**Sinal e diagnóstico coopdiag77:** indicador de intensidade recebida (RSSI), idade da amostra e indicação de ausência de sinal; **INFO** abre os contadores e o estado local do rádio. Durante uma interrupção recuperável do combate, **Reconectando...** anima os pontos e oferece **CANCELAR RECONEXAO**, que limpa o encontro em RAM e volta à criação/entrada de sala. Após conexão encerrada ou timeout técnico, o botão central é **VOLTAR A SALA**; nos demais resultados, continua **VOLTAR A GUILDA**. Isso ajuda a observar a falha; não comprova melhora de alcance nem mede ping. [Evidências e limites](docs/ESTADO_ATUAL.md).
 
-Cancelar antes do envio não gasta recurso; depois de enviar, aguarde a confirmação. Uma queda prolongada encerra o treino, sem retomada durável nem migração de anfitrião. **RF entre duas placas, toque/orientação, restauração de Wi-Fi, OTA físico, heap e FPS ainda precisam de validação no aparelho.** As imagens acima não comprovam esses testes. [Controles do treino](docs/COOP_TRAINING_CONTROLS.md) · [Escopo e qualificação da correção](docs/COOPFIX77_RELEASE_QUALIFICATION.md).
+Permanecem os ajustes de toque e o aceite explícito em **30 segundos**, com prazo aproximado no convidado; os limites técnicos de conexão/sincronização continuam em **12 segundos**. Não há prazo humano para escolher ações ou alvos em combate com o link saudável. Instale a versão atual nas duas placas para obter os mesmos controles e diagnósticos. O convite continua em protocolo v2, compatível com coopfix77 e incompatível com coop77.
+
+Cancelar antes do envio não gasta recurso; depois de enviar, aguarde a confirmação. Uma queda prolongada encerra o treino, sem retomada durável nem migração de anfitrião. **RF entre duas placas, toque/orientação, restauração de Wi-Fi, OTA físico, heap e FPS ainda precisam de validação no aparelho.** As imagens acima não comprovam esses testes. [Controles do treino](docs/COOP_TRAINING_CONTROLS.md) · [Escopo e qualificação do diagnóstico](docs/COOPDIAG77_RELEASE_QUALIFICATION.md).
 
 ## O tempo também passa por aqui
 
@@ -96,8 +98,8 @@ Sol e lua acompanham a hora local, com pulso e mudanças graduais de luz. A pré
 
 ### Instalação e atualização
 
-1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.15-coopfix77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
-2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopfix77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
+1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.15-coopdiag77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
+2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
 3. **Já usa scenes77 ou posterior?** Conecte ao Wi-Fi **2,4 GHz** e abra **Configurações → Atualização → Verificar versão → Instalar**. Mantenha cartão e alimentação conectados até terminar.
 
 > **Atenção aos saves:** a versão atual grava Save30 de 160 bytes, lê Save29/30 e mantém época 1, **sem novo reset**. A primeira passagem de **touch77 ou anterior** exige USB e reinicia uma única vez os três slots antigos, sem importar Save1…28; Wi-Fi e artes ficam fora desse reset. Não tente contornar a recusa do OTA nem apagar toda a flash. [Confira o seu caso antes de instalar](docs/GUIA_RAPIDO.md#compatibilidade-dos-saves).
