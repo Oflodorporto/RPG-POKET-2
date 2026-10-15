@@ -1,0 +1,14 @@
+RPG POKET 7.7 - Correcao do treino cooperativo
+Versao: 2026.10.15-coopfix77 (build 2026101501)
+
+- Captura de toque mais robusta: um toque completo entre dois ciclos pode ser consumido, com cancelamento seguro de pressionamentos antigos.
+- Convite com prazo humano de 30 segundos e contagem visivel. O anfitriao controla o prazo; o convidado recebe uma estimativa enviada pelo anfitriao sem prolongar o convite com retransmissoes.
+- Botao central de retorno nas telas de encerramento do treino, alem da saida existente.
+
+O prazo humano de 30 segundos e separado do limite tecnico de 12 segundos. Se a primeira confirmacao atrasar, a estimativa do convidado pode terminar depois da do anfitriao; o limite local total continua menor que 42 segundos, sem renovar o convite.
+
+O protocolo de convite passa para a versao 2: os dois aparelhos devem instalar esta versao para jogar juntos. O treino continua experimental.
+
+Esta correcao nao comprova nem resolve por si so a causa fisica de desconexoes, alcance de radio ou interferencia. O comportamento em duas placas precisa ser validado; os testes nativos usam radio/toque simulados.
+
+Preserva campanha, SHOP, racoes ate 10, PvP protocolo5, artes e save30 de160bytes, leitura de saves29/30 e reset epoch1. Nao introduz novo reset. As artes mantem os mesmos bytes e hash.

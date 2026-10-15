@@ -66,7 +66,16 @@ public:
  void captureSample(bool valid,bool down,int32_t px,int32_t py,uint32_t now){
   if(!running)return;
   if(sampleOverflow){++touchDrops;return;}
-  if(!samples.push({valid,down,ui.playable(endpoint),px,py,now,endpoint.state.revision,coop::stateHash(endpoint.state),inputGeneration})){
+  Sample sample{valid,down,ui.playable(endpoint),px,py,now,endpoint.state.revision,coop::stateHash(endpoint.state),inputGeneration};
+  // Preserve both endpoints of an identical run, including the original up
+  // timestamp needed by the 30ms release gate. Never merge across a coordinate,
+  // validity, contact, playable-state, revision/hash or generation change.
+  auto same=[](const Sample& a,const Sample& b){return a.valid==b.valid&&a.down==b.down&&a.playable==b.playable&&a.x==b.x&&a.y==b.y&&a.revision==b.revision&&a.hash==b.hash&&a.inputGeneration==b.inputGeneration;};
+  if(samples.count>=2){
+   auto& previous=samples.data[(samples.head+samples.count-2)%16];auto& latest=samples.data[(samples.head+samples.count-1)%16];
+   if(same(previous,sample)&&same(latest,sample)){latest.now=now;return;}
+  }
+  if(!samples.push(sample)){
    ++touchDrops;sampleOverflow=true;samples.clear();
   }
  }

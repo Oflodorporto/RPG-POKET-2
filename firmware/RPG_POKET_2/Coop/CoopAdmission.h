@@ -4,9 +4,10 @@ namespace coopplatform {
 namespace admission {
 // Deliberately distinct from both the frozen PvP v5 packet and coop engine wire.
 constexpr uint32_t kMagic=0x414F4F43; // "COOA" little endian.
-constexpr uint8_t kVersion=1,kMode=0x54;
+constexpr uint8_t kVersion=2,kMode=0x54;
 constexpr size_t kHeaderBytes=26,kProfileBytes=27,kMaxPacket=96;
-enum class Type:uint8_t {Probe,Beacon,Join,Start,Ready,Decline,Busy,Bye};
+enum class Type:uint8_t {Probe,Beacon,Join,Start,Ready,Decline,Busy,Bye,Waiting,Expired};
+constexpr size_t kTypeCount=size_t(Type::Expired)+1;
 struct Header {Type type=Type::Probe;uint64_t session=0,join=0;uint16_t payload=0;};
 struct Packet {uint16_t size=0;uint8_t bytes[kMaxPacket]{};};
 inline coop::Writer begin(Packet& p,Type type,uint64_t session,uint64_t join){
@@ -21,7 +22,7 @@ inline bool finish(Packet& p,coop::Writer& w){
 inline bool decode(const uint8_t* bytes,size_t size,Header& h){
  if(!bytes||size<kHeaderBytes+4||size>kMaxPacket)return false;
  coop::Reader r{bytes,size};if(r.u32()!=kMagic||r.u8()!=kVersion||r.u8()!=kMode)return false;
- uint8_t type=r.u8();if(type>uint8_t(Type::Bye)||r.u8()!=0)return false;
+ uint8_t type=r.u8();if(type>=kTypeCount||r.u8()!=0)return false;
  h.type=Type(type);h.session=r.u64();h.join=r.u64();h.payload=r.u16();
  if(size_t(h.payload)+kHeaderBytes+4!=size)return false;
  size_t expected=0;
@@ -29,7 +30,7 @@ inline bool decode(const uint8_t* bytes,size_t size,Header& h){
   case Type::Beacon:expected=kProfileBytes+1;break;
   case Type::Join:expected=kProfileBytes;break;
   case Type::Start:expected=kProfileBytes+4;break;
-  case Type::Ready:expected=4;break;
+  case Type::Ready:case Type::Waiting:expected=4;break;
   default:break;
  }
  if(h.payload!=expected)return false;

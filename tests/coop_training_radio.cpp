@@ -40,9 +40,9 @@ void callbackAndPeers(){
  coop::Actor guest{};CHECK(coop::playerProfile(g,1,guest));Mac source{{2,0,0,0,1,1}};
  auto makeJoin=[&](uint64_t token){admission::Packet p{};auto w=admission::begin(p,admission::Type::Join,s.sessionToken(),token);coop::writeActor(w,guest);CHECK(admission::finish(p,w));return p;};
  auto join=makeJoin(123);esp_now_recv_info_t info{source.bytes};auto count=fake::sendCount;
- receiver(&info,join.bytes,join.size);CHECK(s.state()==SessionState::Hosting&&fake::sendCount==count);d.tick(110);CHECK(s.state()==SessionState::AwaitingAccept); // callback itself never runs session
+ receiver(&info,join.bytes,join.size);CHECK(s.state()==SessionState::Hosting&&fake::sendCount==count&&!esp_now_is_peer_exist(source.bytes));d.tick(110);CHECK(s.state()==SessionState::AwaitingAccept); // callback itself never runs session
  for(unsigned i=0;i<12;++i){source.bytes[5]=uint8_t(10+i);auto p=makeJoin(500+i);info.src_addr=source.bytes;receiver(&info,p.bytes,p.size);d.tick(200+i);}
- CHECK(fake::peerCount<=8&&fake::peerDeletes>0);CHECK(esp_now_is_peer_exist(s.pendingPeer()->mac.bytes)==false); // awaiting guest not transmitted to yet
+ CHECK(fake::peerCount<=8&&fake::peerDeletes>0);CHECK(esp_now_is_peer_exist(s.pendingPeer()->mac.bytes)); // Waiting reply adds and protects the pending guest on the loop only
  auto bad=s.malformed;for(unsigned i=0;i<12;++i)receiver(&info,join.bytes,join.size);CHECK(coopradio::callbackCounters.drops()>=4&&s.malformed==bad);d.tick(400);
  receiver(nullptr,join.bytes,join.size);receiver(&info,nullptr,4);receiver(&info,join.bytes,-1);receiver(&info,join.bytes,241);
  // Queue old bytes, close/reopen, then prove a late callback is either inactive

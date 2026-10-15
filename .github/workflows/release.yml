@@ -1,15 +1,15 @@
-name: Publicar treino coop experimental apos SHA qualificado
+name: Publicar correcao coop de toque, convite e saida apos SHA qualificado
 # Publication is conditional on the authorized exact-SHA qualification and all repeated gates.
 # Qualification alone never publishes, flashes USB, or performs physical OTA.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "PACKAGE12_STAGING_ONLY.txt", ".github/workflows/package12-check.yml", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "COOPFIX77_STAGING_ONLY.txt", ".github/workflows/coopfix77-check.yml", ".github/workflows/release.yml"]
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: package12-main
+  group: coopfix77-main
   cancel-in-progress: false
 jobs:
   release:
@@ -34,16 +34,16 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package12-check.yml/runs?branch=feat%2Fpackage12-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-coop77" --jq 'length')" = 0
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/coopfix77-check.yml/runs?branch=feat%2Fcoopfix77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_coopfix77_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.15-coopfix77" --jq 'length')" = 0
       - name: Instalar dependencias deterministicas das capturas e gates
         run: |
           python3 -m pip install 'Pillow==11.3.0' 'PyYAML==6.0.3'
       - name: Executar agregado completo herdado e coop ON com LSan obrigatorio
         run: |
           mkdir -p build
-          bash tools/test_package12.sh 2>&1 | tee build/package12-tests.log
+          bash tools/test_coopfix77.sh 2>&1 | tee build/coopfix77-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar core ESP32 historico confirmado na placa
         run: |
@@ -54,73 +54,87 @@ jobs:
       - name: Compilar SHA exato default ON e fallback OFF fora do sketch
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 tools/check_package12_scope.py
-          arduino-cli version | tee build/package12-esp32-toolchain.txt
-          arduino-cli core list | tee -a build/package12-esp32-toolchain.txt
+          python3 tools/check_coopfix77_scope.py
+          arduino-cli version | tee build/coopfix77-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/coopfix77-esp32-toolchain.txt
           for flag in 1 0; do
             extra=()
             if [[ "$flag" = 0 ]]; then extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=0'); fi
             arduino-cli compile --verbose --jobs 4 \
               --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
               "${extra[@]}" \
-              --build-path "$RUNNER_TEMP/esp32-package12/flag-$flag" \
-              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/package12-esp32-flag-$flag.log"
+              --build-path "$RUNNER_TEMP/esp32-coopfix77/flag-$flag" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/coopfix77-esp32-flag-$flag.log"
           done
-          cp "$RUNNER_TEMP/esp32-package12/flag-1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
-          python3 tools/check_package12_scope.py
+          cp "$RUNNER_TEMP/esp32-coopfix77/flag-1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_coopfix77_scope.py
       - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
         run: |
-          python3 tools/release_package12_manifest.py
-          python3 tools/verify_package12_release.py
-          python3 tests/package12_release_verifier.py
-          python3 tools/test_package12_release.py release
-          python3 tools/test_package12_release.py release --sanitizers
-          python3 tools/check_package12_scope.py
+          python3 tools/release_coopfix77_manifest.py
+          python3 tools/verify_coopfix77_release.py
+          python3 tests/coopfix77_release_verifier.py
+          python3 tools/test_coopfix77_release.py release
+          python3 tools/test_coopfix77_release.py release --sanitizers
+          python3 tools/check_coopfix77_scope.py
       - name: Registrar SHA, ambos builds, agregado, capturas e orcamentos
         run: |
-          python3 tools/record_package12_identity.py --build-root "$RUNNER_TEMP/esp32-package12"
+          python3 tools/record_coopfix77_identity.py --build-root "$RUNNER_TEMP/esp32-coopfix77"
       - name: Guardar candidato e provas do SHA exato
         uses: actions/upload-artifact@v4
         with:
-          name: package12-publisher-${{ github.sha }}
+          name: coopfix77-publisher-${{ github.sha }}
           path: |
             release/firmware.bin
             release/artes.pak
             release/manifest.json
             release/SHA256SUMS
-            build/package12-scope-budget.json
-            build/package12-source-identity.json
-            build/package12-tests.log
-            build/package12-esp32*
-            build/package12-validation/**
+            build/coopfix77-scope-budget.json
+            build/coopfix77-source-identity.json
+            build/coopfix77-tests.log
+            build/coopfix77-esp32*.json
+            build/coopfix77-esp32*.log
+            build/coopfix77-esp32*.txt
+            build/package12-validation/**/*.json
+            build/package12-validation/**/*.log
             build/package7-differential*.json
-            build/screens/procedural6/*
-            build/screens/package6-integration/*
-            build/screens/camp-identity77/*
-            build/d20-camp77/previews/*
+            build/screens/procedural6/*.ppm
+            build/screens/package6-integration/*.ppm
+            build/screens/camp-identity77/*.ppm
+            build/screens/camp-identity77/*.png
+            build/screens/camp-identity77/*.gif
+            build/screens/camp-identity77/*.json
+            build/d20-camp77/previews/*.ppm
+            build/d20-camp77/previews/*.png
+            build/d20-camp77/previews/*.gif
+            build/d20-camp77/previews/*.json
             build/ruins-bag77/ruins-bag-*.png
             build/ruins7/*.png
-            build/clock-cycle7/previews/*
-            build/clock-cycle7/visibility-preview/*
-            build/fatigue7/screens/*
+            build/clock-cycle7/previews/*.png
+            build/clock-cycle7/previews/*.gif
+            build/clock-cycle7/previews/*.json
+            build/clock-cycle7/visibility-preview/*.png
+            build/clock-cycle7/visibility-preview/*.gif
+            build/clock-cycle7/visibility-preview/*.json
+            build/fatigue7/screens/*.ppm
             build/narrative8-render/*.json
             build/narrative8-render/*.jsonl
             build/narrative8-render/*.html
             build/narrative8-render/*.txt
             build/narrative8-render/*.log
-            build/narrative8-render/png/*
-            build/narrative8-render/contact-sheets/*
-            build/narrative8-events/*
-            build/pvp-presentation/previews/*
+            build/narrative8-render/png/*.png
+            build/narrative8-render/contact-sheets/*.jpg
+            build/narrative8-events/*.ppm
+            build/pvp-presentation/previews/*.png
+            build/pvp-presentation/previews/*.gif
             build/pvp-presentation/capture-manifest.json
             build/pvp-presentation/screens/*.txt
             build/pvp-presentation/sanitized/*.txt
-            build/pvp-review/screens-normal/*
-            build/pvp-review/screens-sanitizer/*
+            build/pvp-review/screens-normal/*.ppm
+            build/pvp-review/screens-sanitizer/*.ppm
             build/bulk-shop/screens/*.png
             build/bulk-shop/screens/*.ppm
             build/bulk-shop/sanitized/*.ppm
-            build/ration-limit10-oldreader/**
+            build/ration-limit10-oldreader/frozen/*.h
             build/coop-training-native/**/*.log
             build/coop-training-native/**/*.json
             build/coop-training-native/**/*.txt
@@ -130,6 +144,10 @@ jobs:
             build/coop-training-render/**/*.json
             build/coop-training-render/**/*.log
             build/coop-training-render/**/*.tsv
+            build/coop-touch-queue/*.log
+            build/coop-touch-queue/*.json
+            build/coop-invite-countdown/*.log
+            build/coop-invite-countdown/*.json
           if-no-files-found: error
           retention-days: 14
       - name: Publicar somente SHA main autorizado apos repetir todos os gates
@@ -140,26 +158,26 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/package12-check.yml/runs?branch=feat%2Fpackage12-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.14-coop77" --jq 'length')" = 0
-          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_package12_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/coopfix77-check.yml/runs?branch=feat%2Fcoopfix77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_coopfix77_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.15-coopfix77" --jq 'length')" = 0
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_coopfix77_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
           gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" > "$RUNNER_TEMP/main-ref.json"
-          python3 tools/check_package12_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
-          gh release create v2026.10.14-coop77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Treino cooperativo experimental' --notes-file docs/RELEASE_PACKAGE12_NOTAS.txt --latest
+          python3 tools/check_coopfix77_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
+          gh release create v2026.10.15-coopfix77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Treino cooperativo: toque, saida e convite' --notes-file docs/RELEASE_COOPFIX77_NOTAS.txt --latest
       - name: Conferir downloads publicos, OTA real e manifesto latest
         run: |
-          mkdir -p build/published-package12
+          mkdir -p build/published-coopfix77
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-package12/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.14-coop77/$name"
-            cmp "release/$name" "build/published-package12/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-coopfix77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.15-coopfix77/$name"
+            cmp "release/$name" "build/published-coopfix77/$name"
           done
-          python3 tools/verify_package12_release.py build/published-package12
-          python3 tools/test_package12_release.py build/published-package12
-          python3 tools/test_package12_release.py build/published-package12 --sanitizers
+          python3 tools/verify_coopfix77_release.py build/published-coopfix77
+          python3 tools/test_coopfix77_release.py build/published-coopfix77
+          python3 tools/test_coopfix77_release.py build/published-coopfix77 --sanitizers
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-package12/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-package12/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-coopfix77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-coopfix77/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

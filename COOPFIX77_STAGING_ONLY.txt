@@ -1,0 +1,3 @@
+LOCAL PREPARATION / QUALIFICATION CANDIDATE ONLY
+2026.10.15-coopfix77 / build2026101501
+Full 153-group LSan1 qualification, both target builds, real-byte OTA and independent exact-source review are mandatory before promotion/publication. No physical validation implied.

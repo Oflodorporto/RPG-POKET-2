@@ -26,7 +26,16 @@ public:
   if(session.state()==SessionState::Playing)session.training().captureSample(valid,touching,px,py,now);
   if(overflow){++dropped;return;}
   const auto p=toLandscape(px,py);
-  if(!queue.push({valid&&(!touching||p.x>=0),touching,p.x,p.y,now,fingerprint(session)})){++dropped;queue.clear();overflow=true;}
+  Sample sample{valid&&(!touching||p.x>=0),touching,p.x,p.y,now,fingerprint(session)};
+  // Rendering can capture many identical levels before the loop dispatches.
+  // Keep the first AND latest time of each unchanged run: release debounce
+  // needs its start, while every error, edge, drag and state stamp must survive.
+  auto same=[](const Sample& a,const Sample& b){return a.valid==b.valid&&a.down==b.down&&a.x==b.x&&a.y==b.y&&a.stamp==b.stamp;};
+  if(queue.count>=2){
+   auto& previous=queue.data[(queue.head+queue.count-2)%16];auto& latest=queue.data[(queue.head+queue.count-1)%16];
+   if(same(previous,sample)&&same(latest,sample)){latest.now=now;return;}
+  }
+  if(!queue.push(sample)){++dropped;queue.clear();overflow=true;}
  }
  coopview::Control dispatch(Session& session,uint32_t now){
   if(overflow){queue.clear();overflow=false;cancel();if(session.state()==SessionState::Playing)session.training().dispatchSamples(now);return coopview::Control::None;}

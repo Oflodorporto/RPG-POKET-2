@@ -2,8 +2,8 @@
 #include "CoopAdmission.h"
 namespace coopplatform {
 enum class SessionState:uint8_t {Closed,Browsing,Hosting,AwaitingAccept,Joining,Starting,Playing,Ended};
-enum class SessionEnd:uint8_t {None,Left,PeerLeft,JoinTimeout,LinkLost,Won,Lost,Profile,Protocol};
-enum class SessionNotice:uint8_t {None,Declined,Busy,PeerExpired,SendFailed};
+enum class SessionEnd:uint8_t {None,Left,PeerLeft,JoinTimeout,LinkLost,Won,Lost,Profile,Protocol,InviteExpired};
+enum class SessionNotice:uint8_t {None,Declined,Busy,PeerExpired,SendFailed,InviteExpired};
 struct Peer {
  bool valid=false,available=false;Mac mac{};coop::Actor profile{};
  uint64_t sessionToken=0;uint32_t lastSeen=0;
@@ -17,6 +17,7 @@ public:
  using Sender=bool (*)(void*,const Mac&,const uint8_t*,size_t);
  static constexpr size_t kMaxPeers=4;
  static constexpr uint32_t kBeaconMs=700,kPeerExpiryMs=2800,kRetryMs=250;
+ static constexpr uint32_t kAcceptTimeoutMs=30000;
  static constexpr uint32_t kAdmissionTimeoutMs=12000,kLinkTimeoutMs=10000,kTerminalDrainMs=12000;
  static constexpr uint32_t kEnemyPresentationMs=700;
  uint32_t malformed=0,rejected=0,sendDrops=0;
@@ -32,6 +33,16 @@ public:
  const Training& training()const{return combat;}
  uint64_t sessionToken()const{return session;}
  uint64_t joinToken()const{return joinId;}
+ uint32_t observedTime()const{return observedAt;}
+ bool invitationConfirmed()const{return phase==SessionState::Joining&&decisionConfirmed;}
+ bool awaitingDecision()const{return phase==SessionState::AwaitingAccept||invitationConfirmed();}
+ // Pure, saturating elapsed-time queries; uint32 subtraction supports wrap.
+ // Guest time is a bounded estimate from the host, never a shared millis clock.
+ uint32_t decisionRemainingMs(uint32_t now)const{
+  if(phase==SessionState::AwaitingAccept)return remaining(kAcceptTimeoutMs,actionAt,now);
+  if(invitationConfirmed())return remaining(decisionBudget,decisionAt,now);
+  return 0;
+ }
  bool open(const rpg::Game& game,const Mac& own,uint64_t entropy,uint32_t now){
   if(phase!=SessionState::Closed&&phase!=SessionState::Ended)return false;
   if(!usableMac(own)||!entropy||!trainingEligible(game))return false;
@@ -43,13 +54,13 @@ public:
   combat.stop();mac=own;local=profile;remote={};for(auto& p:peers)p={};
   phase=SessionState::Browsing;ending=SessionEnd::None;note=SessionNotice::None;hosting=false;
   session=joinId=0;seed=expectedInitialHash=0;openedEntropy=entropy;
-  actionAt=lastSeen=lastRetry=lastDiscovery=now;terminalAt=0;stallActive=false;stallAt=stallRevision=0;presentationSeen=presentationConfirmed=false;presentationAt=presentationRevision=0;sendProbe();return true;
+  actionAt=lastSeen=lastRetry=lastDiscovery=observedAt=now;decisionConfirmed=false;decisionAt=decisionBudget=0;terminalAt=0;stallActive=false;stallAt=stallRevision=0;presentationSeen=presentationConfirmed=false;presentationAt=presentationRevision=0;sendProbe();return true;
  }
  bool host(uint32_t now){
   if(phase!=SessionState::Browsing)return false;
   session=mint();if(!session)return false;
   hosting=true;phase=SessionState::Hosting;note=SessionNotice::None;
-  actionAt=lastDiscovery=now;sendBeacon();return true;
+  actionAt=lastDiscovery=observedAt=now;sendBeacon();return true;
  }
  bool join(size_t index,uint32_t now){
   if(phase!=SessionState::Browsing||index>=kMaxPeers)return false;
@@ -57,7 +68,7 @@ public:
   if(!p.valid||!p.available||uint32_t(now-p.lastSeen)>=kPeerExpiryMs){note=SessionNotice::PeerExpired;return false;}
   uint64_t fresh=mint();if(!fresh)return false;
   hosting=false;remote=p;session=p.sessionToken;joinId=fresh;local.id=2;local.owner=1;
-  phase=SessionState::Joining;note=SessionNotice::None;actionAt=lastRetry=lastSeen=now;sendJoin();return true;
+  phase=SessionState::Joining;note=SessionNotice::None;decisionConfirmed=false;decisionAt=decisionBudget=0;actionAt=lastRetry=lastSeen=observedAt=now;sendJoin();return true;
  }
  bool accept(uint32_t now){
   expire(now);if(phase!=SessionState::AwaitingAccept||!remote.valid)return false;
@@ -67,10 +78,11 @@ public:
   actionAt=lastRetry=lastSeen=now;note=SessionNotice::None;sendStart();return true;
  }
  bool decline(uint32_t now){
-  if(phase!=SessionState::AwaitingAccept)return false;
+  expire(now);if(phase!=SessionState::AwaitingAccept)return false;
   sendControl(admission::Type::Decline);return resetLobby(now);
  }
  void leave(uint32_t now){
+  observedAt=now;
   if(remote.valid&&session&&joinId)sendControl(admission::Type::Bye);
   end(SessionEnd::Left,now); // Explicit next open is required; packets cannot reopen.
  }
@@ -103,7 +115,7 @@ public:
    if(!hosting||h.session!=session){++rejected;return false;}
    if(phase==SessionState::Hosting){
     remote={true,false,source,profile,h.session,now};joinId=h.join;
-    phase=SessionState::AwaitingAccept;actionAt=lastSeen=now;sendBeacon();return true;
+    phase=SessionState::AwaitingAccept;note=SessionNotice::None;actionAt=lastSeen=now;sendWaiting(now);sendBeacon();return true;
    }
    if(!remote.valid||!sameMac(source,remote.mac)||h.join!=joinId){
     sendDirect(source,T::Busy,h.session,h.join);++rejected;return false;
@@ -111,11 +123,25 @@ public:
    if(!admission::sameProfile(profile,remote.profile)){++rejected;return false;}
    // Idempotent JOIN retry never changes the candidate or extends the decision
    // deadline. Once accepted, retry START to repair a dropped admission packet.
-   if(phase==SessionState::Starting||phase==SessionState::Playing)sendStart();
+   if(phase==SessionState::AwaitingAccept)sendWaiting(now);
+   else if(phase==SessionState::Starting||phase==SessionState::Playing)sendStart();
    return true;
   }
   if(!remote.valid||!sameMac(source,remote.mac)||h.session!=session||h.join!=joinId){++rejected;return false;}
   if(h.type==T::Bye){end(SessionEnd::PeerLeft,now);return true;}
+  if(h.type==T::Waiting){
+   uint32_t budget=r.u32();
+   if(hosting||phase!=SessionState::Joining||!r.ok||!budget||budget>kAcceptTimeoutMs){++rejected;return false;}
+   // One initial estimate, then only reductions. Duplicated/reordered replies
+   // cannot extend the decision window. No training starts before START.
+   if(!decisionConfirmed){decisionConfirmed=true;decisionAt=now;decisionBudget=budget;}
+   else if(budget<decisionRemainingMs(now)){decisionAt=now;decisionBudget=budget;}
+   return true;
+  }
+  if(h.type==T::Expired){
+   if(hosting||phase!=SessionState::Joining){++rejected;return false;}
+   note=SessionNotice::InviteExpired;end(SessionEnd::InviteExpired,now);return true;
+  }
   if(h.type==T::Decline||h.type==T::Busy){
    if(hosting||phase!=SessionState::Joining){++rejected;return false;}
    note=h.type==T::Decline?SessionNotice::Declined:SessionNotice::Busy;
@@ -186,6 +212,8 @@ private:
  Mac mac{};coop::Actor local{};bool hosting=false,keySet=false;
  uint64_t key=0,serial=0,openedEntropy=0,session=0,joinId=0;
  uint32_t seed=0,expectedInitialHash=0,actionAt=0,lastSeen=0,lastRetry=0,lastDiscovery=0,terminalAt=0;
+ bool decisionConfirmed=false;uint32_t decisionAt=0,decisionBudget=0,observedAt=0;
+ static uint32_t remaining(uint32_t budget,uint32_t since,uint32_t now){const uint32_t elapsed=uint32_t(now-since);return elapsed>=budget?0:budget-elapsed;}
  bool stallActive=false;uint32_t stallAt=0,stallRevision=0;
  bool presentationSeen=false,presentationConfirmed=false;uint32_t presentationAt=0,presentationRevision=0;
  static uint64_t mix(uint64_t x){x^=x>>30;x*=0xbf58476d1ce4e5b9ULL;x^=x>>27;x*=0x94d049bb133111ebULL;return x^(x>>31);}
@@ -208,6 +236,11 @@ private:
   admission::Packet p{};auto w=admission::begin(p,admission::Type::Join,session,joinId);
   coop::writeActor(w,local);emit(remote.mac,p,w);
  }
+ void sendWaiting(uint32_t now){
+  const uint32_t budget=decisionRemainingMs(now);if(!budget)return;
+  admission::Packet p{};auto w=admission::begin(p,admission::Type::Waiting,session,joinId);
+  w.u32(budget);emit(remote.mac,p,w);
+ }
  void sendStart(){
   admission::Packet p{};auto w=admission::begin(p,admission::Type::Start,session,joinId);
   coop::writeActor(w,local);w.u32(seed);emit(remote.mac,p,w);
@@ -219,7 +252,7 @@ private:
  void sendControl(admission::Type type){sendDirect(remote.mac,type,session,joinId);}
  void flush(){coop::Packet p{};while(combat.endpoint.outgoing.pop(p))transmit(remote.mac,p.bytes,p.size);}
  bool resetLobby(uint32_t now){
-  remote={};joinId=0;session=mint();
+  remote={};joinId=0;session=mint();decisionConfirmed=false;decisionAt=decisionBudget=0;
   if(!session){end(SessionEnd::Protocol,now);return false;}
   phase=SessionState::Hosting;actionAt=lastDiscovery=now;sendBeacon();return true;
  }
@@ -228,8 +261,12 @@ private:
   if(reason!=SessionEnd::Won&&reason!=SessionEnd::Lost)combat.stop();
  }
  void expire(uint32_t now){
-  if(phase==SessionState::AwaitingAccept&&uint32_t(now-actionAt)>=kAdmissionTimeoutMs){sendControl(admission::Type::Decline);resetLobby(now);}
-  else if((phase==SessionState::Joining||phase==SessionState::Starting)&&uint32_t(now-actionAt)>=kAdmissionTimeoutMs)end(SessionEnd::JoinTimeout,now);
+  observedAt=now;
+  if(phase==SessionState::AwaitingAccept&&!decisionRemainingMs(now)){
+   sendControl(admission::Type::Expired);note=SessionNotice::InviteExpired;resetLobby(now);
+  }else if(invitationConfirmed()&&!decisionRemainingMs(now)){
+   note=SessionNotice::InviteExpired;end(SessionEnd::InviteExpired,now);
+  }else if(((phase==SessionState::Joining&&!decisionConfirmed)||phase==SessionState::Starting)&&uint32_t(now-actionAt)>=kAdmissionTimeoutMs)end(SessionEnd::JoinTimeout,now);
   else if(phase==SessionState::Playing&&(uint32_t(now-lastSeen)>=kLinkTimeoutMs||
           (stallActive&&uint32_t(now-stallAt)>=kLinkTimeoutMs)))end(SessionEnd::LinkLost,now);
  }

@@ -131,7 +131,7 @@ template<class C> void playing(C& c,const ViewModel& v,const coopplatform::Train
  }
  panel(c,kEvent);center(c,kEvent,153,v.artReady&&artMemory?eventLabel(t):"ARTES INDISPONIVEIS / USE SAIR",Gold);controls(c,t);
 }
-inline const char* endLabel(EndReason e){switch(e){case EndReason::Won:return "TREINO VENCIDO";case EndReason::Lost:return "FIM DO TREINO";case EndReason::PeerLeft:return "A OUTRA PLACA SAIU";case EndReason::LinkLost:return "CONEXAO ENCERRADA";case EndReason::JoinTimeout:return "TEMPO DE CONEXAO ESGOTADO";case EndReason::Protocol:return "SESSAO INCOMPATIVEL";case EndReason::Ineligible:return "VOLTE AO ABRIGO PARA TREINAR";default:return "TREINO ENCERRADO";}}
+inline const char* endLabel(EndReason e){switch(e){case EndReason::Won:return "TREINO VENCIDO";case EndReason::Lost:return "FIM DO TREINO";case EndReason::PeerLeft:return "A OUTRA PLACA SAIU";case EndReason::LinkLost:return "CONEXAO ENCERRADA";case EndReason::JoinTimeout:return "TEMPO DE CONEXAO ESGOTADO";case EndReason::InviteExpired:return "CONVITE EXPIRADO";case EndReason::Declined:return "PEDIDO RECUSADO";case EndReason::Busy:return "SALA OCUPADA";case EndReason::Protocol:return "SESSAO INCOMPATIVEL";case EndReason::Ineligible:return "VOLTE AO ABRIGO PARA TREINAR";default:return "TREINO ENCERRADO";}}
 template<class C> void profileCard(C& c,const coop::Actor& a,Rect r,const char* title,bool ready){
  panel(c,r);center(c,r,r.y+6,title,Blue);hero(c,a,{int16_t(r.x+8),int16_t(r.y+18),int16_t(r.w-16),58},ready);char line[40];
  std::snprintf(line,sizeof(line),"%s N%u",className(a.cls),a.level);center(c,r,r.y+80,line,Gold);
@@ -140,12 +140,13 @@ template<class C> void profileCard(C& c,const coop::Actor& a,Rect r,const char* 
 }
 template<class C> void lobby(C& c,const ViewModel& v){
  text(c,8,8,"COOPERATIVO / TREINO",Gold);
- const char* notice=v.notice==LobbyNotice::Declined?"PEDIDO RECUSADO / ESCOLHA UMA SALA":v.notice==LobbyNotice::Busy?"SALA OCUPADA / ESCOLHA OUTRA":v.notice==LobbyNotice::PeerExpired?"SALA EXPIROU / BUSCANDO NOVAMENTE":v.notice==LobbyNotice::SendFailed?"FALHA DE ENVIO / AGUARDE OU SAIA":"DUAS PLACAS / 2 ONDAS + CHEFE";
+ const char* notice=v.notice==LobbyNotice::Declined?"PEDIDO RECUSADO / ESCOLHA UMA SALA":v.notice==LobbyNotice::Busy?"SALA OCUPADA / ESCOLHA OUTRA":v.notice==LobbyNotice::PeerExpired?"SALA EXPIROU / BUSCANDO NOVAMENTE":v.notice==LobbyNotice::SendFailed?"FALHA DE ENVIO / AGUARDE OU SAIA":v.notice==LobbyNotice::InviteExpired?(v.screen==Screen::Hosting?"CONVITE EXPIRADO / AGUARDE NOVO PEDIDO":"CONVITE EXPIRADO / TENTE NOVAMENTE"):"DUAS PLACAS / 2 ONDAS + CHEFE";
  text(c,16,27,v.artReady&&artMemory?notice:"ARTES INDISPONIVEIS / USE SAIR",v.notice==LobbyNotice::None?White:Gold);
  if(v.screen==Screen::Ended||v.screen==Screen::Unavailable){
   backdrop(c,{3,42,314,128},v.artReady);panel(c,{14,69,292,93});center(c,{14,69,292,93},81,endLabel(v.end),Gold);
-  center(c,{14,69,292,93},103,"PERSONAGENS INALTERADOS",Green);center(c,{14,69,292,93},120,"HP, MP, POCOES E CAMPANHA PRESERVADOS",White);center(c,{14,69,292,93},140,"SEM XP / OURO / ITENS RECEBIDOS",Muted);
-  text(c,31,190,"TOQUE SAIR PARA VOLTAR AO RETRATO",Blue);return;
+  if(v.end==EndReason::InviteExpired)center(c,{14,69,292,93},99,"VOLTE A GUILDA E ENTRE NOVAMENTE",Blue);
+  center(c,{14,69,292,93},v.end==EndReason::InviteExpired?115:103,"PERSONAGENS INALTERADOS",Green);center(c,{14,69,292,93},v.end==EndReason::InviteExpired?128:120,"HP, MP, POCOES E CAMPANHA PRESERVADOS",White);center(c,{14,69,292,93},v.end==EndReason::InviteExpired?142:140,"SEM XP / OURO / ITENS RECEBIDOS",Muted);
+  button(c,kTerminalReturn,"VOLTAR A GUILDA","TOQUE AQUI PARA SAIR",true);return;
  }
  if(v.hasLocal)profileCard(c,v.localProfile,{16,48,136,121},"SEU HEROI",v.artReady);
  if(v.screen==Screen::Lobby||v.screen==Screen::Searching||v.screen==Screen::JoinReady){
@@ -160,10 +161,11 @@ template<class C> void lobby(C& c,const ViewModel& v){
   button(c,kAccept,"ACEITAR","iniciar treino",v.allowAccept&&v.hasPeer);button(c,kDecline,"RECUSAR","voltar a sala",true);
  }else{
   panel(c,{168,48,136,121});const bool hosting=v.screen==Screen::Hosting;
-  center(c,{168,48,136,121},72,hosting?"SALA CRIADA":"CONECTANDO",Gold);char line[24];std::snprintf(line,sizeof(line),"SALA #%04X",unsigned(v.roomCode&0xffff));center(c,{168,48,136,121},90,line,Blue);
-  center(c,{168,48,136,121},111,hosting?"AGUARDE PEDIDO":"AGUARDE ACEITE",White);center(c,{168,48,136,121},132,"SEM ENTRADA",Muted);
-  text(c,34,188,hosting?"ACEITE APENAS A PLACA COMBINADA":"AGUARDANDO CONFIRMACAO DAS DUAS PLACAS",Muted);
+  center(c,{168,48,136,121},72,hosting?"SALA CRIADA":v.synchronizing?"SINCRONIZANDO":"CONECTANDO",Gold);char line[24];std::snprintf(line,sizeof(line),"SALA #%04X",unsigned(v.roomCode&0xffff));center(c,{168,48,136,121},90,line,Blue);
+  center(c,{168,48,136,121},111,hosting?"AGUARDE PEDIDO":v.synchronizing?"AGUARDE AS PLACAS":v.showDecisionCountdown?"AGUARDE ACEITE":"AGUARDE RESPOSTA",White);center(c,{168,48,136,121},132,"SEM ENTRADA",Muted);
+  text(c,34,188,hosting?"ACEITE APENAS A PLACA COMBINADA":v.synchronizing?"SINCRONIZANDO AS DUAS PLACAS":v.showDecisionCountdown?"AGUARDE O ANFITRIAO":"AGUARDANDO RESPOSTA DA OUTRA PLACA",Muted);
  }
+ if(v.showDecisionCountdown){char line[32];std::snprintf(line,sizeof(line),v.screen==Screen::ConfirmPeer?"ACEITE EM %us":"PRAZO APROX.: %us",unsigned(v.decisionSeconds));center(c,{14,169,292,12},172,line,v.decisionSeconds>5?Gold:Red);}
 }
 template<class C> void draw(C& c,const ViewModel& v,const coopplatform::Training& t){
  c.setTextWrap(false);c.fillScreen(Ink);panel(c,{3,2,314,20});

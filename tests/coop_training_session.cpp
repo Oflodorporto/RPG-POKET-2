@@ -29,7 +29,7 @@ struct Rig {
  rpg::Game game[2]={hero(0,20),hero(2,20)};Session s[2];
  struct Port {Rig* rig=nullptr;unsigned from=0;} ports[2];
  coop::Queue<Frame,512> frames{};Frame lastJoin{},lastStart{},lastReady{},lastEngine{};
- uint32_t now=100;unsigned admissionDrops[8]{},engineDrops[7]{},dropped=0,heartbeats=0;
+ uint32_t now=100;unsigned admissionDrops[admission::kTypeCount]{},engineDrops[7]{},dropped=0,heartbeats=0;
  bool partition=false,sendFailure=false;
  Rig(){for(unsigned i=0;i<2;++i){ports[i]={this,i};s[i].setSender(&send,&ports[i]);CHECK(s[i].open(game[i],mac[i],456+i,now));}flush();}
  static bool send(void* ctx,const Mac& destination,const uint8_t* bytes,size_t size){
@@ -147,7 +147,7 @@ static void declineTimeoutAndRestart(){
  r.link();CHECK(r.s[0].sessionToken()!=oldHost);r.inject(1,oldStart);r.flush();r.equal();
  // Replayed JOIN cannot extend the host's deliberate decision window.
  Rig timeout;timeout.request();auto request=timeout.lastJoin;
- for(unsigned i=0;i<48;++i){timeout.advance(250);timeout.inject(0,request);}
+ for(unsigned i=0;i<Session::kAcceptTimeoutMs/250;++i){timeout.advance(250);timeout.inject(0,request);}
  CHECK(timeout.s[0].state()==SessionState::Hosting&&timeout.s[1].state()==SessionState::Ended);
  CHECK(timeout.s[0].sessionToken()!=oldHost);
  std::puts("PASS: decline rotates room token, leave/stale reentry blocked, fresh explicit open, absolute admission deadline");
