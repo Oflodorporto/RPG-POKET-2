@@ -5,8 +5,10 @@
 ## Comece por aqui
 
 - [Guia atual de instalação, atualização, controles e saves](GUIA_RAPIDO.md)
-- [Estado publicado: pvp77, hashes, evidências e limitações](ESTADO_ATUAL.md)
+- [Estado publicado: hashes, evidências e limitações](ESTADO_ATUAL.md)
 - [Origem e integridade das imagens da apresentação](MIDIA_README.md)
+- [Controles do treino cooperativo](COOP_TRAINING_CONTROLS.md) e [ensaios físicos pendentes](COOP_TRAINING_HARDWARE_CHECKLIST.md)
+- [Correção coopfix77: publicação, hashes e limites verificados](ESTADO_ATUAL.md)
 
 ## História e mundo
 

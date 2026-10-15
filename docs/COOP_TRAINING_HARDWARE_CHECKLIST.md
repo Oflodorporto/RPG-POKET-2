@@ -1,5 +1,25 @@
 # Treino cooperativo — ensaio em duas placas
 
+## Reteste da correção coopfix77 · pendente
+
+Identidade publicada: `2026.10.15-coopfix77` / build `2026101501`; qualificação de software, publicação e downloads conferidos. Use a identidade e os hashes do [estado publicado](ESTADO_ATUAL.md). As duas placas devem ter o novo protocolo de convite v2; a compilação Arduino qualificada usa treino **ON por padrão**, sem override. As instruções antigas de flag OFF abaixo são histórico, não configuração de instalação desta correção.
+
+Relatos anteriores de coop77: saída nas duas placas após toques repetidos, uma vitória em duas placas e posterior timeout de aproximadamente 12 segundos enquanto se aguardava aceite. O último caso foi reproduzido em software; os relatos não provam congelamento global permanente nem a causa física da perda de link. **Nenhum item abaixo está aprovado fisicamente para coopfix77.**
+
+- [ ] Registrar versão/build em A/B, hash do binário, papéis host/convidado, distância, alimentação e Wi-Fi anterior. Preservar os três slots; não apagar flash nem resetar época.
+- [ ] Repetir o aceite com A e B como anfitrião. Conferir contagem de 30 segundos no host e **PRAZO APROX.** no convidado; aceitar antes de vencer, inclusive perto do fim, sem renovação por pedidos repetidos. O prazo do host é a autoridade, mesmo se o convidado mostrar tempo restante.
+- [ ] Não aceitar: conferir **CONVITE EXPIRADO**, ausência de início tardio e nova tentativa explícita. Recusar manualmente em outra tentativa: conferir **PEDIDO RECUSADO**. Distinguir desses casos o limite técnico de conexão inicial/sincronização de 12 segundos.
+- [ ] Em combate com link saudável, permanecer mais de 30 segundos na escolha de habilidade/alvo; concluir a ação depois, sem vencimento humano nem gasto duplicado. Repetir com espera maior. Se ocorrer queda, registrar tela, momento e condições em vez de atribuí-la automaticamente ao prazo de seleção.
+- [ ] Conferir toques rápidos completos, toques repetidos e contato segurado atravessando mudança de tela, sem comando duplicado ou saída involuntária. Nas telas finais, usar **VOLTAR A GUILDA** central, conferir retrato e toque nos quatro cantos; sair/reentrar em ambas as placas. O botão SAIR no combate também permanece no roteiro.
+- [ ] Repetir uma partida completa de duas ondas e chefe e os cenários de derrota, saída e interrupção de link do roteiro abaixo, sem afirmar alcance ou correção de RF com base na simulação.
+- [ ] Comparar campanha, HP/MP, XP/ouro/itens, saves/época, RNG e artes antes/depois; sem recompensas ou alterações de campanha pelo treino. Conferir restauração Wi-Fi/PvP, três slots e atualização física, sem modificar potência/canal/sleep como parte deste teste.
+
+Os ensaios de RF/interferência, toque/orientação, energia, SD, USB/OTA, heap/stack/PSRAM, latência e FPS permanecem pendentes. Guardar observações/fotos/logs com a identidade exata, marcando cada cenário como aprovado, falhou ou não executado. Capturas host e CI não substituem esses resultados.
+
+## Registro histórico de preparação inicial
+
+O texto a seguir é preservado como registro da candidata anterior, inclusive sua flag OFF e a ausência de binário qualificado naquela etapa. Para o reteste atual, use a identidade, ON padrão e limites documentados acima; os cenários físicos ainda são úteis.
+
 Este roteiro ainda não foi executado. A candidata local tem `RPG_ENABLE_COOP_TRAINING=0` por padrão. Uma futura compilação de qualificação deverá habilitar explicitamente a flag; não instalar como atualização pública nem misturar com comércio em lote.
 
 ## Preparação

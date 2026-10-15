@@ -2,6 +2,16 @@
 
 Coordenadas lógicas em paisagem **320×240**, com origem no canto superior esquerdo. Os retângulos são semiabertos: origem inclusiva, limite final exclusivo. A prévia real do renderer acompanha este documento.
 
+## Atualização coopfix77 · convite e retorno
+
+Este complemento descreve a versão publicada `2026.10.15-coopfix77` / build `2026101501`, qualificada em software, com [publicação e downloads verificados](ESTADO_ATUAL.md). A validação física do toque, orientação e rádio permanece pendente.
+
+- O convite usa protocolo **v2** e exige a atualização das duas placas. O anfitrião decide em **30 segundos desde o primeiro pedido válido**; repetições não reiniciam o prazo. No convidado, a contagem é aproximada e aparece após a confirmação de espera do anfitrião.
+- Conexão inicial e sincronização pós-aceite mantêm limites técnicos de **12 segundos**. Expiração do convite, recusa manual e timeout técnico têm mensagens diferentes.
+- A escolha de ação, habilidade e alvo em combate **não tem prazo humano enquanto o link estiver saudável**; os limites de perda de conexão continuam.
+- Amostras consecutivas idênticas de toque são reunidas sem descartar bordas/mudanças; excesso de eventos ainda cancela o contato de forma segura. Solte o dedo entre comandos. A confiabilidade física exige reteste.
+- Em encerramento/indisponibilidade: botão **VOLTAR A GUILDA** em `(48,180,224,38)`, central, usa a mesma saída com limpeza de 350 ms e retorno ao retrato. O gesto iniciado na tela anterior não pode confirmar essa saída. **SAIR** permanece durante o combate.
+
 ## Entrar e sair
 
 - Guilda em retrato: botão “Coop treino” em `(124,218,102,40)`.
