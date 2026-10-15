@@ -6,6 +6,7 @@
 #include "../PersonalArt.h"
 #include "../EnemyScale.h"
 #include "../Ruins7Art.h"
+#include "../ReleaseVersion.h"
 #include <cstdio>
 #include <cstring>
 namespace coopview {
@@ -146,7 +147,8 @@ template<class C> void lobby(C& c,const ViewModel& v){
   backdrop(c,{3,42,314,128},v.artReady);panel(c,{14,69,292,93});center(c,{14,69,292,93},81,endLabel(v.end),Gold);
   if(v.end==EndReason::InviteExpired)center(c,{14,69,292,93},99,"VOLTE A GUILDA E ENTRE NOVAMENTE",Blue);
   center(c,{14,69,292,93},v.end==EndReason::InviteExpired?115:103,"PERSONAGENS INALTERADOS",Green);center(c,{14,69,292,93},v.end==EndReason::InviteExpired?128:120,"HP, MP, POCOES E CAMPANHA PRESERVADOS",White);center(c,{14,69,292,93},v.end==EndReason::InviteExpired?142:140,"SEM XP / OURO / ITENS RECEBIDOS",Muted);
-  button(c,kTerminalReturn,"VOLTAR A GUILDA","TOQUE AQUI PARA SAIR",true);return;
+  const bool again=v.linkTools&&(v.end==EndReason::LinkLost||v.end==EndReason::JoinTimeout);
+  button(c,kTerminalReturn,again?"VOLTAR A SALA":"VOLTAR A GUILDA",again?"CRIAR OU ENTRAR NOVAMENTE":"TOQUE AQUI PARA SAIR",true);return;
  }
  if(v.hasLocal)profileCard(c,v.localProfile,{16,48,136,121},"SEU HEROI",v.artReady);
  if(v.screen==Screen::Lobby||v.screen==Screen::Searching||v.screen==Screen::JoinReady){
@@ -167,10 +169,54 @@ template<class C> void lobby(C& c,const ViewModel& v){
  }
  if(v.showDecisionCountdown){char line[32];std::snprintf(line,sizeof(line),v.screen==Screen::ConfirmPeer?"ACEITE EM %us":"PRAZO APROX.: %us",unsigned(v.decisionSeconds));center(c,{14,169,292,12},172,line,v.decisionSeconds>5?Gold:Red);}
 }
+inline unsigned long displayCount(uint32_t value){return std::min(value,uint32_t(99999));}
+template<class C> void detail(C& c,int y,char* line,uint16_t color=White){line[52]='\0';text(c,5,y,line,color);}
+template<class C> void signal(C& c,const ViewModel& v){
+ text(c,6,232,"SEM XP/OURO",Muted);char line[40];const auto& s=v.link.signal;
+ if(!s.valid)std::snprintf(line,sizeof(line),"SEM AMOSTRA");
+ else if(!s.fresh(v.link.now))std::snprintf(line,sizeof(line),"SEM SINAL (%lus)",displayCount(s.age(v.link.now)/1000));
+ else std::snprintf(line,sizeof(line),"%s %ddBm",v.link.selectedPeer?"PARCEIRO":"DESCOBERTA",int(s.last));
+ text(c,105,232,line,s.fresh(v.link.now)?Blue:Muted);
+ for(unsigned i=0;i<4;++i){const int h=3+int(i)*3;c.fillRect(284+int(i)*7,239-h,5,h,i<s.bars(v.link.now)?Green:Disabled);}
+}
+template<class C> void recovery(C& c,const ViewModel& v){
+ const Rect r{48,73,224,80};c.fillRect(r.x,r.y,r.w,r.h,Ink);panel(c,r);char line[32];
+ std::snprintf(line,sizeof(line),"Reconectando%.*s",int(v.dots),"...");center(c,r,84,line,Gold);
+ center(c,r,100,"SEM ACOES ATE SINCRONIZAR",Muted);button(c,kRecoveryCancel,"CANCELAR RECONEXAO","voltar a criacao de sala",true);
+}
+template<class C> void diagnosticPage(C& c,const ViewModel& v){
+ text(c,8,8,"DIAGNOSTICO LOCAL",Gold);const auto& d=v.link;char line[64];
+ // Values are loop-thread snapshots. There are no driver calls, clock reads,
+ // allocations or protocol actions in this renderer.
+ std::snprintf(line,sizeof(line),"LOCAL %s / CONVITE V2",FW_VERSION);detail(c,26,line,Blue);
+ const auto& s=d.signal;
+ if(s.valid)std::snprintf(line,sizeof(line),"RSSI %d MIN %d MAX %d IDADE %lums",int(s.last),int(s.minimum),int(s.maximum),displayCount(s.age(d.now)));
+ else{std::snprintf(line,sizeof(line),"RSSI: SEM AMOSTRA DO PARCEIRO");}detail(c,36,line);
+ std::snprintf(line,sizeof(line),"CH %u RX %u PS %u TXmax %d/4dBm",d.channel,s.channel,d.ps,int(d.powerQuarterDbm));detail(c,46,line);
+ std::snprintf(line,sizeof(line),"MODO %u PHY %u ASSOC %u RXrate %u",d.mode,d.protocol,d.connected,s.rate);detail(c,56,line);
+ std::snprintf(line,sizeof(line),"RX %lu OK %lu REJ %lu INV %lu",displayCount(d.callbacks.received),displayCount(d.accepted),displayCount(d.rejected),displayCount(d.callbacks.invalid));detail(c,66,line);
+ std::snprintf(line,sizeof(line),"TX API %lu/%lu MAC UNICAST %lu/%lu",displayCount(d.apiOk),displayCount(d.apiFail),displayCount(d.callbacks.unicastOk),displayCount(d.callbacks.unicastFail));detail(c,76,line);
+ std::snprintf(line,sizeof(line),"MAC BROADCAST %lu/%lu (NAO E ACK)",displayCount(d.callbacks.broadcastOk),displayCount(d.callbacks.broadcastFail));detail(c,86,line);
+ std::snprintf(line,sizeof(line),"TX/RX PROBE %lu/%lu BEACON %lu/%lu",displayCount(d.txAdmission[0]),displayCount(d.rxAdmission[0]),displayCount(d.txAdmission[1]),displayCount(d.rxAdmission[1]));detail(c,96,line);
+ std::snprintf(line,sizeof(line),"JOIN %lu/%lu WAIT %lu/%lu",displayCount(d.txAdmission[2]),displayCount(d.rxAdmission[2]),displayCount(d.txAdmission[8]),displayCount(d.rxAdmission[8]));detail(c,106,line);
+ std::snprintf(line,sizeof(line),"START %lu/%lu READY %lu/%lu",displayCount(d.txAdmission[3]),displayCount(d.rxAdmission[3]),displayCount(d.txAdmission[4]),displayCount(d.rxAdmission[4]));detail(c,116,line);
+ std::snprintf(line,sizeof(line),"ACKvalid %lu RET %lu SNAP %lu",displayCount(d.ackAccepted),displayCount(d.retries),displayCount(d.snapshots));detail(c,126,line);
+ std::snprintf(line,sizeof(line),"FILA max %lums LOOP max %lums",displayCount(d.maxQueueAge),displayCount(d.maxTickGap));detail(c,136,line);
+ std::snprintf(line,sizeof(line),"DROP %lu STALE %lu DESVIOch %lu",displayCount(d.queueDrops),displayCount(d.stale),displayCount(d.channelDrifts));detail(c,146,line);
+ std::snprintf(line,sizeof(line),"GET ch/ps/pwr %ld/%ld/%ld",long(d.channelError),long(d.psError),long(d.powerError));detail(c,156,line);
+ std::snprintf(line,sizeof(line),"ERRO TX %ld PEER %ld DISC %ld",long(d.sendError),long(d.peerError),long(d.disconnectResult));detail(c,166,line);
+ std::snprintf(line,sizeof(line),"EST %u FIM %u SILENCIO %lums",d.state,d.lastEnd,displayCount(d.rxAge));detail(c,176,line,d.frozen?Gold:White);
+ std::snprintf(line,sizeof(line),"ACK? %u PEND? %u TRAVA %lums",d.awaitingAck,d.pending,displayCount(d.stallAge));detail(c,186,line);
+ std::snprintf(line,sizeof(line),"GET modo/phy %ld/%ld",long(d.modeError),long(d.protocolError));detail(c,196,line);
+ std::snprintf(line,sizeof(line),"INIT/CB/CLOSE %ld/%ld/%ld",long(d.initError),long(d.callbackError),long(d.teardownError));detail(c,206,line);
+ text(c,5,218,"DIAG LOCAL | CONTADORES ATE 99999",Muted);
+}
 template<class C> void draw(C& c,const ViewModel& v,const coopplatform::Training& t){
  c.setTextWrap(false);c.fillScreen(Ink);panel(c,{3,2,314,20});
- if(v.screen==Screen::Playing)playing(c,v,t);else lobby(c,v);
+ if(v.diagnostics)diagnosticPage(c,v);else if(v.screen==Screen::Playing)playing(c,v,t);else lobby(c,v);
+ if(v.linkTools&&!v.diagnostics&&v.recovering)recovery(c,v);
+ if(v.linkTools){panel(c,kDiagnostics);center(c,kDiagnostics,7,v.diagnostics?"VOLTAR":"INFO",Gold);}
  panel(c,kExit);center(c,kExit,7,"SAIR",Gold);
- text(c,10,232,"SEM XP/OURO | SEM GASTOS NA CAMPANHA",Muted);
+ if(v.linkTools)signal(c,v);else text(c,10,232,"SEM XP/OURO | SEM GASTOS NA CAMPANHA",Muted);
 }
 }

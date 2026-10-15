@@ -85,7 +85,7 @@ template<class Canvas> struct WifiOverlay {
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
 #if RPG_ENABLE_COOP_TRAINING
-  if(v.page==Page::CoopTraining){coopplatform::LandscapeCanvas<Canvas> landscape(c);coopview::draw(landscape,coopview::model(coopSession,menu.art==ArtStatus::Ready),coopSession.training());return;}
+  if(v.page==Page::CoopTraining){coopplatform::LandscapeCanvas<Canvas> landscape(c);coopview::draw(landscape,coopruntime::view(menu.art==ArtStatus::Ready),coopSession.training());return;}
 #endif
   if(v.traceOpen){combatTraceUi::drawDetails(c,g,v);return;}
   combatTraceUi::Overlay<Canvas> traceOverlay{c,g,v};

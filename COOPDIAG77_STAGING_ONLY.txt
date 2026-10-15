@@ -1,0 +1,7 @@
+LOCAL PREPARATION / QUALIFICATION CANDIDATE ONLY
+2026.10.15-coopdiag77 / build2026101502
+Full 157-group LSan1 qualification, default-ON/forced-OFF target builds,
+actual memory/image budgets, real-byte OTA from 12 historical clients and
+independent exact-source/artifact review are mandatory before promotion.
+User conditionally authorized publication only after those gates pass.
+No physical RF-range fix or board validation is implied.

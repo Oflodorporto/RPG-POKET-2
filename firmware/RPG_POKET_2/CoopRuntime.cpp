@@ -16,12 +16,15 @@ coopradio::Device coopDevice;
 bool coopClosing=false;
 namespace {
 uint32_t closeAt=0,byeAt=0;
+coopdiag::Snapshot displaySnapshot{};uint32_t displayAt=0;
+void updateDisplay(uint32_t now){displaySnapshot=coopDevice.snapshot(now);displayAt=now;}
 }
 namespace coopruntime {
+coopview::ViewModel view(bool artReady){auto v=coopview::model(coopSession,artReady,coopInput.diagnosticsOpen());v.linkTools=coopDevice.active();v.link=displaySnapshot;v.link.now=coopSession.observedTime();return v;}
 bool active(){return coopDevice.active();}
 bool open(const rpg::Game& game,bool blocked,uint64_t entropy,uint32_t now){
  if(coopDevice.open(coopSession,game,blocked,entropy,now)!=coopradio::OpenError::None)return false;
- coopInput.reset();coopClosing=false;return true;
+ coopInput.reset();coopClosing=false;updateDisplay(now);return true;
 }
 void capture(bool valid,bool down,int x,int y,uint32_t now){coopInput.capture(coopSession,valid,down,x,y,now);}
 bool close(){
@@ -29,6 +32,7 @@ bool close(){
 }
 TickResult tick(uint32_t now){
  TickResult result{};coopDevice.tick(now);
+ if(uint32_t(now-displayAt)>=1000||displaySnapshot.state!=uint8_t(coopSession.state()))updateDisplay(now);
  if(coopClosing){
   if(uint32_t(now-closeAt)>=350){result.closed=true;result.restoreOk=close();return result;}
   if(uint32_t(now-byeAt)>=100){byeAt=now;coopSession.leave(now);}
@@ -39,6 +43,8 @@ TickResult tick(uint32_t now){
  if(action!=Control::None){
   result.activity=true;
   if(action==Control::Exit){coopSession.leave(now);coopClosing=true;closeAt=byeAt=now;coopInput.reset();}
+  else if(action==Control::Diagnostics){coopInput.setDiagnostics(!coopInput.diagnosticsOpen(),coopSession,now);updateDisplay(now);}
+  else if(action==Control::ReturnLobby){if(coopDevice.returnToLobby(now)){coopInput.reset();coopClosing=false;closeAt=byeAt=0;updateDisplay(now);}}
   else if(action==Control::Host)coopSession.host(now);
   else if(action>=Control::Join0&&action<=Control::Join3)coopSession.join(unsigned(action)-unsigned(Control::Join0),now);
   else if(action==Control::Accept)coopSession.accept(now);

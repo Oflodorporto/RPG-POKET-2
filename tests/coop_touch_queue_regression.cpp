@@ -240,6 +240,18 @@ void terminalReason(Pair& pair,unsigned reason){
  assert(coopSession.state()==SessionState::Ended&&coopSession.endReason()==expected);
  assert(coopIsOpen()&&!coopClosing);
 }
+// The central transport-failure button now starts a clean lobby; the top SAIR
+// and non-transport terminal buttons retain their portrait/350ms-exit contract.
+void finishLobbyThenClosed(const Game& before,const std::map<std::string,std::vector<uint8_t>>& blobs){
+ assert(coopIsOpen()&&!coopClosing&&view.page==Page::CoopTraining);
+ assert(coopSession.state()==SessionState::Browsing&&!coopSession.training().active());
+ assert(!coopSession.sessionToken()&&!coopSession.joinToken()&&!coopSession.pendingPeer());
+ const auto diagnostic=coopruntime::view(true);assert(!diagnostic.recovering&&!diagnostic.diagnostics);
+ assert(!diagnostic.link.awaitingAck&&!diagnostic.link.pending&&!diagnostic.link.paused&&!diagnostic.link.signal.valid);
+ same(game,before);assert(nvs.blobs==blobs&&!fake::nvsWrites&&!fake::erases);
+ coopClick(50,195);assert(coopSession.state()==SessionState::Hosting&&coopSession.sessionToken());
+ coopClick(280,10);assert(coopClosing);finishClosed(before,blobs);
+}
 void centralTerminalButton(){
  const auto r=coopview::kTerminalReturn;
  assert(r.x==48&&r.y==180&&r.w==224&&r.h==38);
@@ -250,7 +262,7 @@ void centralTerminalButton(){
  for(bool host:{true,false}){
   for(auto point:points){
    Pair pair(host);auto before=game;auto blobs=nvs.blobs;terminalReason(pair,0);
-   coopClick(point.x,point.y);assert(coopClosing);finishClosed(before,blobs);++scenarios;
+   coopClick(point.x,point.y);finishLobbyThenClosed(before,blobs);++scenarios;
   }
   for(unsigned reason=1;reason<=4;++reason){
    Pair pair(host);auto before=game;auto blobs=nvs.blobs;terminalReason(pair,reason);
@@ -261,10 +273,10 @@ void centralTerminalButton(){
    for(auto point:{coopplatform::Point{47,199},coopplatform::Point{272,199},coopplatform::Point{160,179},coopplatform::Point{160,218}}){
     coopClick(point.x,point.y);assert(!coopClosing&&coopIsOpen());
    }
-   coopClick(160,199);assert(coopClosing);finishClosed(before,blobs);++scenarios;
+   coopClick(160,199);finishLobbyThenClosed(before,blobs);++scenarios;
   }
  }
- std::puts("PASS: 28 central terminal runtime cases: both roles, LinkLost corners/edges/center, valid Won/Lost/Left/PeerLeft transitions, exclusive outside edges, portrait/reentry and unchanged saves");
+ std::puts("PASS: 28 central terminal runtime cases: both roles, LinkLost corners/edges/center return to clean lobby; Won/Lost/Left/PeerLeft return to Guild; exclusive outside edges, portrait/reentry and unchanged saves");
 }
 void centralBatchedAndHeld(){
  for(bool host:{true,false}){
@@ -275,7 +287,7 @@ void centralBatchedAndHeld(){
     if(!combined)tickCoopTraining(now);
    }
    if(combined)tickCoopTraining(now);
-   assert(coopClosing&&coopInput.dropped==drops);finishClosed(before,blobs);++scenarios;
+   assert(!coopClosing&&coopInput.dropped==drops);finishLobbyThenClosed(before,blobs);++scenarios;
   }
   for(bool queued:{false,true}){
    Pair pair(host);auto before=game;auto blobs=nvs.blobs;
@@ -290,12 +302,12 @@ void centralBatchedAndHeld(){
     assert(coopSession.state()==SessionState::Ended&&coopSession.endReason()==SessionEnd::LinkLost);
    }else{coopSample(true,true,180,210);pair.cut();}
    // The original held combat finger must never become a terminal Exit.
-   captureRun(true,true,180,210,64);tickCoopTraining(now);assert(!coopClosing&&coopIsOpen());
-   captureRun(true,false,0,0,17);tickCoopTraining(now);assert(!coopClosing&&coopIsOpen());
-   coopClick(160,199);assert(coopClosing);finishClosed(before,blobs);++scenarios;
+   captureRun(true,true,180,210,64);tickCoopTraining(now);assert(!coopClosing&&coopIsOpen()&&coopSession.state()==SessionState::Ended);
+   captureRun(true,false,0,0,17);tickCoopTraining(now);assert(!coopClosing&&coopIsOpen()&&coopSession.state()==SessionState::Ended);
+   coopClick(160,199);finishLobbyThenClosed(before,blobs);++scenarios;
   }
  }
- std::puts("PASS: 12 central recovery cases: 17/64-sample batched Exit and queued/already-dispatched combat holds across LinkLost cannot auto-exit; fresh clean touch succeeds");
+ std::puts("PASS: 12 central recovery cases: 17/64-sample batched lobby return and queued/already-dispatched combat holds across LinkLost cannot auto-cancel; fresh clean touch succeeds");
 }
 
 void shortTraceDifferential(){

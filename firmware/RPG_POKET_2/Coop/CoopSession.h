@@ -34,6 +34,21 @@ public:
  uint64_t sessionToken()const{return session;}
  uint64_t joinToken()const{return joinId;}
  uint32_t observedTime()const{return observedAt;}
+ bool recovering()const{return phase==SessionState::Playing&&combat.endpoint.paused;}
+ uint32_t peerAge(uint32_t now)const{return uint32_t(now-lastSeen);}
+ uint32_t progressAge(uint32_t now)const{return stallActive?uint32_t(now-stallAt):0;}
+ // Cancellation starts a new admission, never a new copy of an old battle.
+ // Retain the token mint stream and original Actor, not a campaign pointer.
+ bool returnToLobby(uint32_t now){
+  if(phase==SessionState::Closed)return false;
+  if(remote.valid&&session&&joinId)sendControl(admission::Type::Bye);
+  combat.stop();remote={};for(auto& p:peers)p={};local.id=1;local.owner=0;
+  phase=SessionState::Browsing;ending=SessionEnd::None;note=SessionNotice::None;hosting=false;
+  session=joinId=0;seed=expectedInitialHash=0;decisionConfirmed=false;decisionAt=decisionBudget=0;
+  actionAt=lastSeen=lastRetry=lastDiscovery=observedAt=now;terminalAt=0;
+  stallActive=false;stallAt=stallRevision=0;presentationSeen=presentationConfirmed=false;presentationAt=presentationRevision=0;
+  sendProbe();return true;
+ }
  bool invitationConfirmed()const{return phase==SessionState::Joining&&decisionConfirmed;}
  bool awaitingDecision()const{return phase==SessionState::AwaitingAccept||invitationConfirmed();}
  // Pure, saturating elapsed-time queries; uint32 subtraction supports wrap.

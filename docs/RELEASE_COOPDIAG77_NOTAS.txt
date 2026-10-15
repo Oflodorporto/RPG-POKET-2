@@ -1,0 +1,13 @@
+RPG POKET 7.7 - Treino cooperativo: sinal e diagnostico
+Versao 2026.10.15-coopdiag77 / build2026101502
+
+- Indicador de sinal recebido entre as placas, com RSSI, amostra ausente e sinal antigo distinguidos. As barras nao sao uma garantia de alcance nem um ping.
+- INFO mostra diagnostico local de descoberta, convite e combate: sinal/idade, canal e configuracao observada, RX, envio MAC, ACK de aplicacao, tentativas e filas.
+- A recuperacao permitida pelo protocolo mostra Reconectando com tres pontos animados. Cancelar encerra a sessao antiga e volta a criacao/busca de sala. Uma sessao ja encerrada nao retoma o combate.
+- O botao central apos perda de conexao volta a sala. SAIR no topo continua voltando a Guilda; vitoria/derrota mantem sua saida anterior.
+
+Atualize as duas placas para usar a mesma versao. Entre em Guilda > Coop treino e use INFO para comparar os diagnosticos. Nao houve ajuste de potencia, canal, modo de economia, taxa ou antena. Esta versao ajuda a observar a falha; nao comprova que o alcance fisico foi corrigido. Reteste fisico em duas placas ainda e necessario.
+
+Treino experimental em RAM, sem XP, ouro ou itens. Personagens, campanha, HP/MP e pocoes persistentes preservados. Save30/160 bytes, leitura29/30, epoch1 e tres slots mantidos, sem novo reset. Racoes ate10 mantidas; versoes anteriores a shop77 podem rejeitar saves com10. Nao ha garantia de downgrade de firmware. Artes permanecem as mesmas666.
+
+Instale pelo fluxo de atualizacao do aparelho e confira a versao instalada. O pacote nao executa gravacao USB nem apagamento total automaticamente.

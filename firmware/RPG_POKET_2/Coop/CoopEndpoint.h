@@ -11,6 +11,7 @@ public:
  bool host=false,hasState=false,paused=true,awaitingAck=false,pending=false;
  uint8_t local=0;uint64_t nonce=0;Receipt receipt{};Error lastError=Error::None;
  uint32_t malformed=0,rejected=0,retries=0,snapshots=0,eventsApplied=0,duplicateEvents=0;
+ uint32_t acceptedAcks=0;
  void hostStart(const State&s,uint64_t id,uint32_t now){State initial=s;*this=Endpoint{};host=true;local=0;nonce=id;state=initial;hasState=validState(initial)&&id;lastSeen=lastTx=lastHeartbeat=now;paused=true;if(hasState)sendSnapshot(now);}
  void clientStart(uint64_t id,uint32_t now){*this=Endpoint{};local=1;nonce=id;lastSeen=lastTx=lastHeartbeat=now;requestSnapshot(now);}
  bool canPlay()const{return hasState&&!paused&&!awaitingAck&&!pending&&state.phase==Phase::Playing&&state.actors[state.turn].owner==local;}
@@ -40,7 +41,7 @@ public:
   Reader r=payloadReader(p,h);
   if(host){
    if(h.type==Type::Command){if(h.payload!=7){++malformed;return;}Command c=readCommand(r,h.sequence);if(!r.ok){++malformed;return;}lastSeen=now;Error e=processCommand(source,c,now);if(e!=Error::None)sendReject(c.sequence,e);return;}
-   if(h.type==Type::Ack){if(h.payload!=4){++malformed;return;}uint32_t hash=r.u32();if(h.sequence!=state.revision||hash!=stateHash(state)){++rejected;return;}lastSeen=now;awaitingAck=false;paused=false;attempts=0;confirmReceipt();return;}
+   if(h.type==Type::Ack){if(h.payload!=4){++malformed;return;}uint32_t hash=r.u32();if(h.sequence!=state.revision||hash!=stateHash(state)){++rejected;return;}if(acceptedAcks!=UINT32_MAX)++acceptedAcks;lastSeen=now;awaitingAck=false;paused=false;attempts=0;confirmReceipt();return;}
    if(h.type==Type::SnapshotRequest){if(h.payload){++malformed;return;}lastSeen=now;sendSnapshot(now);return;}
    if(h.type==Type::Heartbeat){if(h.payload!=4){++malformed;return;}uint32_t hash=r.u32();lastSeen=now;if(h.sequence!=state.revision||hash!=stateHash(state)||paused)sendSnapshot(now);return;}
    ++malformed;return;

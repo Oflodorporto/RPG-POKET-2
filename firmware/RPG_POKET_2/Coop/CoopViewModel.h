@@ -1,16 +1,18 @@
 #pragma once
 // Pure state-to-controls/view model. No font, artwork, decoder or pixel canvas.
 #include "CoopSession.h"
+#include "CoopDiagnostics.h"
 namespace coopview {
 using coopui::Rect;
 inline constexpr Rect kExit={266,2,50,18},kHost={16,181,136,38},kAccept=kHost,kDecline={168,181,136,38};
 inline constexpr Rect kJoin[4]={{168,50,136,27},{168,80,136,27},{168,110,136,27},{168,140,136,27}};
 inline constexpr Rect kTerminalReturn={48,180,224,38};
+inline constexpr Rect kDiagnostics={214,2,48,18},kRecoveryCancel={66,116,188,32};
 inline constexpr Rect kArena={3,42,314,106},kEvent={4,150,312,14};
 inline constexpr Rect kStats[2]={{4,166,154,31},{162,166,154,31}};
 enum class Screen:uint8_t {Lobby,Hosting,Searching,JoinReady,ConfirmPeer,Connecting,Playing,Ended,Unavailable};
 enum class EndReason:uint8_t {None,Won,Lost,Left,PeerLeft,LinkLost,Protocol,Ineligible,JoinTimeout,InviteExpired,Declined,Busy};
-enum class Control:uint8_t {None,Exit,Host,Join0,Join1,Join2,Join3,Accept,Decline};
+enum class Control:uint8_t {None,Exit,Host,Join0,Join1,Join2,Join3,Accept,Decline,Diagnostics,ReturnLobby};
 enum class LobbyNotice:uint8_t {None,Declined,Busy,PeerExpired,SendFailed,InviteExpired};
 struct PeerView {bool present=false,available=true;coop::Actor profile{};uint16_t tag=0;};
 struct ViewModel {
@@ -19,11 +21,14 @@ struct ViewModel {
  bool hasLocal=false,hasPeer=false,artReady=true,allowHost=true,allowJoin=true,allowAccept=false;
  bool showDecisionCountdown=false,synchronizing=false;uint8_t decisionSeconds=0;
  uint8_t local=0;uint32_t roomCode=0;
+ bool linkTools=false,diagnostics=false,recovering=false;uint8_t dots=0;
+ coopdiag::Snapshot link{};
 };
 // Pure presentation adapter: state inspection only, never tick/expire/discover here.
-inline ViewModel model(const coopplatform::Session& session,bool artReady){
+inline ViewModel model(const coopplatform::Session& session,bool artReady,bool diagnostics=false){
  ViewModel v;v.artReady=artReady;v.localProfile=session.localProfile();v.hasLocal=v.localProfile.kind==coop::Kind::Player;v.local=v.localProfile.owner;
  v.roomCode=uint32_t(session.sessionToken());const auto* pending=session.pendingPeer();if(pending){v.peerProfile=pending->profile;v.hasPeer=true;}
+ v.diagnostics=diagnostics;v.recovering=session.recovering();v.dots=uint8_t((session.observedTime()/350)%3+1);
  for(size_t i=0;i<coopplatform::Session::kMaxPeers;++i)if(const auto* p=session.peer(i)){v.peers[i].present=true;v.peers[i].available=p->available;v.peers[i].profile=p->profile;v.peers[i].tag=uint16_t(p->sessionToken);}
  using S=coopplatform::SessionState;switch(session.state()){
   case S::Closed:v.screen=Screen::Unavailable;break;case S::Browsing:v.screen=Screen::Lobby;break;
@@ -51,6 +56,10 @@ inline ViewModel model(const coopplatform::Session& session,bool artReady){
 inline Control hitTest(const ViewModel& v,int32_t x,int32_t y){
  if(x<0||x>=320||y<0||y>=240)return Control::None;
  if(kExit.contains(x,y))return Control::Exit;
+ if(v.linkTools&&kDiagnostics.contains(x,y))return Control::Diagnostics;
+ if(v.diagnostics)return Control::None;
+ if(v.recovering)return kRecoveryCancel.contains(x,y)?Control::ReturnLobby:Control::None;
+ if(v.linkTools&&(v.screen==Screen::Ended)&&(v.end==EndReason::LinkLost||v.end==EndReason::JoinTimeout)&&kTerminalReturn.contains(x,y))return Control::ReturnLobby;
  if((v.screen==Screen::Ended||v.screen==Screen::Unavailable)&&kTerminalReturn.contains(x,y))return Control::Exit;
  if(v.screen==Screen::Lobby||v.screen==Screen::JoinReady||v.screen==Screen::Searching){
   if(v.allowHost&&kHost.contains(x,y))return Control::Host;

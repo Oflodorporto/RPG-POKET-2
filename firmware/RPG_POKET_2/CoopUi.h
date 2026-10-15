@@ -7,6 +7,7 @@
 namespace rpg {struct Game;}
 namespace coopplatform {class Session;class Input;}
 namespace coopradio {class Device;}
+namespace coopview {struct ViewModel;}
 extern coopplatform::Session coopSession;
 extern coopplatform::Input coopInput;
 extern coopradio::Device coopDevice;
@@ -18,5 +19,6 @@ bool open(const rpg::Game& game,bool blocked,uint64_t entropy,uint32_t now);
 void capture(bool valid,bool down,int x,int y,uint32_t now);
 TickResult tick(uint32_t now);
 bool close(); // Immediate, idempotent control cleanup; returns Wi-Fi restore OK.
+coopview::ViewModel view(bool artReady);
 }
 #endif

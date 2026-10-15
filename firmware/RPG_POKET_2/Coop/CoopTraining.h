@@ -60,6 +60,7 @@ public:
  uint32_t generationId()const{return sessionSerial;}
  const Binding& binding()const{return bound;}
  void stop(){running=false;bound={};endpoint={};ui={};touch.reset();samples.clear();sampleOverflow=false;}
+ void cancelInput(uint32_t now){++inputGeneration;touch.cancel(ui,endpoint,now);touch.reset();samples.clear();sampleOverflow=false;}
  void tick(uint32_t now,bool allowEnemyStep=true){if(running){endpoint.tick(now,allowEnemyStep);syncInput(now);}}
  // Safe from same-thread FrameBuffer checkpoints: captures only, never resolves.
  // Not an ISR API. Never call dispatchSamples from inside a renderer/checkpoint.

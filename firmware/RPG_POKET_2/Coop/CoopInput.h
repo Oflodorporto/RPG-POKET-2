@@ -8,6 +8,7 @@ class Input {
  struct Sample {bool valid=false,down=false;int16_t x=0,y=0;uint32_t now=0;uint64_t stamp=0;};
  coop::Queue<Sample,16> queue{};bool overflow=false,armed=false,down=false,releasing=false;
  uint32_t releaseAt=0;uint64_t pressedStamp=0;coopview::Control pressed=coopview::Control::None;
+ bool diagnostics=false,modalSeen=false,lastRecovering=false;
  static uint64_t mix(uint64_t h,uint64_t n){for(unsigned i=0;i<8;++i){h^=uint8_t(n>>(8*i));h*=1099511628211ULL;}return h;}
  static uint64_t identity(const Peer* p,uint64_t h){
   h=mix(h,p&&p->valid);if(!p)return h;for(auto b:p->mac.bytes)h=mix(h,b);
@@ -17,16 +18,26 @@ class Input {
  void cancel(){armed=down=releasing=false;pressed=coopview::Control::None;pressedStamp=0;}
 public:
  uint32_t dropped=0,stale=0;
+ bool diagnosticsOpen()const{return diagnostics;}
+ void setDiagnostics(bool value,Session& session,uint32_t now){reset();diagnostics=value;session.training().cancelInput(now);}
  static uint64_t fingerprint(const Session& session){
   uint64_t h=mix(1469598103934665603ULL,uint8_t(session.state()));h=mix(h,session.sessionToken());h=mix(h,session.joinToken());
-  h=identity(session.pendingPeer(),h);for(size_t i=0;i<Session::kMaxPeers;++i)h=identity(session.peer(i),h);return h;
+  h=mix(h,session.recovering());h=identity(session.pendingPeer(),h);for(size_t i=0;i<Session::kMaxPeers;++i)h=identity(session.peer(i),h);return h;
  }
- void reset(){queue.clear();overflow=false;cancel();}
+ void reset(){queue.clear();overflow=false;cancel();diagnostics=false;modalSeen=false;}
+ uint64_t stamp(const Session& session)const{return mix(fingerprint(session),diagnostics);}
+ void syncModal(Session& session,uint32_t now){
+  const bool value=session.recovering();if(!modalSeen||value!=lastRecovering){
+   if(modalSeen){queue.clear();overflow=false;cancel();session.training().cancelInput(now);}
+   modalSeen=true;lastRecovering=value;
+  }
+ }
  void capture(Session& session,bool valid,bool touching,int32_t px,int32_t py,uint32_t now){
-  if(session.state()==SessionState::Playing)session.training().captureSample(valid,touching,px,py,now);
+  syncModal(session,now);
+  if(session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().captureSample(valid,touching,px,py,now);
   if(overflow){++dropped;return;}
   const auto p=toLandscape(px,py);
-  Sample sample{valid&&(!touching||p.x>=0),touching,p.x,p.y,now,fingerprint(session)};
+  Sample sample{valid&&(!touching||p.x>=0),touching,p.x,p.y,now,stamp(session)};
   // Rendering can capture many identical levels before the loop dispatches.
   // Keep the first AND latest time of each unchanged run: release debounce
   // needs its start, while every error, edge, drag and state stamp must survive.
@@ -38,10 +49,11 @@ public:
   if(!queue.push(sample)){++dropped;queue.clear();overflow=true;}
  }
  coopview::Control dispatch(Session& session,uint32_t now){
-  if(overflow){queue.clear();overflow=false;cancel();if(session.state()==SessionState::Playing)session.training().dispatchSamples(now);return coopview::Control::None;}
+  syncModal(session,now);
+  if(overflow){queue.clear();overflow=false;cancel();session.training().cancelInput(now);return coopview::Control::None;}
   Sample s{};while(queue.pop(s)){
-   if(!s.valid||s.stamp!=fingerprint(session)){if(s.stamp!=fingerprint(session))++stale;cancel();continue;}
-   auto hit=coopview::hitTest(coopview::model(session,true),s.x,s.y);
+   if(!s.valid||s.stamp!=stamp(session)){if(s.stamp!=stamp(session))++stale;cancel();continue;}
+   auto view=coopview::model(session,true,diagnostics);view.linkTools=true;auto hit=coopview::hitTest(view,s.x,s.y);
    if(s.down){
     releasing=false;if(!down){if(!armed)continue;down=true;armed=false;pressed=hit;pressedStamp=s.stamp;}
     else if(hit!=pressed)pressed=coopview::Control::None;
@@ -53,7 +65,7 @@ public:
     if(result!=coopview::Control::None&&pressedStamp==s.stamp){queue.clear();cancel();return result;}
    }else armed=true;
   }
-  if(session.state()==SessionState::Playing)session.training().dispatchSamples(now);
+  if(session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().dispatchSamples(now);
   return coopview::Control::None;
  }
 };
