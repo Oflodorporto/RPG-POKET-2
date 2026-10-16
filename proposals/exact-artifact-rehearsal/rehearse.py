@@ -278,9 +278,19 @@ def current_identity(orchestrator, environment):
     return {name: environment[name] for name in (*expected, 'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT')}
 
 
-def api(endpoint, destination, pages=False):
+def api(endpoint, destination, pages=False, raw_file=False):
     command = ['gh', 'api', '--hostname', 'github.com', '--method', 'GET',
                '-H', 'Accept: application/vnd.github+json', '-H', 'X-GitHub-Api-Version: 2022-11-28']
+    if raw_file:
+        base = '/repos/' + PIN['repository']
+        expected = {base + '/actions/jobs/' + str(PIN['job_id']) + '/logs': 'job.log',
+                    base + '/actions/artifacts/' + str(PIN['artifact_id']) + '/zip': 'qualified.zip'}
+        require(not pages and expected.get(endpoint) == destination.name,
+                'Raw transport is restricted to the pinned log/archive file destinations')
+        # gh guards non-JSON responses even when stdout is redirected. These bytes
+        # go only to an exclusive binary file, never a terminal, and are SHA-pinned
+        # before interpretation. JSON responses retain gh's default escape guard.
+        command += ['--allow-escape-sequences']
     if pages:
         command += ['--paginate', '--slurp']
     with destination.open('xb') as stream:
@@ -301,7 +311,8 @@ def fetch_inputs(folder):
         'job.log': base + '/actions/jobs/' + str(PIN['job_id']) + '/logs',
         'qualified.zip': base + '/actions/artifacts/' + str(PIN['artifact_id']) + '/zip'}
     for name, endpoint in endpoints.items():
-        api(endpoint, folder / name, pages=name in ('jobs.json', 'artifacts.json'))
+        api(endpoint, folder / name, pages=name in ('jobs.json', 'artifacts.json'),
+            raw_file=name in ('job.log', 'qualified.zip'))
     elapsed = time.monotonic_ns() - started
     require(elapsed <= 300 * 1_000_000_000, 'API acquisition exceeded five-minute freshness window; retry in a fresh workspace')
     write(folder / 'fetch.json', {'started_at': started_at, 'completed_at': datetime.now(timezone.utc).isoformat(),

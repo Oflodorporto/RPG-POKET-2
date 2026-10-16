@@ -260,7 +260,87 @@ class SetupAndWorkflow(unittest.TestCase):
             argv = call.call_args.args[0]
             self.assertEqual(argv[argv.index('--method')+1],'GET')
             self.assertIn('--paginate',argv); self.assertIn('--slurp',argv)
+            self.assertNotIn('--allow-escape-sequences',argv)
             self.assertEqual(call.call_args.kwargs['timeout'],180)
+
+    def test_raw_api_preserves_binary_and_ansi_only_in_files(self):
+        payload = b'\xef\xbb\xbf\x1b[31mqualified log\x1b[0m\r\n\x1b]8;;https://example.invalid\x07link\x1b]8;;\x07PK\x00\xff\x1b'
+        base = '/repos/' + r.PIN['repository']
+        for endpoint, name in [(base+'/actions/jobs/'+str(r.PIN['job_id'])+'/logs','job.log'),
+                               (base+'/actions/artifacts/'+str(r.PIN['artifact_id'])+'/zip','qualified.zip')]:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as tmp:
+                target = Path(tmp)/name
+                def fake_run(argv, **kwargs):
+                    self.assertEqual(argv[argv.index('--method')+1],'GET')
+                    self.assertEqual(argv[-1],endpoint)
+                    self.assertEqual(argv.count('--allow-escape-sequences'),1)
+                    self.assertNotIn('--paginate',argv)
+                    self.assertTrue(kwargs['check']); self.assertEqual(kwargs['timeout'],180)
+                    stream = kwargs['stdout']
+                    self.assertEqual(Path(stream.name),target)
+                    self.assertFalse(stream.isatty())
+                    stream.write(payload)
+                with patch.object(r.subprocess,'run',side_effect=fake_run):
+                    r.api(endpoint,target,raw_file=True)
+                self.assertEqual(target.read_bytes(),payload)
+
+    def test_raw_api_rejects_unpinned_endpoints_names_and_pagination(self):
+        base = '/repos/' + r.PIN['repository']
+        good = base+'/actions/jobs/'+str(r.PIN['job_id'])+'/logs'
+        cases = [(base+'/actions/jobs/1/logs','job.log',False),
+                 (good.replace(r.PIN['repository'],'someone/else'),'job.log',False),
+                 (good+'/extra','job.log',False),(good+'?raw=1','job.log',False),
+                 (base+'/actions/artifacts/1/zip','qualified.zip',False),
+                 (base+'/git/ref/heads/main','job.log',False),
+                 (good,'response.json',False),(good,'job.log',True)]
+        with tempfile.TemporaryDirectory() as tmp, patch.object(r.subprocess,'run') as call:
+            for endpoint,name,pages in cases:
+                with self.subTest(endpoint=endpoint,name=name,pages=pages):
+                    with self.assertRaisesRegex(r.Rejected,'restricted'):
+                        r.api(endpoint,Path(tmp)/name,pages=pages,raw_file=True)
+                    self.assertFalse((Path(tmp)/name).exists())
+            call.assert_not_called()
+
+    def test_raw_api_refuses_existing_or_symlink_output(self):
+        endpoint = '/repos/'+r.PIN['repository']+'/actions/jobs/'+str(r.PIN['job_id'])+'/logs'
+        with tempfile.TemporaryDirectory() as tmp, patch.object(r.subprocess,'run') as call:
+            target = Path(tmp)/'job.log'; target.write_bytes(b'original')
+            with self.assertRaises(FileExistsError): r.api(endpoint,target,raw_file=True)
+            self.assertEqual(target.read_bytes(),b'original')
+            target.unlink(); other = Path(tmp)/'other'; other.write_bytes(b'untouched')
+            target.symlink_to(other)
+            with self.assertRaises(FileExistsError): r.api(endpoint,target,raw_file=True)
+            self.assertEqual(other.read_bytes(),b'untouched')
+            call.assert_not_called()
+
+    def test_raw_api_failure_and_timeout_propagate(self):
+        endpoint = '/repos/'+r.PIN['repository']+'/actions/jobs/'+str(r.PIN['job_id'])+'/logs'
+        for error in (subprocess.CalledProcessError(1,['gh','api']),subprocess.TimeoutExpired(['gh','api'],180)):
+            with self.subTest(error=type(error).__name__), tempfile.TemporaryDirectory() as tmp:
+                with patch.object(r.subprocess,'run',side_effect=error):
+                    with self.assertRaises(type(error)):
+                        r.api(endpoint,Path(tmp)/'job.log',raw_file=True)
+
+    def test_all_json_acquisitions_keep_escape_guard_including_main_after(self):
+        base = '/repos/'+r.PIN['repository']; run = base+'/actions/runs/'+str(r.PIN['run_id'])
+        endpoints = [run,run+'/attempts/1',run+'/attempts/1/jobs?per_page=100',
+                     run+'/artifacts?per_page=100',base+'/actions/artifacts/'+str(r.PIN['artifact_id']),
+                     base+'/git/commits/'+r.PIN['source_commit'],base+'/git/ref/heads/main']
+        with tempfile.TemporaryDirectory() as tmp, patch.object(r.subprocess,'run') as call:
+            for i,endpoint in enumerate(endpoints):
+                r.api(endpoint,Path(tmp)/(str(i)+'.json'),pages='?per_page=' in endpoint)
+                self.assertNotIn('--allow-escape-sequences',call.call_args.args[0])
+            r.api(base+'/git/ref/heads/main',Path(tmp)/'main-after.json')
+            self.assertNotIn('--allow-escape-sequences',call.call_args.args[0])
+
+    def test_fetch_raw_transport_is_used_for_exactly_two_files(self):
+        with tempfile.TemporaryDirectory() as tmp, patch.object(r,'api') as call:
+            r.fetch_inputs(Path(tmp))
+            self.assertEqual(len(call.call_args_list),9)
+            for invocation in call.call_args_list:
+                name = invocation.args[1].name
+                self.assertEqual(invocation.kwargs['raw_file'],name in ('job.log','qualified.zip'))
+                self.assertEqual(invocation.kwargs['pages'],name in ('jobs.json','artifacts.json'))
 
     def test_slow_api_acquisition_is_not_fresh(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(r,'api'), patch.object(r.time,'monotonic_ns',side_effect=[0,301_000_000_000]):
