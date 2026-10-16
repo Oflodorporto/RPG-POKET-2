@@ -179,7 +179,11 @@ class Fixture:
             checkpoints[name] = {'status': 'passed', 'commands': argv, 'seconds': 0.25,
                                  'log_sha256': digest(log)['sha256']}
         members[root + 'checkpoints.json'] = data(checkpoints)
-        members['source/build/coopdiag77-tests.log'] = ''.join('RUN ' + name + '\nPASSED ' + name + '\n' for name in commands).encode()
+        preflight = 'RUN preparation\nPASSED preparation\nRESUME skip preparation\n'
+        members['source/build/coopdiag77-tests.log'] = (
+            preflight + adapter.AGGREGATE_START + '\n' +
+            ''.join('RUN ' + name + '\nPASSED ' + name + '\n' for name in commands) +
+            json.dumps(summary, sort_keys=True) + '\n').encode()
         builds = {str(flag): {'feature_enabled': bool(flag), 'image': release['firmware.bin'] if flag else digest(b'off'),
                   'effective_options': {'default_arduino_enabled': bool(flag), 'fqbn': comparison.FQBN,
                                         'explicit_override': None if flag else 0, 'options_sha256': 'f' * 64}}
@@ -416,7 +420,14 @@ class Tests(unittest.TestCase):
             self.fixture.change_json(root + 'checkpoints.json', change, refresh=True)
             self.fixture.write()
             self.reject()
-        for log in (b'RESUME skip preparation\n', b'RUN preparation\n'):
+        log = original['source/build/coopdiag77-tests.log']
+        boundary = (adapter.AGGREGATE_START + '\n').encode()
+        for log in (b'RESUME skip preparation\n', b'RUN preparation\n',
+                    log.replace(boundary, boundary + b'RESUME skip preparation\n'),
+                    log.replace(boundary + b'RUN preparation\n', boundary),
+                    log.replace(boundary, boundary + b'RUN preparation\n'),
+                    log.replace(b'PASSED preparation\n', b''),
+                    log.replace(boundary, b''), log + boundary):
             self.fixture.members['cold'] = deepcopy(original)
             self.fixture.members['cold']['source/build/coopdiag77-tests.log'] = log
             self.fixture.refresh_inventory(self.fixture.members['cold'])

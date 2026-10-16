@@ -533,9 +533,7 @@ def validate_evidence(archive, partial):
                 entry.get('log_sha256') == archive.digest(aggregate_root + name + '.log', MAX_LOG)['sha256'],
                 'Checkpoint command/status/log mismatch: ' + name)
     aggregate_log = archive.read('source/build/coopdiag77-tests.log', MAX_LOG).decode('utf-8', errors='replace')
-    run_names = re.findall(r'^RUN (.+)$', aggregate_log, re.M)
-    require('RESUME skip ' not in aggregate_log and len(run_names) == 157 and set(run_names) == set(commands),
-            'Aggregate did not freshly run all 157 groups')
+    adapter.validate_aggregate_transcript(aggregate_log, commands, summary)
     inventory = archive.json('source-artifact-inventory.json')
     require(type(inventory) is dict and inventory, 'Missing staged source artifact inventory')
     require(set(inventory) == {name.removeprefix('source/') for name in archive.members if name.startswith('source/')},

@@ -316,5 +316,76 @@ class AdapterTests(unittest.TestCase):
             a.json_read(path)
 
 
+class AggregateTranscriptTests(unittest.TestCase):
+    def setUp(self):
+        plan = json.loads((HERE.parents[1] / 'reviewed-plan.json').read_text())
+        self.commands = {'preparation': plan['preparation'], **dict(plan['tasks'])}
+        self.summary = {'source_sha256': '7' * 64, 'all_passed': True, 'tasks': 157,
+                        'failed': [], 'lsan': 'detect_leaks=1', 'esp32_build': False, 'publication': False}
+        # The frozen preflight runs 4-, 5- and 9-group mocked plans plus seven
+        # intentional resume probes. Some names overlap the real aggregate.
+        self.prelude = ''.join('RUN preparation\nPASSED preparation\n' for _ in range(18))
+        self.prelude += 'RESUME skip preparation\n' * 7
+        self.prelude += json.dumps({**self.summary, 'source_sha256': 'a' * 64, 'tasks': 9}) + '\n'
+        self.events = ''.join('RUN ' + name + '\nPASSED ' + name + '\n' for name in self.commands)
+        self.finish = json.dumps(self.summary) + '\n'
+        self.log = self.prelude + a.AGGREGATE_START + '\n' + self.events + self.finish + 'PASS trailing gates\n'
+
+    def verify(self, log):
+        a.validate_aggregate_transcript(log, self.commands, self.summary)
+
+    def test_nested_resume_and_runs_do_not_contaminate_fresh_aggregate(self):
+        self.assertEqual(self.log.count('RUN '), 175)
+        self.assertEqual(self.log.count('RESUME skip '), 7)
+        self.verify(self.log)
+
+    def test_concurrent_tasks_may_interleave_after_preparation(self):
+        names = list(self.commands)[1:]
+        events = ('RUN preparation\nPASSED preparation\n' +
+                  ''.join('RUN ' + name + '\n' for name in names) +
+                  ''.join('PASSED ' + name + '\n' for name in reversed(names)))
+        self.verify(self.log.replace(self.events, events))
+
+    def test_boundaries_summary_and_exact_coverage_fail_closed(self):
+        boundary = a.AGGREGATE_START + '\n'
+        changed_summary = json.dumps({**self.summary, 'tasks': 156}) + '\n'
+        variants = {
+            'missing start': self.log.replace(boundary, ''),
+            'duplicate start': self.log + boundary,
+            'changed start': self.log.replace('PASS: 113 exact-SHA', 'PASS: 114 exact-SHA'),
+            'missing summary': self.log.replace(self.finish, ''),
+            'duplicate summary': self.log + self.finish,
+            'wrong summary': self.log.replace(self.finish, changed_summary),
+            'reversed boundaries': self.finish + boundary + self.events,
+            'wrong source summary': self.log.replace(self.finish, self.finish.replace('7' * 64, '8' * 64)),
+        }
+        for label, log in variants.items():
+            with self.subTest(label=label), self.assertRaises(a.Rejected):
+                self.verify(log)
+
+    def test_progress_rejects_real_resume_missing_duplicate_unknown_and_reordered_events(self):
+        name = list(self.commands)[1]
+        variants = {
+            'real resume': self.events.replace('RUN ' + name, 'RESUME skip ' + name),
+            'extra resume': 'RESUME skip preparation\n' + self.events,
+            'missing run': self.events.replace('RUN ' + name + '\n', ''),
+            'missing pass': self.events.replace('PASSED ' + name + '\n', ''),
+            'duplicate run': self.events + 'RUN ' + name + '\n',
+            'duplicate pass': self.events.replace('RUN ' + name, 'PASSED ' + name),
+            'duplicate task': self.events.replace(name, 'preparation'),
+            'unknown task': self.events.replace(name, 'unknown-task'),
+            'completion before start': self.events.replace('RUN ' + name + '\nPASSED ' + name,
+                                                           'PASSED ' + name + '\nRUN ' + name),
+            'failed task': self.events.replace('PASSED ' + name, 'FAILED ' + name),
+            'unexpected stdout': self.events.replace('RUN ' + name, 'unframed output'),
+            'blank line': self.events + '\n',
+            'late preparation': self.events.replace('RUN preparation\nPASSED preparation\n', '') +
+                                'RUN preparation\nPASSED preparation\n',
+        }
+        for label, events in variants.items():
+            with self.subTest(label=label), self.assertRaises(a.Rejected):
+                self.verify(self.log.replace(self.events, events))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

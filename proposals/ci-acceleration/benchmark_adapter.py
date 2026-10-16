@@ -30,6 +30,9 @@ PINNED = {
     'tools/test_coopdiag77.sh': '5bc9276b407eee326a880336ba6bffb9891d2e25204f6d5e5b118f0f4dcbf12f',
 }
 GENERATED = {'release/firmware.bin', 'release/artes.pak', 'release/manifest.json', 'release/SHA256SUMS'}
+# Last preflight line from the hash-frozen tests/coopdiag77_release_gate.py.
+AGGREGATE_START = ('PASS: 113 exact-SHA, fixed-repository, branch/workflow, '
+                   'live-main drift/API failure and malformed-input gate probes.')
 
 
 class Rejected(ValueError):
@@ -57,6 +60,40 @@ def json_read(path):
             result[key] = value
         return result
     return json.loads(path.read_text(), object_pairs_hook=pairs)
+
+
+def validate_aggregate_transcript(log, commands, summary):
+    """Read only the real runner protocol, not earlier mocked checkpoint probes.
+
+    The frozen shell wrapper runs release-gate probes immediately before the
+    aggregate. Its child commands redirect output to individual checkpoint logs;
+    successful outer stdout is therefore RUN/PASSED pairs and the exact report
+    serialized to summary.json. No last-RUN search or task-name exclusion is used.
+    Callers still validate source/plan/checkpoint hashes and fresh workspaces.
+    """
+    require(type(summary.get('tasks')) is int and summary['tasks'] == 157 and
+            len(commands) == 157 and 'preparation' in commands, 'Expected 157 aggregate groups')
+    lines = log.splitlines()
+    # Match the exact serialization emitted from the same frozen report object.
+    finish = json.dumps(summary)
+    require(lines.count(AGGREGATE_START) == 1 and lines.count(finish) == 1,
+            'Missing or duplicate aggregate transcript boundary')
+    start, end = lines.index(AGGREGATE_START), lines.index(finish)
+    require(start < end, 'Aggregate transcript boundaries out of order')
+    progress = lines[start + 1:end]
+    require(len(progress) == 314, 'All 157 fresh RUN/PASSED pairs required')
+    require(progress[:2] == ['RUN preparation', 'PASSED preparation'],
+            'Preparation must finish before aggregate task groups')
+    state = dict.fromkeys(commands)
+    for line in progress:
+        status, _, name = line.partition(' ')
+        require(status in ('RUN', 'PASSED') and name in state,
+                'Unexpected aggregate progress line: ' + line[:120])
+        require(state[name] is None if status == 'RUN' else state[name] == 'RUN',
+                'Duplicate or out-of-order aggregate progress: ' + name)
+        state[name] = status
+    require(all(status == 'PASSED' for status in state.values()),
+            'All 157 fresh aggregate completions required')
 
 
 def git(root, *args):

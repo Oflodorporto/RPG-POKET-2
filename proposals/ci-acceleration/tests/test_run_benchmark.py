@@ -457,7 +457,11 @@ class AggregateTests(Fixture):
         r.write_json(root / 'source-manifest.json', manifest)
         r.write_json(root / 'checkpoints.json', checkpoints)
         r.write_json(root / 'plan.json', {'focused': False, 'tasks': plan['tasks'], 'source_sha256': manifest['sha256']})
-        (self.source / 'build/coopdiag77-tests.log').write_text(''.join('RUN ' + name + '\n' for name in commands))
+        preflight = 'RUN preparation\nPASSED preparation\nRESUME skip preparation\n'
+        (self.source / 'build/coopdiag77-tests.log').write_text(
+            preflight + r.adapter.AGGREGATE_START + '\n' +
+            ''.join('RUN ' + name + '\nPASSED ' + name + '\n' for name in commands) +
+            json.dumps(summary, sort_keys=True) + '\n')
         return state, plan, root, summary
 
     def test_all_157_fresh_groups_plan_and_log_digests_required(self):
@@ -474,10 +478,15 @@ class AggregateTests(Fixture):
         log = self.source / 'build/coopdiag77-tests.log'
         original = log.read_text()
         with patch.object(r.comparison, 'SOURCE_INVENTORY_SHA256', summary['source_sha256']):
-            for text in (original + 'RESUME skip preparation\n', original.replace('RUN preparation\n', ''),
-                         original + 'RUN preparation\n'):
+            boundary = r.adapter.AGGREGATE_START + '\n'
+            for text in (original.replace(boundary, boundary + 'RESUME skip preparation\n'),
+                         original.replace(boundary + 'RUN preparation\n', boundary),
+                         original.replace(boundary, boundary + 'RUN preparation\n'),
+                         original.replace(boundary, ''), original + boundary,
+                         original.replace('PASSED preparation\n', ''),
+                         original + json.dumps(summary, sort_keys=True) + '\n'):
                 log.write_text(text)
-                with self.assertRaises(r.Rejected):
+                with self.subTest(text=text[:100]), self.assertRaises((r.Rejected, r.adapter.Rejected)):
                     r.verify_aggregate(self.source, state, plan)
 
     def test_groups_sanitizers_and_reviewed_source_inventory_fail_closed(self):

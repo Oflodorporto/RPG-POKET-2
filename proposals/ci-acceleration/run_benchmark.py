@@ -403,9 +403,7 @@ def verify_aggregate(source, state, plan):
         require(entry['status'] == 'passed' and entry['commands'] == expected and
                 entry['log_sha256'] == digest(regular(root / (name + '.log'))), 'Checkpoint mismatch: ' + name)
     log = regular(source / 'build/coopdiag77-tests.log').read_text(errors='replace')
-    require('RESUME skip ' not in log, 'Resumed or skipped aggregate task')
-    run_names = re.findall(r'^RUN (.+)$', log, re.M)
-    require(len(run_names) == 157 and set(run_names) == set(commands), 'All 157 fresh group executions required')
+    adapter.validate_aggregate_transcript(log, commands, summary)
     return summary
 
 
