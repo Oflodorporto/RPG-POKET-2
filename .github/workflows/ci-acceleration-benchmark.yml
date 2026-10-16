@@ -6,6 +6,9 @@ name: Benchmark coopdiag77 cold and warm without publication
 on:
   push:
     branches: [bench/coopdiag77-cache-promotion]
+    paths:
+      - '.github/workflows/ci-acceleration-benchmark.yml'
+      - 'proposals/ci-acceleration/**'
 
 permissions:
   contents: read
@@ -26,7 +29,7 @@ env:
 
 jobs:
   cold:
-    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion'
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion' && !contains(github.event.head_commit.message, '[exact-rehearsal-only]')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     outputs:
@@ -104,7 +107,7 @@ jobs:
 
   warm:
     needs: cold
-    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion'
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion' && !contains(github.event.head_commit.message, '[exact-rehearsal-only]')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     outputs:
@@ -194,7 +197,7 @@ jobs:
 
   compare:
     needs: [cold, warm]
-    if: always() && github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion'
+    if: always() && github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion' && !contains(github.event.head_commit.message, '[exact-rehearsal-only]')
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:

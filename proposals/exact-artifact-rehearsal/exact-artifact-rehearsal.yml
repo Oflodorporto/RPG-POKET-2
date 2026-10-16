@@ -1,0 +1,73 @@
+# LOCAL DEPLOY PROPOSAL. Remote activation still requires separate authorization.
+name: Rehearse exact historical artifact without publication
+on:
+  push:
+    branches: [bench/coopdiag77-cache-promotion]
+    paths:
+      - '.github/workflows/exact-artifact-rehearsal.yml'
+      - 'proposals/exact-artifact-rehearsal/**'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: coopdiag77-exact-rehearsal-${{ github.ref }}
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash --noprofile --norc -euo pipefail {0}
+env:
+  RPG_DETECT_LEAKS: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  rehearse:
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/bench/coopdiag77-cache-promotion'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Checkout independent orchestrator
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          path: orchestrator
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Checkout exact qualified product source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3
+          path: source
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install only fresh pinned host wheels
+        run: |
+          python3 orchestrator/proposals/exact-artifact-rehearsal/setup_host.py --workspace "$RUNNER_TEMP/rehearsal-host"
+          echo "$RUNNER_TEMP/rehearsal-host/venv/bin" >> "$GITHUB_PATH"
+      - name: Test read-only rehearsal guards
+        run: |
+          python3 orchestrator/proposals/exact-artifact-rehearsal/tests/test_rehearse.py
+          python3 -O orchestrator/proposals/exact-artifact-rehearsal/tests/test_rehearse.py
+      - name: Fetch historical artifact and recheck copied exact bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 orchestrator/proposals/exact-artifact-rehearsal/rehearse.py \
+            --source "$GITHUB_WORKSPACE/source" \
+            --orchestrator "$GITHUB_WORKSPACE/orchestrator" \
+            --setup-report "$RUNNER_TEMP/rehearsal-host/setup.json" \
+            --work "$RUNNER_TEMP/exact-rehearsal"
+      - name: Preserve rehearsal evidence only
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: exact-rehearsal-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/exact-rehearsal/report.json
+            ${{ runner.temp }}/exact-rehearsal/commands.json
+            ${{ runner.temp }}/exact-rehearsal/hashes-*.json
+            ${{ runner.temp }}/exact-rehearsal/*.log
+            ${{ runner.temp }}/exact-rehearsal/api/*.json
+            ${{ runner.temp }}/rehearsal-host/setup.json
+            ${{ runner.temp }}/rehearsal-host/install.log
+          if-no-files-found: error
+          retention-days: 14
+          overwrite: false

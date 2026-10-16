@@ -58,7 +58,8 @@ class WorkflowTests(unittest.TestCase):
         self.jobs = self.workflow['jobs']
 
     def test_exact_push_branch_is_only_entry_point(self):
-        self.assertEqual(self.workflow['on'], {'push': {'branches': [BRANCH]}})
+        self.assertEqual(self.workflow['on'], {'push': {'branches': [BRANCH],
+            'paths': ['.github/workflows/ci-acceleration-benchmark.yml', 'proposals/ci-acceleration/**']}})
         self.assertEqual(set(self.jobs), {'cold', 'warm', 'compare'})
         for job in self.jobs.values():
             expression = job['if']
@@ -66,6 +67,7 @@ class WorkflowTests(unittest.TestCase):
             self.assertIn("github.event_name == 'push'", expression)
             self.assertIn("github.ref == 'refs/heads/" + BRANCH + "'", expression)
             self.assertNotIn('||', expression)
+            self.assertTrue(expression.endswith(" && !contains(github.event.head_commit.message, '[exact-rehearsal-only]')"))
 
     def test_least_privilege_and_no_permission_override(self):
         self.assertEqual(self.workflow['permissions'], {'contents': 'read', 'actions': 'read'})

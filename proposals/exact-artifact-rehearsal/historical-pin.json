@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "repository": "Oflodorporto/RPG-POKET-2",
+  "repository_id": 1406710021,
+  "source_commit": "6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "source_tree": "5ad62cddfe052bea09bf99c29989731722088981",
+  "source_parent": "c8738eb67bde3817feaab9f3a53c30607396a5f5",
+  "branch": "feat/coopdiag77-release",
+  "workflow_id": 385717456,
+  "workflow_path": ".github/workflows/coopdiag77-check.yml",
+  "workflow_sha256": "abd57a7fee5268b1b2a1627fbacffff24b1a4dbee52a0c38b2fa9a75114609ce",
+  "run_id": 38762209168,
+  "attempt": 1,
+  "job_id": 116516146624,
+  "job_name": "validate",
+  "artifact_id": 11990837049,
+  "artifact_name": "coopdiag77-6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "zip_bytes": 113558660,
+  "zip_sha256": "911b02cd4602251a1f6aa1656017282cf97f9a34af0e9e27629eb3341f52a737",
+  "zip_members": 2652,
+  "member_names_sha256": "83c65c7cb5fa28e73cda8d805c926e994aea1e1a1cbf1133ae25994cb74d9acf",
+  "job_log_sha256": "913a8f6ab7ac9bd7e83ff452a308a2a09193c47c24db795000eb4a4af8509e38",
+  "payload": {
+    "firmware.bin": {
+      "bytes": 2964656,
+      "sha256": "f4b7fd36e3cf4d66f5b9e5563ba09baf38e25dff0a53f1529e860b35fb83efb7"
+    },
+    "artes.pak": {
+      "bytes": 7470928,
+      "sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56"
+    },
+    "manifest.json": {
+      "bytes": 1228,
+      "sha256": "6774d558419032f833e2e4c00a82ae55d9d55ac0844c9a79146b098a2ce730d5"
+    }
+  },
+  "source_inventory_sha256": "7c81909372ead3217d0133fb49d74e877206a5a6031faaf933b09d59ea03a6fe",
+  "plan_sha256": "244e8d63d05fc55ad35c493abb2fca6ba398d1618bef91f2d00be8965db344a5",
+  "identity_sha256": "77c98cb38736392140e02578f2af282bd6a4acca98ec2ddf5ebba60458ea00a3",
+  "target_evidence_sha256": "1c7210a38b6b5e5d6eb9ed80b3a9b1588166f9c97ac31efa754627aae49c2d5c",
+  "host_compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "cannot_publish": true
+}
