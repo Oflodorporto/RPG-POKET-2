@@ -1,0 +1,69 @@
+{
+  "retrieved_at": "2026-10-15T17:57:00Z",
+  "schema": 1,
+  "sources": [
+    {
+      "bytes": 1902,
+      "path": "sources/arduino-cli-checksums.txt",
+      "representation": "exact response bytes",
+      "sha256": "000ff6e7419aa4b01b0090f43349f5cf7b5613f9129e4906c174604b00c9c0f0",
+      "url": "https://github.com/arduino/arduino-cli/releases/download/v1.5.2-rc.1/1.5.2-rc.1-checksums.txt"
+    },
+    {
+      "bytes": 6006,
+      "path": "sources/arduino-cli-commit.json",
+      "representation": "normalized JSON from GitHub API connector",
+      "sha256": "b071225e87c2cf6cb04e0a758e85568c62cf01f09174fdb66e76416c3fecadd8",
+      "url": "https://api.github.com/repos/arduino/arduino-cli/commits/fef6e48df"
+    },
+    {
+      "bytes": 42041,
+      "path": "sources/arduino-cli-release.json",
+      "representation": "normalized JSON from GitHub API connector",
+      "sha256": "82cfbd4074bf8fc43027cb3acaf2fb5a15d4eb6993c0483d2fa37a0983adbbeb",
+      "url": "https://api.github.com/repos/arduino/arduino-cli/releases/tags/v1.5.2-rc.1"
+    },
+    {
+      "bytes": 404,
+      "path": "sources/arduino-cli-tag.json",
+      "representation": "normalized JSON from GitHub API connector",
+      "sha256": "7f4692e491a5cad7b8404fec5ed87508dec97c02b3325f098770b9b68ad79669",
+      "url": "https://api.github.com/repos/arduino/arduino-cli/git/ref/tags/v1.5.2-rc.1"
+    },
+    {
+      "bytes": 39553,
+      "path": "sources/esp32-release.json",
+      "representation": "normalized JSON from GitHub API connector",
+      "sha256": "26bfe07bb508d34a99ecdafba8dff18734886e673366045b93777694b1c17f5e",
+      "url": "https://api.github.com/repos/espressif/arduino-esp32/releases/tags/3.3.12"
+    },
+    {
+      "bytes": 651419,
+      "path": "sources/package_esp32_index.json",
+      "representation": "exact response bytes",
+      "sha256": "d5f26e5ee0b06c8e2c66c2196aa16fdffdbbc317c832159795f2caa5405d0f7d",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/package_esp32_index.json"
+    },
+    {
+      "bytes": 1724028,
+      "path": "sources/package_index.json",
+      "representation": "exact response bytes",
+      "sha256": "8c205d493d047027c25d61202ba5928ce6b91119237c9120e3befbb39cab939e",
+      "url": "https://downloads.arduino.cc/packages/package_index.json"
+    },
+    {
+      "bytes": 198004,
+      "path": "sources/pillow-11.3.0.pypi.json",
+      "representation": "exact response bytes",
+      "sha256": "217a86cee1e6e85a4e6ebff889b46211041eb159e0e0d2adeb3f6c257c1643c9",
+      "url": "https://pypi.org/pypi/Pillow/11.3.0/json"
+    },
+    {
+      "bytes": 66402,
+      "path": "sources/pyyaml-6.0.3.pypi.json",
+      "representation": "exact response bytes",
+      "sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def",
+      "url": "https://pypi.org/pypi/PyYAML/6.0.3/json"
+    }
+  ]
+}

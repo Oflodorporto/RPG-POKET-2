@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "audit": "Read-only existing qualified evidence; no test or compile rerun",
+  "source_commit": "6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "source_tree": "5ad62cddfe052bea09bf99c29989731722088981",
+  "source_files_bound": 1178,
+  "source_manifest_sha256": "7c81909372ead3217d0133fb49d74e877206a5a6031faaf933b09d59ea03a6fe",
+  "reviewed_plan_sha256": "244e8d63d05fc55ad35c493abb2fca6ba398d1618bef91f2d00be8965db344a5",
+  "matching_groups": 157,
+  "checkpoint_logs_bytes": 246539,
+  "max_checkpoint_log_bytes": 35602,
+  "payloads": {
+    "firmware.bin": {
+      "bytes": 2964656,
+      "sha256": "f4b7fd36e3cf4d66f5b9e5563ba09baf38e25dff0a53f1529e860b35fb83efb7"
+    },
+    "artes.pak": {
+      "bytes": 7470928,
+      "sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56"
+    },
+    "manifest.json": {
+      "bytes": 1228,
+      "sha256": "6774d558419032f833e2e4c00a82ae55d9d55ac0844c9a79146b098a2ce730d5"
+    }
+  },
+  "cannot_authorize_publication": true,
+  "missing_for_new_capsule": [
+    "Standalone final-byte/OTA logs with exit codes and command binding",
+    "Authenticated transport/API adapter bound to exact artifact and attempt",
+    "New exact artifact approval and one-use lease",
+    "Reviewed fresh-main/tag concurrency protocol",
+    "Public downloads/latest verification in final workflow"
+  ],
+  "no_firmware_requalification_performed": true
+}

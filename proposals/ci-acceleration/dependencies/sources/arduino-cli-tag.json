@@ -1,0 +1,10 @@
+{
+  "ref": "refs/tags/v1.5.2-rc.1",
+  "node_id": "MDM6UmVmMTQ0MDM2ODMzOnJlZnMvdGFncy92MS41LjItcmMuMQ==",
+  "url": "https://api.github.com/repos/arduino/arduino-cli/git/refs/tags/v1.5.2-rc.1",
+  "object": {
+    "sha": "fef6e48df6311752b7bfc0498e53e35f37869560",
+    "type": "commit",
+    "url": "https://api.github.com/repos/arduino/arduino-cli/git/commits/fef6e48df6311752b7bfc0498e53e35f37869560"
+  }
+}

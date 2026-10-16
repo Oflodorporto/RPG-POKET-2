@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "measurement": "Historical publisher observation, not a controlled cache or exact-promotion benchmark. Whole-second API durations, excluding queue.",
+  "run_id": 38770945726,
+  "job_id": 116546276849,
+  "url": "https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38770945726/job/116546276849",
+  "run_attempt": 1,
+  "source_commit": "6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "source_tree": "5ad62cddfe052bea09bf99c29989731722088981",
+  "rest_job_seconds": 3324,
+  "steps": [
+    {
+      "name": "Set up job",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "seconds": 2,
+      "conclusion": "success"
+    },
+    {
+      "name": "Exigir main push e qualificacao bem-sucedida do SHA exato",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Instalar dependencias deterministicas das capturas e gates",
+      "seconds": 3,
+      "conclusion": "success"
+    },
+    {
+      "name": "Executar agregado completo herdado e coop ON com LSan obrigatorio",
+      "seconds": 2491,
+      "conclusion": "success"
+    },
+    {
+      "name": "Run arduino/setup-arduino-cli@v2",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Instalar core ESP32 historico confirmado na placa",
+      "seconds": 56,
+      "conclusion": "success"
+    },
+    {
+      "name": "Compilar SHA exato default ON e fallback OFF fora do sketch",
+      "seconds": 158,
+      "conclusion": "success"
+    },
+    {
+      "name": "Verificar bytes finais e OTA Save29 para30 e Save30 para30",
+      "seconds": 301,
+      "conclusion": "success"
+    },
+    {
+      "name": "Registrar SHA, ambos builds, agregado, capturas e orcamentos",
+      "seconds": 3,
+      "conclusion": "success"
+    },
+    {
+      "name": "Guardar candidato e provas do SHA exato",
+      "seconds": 13,
+      "conclusion": "success"
+    },
+    {
+      "name": "Publicar somente SHA main autorizado apos repetir todos os gates",
+      "seconds": 4,
+      "conclusion": "success"
+    },
+    {
+      "name": "Conferir downloads publicos, OTA real e manifesto latest",
+      "seconds": 285,
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "seconds": 0,
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "seconds": 0,
+      "conclusion": "success"
+    }
+  ],
+  "qualification_rebuild_difference": {
+    "byte_identical": false,
+    "changed_bytes": 67,
+    "ranges_half_open": [
+      [
+        176,
+        208
+      ],
+      [
+        82279,
+        82280
+      ],
+      [
+        82285,
+        82286
+      ],
+      [
+        2964623,
+        2964656
+      ]
+    ],
+    "only_permitted_differences": "ESP application descriptor ELF SHA256, exact source compile date/time, image checksum and appended image SHA256",
+    "normalized_sha256": "3526b81abf965e9fbbbbfed6670a7c75967c8d457c1021546a011102ba40ee84",
+    "descriptor_elf_hash_bound_to_actual_build": true,
+    "qualification_compile_time": "16:24:02",
+    "publication_compile_time": "17:24:09",
+    "qualification_compile_date": "Oct 15 2026",
+    "publication_compile_date": "Oct 15 2026",
+    "compiled_during_exact_publisher_run": true,
+    "instruction_and_data_bytes_identical_outside_enumerated_metadata": true,
+    "manifest_only_firmware_sha256_changed": true
+  },
+  "published_files": {
+    "firmware.bin": {
+      "bytes": 2964656,
+      "sha256": "600fd558cc3d8b2852470f7a48b23250c23a4370f456197a54a8878a673000a6"
+    },
+    "artes.pak": {
+      "bytes": 7470928,
+      "sha256": "14bb1adc47bb3e4bdde510f80d165bc8622129f0422e2aef908e97b079028c56"
+    },
+    "manifest.json": {
+      "bytes": 1228,
+      "sha256": "baa489750d50553c22027a6b5f6853364838f0c927c7144aff43bbfd567744e0"
+    }
+  },
+  "independent_audit_sha256": "de7263eb1cc116352d60e6b1049a4f3ad334e5b3bbd3c4b59a3be27ebde95c1e",
+  "independent_audit_scope": "Independent local read-only publisher artifact, terminal remote snapshots and downloaded public bytes audit",
+  "publication_authorization_for_benchmark": false
+}

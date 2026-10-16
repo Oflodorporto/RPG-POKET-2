@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "source_commit": "6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "source_tree": "5ad62cddfe052bea09bf99c29989731722088981",
+  "source_parent": "c8738eb67bde3817feaab9f3a53c30607396a5f5",
+  "source_branch": "feat/coopdiag77-release",
+  "reviewed_plan_sha256": "244e8d63d05fc55ad35c493abb2fca6ba398d1618bef91f2d00be8965db344a5",
+  "group_count": 157,
+  "release": {
+    "version": "2026.10.15-coopdiag77",
+    "build": 2026101502,
+    "tag": "v2026.10.15-coopdiag77"
+  },
+  "original_scripts_sha256": {
+    "tools/test_coopdiag77.sh": "5bc9276b407eee326a880336ba6bffb9891d2e25204f6d5e5b118f0f4dcbf12f",
+    "tools/test_coopdiag77_local.py": "67ef4442d776e6d5049b8154bad1d80e3bcb890b79f4a8bbdcc8dbad78f4e716",
+    "tools/check_coopdiag77_scope.py": "f5c84a13400a634b2948d3afd53dc685e795267116ca0ef5f108c3eef6213fc4",
+    "tools/record_coopdiag77_identity.py": "e6f5d72aea4857b74196ab870b68f5cb64959a24db3a3583ed6d33b43edb0533",
+    ".github/workflows/coopdiag77-check.yml": "abd57a7fee5268b1b2a1627fbacffff24b1a4dbee52a0c38b2fa9a75114609ce",
+    ".github/workflows/release.yml": "d44d2834cb828a0e3554ba50364502307725ed55bd32bb480430c8492d779e3c",
+    "tools/verify_coopdiag77_release.py": "5b7b71afad2901464b3a43d51157f9b1ef1421756d7e9413b605a485fcc2f1b9",
+    "tools/test_coopdiag77_release.py": "c2c059df353c54fb8f8176b26fca83dd7fed0b0039986a97b2399319ed14741f"
+  },
+  "may_publish": false
+}

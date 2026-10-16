@@ -1,0 +1,150 @@
+{
+  "observed_utc": "2026-10-14T16:08:24Z",
+  "measurement": "REST job and step completed_at minus started_at; excludes queue time; single sample per workflow, not a benchmark",
+  "runs": [
+    {
+      "run_id": 38580662456,
+      "job_id": 115909381500,
+      "source_commit": "0541056de5dc94a48b4d750ee0cb4c040df322b1",
+      "run_attempt": 1,
+      "url": "https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38580662456/job/115909381500",
+      "status": "completed",
+      "conclusion": "success",
+      "job_seconds": 1818,
+      "steps": [
+        {
+          "name": "Set up job",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "seconds": 4,
+          "conclusion": "success"
+        },
+        {
+          "name": "Instalar dependencia deterministica das artes e capturas",
+          "seconds": 4,
+          "conclusion": "success"
+        },
+        {
+          "name": "Verificar inventario e executar agregado herdado mais narrativa, relogio, PvP e integracao",
+          "seconds": 1524,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run arduino/setup-arduino-cli@v2",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Instalar core ESP32 confirmado na placa",
+          "seconds": 51,
+          "conclusion": "success"
+        },
+        {
+          "name": "Compilar SHA exato sem gravar nem publicar",
+          "seconds": 64,
+          "conclusion": "success"
+        },
+        {
+          "name": "Verificar bytes compilados e OTA Save29 para30 e Save30 para30",
+          "seconds": 156,
+          "conclusion": "success"
+        },
+        {
+          "name": "Registrar SHA exato, hashes, agregado e orcamento compilado",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Guardar candidato e provas sem publicar",
+          "seconds": 9,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "seconds": 0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run_id": 38587457500,
+      "job_id": 115933136646,
+      "source_commit": "0541056de5dc94a48b4d750ee0cb4c040df322b1",
+      "run_attempt": 1,
+      "url": "https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38587457500/job/115933136646",
+      "status": "completed",
+      "conclusion": "success",
+      "job_seconds": 2331,
+      "steps": [
+        {
+          "name": "Set up job",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Exigir main push e qualificacao do SHA exato",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Instalar dependencia deterministica das artes",
+          "seconds": 10,
+          "conclusion": "success"
+        },
+        {
+          "name": "Rerodar agregado herdado completo e PvP no SHA aprovado",
+          "seconds": 1942,
+          "conclusion": "success"
+        },
+        {
+          "name": "Run arduino/setup-arduino-cli@v2",
+          "seconds": 1,
+          "conclusion": "success"
+        },
+        {
+          "name": "Instalar ESP32",
+          "seconds": 56,
+          "conclusion": "success"
+        },
+        {
+          "name": "Compilar e verificar bytes finais",
+          "seconds": 265,
+          "conclusion": "success"
+        },
+        {
+          "name": "Publicar somente SHA main autorizado e qualificado",
+          "seconds": 4,
+          "conclusion": "success"
+        },
+        {
+          "name": "Conferir downloads publicos e manifesto latest",
+          "seconds": 48,
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "seconds": 0,
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "seconds": 0,
+          "conclusion": "success"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "measurement": "Historical single observation. REST timestamps; no controlled cache experiment. Log-based timings are stored separately and must not be mixed.",
+  "run_id": 38762209168,
+  "job_id": 116516146624,
+  "source_commit": "6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3",
+  "source_tree": "5ad62cddfe052bea09bf99c29989731722088981",
+  "url": "https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38762209168/job/116516146624",
+  "run_attempt": 1,
+  "conclusion": "success",
+  "rest_job_seconds": 3103,
+  "steps": [
+    {
+      "name": "Set up job",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@v4",
+      "seconds": 3,
+      "conclusion": "success"
+    },
+    {
+      "name": "Instalar dependencias deterministicas das capturas e gates",
+      "seconds": 3,
+      "conclusion": "success"
+    },
+    {
+      "name": "Executar agregado completo herdado e coop ON com LSan obrigatorio",
+      "seconds": 2549,
+      "conclusion": "success"
+    },
+    {
+      "name": "Run arduino/setup-arduino-cli@v2",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Instalar core ESP32 historico confirmado na placa",
+      "seconds": 57,
+      "conclusion": "success"
+    },
+    {
+      "name": "Compilar SHA exato default ON e fallback OFF fora do sketch",
+      "seconds": 163,
+      "conclusion": "success"
+    },
+    {
+      "name": "Verificar bytes finais e OTA Save29 para30 e Save30 para30",
+      "seconds": 306,
+      "conclusion": "success"
+    },
+    {
+      "name": "Registrar SHA, ambos builds, agregado, capturas e orcamentos",
+      "seconds": 3,
+      "conclusion": "success"
+    },
+    {
+      "name": "Guardar candidato e provas do SHA exato",
+      "seconds": 13,
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@v4",
+      "seconds": 1,
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "seconds": 0,
+      "conclusion": "success"
+    }
+  ],
+  "previous_log_measurement_seconds": {
+    "aggregate": 2549,
+    "core_install": 56,
+    "esp32_on_off": 163,
+    "final_bytes_ota": 306,
+    "job_approximate": 3099
+  },
+  "runner": {
+    "image": "ubuntu-24.04",
+    "image_version": "20261004.327.1",
+    "os": "24.04.5",
+    "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "arduino_cli": "1.5.2-rc.1",
+    "arduino_cli_commit": "fef6e48df",
+    "core": "3.3.12",
+    "host_jobs": 3,
+    "esp32_jobs": 4
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "arduino_cli_commit": "fef6e48df6311752b7bfc0498e53e35f37869560",
+  "artifact_count": 27,
+  "context": {
+    "arduino_cli_version": "1.5.2-rc.1",
+    "benchmark_salt": "benchmark-coopdiag77-downloads-v1",
+    "esp32_core_version": "3.3.12",
+    "fqbn": "esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none",
+    "pillow_version": "11.3.0",
+    "python_version": "3.12.3",
+    "pyyaml_version": "6.0.3",
+    "runner_arch": "X64",
+    "runner_os": "Linux"
+  },
+  "lock_sha256": "d03e64207ca2c45c81f01ecf64ff8faf230f6552e12c7d96d552d68491c2fa78",
+  "schema": 1
+}

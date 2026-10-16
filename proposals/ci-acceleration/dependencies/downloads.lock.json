@@ -1,0 +1,178 @@
+{
+  "artifacts": [
+    {
+      "bytes": 17704994,
+      "path": "archives/arduino-cli_1.5.2-rc.1_Linux_64bit.tar.gz",
+      "sha256": "396b4dd7d405ce116b7c95c0941784b005d989c52adfde51d983f66c4b0f9531",
+      "url": "https://github.com/arduino/arduino-cli/releases/download/v1.5.2-rc.1/arduino-cli_1.5.2-rc.1_Linux_64bit.tar.gz"
+    },
+    {
+      "bytes": 111604,
+      "path": "archives/ctags-5.8-arduino11-pm-x86_64-pc-linux-gnu.tar.bz2",
+      "sha256": "62b514f3aaf37b5429ef703853bb46365fb91b4754c1916d085bf134004886e3",
+      "url": "https://downloads.arduino.cc/tools/ctags-5.8-arduino11-pm-x86_64-pc-linux-gnu.tar.bz2"
+    },
+    {
+      "bytes": 1731768,
+      "path": "archives/dfu-discovery_v0.1.2_Linux_64bit.tar.gz",
+      "sha256": "d82649741fd6cbe369d7fe22d290efd7e28e4d6fd0b81b7b1eabff43b495b5f8",
+      "url": "https://downloads.arduino.cc/discovery/dfu-discovery/dfu-discovery_v0.1.2_Linux_64bit.tar.gz"
+    },
+    {
+      "bytes": 2283425,
+      "path": "archives/dfu-util-0.11-arduino5-linux_amd64.tar.gz",
+      "sha256": "96c64c278561af806b585c123c85748926ad02b1aedc07e5578ca9bee2be0d2a",
+      "url": "https://downloads.arduino.cc/tools/dfu-util-0.11-arduino5-linux_amd64.tar.gz"
+    },
+    {
+      "bytes": 51102895,
+      "path": "archives/esp32-core-3.3.12.zip",
+      "sha256": "87401004f279a206781e368b66098a8383b7cf87cce7811a6afd0163503fa78f",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32-core-3.3.12.zip"
+    },
+    {
+      "bytes": 48020175,
+      "path": "archives/esp32-libs-3.3.12.zip",
+      "sha256": "4efd0f654c860b018e0ca2f858042ea6a78d8c2d57eef790b0d480d63bb56edc",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 60831692,
+      "path": "archives/esp32c3-libs-3.3.12.zip",
+      "sha256": "4f14e59ca2adc7b917126638287a7115a7a2c0b6aed98df6138f56c3491b3a29",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32c3-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 79284416,
+      "path": "archives/esp32c5-libs-3.3.12.zip",
+      "sha256": "a5609debe863b3460fcc0eb5d7fc08e7914e5fe87a665f7e55b0ccab3fc29ded",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32c5-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 69563845,
+      "path": "archives/esp32c6-libs-3.3.12.zip",
+      "sha256": "20d5f7704dd436a41f0d1e4c68c9e1dcefb25bed12b1706d72c289dd981cffae",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32c6-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 65427432,
+      "path": "archives/esp32h2-libs-3.3.12.zip",
+      "sha256": "adee69261f4038ad4dd80d45321ad0492f54c6597d9fd0759432fe559e801389",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32h2-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 101179058,
+      "path": "archives/esp32p4-libs-3.3.12.zip",
+      "sha256": "b391b8ee6f57fcbdcfbe53f34b4e3f6b8d51f8f09fcd4e5d7304637d919fc309",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32p4-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 100745130,
+      "path": "archives/esp32p4_es-libs-3.3.12.zip",
+      "sha256": "6d295c1d7c03a99b97468d2795e04ec89cca5e0783c42f0ab9c79b8accff6746",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32p4_es-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 45952096,
+      "path": "archives/esp32s2-libs-3.3.12.zip",
+      "sha256": "2a0736a6c25227ed04fdd755241dfe6564da7ee275e791580b8cd3611d6f0444",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32s2-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 91711095,
+      "path": "archives/esp32s3-libs-3.3.12.zip",
+      "sha256": "08f4e7292fee97dc011dc64e3c670a9a4e83a6b52a604c4b9b18ab2885cdd092",
+      "url": "https://github.com/espressif/arduino-esp32/releases/download/3.3.12/esp32s3-libs-3.3.12.zip"
+    },
+    {
+      "bytes": 83577947,
+      "path": "archives/esptool-v5.3.1-linux-amd64.tar.gz",
+      "sha256": "e9cc641f8e4a0b644b52836d7a6b59f3c6d3261213c5ccc41f8f3c3035d06aa4",
+      "url": "https://github.com/espressif/esptool/releases/download/v5.3.1/esptool-v5.3.1-linux-amd64.tar.gz"
+    },
+    {
+      "bytes": 3220729,
+      "path": "archives/mdns-discovery_v1.1.0_Linux_64bit.tar.gz",
+      "sha256": "6966f406e5b6e80d82a388706d6d9d8a63d46035d19d1e6b4fb1ebeaf7fea056",
+      "url": "https://downloads.arduino.cc/discovery/mdns-discovery/mdns-discovery_v1.1.0_Linux_64bit.tar.gz"
+    },
+    {
+      "bytes": 50646,
+      "path": "archives/mkspiffs-0.2.3-arduino-esp32-linux64.tar.gz",
+      "sha256": "5e1a4ff41385e842f389f6b5254102a547e566a06b49babeffa93ef37115cb5d",
+      "url": "https://github.com/igrr/mkspiffs/releases/download/0.2.3/mkspiffs-0.2.3-arduino-esp32-linux64.tar.gz"
+    },
+    {
+      "bytes": 2630575,
+      "path": "archives/openocd-esp32-linux-amd64-0.12.0-esp32-20260424.tar.gz",
+      "sha256": "0c875beb0e8d89cee4335968e8a27c7d151f05b91f636263c81ab01e098d390d",
+      "url": "https://github.com/espressif/openocd-esp32/releases/download/v0.12.0-esp32-20260424/openocd-esp32-linux-amd64-0.12.0-esp32-20260424.tar.gz"
+    },
+    {
+      "bytes": 590607738,
+      "path": "archives/riscv32-esp-elf-14.2.0_20260121-x86_64-linux-gnu.tar.gz",
+      "sha256": "1b79617f43cf0e25b92646359d1623d8bef135050aca44586df59b6a64496d82",
+      "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-14.2.0_20260121/riscv32-esp-elf-14.2.0_20260121-x86_64-linux-gnu.tar.gz"
+    },
+    {
+      "bytes": 43045928,
+      "path": "archives/riscv32-esp-elf-gdb-17.1_20260402-x86_64-linux-gnu.tar.gz",
+      "sha256": "35f3db841338cb4f9bc60d757bc3e87dfa50ff50607bcbc3867c5b1ac28dd342",
+      "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v17.1_20260402/riscv32-esp-elf-gdb-17.1_20260402-x86_64-linux-gnu.tar.gz"
+    },
+    {
+      "bytes": 2163207,
+      "path": "archives/serial-discovery_v1.5.2_Linux_64bit.tar.gz",
+      "sha256": "7a95d7386c66c0846fe4aa96b601e72783ae64f541eb2f5edb4fc9e69a04b6d3",
+      "url": "https://downloads.arduino.cc/discovery/serial-discovery/serial-discovery_v1.5.2_Linux_64bit.tar.gz"
+    },
+    {
+      "bytes": 2446183,
+      "path": "archives/serial-monitor_v0.15.0_Linux_64bit.tar.gz",
+      "sha256": "f1bc9680f2cff08688bc4ccbaf5e9be4ce38aa3f10d40a487a7704c04006f19b",
+      "url": "https://downloads.arduino.cc/monitor/serial-monitor/serial-monitor_v0.15.0_Linux_64bit.tar.gz"
+    },
+    {
+      "bytes": 54000,
+      "path": "archives/x86_64-linux-gnu-mklittlefs-db0513a.tar.gz",
+      "sha256": "7a70428b7089bf1c9d481b0e070e99cd8a430d37e197b7d3db64f24ba8891508",
+      "url": "https://github.com/earlephilhower/mklittlefs/releases/download/4.0.2/x86_64-linux-gnu-mklittlefs-db0513a.tar.gz"
+    },
+    {
+      "bytes": 334265784,
+      "path": "archives/xtensa-esp-elf-14.2.0_20260121-x86_64-linux-gnu.tar.gz",
+      "sha256": "4e090a6cbf1ff7769684d9a248c9b8bdbe4c0ada098adda54b4c67a91449afa7",
+      "url": "https://github.com/espressif/crosstool-NG/releases/download/esp-14.2.0_20260121/xtensa-esp-elf-14.2.0_20260121-x86_64-linux-gnu.tar.gz"
+    },
+    {
+      "bytes": 42655871,
+      "path": "archives/xtensa-esp-elf-gdb-17.1_20260402-x86_64-linux-gnu.tar.gz",
+      "sha256": "73bc6c4e50b06dceb60e94b53aded61b7769be3cf563572269d9c8d643db8e95",
+      "url": "https://github.com/espressif/binutils-gdb/releases/download/esp-gdb-v17.1_20260402/xtensa-esp-elf-gdb-17.1_20260402-x86_64-linux-gnu.tar.gz"
+    },
+    {
+      "bytes": 6645236,
+      "path": "wheels/pillow-11.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "676b2815362456b5b3216b4fd5bd89d362100dc6f4945154ff172e206a22c024",
+      "url": "https://files.pythonhosted.org/packages/e4/c9/06dd4a38974e24f932ff5f98ea3c546ce3f8c995d3f0985f8e5ba48bba19/pillow-11.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+    },
+    {
+      "bytes": 807870,
+      "path": "wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "url": "https://files.pythonhosted.org/packages/8b/9d/b3589d3877982d4f2329302ef98a8026e7f4443c765c46cfecc8858c6b4b/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+    }
+  ],
+  "context": {
+    "arduino_cli_version": "1.5.2-rc.1",
+    "benchmark_salt": "benchmark-coopdiag77-downloads-v1",
+    "esp32_core_version": "3.3.12",
+    "fqbn": "esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none",
+    "pillow_version": "11.3.0",
+    "python_version": "3.12.3",
+    "pyyaml_version": "6.0.3",
+    "runner_arch": "X64",
+    "runner_os": "Linux"
+  },
+  "schema": 1
+}

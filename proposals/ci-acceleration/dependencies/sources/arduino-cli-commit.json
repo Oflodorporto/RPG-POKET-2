@@ -1,0 +1,113 @@
+{
+  "sha": "fef6e48df6311752b7bfc0498e53e35f37869560",
+  "node_id": "C_kwDOCJXT4doAKGZlZjZlNDhkZjYzMTE3NTJiN2JmYzA0OThlNTNlMzVmMzc4Njk1NjA",
+  "commit": {
+    "author": {
+      "name": "Cristian Maglie",
+      "email": "c.maglie@arduino.cc",
+      "date": "2026-07-23T08:36:04Z"
+    },
+    "committer": {
+      "name": "Cristian Maglie",
+      "email": "c.maglie@arduino.cc",
+      "date": "2026-07-23T08:36:04Z"
+    },
+    "message": "Added builds for Windows/ARM64",
+    "tree": {
+      "sha": "2322ecac55afc623581a7c1eb24d1fed066c55cf",
+      "url": "https://api.github.com/repos/arduino/arduino-cli/git/trees/2322ecac55afc623581a7c1eb24d1fed066c55cf"
+    },
+    "url": "https://api.github.com/repos/arduino/arduino-cli/git/commits/fef6e48df6311752b7bfc0498e53e35f37869560",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/arduino/arduino-cli/commits/fef6e48df6311752b7bfc0498e53e35f37869560",
+  "html_url": "https://github.com/arduino/arduino-cli/commit/fef6e48df6311752b7bfc0498e53e35f37869560",
+  "comments_url": "https://api.github.com/repos/arduino/arduino-cli/commits/fef6e48df6311752b7bfc0498e53e35f37869560/comments",
+  "author": {
+    "login": "cmaglie",
+    "id": 423515,
+    "node_id": "MDQ6VXNlcjQyMzUxNQ==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/423515?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/cmaglie",
+    "html_url": "https://github.com/cmaglie",
+    "followers_url": "https://api.github.com/users/cmaglie/followers",
+    "following_url": "https://api.github.com/users/cmaglie/following{/other_user}",
+    "gists_url": "https://api.github.com/users/cmaglie/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/cmaglie/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/cmaglie/subscriptions",
+    "organizations_url": "https://api.github.com/users/cmaglie/orgs",
+    "repos_url": "https://api.github.com/users/cmaglie/repos",
+    "events_url": "https://api.github.com/users/cmaglie/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/cmaglie/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "cmaglie",
+    "id": 423515,
+    "node_id": "MDQ6VXNlcjQyMzUxNQ==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/423515?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/cmaglie",
+    "html_url": "https://github.com/cmaglie",
+    "followers_url": "https://api.github.com/users/cmaglie/followers",
+    "following_url": "https://api.github.com/users/cmaglie/following{/other_user}",
+    "gists_url": "https://api.github.com/users/cmaglie/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/cmaglie/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/cmaglie/subscriptions",
+    "organizations_url": "https://api.github.com/users/cmaglie/orgs",
+    "repos_url": "https://api.github.com/users/cmaglie/repos",
+    "events_url": "https://api.github.com/users/cmaglie/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/cmaglie/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "0a5bb8436646a8e13fee2ddb05b922dfb99746be",
+      "url": "https://api.github.com/repos/arduino/arduino-cli/commits/0a5bb8436646a8e13fee2ddb05b922dfb99746be",
+      "html_url": "https://github.com/arduino/arduino-cli/commit/0a5bb8436646a8e13fee2ddb05b922dfb99746be"
+    }
+  ],
+  "stats": {
+    "total": 7,
+    "additions": 7,
+    "deletions": 0
+  },
+  "files": [
+    {
+      "sha": "23e87844072ed4685a70e8c7625954ef0d647574",
+      "filename": ".github/workflows/publish-go-tester-task.yml",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 0,
+      "changes": 4,
+      "blob_url": "https://github.com/arduino/arduino-cli/blob/fef6e48df6311752b7bfc0498e53e35f37869560/.github%2Fworkflows%2Fpublish-go-tester-task.yml",
+      "raw_url": "https://github.com/arduino/arduino-cli/raw/fef6e48df6311752b7bfc0498e53e35f37869560/.github%2Fworkflows%2Fpublish-go-tester-task.yml",
+      "contents_url": "https://api.github.com/repos/arduino/arduino-cli/contents/.github%2Fworkflows%2Fpublish-go-tester-task.yml?ref=fef6e48df6311752b7bfc0498e53e35f37869560",
+      "patch": "@@ -93,6 +93,10 @@ jobs:\n             path: \"*Windows_64bit.zip\"\n             name: Windows_X86-64\n             runner: ubuntu-latest\n+          - task: dist:Windows_ARM64\n+            path: \"*Windows_ARM64.zip\"\n+            name: Windows_ARM64\n+            runner: ubuntu-latest\n           - task: dist:Linux_32bit\n             path: \"*Linux_32bit.tar.gz\"\n             name: Linux_X86-32"
+    },
+    {
+      "sha": "3e07a4de43afa9969b1f82c67cb61aa980e31539",
+      "filename": ".github/workflows/release-go-task.yml",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "blob_url": "https://github.com/arduino/arduino-cli/blob/fef6e48df6311752b7bfc0498e53e35f37869560/.github%2Fworkflows%2Frelease-go-task.yml",
+      "raw_url": "https://github.com/arduino/arduino-cli/raw/fef6e48df6311752b7bfc0498e53e35f37869560/.github%2Fworkflows%2Frelease-go-task.yml",
+      "contents_url": "https://api.github.com/repos/arduino/arduino-cli/contents/.github%2Fworkflows%2Frelease-go-task.yml?ref=fef6e48df6311752b7bfc0498e53e35f37869560",
+      "patch": "@@ -34,6 +34,9 @@ jobs:\n           - task: Windows_64bit\n             artifact-suffix: Windows_64bit\n             runner: ubuntu-latest\n+          - task: Windows_ARM64\n+            artifact-suffix: Windows_ARM64\n+            runner: ubuntu-latest\n           - task: Linux_32bit\n             artifact-suffix: Linux_32bit\n             runner: ubuntu-latest"
+    }
+  ]
+}
