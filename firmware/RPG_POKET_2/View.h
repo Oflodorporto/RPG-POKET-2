@@ -9,6 +9,7 @@
 #include "PersonalArt.h"
 #include "ClubUi.h"
 #include "CoopUi.h"
+#include "WifiRadioTestConfig.h"
 #include "GearArt.h"
 #include "CombatFx.h"
 #include "CombatPresentation.h"
@@ -16,7 +17,7 @@
 #include "CardCheck.h"
 #include <stdio.h>
 #include <string.h>
-enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp, PurchaseReceipt, CoopTraining };
+enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp, PurchaseReceipt, CoopTraining, WifiRadioTest };
 inline bool purchasePage(Page p){return p==Page::Buy||p==Page::GoodsBuy||p==Page::CrystalBuy||p==Page::CampKit||p==Page::GearBuy;}
 inline bool commercePage(Page p){return purchasePage(p)||p==Page::PurchaseReceipt||p==Page::TradeList||p==Page::TradeConfirm||p==Page::TradeReceipt||p==Page::GearSell;}
 inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
@@ -43,6 +44,9 @@ inline const Backdrop& backdropFor(Page page,const rpg::Game& g){
 }
 struct ViewState {rpg::CombatTrace heroTrace,enemyTrace;bool traceOpen=false,traceEnemy=false;uint8_t tracePage=0;uint32_t tracePauseAt=0,traceBlockUntil=0;uint8_t trackedLevel=0;bool levelPending=false,levelAttributes=false,createHintsPending=false;Page levelReturn=Page::Home;rpg::SaleQuote sale;rpg::PurchaseQuote purchase;Page purchaseReturn=Page::Shop,saleReturn=Page::TradeList;uint8_t saleIndex=0;Page hintReturn=Page::Home;uint8_t hintIndex=0;bool hintError=false;Page page=Page::Choose,picksReturn=Page::TownBag,bagReturn=Page::Inventory,objectiveReturn=Page::Menu,powersReturn=Page::Evolution;Page enemyReturn=Page::Battle;Page guideReturn=Page::Menu;bool paperAnimate=false;unsigned paperStartFrame=0;bool dialogueAnimate=false;unsigned dialogueStartFrame=0;uint8_t dialoguePage=0,cityPage=0;uint8_t bestiaryIndex=0;uint8_t guideIndex=0,tripDestination=0,campaignChoice=0,campaignScene=0;uint8_t evolutionLevel=1,powerIndex=0,attributeIndex=0;uint8_t choice=0,gearIndex=0,itemId=0,forgeSlot=0,questChoice=1,questAction=0;const char* message="";bool recovered=false;Effect effect=Effect::None;unsigned effectFrame=0,heroFrame=0,campProgress=0,effectProgress=1001,effectElapsedMs=UINT32_MAX;CombatResult combatResult;bool effectOnHero=false,touchFeedback=false;CardInfo card;};
 constexpr uint16_t UI_INK=0x1083,UI_PANEL=0x1926,UI_GOLD=0xd5aa,UI_WHITE=0xef1b,UI_MUTED=0x9cf4,UI_GREEN=0x6e0c,UI_RED=0xe28b,UI_BLUE=0x549f;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+#include "WifiRadioTestView.h"
+#endif
 #include "StoryPaper.h"
 #include "MenuView.h"
 #include "NpcArt.h"
@@ -84,6 +88,9 @@ template<class Canvas> struct WifiOverlay {
     for(unsigned i=0;i<4;++i)c.fillRect(223+i*4,17-(i+1)*4,3,(i+1)*4,i<bars?green:0x3186);}
 };
 template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState& v,unsigned frame=0){
+#if RPG_ENABLE_WIFI_RADIO_TEST
+  if(v.page==Page::WifiRadioTest){wifi_radio_ui::draw(c,wifi_radio_ui::screen);return;}
+#endif
 #if RPG_ENABLE_COOP_TRAINING
   if(v.page==Page::CoopTraining){coopplatform::LandscapeCanvas<Canvas> landscape(c);coopview::draw(landscape,coopruntime::view(menu.art==ArtStatus::Ready),coopSession.training());return;}
 #endif

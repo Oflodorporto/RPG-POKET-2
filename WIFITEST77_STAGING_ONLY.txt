@@ -1,0 +1,9 @@
+LOCAL PREPARATION / QUALIFICATION CANDIDATE ONLY
+2026.10.17-wifitest77 / build2026101701
+Inventário de fontes revisado e congelado; qualificação oficial e publicação continuam condicionadas a todos os gates.
+All 156 inherited tasks +8 radio suites +preparation =165 groups with LSan 1.
+Three target variants: default COOP1/RADIO1, COOP1/RADIO0 and COOP0/RADIO1.
+Actual-byte OTA from 13 historical clients, full installation/recovery gates,
+exact-source/artifact review and fresh main/tag leases are mandatory.
+No source/binary equivalence to the missing earlier candidate is claimed.
+No physical RF-range repair or board validation is implied.

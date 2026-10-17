@@ -1,0 +1,21 @@
+RPG POKET 7.7 - Teste Wi-Fi
+Versao 2026.10.17-wifitest77 / build 2026101701
+
+Teste Wi-Fi isolado em Configuracoes, com iniciador/respondedor, descoberta,
+consentimento de sessao, sondagens cancelaveis e diagnostico local. O teste
+separa envio MAC de resposta da aplicacao e mostra potencia solicitada e
+leitura do driver. Os limites do pais e da linha de base continuam aplicados.
+
+Resultados ficam em um anel limitado em RAM; exportacao CSV ao SD depende
+de comando explicito. Ao sair, o perfil anterior de radio deve ser restaurado.
+Falha de restauracao permanece visivel e impede liberar o radio prematuramente.
+Nao altera credenciais Wi-Fi, saves, RNG, regras de combate ou pacote de artes.
+
+Save30/160 bytes, leitura 29/30, epoch 1 e tres slots preservados; nenhum novo
+reset. Primeira instalacao por USB, sem apagar flash inteira; depois OTA
+confirmada no aparelho. Leitores anteriores a shop77 podem rejeitar racao 10;
+nao ha promessa de downgrade de firmware.
+
+Este diagnostico nao comprova potencia RF irradiada, causa de baixo alcance
+ou correcao fisica. Testes host e compilacao nao substituem ensaios de dois
+aparelhos, toque, OTA fisica, memoria de execucao ou tempo de quadro.

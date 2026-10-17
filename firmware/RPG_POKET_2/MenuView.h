@@ -45,8 +45,16 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
   if(page==72){static const char* fields[]={"ANO","MES","DIA","HORA","MINUTO"};center(12,"ACERTAR A HORA",2,UI_GOLD);center(49,"Selecione e ajuste cada campo");snprintf(b,sizeof(b),"%02d/%02d/%04d %02d:%02d",menu.clockDraft[2],menu.clockDraft[1],menu.clockDraft[0],menu.clockDraft[3],menu.clockDraft[4]);center(78,b);center(112,fields[menu.clockField],2,UI_GOLD);snprintf(b,sizeof(b),"%02d",menu.clockDraft[menu.clockField]);center(142,b,3);button(14,181,102,"- Valor");button(124,181,102,"+ Valor");button(14,227,102,"Anterior");button(124,227,102,"Proximo");button(14,272,102,"Cancelar");button(124,272,102,"Aplicar");return true;}
   if(page==52){center(12,"TESTE DE CONEXAO",2,UI_GOLD);center(48,"Sinal e servidor do GitHub");
     if(updateInfo.busy){center(111,"Testando HTTPS...");snprintf(b,sizeof(b),"Tentativa %u/3",updateInfo.netTrials);center(150,b);center(203,"Aguarde o resultado.");}
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    else if(updateInfo.tested){snprintf(b,sizeof(b),"HTTPS: %u/%u respostas OK",updateInfo.netSuccess,updateInfo.netTrials);center(92,b,1,updateInfo.netSuccess==3?UI_GREEN:UI_RED);snprintf(b,sizeof(b),"Falhas: %u / Wi-Fi caiu: %u",updateInfo.netTrials-updateInfo.netSuccess,updateInfo.netDrop);center(119,b);snprintf(b,sizeof(b),"Sinal: %d a %d dBm",updateInfo.minDbm,updateInfo.maxDbm);center(146,b);snprintf(b,sizeof(b),"Resposta media: %lums",(unsigned long)updateInfo.avgMs);center(173,b);}
+#else
     else if(updateInfo.tested){snprintf(b,sizeof(b),"HTTPS: %u/%u respostas OK",updateInfo.netSuccess,updateInfo.netTrials);center(100,b,1,updateInfo.netSuccess==3?UI_GREEN:UI_RED);snprintf(b,sizeof(b),"Falhas: %u / Wi-Fi caiu: %u",updateInfo.netTrials-updateInfo.netSuccess,updateInfo.netDrop);center(132,b);snprintf(b,sizeof(b),"Sinal: %d a %d dBm",updateInfo.minDbm,updateInfo.maxDbm);center(164,b);snprintf(b,sizeof(b),"Resposta media: %lums",(unsigned long)updateInfo.avgMs);center(196,b);center(235,"Teste HTTPS; nao mede ping.");}
-    else center(141,updateInfo.message,1,UI_RED);if(!updateInfo.busy){button(14,272,102,"Voltar");button(124,272,102,"Testar");}return true;}
+#endif
+    else center(141,updateInfo.message,1,UI_RED);
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    if(!updateInfo.busy){center(199,*wifi_radio_ui::entryNotice?wifi_radio_ui::entryNotice:"Teste HTTPS; nao mede ping.",1,*wifi_radio_ui::entryNotice?UI_RED:UI_WHITE);button(14,219,212,"Radio / 2 placas");}
+#endif
+    if(!updateInfo.busy){button(14,272,102,"Voltar");button(124,272,102,"Testar");}return true;}
 
   if(page==32){center(12,"INTERNET / WI-FI",2,UI_GOLD);center(43,menu.connecting?"Conectando...":menu.connected?"Wi-Fi conectado":"Wi-Fi desconectado",1,menu.connected?UI_GREEN:UI_WHITE);
     if(menu.connected){snprintf(b,sizeof(b),"Sinal %d dBm / %u barras",menu.signalDbm,menu.signalBars);center(64,b);}else center(64,"Redes de 2.4 GHz");
@@ -56,8 +64,14 @@ bool renderMenu(Canvas& c,const rpg::Game& g,int page,Text text,Center center,Bo
       if(menu.savedNetworks)snprintf(b,sizeof(b),"Salva %u/%u",menu.savedIndex+1,menu.savedCount);else snprintf(b,sizeof(b),"%d/%d Ch%d %ddBm",menu.networkIndex+1,menu.networkCount,menu.networkChannel,menu.networkDbm);center(151,b);
       button(14,174,102,"Anterior");button(124,174,102,"Proxima");
     }else center(139,menu.scanning?"Buscando em todos os canais...":menu.savedNetworks?"Nenhuma rede salva":"Toque em Buscar");
-    button(14,221,102,menu.savedNetworks?"Esquecer":"2.4 GHz");button(124,221,102,menu.connecting?"Aguarde":"Conectar");center(260,menu.notice,1,UI_RED);
-    button(14,276,102,"Voltar");button(124,276,102,menu.connecting?"Cancelar":"Desligar");return true;}
+    button(14,221,102,menu.savedNetworks?"Esquecer":"2.4 GHz");
+    button(124,221,102,menu.connecting?"Aguarde":"Conectar");center(260,menu.notice,1,UI_RED);
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    button(14,276,68,"Voltar");button(86,276,68,"Testar");button(158,276,68,menu.connecting?"Cancelar":"Desligar");
+#else
+    button(14,276,102,"Voltar");button(124,276,102,menu.connecting?"Cancelar":"Desligar");
+#endif
+    return true;}
   if(page==50){center(20,"ESQUECER REDE",2,UI_GOLD);char name[25];snprintf(name,sizeof(name),"%.24s",menu.network);center(105,name);center(158,"Remover a senha salva?");center(191,"Seus personagens ficam intactos.");center(237,menu.notice,1,UI_RED);button(14,272,102,"Cancelar");button(124,272,102,"Esquecer");return true;}
   if(page==33){char bar[31];unsigned n=strlen(menu.password);snprintf(bar,sizeof(bar),"%u: %.*s",n,22,menu.password+(n>22?n-22:0));box(4,2,232,30);text(10,12,*menu.notice?menu.notice:bar,1,*menu.notice?UI_RED:UI_WHITE);
     const char* chars=keyboardChars(menu.keyboard);for(unsigned i=0;i<12;++i){int x=4+(i%3)*78,y=38+(i/3)*45;box(x,y,76,43);char ch[2]={chars[menu.keyPage*12+i],0};text(x+31,y+12,ch,2);}

@@ -1,15 +1,15 @@
-name: Publicar coop de sinal, diagnostico e reconexao apos SHA qualificado
+name: Publicar wifitest77 - Teste Wi-Fi apos SHA qualificado
 # Publication is conditional on the authorized exact-SHA qualification and all repeated gates.
 # Qualification alone never publishes, flashes USB, or performs physical OTA.
 on:
   push:
     branches: [main]
-    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "COOPDIAG77_STAGING_ONLY.txt", ".github/workflows/coopdiag77-check.yml", ".github/workflows/release.yml"]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "WIFITEST77_STAGING_ONLY.txt", ".github/workflows/wifitest77-check.yml", ".github/workflows/release.yml"]
 permissions:
   contents: write
   actions: read
 concurrency:
-  group: coopdiag77-main
+  group: wifitest77-main
   cancel-in-progress: false
 jobs:
   release:
@@ -34,16 +34,16 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/coopdiag77-check.yml/runs?branch=feat%2Fcoopdiag77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_coopdiag77_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.15-coopdiag77" --jq 'length')" = 0
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fwifitest77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.17-wifitest77" --jq 'length')" = 0
       - name: Instalar dependencias deterministicas das capturas e gates
         run: |
           python3 -m pip install 'Pillow==11.3.0' 'PyYAML==6.0.3'
-      - name: Executar agregado completo herdado e coop ON com LSan obrigatorio
+      - name: Executar agregado completo herdado e oito suites Wi-Fi com LSan obrigatorio
         run: |
           mkdir -p build
-          bash tools/test_coopdiag77.sh 2>&1 | tee build/coopdiag77-tests.log
+          bash tools/test_wifitest77.sh 2>&1 | tee build/wifitest77-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar core ESP32 historico confirmado na placa
         run: |
@@ -51,49 +51,54 @@ jobs:
           arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
           arduino-cli core update-index
           arduino-cli core install esp32:esp32@3.3.12
-      - name: Compilar SHA exato default ON e fallback OFF fora do sketch
+      - name: Compilar SHA exato COOP1 RADIO1 default e dois fallbacks isolados fora do sketch
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 tools/check_coopdiag77_scope.py
-          arduino-cli version | tee build/coopdiag77-esp32-toolchain.txt
-          arduino-cli core list | tee -a build/coopdiag77-esp32-toolchain.txt
-          for flag in 1 0; do
+          python3 tools/check_wifitest77_scope.py
+          arduino-cli version | tee build/wifitest77-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/wifitest77-esp32-toolchain.txt
+          for variant in coop1-radio1 coop1-radio0 coop0-radio1; do
             extra=()
-            if [[ "$flag" = 0 ]]; then extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=0'); fi
+            case "$variant" in
+              coop1-radio1) ;;
+              coop1-radio0) extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_WIFI_RADIO_TEST=0'); ;;
+              coop0-radio1) extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=0'); ;;
+            esac
             arduino-cli compile --verbose --jobs 4 \
               --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
               "${extra[@]}" \
-              --build-path "$RUNNER_TEMP/esp32-coopdiag77/flag-$flag" \
-              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/coopdiag77-esp32-flag-$flag.log"
+              --build-path "$RUNNER_TEMP/esp32-wifitest77/$variant" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/wifitest77-esp32-$variant.log"
           done
-          cp "$RUNNER_TEMP/esp32-coopdiag77/flag-1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
-          python3 tools/check_coopdiag77_scope.py
+          cp "$RUNNER_TEMP/esp32-wifitest77/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_wifitest77_scope.py
       - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
         run: |
-          python3 tools/release_coopdiag77_manifest.py
-          python3 tools/verify_coopdiag77_release.py
-          python3 tests/coopdiag77_release_verifier.py
-          python3 tools/test_coopdiag77_release.py release
-          python3 tools/test_coopdiag77_release.py release --sanitizers
-          python3 tools/check_coopdiag77_scope.py
-      - name: Registrar SHA, ambos builds, agregado, capturas e orcamentos
+          python3 tools/release_wifitest77_manifest.py
+          python3 tools/verify_wifitest77_release.py
+          python3 tests/wifitest77_release_verifier.py
+          python3 tools/test_wifitest77_release.py release
+          python3 tools/test_wifitest77_release.py release --sanitizers
+          python3 tools/check_wifitest77_scope.py
+      - name: Registrar SHA, tres builds, agregado, capturas e orcamentos
         run: |
-          python3 tools/record_coopdiag77_identity.py --build-root "$RUNNER_TEMP/esp32-coopdiag77"
+          python3 tools/record_wifitest77_identity.py --build-root "$RUNNER_TEMP/esp32-wifitest77"
       - name: Guardar candidato e provas do SHA exato
         uses: actions/upload-artifact@v4
         with:
-          name: coopdiag77-publisher-${{ github.sha }}
+          name: wifitest77-publisher-${{ github.sha }}
           path: |
             release/firmware.bin
             release/artes.pak
             release/manifest.json
             release/SHA256SUMS
-            build/coopdiag77-scope-budget.json
-            build/coopdiag77-source-identity.json
-            build/coopdiag77-tests.log
-            build/coopdiag77-esp32*.json
-            build/coopdiag77-esp32*.log
-            build/coopdiag77-esp32*.txt
+            build/wifitest77-scope-budget.json
+            build/wifitest77-source-identity.json
+            build/wifitest77-ota/*.json
+            build/wifitest77-tests.log
+            build/wifitest77-esp32*.json
+            build/wifitest77-esp32*.log
+            build/wifitest77-esp32*.txt
             build/package12-validation/**/*.json
             build/package12-validation/**/*.log
             build/package7-differential*.json
@@ -160,6 +165,12 @@ jobs:
             build/coop-radio-render/**/*.ppm
             build/coop-radio-render/**/*.tsv
             build/coop-radio-render/**/*.gif
+            build/wifi-radio-test/**/*.json
+            build/wifi-radio-test/**/*.log
+            build/wifi-radio-test/**/*.png
+            build/wifi-radio-test/**/*.ppm
+            build/wifi-radio-test/**/*.tsv
+            build/wifi-radio-test/**/*.csv
           if-no-files-found: error
           retention-days: 14
       - name: Publicar somente SHA main autorizado apos repetir todos os gates
@@ -170,26 +181,26 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/coopdiag77-check.yml/runs?branch=feat%2Fcoopdiag77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_coopdiag77_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.15-coopdiag77" --jq 'length')" = 0
-          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_coopdiag77_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fwifitest77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.17-wifitest77" --jq 'length')" = 0
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_wifitest77_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
           gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" > "$RUNNER_TEMP/main-ref.json"
-          python3 tools/check_coopdiag77_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
-          gh release create v2026.10.15-coopdiag77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Treino cooperativo: sinal e diagnostico' --notes-file docs/RELEASE_COOPDIAG77_NOTAS.txt --latest
+          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
+          gh release create v2026.10.17-wifitest77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Teste Wi-Fi' --notes-file docs/RELEASE_WIFITEST77_NOTAS.txt --latest
       - name: Conferir downloads publicos, OTA real e manifesto latest
         run: |
-          mkdir -p build/published-coopdiag77
+          mkdir -p build/published-wifitest77
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-coopdiag77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.15-coopdiag77/$name"
-            cmp "release/$name" "build/published-coopdiag77/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-wifitest77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.17-wifitest77/$name"
+            cmp "release/$name" "build/published-wifitest77/$name"
           done
-          python3 tools/verify_coopdiag77_release.py build/published-coopdiag77
-          python3 tools/test_coopdiag77_release.py build/published-coopdiag77
-          python3 tools/test_coopdiag77_release.py build/published-coopdiag77 --sanitizers
+          python3 tools/verify_wifitest77_release.py build/published-wifitest77
+          python3 tools/test_wifitest77_release.py build/published-wifitest77
+          python3 tools/test_wifitest77_release.py build/published-wifitest77 --sanitizers
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-coopdiag77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-coopdiag77/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-wifitest77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-wifitest77/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

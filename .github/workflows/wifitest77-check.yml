@@ -1,0 +1,163 @@
+name: Qualificar wifitest77 - Teste Wi-Fi integrado
+# Read-only exact-branch candidate evidence, including firmware; never a release.
+on:
+  push:
+    branches: [feat/wifitest77-release]
+    paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "WIFITEST77_STAGING_ONLY.txt", ".github/workflows/wifitest77-check.yml", ".github/workflows/release.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: wifitest77-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/feat/wifitest77-release'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    defaults:
+      run:
+        shell: bash --noprofile --norc -euo pipefail {0}
+    env:
+      RPG_DETECT_LEAKS: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Instalar dependencias deterministicas das capturas e gates
+        run: |
+          python3 -m pip install 'Pillow==11.3.0' 'PyYAML==6.0.3'
+      - name: Executar agregado completo herdado e oito suites Wi-Fi com LSan obrigatorio
+        run: |
+          mkdir -p build
+          bash tools/test_wifitest77.sh 2>&1 | tee build/wifitest77-tests.log
+      - uses: arduino/setup-arduino-cli@v2
+      - name: Instalar core ESP32 historico confirmado na placa
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://espressif.github.io/arduino-esp32/package_esp32_index.json
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32@3.3.12
+      - name: Compilar SHA exato COOP1 RADIO1 default e dois fallbacks isolados fora do sketch
+        run: |
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/check_wifitest77_scope.py
+          arduino-cli version | tee build/wifitest77-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/wifitest77-esp32-toolchain.txt
+          for variant in coop1-radio1 coop1-radio0 coop0-radio1; do
+            extra=()
+            case "$variant" in
+              coop1-radio1) ;;
+              coop1-radio0) extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_WIFI_RADIO_TEST=0'); ;;
+              coop0-radio1) extra+=(--build-property 'compiler.cpp.extra_flags=-DRPG_ENABLE_COOP_TRAINING=0'); ;;
+            esac
+            arduino-cli compile --verbose --jobs 4 \
+              --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
+              "${extra[@]}" \
+              --build-path "$RUNNER_TEMP/esp32-wifitest77/$variant" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/wifitest77-esp32-$variant.log"
+          done
+          cp "$RUNNER_TEMP/esp32-wifitest77/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_wifitest77_scope.py
+      - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
+        run: |
+          python3 tools/release_wifitest77_manifest.py
+          python3 tools/verify_wifitest77_release.py
+          python3 tests/wifitest77_release_verifier.py
+          python3 tools/test_wifitest77_release.py release
+          python3 tools/test_wifitest77_release.py release --sanitizers
+          python3 tools/check_wifitest77_scope.py
+      - name: Registrar SHA, tres builds, agregado, capturas e orcamentos
+        run: |
+          python3 tools/record_wifitest77_identity.py --build-root "$RUNNER_TEMP/esp32-wifitest77"
+      - name: Guardar candidato e provas do SHA exato
+        uses: actions/upload-artifact@v4
+        with:
+          name: wifitest77-${{ github.sha }}
+          path: |
+            release/firmware.bin
+            release/artes.pak
+            release/manifest.json
+            release/SHA256SUMS
+            build/wifitest77-scope-budget.json
+            build/wifitest77-source-identity.json
+            build/wifitest77-ota/*.json
+            build/wifitest77-tests.log
+            build/wifitest77-esp32*.json
+            build/wifitest77-esp32*.log
+            build/wifitest77-esp32*.txt
+            build/package12-validation/**/*.json
+            build/package12-validation/**/*.log
+            build/package7-differential*.json
+            build/screens/procedural6/*.ppm
+            build/screens/package6-integration/*.ppm
+            build/screens/camp-identity77/*.ppm
+            build/screens/camp-identity77/*.png
+            build/screens/camp-identity77/*.gif
+            build/screens/camp-identity77/*.json
+            build/d20-camp77/previews/*.ppm
+            build/d20-camp77/previews/*.png
+            build/d20-camp77/previews/*.gif
+            build/d20-camp77/previews/*.json
+            build/ruins-bag77/ruins-bag-*.png
+            build/ruins7/*.png
+            build/clock-cycle7/previews/*.png
+            build/clock-cycle7/previews/*.gif
+            build/clock-cycle7/previews/*.json
+            build/clock-cycle7/visibility-preview/*.png
+            build/clock-cycle7/visibility-preview/*.gif
+            build/clock-cycle7/visibility-preview/*.json
+            build/fatigue7/screens/*.ppm
+            build/narrative8-render/*.json
+            build/narrative8-render/*.jsonl
+            build/narrative8-render/*.html
+            build/narrative8-render/*.txt
+            build/narrative8-render/*.log
+            build/narrative8-render/png/*.png
+            build/narrative8-render/contact-sheets/*.jpg
+            build/narrative8-events/*.ppm
+            build/pvp-presentation/previews/*.png
+            build/pvp-presentation/previews/*.gif
+            build/pvp-presentation/capture-manifest.json
+            build/pvp-presentation/screens/*.txt
+            build/pvp-presentation/sanitized/*.txt
+            build/pvp-review/screens-normal/*.ppm
+            build/pvp-review/screens-sanitizer/*.ppm
+            build/bulk-shop/screens/*.png
+            build/bulk-shop/screens/*.ppm
+            build/bulk-shop/sanitized/*.ppm
+            build/ration-limit10-oldreader/frozen/*.h
+            build/coop-training-native/**/*.log
+            build/coop-training-native/**/*.json
+            build/coop-training-native/**/*.txt
+            build/coop-training-native/**/*.d
+            build/coop-training-render/**/*.png
+            build/coop-training-render/**/*.ppm
+            build/coop-training-render/**/*.json
+            build/coop-training-render/**/*.log
+            build/coop-training-render/**/*.tsv
+            build/coop-touch-queue/*.log
+            build/coop-touch-queue/*.json
+            build/coop-invite-countdown/*.log
+            build/coop-invite-countdown/*.json
+            build/coop-radio-recovery/*.log
+            build/coop-radio-recovery/*.json
+            build/coop-radio-device/*.log
+            build/coop-radio-device/*.json
+            build/coop-radio-runtime-ui/*.log
+            build/coop-radio-runtime-ui/*.json
+            build/coop-radio-render/**/*.json
+            build/coop-radio-render/**/*.log
+            build/coop-radio-render/**/*.png
+            build/coop-radio-render/**/*.ppm
+            build/coop-radio-render/**/*.tsv
+            build/coop-radio-render/**/*.gif
+            build/wifi-radio-test/**/*.json
+            build/wifi-radio-test/**/*.log
+            build/wifi-radio-test/**/*.png
+            build/wifi-radio-test/**/*.ppm
+            build/wifi-radio-test/**/*.tsv
+            build/wifi-radio-test/**/*.csv
+          if-no-files-found: error
+          retention-days: 14

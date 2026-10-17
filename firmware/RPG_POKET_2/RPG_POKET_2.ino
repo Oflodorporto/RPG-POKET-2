@@ -44,6 +44,9 @@ void sampleTouch();
 #if RPG_ENABLE_COOP_TRAINING
 bool coopIsOpen();bool openCoopTraining();void tickCoopTraining(uint32_t now);void captureCoopTouch(bool valid,bool down,int x,int y,uint32_t now);
 #endif
+#if RPG_ENABLE_WIFI_RADIO_TEST
+bool wifiRadioTestActive();bool wifiRadioTestOpen();void wifiRadioTestTick(uint32_t now);void wifiRadioTestTap(int x,int y);
+#endif
 void paint(uint32_t now){
   static Page paperLastPage=Page::Choose;if(view.page!=paperLastPage){paperLastPage=view.page;view.paperStartFrame=now/120;view.paperAnimate=storyPaperPage(view.page)&&!commercePage(view.page);}
   view.campProgress=rpg::dailyTrip(game)&&game.daily.phase==rpg::DailyPhase::Rest?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/2000):game.campStage==3?std::min<uint32_t>(1000u,uint32_t(now-menu.campStarted)*1000/4500):0;
@@ -398,12 +401,33 @@ void tapped(int x,int y){
     else if(hit(x,y,4,241,74,35))side=-1;else if(hit(x,y,82,241,74,35))forward=-1;else if(hit(x,y,160,241,76,35))side=1;else return;
     auto trapsBefore=game.islandTraps;const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {if(trapsBefore!=game.islandTraps){char msg[48];snprintf(msg,sizeof(msg),game.damage?"Armadilha: -%u HP":"Armadilha evitada!",game.damage);say(msg);}else say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
   }
-  if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
+#if RPG_ENABLE_WIFI_RADIO_TEST
+  if(view.page==Page::WifiRadioTest){wifiRadioTestTap(x,y);return;}
+#endif
+  if(view.page==Page::NetworkTest){if(updateInfo.busy)return;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    if(hit(x,y,14,219,212)){wifiRadioTestOpen();return;}
+#endif
+    if(hit(x,y,14,272,102)){
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      view.page=wifi_radio_ui::networkFromWifi?Page::Wifi:Page::Updates;
+#else
+      view.page=Page::Updates;
+#endif
+      dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
   if(view.page==Page::TravelRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptTrip(game)){say("");savedTransition(currentPage());}return;}
   if(view.page==Page::Club||view.page==Page::ClubBattle||view.page==Page::ClubResult){clubTap(x,y);return;}
   if(view.page==Page::Updates){if(updateInfo.busy)return;
-    if(updateInfo.state==updater::State::Available||updateInfo.canResume){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,14,218,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
-    else if(hit(x,y,14,173,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
+    if(updateInfo.state==updater::State::Available||updateInfo.canResume){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,14,218,212)){view.page=Page::NetworkTest;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      wifi_radio_ui::networkFromWifi=false;
+#endif
+      startNetworkTest();dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
+    else if(hit(x,y,14,173,212)){view.page=Page::NetworkTest;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      wifi_radio_ui::networkFromWifi=false;
+#endif
+      startNetworkTest();dirty=true;}else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
     else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
   if(view.page==Page::Guide){
     if(launchUi::back.contains(x,y)){view.page=view.guideReturn;say("");}
@@ -471,8 +495,15 @@ void tapped(int x,int y){
     else if(hit(x,y,14,222,102)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
     else if(hit(x,y,14,278,212)){openTitle();}return;}
   if(view.page==Page::Tests){if(hit(x,y,14,222,212)){testMemory();pendingTouch=false;gate=TouchGate{};dirty=true;}else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
-  if(view.page==Page::Wifi){if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
+  if(view.page==Page::Wifi){
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    if(hit(x,y,14,276,68)){view.page=Page::Settings;dirty=true;}
+    else if(hit(x,y,86,276,68)){if(!menu.connecting&&!menu.scanning&&!updateInfo.busy){wifi_radio_ui::networkFromWifi=true;view.page=Page::NetworkTest;resetUpdateScreen();dirty=true;}}
+    else if(hit(x,y,158,276,68)){forgetConnection();dirty=true;}
+#else
+    if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
     else if(hit(x,y,124,276,102)){forgetConnection();dirty=true;}
+#endif
     else if(hit(x,y,14,80,102)){showSavedNetworks();dirty=true;}
     else if(hit(x,y,124,80,102)){searchNetworks();dirty=true;}
     else if(hit(x,y,14,221,102)){if(menu.savedNetworks&&menu.savedCount&&!menu.connecting&&!menu.scanning)view.page=Page::ForgetWifi;dirty=true;}
@@ -721,6 +752,9 @@ void tickTravelProgress(uint32_t now){
 #if RPG_ENABLE_COOP_TRAINING
 #include "CoopDevice.h"
 #endif
+#if RPG_ENABLE_WIFI_RADIO_TEST
+#include "WifiRadioTestRuntime.h"
+#endif
 void setup(){
   Serial.begin(115200);Serial.setTxTimeoutMs(0);pinMode(41,OUTPUT);digitalWrite(41,HIGH);pinMode(1,OUTPUT);digitalWrite(1,LOW);
   Wire.begin(48,47);Wire.setClock(400000);Wire.setTimeOut(20);
@@ -755,6 +789,15 @@ void loop(){
     delay(1);return;
   }
 #endif
+#if RPG_ENABLE_WIFI_RADIO_TEST
+  // Exclusive temporary radio ownership also suspends campaign/save/network ticks.
+  if(wifiRadioTestActive()){
+    sampleTouch();if(pendingTouch){pendingTouch=false;if(pendingPage==view.page)wifiRadioTestTap(pendingX,pendingY);}
+    wifiRadioTestTick(millis());now=millis();
+    if(lcdReady && (dirty||uint32_t(now-drawAt)>=120)){drawAt=now;paint(now);dirty=false;}
+    delay(1);return;
+  }
+#endif
   if(tickUpdater())dirty=true;
   tickClub(now);
   if(!arena.opened&&uint32_t(now-wifiPollAt)>=250){wifiPollAt=now;if(tickWifi())dirty=true;}
@@ -771,6 +814,10 @@ void loop(){
   // Entry may have happened in tapped() above; do not run campaign transitions
   // once the newly opened training is active, even in this first iteration.
   if(coopIsOpen()){delay(1);return;}
+#endif
+#if RPG_ENABLE_WIFI_RADIO_TEST
+  // tapped() may have entered the test this iteration: no campaign tick after it.
+  if(wifiRadioTestActive()){delay(1);return;}
 #endif
   now=millis();
   if(menu.clockValid&&uint32_t(now-menu.eventCheckAt)>=1000){menu.eventCheckAt=now;if(canOfferEvents()&&!updateInfo.busy&&!arena.opened&&view.page!=Page::SaveError&&view.page!=Page::FirstTip&&view.page!=Page::Letter&&view.page!=Page::LetterRefuse&&rpg::offerEvent(game,menu.eventDay,menu.eventHour)){say("Nova carta de Maelis");savedTransition(view.page);}}

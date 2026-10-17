@@ -349,12 +349,33 @@ void tapped(int x,int y){
     else if(hit(x,y,4,241,74,35))side=-1;else if(hit(x,y,82,241,74,35))forward=-1;else if(hit(x,y,160,241,76,35))side=1;else return;
     auto trapsBefore=game.islandTraps;const char* err=rpg::dungeonMove(game,forward,side,turn);if(err)say(err);else {if(trapsBefore!=game.islandTraps){char msg[48];snprintf(msg,sizeof(msg),game.damage?"Armadilha: -%u HP":"Armadilha evitada!",game.damage);say(msg);}else say(game.phase==rpg::Phase::Hero?"Inimigo! Seu turno":"");savedTransition(Page::Dungeon);}return;
   }
-  if(view.page==Page::NetworkTest){if(updateInfo.busy)return;if(hit(x,y,14,272,102)){view.page=Page::Updates;dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
+#if RPG_ENABLE_WIFI_RADIO_TEST
+  if(view.page==Page::WifiRadioTest){wifiRadioTestTap(x,y);return;}
+#endif
+  if(view.page==Page::NetworkTest){if(updateInfo.busy)return;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    if(hit(x,y,14,219,212)){wifiRadioTestOpen();return;}
+#endif
+    if(hit(x,y,14,272,102)){
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      view.page=wifi_radio_ui::networkFromWifi?Page::Wifi:Page::Updates;
+#else
+      view.page=Page::Updates;
+#endif
+      dirty=true;}else if(hit(x,y,124,272,102)){startNetworkTest();dirty=true;}return;}
   if(view.page==Page::TravelRoll){if(menu.rollReady&&hit(x,y,14,272,212)&&rpg::acceptTrip(game)){say("");savedTransition(currentPage());}return;}
   if(view.page==Page::Club||view.page==Page::ClubBattle||view.page==Page::ClubResult){clubTap(x,y);return;}
   if(view.page==Page::Updates){if(updateInfo.busy)return;
-    if(updateInfo.state==updater::State::Available||updateInfo.canResume){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,14,218,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
-    else if(hit(x,y,14,173,212)){view.page=Page::NetworkTest;startNetworkTest();dirty=true;}else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
+    if(updateInfo.state==updater::State::Available||updateInfo.canResume){if(hit(x,y,14,272,102)){updateInfo=updater::Info{};resetUpdateScreen();view.page=Page::Settings;dirty=true;}else if(hit(x,y,14,218,212)){view.page=Page::NetworkTest;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      wifi_radio_ui::networkFromWifi=false;
+#endif
+      startNetworkTest();dirty=true;}else if(hit(x,y,124,272,102)){if(!startUpdate(true))say("Conecte o Wi-Fi para atualizar");dirty=true;}}
+    else if(hit(x,y,14,173,212)){view.page=Page::NetworkTest;
+#if RPG_ENABLE_WIFI_RADIO_TEST
+      wifi_radio_ui::networkFromWifi=false;
+#endif
+      startNetworkTest();dirty=true;}else if(hit(x,y,14,218,212)){if(!startUpdate(false)){updateInfo.state=updater::State::Error;snprintf(updateInfo.message,sizeof(updateInfo.message),"Conecte o Wi-Fi primeiro");}dirty=true;}
     else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
   if(view.page==Page::Guide){
     if(launchUi::back.contains(x,y)){view.page=view.guideReturn;say("");}
@@ -422,8 +443,15 @@ void tapped(int x,int y){
     else if(hit(x,y,14,222,102)){view.page=Page::Updates;resetUpdateScreen();dirty=true;}
     else if(hit(x,y,14,278,212)){openTitle();}return;}
   if(view.page==Page::Tests){if(hit(x,y,14,222,212)){testMemory();pendingTouch=false;gate=TouchGate{};dirty=true;}else if(hit(x,y,14,272,212)){view.page=Page::Settings;dirty=true;}return;}
-  if(view.page==Page::Wifi){if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
+  if(view.page==Page::Wifi){
+#if RPG_ENABLE_WIFI_RADIO_TEST
+    if(hit(x,y,14,276,68)){view.page=Page::Settings;dirty=true;}
+    else if(hit(x,y,86,276,68)){if(!menu.connecting&&!menu.scanning&&!updateInfo.busy){wifi_radio_ui::networkFromWifi=true;view.page=Page::NetworkTest;resetUpdateScreen();dirty=true;}}
+    else if(hit(x,y,158,276,68)){forgetConnection();dirty=true;}
+#else
+    if(hit(x,y,14,276,102)){view.page=Page::Settings;dirty=true;}
     else if(hit(x,y,124,276,102)){forgetConnection();dirty=true;}
+#endif
     else if(hit(x,y,14,80,102)){showSavedNetworks();dirty=true;}
     else if(hit(x,y,124,80,102)){searchNetworks();dirty=true;}
     else if(hit(x,y,14,221,102)){if(menu.savedNetworks&&menu.savedCount&&!menu.connecting&&!menu.scanning)view.page=Page::ForgetWifi;dirty=true;}
