@@ -167,7 +167,7 @@ void newTitle(){
   for(uint8_t i=0;i<3;++i)if(menu.slots[i]==rpg::Load::Empty){selectSlot(i);return;}
   view.page=Page::Slots;menu.notice="Escolha um slot para liberar";dirty=true;
 }
-bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
+bool openClub();bool closeClub();void clubTap(int,int);void recoverClubReservation();
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
 bool tickIdleClock(uint32_t now,bool blocked){if(blocked||view.page==Page::SaveError){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 // A persisted result is acknowledged explicitly; never resolve it during drawing
@@ -558,7 +558,7 @@ void tapped(int x,int y){
 #else
     else if(hit(x,y,14,218,212)){
 #endif
-      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}
+      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else if(arena.cleanupPending){view.page=Page::Club;dirty=true;}else say("Nao foi possivel abrir o radio");}
     }return;
   }
   if(view.page==Page::GuildJoin){if(hit(x,y,14,272,102)){view.page=Page::Guild;say("");}else if(hit(x,y,124,272,102)){if(!rpg::joinGuild(game)){say("Cadastro concluido");savedTransition(Page::Guild);}else say("Ouro insuficiente para cadastro");}return;}
@@ -798,6 +798,15 @@ void loop(){
     delay(1);return;
   }
 #endif
+  static bool clubCleanupTouchReady=false;
+  if(!arena.cleanupPending)clubCleanupTouchReady=false;
+  if(arena.cleanupPending){
+    // Failed PvP radio cleanup keeps all campaign and network ticks suspended.
+    if(!clubCleanupTouchReady){pendingTouch=false;gate=TouchGate{};clubCleanupTouchReady=true;}
+    sampleTouch();if(pendingTouch){pendingTouch=false;if(pendingPage==Page::Club)clubTap(pendingX,pendingY);}
+    if(lcdReady && (dirty||uint32_t(now-drawAt)>=120)){drawAt=now;paint(now);dirty=false;}
+    delay(1);return;
+  }
   if(tickUpdater())dirty=true;
   tickClub(now);
   if(!arena.opened&&uint32_t(now-wifiPollAt)>=250){wifiPollAt=now;if(tickWifi())dirty=true;}
@@ -810,6 +819,7 @@ void loop(){
   offerLevelNotice();
   offerFirstHint();
   if(pendingTouch){pendingTouch=false;if(pendingPage==view.page&&pendingPhase==game.phase)tapped(pendingX,pendingY);}
+  if(arena.cleanupPending){delay(1);return;}
 #if RPG_ENABLE_COOP_TRAINING
   // Entry may have happened in tapped() above; do not run campaign transitions
   // once the newly opened training is active, even in this first iteration.

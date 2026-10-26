@@ -11,7 +11,9 @@
 // Radio callbacks only enqueue; all admission, saving and commands run in loop().
 struct ClubInbox {uint8_t mac[6];club::Packet packet;};
 inline StaticQueue_t clubQueueState;inline uint8_t clubQueueBytes[8*sizeof(ClubInbox)];inline QueueHandle_t clubQueue=nullptr;
-inline void clubReceive(const esp_now_recv_info_t* info,const uint8_t* data,int len){if(!clubQueue||(len!=sizeof(club::Packet)&&len!=44))return;if((len==44&&data[8]!=4)||(len==sizeof(club::Packet)&&data[8]!=club::VERSION))return;ClubInbox entry{};memcpy(entry.mac,info->src_addr,6);memcpy(&entry.packet,data,len);xQueueSend(clubQueue,&entry,0);}
+struct ClubRadioState {bool lease=false,wifiTouched=false,radioReady=false,recvRegistered=false;wifi_mode_t oldMode=WIFI_MODE_NULL;wifi_second_chan_t oldSecondary=WIFI_SECOND_CHAN_NONE;uint8_t oldChannel=0;bool oldAuto=false,oldConnected=false;};
+inline ClubRadioState clubRadioState;
+inline void clubReceive(const esp_now_recv_info_t* info,const uint8_t* data,int len){if(!clubQueue||!info||!info->src_addr||!data||(len!=sizeof(club::Packet)&&len!=44))return;if((len==44&&data[8]!=4)||(len==sizeof(club::Packet)&&data[8]!=club::VERSION))return;ClubInbox entry{};memcpy(entry.mac,info->src_addr,6);memcpy(&entry.packet,data,len);xQueueSend(clubQueue,&entry,0);}
 inline void clubSend(void*,const uint8_t* mac,const club::Packet& p){if(!arena.opened)return;if(!esp_now_is_peer_exist(mac)){esp_now_peer_info_t peer{};memcpy(peer.peer_addr,mac,6);peer.channel=6;peer.ifidx=WIFI_IF_STA;esp_now_add_peer(&peer);}esp_now_send(mac,reinterpret_cast<const uint8_t*>(&p),sizeof(p));}
 inline bool clubPersist(){if(journal.save(game))return true;afterSave=view.page;view.page=Page::SaveError;arena.notice="Falha ao salvar; duelo pausado";dirty=true;return false;}
 inline bool clubAdmission(void*,uint32_t id,const club::Peer&){if(arena.begun||view.page==Page::SaveError)return false;auto before=game;const char* err=rpg::reserveFight(game,id);if(err){arena.notice=err;return false;}if(!clubPersist()){game=before;return false;}return true;}
@@ -24,25 +26,61 @@ inline void clubMoveReceive(void*,uint16_t seq,uint8_t action,bool ack,uint32_t 
  if(!ack&&arena.duel.acceptsMove(seq,action)&&!clubBeginMoney())return;
  arena.duel.receive(seq,action,ack,now);arena.visual.capture(arena.duel,now);dirty=true;
 }
+inline bool restoreClubWifi(){
+ auto& radio=clubRadioState;if(!radio.wifiTouched)return true;
+ if(radio.oldMode==WIFI_MODE_NULL){if(!WiFi.mode(WIFI_MODE_NULL))return false;}
+ else {
+  if(radio.oldChannel&&esp_wifi_set_channel(radio.oldChannel,radio.oldSecondary)!=ESP_OK)return false;
+  if(esp_wifi_set_storage(WIFI_STORAGE_FLASH)!=ESP_OK)return false;
+  if(radio.oldConnected&&WiFi.status()!=WL_CONNECTED&&!WiFi.reconnect())return false;
+ }
+ WiFi.persistent(true);if(!WiFi.setAutoReconnect(radio.oldAuto))return false;radio.wifiTouched=false;return true;
+}
+inline bool closeClub(){
+ auto& radio=clubRadioState;if(!radio.lease)return true;
+#if RPG_ENABLE_COOP_TRAINING
+ if(coopradio::owner!=coopradio::Owner::Pvp)return false;
+#endif
+ if(arena.opened){arena.session.cancel(millis());arena.opened=false;}
+ // Keep the queue reachable until the callback has been unregistered.
+ if(radio.recvRegistered){if(esp_now_unregister_recv_cb()!=ESP_OK)goto pending;radio.recvRegistered=false;}
+ clubQueue=nullptr;
+ if(radio.radioReady){if(esp_now_deinit()!=ESP_OK)goto pending;radio.radioReady=false;}
+ if(!restoreClubWifi())goto pending;
+ arena.begun=false;arena.cleanupPending=false;radio.lease=false;
+#if RPG_ENABLE_COOP_TRAINING
+ coopradio::release(coopradio::Owner::Pvp);
+#endif
+ menu.connected=WiFi.status()==WL_CONNECTED;menu.connecting=menu.scanning=false;return true;
+pending:
+ arena.cleanupPending=true;arena.notice="Radio ainda em limpeza";view.page=Page::Club;
+ dirty=true;return false;
+}
+inline bool failClubOpen(const char* notice){arena.notice=notice;closeClub();return false;}
 inline bool openClub(){
- if(game.phase!=rpg::Phase::Home||!game.guildMember||game.p.level<5)return false;
+ if(clubRadioState.lease||game.phase!=rpg::Phase::Home||!game.guildMember||game.p.level<5)return false;
 #if RPG_ENABLE_COOP_TRAINING
  if(!coopradio::acquire(coopradio::Owner::Pvp))return false;
 #endif
- WiFi.disconnect(false,false);WiFi.scanDelete();menu.scanning=menu.connecting=menu.connected=false;WiFi.mode(WIFI_STA);WiFi.setAutoReconnect(false);esp_wifi_set_channel(6,WIFI_SECOND_CHAN_NONE);
- arena=ClubUi{};clubQueue=xQueueCreateStatic(8,sizeof(ClubInbox),clubQueueBytes,&clubQueueState);if(esp_now_init()!=ESP_OK){arena.notice="Radio indisponivel";
-#if RPG_ENABLE_COOP_TRAINING
- coopradio::release(coopradio::Owner::Pvp);
-#endif
- resumeConnection();return false;}
- arena.opened=true;esp_now_register_recv_cb(clubReceive);uint8_t mac[6];esp_wifi_get_mac(WIFI_IF_STA,mac);char name[12];const char* radioNames[]={"HUMANO","ELFO","ANAO","ORC"};snprintf(name,sizeof(name),"%s",radioNames[game.race%4]);arena.session.begin(mac,name,game.p.cls,game.p.level,clubSend,nullptr,millis());arena.session.setAppearance(game.race,game.shirt,game.trousers);arena.session.setAdmission(clubAdmission,nullptr);arena.session.setMoveReceiver(clubMoveReceive,nullptr);arena.session.setResultReceiver(clubResultReceive,nullptr);return true;
-}
-inline void closeClub(){
- if(!arena.opened)return;arena.session.cancel(millis());arena.opened=false;esp_now_unregister_recv_cb();esp_now_deinit();clubQueue=nullptr;arena.begun=false;
-#if RPG_ENABLE_COOP_TRAINING
- coopradio::release(coopradio::Owner::Pvp);
-#endif
- resumeConnection();
+ auto& radio=clubRadioState;radio=ClubRadioState{};radio.lease=true;arena=ClubUi{};
+ clubQueue=xQueueCreateStatic(8,sizeof(ClubInbox),clubQueueBytes,&clubQueueState);if(!clubQueue)return failClubOpen("Fila do radio indisponivel");
+ radio.oldMode=WiFi.getMode();if(radio.oldMode!=WIFI_MODE_NULL&&radio.oldMode!=WIFI_MODE_STA)return failClubOpen("Modo Wi-Fi ocupado");
+ radio.oldAuto=WiFi.getAutoReconnect();radio.oldConnected=WiFi.status()==WL_CONNECTED;
+ if(radio.oldMode!=WIFI_MODE_NULL){
+  if(esp_wifi_get_channel(&radio.oldChannel,&radio.oldSecondary)!=ESP_OK)return failClubOpen("Canal Wi-Fi indisponivel");
+  if(esp_wifi_set_storage(WIFI_STORAGE_RAM)!=ESP_OK)return failClubOpen("Wi-Fi indisponivel");
+ }
+ radio.wifiTouched=true;if(!WiFi.setAutoReconnect(false))return failClubOpen("Auto Wi-Fi indisponivel");WiFi.persistent(false);
+ const bool started=WiFi.mode(WIFI_STA);WiFi.persistent(true);if(!started)return failClubOpen("Modo Wi-Fi indisponivel");
+ if(esp_wifi_set_storage(WIFI_STORAGE_RAM)!=ESP_OK)return failClubOpen("Wi-Fi indisponivel");
+ if(!WiFi.disconnect(false,false))return failClubOpen("Desconexao Wi-Fi falhou");
+ WiFi.scanDelete();menu.scanning=menu.connecting=menu.connected=false;
+ if(esp_wifi_set_channel(6,WIFI_SECOND_CHAN_NONE)!=ESP_OK)return failClubOpen("Canal do radio indisponivel");
+ uint8_t mac[6]{};if(esp_wifi_get_mac(WIFI_IF_STA,mac)!=ESP_OK)return failClubOpen("MAC do radio indisponivel");
+ bool nonzero=false;for(auto octet:mac)nonzero|=octet!=0;if(!nonzero||(mac[0]&1))return failClubOpen("MAC do radio indisponivel");
+ if(esp_now_init()!=ESP_OK)return failClubOpen("Radio indisponivel");radio.radioReady=true;
+ if(esp_now_register_recv_cb(clubReceive)!=ESP_OK)return failClubOpen("Callback do radio indisponivel");radio.recvRegistered=true;
+ char name[12];const char* radioNames[]={"HUMANO","ELFO","ANAO","ORC"};snprintf(name,sizeof(name),"%s",radioNames[game.race%4]);arena.session.begin(mac,name,game.p.cls,game.p.level,clubSend,nullptr,millis());arena.session.setAppearance(game.race,game.shirt,game.trousers);arena.session.setAdmission(clubAdmission,nullptr);arena.session.setMoveReceiver(clubMoveReceive,nullptr);arena.session.setResultReceiver(clubResultReceive,nullptr);arena.opened=true;return true;
 }
 inline void recoverClubReservation(){if(game.clubStage==1){rpg::refundFight(game);savedTransition(currentPage());}else if(game.clubStage==2){rpg::settleFight(game,game.clubSession,-1);savedTransition(currentPage());}}
 inline void finishClub(int result,bool unconfirmed=false){
@@ -80,7 +118,8 @@ inline void tickClub(uint32_t now){
 inline uint32_t clubSessionId(uint32_t value){return value?value:1;}
 inline void clubTap(int x,int y){
  uint32_t now=millis();
- if(view.page==Page::ClubResult){if(hit(x,y,14,272,212)){if(uint32_t(now-arena.finishedAt)<11000){arena.notice="Confirmando resultado...";dirty=true;return;}closeClub();view.page=Page::Guild;say("");}return;}
+ if(arena.cleanupPending){if(hit(x,y,14,272,212)&&closeClub()){view.page=Page::Guild;say("");}return;}
+ if(view.page==Page::ClubResult){if(hit(x,y,14,272,212)){if(uint32_t(now-arena.finishedAt)<11000){arena.notice="Confirmando resultado...";dirty=true;return;}if(closeClub()){view.page=Page::Guild;say("");}}return;}
  if(view.page==Page::ClubBattle){
   for(unsigned i=0;i<4;++i)if(hit(x,y,14+(i%2)*110,220+(i/2)*50,102)){
    auto a=club::Action(i);
@@ -93,7 +132,7 @@ inline void clubTap(int x,int y){
   }
   return;
  }
- if(hit(x,y,14,272,212)){if(game.clubStage==1){rpg::refundFight(game);if(!clubPersist())return;}closeClub();view.page=Page::Guild;say("");return;}
+ if(hit(x,y,14,272,212)){if(game.clubStage==1){rpg::refundFight(game);if(!clubPersist())return;}if(closeClub()){view.page=Page::Guild;say("");}return;}
  auto state=arena.session.state;
  if(state==club::State::Incoming){if(hit(x,y,14,218,102))arena.session.decline(now);else if(hit(x,y,124,218,102))arena.session.accept(now);}
  else if(state==club::State::Listing||state==club::State::Notice){if(state==club::State::Notice)arena.session.dismiss();for(unsigned i=0;i<6;++i)if(hit(x,y,14,54+i*25,212,24))arena.choice=i;

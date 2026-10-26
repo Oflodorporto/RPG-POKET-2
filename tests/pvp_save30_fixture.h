@@ -76,13 +76,15 @@ club::Packet packet(club::Type type,uint32_t session=200,unsigned sequence=0){
 }
 void enqueue(const club::Packet& p){esp_now_recv_info_t info{remoteMac};assert(clubRadioReceiver);clubRadioReceiver(&info,reinterpret_cast<const uint8_t*>(&p),sizeof(p));}
 void reset(){
+  // Each fixture starts after a simulated boot, which resets static driver state.
+  clubRadioState=ClubRadioState{};clubQueue=nullptr;clubRadioReceiver=nullptr;clubFake::reset();
   nvs=RadioStore{};backend.slot=0;Game unused;assert(journal.load(unused)==Load::Empty);
   game=testHero(1,41);game.p.level=5;game.p.mp=game.p.maxmp=totalMana(game);
   game.guildMember=true;game.p.gold=100;game.fatigue=64;assert(persistentValid(game));assert(journal.save(game));
   view.page=Page::Club;afterSave=Page::Home;now=100;assert(openClub());clubRadioSent.clear();
 }
 Game rebootSnapshot(){PersistentJournal<Backend> observer(backend);Game loaded;assert(observer.load(loaded)==Load::Ok&&!observer.fatigueReset);return loaded;}
-void recoverReboot(){assert(journal.load(game)==Load::Ok&&!journal.fatigueReset);arena=ClubUi{};clubQueue=nullptr;view.page=Page::Home;recoverClubReservation();}
+void recoverReboot(){assert(journal.load(game)==Load::Ok&&!journal.fatigueReset);arena=ClubUi{};clubRadioState=ClubRadioState{};clubQueue=nullptr;clubRadioReceiver=nullptr;clubFake::reset();view.page=Page::Home;recoverClubReservation();}
 void prepareAdmission(bool incoming){
   if(incoming){enqueue(packet(club::Type::Invite));tickClub(now);assert(arena.session.state==club::State::Incoming);}
   else {enqueue(packet(club::Type::Hello,0));tickClub(now);assert(arena.session.peers[0].used);}

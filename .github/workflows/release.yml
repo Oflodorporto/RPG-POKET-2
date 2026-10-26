@@ -1,4 +1,4 @@
-name: Publicar wifitest77 - Teste Wi-Fi apos SHA qualificado
+name: Publicar 7.8 - Bolsa e visual apos SHA qualificado
 # Publication is conditional on the authorized exact-SHA qualification and all repeated gates.
 # Qualification alone never publishes, flashes USB, or performs physical OTA.
 on:
@@ -9,7 +9,7 @@ permissions:
   contents: write
   actions: read
 concurrency:
-  group: wifitest77-main
+  group: ponytail-main
   cancel-in-progress: false
 jobs:
   release:
@@ -34,16 +34,16 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fwifitest77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.17-wifitest77" --jq 'length')" = 0
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fponytail-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_ponytail_release_gate.py "$RUNNER_TEMP/qualification.json" --run-id-out "$RUNNER_TEMP/qualified-run-id"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.26-ponytail" --jq 'length')" = 0
       - name: Instalar dependencias deterministicas das capturas e gates
         run: |
           python3 -m pip install 'Pillow==11.3.0' 'PyYAML==6.0.3'
       - name: Executar agregado completo herdado e oito suites Wi-Fi com LSan obrigatorio
         run: |
           mkdir -p build
-          bash tools/test_wifitest77.sh 2>&1 | tee build/wifitest77-tests.log
+          bash tools/test_ponytail.sh 2>&1 | tee build/ponytail-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar core ESP32 historico confirmado na placa
         run: |
@@ -54,9 +54,9 @@ jobs:
       - name: Compilar SHA exato COOP1 RADIO1 default e dois fallbacks isolados fora do sketch
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 tools/check_wifitest77_scope.py
-          arduino-cli version | tee build/wifitest77-esp32-toolchain.txt
-          arduino-cli core list | tee -a build/wifitest77-esp32-toolchain.txt
+          python3 tools/check_ponytail_scope.py
+          arduino-cli version | tee build/ponytail-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/ponytail-esp32-toolchain.txt
           for variant in coop1-radio1 coop1-radio0 coop0-radio1; do
             extra=()
             case "$variant" in
@@ -67,38 +67,38 @@ jobs:
             arduino-cli compile --verbose --jobs 4 \
               --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
               "${extra[@]}" \
-              --build-path "$RUNNER_TEMP/esp32-wifitest77/$variant" \
-              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/wifitest77-esp32-$variant.log"
+              --build-path "$RUNNER_TEMP/esp32-ponytail/$variant" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/ponytail-esp32-$variant.log"
           done
-          cp "$RUNNER_TEMP/esp32-wifitest77/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
-          python3 tools/check_wifitest77_scope.py
+          cp "$RUNNER_TEMP/esp32-ponytail/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_ponytail_scope.py
       - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
         run: |
-          python3 tools/release_wifitest77_manifest.py
-          python3 tools/verify_wifitest77_release.py
-          python3 tests/wifitest77_release_verifier.py
-          python3 tools/test_wifitest77_release.py release
-          python3 tools/test_wifitest77_release.py release --sanitizers
-          python3 tools/check_wifitest77_scope.py
+          python3 tools/release_ponytail_manifest.py
+          python3 tools/verify_ponytail_release.py
+          python3 tests/ponytail_release_verifier.py
+          python3 tools/test_ponytail_release.py release
+          python3 tools/test_ponytail_release.py release --sanitizers
+          python3 tools/check_ponytail_scope.py
       - name: Registrar SHA, tres builds, agregado, capturas e orcamentos
         run: |
-          python3 tools/record_wifitest77_identity.py --build-root "$RUNNER_TEMP/esp32-wifitest77"
+          python3 tools/record_ponytail_identity.py --build-root "$RUNNER_TEMP/esp32-ponytail"
       - name: Guardar candidato e provas do SHA exato
         uses: actions/upload-artifact@v4
         with:
-          name: wifitest77-publisher-${{ github.sha }}
+          name: ponytail-publisher-${{ github.sha }}
           path: |
             release/firmware.bin
             release/artes.pak
             release/manifest.json
             release/SHA256SUMS
-            build/wifitest77-scope-budget.json
-            build/wifitest77-source-identity.json
-            build/wifitest77-ota/*.json
-            build/wifitest77-tests.log
-            build/wifitest77-esp32*.json
-            build/wifitest77-esp32*.log
-            build/wifitest77-esp32*.txt
+            build/ponytail-scope-budget.json
+            build/ponytail-source-identity.json
+            build/ponytail-ota/*.json
+            build/ponytail-tests.log
+            build/ponytail-esp32*.json
+            build/ponytail-esp32*.log
+            build/ponytail-esp32*.txt
             build/package12-validation/**/*.json
             build/package12-validation/**/*.log
             build/package7-differential*.json
@@ -181,26 +181,31 @@ jobs:
           test "$GITHUB_REPOSITORY" = Oflodorporto/RPG-POKET-2
           test "$GITHUB_EVENT_NAME" = push
           test "$GITHUB_REF" = refs/heads/main
-          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fwifitest77-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
-          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json"
-          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.17-wifitest77" --jq 'length')" = 0
-          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_wifitest77_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/wifitest77-check.yml/runs?branch=feat%2Fponytail-release&head_sha=$GITHUB_SHA&status=success&per_page=100" > "$RUNNER_TEMP/qualification.json"
+          python3 tools/check_ponytail_release_gate.py "$RUNNER_TEMP/qualification.json"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/v2026.10.26-ponytail" --jq 'length')" = 0
+          python3 -c 'import sys,subprocess; sys.path.insert(0,"tools"); from record_ponytail_identity import assert_generated_only; assert_generated_only(subprocess.check_output(["git","status","--porcelain","--untracked-files=all"],text=True).strip())'
           gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" > "$RUNNER_TEMP/main-ref.json"
-          python3 tools/check_wifitest77_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json"
-          gh release create v2026.10.17-wifitest77 release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.7 - Teste Wi-Fi' --notes-file docs/RELEASE_WIFITEST77_NOTAS.txt --latest
+          python3 tools/check_ponytail_release_gate.py "$RUNNER_TEMP/qualification.json" --main-ref "$RUNNER_TEMP/main-ref.json" --run-id-file "$RUNNER_TEMP/qualified-run-id"
+          read -r run_id < "$RUNNER_TEMP/qualified-run-id"
+          [[ "$run_id" =~ ^[1-9][0-9]*$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts?per_page=100" > "$RUNNER_TEMP/qualified-artifacts.json"
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name "ponytail-$GITHUB_SHA" --dir "$RUNNER_TEMP/qualified-ponytail"
+          python3 tools/check_ponytail_qualified_artifact.py "$RUNNER_TEMP/qualified-artifacts.json" "$RUNNER_TEMP/qualified-run-id" "$RUNNER_TEMP/qualified-ponytail" release "$GITHUB_SHA"
+          gh release create v2026.10.26-ponytail release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.8 - Bolsa e visual' --notes-file docs/RELEASE_PONYTAIL_NOTAS.txt --latest
       - name: Conferir downloads publicos, OTA real e manifesto latest
         run: |
-          mkdir -p build/published-wifitest77
+          mkdir -p build/published-ponytail
           for name in firmware.bin artes.pak manifest.json; do
-            curl --fail --location --retry 5 --retry-all-errors --output "build/published-wifitest77/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.17-wifitest77/$name"
-            cmp "release/$name" "build/published-wifitest77/$name"
+            curl --fail --location --retry 5 --retry-all-errors --output "build/published-ponytail/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.26-ponytail/$name"
+            cmp "release/$name" "build/published-ponytail/$name"
           done
-          python3 tools/verify_wifitest77_release.py build/published-wifitest77
-          python3 tools/test_wifitest77_release.py build/published-wifitest77
-          python3 tools/test_wifitest77_release.py build/published-wifitest77 --sanitizers
+          python3 tools/verify_ponytail_release.py build/published-ponytail
+          python3 tools/test_ponytail_release.py build/published-ponytail
+          python3 tools/test_ponytail_release.py build/published-ponytail --sanitizers
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-wifitest77/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-wifitest77/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-ponytail/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-ponytail/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

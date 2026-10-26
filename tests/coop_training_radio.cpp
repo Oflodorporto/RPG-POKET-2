@@ -31,7 +31,9 @@ void normal(bool connected){
  CHECK(d.open(s,g,false,77,400)==coopradio::OpenError::None);s.leave(410);d.close();CHECK(fake::initCount==2&&fake::deinitCount==2);
 }
 void failures(){
- for(int fault=1;fault<=6;++fault){fake::reset();fake::fail=fault;Session s;coopradio::Device d;auto g=hero();CHECK(d.open(s,g,false,1,0)!=coopradio::OpenError::None);CHECK(!d.active()&&!fake::radio&&!fake::callbackSet&&coopradio::owner==coopradio::Owner::None);CHECK(!fake::nvsWrites&&!fake::erases&&fake::persistent);}
+ for(int fault=1;fault<=6;++fault){fake::reset();fake::fail=fault;Session s;coopradio::Device d;auto g=hero();CHECK(d.open(s,g,false,1,0)!=coopradio::OpenError::None);
+  if(d.active()){CHECK(fault==1&&d.cleanupPending()&&coopradio::owner==coopradio::Owner::Training);fake::fail=0;CHECK(d.close());}
+  CHECK(!d.active()&&!fake::radio&&!fake::callbackSet&&coopradio::owner==coopradio::Owner::None);CHECK(!fake::nvsWrites&&!fake::erases&&fake::persistent);}
  fake::reset();fake::mode=WIFI_MODE_AP;Session s;coopradio::Device d;auto g=hero();CHECK(d.open(s,g,false,1,0)==coopradio::OpenError::WifiMode&&fake::mutations==0);
  fake::reset();CHECK(d.open(s,g,true,1,0)==coopradio::OpenError::Busy&&fake::mutations==0);g.phase=rpg::Phase::Hero;CHECK(d.open(s,g,false,1,0)==coopradio::OpenError::Profile&&fake::mutations==0);
 }

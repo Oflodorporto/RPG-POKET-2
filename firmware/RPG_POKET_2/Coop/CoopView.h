@@ -213,6 +213,13 @@ template<class C> void diagnosticPage(C& c,const ViewModel& v){
 }
 template<class C> void draw(C& c,const ViewModel& v,const coopplatform::Training& t){
  c.setTextWrap(false);c.fillScreen(Ink);panel(c,{3,2,314,20});
+ if(v.cleanupPending){
+  center(c,{0,0,320,240},8,"SAIDA DO TREINO",Gold);
+  center(c,{0,0,320,240},72,"NAO FOI POSSIVEL RESTAURAR O RADIO",Red);
+  center(c,{0,0,320,240},96,"A CAMPANHA CONTINUA PROTEGIDA",White);
+  center(c,{0,0,320,240},120,"TENTE NOVAMENTE PARA SAIR",Muted);
+  button(c,kTerminalReturn,"TENTAR NOVAMENTE","restaurar Wi-Fi e voltar",true);return;
+ }
  if(v.diagnostics)diagnosticPage(c,v);else if(v.screen==Screen::Playing)playing(c,v,t);else lobby(c,v);
  if(v.linkTools&&!v.diagnostics&&v.recovering)recovery(c,v);
  if(v.linkTools){panel(c,kDiagnostics);center(c,kDiagnostics,7,v.diagnostics?"VOLTAR":"INFO",Gold);}

@@ -18,7 +18,7 @@ bool active();
 bool open(const rpg::Game& game,bool blocked,uint64_t entropy,uint32_t now);
 void capture(bool valid,bool down,int x,int y,uint32_t now);
 TickResult tick(uint32_t now);
-bool close(); // Immediate, idempotent control cleanup; returns Wi-Fi restore OK.
+bool close(); // Failed cleanup retains ownership and the exclusive retry screen.
 coopview::ViewModel view(bool artReady);
 }
 #endif

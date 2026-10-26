@@ -1,0 +1,676 @@
+{
+  "schema_version": 1,
+  "pack": "public-api-icons1",
+  "status": "integrated-result-icons",
+  "icon_count": 16,
+  "variants": 32,
+  "sizes": [
+    24,
+    32
+  ],
+  "transparent_rgb565": "0xf81f",
+  "palette_bytes": 32,
+  "plane_bytes": 12800,
+  "flash_data_bytes": 12832,
+  "maximum_caller_workspace_bytes": 2048,
+  "dynamic_allocations": 0,
+  "art_catalog_entries_changed": 0,
+  "source_lock_sha256": "b985078f21cde9b52a99be16079a0040a6cc36e38218cd020a710525ef1f5cc3",
+  "raster_lock_sha256": "727686a2a0aba0309cb6b40e4daf649af4024050e246b5f95cd0fc50704c09b1",
+  "icons": [
+    {
+      "id": 0,
+      "slug": "broadsword",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "566c7a9f19a08c420938e22e0a83a167e0dfdd9f27d1b85e3c62f9546ec86409",
+      "decoded_rgb565_sha256": "672ee53180b83ea373b744bf36741fcb2937e4ebf5b06081754e6109e9d393b2",
+      "png_sha256": "6c14eae6f6e83845c125a8faa0e011d37912d280653fa998987288db4874f87d",
+      "transparent_pixels": 394
+    },
+    {
+      "id": 0,
+      "slug": "broadsword",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "bc7fe79d587eea8fd3d834c389678eb0e615c862174f50553b3f97a3d3fe478c",
+      "decoded_rgb565_sha256": "f9bf6fe7526e33cdde0864d3242aedae459ade72c7eebbfbab3a51919672ed4e",
+      "png_sha256": "4afdd4d0d849ad4e1a71fbc537b5fd2a200d5eaa294b93825f8c92c9be93e92b",
+      "transparent_pixels": 708
+    },
+    {
+      "id": 1,
+      "slug": "round-shield",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "eaf98c703d7d8ed2514614f8f9aaf3bcacd37de02f1e6760d8f0a00c6fddfed4",
+      "decoded_rgb565_sha256": "43c0df15979b6e0e96c9d754ec651744b19b7f638bf8ee91017515644dd2acdf",
+      "png_sha256": "5dba699d1b3b3e39c088c74bf3721ca8435d363ee28faa96d24c5ae3b15a4eb9",
+      "transparent_pixels": 326
+    },
+    {
+      "id": 1,
+      "slug": "round-shield",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "0a92665666430b4b085d23d8cd674cc8b4ebb4dba7f0697e89a342c16de4fbe4",
+      "decoded_rgb565_sha256": "bad877f0453fbd6de58d902f51f7f5d772df27dc84f0df2da4a53c64d2a534ca",
+      "png_sha256": "386d4458415c38310dad88c222c815f31d95bf22d12010d5503f09f470cef3a5",
+      "transparent_pixels": 578
+    },
+    {
+      "id": 2,
+      "slug": "helmet",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "9495d68478b93ba30f660a69e4e6d671ca46c9c55454d14f57d158ee2ebafac8",
+      "decoded_rgb565_sha256": "97469eb4a71956a9a2081efc77e7171226a9bfd0644116aa9457616411db272f",
+      "png_sha256": "2bce60b916e6a364368198e0ebca779a2af29731bc1ac03f74e3e1b3278ef9e8",
+      "transparent_pixels": 332
+    },
+    {
+      "id": 2,
+      "slug": "helmet",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "07107cff75e7b319adea852436f6227032f17c7e67695f3c10fb5bba260bb78b",
+      "decoded_rgb565_sha256": "3f68ab85411fe0fd04d4c6dbcd6793b42b598d65709eed2cc7821d9990a9884b",
+      "png_sha256": "360b9f7f935c4238745477e108681efd6f111cd34b5d141e3879ae00f68e14fc",
+      "transparent_pixels": 577
+    },
+    {
+      "id": 3,
+      "slug": "chest-armor",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "afb02fe71f2b203865d7e845e77b40eccabe7d4797139664fd9f355315187e09",
+      "decoded_rgb565_sha256": "40a070dcb6da5f9f7e51ffed17c99f0b6c773cbb8b3e57c26b03de6985901ba7",
+      "png_sha256": "105b554f560eb475560c64fb9732685921095438b1fc06f3aded65c696e1aa32",
+      "transparent_pixels": 282
+    },
+    {
+      "id": 3,
+      "slug": "chest-armor",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "78460281250992e174f6eeb60211ecd2f38d2440224a82b8a55539af941d3a32",
+      "decoded_rgb565_sha256": "46a79d0850a59c86e66cb47651b26e71d083529efede9fcd3a113ed9dce61f21",
+      "png_sha256": "45dabfacb4991210c8a626472312ba344fbda85287f4d5cb7bc8855d6aa6c908",
+      "transparent_pixels": 493
+    },
+    {
+      "id": 4,
+      "slug": "wizard-staff",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "bbe2a90ca3f46da2699ed50657b960e30e5ab67a4a439f81ad831cde442644b6",
+      "decoded_rgb565_sha256": "70fd979e5cd5127a4bbbbbd575990fd00480f9c385248e553cbee8fc0037d83d",
+      "png_sha256": "d1f81a6eedf157140bf2c54766ee18b8606a326bc6577853d1b9d1d42b9f1f09",
+      "transparent_pixels": 350
+    },
+    {
+      "id": 4,
+      "slug": "wizard-staff",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "057f0434511303b7f60aaf8cba984046a855744a70729db1fd79edaac9395c8f",
+      "decoded_rgb565_sha256": "7c794e3782c196eb424031d92741afcaf98245f946398a469006689458f5c428",
+      "png_sha256": "f654148cdc06c5d9f72778f4ba4f9b4dbbc0dc611443be9b2a9440e527c24202",
+      "transparent_pixels": 621
+    },
+    {
+      "id": 5,
+      "slug": "crossbow",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "aa06b9dfb5e46bbd2f43235341b8bfef83a05986e9fdbd1ba79fabcb93021067",
+      "decoded_rgb565_sha256": "38dc1636cc9b79242390d525e708033771e82b724c09c3333a5ee43546b0991f",
+      "png_sha256": "35d5709fc4bac538d21855decc351a768d000f9f1ee8f27b6ae3c431a81b8d67",
+      "transparent_pixels": 294
+    },
+    {
+      "id": 5,
+      "slug": "crossbow",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "74ccbf70731f456ac5f0b52c5108c5ef8d02863ddc4ad6c8261a0e7a311492ab",
+      "decoded_rgb565_sha256": "26cbc3617492d777b3e9163962a8e27a9935a4886def60559e89f65c9b045bb9",
+      "png_sha256": "e99cd5d51aba339e52dfb8c1c67dd08a177215f301f1a90b837c3d1aaefeef06",
+      "transparent_pixels": 550
+    },
+    {
+      "id": 6,
+      "slug": "campfire",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "3bfd110f7b46161a42cdb938b1bbf8f5e724385d07d57ecaf3e771590f627b9d",
+      "decoded_rgb565_sha256": "bae67c20ed23d147c8f69a288066048713e9e1c06432720d1dac5e656fdd2968",
+      "png_sha256": "27c8032ab1fc6c9e5fe49e0f884218410be0ae5d5d2abd1174181e2c289aede3",
+      "transparent_pixels": 310
+    },
+    {
+      "id": 6,
+      "slug": "campfire",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "2f2e69514960c03e4168a0952f7f56f1fca5e3dac2da6ffb76898bcbe8286982",
+      "decoded_rgb565_sha256": "c3a4f396e405b7fb657e85206bec64f4080dd09e1b3ec52d6d227f84b2cf812b",
+      "png_sha256": "aa43bc22a702b0276334d3ccfcbcecb5438f78ea6be65791aec711ef937d418b",
+      "transparent_pixels": 558
+    },
+    {
+      "id": 7,
+      "slug": "camping-tent",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "aa2d566514de520bd3f2d637531f75f2dda09f69a05505c38552f403dfde5dde",
+      "decoded_rgb565_sha256": "a30bc30e56f3d8686773c234bde673710c2170d158dc0df4830cfc7622479437",
+      "png_sha256": "c56dbaa5e179a8b821a4a0ed85f8ce4ab2b08aff79f90b664e78cb66085b89b2",
+      "transparent_pixels": 374
+    },
+    {
+      "id": 7,
+      "slug": "camping-tent",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "1c855ddaab49642713ea2a679f0b897fa02568358252c24793bdc08266d66441",
+      "decoded_rgb565_sha256": "0d9d0b1a62ae21af73ae1b13f8bc96fef9690908827733176f96ee7f8d66137d",
+      "png_sha256": "bb81728b632cc9e797b9091a8b796afb8795a39c171346b0ad28390c2cf668d3",
+      "transparent_pixels": 673
+    },
+    {
+      "id": 8,
+      "slug": "sleeping-bag",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "30776c6cac208e3fe4b604b313da193514278d2b63d6dbff555db519274e6f72",
+      "decoded_rgb565_sha256": "13f91a0d51ce8b3253cc490bdc6cc3d7d73450c43bea97a22ab3b0fd09d5e366",
+      "png_sha256": "1a78896aac5e85c1d77377521f713fb62cffec1d575adb6893cf670361344ae3",
+      "transparent_pixels": 332
+    },
+    {
+      "id": 8,
+      "slug": "sleeping-bag",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "11a31d743a0904cdcd3fc068f2c5f320b26c684fffeae53e9bf8badbc3e52c14",
+      "decoded_rgb565_sha256": "49cf39bd692d4efa535f60c040647273a9a77518ea1ade75428744c539d068cc",
+      "png_sha256": "a26fea2a467d944a0a244bd6558735bb4aae2eb1bcb1af2207d9ba0887f5e643",
+      "transparent_pixels": 617
+    },
+    {
+      "id": 9,
+      "slug": "cooking-pot",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "baee46dfde650c06c1885dc912c4500317eb79cf8d890c708aa589d9c4ae010f",
+      "decoded_rgb565_sha256": "cd892e9d197df15540d143ce24075bd9d4226343463c2a170fcf6ad95ddda90e",
+      "png_sha256": "040cf6dd4f41e676739d85743611ad8c7a8b7b8d4b1acaf4822238ab8c921e8b",
+      "transparent_pixels": 389
+    },
+    {
+      "id": 9,
+      "slug": "cooking-pot",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "ae3f15855140eb54165f3b3366c4fc924d5c30f38b9eb05e6bb131a60f16f670",
+      "decoded_rgb565_sha256": "da4e441d6b8dfee9433b629c7861120b12fbbceb118f3597e1bf37b7bc70d4ea",
+      "png_sha256": "1eb176ac2b135370cc49dd2c9faa02cac3fb489eb564e49c7b30a9b8d5b187dd",
+      "transparent_pixels": 665
+    },
+    {
+      "id": 10,
+      "slug": "water-flask",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "cfd513ddb818b3c3a30d4bf1c7e652d2af289df751e81dbb0f0189b74674406d",
+      "decoded_rgb565_sha256": "2e4af28716362dd8d72627f892d0db4e3f84fca8717d9147ae94fa823d6170a8",
+      "png_sha256": "71544db6657426d4f0fcc031ec3e79db76bc4c4ae1ffc0d37fa65b5c7632238a",
+      "transparent_pixels": 339
+    },
+    {
+      "id": 10,
+      "slug": "water-flask",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "39a5ef68c765a01a67c302b08ecb77ca986dffcabe749aef74e51eab8012d44f",
+      "decoded_rgb565_sha256": "2ec3769730c4c934d064fe641e273071440b790c21bbea792e57e93561d0da32",
+      "png_sha256": "91c88d3e4077197ecdaa470edebe527acafc7fd150154fe20bf1b6c7ccfb2eef",
+      "transparent_pixels": 608
+    },
+    {
+      "id": 11,
+      "slug": "medical-pack",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "59d28ee4e6194ee43c4d608a92bf833fb36d044e77a199aa8656b7654f038fa7",
+      "decoded_rgb565_sha256": "7558e873a0ae3cbdcb705fa6245b90392f8b827c8d9031a9468fbeee029c9bf2",
+      "png_sha256": "31637604c1cd16816524b23737f1bfed2e5bd34e2e248061310baa092b9e5cb4",
+      "transparent_pixels": 252
+    },
+    {
+      "id": 11,
+      "slug": "medical-pack",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "93052b2d45eff5c989024854fd16bec11f31b59601783237ed91d0d3cf919ddc",
+      "decoded_rgb565_sha256": "2ad0043ec5dc5d785b80d8be39d05ed8dfda45d3197cd627e0198d760c43f522",
+      "png_sha256": "3bf8600b5fd99d8ce20c058f3793ea6f01be597bbc365068bf4140726353d8cc",
+      "transparent_pixels": 404
+    },
+    {
+      "id": 12,
+      "slug": "fireball",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "dacf3bab65da1c9d11f9c4d809a62905d340c79e6c8a815c94e19628d3b460ce",
+      "decoded_rgb565_sha256": "cb930ebd76d54a3444f26c3f84f31631d0c35e1bee96c11568ba7d68d7e98756",
+      "png_sha256": "81f56564e2d1a74b47853aad857396666d276c7435121318534009b880ed4751",
+      "transparent_pixels": 270
+    },
+    {
+      "id": 12,
+      "slug": "fireball",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "964062f1256a959ad81912d97c5ff6815479bc152f6580c21f2fe1920d11c6c0",
+      "decoded_rgb565_sha256": "052eca79da18c10cfd2aa310bb7efd786641b242eacfc9ec5cb65ca3467fadd2",
+      "png_sha256": "8bd0199eaa85f0bad8815fa6a411ff87e0ca4cf7604da724fa62585554347bac",
+      "transparent_pixels": 479
+    },
+    {
+      "id": 13,
+      "slug": "lightning-trio",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "733d70fdbf38761946ff16f79f43f7ccbee7c1b57a063f9f738d1e6465f97528",
+      "decoded_rgb565_sha256": "7bd0096aefd0dc77ad35c42cdb46891b7ce1c5e319487a12c444066b451161fb",
+      "png_sha256": "f19828ed1c748d874d54265dc26590165852c7a353bcd6fb3e845815755b181b",
+      "transparent_pixels": 310
+    },
+    {
+      "id": 13,
+      "slug": "lightning-trio",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "d6cf63a552791bccc94792a2aeaf40220ecc6bc8698fc5adbabcc0bd15920dec",
+      "decoded_rgb565_sha256": "d8072e04728678b2ffa7f0621fb9da444ab274e435b45afd8db405ef5721ddbb",
+      "png_sha256": "9c33e47bb4a639bfd53be30c26b343098636af0d1c5834c012a10b1f442469a7",
+      "transparent_pixels": 576
+    },
+    {
+      "id": 14,
+      "slug": "ice-bolt",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "78f5f358e7181a188c35fbaf2edaa75efc79c3aef6ba0dad7a45ce82b5c81eaf",
+      "decoded_rgb565_sha256": "b5b02856d3406efa927f1bce6cbee9fe1035e1edd2a814f3d92b254aeeedb3e4",
+      "png_sha256": "abafe3804908f9a7cbf57306272990cb6e28efed42d27cc5a7e26f15a51213a2",
+      "transparent_pixels": 256
+    },
+    {
+      "id": 14,
+      "slug": "ice-bolt",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "27c1bba4128e4f40999937394f59be094e2f6e8f2c8184df3081c65101bc0595",
+      "decoded_rgb565_sha256": "8dd1440f935c22c46618e47bd8d07009079156a5f5aec2a823765893b5609349",
+      "png_sha256": "36c7ec452ad45f442cbd44375182ca6245efa9f5583c78b639637332935dda45",
+      "transparent_pixels": 455
+    },
+    {
+      "id": 15,
+      "slug": "magic-shield",
+      "width": 24,
+      "height": 24,
+      "stride_bytes": 12,
+      "plane_bytes": 288,
+      "plane_sha256": "df0a92976e4366fd031547b0dbed793974bbf5f229842cfb4128d5a7fe6a5f8f",
+      "decoded_rgb565_sha256": "6c6b2e3c6b704757a76ec141518b10a4fadc8446fc48d9bd1ca4d7271c931143",
+      "png_sha256": "9fc16d2a0bcc997cc11f53819475b33d9b9530dc872328add269e2fcd8cf64a8",
+      "transparent_pixels": 287
+    },
+    {
+      "id": 15,
+      "slug": "magic-shield",
+      "width": 32,
+      "height": 32,
+      "stride_bytes": 16,
+      "plane_bytes": 512,
+      "plane_sha256": "f138a88ac864915500b68f7d00d1e446cefab3c5d8fef2c4b5ac3db28cc488c6",
+      "decoded_rgb565_sha256": "69d9765d07dd6c9d00a84ba5d53f812095128f223bacbed178a94b8bdf67ba04",
+      "png_sha256": "76ac520b8c3f7eb897e1ef081ba794187c9d07687e86e43b66d367df100af2ea",
+      "transparent_pixels": 507
+    }
+  ],
+  "files": {
+    "assets/public-api-icons1/CREDITS.md": {
+      "bytes": 3481,
+      "sha256": "c54dfce8fb91882054043737493d05b7a5ca93ac6471d8a0f7b6af501d990081"
+    },
+    "assets/public-api-icons1/generated/broadsword-24.idx4": {
+      "bytes": 288,
+      "sha256": "566c7a9f19a08c420938e22e0a83a167e0dfdd9f27d1b85e3c62f9546ec86409"
+    },
+    "assets/public-api-icons1/generated/broadsword-24.png": {
+      "bytes": 225,
+      "sha256": "6c14eae6f6e83845c125a8faa0e011d37912d280653fa998987288db4874f87d"
+    },
+    "assets/public-api-icons1/generated/broadsword-32.idx4": {
+      "bytes": 512,
+      "sha256": "bc7fe79d587eea8fd3d834c389678eb0e615c862174f50553b3f97a3d3fe478c"
+    },
+    "assets/public-api-icons1/generated/broadsword-32.png": {
+      "bytes": 297,
+      "sha256": "4afdd4d0d849ad4e1a71fbc537b5fd2a200d5eaa294b93825f8c92c9be93e92b"
+    },
+    "assets/public-api-icons1/generated/campfire-24.idx4": {
+      "bytes": 288,
+      "sha256": "3bfd110f7b46161a42cdb938b1bbf8f5e724385d07d57ecaf3e771590f627b9d"
+    },
+    "assets/public-api-icons1/generated/campfire-24.png": {
+      "bytes": 264,
+      "sha256": "27c8032ab1fc6c9e5fe49e0f884218410be0ae5d5d2abd1174181e2c289aede3"
+    },
+    "assets/public-api-icons1/generated/campfire-32.idx4": {
+      "bytes": 512,
+      "sha256": "2f2e69514960c03e4168a0952f7f56f1fca5e3dac2da6ffb76898bcbe8286982"
+    },
+    "assets/public-api-icons1/generated/campfire-32.png": {
+      "bytes": 345,
+      "sha256": "aa43bc22a702b0276334d3ccfcbcecb5438f78ea6be65791aec711ef937d418b"
+    },
+    "assets/public-api-icons1/generated/camping-tent-24.idx4": {
+      "bytes": 288,
+      "sha256": "aa2d566514de520bd3f2d637531f75f2dda09f69a05505c38552f403dfde5dde"
+    },
+    "assets/public-api-icons1/generated/camping-tent-24.png": {
+      "bytes": 208,
+      "sha256": "c56dbaa5e179a8b821a4a0ed85f8ce4ab2b08aff79f90b664e78cb66085b89b2"
+    },
+    "assets/public-api-icons1/generated/camping-tent-32.idx4": {
+      "bytes": 512,
+      "sha256": "1c855ddaab49642713ea2a679f0b897fa02568358252c24793bdc08266d66441"
+    },
+    "assets/public-api-icons1/generated/camping-tent-32.png": {
+      "bytes": 284,
+      "sha256": "bb81728b632cc9e797b9091a8b796afb8795a39c171346b0ad28390c2cf668d3"
+    },
+    "assets/public-api-icons1/generated/chest-armor-24.idx4": {
+      "bytes": 288,
+      "sha256": "afb02fe71f2b203865d7e845e77b40eccabe7d4797139664fd9f355315187e09"
+    },
+    "assets/public-api-icons1/generated/chest-armor-24.png": {
+      "bytes": 256,
+      "sha256": "105b554f560eb475560c64fb9732685921095438b1fc06f3aded65c696e1aa32"
+    },
+    "assets/public-api-icons1/generated/chest-armor-32.idx4": {
+      "bytes": 512,
+      "sha256": "78460281250992e174f6eeb60211ecd2f38d2440224a82b8a55539af941d3a32"
+    },
+    "assets/public-api-icons1/generated/chest-armor-32.png": {
+      "bytes": 340,
+      "sha256": "45dabfacb4991210c8a626472312ba344fbda85287f4d5cb7bc8855d6aa6c908"
+    },
+    "assets/public-api-icons1/generated/cooking-pot-24.idx4": {
+      "bytes": 288,
+      "sha256": "baee46dfde650c06c1885dc912c4500317eb79cf8d890c708aa589d9c4ae010f"
+    },
+    "assets/public-api-icons1/generated/cooking-pot-24.png": {
+      "bytes": 161,
+      "sha256": "040cf6dd4f41e676739d85743611ad8c7a8b7b8d4b1acaf4822238ab8c921e8b"
+    },
+    "assets/public-api-icons1/generated/cooking-pot-32.idx4": {
+      "bytes": 512,
+      "sha256": "ae3f15855140eb54165f3b3366c4fc924d5c30f38b9eb05e6bb131a60f16f670"
+    },
+    "assets/public-api-icons1/generated/cooking-pot-32.png": {
+      "bytes": 213,
+      "sha256": "1eb176ac2b135370cc49dd2c9faa02cac3fb489eb564e49c7b30a9b8d5b187dd"
+    },
+    "assets/public-api-icons1/generated/crossbow-24.idx4": {
+      "bytes": 288,
+      "sha256": "aa06b9dfb5e46bbd2f43235341b8bfef83a05986e9fdbd1ba79fabcb93021067"
+    },
+    "assets/public-api-icons1/generated/crossbow-24.png": {
+      "bytes": 274,
+      "sha256": "35d5709fc4bac538d21855decc351a768d000f9f1ee8f27b6ae3c431a81b8d67"
+    },
+    "assets/public-api-icons1/generated/crossbow-32.idx4": {
+      "bytes": 512,
+      "sha256": "74ccbf70731f456ac5f0b52c5108c5ef8d02863ddc4ad6c8261a0e7a311492ab"
+    },
+    "assets/public-api-icons1/generated/crossbow-32.png": {
+      "bytes": 368,
+      "sha256": "e99cd5d51aba339e52dfb8c1c67dd08a177215f301f1a90b837c3d1aaefeef06"
+    },
+    "assets/public-api-icons1/generated/fireball-24.idx4": {
+      "bytes": 288,
+      "sha256": "dacf3bab65da1c9d11f9c4d809a62905d340c79e6c8a815c94e19628d3b460ce"
+    },
+    "assets/public-api-icons1/generated/fireball-24.png": {
+      "bytes": 279,
+      "sha256": "81f56564e2d1a74b47853aad857396666d276c7435121318534009b880ed4751"
+    },
+    "assets/public-api-icons1/generated/fireball-32.idx4": {
+      "bytes": 512,
+      "sha256": "964062f1256a959ad81912d97c5ff6815479bc152f6580c21f2fe1920d11c6c0"
+    },
+    "assets/public-api-icons1/generated/fireball-32.png": {
+      "bytes": 402,
+      "sha256": "8bd0199eaa85f0bad8815fa6a411ff87e0ca4cf7604da724fa62585554347bac"
+    },
+    "assets/public-api-icons1/generated/helmet-24.idx4": {
+      "bytes": 288,
+      "sha256": "9495d68478b93ba30f660a69e4e6d671ca46c9c55454d14f57d158ee2ebafac8"
+    },
+    "assets/public-api-icons1/generated/helmet-24.png": {
+      "bytes": 199,
+      "sha256": "2bce60b916e6a364368198e0ebca779a2af29731bc1ac03f74e3e1b3278ef9e8"
+    },
+    "assets/public-api-icons1/generated/helmet-32.idx4": {
+      "bytes": 512,
+      "sha256": "07107cff75e7b319adea852436f6227032f17c7e67695f3c10fb5bba260bb78b"
+    },
+    "assets/public-api-icons1/generated/helmet-32.png": {
+      "bytes": 247,
+      "sha256": "360b9f7f935c4238745477e108681efd6f111cd34b5d141e3879ae00f68e14fc"
+    },
+    "assets/public-api-icons1/generated/ice-bolt-24.idx4": {
+      "bytes": 288,
+      "sha256": "78f5f358e7181a188c35fbaf2edaa75efc79c3aef6ba0dad7a45ce82b5c81eaf"
+    },
+    "assets/public-api-icons1/generated/ice-bolt-24.png": {
+      "bytes": 276,
+      "sha256": "abafe3804908f9a7cbf57306272990cb6e28efed42d27cc5a7e26f15a51213a2"
+    },
+    "assets/public-api-icons1/generated/ice-bolt-32.idx4": {
+      "bytes": 512,
+      "sha256": "27c1bba4128e4f40999937394f59be094e2f6e8f2c8184df3081c65101bc0595"
+    },
+    "assets/public-api-icons1/generated/ice-bolt-32.png": {
+      "bytes": 404,
+      "sha256": "36c7ec452ad45f442cbd44375182ca6245efa9f5583c78b639637332935dda45"
+    },
+    "assets/public-api-icons1/generated/lightning-trio-24.idx4": {
+      "bytes": 288,
+      "sha256": "733d70fdbf38761946ff16f79f43f7ccbee7c1b57a063f9f738d1e6465f97528"
+    },
+    "assets/public-api-icons1/generated/lightning-trio-24.png": {
+      "bytes": 264,
+      "sha256": "f19828ed1c748d874d54265dc26590165852c7a353bcd6fb3e845815755b181b"
+    },
+    "assets/public-api-icons1/generated/lightning-trio-32.idx4": {
+      "bytes": 512,
+      "sha256": "d6cf63a552791bccc94792a2aeaf40220ecc6bc8698fc5adbabcc0bd15920dec"
+    },
+    "assets/public-api-icons1/generated/lightning-trio-32.png": {
+      "bytes": 343,
+      "sha256": "9c33e47bb4a639bfd53be30c26b343098636af0d1c5834c012a10b1f442469a7"
+    },
+    "assets/public-api-icons1/generated/magic-shield-24.idx4": {
+      "bytes": 288,
+      "sha256": "df0a92976e4366fd031547b0dbed793974bbf5f229842cfb4128d5a7fe6a5f8f"
+    },
+    "assets/public-api-icons1/generated/magic-shield-24.png": {
+      "bytes": 239,
+      "sha256": "9fc16d2a0bcc997cc11f53819475b33d9b9530dc872328add269e2fcd8cf64a8"
+    },
+    "assets/public-api-icons1/generated/magic-shield-32.idx4": {
+      "bytes": 512,
+      "sha256": "f138a88ac864915500b68f7d00d1e446cefab3c5d8fef2c4b5ac3db28cc488c6"
+    },
+    "assets/public-api-icons1/generated/magic-shield-32.png": {
+      "bytes": 324,
+      "sha256": "76ac520b8c3f7eb897e1ef081ba794187c9d07687e86e43b66d367df100af2ea"
+    },
+    "assets/public-api-icons1/generated/medical-pack-24.idx4": {
+      "bytes": 288,
+      "sha256": "59d28ee4e6194ee43c4d608a92bf833fb36d044e77a199aa8656b7654f038fa7"
+    },
+    "assets/public-api-icons1/generated/medical-pack-24.png": {
+      "bytes": 151,
+      "sha256": "31637604c1cd16816524b23737f1bfed2e5bd34e2e248061310baa092b9e5cb4"
+    },
+    "assets/public-api-icons1/generated/medical-pack-32.idx4": {
+      "bytes": 512,
+      "sha256": "93052b2d45eff5c989024854fd16bec11f31b59601783237ed91d0d3cf919ddc"
+    },
+    "assets/public-api-icons1/generated/medical-pack-32.png": {
+      "bytes": 200,
+      "sha256": "3bf8600b5fd99d8ce20c058f3793ea6f01be597bbc365068bf4140726353d8cc"
+    },
+    "assets/public-api-icons1/generated/palette.rgb565le": {
+      "bytes": 32,
+      "sha256": "8e6b4d30c30958122259db68894b09d1829d3ff2bd40e83ab635152214781ddd"
+    },
+    "assets/public-api-icons1/generated/round-shield-24.idx4": {
+      "bytes": 288,
+      "sha256": "eaf98c703d7d8ed2514614f8f9aaf3bcacd37de02f1e6760d8f0a00c6fddfed4"
+    },
+    "assets/public-api-icons1/generated/round-shield-24.png": {
+      "bytes": 243,
+      "sha256": "5dba699d1b3b3e39c088c74bf3721ca8435d363ee28faa96d24c5ae3b15a4eb9"
+    },
+    "assets/public-api-icons1/generated/round-shield-32.idx4": {
+      "bytes": 512,
+      "sha256": "0a92665666430b4b085d23d8cd674cc8b4ebb4dba7f0697e89a342c16de4fbe4"
+    },
+    "assets/public-api-icons1/generated/round-shield-32.png": {
+      "bytes": 305,
+      "sha256": "386d4458415c38310dad88c222c815f31d95bf22d12010d5503f09f470cef3a5"
+    },
+    "assets/public-api-icons1/generated/sleeping-bag-24.idx4": {
+      "bytes": 288,
+      "sha256": "30776c6cac208e3fe4b604b313da193514278d2b63d6dbff555db519274e6f72"
+    },
+    "assets/public-api-icons1/generated/sleeping-bag-24.png": {
+      "bytes": 259,
+      "sha256": "1a78896aac5e85c1d77377521f713fb62cffec1d575adb6893cf670361344ae3"
+    },
+    "assets/public-api-icons1/generated/sleeping-bag-32.idx4": {
+      "bytes": 512,
+      "sha256": "11a31d743a0904cdcd3fc068f2c5f320b26c684fffeae53e9bf8badbc3e52c14"
+    },
+    "assets/public-api-icons1/generated/sleeping-bag-32.png": {
+      "bytes": 357,
+      "sha256": "a26fea2a467d944a0a244bd6558735bb4aae2eb1bcb1af2207d9ba0887f5e643"
+    },
+    "assets/public-api-icons1/generated/water-flask-24.idx4": {
+      "bytes": 288,
+      "sha256": "cfd513ddb818b3c3a30d4bf1c7e652d2af289df751e81dbb0f0189b74674406d"
+    },
+    "assets/public-api-icons1/generated/water-flask-24.png": {
+      "bytes": 218,
+      "sha256": "71544db6657426d4f0fcc031ec3e79db76bc4c4ae1ffc0d37fa65b5c7632238a"
+    },
+    "assets/public-api-icons1/generated/water-flask-32.idx4": {
+      "bytes": 512,
+      "sha256": "39a5ef68c765a01a67c302b08ecb77ca986dffcabe749aef74e51eab8012d44f"
+    },
+    "assets/public-api-icons1/generated/water-flask-32.png": {
+      "bytes": 293,
+      "sha256": "91c88d3e4077197ecdaa470edebe527acafc7fd150154fe20bf1b6c7ccfb2eef"
+    },
+    "assets/public-api-icons1/generated/wizard-staff-24.idx4": {
+      "bytes": 288,
+      "sha256": "bbe2a90ca3f46da2699ed50657b960e30e5ab67a4a439f81ad831cde442644b6"
+    },
+    "assets/public-api-icons1/generated/wizard-staff-24.png": {
+      "bytes": 235,
+      "sha256": "d1f81a6eedf157140bf2c54766ee18b8606a326bc6577853d1b9d1d42b9f1f09"
+    },
+    "assets/public-api-icons1/generated/wizard-staff-32.idx4": {
+      "bytes": 512,
+      "sha256": "057f0434511303b7f60aaf8cba984046a855744a70729db1fd79edaac9395c8f"
+    },
+    "assets/public-api-icons1/generated/wizard-staff-32.png": {
+      "bytes": 318,
+      "sha256": "f654148cdc06c5d9f72778f4ba4f9b4dbbc0dc611443be9b2a9440e527c24202"
+    },
+    "firmware/RPG_POKET_2/PublicApiIconData.h": {
+      "bytes": 34368,
+      "sha256": "1e799b6dfc647517abc195e383bfdc04119cc689e79c562345161d7b94861161"
+    }
+  }
+}

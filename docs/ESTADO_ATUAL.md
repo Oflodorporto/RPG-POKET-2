@@ -1,8 +1,18 @@
-# Estado publicado · 15 de outubro de 2026
+# Estado do projeto · 26 de outubro de 2026
 
 [Apresentação](../README.md) · [Instalação e controles](GUIA_RAPIDO.md) · [Histórico completo](historico/README-2026-10-14.md)
 
-## Firmware atual · sinal e diagnóstico do treino cooperativo
+## Fonte 7.8 · bolsa e visual
+
+O checkout de `2026.10.26-ponytail` / build `2026102601` reúne a revisão Ponytail, a bolsa em couro aprovada, espada/escudo licenciados e contraste maior nos resultados. A versão pública vigente deve ser consultada em [releases/latest](https://github.com/Oflodorporto/RPG-POKET-2/releases/latest); a presença desta fonte no repositório não comprova publicação ou instalação. Três slots, Save30/leitores29+30, época1, regras e partições não mudam. O manifesto novo não pede reset de personagens. [Créditos da arte](../assets/public-api-icons1/CREDITS.md) · [notas da atualização](RELEASE_PONYTAIL_NOTAS.txt).
+
+## Release anterior · teste Wi-Fi
+
+Latest confirmado: [v2026.10.17-wifitest77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.17-wifitest77), fonte `aecfabf32edba31fce567a32450503be3492ea66`, versão `2026.10.17-wifitest77`, build `2026101701`. Firmware publicado: **3.006.736 bytes**, SHA256 `749ebca3cfd13651dbfe709d4c1003aa9860b3cefe7b5e641ad4859b7f4fa1b6`. O teste Wi-Fi isolado tem consentimento, sondas canceláveis, resultados RAM e exportação CSV explícita. Não comprova melhora RF. [Contrato e limites](WIFITEST77_RELEASE_QUALIFICATION.md).
+
+A revisão local que originou a fonte 7.8 está documentada na [auditoria Ponytail](AUDITORIA_PONYTAIL.md). Os testes e hashes históricos abaixo pertencem à versão de 15/10 e não qualificam, sozinhos, a fonte nova.
+
+## Histórico · sinal e diagnóstico do treino cooperativo de 15/10
 
 Versão `2026.10.15-coopdiag77` / build `2026101502`, identidade `7.7 - Treino cooperativo: sinal e diagnostico`. [Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77) · [Uso e limites](RELEASE_COOPDIAG77_NOTAS.txt) · [Contrato de qualificação](COOPDIAG77_RELEASE_QUALIFICATION.md) · [Controles](COOP_TRAINING_CONTROLS.md).
 
@@ -29,7 +39,7 @@ ELF/objetos de alvo e imagem OFF não são distribuídos no artefato; seus relat
 
 ### Publicação e downloads públicos
 
-Publisher [38770945726](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38770945726), job `116546276849`: **concluído com sucesso em 15/10/2026 às 17:35:46 UTC**. A [Release coopdiag77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77), ID `414086108`, foi publicada às **17:30:58 UTC**. A tag e main, no fechamento da publicação, foram confirmados no commit qualificado `6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3`, tree `5ad62cddfe052bea09bf99c29989731722088981`; latest aponta para a mesma entrega.
+Publisher [38770945726](https://github.com/Oflodorporto/RPG-POKET-2/actions/runs/38770945726), job `116546276849`: **concluído com sucesso em 15/10/2026 às 17:35:46 UTC**. A [Release coopdiag77](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77), ID `414086108`, foi publicada às **17:30:58 UTC**. A tag e main, no fechamento da publicação, foram confirmados no commit qualificado `6026fb49db4fe874b9c3f0571cbe4fdb9e66adb3`, tree `5ad62cddfe052bea09bf99c29989731722088981`; latest apontava para essa entrega em 15/10 (o latest atual está identificado acima).
 
 O publisher repetiu **157/157 grupos**, ASan/UBSan com **LeakSanitizer obrigatório, detect_leaks=1**, ambos os builds ESP32 **default ON/override OFF**, orçamentos e OTA com os bytes reais finais. Os 12 clientes históricos e o instalador atual passaram nos modos otimizado e sanitizado antes da publicação e novamente sobre os downloads públicos. A auditoria independente conferiu o artefato final `11993918653` (2.652 arquivos), logs, snapshots remotos e bytes públicos; não repetiu OTA nem sanitizadores localmente.
 

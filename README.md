@@ -7,7 +7,7 @@
 <p align="center">Fantasia medieval em português · Pixel art inspirada nos 16 bits · ESP32-S3 · Tela de toque</p>
 
 <p align="center">
-  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77"><strong>Baixar a versão atual</strong></a> ·
+  <a href="https://github.com/Oflodorporto/RPG-POKET-2/releases/latest"><strong>Baixar a versão publicada</strong></a> ·
   <a href="docs/GUIA_RAPIDO.md">Instalar e jogar</a> ·
   <a href="#um-pequeno-mundo-para-explorar">Ver o jogo</a> ·
   <a href="#documentação">Documentação</a>
@@ -15,8 +15,8 @@
 
 Crie seu aventureiro, converse com os habitantes de Aeldra, atravesse estradas, explore ruínas e enfrente combates por turnos. Escolha uma classe, personalize sua aparência e acompanhe uma campanha com diário, cartas, personagens e progressão até o nível 20.
 
-**Versão publicada:** 7.7 · Treino cooperativo: sinal e diagnóstico · `2026.10.15-coopdiag77` · build `2026101502`.
-Qualificação de software, publicação e downloads públicos verificados no SHA exato. **A validação física desta versão, incluindo rádio entre duas placas, ainda está pendente.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
+**Versão deste código:** 7.8 · Bolsa e visual · `2026.10.26-ponytail` · build `2026102601`.
+Esta fonte integra a revisão Ponytail, a bolsa aprovada e o polimento de vitória/fuga; a distribuição depende da qualificação do SHA exato. O link acima sempre aponta para a última versão efetivamente publicada. Os personagens, três slots, Save30, regras e partições permanecem. Os dois ícones de resultado vêm de Game Icons CC BY 3.0: [autores e licença](assets/public-api-icons1/CREDITS.md). **Validação física de LCD, toque, OTA e rádio permanece separada.** [Estado completo e limites](docs/ESTADO_ATUAL.md).
 
 ## As Cinzas da Primeira Aurora
 
@@ -98,8 +98,8 @@ Sol e lua acompanham a hora local, com pulso e mudanças graduais de luz. A pré
 
 ### Instalação e atualização
 
-1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.15-coopdiag77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
-2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.15-coopdiag77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
+1. **Primeira instalação:** abra o sketch completo da [fonte da versão atual](https://github.com/Oflodorporto/RPG-POKET-2/tree/v2026.10.17-wifitest77) no Arduino IDE e envie pelo USB com a configuração do [guia de instalação](docs/GUIA_RAPIDO.md#instalar-pelo-usb). Mantenha **EraseFlash=none / Erase All Flash desativado**.
+2. **Artes:** baixe `artes.pak` da [mesma Release](https://github.com/Oflodorporto/RPG-POKET-2/releases/tag/v2026.10.17-wifitest77) e copie para `/RPGPOKET/artes.pak` no microSD FAT32. O pacote atual contém 666 artes e ocupa cerca de 7,5 MB.
 3. **Já usa scenes77 ou posterior?** Conecte ao Wi-Fi **2,4 GHz** e abra **Configurações → Atualização → Verificar versão → Instalar**. Mantenha cartão e alimentação conectados até terminar.
 
 > **Atenção aos saves:** a versão atual grava Save30 de 160 bytes, lê Save29/30 e mantém época 1, **sem novo reset**. A primeira passagem de **touch77 ou anterior** exige USB e reinicia uma única vez os três slots antigos, sem importar Save1…28; Wi-Fi e artes ficam fora desse reset. Não tente contornar a recusa do OTA nem apagar toda a flash. [Confira o seu caso antes de instalar](docs/GUIA_RAPIDO.md#compatibilidade-dos-saves).

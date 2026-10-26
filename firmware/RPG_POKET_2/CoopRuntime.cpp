@@ -20,21 +20,26 @@ coopdiag::Snapshot displaySnapshot{};uint32_t displayAt=0;
 void updateDisplay(uint32_t now){displaySnapshot=coopDevice.snapshot(now);displayAt=now;}
 }
 namespace coopruntime {
-coopview::ViewModel view(bool artReady){auto v=coopview::model(coopSession,artReady,coopInput.diagnosticsOpen());v.linkTools=coopDevice.active();v.link=displaySnapshot;v.link.now=coopSession.observedTime();return v;}
+coopview::ViewModel view(bool artReady){auto v=coopview::model(coopSession,artReady,coopInput.diagnosticsOpen());v.cleanupPending=coopDevice.cleanupPending();v.linkTools=coopDevice.active();v.link=displaySnapshot;v.link.now=coopSession.observedTime();return v;}
 bool active(){return coopDevice.active();}
 bool open(const rpg::Game& game,bool blocked,uint64_t entropy,uint32_t now){
- if(coopDevice.open(coopSession,game,blocked,entropy,now)!=coopradio::OpenError::None)return false;
+ if(coopDevice.open(coopSession,game,blocked,entropy,now)!=coopradio::OpenError::None&&!coopDevice.cleanupPending())return false;
  coopInput.reset();coopClosing=false;updateDisplay(now);return true;
 }
-void capture(bool valid,bool down,int x,int y,uint32_t now){coopInput.capture(coopSession,valid,down,x,y,now);}
+void capture(bool valid,bool down,int x,int y,uint32_t now){coopInput.capture(coopSession,valid,down,x,y,now,coopDevice.cleanupPending());}
 bool close(){
- coopDevice.close();coopInput.reset();coopClosing=false;return coopDevice.restoreOk;
+ const bool ok=coopDevice.close();coopInput.reset();coopClosing=false;return ok;
 }
 TickResult tick(uint32_t now){
+ if(coopDevice.cleanupPending()){
+  TickResult result{};
+  if(coopInput.dispatch(coopSession,now,true)==coopview::Control::Exit){result.activity=true;result.restoreOk=close();result.closed=result.restoreOk;updateDisplay(now);}
+  return result;
+ }
  TickResult result{};coopDevice.tick(now);
  if(uint32_t(now-displayAt)>=1000||displaySnapshot.state!=uint8_t(coopSession.state()))updateDisplay(now);
  if(coopClosing){
-  if(uint32_t(now-closeAt)>=350){result.closed=true;result.restoreOk=close();return result;}
+  if(uint32_t(now-closeAt)>=350){result.restoreOk=close();result.closed=result.restoreOk;result.activity=true;updateDisplay(now);return result;}
   if(uint32_t(now-byeAt)>=100){byeAt=now;coopSession.leave(now);}
   return result;
  }

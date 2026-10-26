@@ -1,17 +1,17 @@
-name: Qualificar wifitest77 - Teste Wi-Fi integrado
+name: Qualificar 7.8 - Bolsa e visual
 # Read-only exact-branch candidate evidence, including firmware; never a release.
 on:
   push:
-    branches: [feat/wifitest77-release]
+    branches: [feat/ponytail-release]
     paths: ["firmware/**", "assets/**", "cartao/**", "docs/**", "tests/**", "tools/**", "README.md", "WIFITEST77_STAGING_ONLY.txt", ".github/workflows/wifitest77-check.yml", ".github/workflows/release.yml"]
 permissions:
   contents: read
 concurrency:
-  group: wifitest77-${{ github.ref }}
+  group: ponytail-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   validate:
-    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/feat/wifitest77-release'
+    if: github.repository == 'Oflodorporto/RPG-POKET-2' && github.event_name == 'push' && github.ref == 'refs/heads/feat/ponytail-release'
     runs-on: ubuntu-latest
     timeout-minutes: 180
     defaults:
@@ -31,7 +31,7 @@ jobs:
       - name: Executar agregado completo herdado e oito suites Wi-Fi com LSan obrigatorio
         run: |
           mkdir -p build
-          bash tools/test_wifitest77.sh 2>&1 | tee build/wifitest77-tests.log
+          bash tools/test_ponytail.sh 2>&1 | tee build/ponytail-tests.log
       - uses: arduino/setup-arduino-cli@v2
       - name: Instalar core ESP32 historico confirmado na placa
         run: |
@@ -42,9 +42,9 @@ jobs:
       - name: Compilar SHA exato COOP1 RADIO1 default e dois fallbacks isolados fora do sketch
         run: |
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          python3 tools/check_wifitest77_scope.py
-          arduino-cli version | tee build/wifitest77-esp32-toolchain.txt
-          arduino-cli core list | tee -a build/wifitest77-esp32-toolchain.txt
+          python3 tools/check_ponytail_scope.py
+          arduino-cli version | tee build/ponytail-esp32-toolchain.txt
+          arduino-cli core list | tee -a build/ponytail-esp32-toolchain.txt
           for variant in coop1-radio1 coop1-radio0 coop0-radio1; do
             extra=()
             case "$variant" in
@@ -55,38 +55,38 @@ jobs:
             arduino-cli compile --verbose --jobs 4 \
               --fqbn 'esp32:esp32:esp32s3:CDCOnBoot=cdc,USBMode=hwcdc,UploadMode=default,CPUFreq=240,FlashMode=qio,FlashSize=16M,PartitionScheme=app3M_fat9M_16MB,PSRAM=opi,EraseFlash=none' \
               "${extra[@]}" \
-              --build-path "$RUNNER_TEMP/esp32-wifitest77/$variant" \
-              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/wifitest77-esp32-$variant.log"
+              --build-path "$RUNNER_TEMP/esp32-ponytail/$variant" \
+              --export-binaries=false firmware/RPG_POKET_2 2>&1 | tee "build/ponytail-esp32-$variant.log"
           done
-          cp "$RUNNER_TEMP/esp32-wifitest77/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
-          python3 tools/check_wifitest77_scope.py
+          cp "$RUNNER_TEMP/esp32-ponytail/coop1-radio1/RPG_POKET_2.ino.bin" build/RPG_POKET_2.ino.bin
+          python3 tools/check_ponytail_scope.py
       - name: Verificar bytes finais e OTA Save29 para30 e Save30 para30
         run: |
-          python3 tools/release_wifitest77_manifest.py
-          python3 tools/verify_wifitest77_release.py
-          python3 tests/wifitest77_release_verifier.py
-          python3 tools/test_wifitest77_release.py release
-          python3 tools/test_wifitest77_release.py release --sanitizers
-          python3 tools/check_wifitest77_scope.py
+          python3 tools/release_ponytail_manifest.py
+          python3 tools/verify_ponytail_release.py
+          python3 tests/ponytail_release_verifier.py
+          python3 tools/test_ponytail_release.py release
+          python3 tools/test_ponytail_release.py release --sanitizers
+          python3 tools/check_ponytail_scope.py
       - name: Registrar SHA, tres builds, agregado, capturas e orcamentos
         run: |
-          python3 tools/record_wifitest77_identity.py --build-root "$RUNNER_TEMP/esp32-wifitest77"
+          python3 tools/record_ponytail_identity.py --build-root "$RUNNER_TEMP/esp32-ponytail"
       - name: Guardar candidato e provas do SHA exato
         uses: actions/upload-artifact@v4
         with:
-          name: wifitest77-${{ github.sha }}
+          name: ponytail-${{ github.sha }}
           path: |
             release/firmware.bin
             release/artes.pak
             release/manifest.json
             release/SHA256SUMS
-            build/wifitest77-scope-budget.json
-            build/wifitest77-source-identity.json
-            build/wifitest77-ota/*.json
-            build/wifitest77-tests.log
-            build/wifitest77-esp32*.json
-            build/wifitest77-esp32*.log
-            build/wifitest77-esp32*.txt
+            build/ponytail-scope-budget.json
+            build/ponytail-source-identity.json
+            build/ponytail-ota/*.json
+            build/ponytail-tests.log
+            build/ponytail-esp32*.json
+            build/ponytail-esp32*.log
+            build/ponytail-esp32*.txt
             build/package12-validation/**/*.json
             build/package12-validation/**/*.log
             build/package7-differential*.json

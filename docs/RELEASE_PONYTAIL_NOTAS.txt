@@ -1,0 +1,7 @@
+RPG POKET 7.8 — Bolsa e visual
+
+Esta atualização reúne a revisão Ponytail do firmware, a bolsa de couro aprovada e o polimento dos resultados com espada/escudo e maior contraste. Os ícones usados são Game Icons CC BY 3.0; autores e fontes individuais constam em assets/public-api-icons1/CREDITS.md.
+
+O pacote mantém três slots, formato Save30 com leitura de Save29/30, época de reset 1, regras, história, partições e 666 artes. O manifesto desta versão não solicita novo reset de personagens. O diagnóstico Wi-Fi da versão anterior permanece, sem alegação de melhora física de alcance de rádio.
+
+Arquivos OTA: firmware.bin, artes.pak e manifest.json. A atualização pelo jogo exige Wi-Fi, espaço na partição app3M e a verificação SHA256 do firmware e da arte. Não faça downgrade do firmware depois que um save novo for gravado. Instalações físicas, toque, legibilidade e preservação dos saves devem ser conferidos na placa.

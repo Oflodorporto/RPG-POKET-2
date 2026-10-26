@@ -17,5 +17,5 @@ struct ClubVisual {
  }
  bool tick(uint32_t now){if(!active())return false;uint32_t elapsed=uint32_t(now-startedAt);elapsedMs=elapsed>=duration?duration:uint16_t(elapsed);return true;}
 };
-struct ClubUi {club::Session session;club::Duel duel;ClubVisual visual;bool opened=false,begun=false,resultUnconfirmed=false;int choice=0,result=0;uint32_t finishedAt=0,redraw=0;const char* notice="";};
+struct ClubUi {club::Session session;club::Duel duel;ClubVisual visual;bool opened=false,begun=false,resultUnconfirmed=false,cleanupPending=false;int choice=0,result=0;uint32_t finishedAt=0,redraw=0;const char* notice="";};
 inline ClubUi arena;

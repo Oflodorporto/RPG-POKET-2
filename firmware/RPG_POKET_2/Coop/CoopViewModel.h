@@ -21,7 +21,7 @@ struct ViewModel {
  bool hasLocal=false,hasPeer=false,artReady=true,allowHost=true,allowJoin=true,allowAccept=false;
  bool showDecisionCountdown=false,synchronizing=false;uint8_t decisionSeconds=0;
  uint8_t local=0;uint32_t roomCode=0;
- bool linkTools=false,diagnostics=false,recovering=false;uint8_t dots=0;
+ bool linkTools=false,diagnostics=false,recovering=false,cleanupPending=false;uint8_t dots=0;
  coopdiag::Snapshot link{};
 };
 // Pure presentation adapter: state inspection only, never tick/expire/discover here.
@@ -55,6 +55,7 @@ inline ViewModel model(const coopplatform::Session& session,bool artReady,bool d
 }
 inline Control hitTest(const ViewModel& v,int32_t x,int32_t y){
  if(x<0||x>=320||y<0||y>=240)return Control::None;
+ if(v.cleanupPending)return kTerminalReturn.contains(x,y)?Control::Exit:Control::None;
  if(kExit.contains(x,y))return Control::Exit;
  if(v.linkTools&&kDiagnostics.contains(x,y))return Control::Diagnostics;
  if(v.diagnostics)return Control::None;

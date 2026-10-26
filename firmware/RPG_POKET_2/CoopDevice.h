@@ -9,11 +9,12 @@ inline bool coopIsOpen(){return coopruntime::active();}
 inline void captureCoopTouch(bool valid,bool down,int x,int y,uint32_t now){coopruntime::capture(valid,down,x,y,now);}
 inline void finishCoopExit(uint32_t now){
  const bool restoreOk=coopruntime::close();
+ if(!restoreOk){pendingTouch=false;gate=TouchGate{};view.page=Page::CoopTraining;dirty=true;return;}
  pendingTouch=false;gate=TouchGate{};view.page=Page::Guild;view.message="";lastActivity=now;dirty=true;
  // The framebuffer/LCD were never rotated; returning to normal rendering and
  // resetting the press gate restores portrait mapping without a stale release.
  menu.connected=WiFi.status()==WL_CONNECTED;menu.connecting=menu.scanning=false;
- menu.signalBars=0;if(!restoreOk)say("Treino fechado; reconecte Wi-Fi");
+ menu.signalBars=0;
 }
 inline bool openCoopTraining(){
  const bool blocked=view.page!=Page::Guild||arena.opened||updateInfo.busy||menu.scanning||menu.connecting||!buffered||!touchReady||!lcdReady||combatFx.active()||journal.blocked||journal.active<0;

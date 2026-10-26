@@ -2,6 +2,7 @@
 #include "PanelArt.h"
 #include "Progression.h"
 #include "TouchPanels.h"
+#include "BagLeatherView.h"
 namespace panelUi {
 constexpr scenicUi::Rect skillsGuide={14,110,48,29};
 constexpr scenicUi::Rect bagBack={8,276,108,44},bagUse={124,276,108,44},bagGear={12,234,216,40};
@@ -34,25 +35,24 @@ template<class C>void drawPanelSkills(C& c,const rpg::Game& g,const ViewState& v
  for(int i=0;i<2;++i)if(g.p.mp<(g.dndProgression&&g.p.cls==0?rpg::powerCost(g,i?rpg::Action::ShieldSpell:rpg::Action::MagicMissile):rpg::skillCost(g.p.cls,i))||(g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2))panelLabel(c,75,180+i*48+19,132,g.dndProgression&&g.p.cls==1&&i==0&&g.p.level<2?"Desbloqueia Nv 2":"Sem mana",UI_MUTED);
 }
 template<class C>void drawPanelBag(C& c,const rpg::Game& g,const ViewState& v){
- bagSkin::crop(c,0,0,240,320,0,0,240,320);bagSkin::leather(c,8,4,224,270);char b[64];
- bagSkin::crop(c,48,14,144,20,12,6,216,26);
+ bagLeather::background(c);char b[64];
  snprintf(b,sizeof(b),"BOLSA / %lu ouro",(unsigned long)g.p.gold);touchLabel(c,16,9,208,b,UI_GOLD);
  snprintf(b,sizeof(b),"HP %u/%u MP %u/%u",g.p.hp,g.p.maxhp,g.p.mp,g.p.maxmp);touchLabel(c,16,21,208,b);
  const char* names[]={"Vida","Mana","Cristal","Racao","Mapa","Sorte","Kit","Sucata","Gazuas"};
  unsigned q[]={g.p.life,g.p.mana,g.crystals,g.rations,g.charts,g.charms,unsigned(g.sleepKit),g.scrap,g.gazuas};
- for(unsigned i=0;i<9;++i){auto r=panelUi::bagSlot(i);bagSkin::frame(c,r);
+ for(unsigned i=0;i<9;++i){auto r=panelUi::bagSlot(i);bagLeather::pocket(c,r);
   if(i==v.choice){c.drawRect(r.x,r.y,r.w,r.h,0xffff);c.drawRect(r.x+1,r.y+1,r.w-2,r.h-2,UI_GOLD);}
   if(i<7)panelCrop(c,panelArt::bagPalette,panelArt::bagAsset,53+int(i%3)*47+10,125+int(i/3)*33+2,23,18,r.x+14,r.y+4,24,22);
   else if(i==7){c.fillRect(r.x+15,r.y+10,14,10,0xbdf7);c.drawRect(r.x+15,r.y+10,14,10,UI_WHITE);c.fillRect(r.x+25,r.y+6,13,10,UI_MUTED);}
   else {c.fillRect(r.x+12,r.y+8,27,3,UI_GOLD);c.fillRect(r.x+36,r.y+8,3,16,UI_GOLD);c.fillRect(r.x+12,r.y+11,3,5,UI_GOLD);}
   touchLabel(c,r.x+2,r.y+29,r.w-4,names[i]);snprintf(b,sizeof(b),"x%u",q[i]);touchLabel(c,r.x+2,r.y+40,r.w-4,b,q[i]?UI_GREEN:UI_MUTED);
  }
- unsigned i=std::min(8u,unsigned(v.choice));bagSkin::crop(c,29,196,182,19,12,207,216,24);
+ unsigned i=std::min(8u,unsigned(v.choice));bagLeather::plate(c,12,207,216,24);
  const char* desc=i==0?"Recupera 30% HP":i==1?"Recupera 50% MP":i==2?"Chave da cripta":i==3?"Comida no acampamento":i==4?"Bonus na viagem":i==5?"Bonus na viagem":i==6?"Kit de acampamento":i==7?"Ver sucata / vender na cidade":"Ver gazuas e orientacoes";
  if(*v.message)touchLines(c,16,210,208,v.message,UI_RED);else {touchLabel(c,16,210,208,names[i],UI_GOLD);touchLabel(c,16,221,208,desc);}
- bagSkin::crop(c,22,225,196,29,panelUi::bagGear.x,panelUi::bagGear.y,panelUi::bagGear.w,panelUi::bagGear.h);
+ bagLeather::equipment(c,panelUi::bagGear);
  snprintf(b,sizeof(b),"Equipamentos: %u",rpg::gearOwnedCount(g.owned));touchLabel(c,16,246,208,b,0xffff,2);
- for(auto r:{panelUi::bagBack,panelUi::bagUse})bagSkin::crop(c,r.x<120?20:124,263,96,35,r.x,r.y,r.w,r.h);
+ for(auto r:{panelUi::bagBack,panelUi::bagUse})bagLeather::button(c,r);
  touchLabel(c,panelUi::bagBack.x+2,290,panelUi::bagBack.w-4,"Voltar",0xffff,2);
  touchLabel(c,panelUi::bagUse.x+2,290,panelUi::bagUse.w-4,i>=7?"Ver":"Usar",0xffff,2);
 }

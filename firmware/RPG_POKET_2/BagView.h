@@ -1,4 +1,5 @@
 #pragma once
+#include "EquipmentIcons.h"
 // Native UI shapes for the bag, existing flash item art for its contents.
 template<class Canvas> void drawBag(Canvas& c,const rpg::Game& g,const ViewState& v){
   c.fillRect(0,0,240,320,UI_INK);c.setTextWrap(false);
@@ -15,9 +16,10 @@ template<class Canvas> void drawBag(Canvas& c,const rpg::Game& g,const ViewState
   for(unsigned i=0;i<(gear?6u:7u);++i){int x=10+(i%3)*76,y=(gear?74:62)+(i/3)*(gear?64:53),h=gear?58:49;
     c.fillRect(x,y,68,h,UI_PANEL);c.drawRect(x,y,68,h,i==v.choice?UI_GOLD:0x3186);
     if(i==v.choice)c.drawRect(x+1,y+1,66,h-2,UI_GOLD);
-    if(gear){unsigned index=v.gearIndex*6+i;if(index<count){auto id=rpg::gearOwnedAt(g.owned,index);auto img=gear_icons[rpg::gearFamily(id)];
-        for(int py=0;py<32;++py)for(int px=0;px<32;++px){auto color=img[(py*56/32)*56+px*56/32];if(color!=SPRITE_KEY)c.fillRect(x+18+px,y+1+py,1,1,color);}
-        text(x+54,y+35,"1",UI_GREEN);bool equipped=g.equipped[rpg::gearSlot(id)]==id;text(x+4,y+44,equipped?"Equipado":"Guardado",equipped?UI_GREEN:UI_MUTED);
+    if(gear){unsigned index=v.gearIndex*6+i;if(index<count){auto id=rpg::gearOwnedAt(g.owned,index);
+        equipmentArt::draw(c,rpg::gearFamily(id),x+18,y+1);
+        snprintf(b,sizeof(b),"T%u +%u",rpg::gearTier(id),rpg::gearBonus(id));text(x+4,y+34,b,UI_GOLD);
+        bool equipped=g.equipped[rpg::gearSlot(id)]==id;text(x+4,y+44,equipped?"Equipado":"Guardado",equipped?UI_GREEN:UI_MUTED);
       }else text(x+19,y+26,"Vazio",UI_MUTED);continue;}
     if(i==6){magicSprite(c,campArt::bedroll,48,48,x+20,y+3,28,28);text(x+4,y+37,"Kit");text(x+56,y+29,g.sleepKit?"1":"0",g.sleepKit?UI_GREEN:UI_MUTED);continue;}
     unsigned prop=i==0?6:i==1?7:i==2?4:i==3?0:i==4?5:11;

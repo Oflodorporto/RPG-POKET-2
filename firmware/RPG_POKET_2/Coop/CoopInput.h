@@ -32,9 +32,9 @@ public:
    modalSeen=true;lastRecovering=value;
   }
  }
- void capture(Session& session,bool valid,bool touching,int32_t px,int32_t py,uint32_t now){
+ void capture(Session& session,bool valid,bool touching,int32_t px,int32_t py,uint32_t now,bool cleanup=false){
   syncModal(session,now);
-  if(session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().captureSample(valid,touching,px,py,now);
+  if(!cleanup&&session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().captureSample(valid,touching,px,py,now);
   if(overflow){++dropped;return;}
   const auto p=toLandscape(px,py);
   Sample sample{valid&&(!touching||p.x>=0),touching,p.x,p.y,now,stamp(session)};
@@ -48,12 +48,12 @@ public:
   }
   if(!queue.push(sample)){++dropped;queue.clear();overflow=true;}
  }
- coopview::Control dispatch(Session& session,uint32_t now){
+ coopview::Control dispatch(Session& session,uint32_t now,bool cleanup=false){
   syncModal(session,now);
   if(overflow){queue.clear();overflow=false;cancel();session.training().cancelInput(now);return coopview::Control::None;}
   Sample s{};while(queue.pop(s)){
    if(!s.valid||s.stamp!=stamp(session)){if(s.stamp!=stamp(session))++stale;cancel();continue;}
-   auto view=coopview::model(session,true,diagnostics);view.linkTools=true;auto hit=coopview::hitTest(view,s.x,s.y);
+   auto view=coopview::model(session,true,diagnostics);view.linkTools=true;view.cleanupPending=cleanup;auto hit=coopview::hitTest(view,s.x,s.y);
    if(s.down){
     releasing=false;if(!down){if(!armed)continue;down=true;armed=false;pressed=hit;pressedStamp=s.stamp;}
     else if(hit!=pressed)pressed=coopview::Control::None;
@@ -65,7 +65,7 @@ public:
     if(result!=coopview::Control::None&&pressedStamp==s.stamp){queue.clear();cancel();return result;}
    }else armed=true;
   }
-  if(session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().dispatchSamples(now);
+  if(!cleanup&&session.state()==SessionState::Playing&&!diagnostics&&!session.recovering())session.training().dispatchSamples(now);
   return coopview::Control::None;
  }
 };

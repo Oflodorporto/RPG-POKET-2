@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "renderer": "Inkscape 1.4 (e7c3feb100, 2024-10-09)",
+  "method": "white paths on transparent page; retain 128x128 alpha8",
+  "source_subset_sha256": "0b1fdcc32e01746da53e63ee66839cff1fbd8cd5fc57f8cf489cb3924f2d6d21",
+  "exports": {
+    "broadsword": {
+      "file": "sources/masks/broadsword.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "13be6bbfd872aac87e51e615a2eaf7afac7d0d63bce9528ec5765a9edd78414e",
+      "alpha_sha256": "6bb5e2e0cc75de2e12c48e76f26257dc6b43825500c2abe8cd26e151637986e2",
+      "file_sha256": "95f3db41889397e0ba522c873fd5a2d0b48826db347967f37b892e6a0406c76f",
+      "decoded_bytes": 16384
+    },
+    "round-shield": {
+      "file": "sources/masks/round-shield.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "3bef329cc3e0cdf5c0933c8d5555e2f63c9e0fdbe332753aa1ae767de6b5db2c",
+      "alpha_sha256": "de18637b63f7f7fd9294882151856e0a080712c1f0d81733959f4f23f7f095ed",
+      "file_sha256": "6ff56c1547a28f063698f42415eb8b8f58549c3afce0d1200f47324d0f3b0b83",
+      "decoded_bytes": 16384
+    },
+    "helmet": {
+      "file": "sources/masks/helmet.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "aafc7d2dd572c6c57e87095564167c38acc9a720194017a5ee5a5e4a5f7353cc",
+      "alpha_sha256": "2140aaf14e9112d51fc8865cbb23891db57048a5754050dd40c376d4c551956a",
+      "file_sha256": "0400e26873c473124ebaa53be991fd8d80966f49aeb83924a16febe22d26e620",
+      "decoded_bytes": 16384
+    },
+    "chest-armor": {
+      "file": "sources/masks/chest-armor.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "6d7ed8a0c3b60fd763b4b546e46111d2e1231679c84964d72e98445ee0de7958",
+      "alpha_sha256": "524209541e9cb21995899e4af4f399d6d3d86cab97d9e3c73c31d4ea08f415ab",
+      "file_sha256": "0850c96cb683ae581e3e363e906f4d11afe64cb7c134191c86e5090ed8c8761a",
+      "decoded_bytes": 16384
+    },
+    "wizard-staff": {
+      "file": "sources/masks/wizard-staff.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "c901449579a9f28f08568672bfa3960faf18c4c93e8a0404b6b25b42edff0f05",
+      "alpha_sha256": "42bafe3785dd44e20ac99b239d3c19d79ffd1193a404adc995557ef461e606be",
+      "file_sha256": "9b0ca27b11e2d3de8c203e99c62709d1e7c6001dc8393138f806bbc50f0849ec",
+      "decoded_bytes": 16384
+    },
+    "crossbow": {
+      "file": "sources/masks/crossbow.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "400b521520086de1bee17accde0a7dccd10a57e0dbc284a937e33ce608920ebf",
+      "alpha_sha256": "8638f676f1a6b70d7922f850e688e1ad2dcb5038ded908561161f5ef810358e6",
+      "file_sha256": "e0b13193b3c11036c15d8c704d714c32d07542991b1c2bc636322219ae0e2d25",
+      "decoded_bytes": 16384
+    },
+    "campfire": {
+      "file": "sources/masks/campfire.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "05378b8cb410f5e0fb90eb1fbb5d5e26e776d102b66a8ebc329604280bd41bc9",
+      "alpha_sha256": "660c9588ccbe8e46065f71e8194973d01c8d300d802a73a0dcacb4b9183573ca",
+      "file_sha256": "a3eeeadc1e101af357f931cebdfb56f0d77ce7000c9811ba4c8d1323adea0fa8",
+      "decoded_bytes": 16384
+    },
+    "camping-tent": {
+      "file": "sources/masks/camping-tent.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "a22c78235d7360dfef88674f945f824120d5774181175293700c55026b6698ff",
+      "alpha_sha256": "43149196c44b1edec2458cf1555c4c1c4d27b1bb45aec07394a2e6342b4ce567",
+      "file_sha256": "9d8318b386f12a57533caa3e0890091b14530ad9935b87419bd43095cf7f182b",
+      "decoded_bytes": 16384
+    },
+    "sleeping-bag": {
+      "file": "sources/masks/sleeping-bag.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "c8fb2333efebe96e594b0f41046e92b7d55ea7ca4d6b9e1b58471facd7df203a",
+      "alpha_sha256": "c3604612cd4036a63bf1fd65934173b4d90de695c8efa50c7336c5a5eb3f6318",
+      "file_sha256": "123473235e3d955ba9867557a82828b8dded05c62883898b3822bd1cf5a1e0c0",
+      "decoded_bytes": 16384
+    },
+    "cooking-pot": {
+      "file": "sources/masks/cooking-pot.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "102995151f6396fc8139549d2a51a77c3ff11aef5665dd52fc7bba0af4887615",
+      "alpha_sha256": "c14226227dc50b0b9e0983a6a416feb369fe2b9e56cba9d4a2a2b15a54f59e14",
+      "file_sha256": "576ea3fe3602a523aa06b5bf5b1bd7d97889344141b63d134490cef4d7eebda4",
+      "decoded_bytes": 16384
+    },
+    "water-flask": {
+      "file": "sources/masks/water-flask.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "d3e54cabac153a698de70856e8707d9201461972484ac4de4ab62c2202547a00",
+      "alpha_sha256": "e88520a99797faf958132e9938b9eac0cb91924ef3f0bb370e7bcfca0c72ad07",
+      "file_sha256": "69624ceb395ac89c751da88f6bf31a551bb267cb7a2ee42c6dda9935e97a3e19",
+      "decoded_bytes": 16384
+    },
+    "medical-pack": {
+      "file": "sources/masks/medical-pack.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "d9fe2c9a4ccc63a7228581d2c59bc18be6d1ade5a01ac9c32778a8eb0e7dcc05",
+      "alpha_sha256": "b1b911dacecaa4087ff991aff02987613e618672dee035cb7df57014a4f8f17a",
+      "file_sha256": "275a2c1d77a2b5c0cc0eae2412ff76cced2411757ebc305f45c562d56c101175",
+      "decoded_bytes": 16384
+    },
+    "fireball": {
+      "file": "sources/masks/fireball.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "d51af5e37254d90e72e9a516c191124164218a11beb26c5d02cc57771c38af2d",
+      "alpha_sha256": "54cf895abc88d7dbcf15823a9640f8f1a2ed9786850be9dd50d0ba21342e99a6",
+      "file_sha256": "2dec2b14f49341d2b428047cbb1f44793c607ffa3f6f80ed50069a02667504b9",
+      "decoded_bytes": 16384
+    },
+    "lightning-trio": {
+      "file": "sources/masks/lightning-trio.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "92dbbe431a83317ac9d81c8820acfa208574d9e4500a0265819218aa1ae691e6",
+      "alpha_sha256": "766a1b1e524be2bf09ddbfc122ecc7d36046de89d5d93138acb3058cba633974",
+      "file_sha256": "99749fc3a15362af18f640baff33c6ffb6abb9a59187ce839414db539f37688d",
+      "decoded_bytes": 16384
+    },
+    "ice-bolt": {
+      "file": "sources/masks/ice-bolt.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "45d65fce87cf0bfd5b66baa34f4e17ae211f0fa868ff4c9f7d9f954666aab2e6",
+      "alpha_sha256": "1fc41bce61def1db4603465960d15995d762334399ebb16c74e1221c0cb6a205",
+      "file_sha256": "0dc469809a15ca0062de10b7a3c40f3c39bf2c50c877ca2f0b6b5a7846c66dd7",
+      "decoded_bytes": 16384
+    },
+    "magic-shield": {
+      "file": "sources/masks/magic-shield.mask8.gz",
+      "width": 128,
+      "height": 128,
+      "body_sha256": "c7229cef49de0bd89bf8d4bc13e16cfece1db902f8d51ef5d479b8180d6ee36f",
+      "alpha_sha256": "d2361ff3c631e163c11094058e79f76ea49cd0a7c27669c045e3d56fb5ec60d9",
+      "file_sha256": "667ab8754960ab64fbabd465a3653ccf1a19084d585bfc91b78e989258e041c6",
+      "decoded_bytes": 16384
+    }
+  }
+}

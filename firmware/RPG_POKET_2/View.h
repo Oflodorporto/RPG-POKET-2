@@ -15,6 +15,7 @@
 #include "CombatPresentation.h"
 #include "EnemyPresentation.h"
 #include "CardCheck.h"
+#include "PublicApiIcons.h"
 #include <stdio.h>
 #include <string.h>
 enum class Page { Choose, Help, Home, Battle, Skills, Bag, Result, SaveError, Blocked, Village, Shop, Buy, TownBag, Character, Map, Market, Inventory, GearShop, GearBag, GearBuy, GearEquip, Forge, Upgrade, Tavern, Contract, QuestConfirm, Card, Menu, Slots, SlotConfirm, DeleteSlot, Settings, Wifi, Keyboard, Tests, Travel, Ruins, Guild, GuildJoin, GuildMissions, Race, Clothes, Club, ClubBattle, ClubResult, Updates, TravelRoll, CityGoods, GoodsBuy, Explore, ForgetWifi, Clock, NetworkTest, DungeonEntry, Dungeon, DungeonMenu, CrystalBuy, DungeonExit, DungeonVictory, BagGear, DungeonLoot, CampSetup, CampRoll, CampRest, CampKit, GearSell, Prologue, Journal, People, Dialogue, Continent, TimeSettings, TimeEdit, Letters, Letter, LetterRefuse, EventTravel, EventResult, Title, Campaign, Evolution, Powers, OathConfirm, TravelConfirm, Recovery, Guide, CampaignTask, CampaignResult, Discovery, Scrap, ChestLock, Lockpicks, Progression, AttributeInfo, EnemyInfo, Bestiary, ContributionResult, Epilogue, IslandEntry, EventMission, EventAbandon, EventChoice, FirstTip, TradeList, TradeConfirm, TradeReceipt, LevelUp, PurchaseReceipt, CoopTraining, WifiRadioTest };
@@ -192,7 +193,9 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     center(163,v.page==Page::SaveError?"Mantenha o aparelho ligado.":"Informe esta tela ao desenvolvedor.");
     if(v.page==Page::SaveError)button(14,250,212,"Tentar salvar");else button(14,250,212,"Menu");return;
   }
-  if(v.page==Page::Club){center(12,"CLUBE DA LUTA",2,UI_GOLD);npcPortrait(c,story::Npc::Grum,14,29,24);text(44,37,"Grum Pedrafranca / 25 ouro");
+  if(v.page==Page::Club){
+    if(arena.cleanupPending){center(35,"SAIDA DO CLUBE",2,UI_GOLD);box(10,75,220,112);center(96,"RADIO EM RECUPERACAO",1,UI_RED);center(125,"Campanha protegida");center(151,"Toque para restaurar o radio");button(14,272,212,"Tentar novamente");return;}
+    center(12,"CLUBE DA LUTA",2,UI_GOLD);npcPortrait(c,story::Npc::Grum,14,29,24);text(44,37,"Grum Pedrafranca / 25 ouro");
     auto state=arena.session.state;if(state==club::State::Listing||state==club::State::Notice){for(unsigned i=0;i<6;++i){int y=54+i*25;box(14,y,212,24);auto& peer=arena.session.peers[i];snprintf(b,sizeof(b),peer.used?"%s / Nv %u%s":"Procurando aventureiros...",peer.name,peer.level,peer.version!=club::VERSION?" / atualizar":peer.available?"":" / ocupado");text(20,y+8,b,1,int(i)==arena.choice?UI_GOLD:UI_WHITE);}button(14,218,212,"Convidar / 25g");}
     else {center(95,arena.session.opponent.name,2);center(135,state==club::State::Incoming?"Aceitar duelo por 25 ouro?":"Aguardando outra placa...");if(state==club::State::Incoming){button(14,218,102,"Recusar");button(124,218,102,"Aceitar");}}
     center(208,"Duelo nao letal / protejam-se.",1,UI_GOLD);center(260,arena.notice,1,UI_RED);button(14,272,212,"Voltar");return;}
@@ -355,13 +358,20 @@ template<class Canvas> void render(Canvas& c,const rpg::Game& g,const ViewState&
     button(14,270,212,"Voltar");return;
   }
   if(v.page==Page::Result){
-    // Rewards use dark ink on the shared parchment; no dark overlay.
-    center(28,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,UI_GOLD);
+    // Keep the reward parchment and controls; use dark ink for small text on it.
+    constexpr uint16_t paperTitle=0x7224;
+    constexpr uint16_t paperSuccess=0x2b65;
+    center(28,g.phase==rpg::Phase::Won?"VITORIA":g.phase==rpg::Phase::Lost?"DERROTA":"FUGA",2,paperTitle);
+    if(g.phase!=rpg::Phase::Lost){
+      uint16_t iconWorkspace[24];
+      publicApiIcons::draw(c,g.phase==rpg::Phase::Won?publicApiIcons::Icon::Broadsword:publicApiIcons::Icon::RoundShield,
+                           24,108,48,iconWorkspace,24);
+    }
     if(g.phase==rpg::Phase::Won){snprintf(b,sizeof(b),"+%u XP",g.gainXp);center(77,b,2);snprintf(b,sizeof(b),"+%u ouro",g.gainGold);center(99,b,2);
       center(124,g.dropLife?"Encontrou uma pocao de HP.":"Encontro vencido.");center(137,rpg::reducedCombatXp(g)?"XP menor: inimigo fraco":g.dropMana?"Encontrou uma pocao de MP.":"");}
     else {center(89,g.phase==rpg::Phase::Lost?"Voce retorna com 1 HP.":"Voce escapou do encontro.");if(g.phase==rpg::Phase::Lost){snprintf(b,sizeof(b),"Penalidade: %u XP",g.gainXp);center(111,b);}}
-    snprintf(b,sizeof(b),"Nv %u / XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(151,b,1,UI_GOLD);panelBar(c,25,165,190,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
-    auto goal=story::objective(g);center(183,goal.title,1,UI_GOLD);center(198,"Progresso salvo.",1,UI_GREEN);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,UI_GREEN);}else center(218,g.phase==rpg::Phase::Lost?"Prepare-se antes de tentar de novo.":"Retorne ao local de origem.",1,UI_MUTED);button(14,268,212,g.phase==rpg::Phase::Lost?"Recuperar forcas":g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
+    snprintf(b,sizeof(b),"Nv %u / XP %lu/%u",g.p.level,(unsigned long)g.p.xp,rpg::xpNeeded(g));center(151,b,1,STORY_INK);panelBar(c,25,165,190,g.p.xp,rpg::xpNeeded(g),UI_GREEN);
+    auto goal=story::objective(g);center(183,goal.title,1,paperTitle);center(198,"Progresso salvo.",1,paperSuccess);if(g.questId){snprintf(b,sizeof(b),"Contrato: %u/%u%s",g.questProgress,rpg::contract(g.questId).count,rpg::questComplete(g)?" / pronto!":"");center(218,b,1,paperSuccess);}else center(218,g.phase==rpg::Phase::Lost?"Prepare-se antes de tentar de novo.":"Retorne ao local de origem.",1,STORY_INK);button(14,268,212,g.phase==rpg::Phase::Lost?"Recuperar forcas":g.campStage==2&&g.phase==rpg::Phase::Won?"Descansar":"Voltar a explorar");return;
   }
   if(v.page==Page::Skills||v.page==Page::Bag||v.page==Page::TownBag){
     bool bag=v.page!=Page::Skills;center(14,bag?"POCOES":"HABILIDADES",2,UI_GOLD);portrait(g.p.cls,80,44);

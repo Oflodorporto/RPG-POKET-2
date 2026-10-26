@@ -19,7 +19,7 @@ struct Store {bool ready=true;bool fail=false;std::map<std::string,std::vector<u
 using NvsBackend=FatigueSlotBackend<Store>;NvsBackend backend(nvs);
 struct SerialMock {void println(const char*){}template<class... T>void printf(const char*,T...){}} Serial;
 uint32_t now=0;uint32_t millis(){return now;}uint32_t esp_random(){return 13;}
-bool startNetworkTest(){updateInfo.busy=menu.connected;return menu.connected;}void resetUpdateScreen(){updateInfo=updater::Info{};}bool startUpdate(bool install){if(!menu.connected)return false;updateInfo.busy=true;updateInfo.state=install?updater::State::Downloading:updater::State::Checking;return true;}void paint(uint32_t){}bool openClub(){return true;}void closeClub(){}void clubTap(int,int){}void recoverClubReservation(){}ArtStatus loadSdArt(){return ArtStatus::Ready;}
+bool startNetworkTest(){updateInfo.busy=menu.connected;return menu.connected;}void resetUpdateScreen(){updateInfo=updater::Info{};}bool startUpdate(bool install){if(!menu.connected)return false;updateInfo.busy=true;updateInfo.state=install?updater::State::Downloading:updater::State::Checking;return true;}void paint(uint32_t){}bool openClub(){return true;}bool closeClub(){return true;}void clubTap(int,int){}void recoverClubReservation(){}ArtStatus loadSdArt(){return ArtStatus::Ready;}
 bool rememberSlot(uint8_t slot){menu.activeSlot=slot;return true;}bool saveBrightness(uint8_t n){menu.brightness=n;return true;}
 bool tickClock(bool=true){return false;}void prepareClockEdit(){}void adjustClockDraft(int){}bool applyClockDraft(){return true;}bool saveClockConfig(bool a,int o,bool d){menu.clockAutomatic=a;menu.utcOffset=o;menu.dayCycle=d;return true;}void applyBrightness(){}void showSavedNetworks(){menu.savedNetworks=true;}void connectSavedNetwork(){menu.connecting=true;}bool deleteSavedNetwork(){--menu.savedCount;return true;}void testMemory(){menu.memoryTest=1;}void searchNetworks(){menu.scanning=true;}void networkChoice(){}void connectNetwork(){menu.connecting=true;}void forgetConnection(){menu.connected=false;menu.connecting=false;}
 struct SdFake {} sdReader;CardInfo checkCard(SdFake&){CardInfo c;c.status=CardStatus::Verified;return c;}
@@ -110,7 +110,7 @@ void newTitle(){
   for(uint8_t i=0;i<3;++i)if(menu.slots[i]==rpg::Load::Empty){selectSlot(i);return;}
   view.page=Page::Slots;menu.notice="Escolha um slot para liberar";dirty=true;
 }
-bool openClub();void closeClub();void clubTap(int,int);void recoverClubReservation();
+bool openClub();bool closeClub();void clubTap(int,int);void recoverClubReservation();
 uint32_t lastActivity=0,clockPollAt=0;Page clockReturn=Page::Home;
 bool tickIdleClock(uint32_t now,bool blocked){if(blocked||view.page==Page::SaveError){lastActivity=now;return false;}if(view.page==Page::Clock)return false;if(uint32_t(now-lastActivity)<60000)return false;clockReturn=view.page;view.page=Page::Clock;menu.clockIdle=true;applyBrightness();dirty=true;return true;}
 // A persisted result is acknowledged explicitly; never resolve it during drawing
@@ -501,7 +501,7 @@ void tapped(int x,int y){
 #else
     else if(hit(x,y,14,218,212)){
 #endif
-      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else say("Nao foi possivel abrir o radio");}
+      if(!game.guildMember)say("Cadastre-se primeiro");else if(game.p.level<5)say("Clube: nivel 5 necessario");else {if(openClub()){view.page=Page::Club;say("");}else if(arena.cleanupPending){view.page=Page::Club;dirty=true;}else say("Nao foi possivel abrir o radio");}
     }return;
   }
   if(view.page==Page::GuildJoin){if(hit(x,y,14,272,102)){view.page=Page::Guild;say("");}else if(hit(x,y,124,272,102)){if(!rpg::joinGuild(game)){say("Cadastro concluido");savedTransition(Page::Guild);}else say("Ouro insuficiente para cadastro");}return;}
