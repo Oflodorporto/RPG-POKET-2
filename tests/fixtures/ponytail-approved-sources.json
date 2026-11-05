@@ -305,8 +305,8 @@
     },
     {
       "path": ".github/workflows/release.yml",
-      "bytes": 11742,
-      "sha256": "1a6c4b0a424380dc05658cf52567f503a01da031042e86490dc487212d3b7cf7",
+      "bytes": 12091,
+      "sha256": "8f9124ba45a182ad225a625a4f272778c1e7b928dc4b170a6ba6fe3720d97e43",
       "executable": false
     },
     {
@@ -6545,14 +6545,14 @@
     },
     {
       "path": "tests/ponytail_qualification_config.py",
-      "bytes": 6353,
-      "sha256": "37dec1f01e3f50be2336598d6d7e4b8307bb801e7c8c287a1b7b8423414007a8",
+      "bytes": 7087,
+      "sha256": "365b714a5f9a27867e928a9d188598915ae8edabfda40278f2d3ed812a11a697",
       "executable": false
     },
     {
       "path": "tests/ponytail_qualified_artifact.py",
-      "bytes": 4655,
-      "sha256": "814b86d448f9668c6ee9b407643947cf8157c3c8c9a9b00d25e42ea3926ef242",
+      "bytes": 7755,
+      "sha256": "80427d5498fe2e43c348d1c62d95a85cc90aa6e825aff911a583775fb714bfb3",
       "executable": false
     },
     {
@@ -7547,8 +7547,8 @@
     },
     {
       "path": "tools/check_ponytail_qualified_artifact.py",
-      "bytes": 4426,
-      "sha256": "b48a6cb665c517b21735082c8def8552028f2888e0d04aef0b8fe1a456fb8ef1",
+      "bytes": 6921,
+      "sha256": "0c07e7c0318c704b5fc5fa4ab7b313aa3dc9b75e01ebbca463b5b5e8dd4f7cbb",
       "executable": false
     },
     {
@@ -8213,8 +8213,8 @@
     },
     {
       "path": "tools/test_ponytail_release.py",
-      "bytes": 41743,
-      "sha256": "21c855575c0c5a5b2619a5263a1c68ed8f0dd0b0baef10a206c781d49dda4f59",
+      "bytes": 41948,
+      "sha256": "0c3326794dea23a7aa5b2896a0c543d1bef57c05cbf331a0e40674a717a5fcd4",
       "executable": false
     },
     {

@@ -14,6 +14,16 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = 'aecfabf32edba31fce567a32450503be3492ea66'
+REVIEWED_CANDIDATE = '7382fc7ab93cd973f5783fbd80370b3cf064db99'
+RELEASE_FIX_PATHS = [
+    '.github/workflows/release.yml',
+    'tests/fixtures/ponytail-approved-sources.json',
+    'tests/ponytail_qualification_config.py',
+    'tests/ponytail_qualified_artifact.py',
+    'tools/check_ponytail_qualified_artifact.py',
+    'tools/check_ponytail_scope.py',
+    'tools/test_ponytail_release.py',
+]
 BRANCH = 'feat/ponytail-release'
 VERSION = '2026.10.26-ponytail'
 BUILD = 2026102601
@@ -23,7 +33,7 @@ GENERATED = {'release/firmware.bin','release/artes.pak','release/manifest.json',
 MANIFEST = ROOT/'tests/fixtures/ponytail-approved-sources.json'
 # Filled after the final source review. A changed inventory must be reviewed,
 # never silently accepted by a command in this repository.
-INVENTORY_SHA256 = 'a7a50c8103c962c0e007afa93c6572d9df57ff862b264f0c5395642c8764fe86'
+INVENTORY_SHA256 = 'b4929874e62866c897633334015a006e0af3b4c2663e05ae45233d6939b5b0ed'
 PROTECTED = {
     'firmware/RPG_POKET_2/Save.h',
     'firmware/RPG_POKET_2/SaveVersion.h',
@@ -73,7 +83,9 @@ def validate_inventory(manifest, paths):
 
 def validate_delta(manifest, head):
     assert re.fullmatch('[0-9a-f]{40}',head)
-    assert git('rev-list','--parents','-n','1',head).decode().split() == [head,BASE], 'Candidate must be sole child of reviewed main'
+    assert git('rev-list','--parents','-n','1',REVIEWED_CANDIDATE).decode().split() == [REVIEWED_CANDIDATE,BASE], 'Reviewed visual candidate ancestry changed'
+    assert git('rev-list','--parents','-n','1',head).decode().split() == [head,REVIEWED_CANDIDATE], 'Release fix must be a single child of reviewed candidate'
+    assert git('diff','--name-only',REVIEWED_CANDIDATE,head).decode().splitlines() == RELEASE_FIX_PATHS, 'Release fix changed unreviewed paths'
     actual=git('diff','--name-only',BASE,head).decode().splitlines()
     assert actual == manifest['delta'], 'Unreviewed source delta'
     assert len(actual)==len(set(actual))
@@ -113,6 +125,6 @@ def main():
             'target_compile_verified':False,'physical_validation':False,'published':False}
     (ROOT/'build').mkdir(exist_ok=True)
     (ROOT/'build/ponytail-scope-budget.json').write_text(json.dumps(budget,indent=2)+'\n')
-    print('PASS: exact reviewed Ponytail source, sole parent, strict path/hash/mode inventory, protected save/rules/updater, art and identity')
+    print('PASS: exact reviewed Ponytail source and release-fix ancestry, strict path/hash/mode inventory, protected save/rules/updater, art and identity')
 
 if __name__=='__main__': main()

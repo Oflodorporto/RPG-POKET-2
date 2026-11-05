@@ -434,7 +434,10 @@ def published_lineage(lineage=None):
         # exact-source inventory, rather than rewriting historical lineage.
         assert git('show','aecfabf32edba31fce567a32450503be3492ea66:'+path) == data, 'Published baseline documentation changed: '+path
     if os.environ.get('GITHUB_ACTIONS') == 'true':
-        assert git('rev-list', '--parents', '-n', '1', 'HEAD').decode().split() == [git('rev-parse', 'HEAD').decode().strip(), 'aecfabf32edba31fce567a32450503be3492ea66'], 'Qualification HEAD must be a single child of reviewed main'
+        reviewed = '7382fc7ab93cd973f5783fbd80370b3cf064db99'
+        head = git('rev-parse', 'HEAD').decode().strip()
+        assert git('rev-list', '--parents', '-n', '1', reviewed).decode().split() == [reviewed, WIFITEST_COMMIT], 'Reviewed visual candidate ancestry changed'
+        assert git('rev-list', '--parents', '-n', '1', 'HEAD').decode().split() == [head, reviewed], 'Release fix must be a single child of reviewed candidate'
     return lineage
 
 

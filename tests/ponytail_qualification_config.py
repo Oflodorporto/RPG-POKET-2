@@ -62,8 +62,13 @@ def validate(qual,pub,old_qual,old_pub):
     compare=pr.index('tools/check_ponytail_qualified_artifact.py')
     publish=pr.index('gh release create v2026.10.26-ponytail')
     assert selection < metadata < download < compare < publish, 'Qualified bytes must be checked before publication'
+    assert '--publish-dir build/qualified-ponytail-release' in pr
+    assert pr.count('tools/test_ponytail_release.py build/qualified-ponytail-release') == 2
     assert 'gh release create v2026.10.26-ponytail' in pr and '--target "$GITHUB_SHA"' in pr and '--latest' in pr
-    assert 'cmp "release/$name"' in pr and 'releases/latest/download/manifest.json' in pr
+    assert 'gh release create v2026.10.26-ponytail build/qualified-ponytail-release/firmware.bin build/qualified-ponytail-release/artes.pak build/qualified-ponytail-release/manifest.json' in pr
+    assert 'cmp "build/qualified-ponytail-release/$name" "build/published-ponytail/$name"' in pr
+    assert 'cmp build/qualified-ponytail-release/manifest.json build/published-ponytail/latest.json' in pr
+    assert 'releases/latest/download/manifest.json' in pr
     assert 'test "$matched" = 1' in pr
 
 def main():
@@ -94,7 +99,10 @@ def main():
     for fragment in ('--run-id-out "$RUNNER_TEMP/qualified-run-id"',
                      'actions/runs/$run_id/artifacts?per_page=100',
                      'gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name "ponytail-$GITHUB_SHA"',
-                     'tools/check_ponytail_qualified_artifact.py'):
+                     'tools/check_ponytail_qualified_artifact.py',
+                     '--publish-dir build/qualified-ponytail-release',
+                     'build/qualified-ponytail-release/firmware.bin',
+                     'cmp "build/qualified-ponytail-release/$name"'):
         altered=copy.deepcopy(p)
         for step in altered['jobs']['release']['steps']:
             if 'run' in step:step['run']=step['run'].replace(fragment,'disabled-artifact-check')

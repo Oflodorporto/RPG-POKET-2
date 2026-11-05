@@ -191,21 +191,23 @@ jobs:
           [[ "$run_id" =~ ^[1-9][0-9]*$ ]]
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$run_id/artifacts?per_page=100" > "$RUNNER_TEMP/qualified-artifacts.json"
           gh run download "$run_id" --repo "$GITHUB_REPOSITORY" --name "ponytail-$GITHUB_SHA" --dir "$RUNNER_TEMP/qualified-ponytail"
-          python3 tools/check_ponytail_qualified_artifact.py "$RUNNER_TEMP/qualified-artifacts.json" "$RUNNER_TEMP/qualified-run-id" "$RUNNER_TEMP/qualified-ponytail" release "$GITHUB_SHA"
-          gh release create v2026.10.26-ponytail release/firmware.bin release/artes.pak release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.8 - Bolsa e visual' --notes-file docs/RELEASE_PONYTAIL_NOTAS.txt --latest
+          python3 tools/check_ponytail_qualified_artifact.py "$RUNNER_TEMP/qualified-artifacts.json" "$RUNNER_TEMP/qualified-run-id" "$RUNNER_TEMP/qualified-ponytail" release "$GITHUB_SHA" --publish-dir build/qualified-ponytail-release
+          python3 tools/test_ponytail_release.py build/qualified-ponytail-release
+          python3 tools/test_ponytail_release.py build/qualified-ponytail-release --sanitizers
+          gh release create v2026.10.26-ponytail build/qualified-ponytail-release/firmware.bin build/qualified-ponytail-release/artes.pak build/qualified-ponytail-release/manifest.json --target "$GITHUB_SHA" --title 'RPG POKET - 7.8 - Bolsa e visual' --notes-file docs/RELEASE_PONYTAIL_NOTAS.txt --latest
       - name: Conferir downloads publicos, OTA real e manifesto latest
         run: |
           mkdir -p build/published-ponytail
           for name in firmware.bin artes.pak manifest.json; do
             curl --fail --location --retry 5 --retry-all-errors --output "build/published-ponytail/$name" "https://github.com/$GITHUB_REPOSITORY/releases/download/v2026.10.26-ponytail/$name"
-            cmp "release/$name" "build/published-ponytail/$name"
+            cmp "build/qualified-ponytail-release/$name" "build/published-ponytail/$name"
           done
           python3 tools/verify_ponytail_release.py build/published-ponytail
           python3 tools/test_ponytail_release.py build/published-ponytail
           python3 tools/test_ponytail_release.py build/published-ponytail --sanitizers
           matched=0
           for attempt in $(seq 1 12); do
-            if curl --fail --location --retry 2 --output build/published-ponytail/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp release/manifest.json build/published-ponytail/latest.json; then matched=1; break; fi
+            if curl --fail --location --retry 2 --output build/published-ponytail/latest.json "https://github.com/$GITHUB_REPOSITORY/releases/latest/download/manifest.json" && cmp build/qualified-ponytail-release/manifest.json build/published-ponytail/latest.json; then matched=1; break; fi
             sleep 10
           done
           test "$matched" = 1

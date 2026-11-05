@@ -83,4 +83,47 @@ with tempfile.TemporaryDirectory(prefix='ponytail-artifact-') as temp:
         selected.write_text(bad)
         reject(lambda:read_run_id(selected))
 
+with tempfile.TemporaryDirectory(prefix='ponytail-select-') as temp:
+    root=Path(temp);download=root/'download';local=root/'local'
+    (download/'release').mkdir(parents=True);(download/'build').mkdir();local.mkdir()
+    qualified_fw=b'qualified firmware';local_fw=b'publisher firmware'
+    assert len(qualified_fw)==len(local_fw)
+    art=b'identical art'
+    qualified_manifest={'version':'fixture','partition':'same','firmware':{'bytes':len(qualified_fw),'sha256':hashlib.sha256(qualified_fw).hexdigest()},'art':{'sha256':hashlib.sha256(art).hexdigest()}}
+    local_manifest=copy.deepcopy(qualified_manifest)
+    local_manifest['firmware']['sha256']=hashlib.sha256(local_fw).hexdigest()
+    blobs={'firmware.bin':qualified_fw,'artes.pak':art,'manifest.json':(json.dumps(qualified_manifest)+'\n').encode()}
+    values={n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()} for n,b in blobs.items()}
+    for n,b in blobs.items(): (download/'release'/n).write_bytes(b)
+    (local/'firmware.bin').write_bytes(local_fw)
+    (local/'artes.pak').write_bytes(art)
+    (local/'manifest.json').write_text(json.dumps(local_manifest)+'\n')
+    identity={'source_commit':sha,'artifacts':values,'published':False,'physical_validation':False}
+    budget={'source_commit':sha,'candidate_firmware_bytes':len(qualified_fw),'target_compile_verified':True,'art_sha256':values['artes.pak']['sha256']}
+    (download/'build/ponytail-source-identity.json').write_text(json.dumps(identity))
+    (download/'build/ponytail-scope-budget.json').write_text(json.dumps(budget))
+    (download/'release/SHA256SUMS').write_text(''.join(values[n]['sha256']+'  '+n+'\n' for n in artifact.NAMES))
+    real_verify,real_check=artifact.verify,artifact.check_image
+    artifact.verify=lambda *args,**kwargs:None
+    artifact.check_image=lambda *args,**kwargs:None
+    try:
+        published=root/'published'
+        assert artifact.select_qualified_package(download,local,published,sha)==values;count+=1
+        assert (published/'firmware.bin').read_bytes()==qualified_fw != local_fw;count+=1
+        reject(lambda:artifact.select_qualified_package(download,local,published,sha))
+        (local/'artes.pak').write_bytes(b'wrong art')
+        reject(lambda:artifact.select_qualified_package(download,local,root/'bad-art',sha))
+        (local/'artes.pak').write_bytes(art)
+        bad=copy.deepcopy(local_manifest);bad['partition']='wrong'
+        (local/'manifest.json').write_text(json.dumps(bad))
+        reject(lambda:artifact.select_qualified_package(download,local,root/'bad-contract',sha))
+        (local/'manifest.json').write_text(json.dumps(local_manifest)+'\n')
+        (local/'firmware.bin').write_bytes(local_fw+b'!')
+        reject(lambda:artifact.select_qualified_package(download,local,root/'bad-size',sha))
+        (local/'firmware.bin').write_bytes(local_fw)
+        (download/'release/firmware.bin').write_bytes(b'corrupted firmware')
+        reject(lambda:artifact.select_qualified_package(download,local,root/'bad-qualified',sha))
+    finally:
+        artifact.verify,artifact.check_image=real_verify,real_check
+
 print(f'PASS: {count} exact-run metadata, absent/expired artifact, SHA, byte divergence, provenance and malformed ID refusal probes')
